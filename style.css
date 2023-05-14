@@ -37,13 +37,13 @@ body {
     --h2-font-size: 56px;
     --h3-font-size: 46px;
   {
-  #top-left-button {
-    --top-left-button-index-translation: -80%, 80%;
-    --top-left-button-index-scale: 0.4;
-  }
-  button {
-    width: 100%;
-  }
+    #top-left-button {
+      --top-left-button-index-translation: -80%, 80%;
+      --top-left-button-index-scale: 0.4;
+    }
+    button {
+      width: 100%;
+    }
 }
 
 #top-left-button {
