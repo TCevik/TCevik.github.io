@@ -13,6 +13,10 @@ body {
   --text-color: #000000;
   --h123-color: #38761d;
   --custom-link-color: #38761d;
+  --p-font-size: 16px;
+  --h1-font-size: 46px;
+  --h2-font-size: 36px;
+  --h3-font-size: 26px;
 }
 
 /* donkere modus */
@@ -26,32 +30,34 @@ body {
 }
 
 @media only screen and (max-device-width: 480px) {
-  button {
-    width: 100%; 
-    --p-font-size: 36px;
+  :root {
+    --font-size: 36px;
     --h1-font-size: 66px;
     --h2-font-size: 56px;
     --h3-font-size: 46px;
+  }
+  button {
+    width: 100%;
   }
 }
 
 h1 {
   color: var(--h123-color);
-  font-size: 46px;
+  font-size: var(--h1-font-size);
 }
 
 h2 {
   color: var(--h123-color);
-  font-size: 36px;
+  font-size: var(--h2-font-size);
 }
 
 h3 {
   color: var(--h123-color);
-  font-size: 26px;
+  font-size: var(--h3-font-size);
 }
 
 p {
-  font-size: 16px;
+  font-size: var(--font-size);
   line-height: 1.5;
 }
 
@@ -64,6 +70,6 @@ button {
   background-color: #43b731;
   color: white;
   padding: 10px;
-  font-size: 16px;
+  font-size: var(--font-size);;
   margin: 1%;
 }
