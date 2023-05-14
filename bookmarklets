@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookmarklets</title>
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Bookmarklets</h1>
+    <p>Hier kan je verschillende hele handige bookmarklets vinden. Dit heette op mijn vorige site "Bookmarkies" voor de gene die dat wil weten.</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
