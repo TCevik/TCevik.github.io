@@ -11,6 +11,8 @@ body {
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
+  --h1-color: #38761d;
+  --custom-link-color: #38761d;
 }
 
 /* donkere modus */
@@ -18,11 +20,13 @@ body {
   :root {
     --background-color: #0d1710;
     --text-color: #ffffff;
+    --h1-color: #7fff48;
+    --custom-link-color: 33ff33;
   }
 }
 
 h1 {
-  color: #38761d;
+  color: var(--h1-color);
   font-size: 24px;
 }
 
@@ -31,7 +35,7 @@ p {
   line-height: 1.5;
 
 a.custom-link {
-  color: #38761d;
+  color: var(--custom-link-color);
 }
 
 button {
