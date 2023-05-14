@@ -71,6 +71,7 @@ button {
   background-color: #38761d;
   color: #ffffff;
   padding: 10px;
+  border: none;
   font-size: var(--font-size);;
   margin: 1%;
 }
