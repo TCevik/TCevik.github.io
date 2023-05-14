@@ -28,7 +28,10 @@ body {
 @media only screen and (max-device-width: 480px) {
   button {
     width: 100%; 
-    font-size: 4em;
+    --p-font-size: 36px;
+    --h1-font-size: 66px;
+    --h2-font-size: 56px;
+    --h3-font-size: 46px;
   }
 }
 
