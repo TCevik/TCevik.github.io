@@ -11,7 +11,7 @@ body {
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
-  --h1-color: #38761d;
+  --h123-color: #38761d;
   --custom-link-color: #38761d;
 }
 
@@ -20,14 +20,24 @@ body {
   :root {
     --background-color: #0d1710;
     --text-color: #ffffff;
-    --h1-color: #7fff48;
+    --h123-color: #7fff48;
     --custom-link-color: 33ff33;
   }
 }
 
 h1 {
-  color: var(--h1-color);
-  font-size: 24px;
+  color: var(--h123-color);
+  font-size: 46px;
+}
+
+h2 {
+  color: var(--h123-color);
+  font-size: 36px;
+}
+
+h3 {
+  color: var(--h123-color);
+  font-size: 26px;
 }
 
 p {
