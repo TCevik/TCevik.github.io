@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TC_tam - Chat</title>
+  <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    #top-left-button {
+      position: fixed;
+      left: 5px;
+      top: 5px;
+      transform: scale(var(--top-left-button-index-scale)) translate(var(--top-left-button-index-translation));
+      --bottom-left-image-index-translation: -300%, 300%;
+      --bottom-left-image-index-scale: 0.15;
+    }
+        
+    @media only screen and (max-device-width: 750px) {
+      #top-left-button {
+          --top-left-button-index-translation: -80%, 80%;
+          --top-left-button-index-scale: 0.4;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+  <iframe src="https://script.google.com/macros/s/AKfycbyX4Qnu19Ojirw9CEWSGmvZdSmT3-FryeOn7iFUPkJUL8ISVhYYLxk5D8lFKxMX5jVY/exec" allowfullscreen></iframe>
+  <script src="script.js"></script>
+</body>
+</html>
