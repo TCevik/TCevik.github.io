@@ -17,8 +17,6 @@ body {
   --h1-font-size: 46px;
   --h2-font-size: 36px;
   --h3-font-size: 26px;
-  --bottom-left-image-index-translation: -300%, 300%;
-  --bottom-left-image-index-scale: 0.15;
 }
 
 /* dark mode */
@@ -38,8 +36,6 @@ body {
     --h1-font-size: 66px;
     --h2-font-size: 56px;
     --h3-font-size: 46px;
-    --bottom-left-image-index-translation: -80%, 80%;
-    --bottom-left-image-index-scale: 0.4;
   }
   button {
     width: 100%;
@@ -82,11 +78,4 @@ button {
 button:hover {
   cursor: pointer;
   font-size: 1.1em;
-}
-
-#bottom-left-image-index {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  transform: scale(var(--bottom-left-image-index-scale)) translate(var(--bottom-left-image-index-translation));
 }
