@@ -25,6 +25,13 @@ body {
   }
 }
 
+@media only screen and (max-device-width: 480px) {
+  button {
+    width: 100%; 
+    font-size: 4em;
+  }
+}
+
 h1 {
   color: var(--h123-color);
   font-size: 46px;
