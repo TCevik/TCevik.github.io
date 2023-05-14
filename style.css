@@ -47,18 +47,14 @@ body {
 }
 
 #top-left-button {
-      position: fixed;
-      left: 5px;
-      top: 5px;
-      transform: scale(var(--top-left-button-index-scale)) translate(var(--top-left-button-index-translation));
-      --bottom-left-image-index-translation: -300%, 300%;
-      --bottom-left-image-index-scale: 0.15;
+  position: fixed;
+  left: 5px;
+  top: 5px;
+  transform: scale(var(--top-left-button-index-scale)) translate(var(--top-left-button-index-translation));
+  --bottom-left-image-index-translation: -300%, 300%;
+  --bottom-left-image-index-scale: 0.15;
 }
         
-    @media only screen and (max-device-width: 750px) {
-
-    }
-
 h1 {
   color: var(--h123-color);
   font-size: var(--h1-font-size);
