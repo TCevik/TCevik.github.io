@@ -9,6 +9,7 @@
 <body>
     <h1>Bookmarklets</h1>
     <p>Hier kan je verschillende hele handige bookmarklets vinden. Dit heette op mijn vorige site "Bookmarkies" voor de gene die dat wil weten.</p>
+    <p>Sleep ze gewoon naar je bookmarkbalk en klik erop om ze te gebruiken.</p>
 
     <script src="script.js"></script>
 </body>
