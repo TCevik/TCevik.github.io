@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google</title>
+  <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    #top-left-button {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      transform: scale(var(--top-left-button-index-scale)) translate(var(--top-left-button-index-translation));
+      --bottom-left-image-index-translation: -300%, 300%;
+      --bottom-left-image-index-scale: 0.15;
+    }
+        
+    @media only screen and (max-device-width: 750px) {
+      #top-left-button {
+          --top-left-button-index-translation: -80%, 80%;
+          --top-left-button-index-scale: 0.4;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="top-left-button">Terug</button>
+  <iframe src="https://birdseeds.xyz/" allowfullscreen></iframe>
+  <script src="script.js"></script>
+</body>
+</html>
