@@ -45,7 +45,7 @@ p {
   line-height: 1.5;
 }
 
-a.custom-link {
+a {
   color: var(--custom-link-color);
 }
 
