@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>[TABBLAD NAAM]</title>
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+</head>
+<body>
+    <h1>Titel</h1>
+    <p>Woord woord woord. Woord woord woord. Woord woord woord.</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
