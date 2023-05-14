@@ -7,7 +7,7 @@ body {
   text-align: center;
 }
 
-/* lichte modus */
+/* light mode */
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
@@ -19,7 +19,7 @@ body {
   --h3-font-size: 26px;
 }
 
-/* donkere modus */
+/* dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #0d1710;
@@ -29,6 +29,7 @@ body {
   }
 }
 
+/* elements get bigger when you have a screen smaller than 750px (phones) */
 @media only screen and (max-device-width: 750px) {
   :root {
     --font-size: 36px;
