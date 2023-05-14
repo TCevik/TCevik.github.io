@@ -68,8 +68,8 @@ a {
 
 button {
   border-radius: 25px;
-  background-color: #43b731;
-  color: white;
+  background-color: #38761d;
+  color: #ffffff;
   padding: 10px;
   font-size: var(--font-size);;
   margin: 1%;
@@ -77,5 +77,5 @@ button {
 
 button:hover {
   cursor: pointer;
-  font-size: 1.1em;
+  background-color: #43b731;
 }
