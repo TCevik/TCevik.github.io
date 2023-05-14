@@ -10,7 +10,19 @@
             position: fixed;
             left: 20px;
             bottom: 20px;
-            transform: scale(0.15) translate(-300%, 300%);
+             transform: scale(var(--bottom-left-image-index-scale)) translate(var(--bottom-left-image-index-translation));
+        }
+        
+        @media only screen and (max-device-width: 750px) {
+            :root {
+                --bottom-left-image-index-translation: -80%, 80%;
+                --bottom-left-image-index-scale: 0.4;
+            }
+        }
+        
+        :root {
+            --bottom-left-image-index-translation: -300%, 300%;
+            --bottom-left-image-index-scale: 0.15;
         }
     </style>
 </head>
