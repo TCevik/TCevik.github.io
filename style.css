@@ -72,11 +72,19 @@ button {
   color: #ffffff;
   padding: 10px;
   border: none;
-  font-size: var(--font-size);;
+  font-size: var(--font-size);
   margin: 1%;
 }
 
 button:hover {
   cursor: pointer;
   filter: brightness(120%);
+}
+
+.bookmarklet {
+  border-radius: 25px;
+  background-color: #38761d;
+  margin: 1%;
+  display: inline-block;
+  padding: 10px;
 }
