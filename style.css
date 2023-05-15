@@ -39,7 +39,7 @@ body {
   }
     #top-left-button {
       --top-left-button-index-translation: -80%, 80%;
-      --top-left-button-index-scale: 0.4;
+      width: 20%;
     }
     button {
       width: 100%;
@@ -50,7 +50,7 @@ body {
   position: fixed;
   left: 5px;
   top: 5px;
-  transform: scale(var(--top-left-button-index-scale)) translate(var(--top-left-button-index-translation));
+  transform: scale(1)) translate(var(--top-left-button-index-translation));
   --bottom-left-image-index-translation: -300%, 300%;
   --bottom-left-image-index-scale: 0.15;
 }
