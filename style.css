@@ -50,8 +50,8 @@ body {
 
 #top-left-button {
   position: fixed;
-  left: 5px;
-  top: 5px;
+  left: 0px;
+  top: 0px;
   transform: scale(1)) translate(var(--top-left-button-index-translation));
   --bottom-left-image-index-translation: -300%, 300%;
   --bottom-left-image-index-scale: 0.15;
