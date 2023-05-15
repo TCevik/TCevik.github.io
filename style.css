@@ -34,9 +34,9 @@ body {
 @media only screen and (max-device-width: 750px) {
   :root {
     --font-size: 36px;
-    --h1-font-size: 66px;
-    --h2-font-size: 56px;
-    --h3-font-size: 46px;
+    --h1-font-size: 106px;
+    --h2-font-size: 86px;
+    --h3-font-size: 66px;
     --button-padding: 30px;
   }
     #top-left-button {
