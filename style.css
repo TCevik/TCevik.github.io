@@ -17,6 +17,7 @@ body {
   --h1-font-size: 46px;
   --h2-font-size: 36px;
   --h3-font-size: 26px;
+  --button-padding: 10px;
 }
 
 /* dark mode */
@@ -36,6 +37,7 @@ body {
     --h1-font-size: 66px;
     --h2-font-size: 56px;
     --h3-font-size: 46px;
+    --button-padding: 30px;
   }
     #top-left-button {
       --top-left-button-index-translation: -80%, 80%;
@@ -84,7 +86,7 @@ button {
   border-radius: 25px;
   background-color: #38761d;
   color: #ffffff;
-  padding: 10px;
+  padding: var(--button-padding);
   border: none;
   font-size: var(--font-size);
   margin: 1%;
