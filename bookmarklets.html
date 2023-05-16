@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Bookmarklets</title>
     <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -18,7 +19,5 @@
     <a class="bookmarklet" href="javascript:(function(){ [].slice.call(document.querySelectorAll('img, .gist')).forEach(function(elem) { elem.remove(); }); })()">Verwijder foto's op site</a>
     <a class="bookmarklet" href="javascript:(function(){var i, nd; function copyChildren(a,b){var i, nn; for(i=0;i<a.childNodes.length;++i) { nn = a.childNodes[i].cloneNode(true); if(nd.importNode) nn = nd.importNode(nn, true); b.appendChild(nn); } } nd=window.open().document; nd.open(); nd.close(); /*140681*/ copyChildren(document.getElementsByTagName('head')[0], nd.getElementsByTagName('head')[0]); copyChildren(document.body, nd.body);})();">Copy de site waarop je nu bent</a>
     <a class="bookmarklet" href="javascript:R=0; x1=.1; y1=.05; x2=.25; y2=.24; x3=1.6; y3=.24; x4=300; y4=200; x5=300; y5=200; DI=document.getElementsByTagName("img"); DIL=DI.length; function A(){for(i=0; i-DIL; i++){DIS=DI[ i ].style; DIS.position='absolute'; DIS.left=(Math.tan(R*x1+i*x2+x3)*x4+x5)+"px"; DIS.top=(Math.sin(R*y1+i*y2+y3)*y4+y5)+"px"}R++}setInterval('A()',5); void(0);">Alle foto's op een website gaan crazy</a>
-
-    <script src="script.js"></script>
 </body>
 </html>
