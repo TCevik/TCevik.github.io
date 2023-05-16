@@ -19,8 +19,13 @@
             filter: brightness(250%);
         }
         
+        :root {
+            --bottom-right-text-translation: 300%, 300%;
+        }
+        
         @media only screen and (max-device-width: 750px) {
             #bottom-left-image {
+                --bottom-right-text-translation: 80%, 80%;
                 --bottom-left-image-index-translation: -80%, 80%;
                 --bottom-left-image-index-scale: 0.4;
             }
@@ -41,6 +46,7 @@
     <button onclick="window.location.href='https://github.com/TCevik/TCevik.github.io/issues/new'">Meld een bug</button>
     <a id="bottom-left-image" onclick="window.location.href='https://github.com/TCevik/TCevik.github.io'">
         <img src="https://tcevik.github.io/github-icon.png"></a>
+    <p style="transform: translate(var(--bottom-right-text-index-translation));">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English.</p>
 
     <script src="https://tcevik.github.io/script.js"></script>
 </body>
