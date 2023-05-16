@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
 </head>
 <body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
     <h1>Titel</h1>
     <p>Woord woord woord. Woord woord woord. Woord woord woord.</p>
 
