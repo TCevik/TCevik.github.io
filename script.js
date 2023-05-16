@@ -16,9 +16,9 @@ window.onload = function() {
 };
 
 // Activiteit loggen wanneer er op een link wordt geklikt
-var links = document.getElementsByTagName('a');
-for (var i = 0; i < links.length; i++) {
-  links[i].addEventListener('click', function() {
-    logActivity('Link clicked: ' + this.href);
-  });
-}
+document.addEventListener('click', function(event) {
+  var target = event.target;
+  if (target.tagName === 'A') {
+    logActivity('Link clicked: ' + target.href);
+  }
+});
