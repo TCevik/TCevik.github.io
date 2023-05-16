@@ -7,7 +7,7 @@ body {
   text-align: center;
 }
 
-/* light mode */
+/* light mode and default */
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
