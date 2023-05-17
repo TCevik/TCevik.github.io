@@ -83,13 +83,13 @@ a {
 }
 
 button {
-  border-radius: 25px;
+  border-radius: 10px;
   background-color: #38761d;
   color: #ffffff;
   padding: var(--button-padding);
   border: none;
   font-size: var(--font-size);
-  margin: 1%;
+  margin: 0.3%;
 }
 
 button:hover {
