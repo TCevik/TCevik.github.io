@@ -10,5 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         var element = document.getElementById("birthday-message");
         element.style.display = "none";
+        element.innerText = "";
     }
 });
