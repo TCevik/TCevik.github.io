@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (currentDate >= targetDateStart && currentDate < targetDateEnd) {
         var element = document.getElementById("birthday-message");
         element.style.display = "block";
-        element.innerText = "Gelukkige verjaardag!";
+        element.innerText = "JAAAAAHOOOOOOO HET IS DE PERIODE ROND MIJN VERJAARDAG (18 mei)";
     } else {
         var element = document.getElementById("birthday-message");
         element.style.display = "none";
