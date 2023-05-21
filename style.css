@@ -40,7 +40,7 @@ body {
     --button-padding: 30px;
   }
     #top-left-button {
-      --top-left-button-index-translation: -80%, 80%;
+      --top-left-button-index-translation: 5%, 10%;
       width: 20%;
     }
     button {
