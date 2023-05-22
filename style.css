@@ -82,6 +82,9 @@ p {
 a {
   font-size: var(--font-size);
   color: var(--custom-link-color);
+  text-decoration: none;
+  border-bottom: 1px solid var(--custom-link-color);
+  line-height: 1;
 }
 
 button {
