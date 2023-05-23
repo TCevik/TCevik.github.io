@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>IDE</title>
+    
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    
+    <style>
+        .square {
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            margin-bottom: 20px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 16px;
+            padding: 10px;
+        }
+    </style>
+    
+    <script>
+        function executeCode() {
+            var cssCode = document.getElementById("css-code").value;
+            var jsCode = document.getElementById("js-code").value;
+            var htmlCode = document.getElementById("html-code").value;
+            
+            var styleElement = document.createElement("style");
+            styleElement.innerHTML = cssCode;
+            document.head.appendChild(styleElement);
+            
+            var scriptElement = document.createElement("script");
+            scriptElement.innerHTML = jsCode;
+            document.head.appendChild(scriptElement);
+            
+            var resultElement = document.getElementById("result");
+            resultElement.innerHTML = htmlCode;
+        }
+    </script>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+    <h1>IDE</h1>
+    <p>Vul code in en druk op uitvoeren om het... UIT TE VOEREN! Hahaha.</p>
+    
+    <div class="square">
+        <textarea id="css-code" rows="5" cols="30" placeholder="Typ je CSS-code hier..."></textarea>
+    </div>
+    
+    <div class="square">
+        <textarea id="js-code" rows="5" cols="30" placeholder="Typ je JavaScript-code hier..."></textarea>
+    </div>
+    
+    <div class="square">
+        <textarea id="html-code" rows="5" cols="30" placeholder="Typ je HTML-code hier..."></textarea>
+    </div>
+    
+    <button onclick="executeCode()">UITVOEREN</button>
+    
+    <div id="result"></div>
+</body>
+</html>
