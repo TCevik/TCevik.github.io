@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MOTO X3M BIKE RACE GAME</title>
+  <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+  <script src="https://tcevik.github.io/script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+  <script>
+    document.addEventListener('click', function () {
+      var elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+</head>
+<body>
+  <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+  <iframe src="https://bike-race.io/game/bike-race" allowfullscreen></iframe>
+</body>
+</html>
