@@ -1,5 +1,5 @@
 // Voeg hier de IP-adressen toe die toegang hebben tot de website
-var toegestaneIPs = ["192.168.178.1"];
+var toegestaneIPs = ["192.168.178.74"];
 
 // Haal het IP-adres van de bezoeker op
 var bezoekerIP = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
