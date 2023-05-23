@@ -64,21 +64,26 @@ body {
 h1 {
   color: var(--h1234-color);
   font-size: var(--h1-font-size);
+  margin-bottom: 15px;
 }
 
 h2 {
   color: var(--h1234-color);
   font-size: var(--h2-font-size);
+  margin-bottom: 15px;
 }
 
 h3 {
   color: var(--h1234-color);
   font-size: var(--h3-font-size);
+  margin-bottom: 5px;
 }
 
 h4 {
   color: var(--h1234-color);
   font-size: var(--h4-font-size);
+  margin-bottom: 5px;
+  margin-top: 15px;
 }
 
 p {
