@@ -9,14 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
     
     <style>
-        .square {
-            width: 200px;
-            height: 200px;
+        #textarea {
+            width: 90%;
+            color: var(--text-color);
+            margin-top: 10px;
+            margin-bottom: 10px;
             border: 1px solid black;
-            margin-bottom: 20px;
             font-family: 'Lexend', sans-serif;
-            font-size: 16px;
+            font-size: var(--font-size);
             padding: 10px;
+            background-color: var(--background-color);
+            text-align: center;
         }
     </style>
     
@@ -44,17 +47,9 @@
     <h1>IDE</h1>
     <p>Vul code in en druk op uitvoeren om het... UIT TE VOEREN! Hahaha.</p>
     
-    <div class="square">
-        <textarea id="css-code" rows="5" cols="30" placeholder="Typ je CSS-code hier..."></textarea>
-    </div>
-    
-    <div class="square">
-        <textarea id="js-code" rows="5" cols="30" placeholder="Typ je JavaScript-code hier..."></textarea>
-    </div>
-    
-    <div class="square">
-        <textarea id="html-code" rows="5" cols="30" placeholder="Typ je HTML-code hier..."></textarea>
-    </div>
+    <textarea id="css-code" rows="5" cols="30" placeholder="Typ je CSS-code hier..."></textarea>
+    <textarea id="js-code" rows="5" cols="30" placeholder="Typ je JavaScript-code hier..."></textarea>
+    <textarea id="html-code" rows="5" cols="30" placeholder="Typ je HTML-code hier..."></textarea>
     
     <button onclick="executeCode()">UITVOEREN</button>
     
