@@ -4,12 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Maak een nieuw element voor de popup
       var popup = document.createElement('div');
       popup.id = 'popup';
-      popup.style.position = 'fixed';
-      popup.style.bottom = '10px';
-      popup.style.left = '10px';
-      popup.style.background = '#ffffff';
-      popup.style.padding = '10px';
-      popup.style.border = '1px solid #cccccc';
+      popup.className = 'popup'; // Voeg de class "popup" toe
   
       // Voeg de tekst toe aan de popup
       var text = document.createTextNode('Door deze website te gebruiken ga je akkoord met de privacy policy en de terms of service.');

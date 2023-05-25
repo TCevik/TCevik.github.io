@@ -50,6 +50,9 @@ body {
     button {
       width: 100%;
     }
+    .popup {
+      width: 95%;
+    }
 }
 
 #top-left-button {
@@ -150,4 +153,14 @@ button:hover {
 ::-moz-scrollbar-thumb {
   background-color: var(--h1234-color);
   border-radius: 6px;
+}
+
+.popup {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: var(--background-color);
+  padding: 10px;
+  border: 1px solid var(--h1234-color);
+  border-radius: 10px;
 }
