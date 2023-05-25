@@ -123,3 +123,31 @@ button:hover {
   display: inline-block;
   padding: 10px;
 }
+
+/* Webkit (Safari/Chrome) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--h1234-color);
+  border-radius: 6px;
+}
+
+/* Firefox */
+::-moz-scrollbar {
+  width: 12px;
+}
+
+::-moz-scrollbar-track {
+  background-color: transparent;
+}
+
+::-moz-scrollbar-thumb {
+  background-color: var(--h1234-color);
+  border-radius: 6px;
+}
