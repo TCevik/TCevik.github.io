@@ -163,4 +163,5 @@ button:hover {
   padding: 10px;
   border: 1px solid var(--h1234-color);
   border-radius: 10px;
+  font-size: var(--font-size);
 }
