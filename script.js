@@ -46,9 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var now = new Date();
   var currentTime = now.toLocaleString();
 
-  var message = {
-    content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum:' + currentTime + '\n' + pageURL
-  };
+  navigator.getBattery().then(function(battery) {
+    var batteryPercentage = Math.round(battery.level * 100);
+    var message = {
+      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%'
+    };
 
-  xhr.send(JSON.stringify(message));
+    xhr.send(JSON.stringify(message));
+  });
 });
