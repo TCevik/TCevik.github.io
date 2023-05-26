@@ -39,8 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
+  var pageName = document.title;
+  var pageURL = window.location.href;
+
   var message = {
-    content: 'Er is iemand op de website!'
+    content: 'Er is iemand op de pagina ' + pageName + '\n' + pageURL
   };
 
   xhr.send(JSON.stringify(message));
