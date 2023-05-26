@@ -96,10 +96,12 @@ if (!localStorage.getItem('userName')) {
     if (userName) {
       localStorage.setItem('userName', userName);
       document.body.removeChild(inputDiv);
+      // Voer hier je code uit nadat de userName is opgeslagen
     }
   });
 } else {
   // De userName is al aanwezig in de localStorage, dus voer hier de rest van je code uit
   var userName = localStorage.getItem('userName');
   console.log('Gebruikersnaam: ' + userName);
+  // Voer hier je code uit met de bestaande userName
 }
