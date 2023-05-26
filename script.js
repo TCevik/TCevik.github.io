@@ -47,11 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   navigator.getBattery().then(function(battery) {
     var batteryPercentage = Math.round(battery.level * 100);
-    var message = {
-      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%'
-    };
 
-    xhr.send(JSON.stringify(message));
+    var userName = localStorage.getItem('userName');
+    if (userName) {
+      var message = {
+        content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + userName
+      };
+      xhr.send(JSON.stringify(message));
+    }
   });
 });
 
