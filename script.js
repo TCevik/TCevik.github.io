@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var pageURL = window.location.href;
 
   var message = {
-    content: 'Er is iemand op de pagina ' + pageName + '\n' + pageURL
+    content: 'Er is iemand op de pagina ' + pageName + '\n' + pageURL,
+    embeds: []
   };
 
   xhr.send(JSON.stringify(message));
