@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   var xhr = new XMLHttpRequest();
-  var url = 'https://script.google.com/macros/s/AKfycbwDRUhtUPRYDf0T4yExdFvl-oyG-81r1MhuqeyexAPxd68bjFDzHodYzRaj5qT0EzK3/exec';
+  var url = 'https://script.google.com/macros/s/AKfycbyiIANH6h66zQeAtlCNoB9E09bAfj-nbhUFYd1rAVJ6DxQi1GTlAzvPx-M9bfon25kL/exec';
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
