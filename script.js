@@ -34,25 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var userName = localStorage.getItem('userName');
-
-  if (!userName) {
-    var input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Vul je naam/gebruikersnaam in';
-    input.addEventListener('change', function(event) {
-      userName = event.target.value;
-      localStorage.setItem('userName', userName);
-      sendData(userName);
-    });
-
-    document.body.appendChild(input);
-  } else {
-    sendData(userName);
-  }
-});
-
-function sendData(userName) {
   var xhr = new XMLHttpRequest();
   var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
   xhr.open('POST', url, true);
@@ -67,9 +48,9 @@ function sendData(userName) {
   navigator.getBattery().then(function(battery) {
     var batteryPercentage = Math.round(battery.level * 100);
     var message = {
-      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + userName
+      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%'
     };
 
     xhr.send(JSON.stringify(message));
   });
-}
+});
