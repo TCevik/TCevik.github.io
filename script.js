@@ -42,10 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var pageName = document.title;
   var pageURL = window.location.href;
 
+  // Vastleggen van de huidige datum en tijd
+  var now = new Date();
+  var currentTime = now.toLocaleString();
+
   var message = {
-    content: 'Er is iemand op de pagina ' + pageName + '\n' + pageURL,
-    embeds: []
+    content: 'Er is iemand op de pagina ' + pageName + '\n' + pageURL + '\nTijd: ' + currentTime
   };
 
   xhr.send(JSON.stringify(message));
-})
+});
