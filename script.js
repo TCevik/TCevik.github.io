@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
       xhr.setRequestHeader('Content-Type', 'application/json');
 
       var message = {
-        content: 'UserName' + 'heeft op de accepteer knop geklikt!'
+        content: 'UserName ' + 'heeft op de accepteer knop geklikt!'
       };
 
       xhr.send(JSON.stringify(message));
