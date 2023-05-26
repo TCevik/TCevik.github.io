@@ -47,32 +47,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
   navigator.getBattery().then(function(battery) {
     var batteryPercentage = Math.round(battery.level * 100);
-    var username = localStorage.getItem('username');
+    var UserName = localStorage.getItem('UserName');
 
     var message = {
-      content: username + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + username
+      content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
     };
 
     xhr.send(JSON.stringify(message));
   });
 });
 
-const savedUsername = localStorage.getItem('username');
+const savedUserName = localStorage.getItem('UserName');
 
-function setUsername() {
-  const username = prompt('(DIT DUURT MAAR 5 SEC!) Voer een gebruikersnaam in om door te gaan:');
+function setUserName() {
+  const UserName = prompt('Voer een gebruikersnaam in om door te gaan:');
 
-  if (username && /^[qwertyuiopasdfghjklzxcvbnm_\-0-9]+$/i.test(username)) {
-    localStorage.setItem('username', username);
+  if (UserName && /^[qwertyuiopasdfghjklzxcvbnm_\-0-9]+$/i.test(UserName)) {
+    localStorage.setItem('UserName', UserName);
     alert('Bedankt! Je gebruikersnaam is opgeslagen.');
   } else {
     alert('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
-    setUsername();
+    setUserName();
   }
 }
 
 if (window.location.href !== 'https://tcevik.github.io/') {
-  if (!savedUsername) {
-    setUsername();
+  if (!savedUserName) {
+    setUserName();
   }
 }
