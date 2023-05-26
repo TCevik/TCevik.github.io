@@ -44,3 +44,44 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(popup);
   }
 });
+
+// Maak een knop aan en voeg deze toe aan de pagina
+var button = document.createElement("button");
+button.innerHTML = "Menu";
+button.style.position = "fixed";
+button.style.top = "10px";
+button.style.right = "10px";
+document.body.appendChild(button);
+
+// Maak het menu met knoppen
+var menu = document.createElement("div");
+menu.style.display = "none";
+menu.style.position = "fixed";
+menu.style.top = "50px";
+menu.style.right = "10px";
+menu.style.padding = "10px";
+menu.style.backgroundColor = "#f1f1f1";
+menu.style.border = "1px solid #ccc";
+document.body.appendChild(menu);
+
+// Voeg knoppen toe aan het menu
+var closeButton = document.createElement("button");
+closeButton.innerHTML = "Sluiten";
+menu.appendChild(closeButton);
+
+// Eventlistener voor de knop
+button.addEventListener("click", function() {
+  if (menu.style.display === "none") {
+    menu.style.display = "block";
+    button.style.display = "none";
+  } else {
+    menu.style.display = "none";
+    button.style.display = "block";
+  }
+});
+
+// Eventlistener voor de sluitknop
+closeButton.addEventListener("click", function() {
+  menu.style.display = "none";
+  button.style.display = "block";
+});
