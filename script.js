@@ -44,3 +44,4 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   xhr.send(JSON.stringify(message));
+})
