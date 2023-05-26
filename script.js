@@ -53,16 +53,40 @@ document.addEventListener('DOMContentLoaded', function() {
     xhrIP.send();
   }
 
-  // Callback-functie om het IP-adres toe te voegen aan de payload
-  function sendMessageWithIP(ipAddress) {
-    var message = {
-      content: 'Er is iemand op de website!',
-      ipAddress: ipAddress
-    };
-
-    xhr.send(JSON.stringify(message));
-  }
-
-  // Oproep om het IP-adres op te halen en de berichtverzending te starten
-  getIPAddress(sendMessageWithIP);
-});
+  document.addEventListener('DOMContentLoaded', function() {
+    var xhr = new XMLHttpRequest();
+    var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+  
+    // Functie om het IP-adres op te halen
+    function getIPAddress(callback) {
+      var xhrIP = new XMLHttpRequest();
+      xhrIP.open('GET', 'https://api.ipify.org?format=json', true);
+      xhrIP.onreadystatechange = function() {
+        if (xhrIP.readyState === 4 && xhrIP.status === 200) {
+          var response = JSON.parse(xhrIP.responseText);
+          var ipAddress = response.ip;
+          callback(ipAddress);
+        }
+      };
+      xhrIP.send();
+    }
+  
+    // Callback-functie om het IP-adres toe te voegen aan de payload
+    function sendMessageWithIP(ipAddress) {
+      var message = {
+        content: 'Er is iemand op de website!',
+        ipAddress: ipAddress
+      };
+  
+      // Voeg extra eigenschappen toe aan het bericht
+      message.pageTitle = document.title;
+      message.pageURL = window.location.href;
+  
+      xhr.send(JSON.stringify(message));
+    }
+  
+    // Oproep om het IP-adres op te halen en de berichtverzending te starten
+    getIPAddress(sendMessageWithIP);
+  });})
