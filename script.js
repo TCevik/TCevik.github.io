@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   var xhr = new XMLHttpRequest();
-  var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
+  var url = 'https://script.google.com/macros/s/AKfycbwDRUhtUPRYDf0T4yExdFvl-oyG-81r1MhuqeyexAPxd68bjFDzHodYzRaj5qT0EzK3/exec';
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -62,7 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
           content: '--------------------------------------------' + '\nEr is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nIP-adres: ' + ipAddress + '\nBatterijpercentage: ' + batteryPercentage + '%'
         };
 
-        xhr.send(JSON.stringify(message));
+        var postData = {
+          pageName: pageName,
+          pageURL: pageURL,
+          currentTime: currentTime,
+          ipAddress: ipAddress,
+          batteryPercentage: batteryPercentage
+        };
+        
+        xhr.send(JSON.stringify(postData));
       });
     }
   };
