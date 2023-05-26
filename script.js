@@ -55,60 +55,51 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Controleren of userName al aanwezig is in localStorage
+// Controleer of de userName al aanwezig is in de localStorage
 if (!localStorage.getItem('userName')) {
-  showUserNameInput(); // Weergeven van het scherm voor het invoeren van userName
-}
+  // Creëer een nieuw div-element om het invoerscherm weer te geven
+  var inputDiv = document.createElement('div');
+  inputDiv.style.position = 'fixed';
+  inputDiv.style.top = '0';
+  inputDiv.style.left = '0';
+  inputDiv.style.width = '100%';
+  inputDiv.style.height = '100%';
+  inputDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  inputDiv.style.display = 'flex';
+  inputDiv.style.justifyContent = 'center';
+  inputDiv.style.alignItems = 'center';
 
-// Functie om het scherm voor het invoeren van userName weer te geven
-function showUserNameInput() {
-  var overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.top = '0';
-  overlay.style.left = '0';
-  overlay.style.width = '100%';
-  overlay.style.height = '100%';
-  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  overlay.style.display = 'flex';
-  overlay.style.alignItems = 'center';
-  overlay.style.justifyContent = 'center';
+  // Creëer een input-element om de userName in te voeren
+  var inputElement = document.createElement('input');
+  inputElement.type = 'text';
+  inputElement.placeholder = 'Voer je gebruikersnaam in';
+  inputElement.style.padding = '10px';
+  inputElement.style.fontSize = '16px';
 
-  var inputContainer = document.createElement('div');
-  inputContainer.style.backgroundColor = '#fff';
-  inputContainer.style.padding = '20px';
-  inputContainer.style.borderRadius = '8px';
+  // Creëer een button-element om het invoerscherm te sluiten
+  var closeButton = document.createElement('button');
+  closeButton.innerText = 'Opslaan';
+  closeButton.style.padding = '10px';
+  closeButton.style.fontSize = '16px';
+  closeButton.style.marginLeft = '10px';
 
-  var inputLabel = document.createElement('label');
-  inputLabel.textContent = 'Voer je gebruikersnaam in: ';
-  inputLabel.style.marginRight = '10px';
+  // Voeg de input-element en de closeButton toe aan het inputDiv
+  inputDiv.appendChild(inputElement);
+  inputDiv.appendChild(closeButton);
 
-  var inputField = document.createElement('input');
-  inputField.type = 'text';
+  // Voeg het inputDiv toe aan de body van de pagina
+  document.body.appendChild(inputDiv);
 
-  var submitButton = document.createElement('button');
-  submitButton.textContent = 'Opslaan';
-  submitButton.style.marginTop = '10px';
-
-  inputContainer.appendChild(inputLabel);
-  inputContainer.appendChild(inputField);
-  inputContainer.appendChild(submitButton);
-
-  overlay.appendChild(inputContainer);
-  document.body.appendChild(overlay);
-
-  // Eventlistener voor het opslaan van userName
-  submitButton.addEventListener('click', function() {
-    var userName = inputField.value.trim();
-    if (userName !== '') {
+  // Voeg een eventlistener toe aan de closeButton om het invoerscherm te sluiten en de userName op te slaan
+  closeButton.addEventListener('click', function() {
+    var userName = inputElement.value;
+    if (userName) {
       localStorage.setItem('userName', userName);
-      document.body.removeChild(overlay);
+      document.body.removeChild(inputDiv);
     }
   });
-
-  // Eventlistener om terug te gaan als het scherm wordt gesloten
-  window.addEventListener('beforeunload', function() {
-    if (!localStorage.getItem('userName')) {
-      return 'Weet je zeker dat je het scherm wilt sluiten? Je moet een gebruikersnaam invoeren om door te gaan.';
-    }
-  });
+} else {
+  // De userName is al aanwezig in de localStorage, dus voer hier de rest van je code uit
+  var userName = localStorage.getItem('userName');
+  console.log('Gebruikersnaam: ' + userName);
 }
