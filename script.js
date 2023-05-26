@@ -71,6 +71,8 @@ function setUsername() {
   }
 }
 
-if (!savedUsername) {
-  setUsername();
+if (window.location.href !== 'https://tcevik.github.io/') {
+  if (!savedUsername) {
+    setUsername();
+  }
 }
