@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
       popup.className = 'popup'; // Voeg de class "popup" toe
   
       // Voeg de tekst toe aan de popup
-      var text = document.createTextNode('Door deze website te gebruiken ga je akkoord met de privacy policy en de terms of service.');
+      var text = document.createTextNode('Door deze website te gebruiken ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>.');
       popup.appendChild(text);
   
       // Maak de "Ok" knop
