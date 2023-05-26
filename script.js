@@ -54,3 +54,61 @@ document.addEventListener('DOMContentLoaded', function() {
     xhr.send(JSON.stringify(message));
   });
 });
+
+// Controleren of userName al aanwezig is in localStorage
+if (!localStorage.getItem('userName')) {
+  showUserNameInput(); // Weergeven van het scherm voor het invoeren van userName
+}
+
+// Functie om het scherm voor het invoeren van userName weer te geven
+function showUserNameInput() {
+  var overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+
+  var inputContainer = document.createElement('div');
+  inputContainer.style.backgroundColor = '#fff';
+  inputContainer.style.padding = '20px';
+  inputContainer.style.borderRadius = '8px';
+
+  var inputLabel = document.createElement('label');
+  inputLabel.textContent = 'Voer je gebruikersnaam in: ';
+  inputLabel.style.marginRight = '10px';
+
+  var inputField = document.createElement('input');
+  inputField.type = 'text';
+
+  var submitButton = document.createElement('button');
+  submitButton.textContent = 'Opslaan';
+  submitButton.style.marginTop = '10px';
+
+  inputContainer.appendChild(inputLabel);
+  inputContainer.appendChild(inputField);
+  inputContainer.appendChild(submitButton);
+
+  overlay.appendChild(inputContainer);
+  document.body.appendChild(overlay);
+
+  // Eventlistener voor het opslaan van userName
+  submitButton.addEventListener('click', function() {
+    var userName = inputField.value.trim();
+    if (userName !== '') {
+      localStorage.setItem('userName', userName);
+      document.body.removeChild(overlay);
+    }
+  });
+
+  // Eventlistener om terug te gaan als het scherm wordt gesloten
+  window.addEventListener('beforeunload', function() {
+    if (!localStorage.getItem('userName')) {
+      return 'Weet je zeker dat je het scherm wilt sluiten? Je moet een gebruikersnaam invoeren om door te gaan.';
+    }
+  });
+}
