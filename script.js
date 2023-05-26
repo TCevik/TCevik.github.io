@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-let userName;
+let userName = localStorage.getItem('userName');
 
 function showPopup() {
   if (!userName) {
@@ -80,6 +80,7 @@ function showPopup() {
     // Eventlistener toevoegen aan de knop
     button.addEventListener('click', function() {
       userName = input.value;
+      localStorage.setItem('userName', userName); // Opslaan van de userName in de localStorage
       closePopup();
     });
 
