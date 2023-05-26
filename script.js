@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const savedUsername = localStorage.getItem('username');
 
 function setUsername() {
-  const username = prompt('(DIT DUURT MAAR 5 SEC!) Voer een gebruikersnaam in:');
+  const username = prompt('(DIT DUURT MAAR 5 SEC!) Voer een gebruikersnaam in om door te gaan:');
 
   if (username && /^[qwertyuiopasdfghjklzxcvbnm_\-0-9]+$/i.test(username)) {
     localStorage.setItem('username', username);
