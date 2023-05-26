@@ -54,3 +54,49 @@ document.addEventListener('DOMContentLoaded', function() {
     xhr.send(JSON.stringify(message));
   });
 });
+
+let userName;
+
+function showPopup() {
+  if (!userName) {
+    // Popup-element maken
+    const popup = document.createElement('div');
+    popup.classList.add('popup'); // Toevoegen van de CSS-klasse "popup" aan de popup
+
+    // Invoerveld maken
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Voer je naam in';
+    input.style.padding = '10px';
+    input.style.fontSize = '18px';
+    input.style.marginRight = '10px';
+
+    // Knop maken
+    const button = document.createElement('button');
+    button.textContent = 'Opslaan';
+    button.style.padding = '10px';
+    button.style.fontSize = '18px';
+
+    // Eventlistener toevoegen aan de knop
+    button.addEventListener('click', function() {
+      userName = input.value;
+      closePopup();
+    });
+
+    // Elementen toevoegen aan de popup
+    popup.appendChild(input);
+    popup.appendChild(button);
+
+    // Popup toevoegen aan de body van de pagina
+    document.body.appendChild(popup);
+  }
+}
+
+function closePopup() {
+  // Popup-element verwijderen
+  const popup = document.querySelector('.popup'); // Selecteren op basis van de CSS-klasse "popup"
+  document.body.removeChild(popup);
+}
+
+// Popup weergeven wanneer de pagina volledig geladen is
+window.addEventListener('load', showPopup);
