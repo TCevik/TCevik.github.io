@@ -16,6 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Voeg een event listener toe aan de knop
     button.addEventListener('click', function() {
+      // Stuur een POST-verzoek naar de Discord-webhook
+      var xhr = new XMLHttpRequest();
+      var url = 'https://discord.com/api/webhooks/1111603856112099399/vxqfA_5PITqXx-i38QYJnLIwgaoncT4lRIb0hdrTNM1VRMBn6BWPXNO6_qOwk7b4VIbe';
+      xhr.open('POST', url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      // Bouw het bericht op
+      var message = {
+        content: '+1 Gebruiker'
+      };
+
+      // Stuur het bericht als JSON naar de webhook
+      xhr.send(JSON.stringify(message));
+
       // Verberg de popup
       popup.style.display = 'none';
 
@@ -30,4 +44,3 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(popup);
   }
 });
-
