@@ -39,9 +39,30 @@ document.addEventListener('DOMContentLoaded', function() {
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
-  var message = {
-    content: 'Er is iemand op de website!'
-  };
+  // Functie om het IP-adres op te halen
+  function getIPAddress(callback) {
+    var xhrIP = new XMLHttpRequest();
+    xhrIP.open('GET', 'https://api.ipify.org?format=json', true);
+    xhrIP.onreadystatechange = function() {
+      if (xhrIP.readyState === 4 && xhrIP.status === 200) {
+        var response = JSON.parse(xhrIP.responseText);
+        var ipAddress = response.ip;
+        callback(ipAddress);
+      }
+    };
+    xhrIP.send();
+  }
 
-  xhr.send(JSON.stringify(message));
-})
+  // Callback-functie om het IP-adres toe te voegen aan de payload
+  function sendMessageWithIP(ipAddress) {
+    var message = {
+      content: 'Er is iemand op de website!',
+      ipAddress: ipAddress
+    };
+
+    xhr.send(JSON.stringify(message));
+  }
+
+  // Oproep om het IP-adres op te halen en de berichtverzending te starten
+  getIPAddress(sendMessageWithIP);
+});
