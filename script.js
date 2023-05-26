@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var currentTime = now.toLocaleString();
 
   var message = {
-    content: 'Er is iemand op de pagina ' + pageName + '\n' + pageURL + '\nTijd: ' + currentTime
+    content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum:' + currentTime + '\n' + pageURL
   };
 
   xhr.send(JSON.stringify(message));
