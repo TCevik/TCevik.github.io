@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Controleer of de gebruiker de website voor het eerst bezoekt
-  if (!localStorage.getItem('visited')) {
+  if (!localStorage.getItem('accept')) {
     // Maak een nieuw element voor de popup
     var popup = document.createElement('div');
     popup.id = 'popup';
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
       popup.style.display = 'none';
 
       // Sla op dat de gebruiker de website heeft bezocht
-      localStorage.setItem('visited', 'true');
+      localStorage.setItem('accept', 'true');
     });
 
     // Voeg de knop toe aan de popup
