@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
   var xhr = new XMLHttpRequest();
   var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
@@ -45,17 +47,30 @@ document.addEventListener('DOMContentLoaded', function() {
   var now = new Date();
   var currentTime = now.toLocaleString();
 
-  navigator.getBattery().then(function(battery) {
-    var batteryPercentage = Math.round(battery.level * 100);
-    var UserName = localStorage.getItem('UserName');
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
 
-    var message = {
-      content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
-    };
+    var batteryPromise = navigator.getBattery();
+    var userNamePromise = new Promise(function(resolve) {
+      resolve(localStorage.getItem('UserName'));
+    });
 
-    xhr.send(JSON.stringify(message));
+    Promise.all([batteryPromise, userNamePromise]).then(function(values) {
+      var battery = values[0];
+      var batteryPercentage = Math.round(battery.level * 100);
+      var UserName = values[1];
+
+      var message = {
+        content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName + '\nLatitude: ' + latitude + '\nLongitude: ' + longitude
+      };
+
+      xhr.send(JSON.stringify(message));
+    });
   });
 });
+
+
 
 const savedUserName = localStorage.getItem('UserName');
 
