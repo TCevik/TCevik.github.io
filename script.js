@@ -54,3 +54,24 @@ document.addEventListener('DOMContentLoaded', function() {
     xhr.send(JSON.stringify(message));
   });
 });
+
+// Controleer of de gebruikersnaam al is opgeslagen in de browser
+const savedUsername = localStorage.getItem('username');
+
+// Functie om de gebruikersnaam in te stellen en op te slaan
+function setUsername() {
+  const username = prompt('Voer je gebruikersnaam in:');
+
+  if (username) {
+    localStorage.setItem('username', username);
+    alert('Bedankt! Je gebruikersnaam is opgeslagen.');
+  } else {
+    alert('Je moet een gebruikersnaam invoeren om door te gaan.');
+    setUsername();
+  }
+}
+
+// Controleren of de gebruikersnaam al is ingesteld
+if (!savedUsername) {
+  setUsername();
+}
