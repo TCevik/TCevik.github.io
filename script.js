@@ -47,8 +47,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   navigator.getBattery().then(function(battery) {
     var batteryPercentage = Math.round(battery.level * 100);
+    var username = localStorage.getItem('username');
+
     var message = {
-      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%'
+      content: username + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + username
     };
 
     xhr.send(JSON.stringify(message));
