@@ -46,12 +46,26 @@ document.addEventListener('DOMContentLoaded', function() {
   var now = new Date();
   var currentTime = now.toLocaleString();
 
-  navigator.getBattery().then(function(battery) {
-    var batteryPercentage = Math.round(battery.level * 100);
-    var message = {
-      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%'
-    };
+  // IP-adres ophalen
+  var ipUrl = 'https://api.ipify.org?format=json';
+  var ipXhr = new XMLHttpRequest();
+  ipXhr.open('GET', ipUrl, true);
 
-    xhr.send(JSON.stringify(message));
-  });
+  ipXhr.onload = function() {
+    if (ipXhr.status === 200) {
+      var ipData = JSON.parse(ipXhr.responseText);
+      var ipAddress = ipData.ip;
+
+      navigator.getBattery().then(function(battery) {
+        var batteryPercentage = Math.round(battery.level * 100);
+        var message = {
+          content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nIP-adres: ' + ipAddress + '\nBatterijpercentage: ' + batteryPercentage + '%'
+        };
+
+        xhr.send(JSON.stringify(message));
+      });
+    }
+  };
+
+  ipXhr.send();
 });
