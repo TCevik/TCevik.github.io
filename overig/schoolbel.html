@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Schoolbel Geluid</title>
+    
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+
+    <script>
+        function playSound() {
+            var audio = new AudioContext();
+            var oscillator = audio.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 440;
+
+            oscillator.connect(audio.destination);
+            oscillator.start();
+
+            setTimeout(function() {
+                oscillator.stop();
+            }, 10000);
+        }
+    </script>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+    <h1>Schoolbel</h1>
+    <p>Dit geluid word op veel scholen gebruikt als schoolbel.
+    <br>Het geluid speelt zich 10 seconden af, dus zet je geluid uit als het net zolang als jouw schoolbel heeft geklinkt.</p>
+    <button onclick="playSound()">Speel schoolbel af</button>
+</body>
+</html>
