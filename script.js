@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     popup.id = 'popup';
     popup.className = 'popup';
 
-    var text = 'Door deze website te gebruiken ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>.';
+    var text = 'Door het gebruik van deze site of het proberen van de inhoud ervan ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>.';
     popup.innerHTML = text;
 
     var button = document.createElement('button');
