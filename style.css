@@ -34,7 +34,7 @@ body {
   }
 }
 
-/* elements get bigger when you have a screen smaller than 750px (phones) */
+/* elements get bigger when you have a screen smaller than 750px (phones in portrait mode) */
 @media only screen and (max-device-width: 750px) {
   :root {
     --font-size: 36px;
