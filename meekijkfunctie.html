@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Meekijkfunctie</title>
+    
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <script src="verstuurscript.js"></script> <!-- Voeg hier het pad naar het verstuurscript toe -->
+    <script>
+        // Functie om de inhoud van de HTML-pagina bij te werken
+        function updateContent(content) {
+            var targetElement = document.getElementById('content');
+            targetElement.innerHTML = content;
+        }
+    </script>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+    <h1>Meekijkfunctie</h1>
+    <div id="content">
+        <p>Hieronder komt alle activiteit op de stite te staan.</p>
+    </div>
+</body>
+</html>

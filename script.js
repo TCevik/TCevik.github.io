@@ -37,8 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   var xhr = new XMLHttpRequest();
-  var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
-  xhr.open('POST', url, true);
+  var discordUrl = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
+  var htmlUrl = 'path/to/save.html'; // Vervang 'path/to/save.html' door het daadwerkelijke pad naar de HTML-pagina waar je de gegevens wilt opslaan.
+  
+  xhr.open('POST', discordUrl, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
   var pageName = document.title;
@@ -57,10 +59,25 @@ document.addEventListener('DOMContentLoaded', function() {
         content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
       };
       xhr.send(JSON.stringify(message));
+
+      // Stuur ook naar de HTML-pagina
+      var htmlContent = '<p>' + JSON.stringify(message) + '</p>';
+      var htmlXhr = new XMLHttpRequest();
+      htmlXhr.open('GET', htmlUrl, true);
+      htmlXhr.onreadystatechange = function() {
+        if (htmlXhr.readyState === 4 && htmlXhr.status === 200) {
+          var response = htmlXhr.responseText;
+          var updatedContent = response + htmlContent;
+          var htmlUpdateXhr = new XMLHttpRequest();
+          htmlUpdateXhr.open('POST', htmlUrl, true);
+          htmlUpdateXhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          htmlUpdateXhr.send('content=' + encodeURIComponent(updatedContent));
+        }
+      };
+      htmlXhr.send();
     }
   });
 });
-
 
 
 const savedUserName = localStorage.getItem('UserName');
