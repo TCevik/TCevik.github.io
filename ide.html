@@ -59,7 +59,13 @@
                 }
             });
         }
-    });
+        });
+
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+            return 'Wil je zeker de site verlaten?';
+        });
     </script>
 </head>
 <body>
