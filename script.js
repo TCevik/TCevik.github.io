@@ -98,9 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var bookIcon = document.createElement('div');
   Object.assign(bookIcon.style, bookIconStyles);
-  bookIcon.classList.add('book-icon');
 
   document.body.appendChild(bookIcon);
+
+  // Voeg de mediaquery code toe
+  @media only screen and (max-width: 750px) {
+    var bookIcon = document.querySelector('div');
+    bookIcon.style.fontSize = '1.2em';
+  }
 
   function readPage() {
     var pageContent = document.body.innerText || document.body.textContent;
