@@ -81,3 +81,12 @@ if (window.location.href !== 'https://tcevik.github.io/') {
     setUserName();
   }
 }
+
+window.addEventListener('load', function() {
+  // Voeg de gewenste tekst toe aan de huidige URL
+  var currentUrl = window.location.href;
+  currentUrl += '?Deze-site-is-gemaakt-door-Tamer-Çevik';
+  
+  // Bijwerk de URL met de toegevoegde tekst
+  window.location.href = currentUrl;
+});
