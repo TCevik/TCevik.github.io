@@ -83,10 +83,19 @@ if (window.location.href !== 'https://tcevik.github.io/') {
 }
 
 window.addEventListener('load', function() {
-  // Voeg de gewenste tekst toe aan de huidige URL
-  var currentUrl = window.location.href;
-  currentUrl += '?Deze-site-is-gemaakt-door-Tamer-Çevik';
+  var desiredText = "Deze-site-is-gemaakt-door-Tamer-Çevik";
   
-  // Bijwerk de URL met de toegevoegde tekst
+  var currentUrl = window.location.href;
+
+  if (currentUrl.endsWith(desiredText)) {
+    return;
+  }
+
+  if (currentUrl.indexOf('?') === -1) {
+    currentUrl += '?' + desiredText;
+  } else {
+    currentUrl = currentUrl.replace(/(\?|\&)([^=]*)$/, '$1' + desiredText);
+  }
+
   window.location.href = currentUrl;
 });
