@@ -85,14 +85,16 @@ if (window.location.href !== 'https://tcevik.github.io/') {
 
 
 window.addEventListener('load', function() {
-  var timeStamp = new Date().getTime();
-  
-  var currentUrl = window.location.href;
-  if (currentUrl.indexOf('?') === -1) {
-    currentUrl += '?';
-  } else {
-    currentUrl += '&';
+  if (performance.navigation.type === 1) {
+    var timeStamp = new Date().getTime();
+    
+    var currentUrl = window.location.href;
+    if (currentUrl.indexOf('?') === -1) {
+      currentUrl += '?';
+    } else {
+      currentUrl += '&';
+    }
+    currentUrl += 'timestamp=' + timeStamp;
+    window.location.href = currentUrl;
   }
-  currentUrl += 'timestamp=' + timeStamp;
-  window.location.href = currentUrl;
 });
