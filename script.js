@@ -1,16 +1,16 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   if (!localStorage.getItem('accept')) {
     var popup = document.createElement('div');
     popup.id = 'popup';
     popup.className = 'popup';
-    
+
     var text = 'Door deze website te gebruiken ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>.';
     popup.innerHTML = text;
 
     var button = document.createElement('button');
     button.innerHTML = 'Ok';
 
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       var xhr = new XMLHttpRequest();
       var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
       xhr.open('POST', url, true);
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var xhr = new XMLHttpRequest();
   var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
   xhr.open('POST', url, true);
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var now = new Date();
   var currentTime = now.toLocaleString();
 
-  navigator.getBattery().then(function(battery) {
+  navigator.getBattery().then(function (battery) {
     var batteryPercentage = Math.round(battery.level * 100);
     var UserName = localStorage.getItem('UserName');
 
@@ -96,7 +96,6 @@ var bookIconStyles = {
 };
 
 var bookIcon = document.createElement('div');
-
 Object.assign(bookIcon.style, bookIconStyles);
 
 document.body.appendChild(bookIcon);
