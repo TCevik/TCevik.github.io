@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   var xhr = new XMLHttpRequest();
   var discordUrl = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
-  var htmlUrl = 'meekijkfunctie.html'; // Vervang 'path/to/save.html' door het daadwerkelijke pad naar de HTML-pagina waar je de gegevens wilt opslaan.
+  var htmlUrl = 'meekijkfunctie.html';
   
   xhr.open('POST', discordUrl, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -53,14 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var batteryPercentage = Math.round(battery.level * 100);
     var UserName = localStorage.getItem('UserName');
 
-    // Controleer of de gebruikersnaam "Tamer" is
     if (UserName !== "Tamer") {
       var message = {
         content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
       };
       xhr.send(JSON.stringify(message));
 
-      // Stuur ook naar de HTML-pagina
       var htmlContent = '<p>' + JSON.stringify(message) + '</p>';
       var htmlXhr = new XMLHttpRequest();
       htmlXhr.open('GET', htmlUrl, true);
