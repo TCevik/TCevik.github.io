@@ -81,12 +81,3 @@ if (window.location.href !== 'https://tcevik.github.io/') {
     setUserName();
   }
 }
-
-// Controleer of de querystring al aanwezig is
-if (window.location.search !== "?deze-site-is-gemaakt-door-tamer") {
-  // Vervang de bestaande querystring of voeg de nieuwe toe
-  var newUrl = window.location.href.replace(window.location.search, "?Deze-site-is-gemaakt-door-Tamer-Çevik");
-
-  // Laad de nieuwe URL
-  window.location.href = newUrl;
-}
