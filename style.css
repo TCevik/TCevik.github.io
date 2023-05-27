@@ -54,7 +54,10 @@ body {
     .popup {
       width: 95%;
     }
-}
+    .book-icon {
+      font-size: 1.2em;
+    }  
+  }
 
 #top-left-button {
   position: fixed;

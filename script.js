@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var bookIcon = document.createElement('div');
   Object.assign(bookIcon.style, bookIconStyles);
+  bookIcon.classList.add('book-icon');
 
   document.body.appendChild(bookIcon);
 
