@@ -51,11 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var batteryPercentage = Math.round(battery.level * 100);
     var UserName = localStorage.getItem('UserName');
 
-    var message = {
-      content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
-    };
-
-    xhr.send(JSON.stringify(message));
+    // Controleer of de gebruikersnaam "Tamer" is
+    if (UserName !== "Tamer") {
+      var message = {
+        content: UserName + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
+      };
+      xhr.send(JSON.stringify(message));
+    }
   });
 });
 
