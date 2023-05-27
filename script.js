@@ -97,5 +97,9 @@ window.addEventListener('load', function() {
     currentUrl = currentUrl.replace(/(\?|\&)([^=]*)$/, '$1' + desiredText);
   }
 
+  if (currentUrl.endsWith(desiredText)) {
+    return;
+  }
+
   window.location.href = currentUrl;
 });
