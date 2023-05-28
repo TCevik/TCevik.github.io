@@ -6,6 +6,10 @@ body {
   padding: 0;
   text-align: center;
   overflow-x: hidden;
+  background-image: url("assets/real-cloud.png"); /* DIT KAN IK WEGHALENNNNNNNN*/
+  background-repeat: no-repeat; /* DIT KAN IK WEGHALENNNNNNNN*/
+  background-size: contain; /* DIT KAN IK WEGHALENNNNNNNN*/
+  background-position: center top; /* DIT KAN IK WEGHALENNNNNNNN*/
 }
 
 /* light mode and default */
