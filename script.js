@@ -133,3 +133,30 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
+
+
+
+// Voorkom dat de pagina wordt gecachet
+function disablePageCache() {
+  // Zorg ervoor dat de browser de pagina niet cacht
+  window.addEventListener('beforeunload', function () {
+    // Voeg een unieke parameter toe aan de URL om ervoor te zorgen dat de browser de pagina altijd opnieuw laadt
+    var timeStamp = new Date().getTime();
+    var currentUrl = window.location.href;
+
+    // Controleer of er al queryparameters aanwezig zijn in de URL
+    if (currentUrl.indexOf('?') !== -1) {
+      // Als er al queryparameters zijn, voeg de unieke parameter toe met een ampersand
+      currentUrl += '&disableCache=' + timeStamp;
+    } else {
+      // Als er nog geen queryparameters zijn, voeg de unieke parameter toe met een vraagteken
+      currentUrl += '?disableCache=' + timeStamp;
+    }
+
+    // Stuur de browser naar de gewijzigde URL om de pagina opnieuw te laden
+    window.location.href = currentUrl;
+  });
+}
+
+// Roep de functie aan om de cache uit te schakelen wanneer de pagina wordt geladen
+disablePageCache();
