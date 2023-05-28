@@ -33,7 +33,22 @@
             document.getElementById('countdown-birthday').innerHTML = "Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot mijn verjaardag!";
         }
   
-      setInterval(countdown, 1000);
+        setInterval(countdown, 1000);
+
+        function countup() {
+            var now = new Date();
+            var startDate = new Date(2023, 4, 21, 14, 31); // 21 mei 2023, 14:31
+            var timeElapsed = now - startDate;
+    
+            var days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+  
+        document.getElementById('countup-site-age').innerHTML = "Deze staat bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+        }
+
+        setInterval(countup, 1000);
     </script>
 </head>
 <body>
@@ -43,6 +58,7 @@
     <br>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site.
     <br>Deze site is volledig geschreven in codeertaal. Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
     <p id="countdown-birthday">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+    <p id="countup-site-age"><p>
 
     <h3>Algemeen</h3>
     <button onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>
