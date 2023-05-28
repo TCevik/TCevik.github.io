@@ -130,12 +130,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
 function scrollTo(elementId) {
   var destination = document.getElementById(elementId).offsetTop;
 
   window.scrollTo({
-      top: destination,
-      behavior: "smooth"
+    top: destination,
+    behavior: "smooth"
   });
 }
