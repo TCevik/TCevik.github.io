@@ -108,6 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     speechUtterance.rate = 0.9;
 
+    speechUtterance.lang = 'nl-NL';
+    
     window.speechSynthesis.speak(speechUtterance);
   }
 
