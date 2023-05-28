@@ -129,3 +129,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
+
+
+
+
+window.addEventListener('beforeinstallprompt', function(event) {
+  event.preventDefault();
+  var prompt = event.prompt("Wil je de TC_tam Website installeren?");
+  prompt.userChoice.then(function(choiceResult) {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('De installatie is geaccepteerd');
+    } else {
+      console.log('De installatie is geweigerd');
+    }
+    prompt = null;
+  });
+});
