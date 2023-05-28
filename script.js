@@ -185,10 +185,11 @@ document.querySelectorAll('a').forEach(function(link) {
     // Voeg de overlay toe aan de body
     document.body.appendChild(overlay);
 
+    // Forceer een herrendering om de overgang toe te passen
+    overlay.getBoundingClientRect();
+
     // Fade-in effect van de overlay
-    setTimeout(function() {
-      overlay.style.opacity = '1';
-    }, 0);
+    overlay.style.opacity = '1';
 
     // Wacht 0,25 seconden voordat de navigatie plaatsvindt
     setTimeout(function() {
@@ -200,14 +201,16 @@ document.querySelectorAll('a').forEach(function(link) {
 // Voeg een event listener toe aan het window object om te reageren op het laden van de nieuwe pagina
 window.addEventListener('load', function() {
   // Vind de overlay
-  var overlay = document.querySelector('div.overlay');
+  var overlay = document.querySelector('div');
+
+  // Forceer een herrendering om de overgang toe te passen
+  overlay.getBoundingClientRect();
 
   // Fade-out effect van de overlay
+  overlay.style.opacity = '0';
+
+  // Verwijder de overlay na het fade-out effect
   setTimeout(function() {
-    overlay.style.opacity = '0';
-    setTimeout(function() {
-      // Verwijder de overlay na het fade-out effect
-      overlay.parentNode.removeChild(overlay);
-    }, 250);
-  }, 0);
+    overlay.parentNode.removeChild(overlay);
+  }, 250);
 });
