@@ -129,29 +129,3 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
-
-
-
-
-
-//DIT KAN IK WEGHALENNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-
-// Verkrijg een referentie naar de afbeelding
-const cloudImage = document.querySelector('body');
-
-// Functie die wordt uitgevoerd wanneer er gescrold wordt
-window.addEventListener('scroll', function() {
-  // Bepaal de verhouding van het scherm dat is gescrolld
-  const scrollRatio = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-
-  // Pas de grootte van de afbeelding aan op basis van de scrollratio
-  const newScale = 1 + (3 * scrollRatio);
-  cloudImage.style.transform = `scale(${newScale})`;
-
-  // Controleer of de afbeelding volledig verdwenen is (3/4 van de pagina)
-  if (scrollRatio >= 0.75) {
-    cloudImage.style.display = 'none';
-  } else {
-    cloudImage.style.display = 'block';
-  }
-});
