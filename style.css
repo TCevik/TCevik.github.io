@@ -112,14 +112,14 @@ button {
   border: none;
   font-size: var(--font-size);
   margin: 0.3%;
-  transition: transform 0.3s; /* Voeg een overgang van 0.3 seconden toe aan de transform eigenschap */
-  transform-origin: center; /* Stel het transformatiepunt in op het midden van de knop */
+  transition: transform 0.2s;
+  transform-origin: center;
 }
 
 button:hover {
   cursor: pointer;
   filter: brightness(120%);
-  transform: scale(1.1); /* Verander de schaal naar 1.1 bij hover */
+  transform: scale(1.1);
 }
 
 .bookmarklet {
