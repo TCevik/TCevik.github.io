@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
 document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
     var bannedMessage = document.createElement('h1');
@@ -128,13 +129,3 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
-
-
-function scrollTo(elementId) {
-  var destination = document.getElementById(elementId).offsetTop;
-
-  window.scrollTo({
-    top: destination,
-    behavior: "smooth"
-  });
-}
