@@ -50,7 +50,45 @@
         }
 
         setInterval(countup, 1000);
+
+        document.getElementById('search-button').addEventListener('click', performSearch);
+        document.getElementById('search-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            var searchQuery = document.getElementById('search-input').value;
+            var searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(searchQuery);
+            window.location.href = searchUrl;
+        }
     </script>
+    <style>
+        .search-container {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 25px;
+            border: 2px solid var(--text-color);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        #search-button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            background-color: var(--text-color);
+            color: var(--background-color);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
@@ -60,6 +98,11 @@
     <br>Deze site is volledig geschreven in codeertaal. Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
     <p id="countdown-birthday">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
     <p id="countup-site-age"><p>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Zoeken op Google">
+        <button id="search-button">Zoeken</button>
+    </div>          
 
     <h3>Algemeen</h3>
     <button onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>
