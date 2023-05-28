@@ -129,3 +129,85 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Voeg een event listener toe aan alle link-elementen
+document.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function(event) {
+    event.preventDefault(); // Voorkom het standaardgedrag van de link
+
+    // Maak een nieuw element aan voor de overlay
+    var overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'black';
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.25s';
+
+    // Voeg de overlay toe aan de body
+    document.body.appendChild(overlay);
+
+    // Fade-in effect van de overlay
+    setTimeout(function() {
+      overlay.style.opacity = '1';
+    }, 0);
+
+    // Wacht 0,25 seconden voordat de navigatie plaatsvindt
+    setTimeout(function() {
+      window.location.href = link.href;
+    }, 250);
+  });
+});
+
+// Voeg een event listener toe aan het window object om te reageren op het laden van de nieuwe pagina
+window.addEventListener('load', function() {
+  // Vind de overlay
+  var overlay = document.querySelector('div.overlay');
+
+  // Fade-out effect van de overlay
+  setTimeout(function() {
+    overlay.style.opacity = '0';
+    setTimeout(function() {
+      // Verwijder de overlay na het fade-out effect
+      overlay.parentNode.removeChild(overlay);
+    }, 250);
+  }, 0);
+});
