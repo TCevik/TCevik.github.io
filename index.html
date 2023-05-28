@@ -53,15 +53,6 @@
                 document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
             }
         });
-
-        document.getElementById("over-mij-button").addEventListener("click", function() {
-            var destination = document.getElementById("over-mij").offsetTop;
-
-            window.scrollTo({
-                top: destination,
-                behavior: "smooth"
-            });
-        });
     </script>
 
 </head>
@@ -75,6 +66,17 @@
     <p id="battery-percentage"><p>
 
     <button id="over-mij-button">Over mij (KLIK HIER VOOR EEN MOOIE ANIMATIE)</button>
+
+    <script>
+        document.getElementById("over-mij-button").addEventListener("click", function() {
+            var destination = document.getElementById("over-mij").offsetTop;
+
+            window.scrollTo({
+                top: destination,
+                behavior: "smooth"
+            });
+        });
+    </script>
 
     <h3>Algemeen</h3>
     <button onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>
