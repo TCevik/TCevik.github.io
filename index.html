@@ -32,7 +32,7 @@
             var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
   
-        document.getElementById('countup-site-age').innerHTML = "Deze staat bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+        document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
         }
 
         setInterval(countup, 1000);

@@ -176,17 +176,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Functie om de inhoud van de pagina op te halen via AJAX
+  // Functie om de inhoud van de pagina op te halen via XMLHttpRequest
   function fetchPage(url) {
-    fetch(url)
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(html) {
-        contentDiv.innerHTML = html; // Update de inhoud van de pagina
-      })
-      .catch(function(error) {
-        console.log('Er is een fout opgetreden:', error);
-      });
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          contentDiv.innerHTML = xhr.responseText; // Update de inhoud van de pagina
+        } else {
+          console.log('Er is een fout opgetreden:', xhr.status);
+        }
+      }
+    };
+    xhr.open('GET', url, true);
+    xhr.send();
   }
 });
+
