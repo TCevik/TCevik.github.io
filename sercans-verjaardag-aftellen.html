@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Aftellen S Verjaardag</title>
+    
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+
+    <script>
+        function countdown() {
+            var now = new Date();
+            var birthday = new Date(now.getFullYear() + 1, [6] - 1, [14]);
+  
+            var timeLeft = birthday - now;
+            var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+  
+            document.getElementById('countdown-birthday').innerHTML = "Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot sercan jarig is!";
+        }
+    </script>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+    <h1 style="color: #3734eb;">Aftellen naar Sercans verjaardag.</h1>
+    <p style="color: #3734eb;">Hier kan je aftellen!</p>
+    <p id="countdown-birthday" style="color: #3734eb;">Laden...</p>
+</body>
+</html>
