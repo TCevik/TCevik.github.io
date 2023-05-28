@@ -1,0 +1,13 @@
+{
+    "name": "TC_tam Website",
+    "short_name": "TC_tam",
+    "start_url": "https://tcevik.github.io/",
+    "display": "standalone",
+    "icons": [
+      {
+        "src": "https://tcevik.github.io/favicon.ico",
+        "sizes": "500x500",
+        "type": "https://tcevik.github.io/favicon.ico"
+      }
+    ]
+  }  
