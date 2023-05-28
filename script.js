@@ -129,38 +129,3 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
-
-
-// Selecteer alle button-elementen
-const buttonElements = document.querySelectorAll('button');
-
-// Voeg een event listener toe aan elk button-element
-buttonElements.forEach(function(buttonElement) {
-  buttonElement.addEventListener('click', function(event) {
-    event.preventDefault(); // Voorkom standaardgedrag van de knop
-
-    // Haal de URL op uit een aangepast attribuut, bijv. 'data-url'
-    const url = this.getAttribute('data-url');
-
-    // Doe een asynchroon HTTP-verzoek naar de server
-    fetch(url)
-      .then(function(response) {
-        if (response.ok) {
-          return response.text(); // Converteer de response naar tekst
-        } else {
-          throw new Error('Fout bij het ophalen van de pagina: ' + response.status);
-        }
-      })
-      .then(function(data) {
-        // Werk de inhoud van de huidige pagina bij met de nieuwe data
-        const contentElement = document.querySelector('body');
-        contentElement.innerHTML = data;
-
-        // Werk de URL van de pagina bij in de geschiedenis
-        history.pushState(null, '', url);
-      })
-      .catch(function(error) {
-        console.error('Er is een fout opgetreden:', error);
-      });
-  });
-});
