@@ -129,3 +129,64 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const contentDiv = document.getElementById('content');
+  const navLinks = document.querySelectorAll('nav a');
+
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault(); // Voorkomt dat de link de pagina opnieuw laadt
+
+      const url = this.getAttribute('href');
+      const pageTitle = this.textContent;
+
+      // Wijzig de URL zonder de pagina opnieuw te laden
+      history.pushState({ url: url, pageTitle: pageTitle }, pageTitle, url);
+
+      // Update de inhoud van de pagina
+      fetchPage(url);
+    });
+  });
+
+  // Vang het popstate-event op wanneer de gebruiker teruggaat of vooruitgaat in de browsergeschiedenis
+  window.addEventListener('popstate', function(event) {
+    const state = event.state;
+    if (state) {
+      const url = state.url;
+      const pageTitle = state.pageTitle;
+
+      // Update de inhoud van de pagina
+      fetchPage(url);
+    }
+  });
+
+  // Functie om de inhoud van de pagina op te halen via AJAX
+  function fetchPage(url) {
+    fetch(url)
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(html) {
+        contentDiv.innerHTML = html; // Update de inhoud van de pagina
+      })
+      .catch(function(error) {
+        console.log('Er is een fout opgetreden:', error);
+      });
+  }
+});
