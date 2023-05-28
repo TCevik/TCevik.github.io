@@ -54,8 +54,8 @@
             }
         });
     </script>
-
 </head>
+
 <body>
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
     <h3>Door Tamer Çevik</h3>
@@ -65,18 +65,7 @@
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
     <p id="battery-percentage"><p>
 
-    <button id="over-mij-button">Over mij (KLIK HIER VOOR EEN MOOIE ANIMATIE)</button>
-
-    <script>
-        document.getElementById("over-mij-button").addEventListener("click", function() {
-            var destination = document.getElementById("over-mij").offsetTop;
-
-            window.scrollTo({
-                top: destination,
-                behavior: "smooth"
-            });
-        });
-    </script>
+    <button onclick="scrollTo('over-mij')">Over mij (KLIK HIER VOOR EEN MOOIE ANIMATIE)</button>
 
     <h3>Algemeen</h3>
     <button onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>

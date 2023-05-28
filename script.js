@@ -128,3 +128,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 });
+
+
+
+function scrollTo(elementId) {
+  var destination = document.getElementById(elementId).offsetTop;
+
+  window.scrollTo({
+      top: destination,
+      behavior: "smooth"
+  });
+}
