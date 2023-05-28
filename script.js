@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
     var bannedMessage = document.createElement('h1');
