@@ -93,17 +93,19 @@
         function updateBatteryLevel() {
             navigator.getBattery().then(function(battery) {
                 var batteryLevel = battery.level * 100;
-                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + batteryLevel.toFixed(2) + "%";
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + Math.round(batteryLevel) + "%";
             });
         }
 
-        setInterval(updateBatteryLevel, 1000);
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(updateBatteryLevel, 1000);
 
-        if ('getBattery' in navigator) {
-            updateBatteryLevel();
-        } else {
-            document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
-        }
+            if ('getBattery' in navigator) {
+                updateBatteryLevel();
+            } else {
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
+            }
+        });
     </script>
 </body>
 </html>
