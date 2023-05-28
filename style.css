@@ -105,18 +105,21 @@ a {
 }
 
 button {
-  border-radius: 10px;
+  border-radius: 15px;
   background-color: var(--button-bgcolor);
   color: #ffffff;
   padding: var(--button-padding);
   border: none;
   font-size: var(--font-size);
   margin: 0.3%;
+  transition: transform 0.3s; /* Voeg een overgang van 0.3 seconden toe aan de transform eigenschap */
+  transform-origin: center; /* Stel het transformatiepunt in op het midden van de knop */
 }
 
 button:hover {
   cursor: pointer;
   filter: brightness(120%);
+  transform: scale(1.1); /* Verander de schaal naar 1.1 bij hover */
 }
 
 .bookmarklet {

@@ -49,21 +49,6 @@
         }
 
         setInterval(countup, 1000);
-
-        // Functie om de knop te verbergen
-        function hideButton() {
-            var button = document.getElementById("siteButton");
-            button.style.display = "none";
-        }
-
-        // Controleer de huidige datum en tijd
-        var now = new Date();
-        var targetDate = new Date("2023-06-01T07:30:00"); // Stel de doeldatum in op 1 juni 7:30 uur
-
-        // Controleer of de huidige datum en tijd gelijk zijn aan of later zijn dan de doeldatum
-        if (now >= targetDate) {
-            hideButton(); // Verberg de knop als de doeldatum is bereikt of overschreden
-        }
     </script>
 </head>
 <body>
@@ -76,7 +61,7 @@
     <p id="countup-site-age"><p>
 
     <h3>Algemeen</h3>
-    <button id="siteButton" onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>
+    <button onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>
     <button onclick="window.location.href='https://tcevik.github.io/chat'">TC_tam Chat</button>
     <button onclick="window.location.href='https://tcevik.github.io/ide'">IDE</button>
     <button onclick="window.location.href='https://youtube.com/@Tamer_Cevik'">Mijn YouTube kanaal</button>
