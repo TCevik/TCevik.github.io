@@ -36,27 +36,6 @@
         }
 
         setInterval(countup, 1000);
-
-        // Functie om het batterijniveau bij te werken
-        function updateBatteryLevel() {
-            // Vraag het batterijniveau op van de computer
-            var batteryLevel = navigator.getBattery().level * 100;
-
-            // Werk de inhoud van het HTML-element bij met het nieuwe batterijniveau
-            document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + batteryLevel.toFixed(2) + "%";
-        }
-
-        // Roep de updateBatteryLevel-functie elke seconde aan
-        setInterval(updateBatteryLevel, 1000);
-
-        // Controleer of de navigator.getBattery-functie wordt ondersteund
-        if ('getBattery' in navigator) {
-            // Roep de updateBatteryLevel-functie eenmaal handmatig aan om het initiële batterijniveau te krijgen
-            updateBatteryLevel();
-        } else {
-            // Geef een foutmelding weer als de functie niet wordt ondersteund
-            document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
-        }
     </script>
 
 </head>
@@ -109,5 +88,22 @@
     <button onclick="window.location.href='https://github.com/TCevik/TCevik.github.io'">Bekijk de code van de site</button>
     
     <p style="margin-top: 60px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English.</p>
+
+    <script>
+        function updateBatteryLevel() {
+            navigator.getBattery().then(function(battery) {
+                var batteryLevel = battery.level * 100;
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + batteryLevel.toFixed(2) + "%";
+            });
+        }
+
+        setInterval(updateBatteryLevel, 1000);
+
+        if ('getBattery' in navigator) {
+            updateBatteryLevel();
+        } else {
+            document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
+        }
+    </script>
 </body>
 </html>
