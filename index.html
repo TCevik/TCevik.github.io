@@ -70,19 +70,12 @@
 
             if (keySequence.join('') === 'tamer') {
                 showButton();
-                resetSequenceAfterDelay(1000); // Reset de toetsencombinatie na 1 seconde
             }
         });
 
         function showButton() {
-            var button = document.getElementById('hiddenButton');
-            button.style.display = 'inline';
-            }
-
-        function resetSequenceAfterDelay(delay) {
-            setTimeout(function() {
-                keySequence = []; // Reset de toetsencombinatie
-            }, delay);
+        var button = document.getElementById('hiddenButton');
+        button.style.display = 'inline';
         }
     </script>
 </head>
