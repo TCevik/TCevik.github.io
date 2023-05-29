@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Extension Crasher</title>
+    
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+    <h1>Tam-exploit: Uitschakelen van Chrome-extensies zonder permanent te verwijderen</h1>
+    
+    <h2>Stap 1: Identificeer de extensie-ID</h2>
+    <p>Zoek de extensie die je wilt uitschakelen en kopieer de 32-karakterige ID van de extensie.
+    <br>Je kunt de ID vinden in chrome://extensions en dan de extensie die je wil crashen in de url achter chrome://extensions/?id=[HIER STAAT DAN DE ID] of in chrome://extensions-internals.</p>
+    
+    <h2>Stap 2: Open een pagina van de extensie</h2>
+    <p>Ga naar de URL chrome-extension://extensie-id/manifest.json (vervang "extensie-id" door de daadwerkelijke ID van de extensie).
+    <br>Dit opent een pagina die behoort tot de extensie die je wilt uitschakelen.</p>
+    
+    <h2>Stap 3: Maak bookmarks aan</h2>
+    <p>Maak drie bookmarks aan: één voor de extensiepagina (bookmark A), één voor chrome://kill (bookmark B) en één voor chrome://hang (bookmark C).</p>
+    
+    <h2>Stap 4: Uitschakelen van de extensie</h2>
+    <p>Terwijl je op de extensiepagina bent (bookmark A), klik je op de bookmark chrome://kill (bookmark B). Dit zou de pagina moeten laten crashen.</p>
+    
+    <h2>Stap 5: Snel handelen</h2>
+    <p>Direct nadat de pagina is gecrasht, begin je snel te klikken op de bookmark chrome://hang (bookmark C) en herlaad je de pagina door op de vernieuwingsknop op je toetsenbord te drukken (of met de sneltoets ctrl+R).
+    <br>Je moet binnen één of twee seconden de pagina hebben herladen na het crashen.</p>
+
+    <h2>Voila je hebt de extensie gecrasht</h2>
+    <p>Je kunt nu testen of hij is gecrasht door op bookmark A te klikken dan zou hij oneindig blijven laden of je klik op het extensie-icoon en er gebeurt niets.</p>
+    <img src="https://www.pngplay.com/wp-content/uploads/9/French-Bread-Transparent-Image.png" alt="Stokbrood">
+</body>
+</html>
