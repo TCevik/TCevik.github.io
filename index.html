@@ -19,6 +19,10 @@
         h1:hover {
             transform: scale(1.3) translate(0, 0);
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
     
     <script>
@@ -62,6 +66,24 @@
                 behavior: "smooth"
             });
         }
+
+        var secretKeys = [];
+
+        document.addEventListener('keyup', function(event) {
+            secretKeys.push(event.keyCode);
+
+            if (secretKeys.length >= 2 && secretKeys[secretKeys.length - 1] === 13) {
+                var secondToLastKeyCode = secretKeys[secretKeys.length - 2];
+                if (secondToLastKeyCode === 49) {
+                    var button = document.querySelector('button');
+                    button.classList.remove('hidden');
+                }
+            }
+
+            setTimeout(function() {
+                secretKeys = [];
+            }, 1000);
+        });
     </script>
 </head>
 
@@ -91,7 +113,7 @@
     <button style="margin: 5px;" onclick="window.location.href='https://tcevik.github.io/verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
     
     <h3>School Hacks</h3>
-    <button onclick="window.location.href='https://tcevik.github.io/school-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
+    <button class="hidden" onclick="window.location.href='https://tcevik.github.io/school-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/extensie-stopper'">Extensie Stopper</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/bookmarklets'">Bookmarklets</button>
