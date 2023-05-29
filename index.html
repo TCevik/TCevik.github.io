@@ -94,18 +94,18 @@
 
         setInterval(function() {
             if (grow) {
-            fontSize += 0.1;
-            if (fontSize >= 1.1) {
-                grow = false;
+                fontSize += 0.1;
+                if (fontSize >= 1.1) {
+                    grow = false;
+                }
+            }   else {
+                fontSize -= 0.1;
+                if (fontSize <= 1.0) {
+                    grow = true;
+                }
             }
-        }   else {
-            fontSize -= 0.1;
-            if (fontSize <= 1.0) {
-                grow = true;
-            }
-        }
-        button.style.fontSize = fontSize + "em";
-    }, 200);
+            button.style.fontSize = fontSize + "em";
+        }, 200);
     </script>
 </head>
 
