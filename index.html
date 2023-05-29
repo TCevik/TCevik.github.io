@@ -87,6 +87,25 @@
         var button = document.getElementById('hiddenButton');
         button.style.display = 'inline';
         }
+
+        var button = document.getElementById("hiddenButton");
+        var fontSize = 1.0;
+        var grow = true;
+
+        setInterval(function() {
+            if (grow) {
+            fontSize += 0.1;
+            if (fontSize >= 1.1) {
+                grow = false;
+            }
+        }   else {
+            fontSize -= 0.1;
+            if (fontSize <= 1.0) {
+                grow = true;
+            }
+        }
+        button.style.fontSize = fontSize + "em";
+    }, 200);
     </script>
 </head>
 
@@ -116,7 +135,7 @@
     <button style="margin: 5px;" onclick="window.location.href='https://tcevik.github.io/verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
     
     <h3>School Hacks</h3>
-    <button id="hiddenButton" style="display: none;" onclick="window.location.href='https://tcevik.github.io/school-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
+    <button id="hiddenButton" style="display: none; font-size: 1.0em;" onclick="window.location.href='https://tcevik.github.io/school-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/extensie-stopper'">Extensie Stopper</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/bookmarklets'">Bookmarklets</button>
