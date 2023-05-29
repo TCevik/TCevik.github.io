@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const savedUserName = localStorage.getItem('UserName');
+/* const savedUserName = localStorage.getItem('UserName');
 
 function setUserName() {
   const UserName = prompt('Voer een gebruikersnaam in om door te gaan:');
@@ -80,7 +80,7 @@ if (window.location.href !== 'https://tcevik.github.io/') {
   if (!savedUserName) {
     setUserName();
   }
-}
+} */
 
 
 
