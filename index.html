@@ -89,24 +89,26 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            var button = document.getElementById("hiddenButton");
-            var fontSize = 1.0;
-            var grow = true;
-
-            setInterval(function() {
-                if (grow) {
-                    fontSize += 0.1;
-                    if (fontSize >= 1.1) {
-                        grow = false;
-                    }
-                } else {
-                    fontSize -= 0.1;
-                    if (fontSize <= 1.0) {
-                        grow = true;
-                    }
-                }
-                button.style.fontSize = fontSize + "em";
-            }, 200);
+          var button = document.getElementById("hiddenButton");
+          var scale = 1.0;
+          var grow = true;
+        
+          button.style.transition = "transform 0.2s ease-in-out";
+        
+          setInterval(function() {
+            if (grow) {
+              scale += 0.1;
+              if (scale >= 1.1) {
+                grow = false;
+              }
+            } else {
+              scale -= 0.1;
+              if (scale <= 1.0) {
+                grow = true;
+              }
+            }
+            button.style.transform = "scale(" + scale + ")";
+          }, 200);
         });
     </script>
 </head>
