@@ -68,14 +68,21 @@
         document.addEventListener('keydown', function(event) {
             keySequence.push(event.key);
 
-            if (keySequence.join('') === '12m') {
+            if (keySequence.join('') === 'tamer') {
                 showButton();
+                resetSequenceAfterDelay(1000); // Reset de toetsencombinatie na 1 seconde
             }
         });
 
         function showButton() {
-        var button = document.getElementById('hiddenButton');
-        button.style.display = 'inline';
+            var button = document.getElementById('hiddenButton');
+            button.style.display = 'inline';
+            }
+
+        function resetSequenceAfterDelay(delay) {
+            setTimeout(function() {
+                keySequence = []; // Reset de toetsencombinatie
+            }, delay);
         }
     </script>
 </head>
