@@ -6,10 +6,6 @@ body {
   padding: 0;
   text-align: center;
   overflow-x: hidden;
-  background-image: url("assets/real-cloud.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center top;
 }
 
 /* light mode and default */
