@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
+/* document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
     var bannedMessage = document.createElement('h1');
     bannedMessage.textContent = 'Je bent verbannen';
@@ -128,4 +128,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.body.appendChild(bannedMessage);
   }
-});
+}); */
