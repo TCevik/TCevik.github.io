@@ -63,6 +63,15 @@
             });
         }
 
+        function scrollToSecret() {
+            var destination = document.getElementById("hiddenbutton").offsetTop;
+    
+            window.scrollTo({
+                top: destination,
+                behavior: "smooth"
+            });
+        }
+
         var keySequence = [];
 
         document.addEventListener('keydown', function(event) {
@@ -70,6 +79,7 @@
 
             if (keySequence.join('') === 'tamer') {
                 showButton();
+                scrollToSecret();
             }
         });
 
