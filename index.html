@@ -78,8 +78,8 @@
             keySequence.push(event.key);
 
             if (keySequence.join('') === 'tamer') {
+                showButton());
                 setTimeout(scrollToSecret, 100);
-                setTimeout(showButton, 2000);
             }
         });
 
