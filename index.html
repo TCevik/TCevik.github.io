@@ -121,6 +121,8 @@
     <br>Deze site is volledig geschreven in codeertaal. Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
     <p id="battery-percentage"><p>
+
+    <p style="color: red;">HEY JIJ DAAR! Wil jij nou €10 euro? Dan heb je pech want van mij krijg je het niet :)</p>
     
     <button onclick="scrollToOverMij();">Over mij</button>
 
@@ -195,12 +197,23 @@
     <br>
     <br>Dark mode kleur:
     <br><span style="color: #0d1710">#0d1710</span>
-    <br>Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob. Maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier<a>. Ik waarschuw je niet klikken! :)
+    <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob. Als je dark mode uitzet verdwijnt de tekst, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
     <br>
     <br>De kleuren van mijn logo zijn:
     <br><span style="color: #33ff33">#33ff33</span>
     <br><span style="color: #336699">#336699</span></p>
 
+    <style>
+        .hahanoobtext {
+            display: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hahanoobtext {
+                display: block;
+            }
+        }
+    </style>
     <button id="hiddenButton" style="margin-top: 300000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
 
     <script>
