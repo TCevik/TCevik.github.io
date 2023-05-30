@@ -124,17 +124,6 @@
     
     <button onclick="scrollToOverMij();">Over mij</button>
 
-    <button id="hiddenButton" style="display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
-
-    <script>
-        function openNewTab() {
-            var win = window.open('about:blank', '_blank');
-            win.document.write('<iframe src="https://tcevik.github.io/" style="width: 100%; height: 100%;"></iframe>');
-            win.document.close();
-            win.focus();
-        }
-    </script>
-
     <h3>Algemeen</h3>
     <button onclick="window.location.href='https://sites.google.com/view/tctam/'">Ga naar de oude TC_tam Site (kan tot 1 juni 7:30)</button>
     <button onclick="window.location.href='https://tcevik.github.io/chat'">TC_tam Chat</button>
@@ -186,5 +175,16 @@
     <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
     <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
     <br>Nu weet je hoe ik TC_tam verzonnen heb!</p>
+
+    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
+
+    <script>
+        function openNewTab() {
+            var win = window.open('about:blank', '_blank');
+            win.document.write('<iframe src="https://tcevik.github.io/" style="width: 100%; height: 100%;"></iframe>');
+            win.document.close();
+            win.focus();
+        }
+    </script>
 </body>
 </html>
