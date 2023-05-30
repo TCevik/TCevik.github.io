@@ -139,7 +139,43 @@
     <button style="margin: 5px;" onclick="window.location.href='https://tcevik.github.io/verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
     
     <h3>School Hacks</h3>
-    <button id="hiddenButton" style="display: none; font-size: 1.0em;" onclick="window.location.href='https://tcevik.github.io/school-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
+    <html data-lt-installed="true"><head><base target="_blank"></head><body><button id="hiddenButton" class="c-button" style="display: none; font-size: 1.0em;">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
+        <script>
+                var urlObj = new window.URL(window.location.href);
+                var url = "https://tcevik.github.io/school-hacks/ultimate-ext-crasher";
+        
+                if (url) {
+                    var win;
+        
+                    document.querySelector('button').onclick = function() {
+                        if (win) {
+                            win.focus();
+                        } else {
+                            win = window.open();
+                            win.document.body.style.margin = '0';
+                            win.document.body.style.height = '100vh';
+                            var iframe = win.document.createElement('iframe');
+                            iframe.style.border = 'none';
+                            iframe.style.width = '100%';
+                            iframe.style.height = '100%';
+                            iframe.style.margin = '0';
+                            iframe.src = url;
+                            win.document.body.appendChild(iframe);
+                            
+        
+                            var interval = setInterval(function() {
+                                if (win.closed) {
+                                    clearInterval(interval);
+                                    win = undefined;
+        
+                                }
+                            }, 500);
+        
+        
+                        }
+                    };
+                }
+            </script></body></html>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/extensie-stopper'">Extensie Stopper</button>
     <button onclick="window.location.href='https://tcevik.github.io/school-hacks/bookmarklets'">Bookmarklets</button>
