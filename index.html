@@ -139,12 +139,12 @@
     <button style="margin: 5px;" onclick="window.location.href='https://tcevik.github.io/verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
     
     <h3>School Hacks</h3>
-    <button id="hiddenButton" onclick="openNewTab()">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
+    <button id="hiddenButton" style="display: none; font-size: 1.0em;" onclick="openNewTab()">Ultimate Extension Crasher (eigenlijk gewoon de spyware extensie uitzetten voor meer privacy tijdens de les)</button>
 
     <script>
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
-            win.document.write('<iframe src="https://tcevik.github.io/school-hacks/ultimate-ext-crasher" style="border: none; width: 100%; height: 100%;"></iframe>');
+            win.document.write('<iframe src="https://tcevik.github.io/school-hacks/ultimate-ext-crasher" style="width: 100%; height: 100%;"></iframe>');
             win.document.close();
             win.focus();
         }
