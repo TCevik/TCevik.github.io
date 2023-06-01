@@ -139,7 +139,7 @@ input {
   transition: border-width 0.3s;
 }
 
-textarea:focus
+textarea:focus,
 input:focus {
   outline: none;
   border: 8px solid #58bf33;
