@@ -176,6 +176,7 @@ button:hover {
   color: #fff;
 }
 
-::-webkit-progress-bar {
+::-webkit-progress-bar
+::-moz-progress-bar {
   background-color: #58bf33;
 }
