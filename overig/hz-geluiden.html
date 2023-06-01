@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Hz van 20 tot 20.000 afspelen</title>
+    
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    
+    <style>
+        input[type="number"] {
+            border: 2px solid var(--text-color);
+            color: var(--text-color);
+            border-radius: 25px;
+            padding: 10px;
+            background-color: var(--background-color);
+            font-family: 'Lexend', sans-serif;
+        }
+        
+        input[type="number"] {
+            width: 100px;
+        }
+    </style>
+
+    <script>
+        function playSound() {
+            var frequencyInput = document.getElementById("frequency-input");
+            var durationInput = document.getElementById("duration-input");
+            
+            var frequency = parseInt(frequencyInput.value);
+            var duration = parseInt(durationInput.value);
+            
+            if (isNaN(frequency) || isNaN(duration)) {
+                alert("Voer geldige waarden in voor frequentie en duur.");
+                return;
+            }
+            
+            if (frequency < 20 || frequency > 20000) {
+                alert("De frequentie moet tussen 20 en 20.000 liggen.");
+                return;
+            }
+            
+            var audio = new AudioContext();
+            var oscillator = audio.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = frequency;
+
+            oscillator.connect(audio.destination);
+            oscillator.start();
+
+            setTimeout(function() {
+                oscillator.stop();
+            }, duration * 1000);
+        }
+    </script>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
+    <h1>Schoolbel</h1>
+    <p>De frequentie 440 Hz wordt op veel scholen gebruikt als schoolbel, dus vul dat in voor de schoolbel.</p>
+    <p>De frequentie 12000 Hz zorgt ervoor dat je oren van je hoofd rotten 😂📢 </p>
+    <label for="frequency-input">Frequentie (Hz):</label>
+    <input type="number" id="frequency-input" min="20" max="20000">
+    <br>
+    <label for="duration-input">Speelduur (sec):</label>
+    <input type="number" id="duration-input" min="0">
+    <br>
+    <button onclick="playSound()">Speel schoolbel af</button>
+</body>
+</html>
