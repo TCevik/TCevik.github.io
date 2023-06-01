@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://tcevik.github.io/style.css">
     <script src="https://tcevik.github.io/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.1"></script>
     
     <style>
          textarea {
@@ -56,6 +57,16 @@
                 textarea.selectionStart = textarea.selectionEnd = start + 4;
             }
         }
+
+        function highlightCode() {
+            var code = document.getElementById('html-code').value;
+            var highlightedCode = Prism.highlight(code, Prism.languages.html, 'html');
+            document.getElementById('html-code').innerHTML = highlightedCode;
+        }
+
+        window.onload = function() {
+            highlightCode();
+        }
     </script>
 </head>
 <body>
@@ -63,7 +74,7 @@
     <h1>IDE</h1>
     <p>Vul code in en bewonder je prestatie</p>
     
-    <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed()">&lt;!DOCTYPE html&gt;
+    <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">&lt;!DOCTYPE html&gt;
         &lt;html lang="nl"&gt;
         &lt;head&gt;
             &lt;meta charset="UTF-8"&gt;
