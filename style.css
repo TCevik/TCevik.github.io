@@ -131,7 +131,20 @@ button:hover {
   padding: 10px;
 }
 
-/* Webkit (Safari/Chrome) */
+
+
+.popup {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: var(--background-color);
+  padding: 10px;
+  border: 1px solid var(--h1234-color);
+  border-radius: 10px;
+  font-size: var(--font-size);
+}
+
+/* Change things like scrollbar and select text */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -145,7 +158,6 @@ button:hover {
   border-radius: 6px;
 }
 
-/* Firefox */
 ::-moz-scrollbar {
   width: 12px;
 }
@@ -159,13 +171,11 @@ button:hover {
   border-radius: 6px;
 }
 
-.popup {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  background: var(--background-color);
-  padding: 10px;
-  border: 1px solid var(--h1234-color);
-  border-radius: 10px;
-  font-size: var(--font-size);
+::selection {
+  background-color: #58bf33;
+  color: #fff;
+}
+
+::-webkit-progress-bar {
+  background-color: #58bf33;
 }
