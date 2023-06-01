@@ -98,15 +98,17 @@ function readPage() {
   speechSynthesis.speak(utterance);
 }
 
-const image = document.createElement('img');
-image.src = 'https://cdn-icons-png.flaticon.com/512/4693/4693365.png';
-image.style.position = 'fixed';
-image.style.top = '40px';
-image.style.right = '40px';
-image.style.cursor = 'pointer';
-image.addEventListener('click', readPage);
+document.addEventListener('DOMContentLoaded', function() {
+  const image = document.createElement('img');
+  image.src = 'https://cdn-icons-png.flaticon.com/512/4693/4693365.png';
+  image.style.position = 'fixed';
+  image.style.top = '40px';
+  image.style.right = '40px';
+  image.style.cursor = 'pointer';
+  image.addEventListener('click', readPage);
 
-document.body.appendChild(image);
+  document.body.appendChild(image);
+});
 
 
 
