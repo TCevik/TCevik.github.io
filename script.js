@@ -84,37 +84,29 @@ if (window.location.href !== 'https://tcevik.github.io/') {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  var bookIconStyles = {
-    position: 'fixed',
-    top: '10px',
-    right: '10px',
-    width: '40px',
-    height: '40px',
-    background: 'url(https://cdn-icons-png.flaticon.com/512/4693/4693365.png) no-repeat',
-    backgroundSize: 'contain',
-    cursor: 'pointer'
-  };
+function readPage() {
+  const utterance = new SpeechSynthesisUtterance();
+  utterance.lang = 'nl-NL';
+  utterance.rate = 0.9;
 
-  var bookIcon = document.createElement('div');
-  Object.assign(bookIcon.style, bookIconStyles);
+  const textContent = Array.from(document.querySelectorAll('body *'))
+    .map(element => element.textContent)
+    .join('. ');
 
-  document.body.appendChild(bookIcon);
+  utterance.text = textContent;
 
-  function readPage() {
-    var pageContent = document.body.innerText || document.body.textContent;
+  speechSynthesis.speak(utterance);
+}
 
-    var speechUtterance = new SpeechSynthesisUtterance(pageContent);
+const image = document.createElement('img');
+image.src = 'https://cdn-icons-png.flaticon.com/512/4693/4693365.png';
+image.style.position = 'fixed';
+image.style.top = '40px';
+image.style.right = '40px';
+image.style.cursor = 'pointer';
+image.addEventListener('click', readPage);
 
-    speechUtterance.rate = 0.9;
-
-    speechUtterance.lang = 'nl-NL';
-    
-    window.speechSynthesis.speak(speechUtterance);
-  }
-
-  bookIcon.addEventListener('click', readPage);
-});
+document.body.appendChild(image);
 
 
 
