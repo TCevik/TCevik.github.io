@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var bookIcon = document.createElement('div');
   Object.assign(bookIcon.style, bookIconStyles);
 
+  bookIcon.classList.add('readPage');
+
   document.body.appendChild(bookIcon);
 
   function readPage() {
