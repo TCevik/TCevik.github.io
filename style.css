@@ -131,7 +131,10 @@ button:hover {
   padding: 10px;
 }
 
-
+.input-field:focus {
+  border: 2px solid #58bf33;
+  outline: none;
+}
 
 .popup {
   position: fixed;
