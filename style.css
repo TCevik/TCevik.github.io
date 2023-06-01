@@ -44,17 +44,25 @@ body {
     --h4-font-size: 46px;
     --button-padding: 30px;
   }
-    #top-left-button {
-      --top-left-button-index-translation: 5%, 10%;
-      width: 20%;
-    }
-    button {
-      width: 100%;
-    }
-    .popup {
-      width: 95%;
-    } 
+
+  #top-left-button {
+    --top-left-button-index-translation: 5%, 10%;
+    width: 20%;
   }
+  
+  button {
+    width: 100%;
+  }
+  .popup {
+    width: 95%;
+  }
+  .readPage {
+    transform-origin: top right;
+    transform: scale(3);
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+}
 
 #top-left-button {
   position: fixed;
@@ -90,7 +98,8 @@ h4 {
   margin-top: 15px;
 }
 
-p {
+p,
+label {
   font-size: var(--font-size);
   line-height: 1.5;
   overflow-wrap: break-word;
@@ -136,13 +145,14 @@ button:hover {
 
 textarea,
 input {
+  font-size: var(--font-size);
   transition: border-width 0.3s;
 }
 
 textarea:focus,
 input:focus {
   outline: none;
-  border: 8px solid #58bf33;
+  border: 0.5em solid #58bf33;
 }
 
 .popup {
