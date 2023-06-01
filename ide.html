@@ -44,6 +44,18 @@
             var embedFrame = document.getElementById('embedFrame');
             embedFrame.srcdoc = htmlCode;
         }
+
+        function handleTabKey(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                var textarea = event.target;
+                var start = textarea.selectionStart;
+                var end = textarea.selectionEnd;
+
+                textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
+                textarea.selectionStart = textarea.selectionEnd = start + 4;
+            }
+        }
     </script>
 </head>
 <body>
@@ -67,7 +79,7 @@
             &lt;br&gt;[Woord woord woord. Woord woord woord. Woord woord woord.]&lt;/p&gt;
         &lt;/body&gt;
         &lt;/html&gt;</textarea>
-            
+
     <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
 </body>
 </html>
