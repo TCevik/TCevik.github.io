@@ -69,22 +69,23 @@
     <h1>IDE</h1>
     <p>Vul code in en bewonder je prestatie</p>
     
-    <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">&lt;!DOCTYPE html&gt;
-        &lt;html lang="nl"&gt;
-        &lt;head&gt;
-            &lt;meta charset="UTF-8"&gt;
-            &lt;title&gt;[NAAM VAN TABBLAD]&lt;/title&gt;
+    <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
+        <!DOCTYPE html>
+        <html lang="nl">
+        <head>
+            <meta charset="UTF-8">
+            <title>[NAAM VAN TABBLAD]</title>
             
-            &lt;link rel="stylesheet" href="https://tcevik.github.io/style.css"&gt;
-            &lt;script src="https://tcevik.github.io/script.js"&gt;&lt;/script&gt;
-            &lt;link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet"&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-            &lt;h1&gt;[Titel]&lt;/h1&gt;
-            &lt;p&gt;[Woord woord woord. Woord woord woord. Woord woord woord.]
-            &lt;br&gt;[Woord woord woord. Woord woord woord. Woord woord woord.]&lt;/p&gt;
-        &lt;/body&gt;
-        &lt;/html&gt;</textarea>
+            <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+            <script src="https://tcevik.github.io/script.js"></script>
+            <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+        </head>
+        <body>
+            <h1>[Titel]</h1>
+            <p>[Woord woord woord. Woord woord woord. Woord woord woord.]
+            <br>[Woord woord woord. Woord woord woord. Woord woord woord.]</p>
+        </body>
+        </html></textarea>
 
     <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
 </body>
