@@ -105,21 +105,24 @@ a {
 }
 
 button {
+  font-family: Lexend, Arial, sans-serif;
   border-radius: 15px;
   background-color: var(--button-bgcolor);
   color: #ffffff;
   padding: var(--button-padding);
-  border: none;
+  border: var(--h1234-color) 1px solid;
   font-size: var(--font-size);
   margin: 0.3%;
-  transition: transform 0.2s;
+  transition: transform 0.3s;
   transform-origin: center;
+  z-index: 1;
 }
 
 button:hover {
   cursor: pointer;
   filter: brightness(120%);
   transform: scale(1.1);
+  z-index: 2;
 }
 
 .bookmarklet {
@@ -131,9 +134,15 @@ button:hover {
   padding: 10px;
 }
 
-.input-field:focus {
-  border: 2px solid #58bf33;
+textarea,
+input {
+  transition: border-width 0.3s;
+}
+
+textarea:focus
+input:focus {
   outline: none;
+  border: 8px solid #58bf33;
 }
 
 .popup {
