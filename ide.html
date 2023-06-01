@@ -23,20 +23,14 @@
             text-align: left;
         }
 
-        .embedbox {
-            width: 95%;
+        #embedFrame {
+            
+            width: 100%;
+            height: 500px;
             margin-top: 10px;
             margin-bottom: 10px;
             border: 3px solid var(--text-color);
             background-color: var(--background-color);
-        }
-
-        .embedbox iframe {
-            width: 100%;
-            height: 500px;
-            border: none;
-            align-self: center;
-            align-content: center;
         }
     </style>
     <script>
@@ -60,8 +54,6 @@
     
     <textarea id="html-code" rows="5" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed()"></textarea>
     
-    <div class="embedbox">
-        <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
-    </div>
+    <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
 </body>
 </html>
