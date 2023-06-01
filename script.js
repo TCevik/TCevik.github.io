@@ -63,12 +63,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 const savedUserName = localStorage.getItem('UserName');
+const forbiddenNames = ['naam1', 'naam2', 'naam3'];
 
 function setUserName() {
-  const UserName = prompt('Voer een gebruikersnaam in om door te gaan:');
+  const userName = prompt('Voer een gebruikersnaam in om door te gaan:');
 
-  if (UserName && /^[qwertyuiopasdfghjklzxcvbnm_\-0-9]+$/i.test(UserName)) {
-    localStorage.setItem('UserName', UserName);
+  if (
+    userName &&
+    /^[qwertyuiopasdfghjklzxcvbnm_\-0-9]+$/i.test(userName) &&
+    !forbiddenNames.includes(userName.toLowerCase())
+  ) {
+    localStorage.setItem('UserName', userName);
     alert('Bedankt! Je gebruikersnaam is opgeslagen.');
   } else {
     alert('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
@@ -77,10 +82,11 @@ function setUserName() {
 }
 
 if (window.location.href !== 'https://tcevik.github.io/') {
-  if (!savedUserName) {
+  if (!savedUserName || forbiddenNames.includes(savedUserName.toLowerCase())) {
     setUserName();
   }
 }
+
 
 
 
