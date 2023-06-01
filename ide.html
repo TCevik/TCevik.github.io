@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
     
     <style>
-        textarea {
+         textarea {
             width: 95%;
             color: var(--text-color);
             margin-top: 10px;
@@ -22,63 +22,44 @@
             background-color: var(--background-color);
             text-align: left;
         }
+
+        .embedbox {
+            width: 95%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 3px solid var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .embedbox iframe {
+            width: 100%;
+            height: 500px; /* Aanpasbare hoogte */
+            border: none;
+        }
     </style>
-    
     <script>
-        function executeCode() {
-            var cssCode = document.getElementById("css-code").value;
-            var jsCode = document.getElementById("js-code").value;
-            var htmlCode = document.getElementById("html-code").value;
-            
-            var styleElement = document.createElement("style");
-            styleElement.innerHTML = cssCode;
-            document.head.appendChild(styleElement);
-            
-            var scriptElement = document.createElement("script");
-            scriptElement.innerHTML = jsCode;
-            document.head.appendChild(scriptElement);
-            
-            var resultElement = document.getElementById("result");
-            resultElement.innerHTML = htmlCode;
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-        var textareas = document.getElementsByTagName("textarea");
-        
-        for (var i = 0; i < textareas.length; i++) {
-            textareas[i].addEventListener("keydown", function(e) {
-                if (e.key === "Tab") {
-                    e.preventDefault();
-                    
-                    var start = this.selectionStart;
-                    var end = this.selectionEnd;
-                    
-                    this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
-                    
-                    this.selectionStart = this.selectionEnd = start + 4;
-                }
-            });
-        }
-        });
-
         window.addEventListener('beforeunload', function (e) {
             e.preventDefault();
             e.returnValue = '';
             return 'Wil je zeker de site verlaten?';
         });
+
+        function updateEmbed() {
+            var htmlCode = document.getElementById('html-code').value;
+            var embedFrame = document.getElementById('embedFrame');
+            embedFrame.srcdoc = htmlCode;
+        }
     </script>
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='https://tcevik.github.io'">Home</button>
     <h1>IDE</h1>
-    <p>Vul code in en druk op uitvoeren om het... UIT TE VOEREN! Hahaha.</p>
+    <p>Vul code in en bewonder je prestatie</p>
     
-    <textarea id="css-code" rows="5" cols="30" placeholder="Typ je CSS-code hier..."></textarea>
-    <textarea id="js-code" rows="5" cols="30" placeholder="Typ je JavaScript-code hier..."></textarea>
-    <textarea id="html-code" rows="5" cols="30" placeholder="Typ je HTML-code hier..."></textarea>
+    <textarea id="html-code" rows="5" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed()"></textarea>
     
-    <button onclick="executeCode()">UITVOEREN</button>
-    
-    <div id="result"></div>
+    <div class="embedbox">
+        <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
+    </div>
 </body>
 </html>
