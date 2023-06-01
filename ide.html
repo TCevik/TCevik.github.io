@@ -61,8 +61,9 @@
         function highlightCode() {
             var code = document.getElementById('html-code').value;
             var highlightedCode = Prism.highlight(code, Prism.languages.html, 'html');
-            document.getElementById('html-code').innerHTML = highlightedCode;
+            document.getElementById('html-code').textContent = highlightedCode;
         }
+
 
         window.onload = function() {
             highlightCode();
