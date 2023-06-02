@@ -116,6 +116,7 @@ a {
 button {
   font-family: Lexend, Arial, sans-serif;
   border-radius: 15px;
+  font-weight: 500;
   background-color: var(--button-bgcolor);
   color: #ffffff;
   padding: var(--button-padding);
