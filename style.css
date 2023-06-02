@@ -144,13 +144,15 @@ button:hover {
 }
 
 textarea,
-input {
+input,
+input[type="number"] {
   font-size: var(--font-size);
   transition: border-width 0.3s;
 }
 
 textarea:focus,
-input:focus {
+input:focus,
+input[type="number"] {
   outline: none;
   border: 0.5em solid #58bf33;
 }
