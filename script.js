@@ -126,6 +126,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+(function() {
+  var script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-7KL389S9VR';
+
+  var firstScript = document.getElementsByTagName('script')[0];
+  firstScript.parentNode.insertBefore(script, firstScript);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7KL389S9VR');
+})();
+
+
+/*
+window.addEventListener('load', function() {
+  var script = document.createElement('script');
+  script.src = 'https://www.googleoptimize.com/optimize.js?id=OPT-59BDR98';
+  document.head.appendChild(script);
+}); */
+
+
 
 /* document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
