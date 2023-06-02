@@ -142,14 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 
 
-/*
-window.addEventListener('load', function() {
-  var script = document.createElement('script');
-  script.src = 'https://www.googleoptimize.com/optimize.js?id=OPT-59BDR98';
-  document.head.appendChild(script);
-}); */
-
-
 
 /* document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
