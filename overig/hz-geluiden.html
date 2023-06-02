@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
     
     <style>
-        input[type="number"] {
+        input {
             border: 2px solid var(--text-color);
             color: var(--text-color);
             border-radius: 25px;
@@ -18,7 +18,7 @@
             font-family: 'Lexend', sans-serif;
         }
         
-        input[type="number"] {
+        input {
             width: 100px;
         }
     </style>
@@ -62,12 +62,12 @@
     <p>De frequentie 12000 Hz zorgt ervoor dat je oren van je hoofd rotten. 😂📢</p>
     <p>De frequentie 4000 Hz voor 30 sec op max volume zorgt ervoor dat je piepstrophobia krijgt. 🚫</p>
     <label for="frequency-input">Frequentie (Hz):</label>
-    <input type="number" id="frequency-input" min="20" max="20000">
+    <input id="frequency-input" min="20" max="20000">
     <p>
     <br>1000ms = 1sec | 1500ms = 1,5sec
     </p>
     <label for="duration-input">Speelduur (ms):</label>
-    <input type="number" id="duration-input" min="0">
+    <input id="duration-input" min="0">
     <br>
     <button onclick="playSound()">Speel geluid af</button>
 </body>
