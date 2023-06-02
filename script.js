@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 const savedUserName = localStorage.getItem('UserName');
-const forbiddenNames = ['tameriscool192', 'naam2', 'naam3'];
+const forbiddenNames = ['tameriscool192', 'abcdef', 'y', 'hey'];
 
 function setUserName() {
   const userName = prompt('Voer een gebruikersnaam in om door te gaan:');
