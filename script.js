@@ -70,7 +70,7 @@ function setUserName() {
 
   if (
     userName &&
-    /^[qwertyuiopasdfghjklzxcvbnm_\-0-9]+$/i.test(userName) &&
+    /^[qwertyuiopasdfghjklzxcvbnm0-9]+$/i.test(userName) &&
     !forbiddenNames.includes(userName.toLowerCase())
   ) {
     localStorage.setItem('UserName', userName);
