@@ -66,7 +66,7 @@ const savedUserName = localStorage.getItem('UserName');
 const forbiddenNames = ['tameriscool192', 'abcdef', 'y', 'hey'];
 
 function setUserName() {
-  const userName = prompt('(Vul gewoon je naam in ofzo. Je hoeft geen wachtwoord te maken.) Voer een gebruikersnaam in om door te gaan:');
+  const userName = prompt('(Vul gewoon je naam in ofzo. Dit word later gebruikt als nickname.) Voer een gebruikersnaam in om door te gaan:');
 
   if (
     userName &&
