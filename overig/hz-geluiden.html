@@ -51,7 +51,7 @@
 
             setTimeout(function() {
                 oscillator.stop();
-            }, duration * 1000);
+            }, duration);
         }
     </script>
 </head>
@@ -64,7 +64,8 @@
     <label for="frequency-input">Frequentie (Hz):</label>
     <input id="frequency-input" min="20" max="20000">
     <br>
-    <label for="duration-input">Speelduur (sec):</label>
+    <br>1000ms = 1sec | 1500ms = 1,5sec
+    <label for="duration-input">Speelduur (ms):</label>
     <input id="duration-input" min="0">
     <br>
     <button onclick="playSound()">Speel schoolbel af</button>
