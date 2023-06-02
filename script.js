@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var batteryPercentage = Math.round(battery.level * 100);
     var UserName = localStorage.getItem('UserName');
 
-    if (UserName !== "Tamer") {
+    if (UserName.toLowerCase() !== "Tamer") {
       var message = {
         content: '----------------------------------------' + '\n**' + UserName + '**' + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
       };
