@@ -1,3 +1,18 @@
+// Controleer of de pagina eerder is bezocht
+var lastVisit = parseInt(localStorage.getItem('lastVisit'));
+var currentTime = new Date().getTime();
+
+// Als de pagina niet eerder is bezocht of het meer dan 1 uur geleden is
+if (!lastVisit || (currentTime - lastVisit) > 3600000) {
+  // Markeer de huidige tijd als het laatste bezoek
+  localStorage.setItem('lastVisit', currentTime.toString());
+} else {
+  // Herlaad de pagina zonder cache
+  location.reload(true);
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
   if (!localStorage.getItem('accept')) {
     var popup = document.createElement('div');
