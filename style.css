@@ -147,6 +147,7 @@ button:hover {
 textarea,
 #input {
   font-size: var(--font-size);
+  color: var(--text-color);
   transition: border-width 0.3s;
   background-color: var(--background-color);
   font-family: Lexend, Arial, sans-serif;
