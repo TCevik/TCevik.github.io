@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function setTabNameAndIcon() {
-  var tabName = document.getElementById('input').value;
+  var tabName = document.getElementById('input_tab').value;
   var tabIcon = document.getElementById('input_icon').value;
   
   document.title = tabName;
