@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Notitie maker</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <h1>Notities</h1>
+    <p>Hier kan je notities maken.</p>
+    
+    <textarea id="input" oninput="saveNotitie();" rows="50" cols="100"></textarea>
+    
+    <script>
+        function saveNotitie() {
+            var notitieTekst = document.getElementById("notitie-tekst").value;
+            document.cookie = "notitie=" + encodeURIComponent(notitieTekst);
+        }
+        
+        function loadNotitie() {
+            var cookie = document.cookie;
+            var cookieParts = cookie.split("; ");
+            for (var i = 0; i < cookieParts.length; i++) {
+                var cookiePart = cookieParts[i].split("=");
+                if (cookiePart[0] === "notitie") {
+                    var notitieTekst = decodeURIComponent(cookiePart[1]);
+                    document.getElementById("notitie-tekst").value = notitieTekst;
+                    break;
+                }
+            }
+        }
+        
+        window.onload = loadNotitie;
+    </script>
+</body>
+</html>

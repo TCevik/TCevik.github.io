@@ -145,7 +145,7 @@ button:hover {
 }
 
 textarea,
-input {
+#input {
   font-size: var(--font-size);
   transition: border-width 0.3s;
   background-color: var(--background-color);
@@ -153,7 +153,7 @@ input {
 }
 
 textarea:focus,
-input:focus {
+#input:focus {
   outline: none;
   border: 0.2em solid #58bf33;
 }
