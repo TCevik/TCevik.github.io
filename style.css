@@ -148,12 +148,14 @@ textarea,
 input {
   font-size: var(--font-size);
   transition: border-width 0.3s;
+  background-color: var(--background-color);
+  font-family: Lexend, Arial, sans-serif;
 }
 
 textarea:focus,
 input:focus {
   outline: none;
-  border: 0.5em solid #58bf33;
+  border: 0.2em solid #58bf33;
 }
 
 .popup {
