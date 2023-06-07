@@ -16,7 +16,7 @@
     
     <script>
         function saveNotitie() {
-            var notitieTekst = document.getElementById("notitie-tekst").value;
+            var notitieTekst = document.getElementById("input").value;
             document.cookie = "notitie=" + encodeURIComponent(notitieTekst);
         }
         
@@ -27,7 +27,7 @@
                 var cookiePart = cookieParts[i].split("=");
                 if (cookiePart[0] === "notitie") {
                     var notitieTekst = decodeURIComponent(cookiePart[1]);
-                    document.getElementById("notitie-tekst").value = notitieTekst;
+                    document.getElementById("input").value = notitieTekst;
                     break;
                 }
             }
