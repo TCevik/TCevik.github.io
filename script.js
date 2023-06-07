@@ -215,7 +215,7 @@ function saveTabInfoToCookie(name, icon) {
 function resetTabInfo() {
   deleteCookie("tabName");
   deleteCookie("tabIcon");
-  setTabInfo("Tabblad", "default-icon.png");
+  setTabInfo("TC_tam", "https://tcevik.github.io/favicon.ico");
   document.getElementById("nameInput").value = "";
   document.getElementById("iconInput").value = "";
 }
