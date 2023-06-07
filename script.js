@@ -153,3 +153,85 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(bannedMessage);
   }
 }); */
+
+
+
+
+
+
+
+// Functie om de cookie te lezen
+function getCookie(cookieName) {
+  var name = cookieName + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var cookieArray = decodedCookie.split(';');
+  for (var i = 0; i < cookieArray.length; i++) {
+    var cookie = cookieArray[i];
+    while (cookie.charAt(0) === ' ') {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(name) === 0) {
+      return cookie.substring(name.length, cookie.length);
+    }
+  }
+  return "";
+}
+
+// Functie om de cookie te schrijven
+function setCookie(cookieName, cookieValue) {
+  var d = new Date();
+  d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Cookie geldigheid van 1 jaar
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+}
+
+// Functie om de cookie te verwijderen
+function deleteCookie(cookieName) {
+  document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+// Functie om de tabbladnaam en het icoon in te stellen
+function setTabInfo(name, icon) {
+  document.title = name;
+  document.querySelector("link[rel*='icon']").href = icon;
+}
+
+// Functie om de tabbladnaam en het icoon uit de cookie te halen en in te stellen
+function loadTabInfoFromCookie() {
+  var name = getCookie("tabName");
+  var icon = getCookie("tabIcon");
+  if (name !== "" && icon !== "") {
+    setTabInfo(name, icon);
+  }
+}
+
+// Functie om de tabbladnaam en het icoon in de cookie op te slaan
+function saveTabInfoToCookie(name, icon) {
+  setCookie("tabName", name);
+  setCookie("tabIcon", icon);
+}
+
+// Functie om de tabbladnaam en het icoon te resetten
+function resetTabInfo() {
+  deleteCookie("tabName");
+  deleteCookie("tabIcon");
+  setTabInfo("Tabblad", "default-icon.png");
+  document.getElementById("nameInput").value = "";
+  document.getElementById("iconInput").value = "";
+}
+
+// Event handler voor de "Opslaan" knop
+document.getElementById("saveButton").addEventListener("click", function() {
+  var name = document.getElementById("nameInput").value;
+  var icon = document.getElementById("iconInput").value;
+  saveTabInfoToCookie(name, icon);
+  setTabInfo(name, icon);
+});
+
+// Event handler voor de "Reset" knop
+document.getElementById("resetButton").addEventListener("click", function() {
+  resetTabInfo();
+});
+
+// Bij het laden van de pagina controleren of er gegevens in de cookie zijn opgeslagen
+loadTabInfoFromCookie();
