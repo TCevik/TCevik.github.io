@@ -117,9 +117,9 @@ button {
   position: relative;
   font-family: Lexend, Arial, sans-serif;
   border-radius: 15px;
-  font-weight: 500;
+  font-weight: inherit;
   outline: none;
-  border: solid var(--text-color);
+  border: 1px solid var(--text-color);
   background-color: var(--button-bgcolor);
   color: #ffffff;
   padding: var(--button-padding);
