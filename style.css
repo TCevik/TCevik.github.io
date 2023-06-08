@@ -135,6 +135,7 @@ button:focus,
 button:hover {
   border: solid #58bf33;
   cursor: pointer;
+  padding: var(--button-padding);
   filter: brightness(120%);
   margin: 0.3%;
   transform: scale(1.1);
@@ -150,7 +151,6 @@ button:hover {
   padding: 10px;
 }
 
-textarea,
 #input {
   border-radius: 25px;
   padding: 10px;
