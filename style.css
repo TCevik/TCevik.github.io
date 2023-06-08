@@ -9,7 +9,7 @@ body {
   transition: 0.5s;
 }
 
-/* light mode and default */
+/* light mode and default mode */
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
