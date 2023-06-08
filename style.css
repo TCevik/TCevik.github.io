@@ -6,6 +6,7 @@ body {
   padding: 0;
   text-align: center;
   overflow-x: hidden;
+  transition: 0.5s;
 }
 
 /* light mode and default */
