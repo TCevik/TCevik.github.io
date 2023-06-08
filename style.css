@@ -49,11 +49,6 @@ body {
     --top-left-button-index-translation: 5%, 10%;
     width: 20%;
   }
-
-  input {
-    width: 200px;
-    height: 60px;
-  }
   
   button {
     width: 100%;
