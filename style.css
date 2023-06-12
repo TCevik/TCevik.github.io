@@ -117,16 +117,16 @@ a {
 button {
   position: relative;
   font-family: Lexend, Arial, sans-serif;
-  border-radius: 15px;
+  border-radius: 10px;
   font-weight: inherit;
   outline: none;
-  border: 2px solid var(--text-color);
+  border: solid var(--text-color);
   background-color: var(--button-bgcolor);
   color: #ffffff;
   padding: var(--button-padding);
   font-size: var(--font-size);
   margin: 0.3%;
-  transition: transform 0.3s, border-color 0.3s;
+  transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s;
   transform-origin: center;
   z-index: 1;
 }
@@ -135,6 +135,7 @@ button:focus,
 button:hover {
   border: 2px solid #58bf33;
   cursor: pointer;
+  border-radius: 20px;
   padding: var(--button-padding);
   filter: brightness(120%);
   margin: 0.3%;
