@@ -133,7 +133,7 @@ button {
 
 button:focus,
 button:hover {
-  border: 2px solid #58bf33;
+  border: solid #58bf33;
   cursor: pointer;
   border-radius: 20px;
   padding: var(--button-padding);
