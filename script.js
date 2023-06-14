@@ -145,33 +145,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-function setTabCookie() {
-  document.cookie = "changeTab=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-  updateTab();
+// Functie om de cookie te creëren
+function createCookie(name, value, days) {
+	var expires;
+
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		expires = "; expires=" + date.toGMTString();
+	} else {
+		expires = "";
+	}
+
+	document.cookie = name + "=" + value + expires + "; path=/";
 }
 
-function deleteTabCookie() {
-  document.cookie = "changeTab=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  updateTab();
+// Functie om de cookie te lezen
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1, c.length);
+		}
+
+		if (c.indexOf(nameEQ) == 0) {
+			return c.substring(nameEQ.length, c.length);
+		}
+	}
+
+	return null;
 }
 
-function updateTab() {
-  var changeTabCookie = document.cookie.replace(/(?:(?:^|.*;\s*)changeTab\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  
-  if (changeTabCookie === "true") {
-    document.getElementById("tabName").innerText = "google";
-    document.getElementById("tabIcon").setAttribute("href", "/fav");
-  } else {
-    // Hier kun je de standaard naam en het icoon instellen
-    document.getElementById("tabName").innerText = "Standaard Tab Naam";
-    document.getElementById("tabIcon").setAttribute("href", "/standaard_icoon");
-  }
+// Functie om de cookie te verwijderen
+function eraseCookie(name) {
+	createCookie(name, "", -1);
 }
 
-// Controleer de status bij het laden van de pagina
-window.onload = function() {
-  updateTab();
-};
+// Functie om het tabblad te wijzigen
+function changeTab(name, icon) {
+	var tab = document.getElementById("tab");
+	tab.innerHTML = "Dit is het " + name + " tabblad";
+	tab.style.backgroundImage = "url('" + icon + "')";
+}
+
+// Event listener voor de knop
+document.getElementById("cookieButton").addEventListener("click", function() {
+	var cookie = readCookie("changeTab");
+
+	if (cookie) {
+		eraseCookie("changeTab");
+	} else {
+		createCookie("changeTab", "true", 365);
+		changeTab("Google", "/fav");
+	}
+});
 
 
 
