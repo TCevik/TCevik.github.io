@@ -179,31 +179,47 @@ function eraseCookie(name) {
   createCookie(name, "", -1);
 }
 
-// Functie die wordt uitgevoerd wanneer op de knop wordt geklikt
-function changeTab() {
-  var tabName = "changeTab";
+// Functie om de initiële acties uit te voeren bij het laden van de pagina
+function initializePage() {
+  var cookieName = "changeTab";
   var cookieValue = "enabled";
 
-  if (readCookie(tabName) === null) {
+  if (readCookie(cookieName) === cookieValue) {
+    // Cookie bestaat en heeft de juiste waarde, dus we passen de tabnaam en het favicon aan
+    document.title = "Google";
+    var link = document.querySelector("link[rel~='icon']");
+    link.href = "https://google.com/favicon.ico";
+  } else {
+    // Cookie bestaat niet of heeft een andere waarde, dus we herstellen de oorspronkelijke tabnaam en het favicon
+    document.title = "Jouw website";
+    var link = document.querySelector("link[rel~='icon']");
+    link.href = "pad/naar/jouw/favicon.ico";
+  }
+}
+
+// Functie die wordt uitgevoerd wanneer op de knop wordt geklikt
+function changeTab() {
+  var cookieName = "changeTab";
+  var cookieValue = "enabled";
+
+  if (readCookie(cookieName) === null) {
     // Cookie bestaat niet, dus we maken het aan
-    createCookie(tabName, cookieValue, 1);
+    createCookie(cookieName, cookieValue, 1);
     document.title = "Google";
     var link = document.querySelector("link[rel~='icon']");
     link.href = "https://google.com/favicon.ico";
   } else {
     // Cookie bestaat al, dus we verwijderen het
-    eraseCookie(tabName);
+    eraseCookie(cookieName);
     alert("De functie is uitgeschakeld bij de volgende herlaadbeurt.");
   }
 }
 
+// Roep de functie aan bij het laden van de pagina
+initializePage();
 
 
 
-
-function onPageLoad() {
-  changeTab();
-}
 
 
 
