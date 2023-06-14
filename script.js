@@ -187,35 +187,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  function veranderTabblad() {
-    document.title = 'Nieuwe naam';
-    const favicon = document.querySelector('link[rel="shortcut icon"]');
-    favicon.href = 'nieuw-icoon.png';
-    document.cookie = 'tabblad-veranderd=true';
-  }
 
-  function veranderTerugTabblad() {
-    document.title = 'Oude naam';
-    const favicon = document.querySelector('link[rel="shortcut icon"]');
-    favicon.href = 'oud-icoon.png';
-    document.cookie = 'tabblad-veranderd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  }
 
-  // Check of de cookie bestaat bij het laden van de pagina
-  window.addEventListener('load', function() {
-    const cookieValue = getCookie('tabblad-veranderd');
-    if (cookieValue === 'true') {
-      veranderTabblad();
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1, c.length);
     }
-  });
-
-  // Hulpmethode om de waarde van een cookie op te halen
-  function getCookie(name) {
-    const value = "; " + document.cookie;
-    const parts = value.split("; " + name + "=");
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
+    if (c.indexOf(nameEQ) === 0) {
+      return c.substring(nameEQ.length, c.length);
     }
   }
-});
+  return null;
+}
+
+function veranderTabblad() {
+  document.title = 'Nieuwe naam';
+  const favicon = document.querySelector('link[rel="shortcut icon"]');
+  favicon.href = 'nieuw-icoon.png';
+  setCookie('tabblad-veranderd', 'true', 365); // Cookie wordt 365 dagen bewaard
+}
+
+function veranderTerugTabblad() {
+  document.title = 'Oude naam';
+  const favicon = document.querySelector('link[rel="shortcut icon"]');
+  favicon.href = 'oud-icoon.png';
+  setCookie('tabblad-veranderd', '', -1); // Cookie wordt verwijderd
+}
+
+// Controleren of de cookie is ingesteld bij het laden van de pagina
+window.onload = function() {
+  var cookieValue = getCookie('tabblad-veranderd');
+  if (cookieValue === 'true') {
+    veranderTabblad();
+  }
+};
