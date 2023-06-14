@@ -193,7 +193,7 @@ function changeTab(name, icon) {
 }
 
 // Event listener voor de knop
-function readCookie()
+function readCookie() {
 	var cookie = readCookie("changeTab");
 
 	if (cookie) {
@@ -202,7 +202,7 @@ function readCookie()
 		createCookie("changeTab", "true", 365);
 		changeTab("Google", "/fav");
 	}
-});
+};
 
 
 
