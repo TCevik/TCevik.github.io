@@ -145,6 +145,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+function setTabCookie() {
+  document.cookie = "changeTab=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+  updateTab();
+}
+
+function deleteTabCookie() {
+  document.cookie = "changeTab=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  updateTab();
+}
+
+function updateTab() {
+  var changeTabCookie = document.cookie.replace(/(?:(?:^|.*;\s*)changeTab\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  
+  if (changeTabCookie === "true") {
+    document.getElementById("tabName").innerText = "google";
+    document.getElementById("tabIcon").setAttribute("href", "/fav");
+  } else {
+    // Hier kun je de standaard naam en het icoon instellen
+    document.getElementById("tabName").innerText = "Standaard Tab Naam";
+    document.getElementById("tabIcon").setAttribute("href", "/standaard_icoon");
+  }
+}
+
+// Controleer de status bij het laden van de pagina
+window.onload = function() {
+  updateTab();
+};
 
 
 
