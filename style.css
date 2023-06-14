@@ -176,6 +176,7 @@ button:hover {
 
 .popup {
   position: fixed;
+  z-index: 10000;
   bottom: 10px;
   left: 10px;
   background: var(--background-color);
