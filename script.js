@@ -144,75 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-// Functie om de cookie te creëren
-function createCookie(name, value, days) {
-	var expires;
-
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-		expires = "; expires=" + date.toGMTString();
-	} else {
-		expires = "";
-	}
-
-	document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-// Functie om de cookie te lezen
-function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-
-	for (var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1, c.length);
-		}
-
-		if (c.indexOf(nameEQ) == 0) {
-			return c.substring(nameEQ.length, c.length);
-		}
-	}
-
-	return null;
-}
-
-// Functie om de cookie te verwijderen
-function eraseCookie(name) {
-	createCookie(name, "", -1);
-}
-
-// Functie om het tabblad te wijzigen
-function changeTab(name, icon) {
-	var tab = document.getElementById("tab");
-	tab.innerHTML = "Dit is het " + name + " tabblad";
-	tab.style.backgroundImage = "url('" + icon + "')";
-}
-
-// Event listener voor de knop
-function readCookie() {
-	var cookie = readCookie("changeTab");
-
-	if (cookie) {
-		eraseCookie("changeTab");
-	} else {
-		createCookie("changeTab", "true", 365);
-		changeTab("Google", "/fav");
-	}
-};
-
-
-
-
-
-
-
-
-
-
 /* document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
     var bannedMessage = document.createElement('h1');
@@ -223,3 +154,57 @@ function readCookie() {
     document.body.appendChild(bannedMessage);
   }
 }); */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function veranderTabblad() {
+  document.title = 'Nieuwe naam';
+  const favicon = document.querySelector('link[rel="shortcut icon"]');
+  favicon.href = 'nieuw-icoon.png';
+  document.cookie = 'tabblad-veranderd=true';
+}
+
+function veranderTerugTabblad() {
+  document.title = 'Oude naam';
+  const favicon = document.querySelector('link[rel="shortcut icon"]');
+  favicon.href = 'oud-icoon.png';
+  document.cookie = 'tabblad-veranderd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+}
+
+const cookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('tabblad-veranderd='));
+
+if (cookie) {
+  veranderTabblad();
+}

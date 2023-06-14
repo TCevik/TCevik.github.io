@@ -123,9 +123,8 @@
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
     <p id="battery-percentage"><p>
 
-    <button id="cookieButton" onclick="readCookie()">Klik hier om de cookie aan te maken of te verwijderen</button>
-    <div id="tab" name="tab">Dit is het standaard tabblad</div>
-
+    <button id="verander-knop">Verberg tabblad</button>
+    <button id="verander-terug-knop">Verander terug</button>
     <br><button onclick="window.location.href='https://toukle.github.io'">Ga naar Toukle!!!</button>
 
     <h3>Algemeen</h3>
@@ -227,6 +226,12 @@
             win.document.close();
             win.focus();
         }
+
+        const veranderKnop = document.getElementById('verander-knop');
+        const veranderTerugKnop = document.getElementById('verander-terug-knop');
+            
+        veranderKnop.addEventListener('click', veranderTabblad);
+        veranderTerugKnop.addEventListener('click', veranderTerugTabblad);
     </script>
 </body>
 </html>
