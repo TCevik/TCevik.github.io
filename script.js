@@ -193,7 +193,7 @@ function changeTab(name, icon) {
 }
 
 // Event listener voor de knop
-document.getElementById("cookieButton").addEventListener("click", function() {
+function readCookie()
 	var cookie = readCookie("changeTab");
 
 	if (cookie) {
