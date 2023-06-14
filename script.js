@@ -145,78 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// Functie om de cookie te maken
-function createCookie(name, value, days) {
-  var expires;
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    expires = "; expires=" + date.toGMTString();
-  } else {
-    expires = "";
-  }
-  document.cookie = name + "=" + value + expires + "; path=/";
-}
 
-// Functie om de cookie te lezen
-function readCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1, c.length);
-    }
-    if (c.indexOf(nameEQ) === 0) {
-      return c.substring(nameEQ.length, c.length);
-    }
-  }
-  return null;
-}
 
-// Functie om de cookie te verwijderen
-function eraseCookie(name) {
-  createCookie(name, "", -1);
-}
-
-// Functie om de initiële acties uit te voeren bij het laden van de pagina
-function initializePage() {
-  var cookieName = "changeTab";
-  var cookieValue = "enabled";
-
-  if (readCookie(cookieName) === cookieValue) {
-    // Cookie bestaat en heeft de juiste waarde, dus we passen de tabnaam en het favicon aan
-    document.title = "Google";
-    var link = document.querySelector("link[rel~='icon']");
-    link.href = "https://google.com/favicon.ico";
-  } else {
-    // Cookie bestaat niet of heeft een andere waarde, dus we herstellen de oorspronkelijke tabnaam en het favicon
-    document.title = "Jouw website";
-    var link = document.querySelector("link[rel~='icon']");
-    link.href = "pad/naar/jouw/favicon.ico";
-  }
-}
-
-// Functie die wordt uitgevoerd wanneer op de knop wordt geklikt
-function changeTab() {
-  var cookieName = "changeTab";
-  var cookieValue = "enabled";
-
-  if (readCookie(cookieName) === null) {
-    // Cookie bestaat niet, dus we maken het aan
-    createCookie(cookieName, cookieValue, 1);
-    document.title = "Google";
-    var link = document.querySelector("link[rel~='icon']");
-    link.href = "https://google.com/favicon.ico";
-  } else {
-    // Cookie bestaat al, dus we verwijderen het
-    eraseCookie(cookieName);
-    alert("De functie is uitgeschakeld bij de volgende herlaadbeurt.");
-  }
-}
-
-// Roep de functie aan bij het laden van de pagina
-initializePage();
 
 
 
