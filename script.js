@@ -228,7 +228,6 @@ function veranderTerugTabblad() {
   setCookie('tabblad-veranderd', '', -1); // Cookie wordt verwijderd
 }
 
-// Controleren of de cookie is ingesteld bij het laden van de pagina
 window.onload = function() {
   var cookieValue = getCookie('tabblad-veranderd');
   if (cookieValue === 'true') {
