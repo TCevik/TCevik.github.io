@@ -187,34 +187,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+document.addEventListener('DOMContentLoaded', function() {
+  function veranderTabblad() {
+    document.title = 'Nieuwe naam';
+    const favicon = document.querySelector('link[rel="shortcut icon"]');
+    favicon.href = 'nieuw-icoon.png';
+    document.cookie = 'tabblad-veranderd=true';
+  }
 
-function veranderTabblad() {
-  document.title = 'Nieuwe naam';
-  const favicon = document.querySelector('link[rel="shortcut icon"]');
-  favicon.href = 'nieuw-icoon.png';
-  document.cookie = 'tabblad-veranderd=true';
-}
+  function veranderTerugTabblad() {
+    document.title = 'Oude naam';
+    const favicon = document.querySelector('link[rel="shortcut icon"]');
+    favicon.href = 'oud-icoon.png';
+    document.cookie = 'tabblad-veranderd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
 
-function veranderTerugTabblad() {
-  document.title = 'Oude naam';
-  const favicon = document.querySelector('link[rel="shortcut icon"]');
-  favicon.href = 'oud-icoon.png';
-  document.cookie = 'tabblad-veranderd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
+  // Check of de cookie bestaat bij het laden van de pagina
+  window.addEventListener('load', function() {
+    const cookieValue = getCookie('tabblad-veranderd');
+    if (cookieValue === 'true') {
+      veranderTabblad();
+    }
+  });
 
-// Check of de cookie bestaat bij het laden van de pagina
-window.addEventListener('load', function() {
-  const cookieValue = getCookie('tabblad-veranderd');
-  if (cookieValue === 'true') {
-    veranderTabblad();
+  // Hulpmethode om de waarde van een cookie op te halen
+  function getCookie(name) {
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + name + "=");
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
   }
 });
-
-// Hulpmethode om de waarde van een cookie op te halen
-function getCookie(name) {
-  const value = "; " + document.cookie;
-  const parts = value.split("; " + name + "=");
-  if (parts.length === 2) {
-    return parts.pop().split(";").shift();
-  }
-}
