@@ -132,10 +132,16 @@
                 dropdownContent.classList.add("show");
             }
         }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey) {
+              event.preventDefault();
+            }
+        });
     </script>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
     <h3>Door Tamer Çevik</h3>
     <p style="margin-bottom: 0px;">Welkom op de TC_tam website gemaakt door Tamer Çevik.</p>
