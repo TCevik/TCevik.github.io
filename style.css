@@ -120,7 +120,7 @@ button {
   border-radius: 10px;
   font-weight: inherit;
   outline: none;
-  border: solid var(--text-color);
+  border: solid var(--button-bgcolor);
   background-color: var(--button-bgcolor);
   color: #ffffff;
   padding: var(--button-padding);
