@@ -131,7 +131,6 @@ button {
   z-index: 1;
 }
 
-button:focus,
 button:hover {
   border: solid #58bf33;
   cursor: pointer;
@@ -141,6 +140,11 @@ button:hover {
   margin: 0.3%;
   transform: scale(1.1);
   z-index: 2;
+}
+
+button:focus {
+  border: solid #58bf33;
+  border-radius: 20px;
 }
 
 .bookmarklet {
