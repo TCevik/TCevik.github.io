@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Tamer Launcher</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <h1>Apps</h1>
+    <button onclick="window.location.href='minecraft://'">Open Minecraft</button>
+</body>
+</html>
