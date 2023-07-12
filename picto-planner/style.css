@@ -1,0 +1,155 @@
+/*default*/
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --h1234-color: #000000;
+  --custom-link-color: #38761d;
+  --font-size: 16px;
+  --h1-font-size: 46px;
+  --h2-font-size: 36px;
+  --h3-font-size: 26px;
+  --h4-font-size: 22px;
+  --button-padding: 10px;
+  --button-bgcolor: #43b731;
+}
+
+
+
+/*General Stuff Of Website*/
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Quicksand, Arial, sans-serif;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  text-align: center;
+  overflow-x: hidden;
+  transition: 0.5s;
+  user-select: none;
+}
+
+
+
+/*h1234*/
+h1 {
+  color: var(--h1234-color);
+  font-size: var(--h1-font-size);
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+h2 {
+  color: var(--h1234-color);
+  font-size: var(--h2-font-size);
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+h3 {
+  color: var(--h1234-color);
+  font-size: var(--h3-font-size);
+  margin-bottom: 5px;
+  font-weight: 900;
+}
+
+h4 {
+  color: var(--h1234-color);
+  font-size: var(--h4-font-size);
+  margin-bottom: 5px;
+  margin-top: 10px;
+  font-weight: 900;
+}
+
+
+
+/*Link And Normal Text*/
+p,
+label {
+  font-size: var(--font-size);
+  line-height: 1.5;
+  font-family: Quicksand, Arial, sans-serif;
+  overflow-wrap: break-word;
+  font-weight: 900;
+}
+
+a {
+  font-size: var(--font-size);
+  color: var(--custom-link-color);
+  text-decoration: none;
+  font-family: Quicksand, Arial, sans-serif;
+  border-bottom: 1px solid var(--custom-link-color);
+  line-height: 1;
+  padding-bottom: 1px;
+  font-weight: 900;
+}
+
+
+
+/*Button And Input*/
+button {
+  position: relative;
+  font-family: Quicksand, Arial, sans-serif;
+  border-radius: 10px;
+  font-weight: 900;
+  outline: none;
+  border: solid var(--text-color);
+  background-color: var(--button-bgcolor);
+  color: #ffffff;
+  padding: var(--button-padding);
+  font-size: var(--font-size);
+  margin: 0.3%;
+  transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s;
+  transform-origin: center;
+  z-index: 1;
+}
+
+button:focus,
+button:hover {
+  border: solid #58bf33;
+  cursor: pointer;
+  border-radius: 20px;
+  filter: brightness(120%);
+  margin: 0.3%;
+  transform: scale(1.1);
+  z-index: 2;
+}
+
+#input {
+  border-radius: 25px;
+  padding: 10px;
+  outline: none;
+  margin: 20px;
+  border: solid var(--text-color);
+  font-size: var(--text-size);
+  color: var(--text-color);
+  transition: border-color 0.3s;
+  background-color: var(--background-color);
+  font-family: Quicksand, Arial, sans-serif;
+  font-weight: 900;
+}
+
+#input:hover,
+#input:focus {
+  border: solid #58bf33;
+}
+
+#input::placeholder {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+
+
+/*Other*/
+::selection {
+  background-color: #43b731;
+  color: #fff;
+}
+
+.toukle-button {
+  position: absolute;
+  left: 10px;
+  top: 5px;
+}
