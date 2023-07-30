@@ -27,12 +27,14 @@
         function playSound() {
             var frequencyInput = document.getElementById("frequency-input");
             var durationInput = document.getElementById("duration-input");
+            var delayInput = document.getElementById("delay-input");
             
             var frequency = parseInt(frequencyInput.value);
             var duration = parseInt(durationInput.value);
+            var delay = parseInt(delayInput.value);
             
-            if (isNaN(frequency) || isNaN(duration)) {
-                alert("Voer geldige waarden in voor frequentie en duur.");
+            if (isNaN(frequency) || isNaN(duration) || isNaN(delay)) {
+                alert("Voer geldige waarden in voor frequentie, duur en vertraging.");
                 return;
             }
             
@@ -51,12 +53,18 @@
 
             setTimeout(function() {
                 oscillator.stop();
+                // Check if the delay is greater than 0 and replay the sound
+                if (delay > 0) {
+                    setTimeout(function() {
+                        playSound();
+                    }, delay);
+                }
             }, duration);
         }
     </script>
 </head>
 <body>
-    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <button id="top-left-button" onclick="window.location.href='/';">Home</button>
     <h1>HZ Invullen</h1>
     <p>De frequentie 440 Hz en tijd 2500ms wordt op veel scholen gebruikt als schoolbel, dus vul dat in voor de schoolbel. 🔔</p>
     <p>De frequentie 12000 Hz zorgt ervoor dat je oren van je hoofd rotten. 😂📢</p>
@@ -68,6 +76,10 @@
     </p>
     <label for="duration-input">Speelduur (ms):</label>
     <input id="duration-input" min="0">
+    <br>
+    <!-- Add a new input field for the delay -->
+    <label for="delay-input">Speel opnieuw na stop in (ms):</label>
+    <input id="delay-input" min="0" value="0" placeholder="0 = niet herha...">
     <br>
     <button onclick="playSound()">Speel geluid af</button>
 </body>
