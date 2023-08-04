@@ -62,30 +62,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const savedUserName = localStorage.getItem('UserName');
-const forbiddenNames = ['tameriscool192', 'tamerisgay', 'mdmmfzf'];
-
-function setUserName() {
-  const userName = prompt('(Vul gewoon je naam in ofzo. Dit word later gebruikt als nickname.) Voer een gebruikersnaam in om door te gaan:');
-
-  if (
-    userName &&
-    /^[qwertyuiopasdfghjklzxcvbnm0-9]+$/i.test(userName) &&
-    !forbiddenNames.includes(userName.toLowerCase())
-  ) {
-    localStorage.setItem('UserName', userName);
-    alert('Bedankt! Je gebruikersnaam is opgeslagen.');
-  } else {
-    alert('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
-    setUserName();
-  }
+function onClickHandler() {
+  google.accounts.id.prompt();
 }
 
-if (window.location.href !== 'https://tcevik.github.io/') {
-  if (!savedUserName || forbiddenNames.includes(savedUserName.toLowerCase())) {
-    setUserName();
-  }
-}
+google.accounts.id.initialize({
+  client_id: 'YOUR_CLIENT_ID',
+  callback: handleCredentialResponse
+});
+
+google.accounts.id.renderButton(document.getElementById('signin-button'), {
+  theme: 'outline',
+  size: 'large',
+  text: 'Sign in with Google',
+  onsuccess: handleCredentialResponse,
+  onfailure: handleError,
+  prompt_parent_id: 'signin-button',
+  prompt_consent: true,
+  prompt_select_account: true,
+  prompt_continue: true
+});
 
 
 
