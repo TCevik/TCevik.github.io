@@ -1,3 +1,4 @@
+/* accepteer popup */
 document.addEventListener('DOMContentLoaded', function () {
   if (!localStorage.getItem('accept')) {
     var popup = document.createElement('div');
@@ -35,65 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  var xhr = new XMLHttpRequest();
-  var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
-  xhr.open('POST', url, true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  var pageName = document.title;
-  var pageURL = window.location.href;
-
-  var now = new Date();
-  var currentTime = now.toLocaleString();
-
-  navigator.getBattery().then(function (battery) {
-    var batteryPercentage = Math.round(battery.level * 100);
-    var UserName = localStorage.getItem('UserName');
-
-    if (UserName.toLowerCase() !== "tamer") {
-      var message = {
-        content: '----------------------------------------' + '\n**' + UserName + '**' + ' is op de pagina: ' + pageName + '.' + '\nTijd & Datum: ' + currentTime + '\nPagina-URL: ' + pageURL + '\nBatterijpercentage: ' + batteryPercentage + '%' + '\nGebruikersnaam: ' + UserName
-      };
-      xhr.send(JSON.stringify(message));
-    }
-  });
-});
-
-
-
+/* verwijder naam */
 document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
 
 
-/* const savedUserName = localStorage.getItem('UserName');
-const forbiddenNames = ['tameriscool192', 'tamerisgay', 'mdmmfzf', 'f'];
-
-function setUserName() {
-  const userName = prompt('(Vul gewoon je naam in ofzo. Dit word later gebruikt als nickname.) Voer een gebruikersnaam in om door te gaan:');
-
-  if (
-    userName &&
-    /^[qwertyuiopasdfghjklzxcvbnm0-9]+$/i.test(userName) &&
-    !forbiddenNames.includes(userName.toLowerCase())
-  ) {
-    localStorage.setItem('UserName', userName);
-    alert('Bedankt! Je gebruikersnaam is opgeslagen.');
-  } else {
-    alert('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
-    setUserName();
-  }
-}
-
-if (window.location.href !== 'https://tcevik.github.io/') {
-  if (!savedUserName || forbiddenNames.includes(savedUserName.toLowerCase())) {
-    setUserName();
-  }
-} */
-
-
-
-
+/* voeg voorleesknop toe aan pagina */
 document.addEventListener('DOMContentLoaded', function() {
   var bookIconStyles = {
     position: 'fixed',
@@ -130,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+/* google analytics */
 (function() {
   var script = document.createElement('script');
   script.async = true;
@@ -144,16 +93,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
   gtag('config', 'G-7KL389S9VR');
 })();
-
-
-
-/* document.addEventListener('DOMContentLoaded', function() {
-  if (localStorage.getItem('UserName') === '[Verbannen Gebruikersnaam]') {
-    var bannedMessage = document.createElement('h1');
-    bannedMessage.textContent = 'Je bent verbannen';
-
-    document.body.innerHTML = '';
-
-    document.body.appendChild(bannedMessage);
-  }
-}); */
