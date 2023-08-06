@@ -62,7 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const savedUserName = localStorage.getItem('UserName');
+document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+
+
+/* const savedUserName = localStorage.getItem('UserName');
 const forbiddenNames = ['tameriscool192', 'tamerisgay', 'mdmmfzf', 'f'];
 
 function setUserName() {
@@ -85,7 +89,7 @@ if (window.location.href !== 'https://tcevik.github.io/') {
   if (!savedUserName || forbiddenNames.includes(savedUserName.toLowerCase())) {
     setUserName();
   }
-}
+} */
 
 
 
