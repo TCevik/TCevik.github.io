@@ -31,33 +31,9 @@
             max-height: 150px;
             transition: max-height 0.7 ease;
         }
-
-        body {
-          background-image: url("https://tcevik.github.io/assets/plaatje-cadeautjes-cloudwise.jpg");
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-          background-position: center center;
-          background-size: cover;
-        }
     </style>
     
     <script>
-        window.addEventListener("scroll", function() {
-          const scrollPosition = window.scrollY;
-          const maxZoom = 120; // 120% grootte
-          const minZoom = 100; // 100% grootte
-          const fadeStart = 200; // pixels waarin het vervagingsproces begint
-          const fadeEnd = 500; // pixels waarin het vervagingsproces eindigt
-        
-          let zoom = minZoom + (scrollPosition / (fadeEnd - fadeStart)) * 20; // bereken de zoomwaarde op basis van de scrollpositie
-        
-          // Beperk de zoomwaarde tussen minZoom en maxZoom
-          zoom = Math.max(minZoom, Math.min(maxZoom, zoom));
-        
-          // Pas de zoomwaarde toe op de achtergrondafbeelding
-          document.body.style.backgroundSize = `${zoom}%`;
-        });
-
         function countup() {
             var now = new Date();
             var startDate = new Date(2023, 4, 21, 14, 31, 26);
