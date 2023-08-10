@@ -190,6 +190,7 @@ textarea {
   font-family: 'Lexend', sans-serif;
   font-size: var(--font-size);
   padding: 10px;
+  transition: border-color 0.3s;
   background-color: var(--background-color);
   text-align: left;
 }
