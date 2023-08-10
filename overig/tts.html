@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>TTS</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/';">Home</button>
+    <h1>TTS</h1>
+    <p>Vul wat text in en het doet precies wat het zegt.</p>
+    
+    <input id="input" id="text-to-read" rows="4" cols="50"></input>
+    <br><button id="read-button" onclick="readText();">Lees voor</button>
+    
+    <script>
+        function readText() {
+            var text = document.getElementById("text-to-read").value;
+            var speech = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>

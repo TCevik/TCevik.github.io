@@ -158,7 +158,7 @@ button:focus {
   padding: 10px;
 }
 
-#input {
+input {
   border-radius: 25px;
   padding: 10px;
   outline: none;
@@ -171,12 +171,12 @@ button:focus {
   font-family: Lexend, Arial, sans-serif;
 }
 
-#input:hover,
-#input:focus {
+input:hover,
+input:focus {
   border: solid #58bf33;
 }
 
-#input::placeholder {
+input::placeholder {
   color: var(--text-color);
 }
 
