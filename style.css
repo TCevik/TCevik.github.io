@@ -194,6 +194,15 @@ textarea {
   text-align: left;
 }
 
+textarea:hover,
+textarea:focus {
+  border: solid #58bf33;
+}
+
+textarea::placeholder {
+  color: var(--text-color);
+}
+
 .popup {
   position: fixed;
   z-index: 10000;
