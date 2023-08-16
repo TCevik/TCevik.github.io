@@ -248,7 +248,8 @@
     <script>
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
-            win.document.write('<!DOCTYPE html><html><head><title>‎</title></head><body><iframe src="/" style="width: 100%; height: 100%;"></iframe></body></html>');
+            var iframeHeight = window.innerHeight; // Haal de hoogte van het venster op
+            win.document.write('<!DOCTYPE html><html><head><title>‎</title></head><body><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px;"></iframe></body></html>');
             win.document.close();
             win.focus();
         }
