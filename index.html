@@ -248,20 +248,9 @@
     <script>
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
-            var iframe;
-                
-            function updateIframeHeight() {
-                var iframeHeight = window.innerHeight;
-                iframe.style.height = iframeHeight + 'px';
-            }
-        
-            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; height: 100%; border: none;"></iframe></body></html>');
+            var iframeHeight = 999999999999;
+            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe></body></html>');
             win.document.close();
-            iframe = win.document.querySelector('iframe');
-            updateIframeHeight();
-        
-            setInterval(updateIframeHeight, 750);
-        
             win.focus();
         }
     </script>
