@@ -248,10 +248,23 @@
     <script>
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
-            var iframeHeight = window.innerHeight;
-            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe></body></html>');
+                
+            function updateIframeSize() {
+                var iframeHeight = window.innerHeight;
+                win.document.querySelector('iframe').style.height = iframeHeight + 'px';
+            }
+        
+            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; border: none;"></iframe></body></html>');
             win.document.close();
             win.focus();
+        
+            // Update iframe size every 0.75 seconds
+            var interval = setInterval(updateIframeSize, 750);
+        
+            // Clear the interval when the window is closed
+            win.onunload = function () {
+                clearInterval(interval);
+            };
         }
     </script>
 </body>
