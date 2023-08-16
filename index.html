@@ -249,7 +249,7 @@
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
             var iframeHeight = 999999999999;
-            win.document.write('<!DOCTYPE html><html><head><title>‎</title></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe></body></html>');
+            win.document.write('<!DOCTYPE html><html><head><title>‎</title></head><body style="margin: 0;"><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe></body></html>');
             win.document.close();
             win.focus();
         }
