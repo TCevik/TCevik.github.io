@@ -37,36 +37,6 @@ body {
   }
 }
 
-/* elements get bigger when you have a screen smaller than 750px (phones in portrait mode) */
-@media only screen and (max-device-width: 750px) {
-  :root {
-    --font-size: 36px;
-    --h1-font-size: 106px;
-    --h2-font-size: 86px;
-    --h3-font-size: 66px;
-    --h4-font-size: 46px;
-    --button-padding: 30px;
-  }
-
-  #top-left-button {
-    --top-left-button-index-translation: 5%, 10%;
-    width: 20%;
-  }
-  
-  button {
-    width: 100%;
-  }
-  .popup {
-    width: 95%;
-  }
-  .readPage {
-    transform-origin: top right;
-    transform: scale(3);
-    margin-top: 5px;
-    margin-right: 5px;
-  }
-}
-
 #top-left-button {
   position: fixed;
   left: 0px;
