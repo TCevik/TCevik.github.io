@@ -249,7 +249,7 @@
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
             var iframeHeight = window.innerHeight;
-            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe></body></html>');
+            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title><link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png"></head><body style="margin: 0; overflow: hidden;"><iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe></body></html>');
             win.document.close();
             win.focus();
         }
