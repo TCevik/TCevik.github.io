@@ -13,27 +13,5 @@
     <p>Hier kan je notities maken!!!</p>
     
     <textarea id="input" oninput="saveNotitie();" rows="50" cols="50"></textarea>
-    
-    <script>
-        function saveNotitie() {
-            var notitieTekst = document.getElementById("input").value;
-            document.cookie = "notitie=" + encodeURIComponent(notitieTekst);
-        }
-        
-        function loadNotitie() {
-            var cookie = document.cookie;
-            var cookieParts = cookie.split("; ");
-            for (var i = 0; i < cookieParts.length; i++) {
-                var cookiePart = cookieParts[i].split("=");
-                if (cookiePart[0] === "notitie") {
-                    var notitieTekst = decodeURIComponent(cookiePart[1]);
-                    document.getElementById("input").value = notitieTekst;
-                    break;
-                }
-            }
-        }
-        
-        window.onload = loadNotitie;
-    </script>
 </body>
 </html>
