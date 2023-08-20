@@ -56,7 +56,7 @@ if (window.location.href !== 'https://tcevik.github.io/') {
 
 
 
-/* 1 april grap kleuren */
+/* 1 april grap kleuren (zet dit in script.js) */
 function getRandomColor() {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -68,10 +68,10 @@ function changePageColors() {
   const randomColor = getRandomColor();
   document.body.style.backgroundColor = randomColor;
 
-  const buttons = document.querySelectorAll('button');
-  buttons.forEach(button => {
-    const buttonRandomColor = getRandomColor();
-    button.style.backgroundColor = buttonRandomColor;
+  const allTextElements = document.querySelectorAll('body *');
+  allTextElements.forEach(element => {
+    const textRandomColor = getRandomColor();
+    element.style.color = textRandomColor;
   });
 }
 
