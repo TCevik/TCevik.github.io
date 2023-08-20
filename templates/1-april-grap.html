@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam</title>
+    <meta name="description" content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Dit is een site die je kan gebruiken om bijvoorbeeld beheerde school dingen te unblocken. Nou, in ieder geval hoop ik dat je veel plezier met mijn site hebt!">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+        h1 {
+            transition: transform 0.7s ease;
+            transform-origin: center;
+        }
+
+        h1:hover {
+            transform: scale(1.3) translate(0, 0);
+        }
+
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease;
+        }
+
+        .dropdown-content.show {
+            max-height: 150px;
+            transition: max-height 0.7 ease;
+        }
+
+        #battery-percentage {
+            position: fixed;
+            top: 5px;
+            left: 5px;
+            margin: 10px;
+        }
+    </style>
+    
+    <script>
+        function countup() {
+            var now = new Date();
+            var startDate = new Date(2023, 4, 21, 14, 31, 26);
+            var timeElapsed = now - startDate;
+    
+            var days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+  
+        document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+        }
+
+        setInterval(countup, 1000);
+
+        function updateBatteryLevel() {
+            navigator.getBattery().then(function(battery) {
+                var batteryLevel = battery.level * 100;
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + Math.round(batteryLevel) + "%";
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(updateBatteryLevel, 1000);
+
+            if ('getBattery' in navigator) {
+                updateBatteryLevel();
+            } else {
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
+            }
+        });
+
+        function scrollToOverMij() {
+            var destination = document.getElementById("overmij").offsetTop;
+    
+            window.scrollTo({
+                top: destination,
+                behavior: "smooth"
+            });
+        }
+
+        function scrollToSecret() {
+            var destination = document.getElementById("hiddenButton").offsetTop;
+    
+            window.scrollTo({
+                top: destination,
+                behavior: "smooth"
+            });
+        }
+
+        var keySequence = [];
+
+        document.addEventListener('keydown', function(event) {
+            keySequence.push(event.key);
+
+            if (keySequence.join('') === 'ballondoos') {
+                showButton();
+                setTimeout(scrollToSecret, 100);
+            }
+        });
+
+        function showButton() {
+        var button = document.getElementById('hiddenButton');
+        button.style.display = 'inline';
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+          var button = document.getElementById("hiddenButton");
+          var scale = 1.0;
+          var grow = true;
+        
+          button.style.transition = "transform 0.2s ease-in-out";
+        
+          setInterval(function() {
+            if (grow) {
+              scale += 0.1;
+              if (scale >= 1.1) {
+                grow = false;
+              }
+            } else {
+              scale -= 0.1;
+              if (scale <= 1.0) {
+                grow = true;
+              }
+            }
+            button.style.transform = "scale(" + scale + ")";
+          }, 200);
+        });
+
+        function toggleDropdown(category) {
+            var dropdownContent = document.getElementById(category + "-dropdown");
+
+            if (dropdownContent.classList.contains("show")) {
+                dropdownContent.classList.remove("show");
+            } else {
+                dropdownContent.classList.add("show");
+            }
+        }
+
+
+        function getRandomColor() {
+          const r = Math.floor(Math.random() * 256);
+          const g = Math.floor(Math.random() * 256);
+          const b = Math.floor(Math.random() * 256);
+          return `rgb(${r},${g},${b})`;
+        }
+        
+        function changePageColors() {
+          const randomColor = getRandomColor();
+          document.body.style.backgroundColor = randomColor;
+        
+          const buttons = document.querySelectorAll('button');
+          buttons.forEach(button => {
+            const buttonRandomColor = getRandomColor();
+            button.style.backgroundColor = buttonRandomColor;
+          });
+        }
+        
+        window.addEventListener('load', changePageColors);
+
+    </script>
+</head>
+
+<body oncontextmenu="return false;">
+    <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
+    <h3>Door Tamer Çevik</h3>
+    <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag."</p>
+    <br><div class="dropdown">
+        <button style="margin-top: -30px; padding: 5px;" onclick="toggleDropdown('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+        <div id="explanation-dropdown" class="dropdown-content">
+            <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Als ik jou was zou ik het maar doen. Tenzij je houd van dingen die niet helemaal goed werken... :)
+            <br>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in HTML). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
+        </div>
+    </div>
+    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+    <p id="battery-percentage"><p>
+
+    <p>Zoeken op de site? Klik op ctrl + f om dat te doen.</p>
+
+    <p style="margin-top: 30px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English.</p>
+
+    <h3>Algemeen</h3>
+    <button onclick="window.location.href='chat'">TC_tam Chat</button>
+    <button onclick="scrollToOverMij();">Over mij</button>
+    <button onclick="window.open('https://www.youtube.com/@TC_tam-YT?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+
+    <h3>Overig</h3>
+    <button onclick="window.location.href='overig/myinstants'">MyInstants</button>
+    <button onclick="window.location.href='overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+    <button onclick="window.location.href='overig/tctam-merch'">Merch</button>
+    <button onclick="window.location.href='overig/notities'">Notities</button>
+    <button onclick="window.location.href='ide'">IDE</button>
+    <button onclick="window.location.href='overig/tts'">TTS</button>
+    
+    <h3>Lees hier nu al mijn verhalen</h3>
+    <button style="margin: 5px;" onclick="window.location.href='verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
+    
+    <h3>Web Tricks</h3>
+    <button onclick="window.location.href='web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
+
+    <h3>School Hacks</h3>
+    <button onclick="window.location.href='school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
+    <button onclick="window.location.href='school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
+    <button onclick="window.location.href='school-hacks/bookmarklets'">Bookmarklets</button>
+
+        <h4>Antwoorden</h4>
+        <button onclick="window.location.href='https://docs.google.com/document/d/e/2PACX-1vRv7JFsGBR-HXqSah_4hLyEwodeMs8_MX9p7CCUiZUazQ1OkUjv14Hk1-yal4_VkuUZoa-wOivTu0So/pub'">Nieuw Nederlands 2 HAVO Volledig Boek (Nederlands)</button>
+        <button onclick="window.location.href='https://drive.google.com/file/d/1oXUmI5OI7zOotuv1pVx1biXq24xp-o3b/view'">Pincode 3 HAVO Hoofdstuk 1 (Economie)</button>
+
+        <h4>Extensie Hacks</h4>
+        <button onclick="window.location.href='school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
+        <button onclick="window.location.href='school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
+        <button onclick="window.location.href='school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
+
+        <h4>Proxys - Emulators</h4>
+        <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
+        <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
+        <button onclick="window.location.href='school-hacks/proxys-emulators/proxy'">Proxy met tab verberger</button>
+        <button onclick="window.location.href='school-hacks/proxys-emulators/proxy-2'">Proxy met tab verberger 2 (gebruik bovenste zoekbalk)</button>
+
+    <h3>Games</h3>
+    <button onclick="window.location.href='games/fallbeans'">fallbeans</button>
+    <button onclick="window.location.href='games/lolbeans'">lolbeans</button>
+    <button onclick="window.location.href='games/minecraft-1.5.2'">Minecraft 1.5.2</button>
+    <button onclick="window.location.href='games/drive-mad'">Drive Mad</button>
+    <button onclick="window.location.href='games/flippy-fields'">Flippy Fields (Drive Mad)</button>
+    <button onclick="window.location.href='games/moto-x3m-bike-race-game'">MOTO X3M BIKE RACE GAME</button>
+    
+    <h3>Over de website</h3>
+    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
+    <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
+    <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
+    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
+    
+    <h1 id="overmij">Over mij</h1>
+    <p style="margin-bottom: 300px;">Ik ben Tamer en ik houd van computers. 
+    <br>Mijn hobby's zijn: coderen en karate. (en natuurlijk ook vakantie hebben van school :-))
+    <br>Ik ben op het idee gekomen om deze website te maken door mijn YouTube kanaal. 
+    <br>Maar, al deze "school hacks" ben ik gaan maken omdat ik een vergelijkbare site zag en dacht: dit kan ik ook, maar dan beter!
+    <br>En ik vond het gewoon cool om te maken...
+    <br>
+    <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
+    <br>⦁ Ik heet Tamer Çevik.
+    <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
+    <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+    <br>Nu weet je hoe ik TC_tam verzonnen heb!
+    <br>
+    <br>Mijn favoriete kleuren zijn:
+    <br><span style="color: #132f0c">#132f0c</span>
+    <br><span style="color: #38761d">#38761d</span>
+    <br><span style="color: #43b731">#43b731</span>
+    <br><span style="color: #58bf33">#58bf33</span>
+    <br><span style="color: #e0fcd4">#e0fcd4</span>
+    <br>
+    <br>Dark mode kleur:
+    <br><span style="color: #0d1710">#0d1710</span>
+    <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
+    <br>De kleuren van mijn logo zijn:
+    <br><span style="color: #33ff33">#33ff33</span>
+    <br><span style="color: #336699">#336699</span></p>
+
+    <style>
+        .hahanoobtext {
+            display: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hahanoobtext {
+                display: block;
+            }
+        }
+    </style>
+    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
+
+    <script>
+        function openNewTab() {
+            var win = window.open('about:blank', '_blank');
+            var iframeHeight = window.innerHeight;
+            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title>');
+            win.document.write('<link rel="icon" type="image/x-icon" href="https://tcevik.github.io/assets/asfalt-light.png">');
+            win.document.write('</head><body style="margin: 0; overflow: hidden;">');
+            win.document.write('<iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe>');
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+        }
+    </script>
+</body>
+</html>
