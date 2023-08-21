@@ -49,43 +49,6 @@ document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
 
 
-/* voeg voorleesknop toe aan pagina */
-document.addEventListener('DOMContentLoaded', function() {
-  var bookIconStyles = {
-    position: 'fixed',
-    top: '10px',
-    right: '10px',
-    width: '40px',
-    height: '40px',
-    background: 'url(https://cdn-icons-png.flaticon.com/512/4693/4693365.png) no-repeat',
-    backgroundSize: 'contain',
-    cursor: 'pointer'
-  };
-
-  var bookIcon = document.createElement('div');
-  Object.assign(bookIcon.style, bookIconStyles);
-
-  bookIcon.classList.add('readPage');
-
-  document.body.appendChild(bookIcon);
-
-  function readPage() {
-    var pageContent = document.body.innerText || document.body.textContent;
-
-    var speechUtterance = new SpeechSynthesisUtterance(pageContent);
-
-    speechUtterance.rate = 0.9;
-
-    speechUtterance.lang = 'nl-NL';
-    
-    window.speechSynthesis.speak(speechUtterance);
-  }
-
-  bookIcon.addEventListener('click', readPage);
-});
-
-
-
 /* google analytics */
 (function() {
   var script = document.createElement('script');

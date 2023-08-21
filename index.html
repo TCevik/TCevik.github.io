@@ -31,6 +31,30 @@
             max-height: 150px;
             transition: max-height 0.7 ease;
         }
+
+        .navigation {
+            position: fixed;
+            margin-top: -15px;
+            top: 0;
+            left: 0;
+            background-color: var(--background-color);
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .navigation a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navigation a:hover {
+            background-color: #555;
+        }
     </style>
     
     <script>
@@ -158,7 +182,17 @@
 </head>
 
 <body>
-    <h4 style="margin-bottom: -30px; margin-top: 5px;"><marquee>BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS</marquee></h4>
+    <div class="navigation">
+        <a href="#algemeen">Algemeen</a>
+        <a href="#overig">Overig</a>
+        <a href="#verhalen">Verhalen</a>
+        <a href="#webtricks">Web Tricks</a>
+        <a href="#schoolhacks">School Hacks</a>
+        <a href="#games">Games</a>
+        <a href="#overwebsite">Over De Website</a>
+    </div>
+
+    <h4 style="margin-bottom: -30px; margin-top: 50px;"><marquee>BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS</marquee></h4>
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
     <h3>Door Tamer Çevik</h3>
     <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag."</p>
@@ -195,12 +229,12 @@
 
     <br><button onclick="partyTimer()">!!!PARTYMODE!!!</button>
     
-    <h3>Algemeen</h3>
+    <h3 id="algemeen">Algemeen</h3>
     <button onclick="window.location.href='chat'">TC_tam Chat</button>
     <button onclick="scrollToOverMij();">Over mij</button>
     <button onclick="window.open('https://www.youtube.com/@TC_tam-YT?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
 
-    <h3>Overig</h3>
+    <h3 id="overig">Overig</h3>
     <button onclick="window.location.href='overig/myinstants'">MyInstants</button>
     <button onclick="window.location.href='overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
     <button onclick="window.location.href='overig/tctam-merch'">Merch</button>
@@ -208,13 +242,13 @@
     <button onclick="window.location.href='overig/ide'">IDE</button>
     <button onclick="window.location.href='overig/tts'">TTS</button>
     
-    <h3>Lees hier nu al mijn verhalen</h3>
+    <h3 id="verhalen">Lees hier nu al mijn verhalen</h3>
     <button style="margin: 5px;" onclick="window.location.href='verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
     
-    <h3>Web Tricks</h3>
+    <h3 id="webtricks">Web Tricks</h3>
     <button onclick="window.location.href='web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
 
-    <h3>School Hacks</h3>
+    <h3 id="schoolhacks">School Hacks</h3>
     <button onclick="window.location.href='school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
     <button onclick="window.location.href='school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
     <button onclick="window.location.href='school-hacks/bookmarklets'">Bookmarklets</button>
@@ -234,7 +268,7 @@
         <button onclick="window.location.href='school-hacks/proxys-emulators/proxy'">Proxy met tab verberger</button>
         <button onclick="window.location.href='school-hacks/proxys-emulators/proxy-2'">Proxy met tab verberger 2 (gebruik bovenste zoekbalk)</button>
 
-    <h3>Games</h3>
+    <h3 id="games">Games</h3>
     <button onclick="window.location.href='games/fallbeans'">fallbeans</button>
     <button onclick="window.location.href='games/lolbeans'">lolbeans</button>
     <button onclick="window.location.href='games/minecraft-1.5.2'">Minecraft 1.5.2</button>
@@ -242,7 +276,7 @@
     <button onclick="window.location.href='games/flippy-fields'">Flippy Fields (Drive Mad)</button>
     <button onclick="window.location.href='games/moto-x3m-bike-race-game'">MOTO X3M BIKE RACE GAME</button>
     
-    <h3>Over de website</h3>
+    <h3 id="overwebsite">Over de website</h3>
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
     <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
     <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
