@@ -53,26 +53,3 @@ if (window.location.href !== 'https://tcevik.github.io/') {
     setUserName();
   }
 }
-
-
-
-/* Maak alle kleuren op de site random */
-function getRandomColor() {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return `rgb(${r},${g},${b})`;
-}
-
-function changePageColors() {
-  const randomColor = getRandomColor();
-  document.body.style.backgroundColor = randomColor;
-
-  const allTextElements = document.querySelectorAll('body *');
-  allTextElements.forEach(element => {
-    const textRandomColor = getRandomColor();
-    element.style.color = textRandomColor;
-  });
-}
-
-changePageColors()
