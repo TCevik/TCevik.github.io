@@ -139,6 +139,29 @@
                 dropdownContent.classList.add("show");
             }
         }
+
+        function getRandomColor() {
+          const r = Math.floor(Math.random() * 256);
+          const g = Math.floor(Math.random() * 256);
+          const b = Math.floor(Math.random() * 256);
+          return `rgb(${r},${g},${b})`;
+        }
+
+        function changePageColors() {
+          const randomColor = getRandomColor();
+          document.body.style.backgroundColor = randomColor;
+        
+          const allTextElements = document.querySelectorAll('body *');
+          allTextElements.forEach(element => {
+            const textRandomColor = getRandomColor();
+            element.style.color = textRandomColor;
+          });
+        }
+
+        function partyTimer() {
+            // Roep de functie elke 0.5 seconden aan
+            var interval = setInterval(changePageColors, 500); // 500 ms = 0.5 seconden
+        }
     </script>
 </head>
 
@@ -159,6 +182,8 @@
     <p>Zoeken op de site? Klik op ctrl + f om dat te doen.</p>
 
     <p style="margin-top: 30px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English.</p>
+
+    <button onclick="partyTimer()">!!!PARTYMODE!!!</button>
 
     <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
     <a href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">

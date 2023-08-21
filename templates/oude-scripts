@@ -56,7 +56,7 @@ if (window.location.href !== 'https://tcevik.github.io/') {
 
 
 
-/* 1 april grap kleuren (zet dit in script.js) */
+/* Maak alle kleuren op de site random */
 function getRandomColor() {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -75,4 +75,4 @@ function changePageColors() {
   });
 }
 
-window.addEventListener('load', changePageColors);
+changePageColors()
