@@ -317,6 +317,26 @@
     <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
 
     <script>
+        const navigationLinks = document.querySelectorAll('.navigation a');
+        const headerHeight = 15;
+
+        navigationLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    const targetOffset = targetElement.offsetTop - headerHeight;
+                    window.scrollTo({
+                        top: targetOffset,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
         function openNewTab() {
             var win = window.open('about:blank', '_blank');
             var iframeHeight = window.innerHeight;
