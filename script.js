@@ -64,3 +64,12 @@ document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
   gtag('config', 'G-7KL389S9VR');
 })();
+
+// Voeg een event listener toe die luistert naar het veranderen van de schermoriëntatie
+window.addEventListener("orientationchange", function() {
+  // Controleer de huidige schermoriëntatie
+  if (window.orientation === 0 || window.orientation === 180) {
+    // Leeg de inhoud van de pagina
+    document.body.innerHTML = "<p>Draai je apparaat om de pagina te bekijken.</p>";
+  }
+});
