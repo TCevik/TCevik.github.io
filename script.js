@@ -65,29 +65,21 @@ document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   gtag('config', 'G-7KL389S9VR');
 })();
 
-// Wacht tot de pagina volledig is geladen
-window.addEventListener('load', function() {
-  // Functie om de schermgrootte te controleren en acties uit te voeren
+// Wacht tot het document volledig is geladen
+document.addEventListener("DOMContentLoaded", function() {
+  // Functie om het schermformaat te controleren en de pagina aan te passen
   function checkScreenSize() {
-      if (window.innerWidth < 750) {  // Controleer of scherm smaller is dan 750px
-          // Verwijder alle inhoud van de pagina
-          document.body.innerHTML = '';
+      // Haal de breedte van het scherm op
+      var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-          // Maak een nieuw berichtelement aan
-          var message = document.createElement('div');
-          message.innerText = 'Draai je apparaat';  // Stel de boodschap in
-          message.style.fontSize = '24px';  // Pas de tekstgrootte aan voor duidelijkheid
-          message.style.textAlign = 'center';  // Centreer de tekst
-          message.style.marginTop = '50vh';  // Plaats het bericht verticaal gecentreerd
-
-          // Voeg het berichtelement toe aan de pagina
-          document.body.appendChild(message);
+      // Controleer of de schermgrootte kleiner is dan 750px
+      if (screenWidth < 750) {
+          // Leeg de inhoud van de pagina
+          document.body.innerHTML = "<div style='text-align: center; padding: 50px;'>Draai je apparaat om de website te bekijken.</div>";
       }
   }
 
-  // Voer de controlefunctie uit wanneer de schermgrootte verandert
-  window.addEventListener('resize', checkScreenSize);
-
-  // Voer de controlefunctie eenmaal uit bij het laden van de pagina
+  // Voer de functie uit bij het laden en wijzigen van de schermgrootte
+  window.addEventListener("resize", checkScreenSize);
   checkScreenSize();
 });
