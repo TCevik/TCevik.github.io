@@ -64,3 +64,30 @@ document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
   gtag('config', 'G-7KL389S9VR');
 })();
+
+// Wacht tot de pagina volledig is geladen
+window.addEventListener('load', function() {
+  // Functie om de schermgrootte te controleren en acties uit te voeren
+  function checkScreenSize() {
+      if (window.innerWidth < 750) {  // Controleer of scherm smaller is dan 750px
+          // Verwijder alle inhoud van de pagina
+          document.body.innerHTML = '';
+
+          // Maak een nieuw berichtelement aan
+          var message = document.createElement('div');
+          message.innerText = 'Draai je apparaat';  // Stel de boodschap in
+          message.style.fontSize = '24px';  // Pas de tekstgrootte aan voor duidelijkheid
+          message.style.textAlign = 'center';  // Centreer de tekst
+          message.style.marginTop = '50vh';  // Plaats het bericht verticaal gecentreerd
+
+          // Voeg het berichtelement toe aan de pagina
+          document.body.appendChild(message);
+      }
+  }
+
+  // Voer de controlefunctie uit wanneer de schermgrootte verandert
+  window.addEventListener('resize', checkScreenSize);
+
+  // Voer de controlefunctie eenmaal uit bij het laden van de pagina
+  checkScreenSize();
+});
