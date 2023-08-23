@@ -65,23 +65,27 @@ document.cookie = "UserName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   gtag('config', 'G-7KL389S9VR');
 })();
 
+// Bewaar de oorspronkelijke inhoud van de pagina
+var originalContent = document.body.innerHTML;
+
 // Wacht tot het document volledig is geladen
 document.addEventListener("DOMContentLoaded", function() {
-  // Functie om het schermformaat te controleren en de pagina aan te passen
-  function checkScreenSize() {
-      // Haal de breedte van het scherm op
-      var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    // Functie om het schermformaat te controleren en de pagina aan te passen
+    function checkScreenSize() {
+        // Haal de breedte van het scherm op
+        var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-      // Controleer of de schermgrootte kleiner is dan 750px
-      if (screenWidth < 750) {
-          // Leeg de inhoud van de pagina
-          document.body.innerHTML = "<div style='text-align: center; padding: 50px;'>Draai je apparaat om de website te bekijken.</div>";
-      } else {
-        location.reload(); 
+        // Controleer of de schermgrootte kleiner is dan 750px
+        if (screenWidth < 750) {
+            // Leeg de inhoud van de pagina en toon de boodschap
+            document.body.innerHTML = "<div style='text-align: center; padding: 50px;'>Draai je apparaat om de website te bekijken.</div>";
+        } else {
+            // Herstel de oorspronkelijke inhoud van de pagina
+            document.body.innerHTML = originalContent;
         }
-  }
+    }
 
-  // Voer de functie uit bij het laden en wijzigen van de schermgrootte
-  window.addEventListener("resize", checkScreenSize);
-  checkScreenSize();
+    // Voer de functie uit bij het laden en wijzigen van de schermgrootte
+    window.addEventListener("resize", checkScreenSize);
+    checkScreenSize();
 });
