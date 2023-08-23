@@ -76,10 +76,9 @@ document.addEventListener("DOMContentLoaded", function() {
       if (screenWidth < 750) {
           // Leeg de inhoud van de pagina
           document.body.innerHTML = "<div style='text-align: center; padding: 50px;'>Draai je apparaat om de website te bekijken.</div>";
-      }
-      else {
-       location.reload(); 
-      }
+      } else {
+        location.reload(); 
+        }
   }
 
   // Voer de functie uit bij het laden en wijzigen van de schermgrootte
