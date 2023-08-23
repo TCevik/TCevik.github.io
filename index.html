@@ -24,15 +24,12 @@
         }
 
         .navigation {
-            position: fixed;
-            margin-top: -15px;
-            top: 0;
-            left: 0;
             background-color: var(--background-color);
             width: 100%;
             padding: 10px 0;
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             z-index: 1000;
         }
 
@@ -41,6 +38,9 @@
             text-decoration: none;
             padding: 10px 20px;
             transition: background-color 0.3s ease;
+            flex: 0 0 calc(10% - 40px);
+            box-sizing: border-box;
+            text-align: center;
         }
 
         .navigation a:hover {
@@ -186,7 +186,7 @@
         <a href="#overwebsite">Over De Website</a>
     </div>
 
-    <h4 style="margin-bottom: -30px; margin-top: 50px;"><marquee>BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
+    <h4 style="margin-bottom: -30px; margin-top: 10px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
     <h3>Door Tamer Çevik</h3>
     <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag."</p>
