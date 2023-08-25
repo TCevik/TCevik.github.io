@@ -170,6 +170,19 @@
         function partyTimer() {
             var interval = setInterval(changePageColors, 100);
         }
+
+        window.onload = function() {
+            if (window.location.href.endsWith("?partymode")) {
+                partyTimer();
+            }
+        };
+
+        function activatePartyMode() {
+            // Voeg "?partymode" toe aan de URL en herlaad de pagina
+            window.location.href = window.location.href + "?partymode";
+
+            partyTimer();
+        }
     </script>
 </head>
 
@@ -225,7 +238,7 @@
         <img style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
     </a>
 
-    <br><button onclick="partyTimer()">!!!PARTYMODE!!!</button>
+    <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
     
     <h3 style="margin-top: 75px;" id="algemeen">Algemeen</h3>
     <button onclick="window.location.href='chat'">TC_tam Chat</button>
