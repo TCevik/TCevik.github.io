@@ -32,11 +32,13 @@ function sendMessage(message) {
 }
 
 // Functie om berichten weer te geven
-function displayMessage(sender, message) {
-    const messageElement = document.createElement('div');
-    messageElement.innerText = `${sender}: ${message}`;
-    chatMessages.appendChild(messageElement);
+function displayMessage(message) {
+  const userName = getUserName(); // Haal de gebruikersnaam op uit de cookie
+  const messageElement = document.createElement('div');
+  messageElement.innerText = `${userName}: ${message}`;
+  chatMessages.appendChild(messageElement);
 }
+
 
 // Luister naar nieuwe berichten in de database
 database.ref('chat').on('child_added', (snapshot) => {
@@ -65,3 +67,13 @@ messageInput.addEventListener('keydown', (event) => {
         }
     }
 });
+
+// Functie om de gebruikersnaam uit de cookie te halen
+function getUserName() {
+  const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('userName='))
+      .split('=')[1];
+  
+  return cookieValue ? decodeURIComponent(cookieValue) : 'Gebruiker';
+}
