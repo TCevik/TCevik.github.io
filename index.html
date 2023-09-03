@@ -186,7 +186,7 @@
 </head>
 
 <body style="width: 100vw;">
-        <div class="navigation">
+    <div class="navigation">
         <a style="border-left: 1px solid var(--custom-link-color);" href="#algemeen">Algemeen</a>
         <a href="#overig">Overig</a>
         <a href="#verhalen">Verhalen</a>
@@ -203,6 +203,25 @@
 </body>
 
 <body>
+    <p style="position:absolute; left: 5px; top: 5px;">Versie: <span id="runsAmount">Error</span></p>
+    <script>
+        fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
+            method: 'GET',
+            headers: {
+                'Authorization': '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',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const runsAmount = data.total_count;
+            
+            document.getElementById('runsAmount').textContent = runsAmount;
+        })
+        .catch(error => {
+            console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
+        });
+    </script>
+
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
     <h3>Door Tamer Çevik</h3>
     <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag."</p>

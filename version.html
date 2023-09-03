@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Workflow Runs</title>
+</head>
+<body>
+    <p>Versie: <span id="runsAmount">Error. Kon niet opgehaald worden.</span></p>
+
+    <script>
+        fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
+            method: 'GET',
+            headers: {
+                'Authorization': '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',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const runsAmount = data.total_count;
+            
+            document.getElementById('runsAmount').textContent = runsAmount;
+        })
+        .catch(error => {
+            console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
+        });
+    </script>
+</body>
+</html>
