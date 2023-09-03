@@ -1,0 +1,40 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          yarn install
+          yarn build
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test
+        run: |
+          yarn install
+          yarn test
+
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update versie
+        run: |
+          echo "Versie: $(echo $GITHUB_SHA | cut -c1-7)" > version.txt
+          curl -X POST -H "Content-Type: application/json" -d '{ "versie": $(cat version.txt) }' http://<your-website>/version.html
