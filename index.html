@@ -199,7 +199,7 @@
         <a style="border-right: 1px solid var(--custom-link-color);" href="#overwebsite">Over De Website</a>
     </div>
     
-    <h4 style="margin-bottom: -30px; margin-top: 10px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
+    <h4 style="margin-bottom: -30px; margin-top: 10px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
 </body>
 
 <body>
@@ -215,7 +215,13 @@
             .then(response => response.json())
             .then(data => {
                 const runsAmount = data.total_count;
-                document.getElementById('runsAmount').textContent = runsAmount;
+                var element1 = document.getElementById('runsAmount');
+                var element2 = document.getElementById('runsAmountNews');
+                
+                if (element1 && element2) {
+                    element1.textContent = runsAmount;
+                    element2.textContent = runsAmount;
+                }
             })
             .catch(error => {
                 console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
