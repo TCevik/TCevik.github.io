@@ -59,31 +59,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
   gtag('config', 'G-7KL389S9VR');
 })();
-
-
-
-/* laat gebruiker een naam kiezen */
-const savedUserName = localStorage.getItem('UserName');
-const forbiddenNames = ['tameriscool192', 'tamerisgay'];
-
-function setUserName() {
-  const userName = prompt('(Vul gewoon je naam in ofzo. Dit word later gebruikt als nickname.) Voer een gebruikersnaam in om door te gaan:');
-
-  if (
-    userName &&
-    /^[qwertyuiopasdfghjklzxcvbnm0-9]+$/i.test(userName) &&
-    !forbiddenNames.includes(userName.toLowerCase())
-  ) {
-    localStorage.setItem('UserName', userName);
-    alert('Bedankt! Je gebruikersnaam is opgeslagen.');
-  } else {
-    alert('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
-    setUserName();
-  }
-}
-
-if (window.location.href !== 'https://tcevik.github.io/') {
-  if (!savedUserName || forbiddenNames.includes(savedUserName.toLowerCase())) {
-    setUserName();
-  }
-}

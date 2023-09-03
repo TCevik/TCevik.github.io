@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* laat gebruiker een naam kiezen */
 const savedUserName = localStorage.getItem('UserName');
-const forbiddenNames = ['tameriscool192', 'tamerisgay', 'mdmmfzf', 'f'];
+const forbiddenNames = ['tameriscool192', 'tamerisgay'];
 
 function setUserName() {
   const userName = prompt('(Vul gewoon je naam in ofzo. Dit word later gebruikt als nickname.) Voer een gebruikersnaam in om door te gaan:');
