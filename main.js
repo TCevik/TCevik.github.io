@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Verwijzing naar de Firebase Realtime Database
+// Verwijzing naar de Firebase Realtime Database 
 const database = firebase.database();
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
