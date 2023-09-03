@@ -203,23 +203,27 @@
 </body>
 
 <body>
-    <p style="position:absolute; left: 5px; top: 5px;">Versie: <span id="runsAmount">Error</span></p>
+    <p style="position:absolute; left: 10px; top: 5px;">Versie: <span id="runsAmount">Error</span></p>
     <script>
-        fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
-            method: 'GET',
-            headers: {
-                'Authorization': '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',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            const runsAmount = data.total_count;
-            
-            document.getElementById('runsAmount').textContent = runsAmount;
-        })
-        .catch(error => {
-            console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
-        });
+        function fetchData() {
+            fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
+                method: 'GET',
+                headers: {
+                    'Authorization': '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',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const runsAmount = data.total_count;
+                document.getElementById('runsAmount').textContent = runsAmount;
+            })
+            .catch(error => {
+                console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
+            });
+        }
+        
+        // Voer fetchData uit elke 5 seconden
+        setInterval(fetchData, 5000);
     </script>
 
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
