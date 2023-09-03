@@ -37,4 +37,4 @@ jobs:
       - name: Update versie
         run: |
           echo "Versie: $(echo $GITHUB_SHA | cut -c1-7)" > version.txt
-          curl -X POST -H "Content-Type: application/json" -d '{ "versie": $(cat version.txt) }' http://<your-website>/version.html
+          curl -X POST -H "Content-Type: application/json" -d '{ "versie": $(cat version.txt) }' http://tcevik.github.io/version.html
