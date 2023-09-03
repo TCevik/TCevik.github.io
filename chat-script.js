@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Verwijzing naar de Firebase Realtime Database 
+// Verwijzing naar de Firebase Realtime Database
 const database = firebase.database();
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
@@ -20,48 +20,47 @@ const sendButton = document.getElementById('send-button');
 
 // Functie om een bericht te verzenden
 function sendMessage(message) {
-  const timestamp = Date.now();
-  const messageData = {
-      timestamp: timestamp,
-      name: userName,
-      message: message,
-  };
+    const timestamp = Date.now();
+    const messageData = {
+        timestamp: timestamp,
+        message: message,
+    };
 
-  // Verzend het bericht naar de database
-  database.ref('chat').push(messageData);
+    // Verzend het bericht naar de database
+    database.ref('chat').push(messageData);
 }
 
 // Functie om berichten weer te geven
 function displayMessage(sender, message) {
-  const messageElement = document.createElement('div');
-  messageElement.innerText = `${sender}: ${message}`;
-  chatMessages.appendChild(messageElement);
+    const messageElement = document.createElement('div');
+    messageElement.innerText = `${sender}: ${message}`;
+    chatMessages.appendChild(messageElement);
 }
 
 // Luister naar nieuwe berichten in de database
 database.ref('chat').on('child_added', (snapshot) => {
-  const messageData = snapshot.val();
-  const sender = messageData.sender || 'Anoniem';
-  const message = messageData.message;
-  displayMessage(sender, message);
+    const messageData = snapshot.val();
+    const sender = messageData.sender || 'Gebruiker'; // Vervang 'Anoniem' door de daadwerkelijke gebruikersnaam
+    const message = messageData.message;
+    displayMessage(sender, message);
 });
 
 // Eventlistener voor verzenden van bericht
 sendButton.addEventListener('click', () => {
-  const message = messageInput.value;
-  if (message.trim() !== '') {
-      sendMessage(message);
-      messageInput.value = '';
-  }
+    const message = messageInput.value;
+    if (message.trim() !== '') {
+        sendMessage(message);
+        messageInput.value = '';
+    }
 });
 
 // Eventlistener voor toetsenbord "Enter" om bericht te verzenden
 messageInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-      const message = messageInput.value;
-      if (message.trim() !== '') {
-          sendMessage(message);
-          messageInput.value = '';
-      }
-  }
+    if (event.key === 'Enter') {
+        const message = messageInput.value;
+        if (message.trim() !== '') {
+            sendMessage(message);
+            messageInput.value = '';
+        }
+    }
 });
