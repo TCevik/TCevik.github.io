@@ -221,9 +221,11 @@
                 console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
             });
         }
-        
+
         // Voer fetchData uit elke 5 seconden
         setInterval(fetchData, 5000);
+
+        fetchData();
     </script>
 
     <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
