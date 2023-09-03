@@ -23,7 +23,7 @@ function sendMessage(message) {
   const timestamp = Date.now();
   const messageData = {
       timestamp: timestamp,
-      name: userName
+      name: userName,
       message: message,
   };
 
