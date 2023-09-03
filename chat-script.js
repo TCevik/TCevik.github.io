@@ -2,13 +2,14 @@
 const firebaseConfig = {
   apiKey: "AIzaSyAkS4WdnA5EuT8wM6NK1752lqqgosmMdnA",
   authDomain: "githubchat-77956.firebaseapp.com",
+  databaseURL: "https://githubchat-77956-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "githubchat-77956",
-  databaseURL: "https://githubchat-77956-default-rtdb.europe-west1.firebasedatabase.app/",
   storageBucket: "githubchat-77956.appspot.com",
   messagingSenderId: "252339182035",
-  appId: "1:252339182035:web:c4f84a63e10eced96b7726",
-  measurementId: "G-T9W7PHQJ7S"
+  appId: "1:252339182035:web:9b3fd5f4937364e56b7726",
+  measurementId: "G-SN0H6S7567"
 };
+
 
 firebase.initializeApp(firebaseConfig);
 
