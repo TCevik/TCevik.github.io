@@ -3,7 +3,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAkS4WdnA5EuT8wM6NK1752lqqgosmMdnA",
   authDomain: "githubchat-77956.firebaseapp.com",
   projectId: "githubchat-77956",
-  databaseURL: "https://console.firebase.google.com/u/0/project/githubchat-77956/database/githubchat-77956-default-rtdb/data/~2F",
+  databaseURL: "https://githubchat-77956-default-rtdb.europe-west1.firebasedatabase.app/",
   storageBucket: "githubchat-77956.appspot.com",
   messagingSenderId: "252339182035",
   appId: "1:252339182035:web:c4f84a63e10eced96b7726",
