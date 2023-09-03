@@ -33,9 +33,16 @@ function sendMessage(message) {
 
 // Functie om berichten weer te geven
 function displayMessage(sender, message) {
-    const messageElement = document.createElement('div');
-    messageElement.innerText = `${sender}: ${message}`;
-    chatMessages.appendChild(messageElement);
+  const messageElement = document.createElement('div');
+  messageElement.innerText = `${sender}: ${message}`;
+  chatMessages.appendChild(messageElement);
+
+  var destination = document.getElementById("message-input").offsetTop;
+
+  window.scrollTo({
+      top: destination,
+      behavior: "smooth"
+  });
 }
 
 // Luister naar nieuwe berichten in de database
