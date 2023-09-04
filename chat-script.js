@@ -72,3 +72,46 @@ messageInput.addEventListener('keydown', (event) => {
         }
     }
 });
+
+// Inloggen met e-mail en wachtwoord
+function loginWithEmailAndPassword(email, password) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Gebruiker succesvol ingelogd
+      const user = userCredential.user;
+      console.log(`Gebruiker ingelogd: ${user.email}`);
+    })
+    .catch((error) => {
+      // Inlogfout, toon een foutmelding aan de gebruiker
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(`Fout bij inloggen: ${errorMessage}`);
+    });
+}
+
+// Eventlistener voor inloggen
+loginButton.addEventListener('click', () => {
+  const email = document.getElementById('login-email-input').value;
+  const password = document.getElementById('login-password-input').value;
+  
+  if (email.trim() !== '' && password.trim() !== '') {
+    loginWithEmailAndPassword(email, password);
+  }
+});
+
+
+// Verkrijg referenties naar de chat-input en de verzendknop
+const chatContainer = document.getElementById('chat-container');
+const messageInput = document.getElementById('message-input');
+const sendButton = document.getElementById('send-button');
+
+// Controleer de inlogstatus van de gebruiker
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // Gebruiker is ingelogd, toon de chat-invoer en verzendknop
+    chatContainer.style.display = 'block';
+  } else {
+    // Gebruiker is niet ingelogd, verberg de chat-invoer en verzendknop
+    chatContainer.style.display = 'none';
+  }
+});
