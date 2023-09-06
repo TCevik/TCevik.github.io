@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picture-in-Picture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0077FF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        video {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <button id="pipButton">Start Picture-in-Picture</button>
+    <video id="video" src="https://tcevik.github.io/testen/vid.webm" controls></video>
+    <script>
+        const video = document.getElementById('video');
+        const pipButton = document.getElementById('pipButton');
+
+        pipButton.addEventListener('click', () => {
+            if (document.pictureInPictureElement) {
+                document.exitPictureInPicture()
+                    .then(() => {
+                        pipButton.textContent = 'Start Picture-in-Picture';
+                    })
+                    .catch(error => {
+                        console.error('Fout bij het verlaten van Picture-in-Picture:', error);
+                    });
+            } else {
+                video.requestPictureInPicture()
+                    .then(() => {
+                        pipButton.textContent = 'Stop Picture-in-Picture';
+                    })
+                    .catch(error => {
+                        console.error('Fout bij het starten van Picture-in-Picture:', error);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
