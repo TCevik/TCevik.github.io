@@ -190,11 +190,6 @@ textarea::placeholder {
 }
 
 /* Change things like scrollbar and select text */
-.contextmenu {
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
 ::-webkit-scrollbar {
   width: 12px;
 }
