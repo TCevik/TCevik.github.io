@@ -4,19 +4,6 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chatOutput = document.getElementById('chat-output'); // Voeg chat-output toe
 
-// Functie om een bericht te verzenden
-function sendMessage(email, message) {
-    const timestamp = Date.now();
-    const messageData = {
-        timestamp: timestamp,
-        email: email, // Voeg de e-mail toe aan het bericht
-        message: message,
-    };
-
-    // Verzend het bericht naar de database
-    database.ref('chat').push(messageData);
-}
-
 // Eventlistener om bij te houden of het tabblad actief is
 let isTabActive = true;
 
@@ -30,12 +17,41 @@ document.addEventListener('visibilitychange', () => {
 
 // Voeg een variabele toe om de tijd van het laatste verzonden bericht bij te houden
 let lastMessageTime = 0;
+let lastMessageTimeForSpecialEmail = 0;
 
 // Voeg een timer toe om de wachttijd te regelen
-function canSendMessage() {
+function canSendMessage(email) {
     const currentTime = Date.now();
-    const timeSinceLastMessage = currentTime - lastMessageTime;
-    return timeSinceLastMessage >= 3000; // 3000 milliseconden = 3 seconden
+    if (email === 'tam.cevik123@gmail.com') {
+        const timeSinceLastMessage = currentTime - lastMessageTimeForSpecialEmail;
+        return timeSinceLastMessage >= 0; // Direct verzenden voor specifieke e-mail
+    } else {
+        const timeSinceLastMessage = currentTime - lastMessageTime;
+        return timeSinceLastMessage >= 3000; // 3000 milliseconden = 3 seconden voor andere e-mails
+    }
+}
+
+// Eventlistener om berichttijd bij te werken
+function updateLastMessageTime(email) {
+    const currentTime = Date.now();
+    if (email === 'tam.cevik123@gmail.com') {
+        lastMessageTimeForSpecialEmail = currentTime;
+    } else {
+        lastMessageTime = currentTime;
+    }
+}
+
+// Functie om een bericht te verzenden
+function sendMessage(email, message) {
+    const timestamp = Date.now();
+    const messageData = {
+        timestamp: timestamp,
+        email: email, // Voeg de e-mail toe aan het bericht
+        message: message,
+    };
+
+    // Verzend het bericht naar de database
+    database.ref('chat').push(messageData);
 }
 
 // Voeg een eventlistener toe voor de verzendknop
@@ -44,12 +60,12 @@ sendButton.addEventListener('click', () => {
     const message = messageInput.value;
     
     if (message.trim() !== '') {
-        if (canSendMessage()) { // Controleer of er 3 seconden zijn verstreken
+        if (canSendMessage(email)) { // Controleer of er 3 seconden zijn verstreken (of direct voor specifieke e-mail)
             sendMessage(email, message); // Stuur de e-mail mee met het bericht
             messageInput.value = '';
-            lastMessageTime = Date.now(); // Bijwerken van de tijd van het laatste bericht
+            updateLastMessageTime(email); // Bijwerken van de tijd van het laatste bericht
         } else {
-            alert('Je moet 3 seconden wachten voordat je een nieuw bericht kunt sturen.');
+            alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
         }
     }
 });
@@ -61,12 +77,12 @@ messageInput.addEventListener('keydown', (event) => {
         const message = messageInput.value;
         
         if (message.trim() !== '') {
-            if (canSendMessage()) { // Controleer of er 3 seconden zijn verstreken
+            if (canSendMessage(email)) { // Controleer of er 3 seconden zijn verstreken (of direct voor specifieke e-mail)
                 sendMessage(email, message); // Stuur de e-mail mee met het bericht
                 messageInput.value = '';
-                lastMessageTime = Date.now(); // Bijwerken van de tijd van het laatste bericht
+                updateLastMessageTime(email); // Bijwerken van de tijd van het laatste bericht
             } else {
-                alert('Je moet 3 seconden wachten voordat je een nieuw bericht kunt sturen.');
+                alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
             }
         }
     }
