@@ -1,13 +1,13 @@
 // Voeg hier je Firebase-configuratiegegevens toe
 const firebaseConfig = {
-    apiKey: "AIzaSyAkS4WdnA5EuT8wM6NK1752lqqgosmMdnA",
-    authDomain: "githubchat-77956.firebaseapp.com",
-    databaseURL: "https://githubchat-77956-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "githubchat-77956",
-    storageBucket: "githubchat-77956.appspot.com",
-    messagingSenderId: "252339182035",
-    appId: "1:252339182035:web:9b3fd5f4937364e56b7726",
-    measurementId: "G-SN0H6S7567"
+    apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+    authDomain: "tctam-d04b8.firebaseapp.com",
+    projectId: "tctam-d04b8",
+    databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app/",
+    storageBucket: "tctam-d04b8.appspot.com",
+    messagingSenderId: "793882705601",
+    appId: "1:793882705601:web:ac714f422263f4350b5e40",
+    measurementId: "G-TQLZK0WT42"
 };
 
 firebase.initializeApp(firebaseConfig);
