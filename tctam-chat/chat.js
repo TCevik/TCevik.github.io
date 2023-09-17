@@ -1,18 +1,7 @@
-// Verwijzing naar de Firebase Realtime Database
 const database = firebase.database();
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chatOutput = document.getElementById('chat-output'); 
-
-let isTabActive = true;
-
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        isTabActive = true;
-    } else {
-        isTabActive = false;
-    }
-});
 
 let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
@@ -52,9 +41,11 @@ function updateSendButtonStatus(emailVerified) {
     if (emailVerified) {
         sendButton.disabled = false;
         sendButton.textContent = 'Verzend';
+        messageInput.removeEventListener('keydown', preventEnterIfNotVerified);
     } else {
         sendButton.disabled = true;
         sendButton.textContent = 'Verifieer je e-mail om te verzenden';
+        messageInput.addEventListener('keydown', preventEnterIfNotVerified);
     }
 }
 
@@ -73,24 +64,15 @@ sendButton.addEventListener('click', () => {
     }
 });
 
-messageInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        const email = firebase.auth().currentUser.email;
-        const message = messageInput.value;
-
-        if (message.trim() !== '') {
-            if (canSendMessage(email)) {
-                sendMessage(email, message);
-                messageInput.value = '';
-                updateLastMessageTime(email);
-            } else {
-                alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
-            }
-        }
+function preventEnterIfNotVerified(event) {
+    const user = firebase.auth().currentUser;
+    if (user && !user.emailVerified && event.key === 'Enter') {
+        event.preventDefault();
+        alert('Je moet een geverifieerd e-mailadres hebben om een bericht te verzenden.');
     }
-});
+}
 
-// Hier voegen we de e-mailverificatie toe
+// Voeg e-mailverificatie toe
 function checkEmailVerification() {
     const user = firebase.auth().currentUser;
     if (user) {
@@ -98,7 +80,6 @@ function checkEmailVerification() {
 
         if (!user.emailVerified) {
             alert('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
-            // Stuur een bevestigingsmail naar de gebruiker
             user.sendEmailVerification().catch((error) => {
                 console.error('Fout bij het verzenden van de bevestigingsmail:', error);
             });
@@ -113,12 +94,12 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
-        const messageData = snapshot.val();
-        const email = messageData.email;
-        const message = messageData.message;
+    const messageData = snapshot.val();
+    const email = messageData.email;
+    const message = messageData.message;
 
-        const messageElement = document.createElement('div');
-        messageElement.textContent = email + ': ' + message;
+    const messageElement = document.createElement('div');
+    messageElement.textContent = email + ': ' + message;
 
-        chatOutput.insertBefore(messageElement, chatOutput.firstChild);
+    chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
