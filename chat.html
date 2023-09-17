@@ -3,27 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    <title>TC_tam Chat</title>
+    <title>Foto Upload</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #upload-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Voeg dit toe om de positie van de tekstvak en knop te beheersen */
+        }
+
+        #upload-button {
+            padding: 15px 30px;
+            color: #ccc;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        #uploaded-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        /* Voeg stijlen toe voor het tekstvak en de knop linksboven */
+        #message-box {
+            position: absolute;
+            top: 0px; /* Pas de gewenste afstand vanaf de bovenkant aan */
+            left: 0px; /* Pas de gewenste afstand vanaf de linkerkant aan */
+        }
+
+        /* Stijlen voor het berichtinvoerveld */
+        #message-input,
+        #username-input {
+            padding: 0px;
+            width: 180px; /* Pas de breedte aan zoals gewenst */
+            color: #000;
+            border: none;
+            background-color: transparent;
+            outline: none; /* Dit voorkomt de focuslijn */
+        }
+
+        /* Stijlen voor de verzendknop */
+        #send-button {
+            padding: 0px 0px;
+            background-color: transparent;
+            color: #ccc;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
-    <header>
-        <h1>Chat App</h1>
-    </header>
-    <main>
-        <div class="chat-container">
-            <div class="chat-messages" id="chat-messages">
-            </div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type hier je bericht...">
-                <button id="send-button">Verstuur</button>
-            </div>
+    <div id="upload-container">
+        <input type="file" accept="image/*" id="file-input" style="display: none;">
+        <label for="file-input" id="upload-button">Upload Foto (bijvoorbeeld een screenshot van het werk dat je hoort te doen en dan zien de docenten dat)</label>
+        <img src="" alt="Uploaded Image" id="uploaded-image">
+        
+        <!-- Voeg het tekstvak en de knop toe linksboven -->
+        <div id="message-box">
+            <input type="text" id="username-input" autocomplete="off" placeholder="Voer je naam in">
+            <input type="text" id="message-input" autocomplete="off" placeholder="Voer een bericht in">
+            <button id="send-button">Verstuur</button>
         </div>
-    </main>
+    </div>
+  
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
     <script src="chat-script.js"></script>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const uploadButton = document.getElementById('upload-button');
+        const uploadedImage = document.getElementById('uploaded-image');
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                    uploadButton.style.display = 'none';
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 </html>
