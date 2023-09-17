@@ -1,32 +1,15 @@
-// Voeg hier je Firebase-configuratiegegevens toe
-const firebaseConfig = {
-    apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
-    authDomain: "tctam-d04b8.firebaseapp.com",
-    projectId: "tctam-d04b8",
-    databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app/",
-    storageBucket: "tctam-d04b8.appspot.com",
-    messagingSenderId: "793882705601",
-    appId: "1:793882705601:web:ac714f422263f4350b5e40",
-    measurementId: "G-TQLZK0WT42"
-};
-
-firebase.initializeApp(firebaseConfig);
-
 // Verwijzing naar de Firebase Realtime Database
 const database = firebase.database();
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-
-// Variabele om het aantal weer te geven berichten bij te houden
-const maxMessagesToShow = 8;
-const displayedMessages = [];
+const chatOutput = document.getElementById('chat-output'); // Voeg chat-output toe
 
 // Functie om een bericht te verzenden
-function sendMessage(username, message) {
+function sendMessage(email, message) {
     const timestamp = Date.now();
     const messageData = {
         timestamp: timestamp,
-        sender: username,
+        email: email, // Voeg de e-mail toe aan het bericht
         message: message,
     };
 
@@ -57,12 +40,12 @@ function canSendMessage() {
 
 // Voeg een eventlistener toe voor de verzendknop
 sendButton.addEventListener('click', () => {
-    const username = document.getElementById('username-input').value;
+    const email = firebase.auth().currentUser.email; // Haal de huidige gebruikerse-mail op
     const message = messageInput.value;
     
     if (message.trim() !== '') {
         if (canSendMessage()) { // Controleer of er 3 seconden zijn verstreken
-            sendMessage(username, message);
+            sendMessage(email, message); // Stuur de e-mail mee met het bericht
             messageInput.value = '';
             lastMessageTime = Date.now(); // Bijwerken van de tijd van het laatste bericht
         } else {
@@ -74,12 +57,12 @@ sendButton.addEventListener('click', () => {
 // Eventlistener voor toetsenbord "Enter" om bericht te verzenden
 messageInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-        const username = document.getElementById('username-input').value;
+        const email = firebase.auth().currentUser.email; // Haal de huidige gebruikerse-mail op
         const message = messageInput.value;
         
         if (message.trim() !== '') {
             if (canSendMessage()) { // Controleer of er 3 seconden zijn verstreken
-                sendMessage(username, message);
+                sendMessage(email, message); // Stuur de e-mail mee met het bericht
                 messageInput.value = '';
                 lastMessageTime = Date.now(); // Bijwerken van de tijd van het laatste bericht
             } else {
@@ -89,24 +72,17 @@ messageInput.addEventListener('keydown', (event) => {
     }
 });
 
-// Functie om berichten weer te geven als een alert
-function displayMessageAsAlert(sender, message) {
-    const alertMessage = `${sender}: ${message}`;
-    displayedMessages.push(alertMessage);
-
-    if (displayedMessages.length > maxMessagesToShow) {
-        displayedMessages.shift();
-    }
-
-    alert(displayedMessages.join('\n'));
-}
-
-// Luister naar nieuwe berichten in de database
-database.ref('chat').orderByChild('timestamp').limitToLast(maxMessagesToShow).on('child_added', (snapshot) => {
+database.ref('chat').orderByChild('timestamp').limitToLast(50).on('child_added', (snapshot) => {
     if (isTabActive) {
         const messageData = snapshot.val();
-        const sender = messageData.sender || 'Gebruiker';
+        const email = messageData.email; // Haal de e-mail op uit het bericht
         const message = messageData.message;
-        displayMessageAsAlert(sender, message);
+        
+        // Maak een nieuw HTML-element voor het bericht
+        const messageElement = document.createElement('div');
+        messageElement.textContent = email + ': ' + message;
+        
+        // Voeg het bericht toe aan de chat-output aan het begin (bovenaan)
+        chatOutput.insertBefore(messageElement, chatOutput.firstChild);
     }
 });
