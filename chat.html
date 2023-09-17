@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/script.js"></script>
-    <title>Foto Upload</title>
+    <title>Cloudwise - Vlietland College</title>
+    <link rel="icon" type="image/x-icon" href="https://cloudwise-sso.appspot.com/favicon.ico">
     <style>
         body {
             margin: 0;
@@ -17,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative; /* Voeg dit toe om de positie van de tekstvak en knop te beheersen */
+            position: relative;
         }
 
         #upload-button {
@@ -25,6 +25,8 @@
             color: #ccc;
             border: 1px solid #ccc;
             cursor: pointer;
+            background-color: transparent;
+            outline: none;
         }
 
         #uploaded-image {
@@ -37,31 +39,55 @@
             display: none;
         }
 
-        /* Voeg stijlen toe voor het tekstvak en de knop linksboven */
-        #message-box {
+        /* Stijlen voor het tabbladnaamveld rechtsboven */
+        #tab-name-box {
             position: absolute;
-            top: 0px; /* Pas de gewenste afstand vanaf de bovenkant aan */
-            left: 0px; /* Pas de gewenste afstand vanaf de linkerkant aan */
+            top: 0px;
+            right: 0px;
+            display: flex;
+            align-items: center;
         }
 
-        /* Stijlen voor het berichtinvoerveld */
-        #message-input,
-        #username-input {
+        /* Stijlen voor het tabbladnaamveld en de knop */
+        #tab-name-input {
             padding: 0px;
-            width: 180px; /* Pas de breedte aan zoals gewenst */
+            width: 120px;
             color: #000;
             border: none;
+            background-color: #efefef8f;
+            outline: none;
+        }
+
+        #set-tab-name-button {
+            color: #ccc;
+            border: 1px solid #ccc;
+            cursor: pointer;
             background-color: transparent;
-            outline: none; /* Dit voorkomt de focuslijn */
+        }
+
+        /* Stijlen voor het invoerveld en de knop linksboven */
+        #message-box {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        /* Stijlen voor de invoervelden */
+        #username-input, #message-input {
+            padding: 5px;
+            width: 120px;
+            color: #000;
+            border: none;
+            background-color: #efefef8f;
+            outline: none;
         }
 
         /* Stijlen voor de verzendknop */
         #send-button {
-            padding: 0px 0px;
-            background-color: transparent;
             color: #ccc;
-            border: none;
+            border: 1px solid #ccc;
             cursor: pointer;
+            background-color: transparent;
         }
     </style>
 </head>
@@ -70,8 +96,14 @@
         <input type="file" accept="image/*" id="file-input" style="display: none;">
         <label for="file-input" id="upload-button">Upload Foto (bijvoorbeeld een screenshot van het werk dat je hoort te doen en dan zien de docenten dat)</label>
         <img src="" alt="Uploaded Image" id="uploaded-image">
-        
-        <!-- Voeg het tekstvak en de knop toe linksboven -->
+
+        <!-- Voeg het tabbladnaamveld rechtsboven toe -->
+        <div id="tab-name-box">
+            <input type="text" id="tab-name-input" autocomplete="off" placeholder="Tabbladnaam">
+            <button id="set-tab-name-button">Set</button>
+        </div>
+
+        <!-- Voeg het invoerveld en de knop toe linksboven -->
         <div id="message-box">
             <input type="text" id="username-input" autocomplete="off" placeholder="Voer je naam in">
             <input type="text" id="message-input" autocomplete="off" placeholder="Voer een bericht in">
@@ -87,6 +119,17 @@
         const fileInput = document.getElementById('file-input');
         const uploadButton = document.getElementById('upload-button');
         const uploadedImage = document.getElementById('uploaded-image');
+        const tabNameInput = document.getElementById('tab-name-input');
+        const setTabNameButton = document.getElementById('set-tab-name-button');
+        const tabNameBox = document.getElementById('tab-name-box');
+
+        setTabNameButton.addEventListener('click', () => {
+            const tabName = tabNameInput.value;
+            if (tabName) {
+                document.title = tabName;
+                tabNameBox.style.display = 'none';
+            }
+        });
 
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];

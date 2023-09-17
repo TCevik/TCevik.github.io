@@ -45,13 +45,29 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+// Voeg een variabele toe om de tijd van het laatste verzonden bericht bij te houden
+let lastMessageTime = 0;
+
+// Voeg een timer toe om de wachttijd te regelen
+function canSendMessage() {
+    const currentTime = Date.now();
+    const timeSinceLastMessage = currentTime - lastMessageTime;
+    return timeSinceLastMessage >= 3000; // 3000 milliseconden = 3 seconden
+}
+
 // Voeg een eventlistener toe voor de verzendknop
 sendButton.addEventListener('click', () => {
     const username = document.getElementById('username-input').value;
     const message = messageInput.value;
+    
     if (message.trim() !== '') {
-        sendMessage(username, message);
-        messageInput.value = '';
+        if (canSendMessage()) { // Controleer of er 3 seconden zijn verstreken
+            sendMessage(username, message);
+            messageInput.value = '';
+            lastMessageTime = Date.now(); // Bijwerken van de tijd van het laatste bericht
+        } else {
+            alert('Je moet 3 seconden wachten voordat je een nieuw bericht kunt sturen.');
+        }
     }
 });
 
@@ -60,9 +76,15 @@ messageInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         const username = document.getElementById('username-input').value;
         const message = messageInput.value;
+        
         if (message.trim() !== '') {
-            sendMessage(username, message);
-            messageInput.value = '';
+            if (canSendMessage()) { // Controleer of er 3 seconden zijn verstreken
+                sendMessage(username, message);
+                messageInput.value = '';
+                lastMessageTime = Date.now(); // Bijwerken van de tijd van het laatste bericht
+            } else {
+                alert('Je moet 3 seconden wachten voordat je een nieuw bericht kunt sturen.');
+            }
         }
     }
 });
