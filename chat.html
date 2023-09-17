@@ -116,6 +116,28 @@
     <script src="chat-script.js"></script>
 
     <script>
+        // Controleer of de huidige pagina in een about:blank tabblad wordt weergegeven
+        if (window.location.href === 'about:blank') {
+            // Als de huidige pagina al een about:blank tabblad is, doe niets
+            console.log('Dit is al een about:blank tabblad.');
+        } else {
+            // Als de huidige pagina niet in een about:blank tabblad wordt weergegeven, sluit deze in een nieuw about:blank tabblad in
+            var newTab = window.open('about:blank', '_blank');
+            if (newTab) {
+                newTab.document.write('<html><head><title>Nieuw about:blank tabblad</title></head><body></body></html>');
+                newTab.document.body.appendChild(document.documentElement.cloneNode(true));
+                newTab.document.title = document.title;
+                newTab.document.close();
+            
+                // Sluit het oude tabblad na 0,5 seconden
+                setTimeout(function () {
+                    window.close(); // Sluit het oude tabblad
+                }, 500); // 500 milliseconden = 0,5 seconden
+            } else {
+                console.log('Het openen van een nieuw tabblad is geblokkeerd door de browser.');
+            }
+        }
+      
         const fileInput = document.getElementById('file-input');
         const uploadButton = document.getElementById('upload-button');
         const uploadedImage = document.getElementById('uploaded-image');
