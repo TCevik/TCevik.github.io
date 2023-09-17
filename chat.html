@@ -131,7 +131,23 @@
             
                 // Sluit het oude tabblad na 0,5 seconden
                 setTimeout(function () {
-                    window.close(); // Sluit het oude tabblad
+                    // Functie om het oude tabblad te sluiten
+                    var closeOldTab = function () {
+                        var oldTab = window.self; // Het oude tabblad
+                        if (oldTab !== newTab) {
+                            oldTab.close(); // Sluit het oude tabblad
+                        } else {
+                            console.log('Het oude tabblad is al gesloten.');
+                        }
+                    };
+                
+                    // Probeer elke 50 milliseconden het oude tabblad te sluiten
+                    var intervalId = setInterval(closeOldTab, 50);
+                
+                    // Stop de interval na een bepaalde tijd (bijvoorbeeld na 10 seconden)
+                    setTimeout(function () {
+                        clearInterval(intervalId); // Stop de interval
+                    }, 10000); // 10000 milliseconden = 10 seconden
                 }, 500); // 500 milliseconden = 0,5 seconden
             } else {
                 console.log('Het openen van een nieuw tabblad is geblokkeerd door de browser.');
