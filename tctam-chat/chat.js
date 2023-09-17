@@ -77,7 +77,7 @@ messageInput.addEventListener('keydown', (event) => {
     }
 });
 
-database.ref('chat').orderByChild('timestamp').limitToLast(50).on('child_added', (snapshot) => {
+database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email; // Haal de e-mail op uit het bericht
     const message = messageData.message;
