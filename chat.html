@@ -116,44 +116,6 @@
     <script src="chat-script.js"></script>
 
     <script>
-        // Controleer of de huidige pagina in een about:blank tabblad wordt weergegeven
-        if (window.location.href === 'about:blank') {
-            // Als de huidige pagina al een about:blank tabblad is, doe niets
-            console.log('Dit is al een about:blank tabblad.');
-        } else {
-            // Als de huidige pagina niet in een about:blank tabblad wordt weergegeven, sluit deze in een nieuw about:blank tabblad in
-            var newTab = window.open('about:blank', '_blank');
-            if (newTab) {
-                newTab.document.write('<html><head><title>Nieuw about:blank tabblad</title></head><body></body></html>');
-                newTab.document.body.appendChild(document.documentElement.cloneNode(true));
-                newTab.document.title = document.title;
-                newTab.document.close();
-            
-                // Sluit het oude tabblad na 0,5 seconden
-                setTimeout(function () {
-                    // Functie om het oude tabblad te sluiten
-                    var closeOldTab = function () {
-                        var oldTab = window.self; // Het oude tabblad
-                        if (oldTab !== newTab) {
-                            oldTab.close(); // Sluit het oude tabblad
-                        } else {
-                            console.log('Het oude tabblad is al gesloten.');
-                        }
-                    };
-                
-                    // Probeer elke 50 milliseconden het oude tabblad te sluiten
-                    var intervalId = setInterval(closeOldTab, 50);
-                
-                    // Stop de interval na een bepaalde tijd (bijvoorbeeld na 10 seconden)
-                    setTimeout(function () {
-                        clearInterval(intervalId); // Stop de interval
-                    }, 10000); // 10000 milliseconden = 10 seconden
-                }, 500); // 500 milliseconden = 0,5 seconden
-            } else {
-                console.log('Het openen van een nieuw tabblad is geblokkeerd door de browser.');
-            }
-        }
-      
         const fileInput = document.getElementById('file-input');
         const uploadButton = document.getElementById('upload-button');
         const uploadedImage = document.getElementById('uploaded-image');
