@@ -5,6 +5,7 @@ const chatOutput = document.getElementById('chat-output');
 
 let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
+let enterKeyEnabled = true; // Houd bij of de Enter-toets is ingeschakeld
 
 function canSendMessage(email) {
     const currentTime = Date.now();
@@ -41,11 +42,11 @@ function updateSendButtonStatus(emailVerified) {
     if (emailVerified) {
         sendButton.disabled = false;
         sendButton.textContent = 'Verzend';
-        messageInput.removeEventListener('keydown', preventEnterIfNotVerified);
+        enterKeyEnabled = true; // Schakel de Enter-toets in
     } else {
         sendButton.disabled = true;
         sendButton.textContent = 'Verifieer je e-mail om te verzenden';
-        messageInput.addEventListener('keydown', preventEnterIfNotVerified);
+        enterKeyEnabled = false; // Schakel de Enter-toets uit
     }
 }
 
@@ -64,13 +65,22 @@ sendButton.addEventListener('click', () => {
     }
 });
 
-function preventEnterIfNotVerified(event) {
-    const user = firebase.auth().currentUser;
-    if (user && !user.emailVerified && event.key === 'Enter') {
-        event.preventDefault();
-        alert('Je moet een geverifieerd e-mailadres hebben om een bericht te verzenden.');
+messageInput.addEventListener('keydown', (event) => {
+    const email = firebase.auth().currentUser.email;
+    const message = messageInput.value;
+
+    if (event.key === 'Enter' && enterKeyEnabled) {
+        if (message.trim() !== '') {
+            if (canSendMessage(email)) {
+                sendMessage(email, message);
+                messageInput.value = '';
+                updateLastMessageTime(email);
+            } else {
+                alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
+            }
+        }
     }
-}
+});
 
 // Voeg e-mailverificatie toe
 function checkEmailVerification() {
