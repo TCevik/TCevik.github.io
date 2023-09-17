@@ -102,7 +102,7 @@ function displayMessageAsAlert(sender, message) {
 }
 
 // Luister naar nieuwe berichten in de database
-database.ref('chat').orderByChild('timestamp').limitToLast(maxMessagesToShow).on('child_added', (snapshot) => {
+database.ref('hackchat').orderByChild('timestamp').limitToLast(maxMessagesToShow).on('child_added', (snapshot) => {
     if (isTabActive) {
         const messageData = snapshot.val();
         const sender = messageData.sender || 'Gebruiker';
