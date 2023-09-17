@@ -4,17 +4,6 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chatOutput = document.getElementById('chat-output'); // Voeg chat-output toe
 
-// Eventlistener om bij te houden of het tabblad actief is
-let isTabActive = true;
-
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        isTabActive = true;
-    } else {
-        isTabActive = false;
-    }
-});
-
 // Voeg een variabele toe om de tijd van het laatste verzonden bericht bij te houden
 let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
@@ -89,16 +78,14 @@ messageInput.addEventListener('keydown', (event) => {
 });
 
 database.ref('chat').orderByChild('timestamp').limitToLast(50).on('child_added', (snapshot) => {
-    if (isTabActive) {
-        const messageData = snapshot.val();
-        const email = messageData.email; // Haal de e-mail op uit het bericht
-        const message = messageData.message;
-        
-        // Maak een nieuw HTML-element voor het bericht
-        const messageElement = document.createElement('div');
-        messageElement.textContent = email + ': ' + message;
-        
-        // Voeg het bericht toe aan de chat-output aan het begin (bovenaan)
-        chatOutput.insertBefore(messageElement, chatOutput.firstChild);
-    }
+    const messageData = snapshot.val();
+    const email = messageData.email; // Haal de e-mail op uit het bericht
+    const message = messageData.message;
+    
+    // Maak een nieuw HTML-element voor het bericht
+    const messageElement = document.createElement('div');
+    messageElement.textContent = email + ': ' + message;
+    
+    // Voeg het bericht toe aan de chat-output aan het begin (bovenaan)
+    chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
