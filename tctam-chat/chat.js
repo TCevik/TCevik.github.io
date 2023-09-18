@@ -4,27 +4,39 @@ const sendButton = document.getElementById('send-button');
 const chatOutput = document.getElementById('chat-output'); 
 
 let lastMessageTime = 0;
-let lastMessageTimeForSpecialEmail = 0;
 let enterKeyEnabled = true; // Houd bij of de Enter-toets is ingeschakeld
 
-function canSendMessage(email) {
-    const currentTime = Date.now();
-    if (email === 'tam.cevik123@gmail.com') {
-        const timeSinceLastMessage = currentTime - lastMessageTimeForSpecialEmail;
-        return timeSinceLastMessage >= 0;
-    } else {
-        const timeSinceLastMessage = currentTime - lastMessageTime;
-        return timeSinceLastMessage >= 3000;
+// Voeg e-mailverificatie toe
+function checkEmailVerification() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+        if (!user.emailVerified) {
+            // Controleer of de gebruiker in de afgelopen 10 minuten een verificatie-e-mail heeft verzonden
+            const currentTime = Date.now();
+            const lastVerificationEmailTime = parseInt(localStorage.getItem('lastVerificationEmailTime')) || 0;
+            const timeSinceLastVerificationEmail = currentTime - lastVerificationEmailTime;
+
+            if (timeSinceLastVerificationEmail >= 600000) { // 600000 ms = 10 minuten
+                alert('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
+                user.sendEmailVerification().then(() => {
+                    // Sla het tijdstip van het verzenden van de e-mail op
+                    localStorage.setItem('lastVerificationEmailTime', currentTime.toString());
+                }).catch((error) => {
+                    console.error('Fout bij het verzenden van de bevestigingsmail:', error);
+                });
+            }
+        }
     }
 }
 
-function updateLastMessageTime(email) {
+function canSendMessage(email) {
     const currentTime = Date.now();
-    if (email === 'tam.cevik123@gmail.com') {
-        lastMessageTimeForSpecialEmail = currentTime;
-    } else {
-        lastMessageTime = currentTime;
-    }
+    const timeSinceLastMessage = currentTime - lastMessageTime;
+    return timeSinceLastMessage >= 3000;
+}
+
+function updateLastMessageTime() {
+    lastMessageTime = Date.now();
 }
 
 function sendMessage(email, message) {
@@ -58,7 +70,7 @@ sendButton.addEventListener('click', () => {
         if (canSendMessage(email)) {
             sendMessage(email, message);
             messageInput.value = '';
-            updateLastMessageTime(email);
+            updateLastMessageTime();
         } else {
             alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
         }
@@ -74,28 +86,13 @@ messageInput.addEventListener('keydown', (event) => {
             if (canSendMessage(email)) {
                 sendMessage(email, message);
                 messageInput.value = '';
-                updateLastMessageTime(email);
+                updateLastMessageTime();
             } else {
                 alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
             }
         }
     }
 });
-
-// Voeg e-mailverificatie toe
-function checkEmailVerification() {
-    const user = firebase.auth().currentUser;
-    if (user) {
-        updateSendButtonStatus(user.emailVerified);
-
-        if (!user.emailVerified) {
-            alert('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
-            user.sendEmailVerification().catch((error) => {
-                console.error('Fout bij het verzenden van de bevestigingsmail:', error);
-            });
-        }
-    }
-}
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
