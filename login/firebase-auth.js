@@ -1,13 +1,12 @@
 var auth = firebase.auth();
 var loginForm = document.getElementById('login');
 var userInfo = document.getElementById('user-info');
-var chat = document.getElementById('chat'); // Voeg chat toe aan je code
+var settings = document.getElementById('settings'); // Voeg settings toe aan je code
 
 // Functie om inlogformulier en gebruikersinformatie te tonen/verbergen
 function toggleUI(isLoggedIn) {
     loginForm.style.display = isLoggedIn ? 'none' : 'block';
     userInfo.style.display = isLoggedIn ? 'block' : 'none';
-    chat.style.display = isLoggedIn ? 'block' : 'none';
 }
 
 // Inlogstatus controleren bij het laden van de pagina

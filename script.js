@@ -103,10 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const loggedIn = localStorage.getItem('loggedIn');
 
       if (loggedIn === 'true') {
-          window.location.href = "https://tcevik.github.io";
+          window.location.href = "https://tcevik.github.io/tctam-chat";
       } else {
           // Navigeer naar de opgegeven URL voor inloggen
-          window.location.href = "https://tcevik.github.io/tctam-chat/";
+          window.location.href = "https://tcevik.github.io/login";
       }
   });
 });
