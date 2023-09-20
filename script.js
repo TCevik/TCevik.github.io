@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = "https://tcevik.github.io/tctam-chat";
       } else {
           // Navigeer naar de opgegeven URL voor inloggen
-          window.location.href = "https://tcevik.github.io/login";
+          window.location.href = "https://tcevik.github.io/tctam-chat";
       }
   });
 });

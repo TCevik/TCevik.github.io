@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <title>TC_tam Chat App</title>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <div id="user-info" style="display: none;">
+        <span id="user-email"></span>
+        <button id="logout-btn">Uitloggen</button>
+        <button id="change-password-btn">Wachtwoord wijzigen</button>
+    </div>
+      
+    <div id="login">
+        <h1>Inloggen / Registreren</h1>
+        <form id="login-form">
+            <input type="email" id="login-email" placeholder="E-mailadres" required>
+            <input type="password" id="login-password" placeholder="Wachtwoord" required>
+            <button type="submit">Inloggen / Registreren</button>
+            <button id="reset-password-btn">Wachtwoord resetten</button>
+        </form>
+    </div>
+
+    <div id="chat" style="display: none;">
+        <input type="text" id="message-input" placeholder="Voer een bericht in" maxlength="500">
+        <button id="send-button">Verzenden</button>
+        <div id="chat-output"></div>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="firebase-auth.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>
