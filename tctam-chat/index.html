@@ -24,14 +24,17 @@
     <script src="chat.js"></script>
 
     <script>
-        // Controleer of de variabele loggedIn bestaat en of deze false is
-        if (typeof loggedIn === 'undefined' || loggedIn === false) {
-            // Als loggedIn niet bestaat of false is, doorsturen naar de login-pagina
-            window.location.href = "https://tcevik.github.io/login/";
-        } else {
-            // Als loggedIn true is, gebeurt er niets
-            console.log("Gebruiker is al ingelogd.");
-        }
+        // Wacht 1 seconde (1000 milliseconden) voordat de code wordt uitgevoerd
+        setTimeout(function() {
+            // Controleer of de variabele loggedIn bestaat en of deze false is
+            if (typeof loggedIn === 'undefined' || loggedIn === false) {
+                // Als loggedIn niet bestaat of false is, doorsturen naar de login-pagina
+                window.location.href = "https://tcevik.github.io/login/";
+            } else {
+                // Als loggedIn true is, gebeurt er niets
+                console.log("Gebruiker is al ingelogd.");
+            }
+        }, 1000);
     </script>
 </body>
 </html>
