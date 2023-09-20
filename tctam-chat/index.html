@@ -24,10 +24,13 @@
     <script src="chat.js"></script>
 
     <script>
-        // Controleer of de cookie 'loggedIn' niet bestaat of is ingesteld op 'false'
-        if (document.cookie.indexOf('loggedIn=false') === -1 && document.cookie.indexOf('loggedIn=true') === -1) {
-            // Cookie bestaat niet of is ingesteld op 'false', omleiden naar login-pagina
-            window.location.href = 'https://tcevik.github.io/login';
+        // Controleer of de variabele loggedIn bestaat en of deze false is
+        if (typeof loggedIn === 'undefined' || loggedIn === false) {
+            // Als loggedIn niet bestaat of false is, doorsturen naar de login-pagina
+            window.location.href = "https://tcevik.github.io/login/";
+        } else {
+            // Als loggedIn true is, gebeurt er niets
+            console.log("Gebruiker is al ingelogd.");
         }
     </script>
 </body>
