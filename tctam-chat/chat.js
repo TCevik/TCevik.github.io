@@ -119,3 +119,7 @@ function fetchAndDisplayMessages() {
         chatOutput.insertBefore(messageElement, chatOutput.firstChild);
     });
 }
+
+database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
+    fetchAndDisplayMessages();
+});
