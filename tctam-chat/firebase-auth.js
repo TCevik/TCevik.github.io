@@ -29,6 +29,7 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
             alert('Ingelogd!');
             toggleUI(true);
             localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
+            localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
         })
         .catch(function (error) {
             // Als inloggen mislukt, probeer te registreren
