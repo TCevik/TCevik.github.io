@@ -67,43 +67,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// Voeg een knop toe aan de pagina
-const loginButton = document.createElement("button");
-loginButton.style.position = "fixed";
-loginButton.style.top = "3px";
-loginButton.style.right = "3px";
-document.body.appendChild(loginButton);
+// Voeg een eventlistener toe voor het 'DOMContentLoaded'-evenement
+document.addEventListener('DOMContentLoaded', function() {
+  // Voeg een knop toe aan de pagina
+  const loginButton = document.createElement("button");
+  loginButton.style.position = "fixed";
+  loginButton.style.top = "3px";
+  loginButton.style.right = "3px";
+  document.body.appendChild(loginButton);
 
-// Functie om de tekst van de knop te updaten op basis van de loggedIn-cookie
-function updateLoginButton() {
-    const loggedIn = localStorage.getItem('loggedIn');
+  // Functie om de tekst van de knop te updaten op basis van de loggedIn-cookie
+  function updateLoginButton() {
+      const loggedIn = localStorage.getItem('loggedIn');
 
-    if (loggedIn === 'true') {
-        loginButton.textContent = "Je bent ingelogd";
-    } else {
-        loginButton.textContent = "Inloggen";
-    }
-}
+      if (loggedIn === 'true') {
+          loginButton.textContent = "Je bent ingelogd";
+      } else {
+          loginButton.textContent = "Inloggen";
+      }
+  }
 
-// Maak een callback-functie
-const updateLoginButtonCallback = () => {
-  // Voer de functie `updateLoginButton()` uit
+  // Maak een callback-functie
+  const updateLoginButtonCallback = () => {
+      // Voer de functie `updateLoginButton()` uit
+      updateLoginButton();
+  };
+
   updateLoginButton();
-};
 
-updateLoginButton();
+  // Voer de callback-functie elke seconde uit
+  setInterval(updateLoginButtonCallback, 1000);
 
-// Voer de callback-functie elke seconde uit
-setInterval(updateLoginButtonCallback, 1000);
+  // Voeg een click event listener toe aan de knop
+  loginButton.addEventListener("click", function() {
+      const loggedIn = localStorage.getItem('loggedIn');
 
-// Voeg een click event listener toe aan de knop
-loginButton.addEventListener("click", function() {
-    const loggedIn = localStorage.getItem('loggedIn');
-
-    if (loggedIn === 'true') {
-        window.location.href = "https://tcevik.github.io";
-    } else {
-        // Navigeer naar de opgegeven URL voor inloggen
-        window.location.href = "https://tcevik.github.io/tctam-chat/";
-    }
+      if (loggedIn === 'true') {
+          window.location.href = "https://tcevik.github.io";
+      } else {
+          // Navigeer naar de opgegeven URL voor inloggen
+          window.location.href = "https://tcevik.github.io/tctam-chat/";
+      }
+  });
 });
