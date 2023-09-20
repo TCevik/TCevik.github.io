@@ -1,7 +1,7 @@
 var auth = firebase.auth();
-var loggedIn = localStorage.getItem('loggedIn');
 var loginForm = document.getElementById('login');
 var userInfo = document.getElementById('user-info');
+var chat = document.getElementById('chat'); // Voeg chat toe aan je code
 
 // Functie om inlogformulier en gebruikersinformatie te tonen/verbergen
 function toggleUI(isLoggedIn) {
@@ -12,9 +12,8 @@ function toggleUI(isLoggedIn) {
 
 // Inlogstatus controleren bij het laden van de pagina
 window.addEventListener('load', function () {
-    auth.onAuthStateChanged(function (user) {
-        toggleUI(!!user);
-    });
+    var loggedIn = localStorage.getItem('loggedIn');
+    toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
 });
 
 // Inloggen / Registreren
@@ -29,7 +28,7 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
             console.log('Gebruiker ingelogd:', user.email);
             alert('Ingelogd!');
             toggleUI(true);
-            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
         })
         .catch(function (error) {
             // Als inloggen mislukt, probeer te registreren
@@ -38,7 +37,7 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
                     console.log('Gebruiker geregistreerd:', userCredential.user.email);
                     alert('Registratie gelukt!');
                     toggleUI(true);
-                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij registratie
                 })
                 .catch(function (error) {
                     console.error('Fout bij inloggen/registreren:', error.message);
@@ -53,7 +52,7 @@ document.getElementById('logout-btn').addEventListener('click', function () {
         .then(function () {
             console.log('Gebruiker uitgelogd');
             toggleUI(false);
-            localStorage.removeItem('loggedIn');
+            localStorage.setItem('loggedIn', 'false'); // Stel loggedIn in op 'false' bij uitloggen
         })
         .catch(function (error) {
             console.error('Fout bij uitloggen:', error.message);
