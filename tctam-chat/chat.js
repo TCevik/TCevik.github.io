@@ -100,6 +100,14 @@ function checkEmailVerification() {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         checkEmailVerification();
+        const messageData = snapshot.val();
+        const email = messageData.email;
+        const message = messageData.message;
+
+        const messageElement = document.createElement('div');
+        messageElement.textContent = email + ': ' + message;
+
+        chatOutput.insertBefore(messageElement, chatOutput.firstChild);
     }
 });
 
