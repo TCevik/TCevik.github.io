@@ -100,26 +100,16 @@ function checkEmailVerification() {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         checkEmailVerification();
-        fetchAndDisplayMessages();
     }
 });
 
-// Definieer een functie om berichten op te halen en weer te geven
-function fetchAndDisplayMessages() {
-    const chatOutput = document.getElementById('chatOutput'); // Zorg ervoor dat je 'chatOutput' element hebt in je HTML
-    
-    database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
-        const messageData = snapshot.val();
-        const email = messageData.email;
-        const message = messageData.message;
-
-        const messageElement = document.createElement('div');
-        messageElement.textContent = email + ': ' + message;
-
-        chatOutput.insertBefore(messageElement, chatOutput.firstChild);
-    });
-}
-
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
-    fetchAndDisplayMessages();
+    const messageData = snapshot.val();
+    const email = messageData.email;
+    const message = messageData.message;
+
+    const messageElement = document.createElement('div');
+    messageElement.textContent = email + ': ' + message;
+
+    chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
