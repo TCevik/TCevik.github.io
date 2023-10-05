@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Haal de huidige URL op
   const currentURL = window.location.pathname;
 
-  // Controleer of de URL niet '/games' of '/games/' is
-  if (currentURL !== '/games' && currentURL !== '/games/') {
+  // Controleer of de URL begint met '/games/' of '/games?' (en optionele queryparameters)
+  if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?')) {
     // Voeg een knop toe aan de pagina
     const loginButton = document.createElement("button");
     loginButton.style.position = "fixed";
@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
 
 
 
