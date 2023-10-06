@@ -3,18 +3,36 @@ var loginForm = document.getElementById('login');
 var userInfo = document.getElementById('user-info');
 var chat = document.getElementById('chat'); // Voeg chat toe aan je code
 
-// Functie om inlogformulier en gebruikersinformatie te tonen/verbergen
+// Cookies ophalen
+var cookies = document.cookie.split(";");
+
+// Cookies opslaan in de database
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    var key = cookie.split("=")[0];
+    var value = cookie.split("=")[1];
+
+    // Sla de cookie op in de database
+    firebase.database().ref("cookies").child(key).set(value);
+}
+
+// Inloggen / Registreren
 function toggleUI(isLoggedIn) {
+    // Controleer of de gebruiker cookies heeft opgeslagen
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+        // Sla de cookies op in de browser
+        for (var key in user.cookies) {
+            document.cookie = key + "=" + user.cookies[key];
+        }
+    }
+
+    // Inlogstatus controleren
     loginForm.style.display = isLoggedIn ? 'none' : 'block';
     userInfo.style.display = isLoggedIn ? 'block' : 'none';
     chat.style.display = isLoggedIn ? 'block' : 'none';
 }
-
-// Inlogstatus controleren bij het laden van de pagina
-window.addEventListener('load', function () {
-    var loggedIn = localStorage.getItem('loggedIn');
-    toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
-});
 
 // Inloggen / Registreren
 document.getElementById('login-form').addEventListener('submit', function (e) {
@@ -95,3 +113,32 @@ document.getElementById('reset-password-btn').addEventListener('click', function
             });
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Cookies uit de database halen
+var user = firebase.auth().currentUser;
+
+// Controleer of de gebruiker cookies heeft opgeslagen
+if (user.cookies) {
+    // Sla de cookies op in de browser
+    for (var key in user.cookies) {
+        document.cookie = key + "=" + user.cookies[key];
+    }
+}

