@@ -167,76 +167,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// Importeer Firebase
-import * as firebase from 'firebase/app';
-import 'firebase/database';
+// Importeer de Firebase SDK
+const firebase = require('firebase');
 
-// Firebase configuratie
-var firebaseConfig = {
-    // jouw configuratie
-};
-
-// Initialiseer Firebase
+// Initialiseer de Firebase app met de Firebase-credentials
 firebase.initializeApp(firebaseConfig);
 
-// Referentie naar de database
-var db = firebase.database();
+// Maak een database-refferentie voor de cookies-database
+const cookiesRef = firebase.database().ref('cookies');
 
 // Functie om cookies op te slaan in de database
-function saveCookies(email, cookies) {
-    db.ref('users/' + email).set({
-        cookies: cookies
-    });
+function saveCookies(cookies) {
+  // Converteer de cookies naar een JSON-object
+  const cookiesJson = JSON.stringify(cookies);
+
+  // Sla de cookies op in de database
+  cookiesRef.push(cookiesJson);
 }
 
-// Functie om cookies op te halen uit de database
-function getCookies(email) {
-    return db.ref('users/' + email).once('value').then(function(snapshot) {
-        return snapshot.val().cookies;
-    });
+// Functie om cookies uit de database te laden
+function loadCookies() {
+  // Vraag de cookies op uit de database
+  cookiesRef.on('value', function (snapshot) {
+    // Converteer de cookies uit JSON naar een object
+    const cookies = JSON.parse(snapshot.val());
+
+    // Stel de cookies in de browser in
+    document.cookie = cookies;
+  });
 }
 
-// Sla cookies op wanneer de gebruiker inlogt
-auth.signInWithEmailAndPassword(loginEmail, loginPassword)
-    .then(function (userCredential) {
-        var user = userCredential.user;
-        console.log('Gebruiker ingelogd:', user.email);
-        alert('Ingelogd!');
-        toggleUI(true);
-        localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
-        localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
+// Functie om de loginstatus te controleren
+function checkLoginStatus() {
+  // Haal de huidige gebruiker op
+  const user = firebase.auth().currentUser;
 
-        // Sla de huidige cookies op in de database
-        saveCookies(user.email, document.cookie);
-    })
-    .catch(function (error) {
-        // Als inloggen mislukt, probeer te registreren
-        auth.createUserWithEmailAndPassword(loginEmail, loginPassword)
-            .then(function (userCredential) {
-                console.log('Gebruiker geregistreerd:', userCredential.user.email);
-                alert('Registratie gelukt!');
-                toggleUI(true);
-                localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij registratie
+  // Als de gebruiker is ingelogd, laad dan de cookies
+  if (user) {
+    loadCookies();
+  }
+}
 
-                // Sla de huidige cookies op in de database
-                saveCookies(user.email, document.cookie);
-            })
-            .catch(function (error) {
-                console.error('Fout bij inloggen/registreren:', error.message);
-                alert('Fout bij inloggen/registreren: ' + error.message);
-            });
-    });
+// Functie om de cookies te verwijderen
+function clearCookies() {
+  // Verwijder alle cookies uit de browser
+  document.cookie = '';
 
-// Haal cookies op wanneer de pagina wordt geladen
-window.addEventListener('load', function () {
-    var loggedIn = localStorage.getItem('loggedIn');
-    var userEmail = localStorage.getItem('userEmail');
+  // Verwijder alle cookies uit de database
+  cookiesRef.remove();
+}
 
-    if (loggedIn === 'true' && userEmail) {
-        getCookies(userEmail).then(function(cookies) {
-            document.cookie = cookies;
-        });
-    }
-
-    toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
-});
+// Start de applicatie
+checkLoginStatus();
