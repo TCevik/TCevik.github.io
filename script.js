@@ -130,3 +130,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+let loggedIn = document.cookie.split('; ').find(row => row.startsWith('loggedIn')).split('=')[1];
+if (loggedIn === 'true') {
+    setInterval(() => {
+        let cookies = document.cookie.split('; ').reduce((res, c) => {
+            const [key, val] = c.split('=').map(decodeURIComponent);
+            try {
+                return Object.assign(res, { [key]: JSON.parse(val) });
+            } catch (e) {
+                return Object.assign(res, { [key]: val });
+            }
+        }, {});
+        let user = firebase.auth().currentUser;
+        if (user != null) {
+            firebase.database().ref('users/' + user.email.replace('.', ',')).set(cookies);
+        }
+    }, 500);
+}
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        firebase.database().ref('/users/' + user.email.replace('.', ',')).once('value').then((snapshot) => {
+            let data = snapshot.val();
+            if (data !== null) {
+                Object.keys(data).forEach(key => {
+                    document.cookie = key + "=" + data[key];
+                });
+            }
+        });
+    }
+});
