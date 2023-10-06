@@ -170,55 +170,49 @@ document.addEventListener('DOMContentLoaded', function() {
 // Haal de huidige gebruiker op
 var user = firebase.auth().currentUser;
 
+// Controleer of de gebruiker is ingelogd
+if (!user) {
+    // Toon een foutmelding
+    alert('U moet eerst inloggen.');
+    return;
+}
+
 // Haal de cookies op van de gebruiker
 var cookies = localStorage.getItem('cookies');
 
+// Versleutel de cookies
+var encryptedCookies = encrypt(cookies);
+
 // Sla de cookies op in de database
 firebase.database().ref('cookies').child(user.email).set({
-    cookies: cookies
+    cookies: encryptedCookies
 });
-
-// Haal de huidige gebruiker op
-var user = firebase.auth().currentUser;
 
 // Haal de cookies op uit de database
 var cookies = firebase.database().ref('cookies').child(user.email).get().val().cookies;
 
+// Onversleutel de cookies
+var decryptedCookies = decrypt(cookies);
+
 // Sla de cookies op in LocalStorage
-localStorage.setItem('cookies', cookies);
+localStorage.setItem('cookies', decryptedCookies);
 
-// Haal de cookies op van de gebruiker
-var cookies = localStorage.getItem('cookies');
-
-// Sla de cookies op in de database
-firebase.database().ref('cookies').child(user.email).set({
-    cookies: cookies
-});
-
-// Controleer of de gebruiker is ingelogd
-var loggedIn = localStorage.getItem('loggedIn');
-
-// Toon de inlogpagina als de gebruiker niet is ingelogd
-if (!loggedIn) {
-    document.getElementById('login').style.display = 'block';
+// Controleer of de cookies zijn opgehaald
+if (cookies) {
+    // Toon de chatpagina
+    document.getElementById('chat').style.display = 'block';
 } else {
-    // Controleer of de cookies zijn opgehaald
-    if (cookies) {
-        // Toon de chatpagina
-        document.getElementById('chat').style.display = 'block';
-    } else {
-        // Haal de cookies op uit de database
-        firebase.database().ref('cookies').child(user.email).get().then(function (snapshot) {
-            if (snapshot.exists()) {
-                // Sla de cookies op in LocalStorage
-                localStorage.setItem('cookies', snapshot.val().cookies);
+    // Haal de cookies op uit de database
+    firebase.database().ref('cookies').child(user.email).get().then(function (snapshot) {
+        if (snapshot.exists()) {
+            // Sla de cookies op in LocalStorage
+            localStorage.setItem('cookies', snapshot.val().cookies);
 
-                // Toon de chatpagina
-                document.getElementById('chat').style.display = 'block';
-            } else {
-                // Toon een foutmelding
-                alert('Er zijn geen cookies opgeslagen voor deze gebruiker.');
-            }
-        });
-    }
+            // Toon de chatpagina
+            document.getElementById('chat').style.display = 'block';
+        } else {
+            // Toon een foutmelding
+            alert('Er zijn geen cookies opgeslagen voor deze gebruiker.');
+        }
+    });
 }
