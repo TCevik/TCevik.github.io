@@ -167,3 +167,76 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Importeer Firebase
+import * as firebase from 'firebase/app';
+import 'firebase/database';
+
+// Firebase configuratie
+var firebaseConfig = {
+    // jouw configuratie
+};
+
+// Initialiseer Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Referentie naar de database
+var db = firebase.database();
+
+// Functie om cookies op te slaan in de database
+function saveCookies(email, cookies) {
+    db.ref('users/' + email).set({
+        cookies: cookies
+    });
+}
+
+// Functie om cookies op te halen uit de database
+function getCookies(email) {
+    return db.ref('users/' + email).once('value').then(function(snapshot) {
+        return snapshot.val().cookies;
+    });
+}
+
+// Sla cookies op wanneer de gebruiker inlogt
+auth.signInWithEmailAndPassword(loginEmail, loginPassword)
+    .then(function (userCredential) {
+        var user = userCredential.user;
+        console.log('Gebruiker ingelogd:', user.email);
+        alert('Ingelogd!');
+        toggleUI(true);
+        localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
+        localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
+
+        // Sla de huidige cookies op in de database
+        saveCookies(user.email, document.cookie);
+    })
+    .catch(function (error) {
+        // Als inloggen mislukt, probeer te registreren
+        auth.createUserWithEmailAndPassword(loginEmail, loginPassword)
+            .then(function (userCredential) {
+                console.log('Gebruiker geregistreerd:', userCredential.user.email);
+                alert('Registratie gelukt!');
+                toggleUI(true);
+                localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij registratie
+
+                // Sla de huidige cookies op in de database
+                saveCookies(user.email, document.cookie);
+            })
+            .catch(function (error) {
+                console.error('Fout bij inloggen/registreren:', error.message);
+                alert('Fout bij inloggen/registreren: ' + error.message);
+            });
+    });
+
+// Haal cookies op wanneer de pagina wordt geladen
+window.addEventListener('load', function () {
+    var loggedIn = localStorage.getItem('loggedIn');
+    var userEmail = localStorage.getItem('userEmail');
+
+    if (loggedIn === 'true' && userEmail) {
+        getCookies(userEmail).then(function(cookies) {
+            document.cookie = cookies;
+        });
+    }
+
+    toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
+});
