@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const loggedIn = localStorage.getItem('loggedIn');
 
         if (loggedIn === 'true') {
-            loginButton.textContent = "Ingelogd";
+            loginButton.textContent = "Je bent ingelogd";
         } else {
             loginButton.textContent = "Inloggen";
         }
