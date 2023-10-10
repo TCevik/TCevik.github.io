@@ -195,10 +195,16 @@ document.addEventListener("keydown", function (event) {
   // Controleer of de backspace-toets is ingedrukt
   if (event.key === "Backspace" && document.activeElement) {
     // Vraag de gebruiker om de naam van het tabblad in te vullen
-    var tabName = prompt("Vul hier de naam van het tabblad in:");
+    var tabName = prompt("Vul hier de naam van het tabblad in (vul reset in om alles weer normaal te krijgen):");
     
-    // Controleer of de gebruiker een naam heeft ingevoerd
-    if (tabName !== null && tabName !== "") {
+    // Controleer of de gebruiker "reset" heeft ingevoerd
+    if (tabName === "reset") {
+      // Verwijder het cookie "tabName"
+      deleteCookie("tabName");
+      
+      // Zet de cookie "stopTabNames" op false
+      setCookie("stopTabNames", "false");
+    } else if (tabName !== null && tabName !== "") {
       // Stel de tabbladnaam in op de ingevoerde waarde
       document.title = tabName;
       
@@ -207,11 +213,14 @@ document.addEventListener("keydown", function (event) {
       
       // Zet de cookie "stopTabNames" op true
       setCookie("stopTabNames", "true");
-    } else {
-      alert("Je moet een naam invullen om door te gaan.");
     }
   }
 });
+
+// Functie om een cookie te verwijderen
+function deleteCookie(name) {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
 
 // Functie om een cookie in te stellen
 function setCookie(name, value) {
