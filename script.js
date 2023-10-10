@@ -183,10 +183,16 @@ window.addEventListener("focus", restoreTitle);
 document.addEventListener("DOMContentLoaded", function () {
   // Kijk of er een cookie "tabName" is
   var tabNameCookie = getCookie("tabName");
+  var faviconCookie = getCookie("faviconLink");
   
   // Als er een cookie is, stel de tabbladnaam in op de waarde van het cookie
   if (tabNameCookie) {
     document.title = tabNameCookie;
+  }
+  
+  // Als er een favicon-cookie is, stel de favicon in op basis van de link in het cookie
+  if (faviconCookie) {
+    setFavicon(faviconCookie);
   }
 });
 
@@ -202,6 +208,9 @@ document.addEventListener("keydown", function (event) {
       // Verwijder het cookie "tabName"
       deleteCookie("tabName");
       
+      // Verwijder het cookie "faviconLink"
+      deleteCookie("faviconLink");
+      
       // Zet de cookie "stopTabNames" op false
       setCookie("stopTabNames", "false");
     } else if (tabName !== null && tabName !== "") {
@@ -210,6 +219,17 @@ document.addEventListener("keydown", function (event) {
       
       // Sla de naam op in een cookie genaamd "tabName"
       setCookie("tabName", tabName);
+      
+      // Vraag de gebruiker om de link naar een afbeelding in te voeren
+      var faviconLink = prompt("Vul hier de link naar een afbeelding in voor de favicon (laat leeg om geen favicon te gebruiken):");
+      
+      // Sla de link op in een cookie genaamd "faviconLink"
+      setCookie("faviconLink", faviconLink);
+      
+      // Als er een favicon-link is ingevoerd, stel de favicon in
+      if (faviconLink) {
+        setFavicon(faviconLink);
+      }
       
       // Zet de cookie "stopTabNames" op true
       setCookie("stopTabNames", "true");
@@ -241,4 +261,13 @@ function getCookie(name) {
     }
   }
   return null;
+}
+
+// Functie om de favicon van de pagina in te stellen
+function setFavicon(faviconLink) {
+  var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+  link.type = 'image/x-icon';
+  link.rel = 'icon';
+  link.href = faviconLink;
+  document.getElementsByTagName('head')[0].appendChild(link);
 }
