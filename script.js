@@ -131,10 +131,9 @@ var messages = [
 
 var currentMessageIndex = 0; // Index van het huidige bericht
 
-// Functie om de titel te wijzigen wanneer de focus wordt verloren
 function changeTitle() {
-  document.title = messages[currentMessageIndex];
-  currentMessageIndex = (currentMessageIndex + 1) % messages.length; // Wissel naar het volgende bericht
+  const randomIndex = Math.floor(Math.random() * messages.length);
+  document.title = messages[randomIndex];
 }
 
 // Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
