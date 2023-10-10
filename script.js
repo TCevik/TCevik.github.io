@@ -121,7 +121,11 @@ var originalTitle = document.title; // Bewaar de oorspronkelijke titel van het t
 var messages = [
   "TC_tam mist je!",
   "TC_tam zit hier!",
-  "Kom alsjeblieft terug!"
+  "Hier was je bezig, bij TC_tam!",
+  "TC_tam: blijf bij mij!",
+  "Let goed op TC_tam!",
+  "TC_tam zit hier!",
+  "TC_tam: kom je snel terug?"
 ];
 
 var currentMessageIndex = 0; // Index van het huidige bericht
