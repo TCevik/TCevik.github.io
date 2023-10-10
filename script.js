@@ -124,8 +124,9 @@ var messages = [
   "Hier was je bezig, bij TC_tam!",
   "TC_tam: blijf bij mij!",
   "Let goed op TC_tam!",
-  "TC_tam zit hier!",
-  "TC_tam: kom je snel terug?"
+  "TC_tam: kom je snel terug?",
+  "TC_tam: wat doe je nou?",
+  "TC_tam: hier moet je zijn!"
 ];
 
 var currentMessageIndex = 0; // Index van het huidige bericht
