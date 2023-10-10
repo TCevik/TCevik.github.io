@@ -53,7 +53,7 @@ document.getElementById('logout-btn').addEventListener('click', function () {
         .then(function () {
             console.log('Gebruiker uitgelogd');
             toggleUI(false);
-            localStorage.setItem('loggedIn', 'false'); // Stel loggedIn in op 'false' bij uitloggen
+            localStorage.setItem('loggedIn', 'false');
         })
         .catch(function (error) {
             console.error('Fout bij uitloggen:', error.message);
