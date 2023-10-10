@@ -132,14 +132,26 @@ var messages = [
 var currentMessageIndex = 0; // Index van het huidige bericht
 
 function changeTitle() {
-  const stopTabNamesCookie = document.cookie
-    .split('; ')
-    .find(cookie => cookie.startsWith('stopTabNames='));
+  // Controleren of de cookie "stopTabNames" bestaat en de waarde ervan ophalen
+  const stopTabNamesCookie = getCookie("stopTabNames");
 
-  if (!stopTabNamesCookie || stopTabNamesCookie.split('=')[1] !== 'false') {
+  // Als de cookie niet bestaat of de waarde false is, de titel wijzigen
+  if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
     const randomIndex = Math.floor(Math.random() * messages.length);
     document.title = messages[randomIndex];
   }
+}
+
+// Functie om een cookie op te halen op basis van de naam
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return null;
 }
 
 // Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
