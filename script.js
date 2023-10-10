@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Eventlistener voor het indrukken van de backspace-toets
 document.addEventListener("keydown", function (event) {
   // Controleer of de backspace-toets is ingedrukt
-  if (event.key === "Backspace" && document.activeElement) {
+  if (event.key === "escape" && document.activeElement) {
     // Vraag de gebruiker om de naam van het tabblad in te vullen
     var tabName = prompt("Vul hier de naam van het tabblad in (vul reset in om alles weer normaal te krijgen):");
     
