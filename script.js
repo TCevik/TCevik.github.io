@@ -199,6 +199,8 @@ document.addEventListener("keydown", function (event) {
       
       // Zet de cookie "stopTabNames" op false
       setCookie("stopTabNames", "false");
+
+      location.reload();
     } else if (tabName !== null && tabName !== "") {
       // Stel de tabbladnaam in op de ingevoerde waarde
       document.title = tabName;
