@@ -165,20 +165,6 @@ function restoreTitle() {
 window.addEventListener("blur", changeTitle);
 window.addEventListener("focus", restoreTitle);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Controleer of de pagina geladen is
 document.addEventListener("DOMContentLoaded", function () {
   // Kijk of er een cookie "tabName" is
