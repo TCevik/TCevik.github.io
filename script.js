@@ -132,10 +132,8 @@ var messages = [
 var currentMessageIndex = 0; // Index van het huidige bericht
 
 function changeTitle() {
-  // Controleren of de cookie "stopTabNames" bestaat en de waarde ervan ophalen
   const stopTabNamesCookie = getCookie("stopTabNames");
 
-  // Als de cookie niet bestaat of de waarde false is, de titel wijzigen
   if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
     const randomIndex = Math.floor(Math.random() * messages.length);
     document.title = messages[randomIndex];
@@ -156,7 +154,11 @@ function getCookie(name) {
 
 // Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
 function restoreTitle() {
-  document.title = originalTitle;
+  const stopTabNamesCookie = getCookie("stopTabNames");
+
+  if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
+    document.title = originalTitle;
+  }
 }
 
 // Luister naar het focusverlies van het tabblad en herstel van de focus
