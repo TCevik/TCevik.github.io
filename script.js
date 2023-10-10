@@ -132,10 +132,8 @@ var messages = [
 var currentMessageIndex = 0; // Index van het huidige bericht
 
 function changeTitle() {
-  if (typeof Cookies.get('stopTabNames') === 'undefined' || Cookies.get('stopTabNames') === 'false') {
-    const randomIndex = Math.floor(Math.random() * messages.length);
-    document.title = messages[randomIndex];
-  }
+  const randomIndex = Math.floor(Math.random() * messages.length);
+  document.title = messages[randomIndex];
 }
 
 // Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
