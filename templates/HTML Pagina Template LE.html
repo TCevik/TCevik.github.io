@@ -6,26 +6,8 @@
     
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+    <script src="/ex-script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
-    <script>
-        function getCookie(name) {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + '=')) {
-              return cookie.substring(name.length + 1);
-            }
-          }
-          return null;
-        }
-
-        const loggedInCookie = getCookie('loggedIn');
-
-        if (loggedInCookie === 'true') {
-        } else {
-          window.location.href = '/';
-        }
-    </script>
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>

@@ -113,22 +113,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-  const currentURL = window.location.pathname;
-
-  // Controleer of de URL begint met '/games/' of '/games?' (en optionele queryparameters)
-  if (currentURL.startsWith('/login-exclusive/') && currentURL.startsWith('/login-exclusive?')) {
-    const loggedIn = localStorage.getItem('loggedIn');
-
-    if (loggedIn === 'true') {
-      stop
-    } else {
-      alert("Dit is een exclusieve pagina. Maak een account om door te gaan.")
-      window.location.href = '/';
-    }
-  }
-});
