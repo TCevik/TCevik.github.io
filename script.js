@@ -144,3 +144,72 @@ function restoreTitle() {
 // Luister naar het focusverlies van het tabblad en herstel van de focus
 window.addEventListener("blur", changeTitle);
 window.addEventListener("focus", restoreTitle);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Controleer of de pagina geladen is
+document.addEventListener("DOMContentLoaded", function () {
+  // Kijk of er een cookie "tabName" is
+  var tabNameCookie = getCookie("tabName");
+  
+  // Als er een cookie is, stel de tabbladnaam in op de waarde van het cookie
+  if (tabNameCookie) {
+    document.title = tabNameCookie;
+  }
+});
+
+// Eventlistener voor het indrukken van de backspace-toets
+document.addEventListener("keydown", function (event) {
+  // Controleer of de backspace-toets is ingedrukt
+  if (event.key === "Backspace" && document.activeElement) {
+    // Vraag de gebruiker om de naam van het tabblad in te vullen
+    var tabName = prompt("Vul hier de naam van het tabblad in:");
+    
+    // Controleer of de gebruiker een naam heeft ingevoerd
+    if (tabName !== null && tabName !== "") {
+      // Stel de tabbladnaam in op de ingevoerde waarde
+      document.title = tabName;
+      
+      // Sla de naam op in een cookie genaamd "tabName"
+      setCookie("tabName", tabName);
+      
+      // Zet de cookie "stopTabNames" op true
+      setCookie("stopTabNames", "true");
+    } else {
+      alert("Je moet een naam invullen om door te gaan.");
+    }
+  }
+});
+
+// Functie om een cookie in te stellen
+function setCookie(name, value) {
+  document.cookie = name + "=" + value + "; path=/";
+}
+
+// Functie om een cookie op te halen
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var cookies = document.cookie.split(";");
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    while (cookie.charAt(0) === " ") {
+      cookie = cookie.substring(1, cookie.length);
+    }
+    if (cookie.indexOf(nameEQ) === 0) {
+      return cookie.substring(nameEQ.length, cookie.length);
+    }
+  }
+  return null;
+}
