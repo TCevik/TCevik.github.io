@@ -9,7 +9,7 @@ let enterKeyEnabled = true; // Houd bij of de Enter-toets is ingeschakeld
 
 function canSendMessage(email) {
     const currentTime = Date.now();
-    if (email === 'tam.cevik123@gmail.com') {
+    if (email === 'tam.cevik123@gmail.com, tamer.cevik@vlietlandcollege.nl, timo.witteveen@vlietlandcollege.nl') {
         const timeSinceLastMessage = currentTime - lastMessageTimeForSpecialEmail;
         return timeSinceLastMessage >= 0;
     } else {
