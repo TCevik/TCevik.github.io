@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Exclusieve pagina</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <h1>Exclusieve pagina's op de TC_tam Website</h1>
+    <p>
+    De TC_tam Website biedt een aantal exclusieve pagina's die alleen toegankelijk zijn voor mensen met een TC_tam account. Deze pagina's bevatten informatie en content die niet beschikbaar is voor het publiek.
+    
+    Inhoud van exclusieve pagina's
+    
+    De exclusieve pagina's op de TC_tam Website bevatten onder andere de volgende content:
+    - Geavanceerde nieuwe hacks
+    - Nieuws en updates over TC_tam
+    - Vroege toegang tot nieuwe functies
+    - Toegang tot exclusieve pagina's</p>
+
+    <script>
+        function getCookie(name) {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+              return cookie.substring(name.length + 1);
+            }
+          }
+          return null;
+        }
+
+        const loggedInCookie = getCookie('loggedIn');
+
+        if (loggedInCookie === 'true') {
+            stop
+        } else {
+          alert("Dit is een exclusieve pagina. Maak een account om door te gaan.")
+          window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
