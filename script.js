@@ -113,3 +113,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+
+var originalTitle = document.title; // Bewaar de oorspronkelijke titel van het tabblad
+
+// Array met de berichten die we willen weergeven wanneer de focus verloren is
+var messages = [
+  "TC_tam mist je!",
+  "TC_tam zit hier!",
+  "Kom alsjeblieft terug!"
+];
+
+var currentMessageIndex = 0; // Index van het huidige bericht
+
+// Functie om de titel te wijzigen wanneer de focus wordt verloren
+function changeTitle() {
+  document.title = messages[currentMessageIndex];
+  currentMessageIndex = (currentMessageIndex + 1) % messages.length; // Wissel naar het volgende bericht
+}
+
+// Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
+function restoreTitle() {
+  document.title = originalTitle;
+}
+
+// Luister naar het focusverlies van het tabblad en herstel van de focus
+window.addEventListener("blur", changeTitle);
+window.addEventListener("focus", restoreTitle);
