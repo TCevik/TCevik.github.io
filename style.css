@@ -106,7 +106,7 @@ button {
   box-shadow: 0 5px 0 var(--button-shadow);
 }
 
-#menu button:active {
+button:active {
   box-shadow: none;
   transform: translateY(5px);
 }
