@@ -404,7 +404,7 @@
         });
 
         function openNewTab() {
-          var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat of als ze met je scherm meekijken. Wees gewaarschuwd!";
+          var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd!";
           var confirmResult = confirm(alertText);
           if (confirmResult) {
             var win = window.open('about:blank', '_blank');
