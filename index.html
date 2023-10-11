@@ -208,10 +208,21 @@
             #menu button {
               width: 95%;
               margin-top: 3px;
+              box-shadow: 0 5px 0 var(--button-shadow);
+            }
+
+            #menu button:active {
+                box-shadow: none;
+                transform: translateY(5px);
+            }
+
+            #menu {
+                width: 20%;
+                border-radius: 10px;
             }
         </style>
 
-        <td id="menu" style="width: 20%;">
+        <td id="menu">
             <br>
             <br>
             <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
