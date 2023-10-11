@@ -109,7 +109,15 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const message = messageData.message;
 
     const messageElement = document.createElement('div');
-    messageElement.textContent = email + ': ' + message;
+    const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
+    messageElement.innerHTML = email + ': ' + messageContent;
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
+
+function linkifyText(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function (url) {
+        return `<a href="${url}" target="_blank">${url}</a>`;
+    });
+}
