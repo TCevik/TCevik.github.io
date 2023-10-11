@@ -284,8 +284,9 @@ document.getElementById('counterButton').addEventListener('click', () => {
 
 getalRef.on('value', (snapshot) => {
   const huidigGetal = snapshot.val();
-  document.getElementById('counterButton').textContent = huidigGetal;
+  document.getElementById('counterButton').textContent = `Huidig Getal: ${huidigGetal}`;
 });
+
 
 src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app-compat.js"
 src="https://www.gstatic.com/firebasejs/9.3.0/firebase-database-compat.js"
