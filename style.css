@@ -123,7 +123,7 @@ button:hover {
 
 button:focus {
   border: solid #58bf33;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .bookmarklet {
