@@ -206,43 +206,43 @@
         <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-database-compat.js"></script>
 
-        <script>
-            const firebaseConfig = {
-              apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
-              authDomain: "tctam-d04b8.firebaseapp.com",
-              databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
-              projectId: "tctam-d04b8",
-              storageBucket: "tctam-d04b8.appspot.com",
-              messagingSenderId: "793882705601",
-              appId: "1:793882705601:web:118e6ea26069867d0b5e40",
-              measurementId: "G-Q00YFYX8SP"
-            };
-        
-            firebase.initializeApp(firebaseConfig);
-        
-            const database = firebase.database();
-            const getalRef = database.ref('getal');
-        
-            const updateButton = document.getElementById('updateButton');
-        
-            getalRef.on('value', (snapshot) => {
-              const huidigGetal = snapshot.val();
-              updateButton.textContent = `Deze knop is al ${huidigGetal} keer ingedrukt`;
-            });
-        
-            updateButton.addEventListener('click', () => {
-              getalRef.transaction((currentValue) => {
-                // Verhoog het getal met 1
-                return (currentValue || 0) + 1;
-              });
-            });
-        </script>
-
         <td id="menu">
             <br>
             <br>
             <button id="updateButton">Deze knop is al [getal] keer ingedrukt</button>
-            <span id="getalDisplay">0</span>
+
+            <script>
+                const firebaseConfig = {
+                  apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+                  authDomain: "tctam-d04b8.firebaseapp.com",
+                  databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+                  projectId: "tctam-d04b8",
+                  storageBucket: "tctam-d04b8.appspot.com",
+                  messagingSenderId: "793882705601",
+                  appId: "1:793882705601:web:118e6ea26069867d0b5e40",
+                  measurementId: "G-Q00YFYX8SP"
+                };
+            
+                firebase.initializeApp(firebaseConfig);
+            
+                const database = firebase.database();
+                const getalRef = database.ref('getal');
+            
+                const updateButton = document.getElementById('updateButton');
+            
+                getalRef.on('value', (snapshot) => {
+                  const huidigGetal = snapshot.val();
+                  updateButton.textContent = `Deze knop is al ${huidigGetal} keer ingedrukt`;
+                });
+            
+                updateButton.addEventListener('click', () => {
+                  getalRef.transaction((currentValue) => {
+                    // Verhoog het getal met 1
+                    return (currentValue || 0) + 1;
+                  });
+                });
+            </script>
+            
             <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
             <button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
 
