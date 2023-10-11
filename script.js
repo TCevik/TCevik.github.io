@@ -259,23 +259,3 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
-
-
-
-
-
-
-
-
-
-
-window.addEventListener('DOMContentLoaded', function () {
-  function doStuff (callback) {
-    document.body.className = 'hidden';
-    callback();
-  }
-  
-  doStuff(function () {
-    document.body.className = 'visible';
-  });
-});
