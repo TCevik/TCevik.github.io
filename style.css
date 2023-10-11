@@ -103,16 +103,22 @@ button {
   transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s;
   transform-origin: center;
   z-index: 1;
+  box-shadow: 0 5px 0 var(--button-shadow);
+}
+
+#menu button:active {
+  box-shadow: none;
+  transform: translateY(5px);
 }
 
 button:hover {
   border: solid #58bf33;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: var(--button-padding);
   filter: brightness(120%);
   margin: 0.3%;
-  transform: scale(1.1);
+  transform: scale(1.0);
   z-index: 2;
 }
 
