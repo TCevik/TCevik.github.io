@@ -207,10 +207,11 @@
         <style>
             #menu button {
               width: 95%;
+              margin-top: 3px;
             }
 
             #menu.nactive {
-                display: none;
+                display: none; 
             }
         </style>
         <script>
@@ -221,7 +222,7 @@
                 menu.classList.toggle("nactive");
             }
         </script>
-        <button style="position: absolute; left: 5px; top: 45px;" id="menu-button" onclick="menuChange()">Menu</button>
+        <button style="position: absolute; left: 100px; top: 15px;" id="menu-button" onclick="menuChange()">Menu</button>
 
         <td id="menu" style="width: 25%;">
             <h3 id="algemeen">Algemeen</h3>
