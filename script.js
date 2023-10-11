@@ -276,17 +276,20 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const getalRef = database.ref('getal');
 
-document.getElementById('counterButton').addEventListener('click', () => {
-  getalRef.transaction((currentValue) => {
-    return (currentValue || 0) + 1;
+document.addEventListener('DOMContentLoaded', () => {
+  // Plaats hier de code die pas moet worden uitgevoerd als de pagina is geladen.
+
+  document.getElementById('counterButton').addEventListener('click', () => {
+    getalRef.transaction((currentValue) => {
+      return (currentValue || 0) + 1;
+    });
+  });
+
+  getalRef.on('value', (snapshot) => {
+    const huidigGetal = snapshot.val();
+    document.getElementById('counterButton').textContent = `Huidig Getal: ${huidigGetal}`;
   });
 });
-
-getalRef.on('value', (snapshot) => {
-  const huidigGetal = snapshot.val();
-  document.getElementById('counterButton').textContent = `Huidig Getal: ${huidigGetal}`;
-});
-
 
 src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app-compat.js"
 src="https://www.gstatic.com/firebasejs/9.3.0/firebase-database-compat.js"
