@@ -259,3 +259,33 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+  authDomain: "tctam-d04b8.firebaseapp.com",
+  databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "tctam-d04b8",
+  storageBucket: "tctam-d04b8.appspot.com",
+  messagingSenderId: "793882705601",
+  appId: "1:793882705601:web:118e6ea26069867d0b5e40",
+  measurementId: "G-Q00YFYX8SP"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const database = firebase.database();
+const getalRef = database.ref('getal');
+
+document.getElementById('counterButton').addEventListener('click', () => {
+  getalRef.transaction((currentValue) => {
+    return (currentValue || 0) + 1;
+  });
+});
+
+getalRef.on('value', (snapshot) => {
+  const huidigGetal = snapshot.val();
+  document.getElementById('counterButton').textContent = huidigGetal;
+});
+
+src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app-compat.js"
+src="https://www.gstatic.com/firebasejs/9.3.0/firebase-database-compat.js"
