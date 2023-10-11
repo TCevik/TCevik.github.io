@@ -208,6 +208,10 @@
             #menu button {
               width: 95%;
             }
+
+            #menu.nactive {
+                display: none;
+            }
         </style>
         <button id="menu-button">Menu</button>
         <script>
@@ -215,7 +219,7 @@
             const menu = document.getElementById("menu");
         
             menuButton.addEventListener("click", function () {
-                menu.classList.toggle("active");
+                menu.classList.toggle("nactive");
             });
         </script>
 
