@@ -232,3 +232,12 @@ textarea::placeholder {
 ::-moz-progress-bar {
   background-color: #58bf33;
 }
+
+.hidden {
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
