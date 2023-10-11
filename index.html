@@ -213,15 +213,15 @@
                 display: none;
             }
         </style>
-        <button id="menu-button">Menu</button>
         <script>
-            const menuButton = document.getElementById("menu-button");
-            const menu = document.getElementById("menu");
-        
-            menuButton.addEventListener("click", function () {
+            function menuChange() {
+                const menuButton = document.getElementById("menu-button");
+                const menu = document.getElementById("menu");
+            
                 menu.classList.toggle("nactive");
-            });
+            }
         </script>
+        <button style="position: absolute; left: 5px; top: 45px;" id="menu-button" onclick="menuChange()">Menu</button>
 
         <td id="menu" style="width: 25%;">
             <h3 id="algemeen">Algemeen</h3>
