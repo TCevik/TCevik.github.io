@@ -209,7 +209,7 @@
         <td id="menu">
             <br>
             <br>
-            <button id="updateButton">Deze knop is al [getal] keer ingedrukt</button>
+            <button id="updateButton" onkeydown="return false;">Laden...</button>
 
             <script>
                 const firebaseConfig = {
@@ -232,7 +232,7 @@
             
                 getalRef.on('value', (snapshot) => {
                   const huidigGetal = snapshot.val();
-                  updateButton.textContent = `Deze knop is al ${huidigGetal} keer ingedrukt`;
+                  updateButton.textContent = `Deze knop is al gewoon ${huidigGetal} keer ingedrukt`;
                 });
             
                 updateButton.addEventListener('click', () => {
