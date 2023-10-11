@@ -209,22 +209,14 @@
               width: 95%;
               margin-top: 3px;
             }
-
-            #menu.nactive {
-                display: none; 
-            }
         </style>
-        <script>
-            function menuChange() {
-                const menuButton = document.getElementById("menu-button");
-                const menu = document.getElementById("menu");
-            
-                menu.classList.toggle("nactive");
-            }
-        </script>
-        <button style="position: absolute; left: 105px; top: 15px;" id="menu-button" onclick="menuChange()">Menu</button>
 
-        <td id="menu" style="width: 25%;">
+        <td id="menu" style="width: 20%;">
+            <br>
+            <br>
+            <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+            <button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
+
             <h3 id="algemeen">Algemeen</h3>
             <button onclick="window.location.href='tctam-chat'">TC_tam Chat</button>
             <button onclick="scrollToOverMij();">Over mij</button>
@@ -316,10 +308,6 @@
             </a>
         
             <center><h3 style="width: 90%;" id="algemeen">Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</h3></center>
-        
-            <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
-            <br>
-            <br><button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
             
             <h1 style="margin-top: 50px;" id="overmij">Over mij</h1>
             <h3>Hoi, ik ben Tamer!</h3>
