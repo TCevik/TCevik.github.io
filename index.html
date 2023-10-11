@@ -202,6 +202,157 @@
 </body>
 
 <body>
+
+    <table>
+        <style>
+            #menu button {
+              width: 95%;
+            }
+        </style>
+
+        <td id="menu" style="width: 25%;">
+            <h3 style="margin-top: 75px;" id="algemeen">Algemeen</h3>
+            <button onclick="window.location.href='tctam-chat'">TC_tam Chat</button>
+            <button onclick="scrollToOverMij();">Over mij</button>
+            <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+        
+            <h3 style="margin-top: 50px;" id="overig">Overig</h3>
+            <button onclick="window.location.href='overig/bing-chat'">Bing Ai (gpt 4)</button>
+            <button onclick="window.location.href='overig/myinstants'">MyInstants</button>
+            <button onclick="window.location.href='overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+            <button onclick="window.location.href='overig/tctam-merch'">Merch</button>
+            <button onclick="window.location.href='overig/notities'">Notities</button>
+            <button onclick="window.location.href='overig/ide'">IDE</button>
+            <button onclick="window.location.href='overig/tts'">TTS</button>
+            
+            <h3 style="margin-top: 50px;" id="verhalen">Lees hier nu al mijn verhalen</h3>
+            <button style="margin: 5px;" onclick="window.location.href='verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
+            
+            <h3 style="margin-top: 50xp;" id="webtricks">Web Tricks</h3>
+            <button onclick="window.location.href='web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
+        
+            <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
+            <button onclick="window.location.href='school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
+            <button onclick="window.location.href='school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
+            <button onclick="window.location.href='school-hacks/bookmarklets'">Bookmarklets</button>
+            <button onclick="window.location.href='school-hacks/dns-unblock'">DNS Unblock</button>
+            <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
+            <button onclick="window.location.href='school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
+        
+                <h4 id="extensiehacks">Extensie Hacks</h4>
+                <button onclick="window.location.href='school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
+                <button onclick="window.location.href='school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
+                <button onclick="window.location.href='school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
+        
+                <h4 id="proxysemulators">Proxys - Emulators</h4>
+                <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
+                <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
+                <button onclick="window.location.href='school-hacks/proxys-emulators/proxy'">Proxy met tab verberger (gebruik bovenste zoekbalk)</button>
+        
+            <h3 style="margin-top: 50px;" id="games">Games</h3>
+            <button onclick="window.location.href='games/alle-games'">Alle games</button>
+            <br><button onclick="window.location.href='games/apple-shooter'">Apple Shooter (gemaakt door mij)</button>
+            <button onclick="window.location.href='games/fallbeans'">fallbeans</button>
+            <button onclick="window.location.href='games/lolbeans'">lolbeans</button>
+            <button onclick="window.location.href='games/minecraft-1.5.2'">Minecraft 1.5.2</button>
+            <button onclick="window.location.href='games/drive-mad'">Drive Mad</button>
+            <button onclick="window.location.href='games/flippy-fields'">Flippy Fields (Drive Mad)</button>
+            <button onclick="window.location.href='games/moto-x3m-bike-race-game'">MOTO X3M BIKE RACE GAME</button>
+            
+            <h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
+            <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
+            <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
+            <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
+            <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
+        </td>
+
+        <td style="width: 75%;">
+            <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
+            <h3>Door Tamer Çevik</h3>
+            <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
+            <br><div class="dropdown">
+                <button style="margin-top: -30px; padding: 5px;" onclick="toggleDropdown('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+                <div id="explanation-dropdown" class="dropdown-content">
+                    <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Als ik jou was zou ik het maar doen. Tenzij je houd van dingen die niet helemaal goed werken... :)
+                    <br>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in HTML). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
+                </div>
+            </div>
+            <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+            <p id="battery-percentage"><p>
+        
+            <p>Zoeken op de site? Klik op ctrl + f om dat te doen.</p>
+        
+            <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English or you can click right <a href="https://tcevik-github-io.translate.goog/?_x_tr_sl=nl&_x_tr_tl=en&_x_tr_hl=nl&_x_tr_pto=wapp">here<a>.</p>
+        
+            <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
+            <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
+            </a>
+            <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
+            </a>
+            <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
+            </a>
+            <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
+            </a>
+            <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
+            </a>
+        
+            <center><h3 style="width: 90%;" id="algemeen">Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</h3></center>
+        
+            <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+            <br>
+            <br><button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
+            
+            <h1 style="margin-top: 50px;" id="overmij">Over mij</h1>
+            <h3>Hoi, ik ben Tamer!</h3>
+            <center><p style="width: 95%; margin-bottom: 300px;">
+            <br>Yo welkom, veel plezier op mijn website!
+            <br>
+            <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
+            <br>⦁ Ik heet Tamer Çevik.
+            <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
+            <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+            <br>Nu weet je hoe ik TC_tam verzonnen heb!
+            <br>
+            <br>Ik ben jarig op 18 mei.
+            <br>
+            <br>Mijn favoriete kleuren zijn:
+            <br><span style="color: #132f0c">#132f0c</span>
+            <br><span style="color: #38761d">#38761d</span>
+            <br><span style="color: #43b731">#43b731</span>
+            <br><span style="color: #58bf33">#58bf33</span>
+            <br><span style="color: #e0fcd4">#e0fcd4</span>
+            <br>
+            <br>Dark mode kleur:
+            <br><span style="color: #0d1710">#0d1710</span>
+            <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
+            <br>De kleuren van mijn logo zijn:
+            <br><span style="color: #33ff33">#33ff33</span>
+            <br><span style="color: #336699">#336699</span></p></center>
+        
+            <style>
+                .hahanoobtext {
+                    display: none;
+                }
+        
+                @media (prefers-color-scheme: dark) {
+                    .hahanoobtext {
+                        display: block;
+                    }
+                }
+            </style>
+            <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
+        </td>
+    </table>
+
+
+
+
+
     <p style="position:absolute; left: 10px; top: 5px;">Versie: <span id="runsAmount">Error</span></p>
     <script>
         function fetchData() {
@@ -231,140 +382,6 @@
 
         fetchData();
     </script>
-
-    <h1 style="line-height: 50px; margin-bottom: -20px;">TC_tam</h1>
-    <h3>Door Tamer Çevik</h3>
-    <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
-    <br><div class="dropdown">
-        <button style="margin-top: -30px; padding: 5px;" onclick="toggleDropdown('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
-        <div id="explanation-dropdown" class="dropdown-content">
-            <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Als ik jou was zou ik het maar doen. Tenzij je houd van dingen die niet helemaal goed werken... :)
-            <br>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in HTML). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
-        </div>
-    </div>
-    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
-    <p id="battery-percentage"><p>
-
-    <p>Zoeken op de site? Klik op ctrl + f om dat te doen.</p>
-
-    <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English or you can click right <a href="https://tcevik-github-io.translate.goog/?_x_tr_sl=nl&_x_tr_tl=en&_x_tr_hl=nl&_x_tr_pto=wapp">here<a>.</p>
-
-    <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
-    <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
-        <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
-    </a>
-    <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
-        <img style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
-    </a>
-    <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
-        <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
-    </a>
-    <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
-        <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
-    </a>
-    <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
-        <img style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
-    </a>
-
-    <center><h3 style="width: 90%;" id="algemeen">Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</h3></center>
-
-    <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
-    <br>
-    <br><button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
-    
-    <h3 style="margin-top: 75px;" id="algemeen">Algemeen</h3>
-    <button onclick="window.location.href='tctam-chat'">TC_tam Chat</button>
-    <button onclick="scrollToOverMij();">Over mij</button>
-    <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
-
-    <h3 style="margin-top: 50px;" id="overig">Overig</h3>
-    <button onclick="window.location.href='overig/bing-chat'">Bing Ai (gpt 4)</button>
-    <button onclick="window.location.href='overig/myinstants'">MyInstants</button>
-    <button onclick="window.location.href='overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
-    <button onclick="window.location.href='overig/tctam-merch'">Merch</button>
-    <button onclick="window.location.href='overig/notities'">Notities</button>
-    <button onclick="window.location.href='overig/ide'">IDE</button>
-    <button onclick="window.location.href='overig/tts'">TTS</button>
-    
-    <h3 style="margin-top: 50px;" id="verhalen">Lees hier nu al mijn verhalen</h3>
-    <button style="margin: 5px;" onclick="window.location.href='verhalen/alle-verhalen'">Lees hier nu over het bezoek aan Cloudwise! (deel 3)</button>
-    
-    <h3 style="margin-top: 50xp;" id="webtricks">Web Tricks</h3>
-    <button onclick="window.location.href='web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
-
-    <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
-    <button onclick="window.location.href='school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
-    <button onclick="window.location.href='school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
-    <button onclick="window.location.href='school-hacks/bookmarklets'">Bookmarklets</button>
-    <button onclick="window.location.href='school-hacks/dns-unblock'">DNS Unblock</button>
-    <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
-    <button onclick="window.location.href='school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
-
-        <h4 id="extensiehacks">Extensie Hacks</h4>
-        <button onclick="window.location.href='school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
-        <button onclick="window.location.href='school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
-        <button onclick="window.location.href='school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
-
-        <h4 id="proxysemulators">Proxys - Emulators</h4>
-        <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
-        <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
-        <button onclick="window.location.href='school-hacks/proxys-emulators/proxy'">Proxy met tab verberger (gebruik bovenste zoekbalk)</button>
-
-    <h3 style="margin-top: 50px;" id="games">Games</h3>
-    <button onclick="window.location.href='games/alle-games'">Alle games</button>
-    <br><button onclick="window.location.href='games/apple-shooter'">Apple Shooter (gemaakt door mij)</button>
-    <button onclick="window.location.href='games/fallbeans'">fallbeans</button>
-    <button onclick="window.location.href='games/lolbeans'">lolbeans</button>
-    <button onclick="window.location.href='games/minecraft-1.5.2'">Minecraft 1.5.2</button>
-    <button onclick="window.location.href='games/drive-mad'">Drive Mad</button>
-    <button onclick="window.location.href='games/flippy-fields'">Flippy Fields (Drive Mad)</button>
-    <button onclick="window.location.href='games/moto-x3m-bike-race-game'">MOTO X3M BIKE RACE GAME</button>
-    
-    <h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
-    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
-    <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
-    <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
-    
-    <h1 style="margin-top: 50px;" id="overmij">Over mij</h1>
-    <h3>Hoi, ik ben Tamer!</h3>
-    <center><p style="width: 95%; margin-bottom: 300px;">
-    <br>Yo welkom, veel plezier op mijn website!
-    <br>
-    <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
-    <br>⦁ Ik heet Tamer Çevik.
-    <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
-    <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
-    <br>Nu weet je hoe ik TC_tam verzonnen heb!
-    <br>
-    <br>Ik ben jarig op 18 mei.
-    <br>
-    <br>Mijn favoriete kleuren zijn:
-    <br><span style="color: #132f0c">#132f0c</span>
-    <br><span style="color: #38761d">#38761d</span>
-    <br><span style="color: #43b731">#43b731</span>
-    <br><span style="color: #58bf33">#58bf33</span>
-    <br><span style="color: #e0fcd4">#e0fcd4</span>
-    <br>
-    <br>Dark mode kleur:
-    <br><span style="color: #0d1710">#0d1710</span>
-    <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
-    <br>De kleuren van mijn logo zijn:
-    <br><span style="color: #33ff33">#33ff33</span>
-    <br><span style="color: #336699">#336699</span></p></center>
-
-    <style>
-        .hahanoobtext {
-            display: none;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .hahanoobtext {
-                display: block;
-            }
-        }
-    </style>
-    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
 
     <script>
         const navigationLinks = document.querySelectorAll('.navigation a');
