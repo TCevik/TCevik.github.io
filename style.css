@@ -109,6 +109,7 @@ button {
 button:active {
   box-shadow: none;
   transform: translateY(5px);
+  padding: var(--button-padding);
 }
 
 button:hover {
@@ -117,8 +118,6 @@ button:hover {
   border-radius: 10px;
   padding: var(--button-padding);
   filter: brightness(120%);
-  margin: 0.3%;
-  transform: scale(1.0);
   z-index: 2;
 }
 
