@@ -118,11 +118,25 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const message = messageData.message;
 
     const messageElement = document.createElement('div');
-    const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
+    const messageContent = linkifyText(message);
+
     messageElement.innerHTML = email + ': ' + messageContent;
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
+
+function createEmbedPreview(link) {
+    const embedPreview = document.createElement('iframe');
+    
+    // Stel de bron van het iframe in op de link
+    embedPreview.src = link;
+    
+    // Stel de breedte en hoogte van het iframe in
+    embedPreview.width = 300; // Pas deze waarde aan als dat nodig is
+    embedPreview.height = 200; // Pas deze waarde aan als dat nodig is
+
+    return embedPreview;
+}
 
 function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
