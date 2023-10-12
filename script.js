@@ -249,14 +249,18 @@ function setFavicon(faviconLink) {
 
 var alleElementen = document.querySelectorAll('*');
 alleElementen.forEach(function(element) {
-    element.style.opacity = '0';
+    if (element !== document.body) {
+        element.style.opacity = '0';
+    }
 });
 
 window.addEventListener('load', function() {
   setTimeout(function() {
     alleElementen.forEach(function(element) {
-      element.style.transition = 'opacity 0.5s';
-      element.style.opacity = '1';
+      if (element !== document.body) {
+        element.style.transition = 'opacity 0.5s';
+        element.style.opacity = '1';
+      }
     });
-  }, 0);
+  }, 100);
 });
