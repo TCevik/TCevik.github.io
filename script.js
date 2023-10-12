@@ -247,7 +247,7 @@ function setFavicon(faviconLink) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
-var alleElementen = document.querySelectorAll('*');
+/* var alleElementen = document.querySelectorAll('*');
 alleElementen.forEach(function(element) {
     if (element !== document.body) {
         element.style.opacity = '0';
@@ -266,4 +266,4 @@ window.addEventListener('load', function() {
     });
     document.body.style.backgroundColor = '';
   }, 300);
-});
+}); */
