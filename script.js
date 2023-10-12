@@ -246,21 +246,3 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
-
-var alleElementen = document.querySelectorAll('*');
-alleElementen.forEach(function(element) {
-    if (element !== document.body) {
-        element.style.opacity = '0';
-    }
-});
-
-window.addEventListener('load', function() {
-  setTimeout(function() {
-    alleElementen.forEach(function(element) {
-      if (element !== document.body) {
-        element.style.transition = 'opacity 1s';
-        element.style.opacity = '1';
-      }
-    });
-  }, 300);
-});
