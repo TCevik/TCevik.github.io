@@ -259,10 +259,3 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
-
-if (window.self !== window.top && window.location.href !== "https://tcevik.github.io/tctam-chat/" && window.location.href !== "about:blank" && window.location.href !== "") {
-  // De pagina wordt ingesloten in een iframe, maar niet de specifieke URL's, inclusief "about:blank"
-  alert("Deze pagina wordt ingesloten in een iframe, maar niet de gewenste URL's.");
-} else {
-  // De pagina wordt niet ingesloten in een iframe of de specifieke URL's, inclusief "about:blank"
-}
