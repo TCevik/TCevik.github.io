@@ -259,3 +259,11 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+if (window.self !== window.top) {
+  // De pagina wordt ingesloten in een iframe
+  alert("Deze pagina wordt ingesloten in een iframe.");
+} else {
+  // De pagina wordt niet ingesloten in een iframe
+  alert("Deze pagina wordt niet ingesloten in een iframe.");
+}
