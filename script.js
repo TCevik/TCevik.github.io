@@ -262,5 +262,5 @@ window.addEventListener('load', function() {
         element.style.opacity = '1';
       }
     });
-  }, 100);
+  }, 300);
 });
