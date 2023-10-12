@@ -265,4 +265,4 @@ function setFavicon(faviconLink) {
   alert("Deze pagina wordt ingesloten in een iframe.");
 } else {
   // De pagina wordt niet ingesloten in een iframe
-}
+} */
