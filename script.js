@@ -1,28 +1,17 @@
 /* accepteer popup */
 document.addEventListener('DOMContentLoaded', function () {
-  if (!localStorage.getItem('accept')) {
+  if (!localStorage.getItem('acceptPopup')) {
     var popup = document.createElement('div');
     popup.id = 'popup';
     popup.className = 'popup';
 
-    var text = 'Door het gebruik van deze site of het proberen van de inhoud ervan ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>.';
+    var text = 'Door het gebruik van deze site of het proberen van de inhoud ervan ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>. Veel plezier!';
     popup.innerHTML = text;
 
     var button = document.createElement('button');
     button.innerHTML = 'Ok';
 
     button.addEventListener('click', function () {
-      var xhr = new XMLHttpRequest();
-      var url = 'https://discord.com/api/webhooks/1111641644618485881/-6u1wFzHXxxMTPn9xR-3cIw1YNSCfkj5BK0sRxSSefoQ1IDfzNvBASKW7FzG-VRyZUTC';
-      xhr.open('POST', url, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-
-      var message = {
-        content: 'Iemand heeft op de accepteer knop geklikt!'
-      };
-
-      xhr.send(JSON.stringify(message));
-
       var opacity = 1;
       var intervalId = setInterval(function () {
         opacity -= 0.05;
@@ -33,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }, 15);
 
-      localStorage.setItem('accept', 'true');
+      localStorage.setItem('acceptPopup', 'true');
     });
 
     popup.appendChild(button);
@@ -41,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(popup);
   }
 });
-
-
 
 /* google analytics */
 (function() {
