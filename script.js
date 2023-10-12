@@ -254,13 +254,16 @@ alleElementen.forEach(function(element) {
     }
 });
 
+document.body.style.backgroundColor = 'transparent';
+
 window.addEventListener('load', function() {
   setTimeout(function() {
     alleElementen.forEach(function(element) {
       if (element !== document.body) {
-        element.style.transition = 'opacity 0.5s';
+        element.style.transition = 'opacity 1s';
         element.style.opacity = '1';
       }
     });
-  }, 100);
+    document.body.style.backgroundColor = '';
+  }, 300);
 });
