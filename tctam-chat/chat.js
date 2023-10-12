@@ -103,17 +103,39 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
     const message = messageData.message;
-
+  
     const messageElement = document.createElement('div');
-    const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
-    messageElement.innerHTML = email + ': ' + messageContent;
-
+    const messageContent = linkifyText(message);
+  
+    const linkMatches = message.match(/\bhttps?:\/\/\S+/gi);
+    if (linkMatches) {
+      for (const link of linkMatches) {
+        const embedPreview = createEmbedPreview(link);
+        messageContent = messageContent.replace(link, '');
+        messageElement.appendChild(embedPreview);
+      }
+    }
+  
+    messageElement.innerHTML += email + ': ' + messageContent;
+  
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
-});
+  });
 
 function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -121,3 +143,15 @@ function linkifyText(text) {
         return `<a href="${url}" target="_blank">${url}</a>`;
     });
 }
+
+function createEmbedPreview(url) {
+    const embedContainer = document.createElement('div');
+    embedContainer.classList.add('embed-preview');
+    const embedFrame = document.createElement('iframe');
+    embedFrame.src = 'https://www.example.com/oembed?url=' + encodeURIComponent(url);
+    embedFrame.width = '100%'; // Aanpassen naar gewenste grootte
+    embedFrame.style.maxWidth = '500px'; // Maximale breedte van 500px
+  
+    embedContainer.appendChild(embedFrame);
+    return embedContainer;
+  }
