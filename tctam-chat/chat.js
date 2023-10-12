@@ -112,6 +112,30 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 
+function createEmbedPreview(link) {
+    const embedContainer = document.createElement('div');
+    const embedPreview = document.createElement('iframe');
+    
+    // Stel de bron van het iframe in op de link
+    embedPreview.src = link;
+    
+    // Stel de breedte en hoogte van het iframe in
+    embedPreview.width = 300; // Pas deze waarde aan als dat nodig is
+    embedPreview.height = 200; // Pas deze waarde aan als dat nodig is
+
+    // Voeg het iframe toe aan de container
+    embedContainer.appendChild(embedPreview);
+    
+    return embedContainer;
+}
+
+function linkifyText(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url) => {
+        return `<a href="${url}" target="_blank">${url}</a><br>${createEmbedPreview(url).outerHTML}`;
+    });
+}
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
@@ -124,23 +148,3 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
-
-function createEmbedPreview(link) {
-    const embedPreview = document.createElement('iframe');
-    
-    // Stel de bron van het iframe in op de link
-    embedPreview.src = link;
-    
-    // Stel de breedte en hoogte van het iframe in
-    embedPreview.width = 300; // Pas deze waarde aan als dat nodig is
-    embedPreview.height = 200; // Pas deze waarde aan als dat nodig is
-
-    return embedPreview;
-}
-
-function linkifyText(text) {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function (url) {
-        return `<a href="${url}" target="_blank">${url}</a>`;
-    });
-}
