@@ -149,8 +149,8 @@ function restoreTitle() {
 }
 
 // Luister naar het focusverlies van het tabblad en herstel van de focus
-window.addEventListener("blur", changeTitle);
-window.addEventListener("focus", restoreTitle);
+/* window.addEventListener("blur", changeTitle);
+window.addEventListener("focus", restoreTitle); */
 
 // Controleer of de pagina geladen is
 document.addEventListener("DOMContentLoaded", function () {
