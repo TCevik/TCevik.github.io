@@ -247,14 +247,12 @@ function setFavicon(faviconLink) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
-/* var alleElementen = document.querySelectorAll('*');
+var alleElementen = document.querySelectorAll('*');
 alleElementen.forEach(function(element) {
     if (element !== document.body) {
         element.style.opacity = '0';
     }
 });
-
-document.body.style.backgroundColor = 'transparent';
 
 window.addEventListener('load', function() {
   setTimeout(function() {
@@ -264,6 +262,5 @@ window.addEventListener('load', function() {
         element.style.opacity = '1';
       }
     });
-    document.body.style.backgroundColor = '';
-  }, 300);
-}); */
+  }, 100);
+});
