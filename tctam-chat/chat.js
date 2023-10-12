@@ -103,6 +103,15 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
+// Functie om een afbeeldingselement te maken voor de URL van de afbeelding
+function createImageElement(url) {
+    const image = document.createElement('img');
+    image.src = url;
+    image.style.maxWidth = '500px';
+    // Hier kun je andere gewenste stijlen toepassen op het afbeeldingselement
+    return image;
+}
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
@@ -111,6 +120,17 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
     messageElement.innerHTML = email + ': ' + messageContent;
+
+    // Doorloop de inhoud van het bericht om afbeeldingslinks te detecteren
+    const messageLines = messageContent.split('\n');
+    for (const line of messageLines) {
+        if (line.match(/\.(png|jpg|jpeg)$/)) {
+            // De lijn bevat een link naar een afbeelding
+            const imageUrl = line.trim(); // Zorg ervoor dat er geen overbodige spaties zijn
+            const imageElement = createImageElement(imageUrl);
+            messageElement.appendChild(imageElement);
+        }
+    }
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
