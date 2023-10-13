@@ -316,21 +316,35 @@
             <br><span style="color: #336699">#336699</span></p></center>
 
             <h4>Laten we even chatten:</h4>
-            <button onclick="loadIframe()">Start Chatten</button>
+            <button id="frame-button" onclick="loadIframe()">Start Chat</button>
             <div id="iframeContainer"></div>
 
             <script>
                 function loadIframe() {
+                    var button = document.getElementById('frame-button');
                     var iframe = document.createElement('iframe');
                     iframe.style.borderRadius = '10px';
                     iframe.style.border = 'var(--h1234-color) solid 3px';
                     iframe.style.width = '800px';
                     iframe.style.height = '600px';
+                    iframe.style.opacity = '0';
                     iframe.src = 'https://tcevik.github.io/tctam-chat/';
                     iframe.scrolling = 'no';
                     document.getElementById('iframeContainer').appendChild(iframe);
+                
+                    // Toegevoegde code voor uitfaden en display none
+                    setTimeout(function() {
+                        iframe.style.transition = 'opacity 1s';
+                        button.style.transition = 'opacity 1s';
+                        button.style.opacity = '0';
+                        setTimeout(function() {
+                            button.style.display = 'none';
+                            iframe.style.opacity = '100';
+                        }, 1000);
+                    }, 30);
                 }
-            </script>        
+            </script>
+            
             <style>
                 .hahanoobtext {
                     display: none;
