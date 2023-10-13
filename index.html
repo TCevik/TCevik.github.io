@@ -323,6 +323,7 @@
                 function loadIframe() {
                     var button = document.getElementById('frame-button');
                     var iframe = document.createElement('iframe');
+                    button.disabled = true;
                     iframe.style.borderRadius = '10px';
                     iframe.style.border = 'var(--h1234-color) solid 3px';
                     iframe.style.width = '800px';
