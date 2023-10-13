@@ -316,8 +316,21 @@
             <br><span style="color: #336699">#336699</span></p></center>
 
             <h4>Laten we even chatten:</h4>
-            <iframe style="border-radius: 10px; border: var(--h1234-color) solid 3px; width: 800px; height: 600px;" src="https://tcevik.github.io/tctam-chat/" scrolling="no"></iframe>
-        
+            <button onclick="loadIframe()">Start Chatten</button>
+            <div id="iframeContainer"></div>
+
+            <script>
+                function loadIframe() {
+                    var iframe = document.createElement('iframe');
+                    iframe.style.borderRadius = '10px';
+                    iframe.style.border = 'var(--h1234-color) solid 3px';
+                    iframe.style.width = '800px';
+                    iframe.style.height = '600px';
+                    iframe.src = 'https://tcevik.github.io/tctam-chat/';
+                    iframe.scrolling = 'no';
+                    document.getElementById('iframeContainer').appendChild(iframe);
+                }
+            </script>        
             <style>
                 .hahanoobtext {
                     display: none;
