@@ -47,10 +47,16 @@ document.addEventListener('DOMContentLoaded', function () {
   gtag('config', 'G-7KL389S9VR');
 })();
 
-
-
-
-
+// Maak een nieuwe script tag element
+var script = document.createElement('script');
+// Stel de src-attribuut in op de opgegeven URL
+script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862";
+script.setAttribute("crossorigin", "anonymous");
+script.setAttribute("async", true);
+// Vind het <head> element
+var head = document.head || document.getElementsByTagName('head')[0];
+// Voeg de script tag toe aan het <head> element
+head.appendChild(script);
 
 document.addEventListener('DOMContentLoaded', function() {
   // Haal de huidige URL op
