@@ -249,3 +249,54 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+// Functie om de animatie te tonen
+function toonWelkomstAnimatie() {
+  var welkomstDiv = document.createElement('h1'); // Veranderd naar h1
+  welkomstDiv.textContent = 'Welkom bij TC_tam!';
+  welkomstDiv.style.position = 'fixed';
+  welkomstDiv.style.top = '50%';
+  welkomstDiv.style.left = '50%';
+  welkomstDiv.style.transform = 'translate(-50%, -50%)';
+  document.body.appendChild(welkomstDiv);
+
+  // Verberg de rest van de pagina met fade-out
+  var alleElementen = document.body.children;
+  for (var i = 0; i < alleElementen.length; i++) {
+      if (alleElementen[i] !== welkomstDiv) {
+          alleElementen[i].style.transition = 'opacity 0.5s';
+          alleElementen[i].style.opacity = '0';
+      }
+  }
+
+  // Voor dit voorbeeld laat ik de welkomsttekst na 2 seconden verdwijnen met fade-out
+  setTimeout(function() {
+      welkomstDiv.style.transition = 'opacity 0.5s';
+      welkomstDiv.style.opacity = '0';
+      // Herstel de rest van de pagina met fade-in
+      setTimeout(function() {
+          document.body.removeChild(welkomstDiv);
+          for (var i = 0; i < alleElementen.length; i++) {
+              if (alleElementen[i] !== welkomstDiv) {
+                  alleElementen[i].style.transition = 'opacity 0.5s';
+                  alleElementen[i].style.opacity = '1';
+              }
+          }
+      }, 500);
+  }, 2000);
+}
+
+// Functie om te controleren of de pagina voor het eerst in 10 minuten wordt geladen
+function controleerEersteLaadTijd() {
+  var laatsteLaadTijd = localStorage.getItem('laatsteLaadTijd');
+  var huidigeTijd = new Date().getTime();
+  if (!laatsteLaadTijd || (huidigeTijd - laatsteLaadTijd) > 600000) {
+      localStorage.setItem('laatsteLaadTijd', huidigeTijd);
+      toonWelkomstAnimatie();
+  }
+}
+
+// Roep de controlefunctie op wanneer de pagina wordt geladen
+window.onload = function() {
+  controleerEersteLaadTijd();
+};
