@@ -318,33 +318,6 @@
             <h4>Laten we even chatten:</h4>
             <button id="frame-button" onclick="loadIframe()">Start Chat</button>
             <div id="iframeContainer"></div>
-
-            <script>
-                function loadIframe() {
-                    var button = document.getElementById('frame-button');
-                    var iframe = document.createElement('iframe');
-                    button.disabled = true;
-                    iframe.style.borderRadius = '10px';
-                    iframe.style.border = 'var(--h1234-color) solid 3px';
-                    iframe.style.width = '800px';
-                    iframe.style.height = '600px';
-                    iframe.style.opacity = '0';
-                    iframe.src = 'https://tcevik.github.io/tctam-chat/';
-                    iframe.scrolling = 'no';
-                    document.getElementById('iframeContainer').appendChild(iframe);
-                
-                    // Toegevoegde code voor uitfaden en display none
-                    setTimeout(function() {
-                        iframe.style.transition = 'opacity 1s';
-                        button.style.transition = 'opacity 1s';
-                        button.style.opacity = '0';
-                        setTimeout(function() {
-                            button.style.display = 'none';
-                            iframe.style.opacity = '100';
-                        }, 1000);
-                    }, 30);
-                }
-            </script>
             
             <style>
                 .hahanoobtext {
@@ -362,6 +335,31 @@
 
     <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
     <script>
+        function loadIframe() {
+            var button = document.getElementById('frame-button');
+            var iframe = document.createElement('iframe');
+            button.disabled = true;
+            iframe.style.borderRadius = '10px';
+            iframe.style.border = 'var(--h1234-color) solid 3px';
+            iframe.style.width = '800px';
+            iframe.style.height = '600px';
+            iframe.style.opacity = '0';
+            iframe.src = 'https://tcevik.github.io/tctam-chat/';
+            iframe.scrolling = 'no';
+            document.getElementById('iframeContainer').appendChild(iframe);
+        
+            // Toegevoegde code voor uitfaden en display none
+            setTimeout(function() {
+                iframe.style.transition = 'opacity 1s';
+                button.style.transition = 'opacity 1s';
+                button.style.opacity = '0';
+                setTimeout(function() {
+                    button.style.display = 'none';
+                    iframe.style.opacity = '100';
+                }, 1000);
+            }, 30);
+        }
+
         function fetchData() {
             fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
                 method: 'GET',
