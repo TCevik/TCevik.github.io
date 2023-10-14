@@ -278,12 +278,12 @@ function toonWelkomstAnimatie() {
           document.body.removeChild(welkomstDiv);
           for (var i = 0; i < alleElementen.length; i++) {
               if (alleElementen[i] !== welkomstDiv) {
-                  alleElementen[i].style.transition = 'opacity 0.5s';
+                  alleElementen[i].style.transition = 'opacity 1.0s';
                   alleElementen[i].style.opacity = '1';
               }
           }
       }, 500);
-  }, 2000);
+  }, 3000);
 }
 
 // Functie om te controleren of de pagina voor het eerst in 10 minuten wordt geladen
