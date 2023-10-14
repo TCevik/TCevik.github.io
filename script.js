@@ -287,14 +287,15 @@ function toonWelkomstAnimatie() {
         }, 1000);
       }, 500);
   }, 3000);
+  // Reset de cookie voor de laadtijd
+  localStorage.setItem('laatsteLaadTijd', new Date().getTime());
 }
 
-// Functie om te controleren of de pagina voor het eerst in 10 minuten wordt geladen
+// Functie om te controleren of de pagina na 10 minuten wordt geladen
 function controleerEersteLaadTijd() {
   var laatsteLaadTijd = localStorage.getItem('laatsteLaadTijd');
   var huidigeTijd = new Date().getTime();
   if (!laatsteLaadTijd || (huidigeTijd - laatsteLaadTijd) > 600000) {
-      localStorage.setItem('laatsteLaadTijd', huidigeTijd);
       toonWelkomstAnimatie();
   }
 }
