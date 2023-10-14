@@ -295,7 +295,7 @@ function toonWelkomstAnimatie() {
 function controleerEersteLaadTijd() {
   var laatsteLaadTijd = localStorage.getItem('laatsteLaadTijd');
   var huidigeTijd = new Date().getTime();
-  if (!laatsteLaadTijd || (huidigeTijd - laatsteLaadTijd) > 600000) {
+  if (!laatsteLaadTijd || (huidigeTijd - laatsteLaadTijd) > 6000) {
       toonWelkomstAnimatie();
   }
 }
