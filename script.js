@@ -278,10 +278,13 @@ function toonWelkomstAnimatie() {
           document.body.removeChild(welkomstDiv);
           for (var i = 0; i < alleElementen.length; i++) {
               if (alleElementen[i] !== welkomstDiv) {
-                  alleElementen[i].style.transition = 'opacity 1.0s';
+                  alleElementen[i].style.transition = 'opacity 1s';
                   alleElementen[i].style.opacity = '1';
               }
           }
+        setTimeout(function() {
+          location.reload(); 
+        }, 1000);
       }, 500);
   }, 3000);
 }
