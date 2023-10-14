@@ -297,6 +297,6 @@ function controleerEersteLaadTijd() {
 }
 
 // Roep de controlefunctie op wanneer de pagina wordt geladen
-window.onload = function() {
+window.addEventListener('DOMContentLoaded', (event) => {
   controleerEersteLaadTijd();
-};
+});
