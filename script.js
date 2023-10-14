@@ -283,7 +283,7 @@ function toonWelkomstAnimatie() {
               }
           }
         setTimeout(function() {
-          location.reload(); 
+          // location.reload(); 
         }, 1000);
       }, 500);
   }, 3000);
