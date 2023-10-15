@@ -9,7 +9,6 @@ body {
   text-align: center;
   overflow-x: hidden;
   transition: 0.5s;
-  opacity: 0;
 }
 
 /* light mode and default mode */
