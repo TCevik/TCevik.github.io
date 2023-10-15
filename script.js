@@ -277,12 +277,3 @@ function setFavicon(faviconLink) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  var alleElementen = document.body;
-  alleElementen.style.opacity = 0;
-  alleElementen.style.transition = 'opacity 1.0s';
-        
-  setTimeout(function() {
-    alleElementen.style.opacity = 1;
-  }, 100);
-});
