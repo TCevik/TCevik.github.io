@@ -50,17 +50,17 @@
     </style>
     
     <script>
-        function countup() {
-            var now = new Date();
-            var startDate = new Date(2023, 4, 21, 20, 6, 16);
+function countup() {
+    var now = new Date();
+    var startDate = new Date(2023, 4, 21, 20, 6, 16);
             var timeElapsed = now - startDate;
-    
+
             var days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
             var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
-  
-        document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+
+            document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
         }
 
         setInterval(countup, 1000);
@@ -74,7 +74,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             setInterval(updateBatteryLevel, 1000);
-
+        
             if ('getBattery' in navigator) {
                 updateBatteryLevel();
             } else {
@@ -84,7 +84,7 @@
 
         function scrollToOverMij() {
             var destination = document.getElementById("overmij").offsetTop;
-    
+        
             window.scrollTo({
                 top: destination,
                 behavior: "smooth"
@@ -93,7 +93,7 @@
 
         function scrollToSecret() {
             var destination = document.getElementById("hiddenButton").offsetTop;
-    
+        
             window.scrollTo({
                 top: destination,
                 behavior: "smooth"
@@ -104,7 +104,7 @@
 
         document.addEventListener('keydown', function(event) {
             keySequence.push(event.key);
-
+        
             if (keySequence.join('') === 'ballondoos') {
                 showButton();
                 setTimeout(scrollToSecret, 100);
@@ -112,36 +112,36 @@
         });
 
         function showButton() {
-        var button = document.getElementById('hiddenButton');
-        button.style.display = 'inline';
+            var button = document.getElementById('hiddenButton');
+            button.style.display = 'inline';
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-          var button = document.getElementById("hiddenButton");
-          var scale = 1.0;
-          var grow = true;
+            var button = document.getElementById("hiddenButton");
+            var scale = 1.0;
+            var grow = true;
         
-          button.style.transition = "transform 0.2s ease-in-out";
+            button.style.transition = "transform 0.2s ease-in-out";
         
-          setInterval(function() {
-            if (grow) {
-              scale += 0.1;
-              if (scale >= 1.1) {
-                grow = false;
-              }
-            } else {
-              scale -= 0.1;
-              if (scale <= 1.0) {
-                grow = true;
-              }
-            }
-            button.style.transform = "scale(" + scale + ")";
-          }, 200);
+            setInterval(function() {
+                if (grow) {
+                    scale += 0.1;
+                    if (scale >= 1.1) {
+                        grow = false;
+                    }
+                } else {
+                    scale -= 0.1;
+                    if (scale <= 1.0) {
+                        grow = true;
+                    }
+                }
+                button.style.transform = "scale(" + scale + ")";
+            }, 200);
         });
 
         function toggleDropdown(category) {
             var dropdownContent = document.getElementById(category + "-dropdown");
-
+        
             if (dropdownContent.classList.contains("show")) {
                 dropdownContent.classList.remove("show");
             } else {
@@ -150,21 +150,21 @@
         }
 
         function getRandomColor() {
-          const r = Math.floor(Math.random() * 256);
-          const g = Math.floor(Math.random() * 256);
-          const b = Math.floor(Math.random() * 256);
-          return `rgb(${r},${g},${b})`;
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return `rgb(${r},${g},${b})`;
         }
 
         function changePageColors() {
-          const randomColor = getRandomColor();
-          document.body.style.backgroundColor = randomColor;
+            const randomColor = getRandomColor();
+            document.body.style.backgroundColor = randomColor;
         
-          const allTextElements = document.querySelectorAll('body *');
-          allTextElements.forEach(element => {
-            const textRandomColor = getRandomColor();
-            element.style.color = textRandomColor;
-          });
+            const allTextElements = document.querySelectorAll('body *');
+            allTextElements.forEach(element => {
+                const textRandomColor = getRandomColor();
+                element.style.color = textRandomColor;
+            });
         }
 
         function partyTimer() {
@@ -179,55 +179,67 @@
 
         function activatePartyMode() {
             // window.location.href = window.location.href + "?partymode";
-
+        
             partyTimer();
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-          let letterContainer = document.createElement('div');
-          letterContainer.id = 'letter-container';
-          letterContainer.style.position = 'fixed';
-          letterContainer.style.left = '0';
-          letterContainer.style.top = '0';
-          letterContainer.style.right = '0';
-          letterContainer.style.bottom = '0';
-          letterContainer.style.overflow = 'hidden';
-          document.body.appendChild(letterContainer);
-
-          let letters = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
-          let fontSizeRange = [10, 30];
-
-          function createLetter() {
-              let letter = document.createElement('span');
-              letter.innerHTML = letters.charAt(Math.floor(Math.random() * letters.length));
-              letter.style.position = 'absolute';
-              letter.style.color = '#ffffff';
-              letter.style.userSelect = 'none';
-              letter.style.left = Math.random() * window.innerWidth + 'px';
-              letter.style.top = '-50px';
-              letter.style.fontSize = Math.floor(Math.random() * (fontSizeRange[1] - fontSizeRange[0] + 1) + fontSizeRange[0]) + 'px';
-              letter.style.filter = 'blur(2px) brightness(0.5)';
-              letterContainer.appendChild(letter);
+            let letterContainer = document.createElement('div');
+            letterContainer.id = 'letter-container';
+            letterContainer.style.position = 'fixed';
+            letterContainer.style.left = '0';
+            letterContainer.style.top = '0';
+            letterContainer.style.right = '0';
+            letterContainer.style.bottom = '0';
+            letterContainer.style.overflow = 'hidden';
+            document.body.appendChild(letterContainer);
         
-              let speed = Math.random() * 2 + 1;
-              letter.dataset.speed = speed;
+            let letters = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
+            let fontSizeRange = [10, 30];
         
-              function moveLetter() {
-                  let top = parseInt(letter.style.top);
-                  let currentSpeed = parseFloat(letter.dataset.speed);
-                  if (top > window.innerHeight) {
-                      letter.remove();
-                  } else {
-                      letter.style.top = top + currentSpeed + 'px';
-                      requestAnimationFrame(moveLetter);
-                  }
-              }
-          
-              moveLetter();
-          }
-      
-          setInterval(createLetter, 300);
+            function createLetter() {
+                let letter = document.createElement('span');
+                letter.innerHTML = letters.charAt(Math.floor(Math.random() * letters.length));
+                letter.style.position = 'absolute';
+                letter.style.color = '#ffffff';
+                letter.style.userSelect = 'none';
+                letter.style.left = Math.random() * window.innerWidth + 'px';
+                letter.style.top = '-50px';
+                letter.style.fontSize = Math.floor(Math.random() * (fontSizeRange[1] - fontSizeRange[0] + 1) + fontSizeRange[0]) + 'px';
+                letter.style.filter = 'blur(2px) brightness(0.5)';
+                letterContainer.appendChild(letter);
+            
+                let speed = Math.random() * 2 + 1;
+                letter.dataset.speed = speed;
+            
+                function moveLetter() {
+                    let top = parseInt(letter.style.top);
+                    let currentSpeed = parseFloat(letter.dataset.speed);
+                    if (top > window.innerHeight) {
+                        letter.remove();
+                    } else {
+                        letter.style.top = top + currentSpeed + 'px';
+                        requestAnimationFrame(moveLetter);
+                    }
+                }
+            
+                moveLetter();
+            }
+        
+            if (document.cookie.split(';').some((item) => item.trim().startsWith('backgroundToggle='))) {
+                var backgroundToggle = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                if (backgroundToggle === 'true') {
+                    setInterval(createLetter, 300);
+                }
+            }
         });
+
+        function changeBackground() {
+            var value = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            var toggleValue = (value === 'true') ? 'false' : 'true';
+            document.cookie = "backgroundToggle=" + toggleValue;
+            location.reload()
+        }
     </script>
 </head>
 
@@ -251,7 +263,8 @@
 
         <td id="menu">
             <br>
-            <br>       
+            <br>
+            <button id="backgroundSetting" onclick="changeBackground()">Zet de coole achtergrond aan/uit</button>
             <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
             <button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
             <button onclick="window.location.href='games/alle-games'">Games</button>
