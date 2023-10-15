@@ -294,10 +294,12 @@ document.addEventListener('DOMContentLoaded', function() {
       moveLetter();
   }
 
-  if (document.cookie.split(';').some((item) => item.trim().startsWith('backgroundToggle='))) {
-      var backgroundToggle = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-      if (backgroundToggle === 'true') {
-          setInterval(createLetter, 300);
-      }
+  if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?')) {
+    if (document.cookie.split(';').some((item) => item.trim().startsWith('backgroundToggle='))) {
+        var backgroundToggle = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (backgroundToggle === 'true') {
+            setInterval(createLetter, 300);
+        }
+    }
   }
 });
