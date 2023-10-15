@@ -276,10 +276,12 @@ function setFavicon(faviconLink) {
 
 
 
-var alleElementen = document.body
-alleElementen.style.opacity = 0;
-
 document.addEventListener('DOMContentLoaded', function() {
+  var alleElementen = document.body;
+  alleElementen.style.opacity = 0;
   alleElementen.style.transition = 'opacity 1.0s';
-  alleElementen.style.opacity = '1';
+
+  window.onload = function() {
+    alleElementen.style.opacity = 1;
+  };
 });
