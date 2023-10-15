@@ -249,3 +249,10 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+window.onload = function() {
+  var elementen = document.querySelectorAll("*");
+  for (var i = 0; i < elementen.length; i++) {
+    elementen[i].style.opacity = 1;
+  }
+};
