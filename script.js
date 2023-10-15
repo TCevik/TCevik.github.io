@@ -282,6 +282,8 @@ document.addEventListener('DOMContentLoaded', function() {
   alleElementen.style.transition = 'opacity 1.0s';
 
   window.onload = function() {
-    alleElementen.style.opacity = 1;
+    setTimeout(function() {
+      alleElementen.style.opacity = 1;
+    }, 0);
   };
 });
