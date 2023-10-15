@@ -183,57 +183,6 @@ function countup() {
             partyTimer();
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let letterContainer = document.createElement('div');
-            letterContainer.id = 'letter-container';
-            letterContainer.style.position = 'fixed';
-            letterContainer.style.left = '0';
-            letterContainer.style.top = '0';
-            letterContainer.style.right = '0';
-            letterContainer.style.bottom = '0';
-            letterContainer.style.overflow = 'hidden';
-            document.body.appendChild(letterContainer);
-        
-            let letters = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
-            let fontSizeRange = [10, 30];
-        
-            function createLetter() {
-                let letter = document.createElement('span');
-                letter.innerHTML = letters.charAt(Math.floor(Math.random() * letters.length));
-                letter.style.position = 'absolute';
-                letter.style.color = '#ffffff';
-                letter.style.userSelect = 'none';
-                letter.style.left = Math.random() * window.innerWidth + 'px';
-                letter.style.top = '-50px';
-                letter.style.fontSize = Math.floor(Math.random() * (fontSizeRange[1] - fontSizeRange[0] + 1) + fontSizeRange[0]) + 'px';
-                letter.style.filter = 'blur(2px) brightness(0.5)';
-                letterContainer.appendChild(letter);
-            
-                let speed = Math.random() * 2 + 1;
-                letter.dataset.speed = speed;
-            
-                function moveLetter() {
-                    let top = parseInt(letter.style.top);
-                    let currentSpeed = parseFloat(letter.dataset.speed);
-                    if (top > window.innerHeight) {
-                        letter.remove();
-                    } else {
-                        letter.style.top = top + currentSpeed + 'px';
-                        requestAnimationFrame(moveLetter);
-                    }
-                }
-            
-                moveLetter();
-            }
-        
-            if (document.cookie.split(';').some((item) => item.trim().startsWith('backgroundToggle='))) {
-                var backgroundToggle = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-                if (backgroundToggle === 'true') {
-                    setInterval(createLetter, 300);
-                }
-            }
-        });
-
         function changeBackground() {
             var value = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*=\s*([^;]*).*$)|^.*$/, "$1");
             var toggleValue = (value === 'true') ? 'false' : 'true';
