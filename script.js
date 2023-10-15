@@ -250,7 +250,7 @@ function setFavicon(faviconLink) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', function() {
   var bodyElement = document.querySelector("body");
   bodyElement.style.opacity = 1;
-};
+});
