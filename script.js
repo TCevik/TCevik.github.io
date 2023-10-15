@@ -250,7 +250,36 @@ function setFavicon(faviconLink) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var alleElementen = document.body.children;
+alleElementen.style.opacity = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
-  var bodyElement = document.querySelector("body");
-  bodyElement.style.opacity = 1;
+  alleElementen.style.transition = 'opacity 1.0s';
+  alleElementen.style.opacity = '1';
 });

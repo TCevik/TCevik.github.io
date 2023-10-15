@@ -8,8 +8,7 @@ body {
   width: 95%;
   text-align: center;
   overflow-x: hidden;
-  transition: 0.5s, opacity 5.0s;
-  opacity: 0;
+  transition: 0.5s;
 }
 
 /* light mode and default mode */
