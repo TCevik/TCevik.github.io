@@ -251,8 +251,6 @@ function setFavicon(faviconLink) {
 }
 
 window.onload = function() {
-  var elementen = document.querySelectorAll("*");
-  for (var i = 0; i < elementen.length; i++) {
-    elementen[i].style.opacity = 1;
-  }
+  var bodyElement = document.querySelector("body");
+  bodyElement.style.opacity = 1;
 };
