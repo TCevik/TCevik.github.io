@@ -182,13 +182,6 @@ function countup() {
         
             partyTimer();
         }
-
-        function changeBackground() {
-            var value = document.cookie.replace(/(?:(?:^|.*;\s*)backgroundToggle\s*=\s*([^;]*).*$)|^.*$/, "$1");
-            var toggleValue = (value === 'true') ? 'false' : 'true';
-            document.cookie = "backgroundToggle=" + toggleValue;
-            location.reload()
-        }
     </script>
 </head>
 
@@ -213,7 +206,6 @@ function countup() {
         <td id="menu">
             <br>
             <br>
-            <button id="backgroundSetting" onclick="changeBackground()">Zet de coole achtergrond aan/uit</button>
             <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
             <button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
             <button onclick="window.location.href='games/alle-games'">Games</button>
