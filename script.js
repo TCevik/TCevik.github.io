@@ -276,14 +276,13 @@ function setFavicon(faviconLink) {
 
 
 
+
 document.addEventListener('DOMContentLoaded', function() {
   var alleElementen = document.body;
   alleElementen.style.opacity = 0;
   alleElementen.style.transition = 'opacity 1.0s';
-});
-
-window.addEventListener('load', function() {
+        
   setTimeout(function() {
-    document.body.style.opacity = 1;
-  }, 100); // Adding a slight delay to ensure proper handling
+    alleElementen.style.opacity = 1;
+  }, 100);
 });
