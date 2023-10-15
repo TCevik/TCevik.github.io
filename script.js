@@ -276,7 +276,7 @@ function setFavicon(faviconLink) {
 
 
 
-var alleElementen = document.body.children;
+var alleElementen = document.body
 alleElementen.style.opacity = 0;
 
 document.addEventListener('DOMContentLoaded', function() {
