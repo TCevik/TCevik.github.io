@@ -252,31 +252,19 @@ function setFavicon(faviconLink) {
 
 const currentURL = window.location.pathname;
 
-if (currentURL.startsWith('/games/') && currentURL.startsWith('/games?')) {
-  // Voeg event listeners toe om het fullscreen event te detecteren
-  document.addEventListener('fullscreenchange', function () {
-    toggleFullScreen();
-  });
+if (currentURL.startsWith('/games/')) {
+  var topLeftButton = document.getElementById('top-left-button');
 
-  document.addEventListener('webkitfullscreenchange', function () {
-    toggleFullScreen();
-  });
+  document.addEventListener('mousemove', function(e) {
+    var x = e.clientX;
+    var y = e.clientY;
+    var topLeftCornerWidth = 100; // breedte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
+    var topLeftCornerHeight = 100; // hoogte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
 
-  document.addEventListener('mozfullscreenchange', function () {
-    toggleFullScreen();
+    if (x < topLeftCornerWidth && y < topLeftCornerHeight) {
+      topLeftButton.style.display = 'block';
+    } else {
+      topLeftButton.style.display = 'none';
+    }
   });
-
-  document.addEventListener('MSFullscreenChange', function () {
-    toggleFullScreen();
-  });
-}
-
-// Functie om de stijlen aan te passen wanneer het scherm wordt vergroot of verkleind
-function toggleFullScreen() {
-  var elem = document.getElementById('top-left-button');
-  if (!document.fullscreenElement) {
-    elem.style.zIndex = 9999; // Terugzetten naar oorspronkelijke waarde wanneer scherm niet in full screen is
-  } else {
-    elem.style.zIndex = -9999; // Aanpassen van z-index wanneer scherm in full screen is
-  }
 }
