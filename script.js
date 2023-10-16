@@ -249,3 +249,34 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+const currentURL = window.location.pathname;
+
+if (currentURL.startsWith('/games/') && currentURL.startsWith('/games?')) {
+  // Voeg event listeners toe om het fullscreen event te detecteren
+  document.addEventListener('fullscreenchange', function () {
+    toggleFullScreen();
+  });
+
+  document.addEventListener('webkitfullscreenchange', function () {
+    toggleFullScreen();
+  });
+
+  document.addEventListener('mozfullscreenchange', function () {
+    toggleFullScreen();
+  });
+
+  document.addEventListener('MSFullscreenChange', function () {
+    toggleFullScreen();
+  });
+}
+
+// Functie om de stijlen aan te passen wanneer het scherm wordt vergroot of verkleind
+function toggleFullScreen() {
+  var elem = document.getElementById('top-left-button');
+  if (!document.fullscreenElement) {
+    elem.style.zIndex = 9999; // Terugzetten naar oorspronkelijke waarde wanneer scherm niet in full screen is
+  } else {
+    elem.style.zIndex = -9999; // Aanpassen van z-index wanneer scherm in full screen is
+  }
+}
