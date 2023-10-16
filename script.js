@@ -260,7 +260,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var x = e.clientX;
       var y = e.clientY;
       var topLeftCornerWidth = 100; // breedte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
-      var topLeftCornerHeight = 100; // hoogte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
+      var topLeftCornerHeight = 75; // hoogte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
 
       if (x < topLeftCornerWidth && y < topLeftCornerHeight) {
         topLeftButton.style.display = 'block';
