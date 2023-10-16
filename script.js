@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     popup.innerHTML = text;
 
     var button = document.createElement('button');
-    button.innerHTML = 'Het boeit me inderdaad niks :)';
+    button.innerHTML = 'Hmm';
 
     button.addEventListener('click', function () {
       var opacity = 1;
