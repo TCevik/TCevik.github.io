@@ -253,7 +253,7 @@ function setFavicon(faviconLink) {
 const currentURL = window.location.pathname;
 
 document.addEventListener("DOMContentLoaded", function () {
-  if (currentURL.startsWith('/games/') && currentURL.startsWith('/games?')) {
+  if (currentURL.startsWith('/games/')) { // Controleren of de huidige URL begint met '/games/'
     var topLeftButton = document.getElementById('top-left-button');
 
     document.addEventListener('mousemove', function(e) {
