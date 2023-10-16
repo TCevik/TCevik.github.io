@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
     popup.id = 'popup';
     popup.className = 'popup';
 
-    var text = 'Door het gebruik van deze site of het proberen van de inhoud ervan ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>. Veel plezier!';
+    var text = 'Door het gebruik van deze site of het proberen van de inhoud ervan ga je akkoord met de <a href="https://tcevik.github.io/privacy-policy">privacy policy</a> en de <a href="https://tcevik.github.io/terms-of-service">terms of service</a>. Maar dit boeit je waarschijnlijk toch niks, dus klik het maar weg!';
     popup.innerHTML = text;
 
     var button = document.createElement('button');
-    button.innerHTML = 'Ok';
+    button.innerHTML = 'Het boeit me inderdaad niks :)';
 
     button.addEventListener('click', function () {
       var opacity = 1;
