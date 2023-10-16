@@ -249,24 +249,3 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
-
-const currentURL = window.location.pathname;
-
-document.addEventListener("DOMContentLoaded", function () {
-  if (currentURL.startsWith('/games/')) { // Controleren of de huidige URL begint met '/games/'
-    var topLeftButton = document.getElementById('top-left-button');
-
-    document.addEventListener('mousemove', function(e) {
-      var x = e.clientX;
-      var y = e.clientY;
-      var topLeftCornerWidth = 100; // breedte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
-      var topLeftCornerHeight = 75; // hoogte van het gebied in de linkerbovenhoek waarin de knop zichtbaar moet zijn
-
-      if (x < topLeftCornerWidth && y < topLeftCornerHeight) {
-        topLeftButton.style.display = 'block';
-      } else {
-        topLeftButton.style.display = 'none';
-      }
-    });
-  }
-});
