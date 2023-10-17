@@ -9,6 +9,11 @@ body {
   text-align: center;
   overflow-x: hidden;
   transition: 0.5s;
+  background-image: url("/assets/firework.gif");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 /* light mode and default mode */
