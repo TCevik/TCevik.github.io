@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>IDE</title>
-    
+
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
-    
+
     <style>
         textarea {
             width: 95%;
@@ -52,31 +52,47 @@
                 textarea.selectionStart = textarea.selectionEnd = start + 4;
             }
         }
+
+        function toggleFullscreen() {
+            var elem = document.getElementById('embedFrame');
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+        }
     </script>
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
     <h1>IDE</h1>
     <p>Vul code in en bewonder je prestatie</p>
-    
+
     <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>[NAAM VAN TABBLAD]</title>
-    
-    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
-    <script src="https://tcevik.github.io/script.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
-</head>
-<body>
-    <h1>[Titel]</h1>
-    <p>[Woord woord woord. Woord woord woord. Woord woord woord.]
-    <br>[Woord woord woord. Woord woord woord. Woord woord woord.]</p>
-</body>
-</html></textarea>
+        <!DOCTYPE html>
+        <html lang="nl">
+        <head>
+            <meta charset="UTF-8">
+            <title>[NAAM VAN TABBLAD]</title>
+
+            <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+            <script src="https://tcevik.github.io/script.js"></script>
+            <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+        </head>
+        <body>
+            <h1>[Titel]</h1>
+            <p>[Woord woord woord. Woord woord woord. Woord woord woord.]
+                <br>[Woord woord woord. Woord woord woord. Woord woord woord.]</p>
+        </body>
+        </html>
+    </textarea>
 
     <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
+
+    <button id="fullscreenButton" onclick="toggleFullscreen()">Volledig scherm</button>
 </body>
 </html>
