@@ -14,12 +14,7 @@
     <style>
         .dropdown-content {
             max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.7s ease;
-        }
-
-        .dropdown-content.show {
-            transition: max-height 0.7s ease;
+            overflow: auto;
         }
     </style>
     
@@ -113,17 +108,50 @@
             }, 200);
         });
 
-        function toggleDropdown(category) {
+        function togglePopup(category) {
+            var popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.style.opacity = 0; // Begin met 0 doorzichtigheid voor de fade-in effect
+            popup.style.transition = "opacity 0.5s"; // Toevoegen van overgangseffect
+            
+            var closeBtn = document.createElement("button");
+            closeBtn.classList.add("close");
+            closeBtn.innerHTML = "Sluiten";
+            closeBtn.onclick = function() {
+                popup.style.opacity = 0; // Start de fade-out
+                var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+                elementsToBlur.forEach(function(element) {
+                    element.style.filter = "none"; // Verwijder de wazigheid
+                });
+                setTimeout(function() {
+                    document.body.removeChild(popup); // Verwijder de popup na fade-out
+                }, 500); // Wacht 0,5 seconde voor de fade-out voordat de popup wordt verwijderd
+            };
+        
+            popup.appendChild(closeBtn);
+        
             var dropdownContent = document.getElementById(category + "-dropdown");
-
-            if (dropdownContent.classList.contains("show")) {
-                dropdownContent.style.maxHeight = "0px"; // Verberg de dropdown
-                dropdownContent.classList.remove("show");
-            } else {
-                dropdownContent.classList.add("show");
-                var height = dropdownContent.scrollHeight + "px"; // Bereken de werkelijke hoogte van de inhoud
-                dropdownContent.style.maxHeight = height; // Stel de maximale hoogte in op de werkelijke hoogte
-            }
+            var contentClone = dropdownContent.cloneNode(true);
+            contentClone.style.maxHeight = "none"; // Verwijder de maximale hoogte
+        
+            popup.appendChild(contentClone);
+        
+            document.body.appendChild(popup);
+        
+            // Force reflow, zodat de fade-in kan starten
+            void popup.offsetWidth;
+        
+            // Fade-in effect
+            popup.style.opacity = 1;
+        
+            var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+            elementsToBlur.forEach(function(element) {
+                element.style.transition = "filter 0.5s"; // Toevoegen van overgangseffect
+                element.style.filter = "blur(3px)"; // Maak de rest van de site wazig
+            });
+        
+            // Verwijder de wazigheid voor de popup
+            popup.style.filter = "none";
         }
 
         function getRandomColor() {
@@ -232,7 +260,7 @@
             <h3>Door Tamer Çevik</h3>
             <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
             <br><div class="dropdown">
-                <button style="margin-top: -30px; padding: 5px;" onclick="toggleDropdown('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+                <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
                 <div id="explanation-dropdown" class="dropdown-content">
                     <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Als ik jou was zou ik het maar doen. Tenzij je houd van dingen die niet helemaal goed werken... :)
                     <br>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
