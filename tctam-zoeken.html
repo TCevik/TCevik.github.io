@@ -13,10 +13,11 @@
         }
 
         #searchbar {
-            position: relative;
+            position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%);
+            width: 100vw;
+            transform: translate(-50%, -50%);
         }
 
         #input {
@@ -127,7 +128,7 @@
 </head>
 <body>
     <div id="searchbar">
-        <h1 style="margin-bottom: -20px; margin-top: calc(100vh / 3 );">TC_tam</h1>
+        <h1 style="margin-bottom: -20px;">TC_tam</h1>
         <input type="text" id="input" placeholder="Zoekterm..." style="width: 60%;">
         <img id="mic-image" src="/assets/mic.png" onclick="startSpeechRecognition()" style="cursor: pointer; z-index: 9999; position: responsive; width: 60px; height: 60px; top: 50%; border-radius: 20%; transform: translateY(40%);">
         <br><button style="margin-top: -30px;" onclick="search()">Zoeken</button>
