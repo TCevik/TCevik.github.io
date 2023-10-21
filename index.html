@@ -109,9 +109,10 @@
             var popup = document.createElement("div");
             popup.classList.add("popup");
             popup.style.opacity = 0;
-            popup.style.top = "0px";
+            popup.style.top = "50px";
+            popup.style.bottom = "50px";
             popup.style.transition = "opacity 0.5s";
-            popup.style.width = "calc(100vw - 100px)";
+            popup.style.width = "calc(100vw - 150px)";
             popup.style.position = "fixed";
             popup.style.left = "calc(100vw / 2)";
             popup.style.transform = "translate(-50%)";
@@ -136,7 +137,7 @@
         
             var dropdownContent = document.getElementById(category + "-dropdown");
             var contentClone = dropdownContent.cloneNode(true);
-            contentClone.style.maxHeight = "85vh";
+            contentClone.style.maxHeight = "65vh";
             contentClone.style.overflowY = "auto";
         
             popup.appendChild(contentClone);
