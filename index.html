@@ -109,60 +109,64 @@
         });
 
         function togglePopup(category) {
-            var overlay = document.createElement("div");
+    var overlay = document.createElement("div");
             overlay.classList.add("overlay");
             document.body.appendChild(overlay);
-                
+
             var popup = document.createElement("div");
             popup.classList.add("popup");
-            popup.style.opacity = 0; // Begin met 0 doorzichtigheid voor het fade-in effect
-            popup.style.transition = "opacity 0.5s"; // Toevoegen van overgangseffect
-                
+            popup.style.opacity = 0;
+            popup.style.transition = "opacity 0.5s";
+            popup.style.width = "calc(100vw - 100px)";
+            popup.style.position = "fixed";
+            popup.style.left = "calc(100vw / 2)";
+            popup.style.transform = "translate(-50%)";
+
             var closeBtn = document.createElement("button");
             closeBtn.classList.add("close");
             closeBtn.innerHTML = "Sluiten";
-            closeBtn.onclick = function() {
-                popup.style.opacity = 0; // Start de fade-out
-                overlay.style.display = "none"; // Verwijder de overlay na fade-out
+            closeBtn.onclick = function () {
+                popup.style.opacity = 0;
+                overlay.style.display = "none";
                 var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
-                elementsToBlur.forEach(function(element) {
-                    element.style.filter = "none"; // Verwijder de wazigheid
+                elementsToBlur.forEach(function (element) {
+                    element.style.filter = "none";
                 });
-                setTimeout(function() {
-                    document.body.removeChild(popup); // Verwijder de popup na fade-out
-                }, 500); // Wacht 0,5 seconde voor de fade-out voordat de popup wordt verwijderd
+                document.body.style.overflowY = "auto";
+                setTimeout(function () {
+                    document.body.removeChild(popup);
+                }, 500);
             };
         
             popup.appendChild(closeBtn);
         
             var dropdownContent = document.getElementById(category + "-dropdown");
             var contentClone = dropdownContent.cloneNode(true);
-            contentClone.style.maxHeight = "none"; // Verwijder de maximale hoogte
+            contentClone.style.maxHeight = "none";
         
             popup.appendChild(contentClone);
         
             document.body.appendChild(popup);
         
-            // Force reflow, zodat de fade-in kan starten
             void popup.offsetWidth;
         
-            // Fade-in effect
             popup.style.opacity = 1;
         
             var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
-            elementsToBlur.forEach(function(element) {
-                element.style.transition = "filter 0.5s"; // Toevoegen van overgangseffect
-                element.style.filter = "blur(3px)"; // Maak de rest van de site wazig
+            elementsToBlur.forEach(function (element) {
+                element.style.transition = "filter 0.5s";
+                element.style.filter = "blur(3px)";
             });
         
-            // Zorg ervoor dat de overlay de volledige pagina bedekt
             overlay.style.position = "fixed";
             overlay.style.top = 0;
             overlay.style.left = 0;
             overlay.style.width = "100%";
             overlay.style.height = "100%";
-            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Halfdoorzichtige zwarte achtergrond
-            overlay.style.zIndex = 999; // Zorg ervoor dat de overlay bovenop andere elementen staat
+            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+            overlay.style.zIndex = 999;
+        
+            document.body.style.overflowY = "hidden";
         }
 
         function getRandomColor() {
