@@ -411,19 +411,18 @@
         fetchData();
 
         function openNewTab() {
-            var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd!";
-            var confirmResult = confirm(alertText);
-            if (confirmResult) {
-                var win = window.open('about:blank', '_blank');
-                var iframeHeight = window.innerHeight;
-                win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title>');
-                win.document.write('<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACBklEQVR42u3VAQkAAAjDsPtug0zGQCCdJfEgIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiL9FfuE9AUqPfZ9hLhJAv9kQb/WLCb3zV03ByU6ciM3auyB70gPsH1gRs8VpvfAzMfJr3IBObTQu9FyAWvEf3ACGgPLi8F4wB9gGv7D5AGvhZvQMB0wBum+eUC7wAxOQc9QAwuPTjOw8iU5wVwYlwsC8QGtIVwWvAGvkJlw4e/5KXyZJtPfMVD/1v9t/mQ7KcTxMh7AAAxCjuOwNMpHx6IuZtFy7PQACcUq9Iu1/5Rdx/VeT5yGPT6y88Kv14f/yVf5Ux87F4ikF1+9EJPTqQbq+Kc06r5mvFZgXMAAAAAElFTkSuQmCC">');
-                win.document.write('</head><body style="margin: 0; overflow: hidden;">');
-                win.document.write('<iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe>');
-                win.document.write('</body></html>');
-                win.document.close();
-                win.focus();
-            }
+          var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd!";
+          var confirmResult = confirm(alertText);
+          if (confirmResult) {
+            var win = window.open('about:blank', '_blank');
+            var iframeHeight = window.innerHeight;
+            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title>');
+            win.document.write('<link rel="icon" type="image/x-icon" href="https://tcevik.github.io/assets/asfalt-light.png">');
+            win.document.write('</head><body style="margin: 0; overflow: hidden;">');
+            win.document.write('<iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe>');
+            win.document.close();
+            win.focus();
+          }
         }
     </script>
 </body>
