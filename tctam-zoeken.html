@@ -49,7 +49,7 @@
         }
     </style>
     <script>
-        window.onload = function() {
+        function focusSearchBar() {
             document.getElementById("input").focus();
         }
 
@@ -126,7 +126,7 @@
         }
     </script>
 </head>
-<body>
+<body onload="focusSearchBar()">
     <div id="searchbar">
         <h1 style="margin-bottom: -20px;">TC_tam</h1>
         <input type="text" id="input" placeholder="Zoekterm..." style="width: 60%;">
