@@ -10,13 +10,6 @@
     <script src="/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
     <link rel="manifest" href="/manifest.json">
-
-    <style>
-        .dropdown-content {
-            max-height: 0;
-            overflow: auto;
-        }
-    </style>
     
     <script>
         function countup() {
@@ -223,6 +216,15 @@
                 width: 20%;
                 border-radius: 10px;
             }
+            
+            .dropdown-content {
+                max-height: 0;
+                overflow: auto;
+            }
+
+            .dropdown-content h4 {
+                margin-bottom: -15px;
+            }
         </style>
 
         <td id="menu">
@@ -279,15 +281,18 @@
             <br><div class="dropdown">
                 <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
                 <div id="explanation-dropdown" class="dropdown-content">
-                    <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
-                    <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
-                    <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
-                </div>
+                    <h4>Nieuwe veranderingen ophalen:</h4>
+                        <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
+                    <h4>Bugs:</h4>
+                        <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
+                    <h4>Tabblad verberger:</h4>
+                        <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
+                    <h4>Zoeken op een pagina:</h4>
+                        <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
+                    </div>
             </div>
             <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
             <p id="battery-percentage"><p>
-        
-            <p>Zoeken op de site? Klik op ctrl + f om dat te doen.</p>
         
             <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to English or you can click right <a href="https://tcevik-github-io.translate.goog/?_x_tr_sl=nl&_x_tr_tl=en&_x_tr_hl=nl&_x_tr_pto=wapp">here<a>.</p>
         
