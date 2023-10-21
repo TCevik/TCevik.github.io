@@ -19,33 +19,7 @@
         }
 
         .dropdown-content.show {
-            max-height: 150px;
-            transition: max-height 0.7 ease;
-        }
-
-        .navigation {
-            background: transparent;
-            width: 100%;
-            margin-top: -10px;
-            padding: 10px 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            z-index: 1000;
-        }
-
-        .navigation a {
-            color: var(--text-color);
-            text-decoration: none;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease;
-            flex: 0 0 calc(10% - 40px);
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .navigation a:hover {
-            background-color: #555;
+            transition: max-height 0.7s ease;
         }
     </style>
     
@@ -141,11 +115,14 @@
 
         function toggleDropdown(category) {
             var dropdownContent = document.getElementById(category + "-dropdown");
-        
+
             if (dropdownContent.classList.contains("show")) {
+                dropdownContent.style.maxHeight = "0px"; // Verberg de dropdown
                 dropdownContent.classList.remove("show");
             } else {
                 dropdownContent.classList.add("show");
+                var height = dropdownContent.scrollHeight + "px"; // Bereken de werkelijke hoogte van de inhoud
+                dropdownContent.style.maxHeight = height; // Stel de maximale hoogte in op de werkelijke hoogte
             }
         }
 
