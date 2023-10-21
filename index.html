@@ -395,12 +395,10 @@
             .then(response => response.json())
             .then(data => {
                 const runsAmount = data.total_count;
-                var element1 = document.getElementById('runsAmount');
-                var element2 = document.getElementById('runsAmountNews');
+                var element = document.getElementById('runsAmountNews');
 
-                if (element1 && element2) {
-                    element1.textContent = runsAmount;
-                    element2.textContent = runsAmount;
+                if (element) {
+                    element.textContent = runsAmount;
                 }
             })
             .catch(error => {
@@ -411,26 +409,6 @@
         setInterval(fetchData, 5000);
 
         fetchData();
-
-        const navigationLinks = document.querySelectorAll('.navigation a');
-        const headerHeight = 10;
-
-        navigationLinks.forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
-
-                const targetId = link.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-
-                if (targetElement) {
-                    const targetOffset = targetElement.offsetTop - headerHeight;
-                    window.scrollTo({
-                        top: targetOffset,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
 
         function openNewTab() {
           var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd!";
