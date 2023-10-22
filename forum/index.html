@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Realtime Database</title>
+    <!-- Voeg hier de Firebase SDK toe -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+            authDomain: "tctam-d04b8.firebaseapp.com",
+            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tctam-d04b8",
+            storageBucket: "tctam-d04b8.appspot.com",
+            messagingSenderId: "793882705601",
+            appId: "1:793882705601:web:118e6ea26069867d0b5e40",
+            measurementId: "G-Q00YFYX8SP"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database service
+        const database = firebase.database();
+
+        // Haal de naam op uit de URL
+        const currentUrl = window.location.href;
+        const nameFromUrl = currentUrl.split('/').pop();
+
+        // Haal de tekst op uit de database op basis van de naam
+        database.ref(nameFromUrl).once('value').then((snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const text = data.text;
+                document.getElementById('displayText').innerText = text;
+            } else {
+                document.getElementById('displayText').innerText = 'Geen tekst gevonden voor deze URL.';
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Firebase Realtime Database</h1>
+    <div id="displayText"></div>
+</body>
+</html>
