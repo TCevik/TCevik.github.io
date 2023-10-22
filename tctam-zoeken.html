@@ -76,18 +76,31 @@
 
         function search() {
             var searchInput = document.getElementById("input").value;
-            
+
             if (searchInput.trim() === "") {
                 return;
             }
-          
-            var searchURL = "https://www.google.com/search?q=" + encodeURIComponent(searchInput);
-            openInNewTab(searchURL);
+        
+            if (isValidURL(searchInput)) {
+                openInNewTab(searchInput);
+            } else {
+                var searchURL = "https://www.google.com/search?q=" + encodeURIComponent(searchInput);
+                openInNewTab(searchURL);
+            }
         }
-    
+
         function openInNewTab(url) {
-            var newTab = window.open(url);
+            var newTab = window.open(url, '_blank');
             newTab.focus();
+        }
+
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;  
+            }
         }
     
         function handleKeyDown(event) {
