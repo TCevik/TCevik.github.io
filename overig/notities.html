@@ -58,7 +58,7 @@
                 userEmail = user.email.replace(/\./g, '_'); // Vervang de punten door underscores
             }
 
-            const nameRef = database.ref('userdata/notes/' + userEmail);
+            const nameRef = database.ref('userdata/' + userEmail + '/notes/');
 
             const userNote = document.getElementById('input').value;
             nameRef.set({
@@ -81,7 +81,7 @@
                     userEmail = user.email.replace(/\./g, '_');
                 }
 
-                const nameRef = database.ref('userdata/notes/' + userEmail);
+                const nameRef = database.ref('userdata/' + userEmail + '/notes/');
                 nameRef.once('value', function(snapshot) {
                     const userData = snapshot.val();
                     if (userData && userData.text) {
