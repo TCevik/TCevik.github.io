@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Realtime Database</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <!-- Voeg hier de Firebase SDK toe -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+            authDomain: "tctam-d04b8.firebaseapp.com",
+            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tctam-d04b8",
+            storageBucket: "tctam-d04b8.appspot.com",
+            messagingSenderId: "793882705601",
+            appId: "1:793882705601:web:118e6ea26069867d0b5e40",
+            measurementId: "G-Q00YFYX8SP"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database service
+        const database = firebase.database();
+
+        function submitData() {
+            const name = document.getElementById("name").value;
+            const text = document.getElementById("text").value;
+
+            database.ref('forum/' + name.toLowerCase().replace(/ /g, "-")).set({
+                text: text
+            });
+
+            const url = `https://tcevik.github.io/forum/${name.replace(/ /g, "-")}`;
+            window.location.href = url; // Deze regel zorgt ervoor dat je automatisch naar de link gaat.
+        }
+    </script>
+</head>
+<body>
+    <h1>Firebase Realtime Database</h1>
+    <h3 for="name">Naam van post:</h3><br>
+    <input style="margin-top: -20px;" type="text" id="name"><br><br>
+    <h3 style="margin-top: -20px;" for="text">Tekst:</h3><br>
+    <textarea style="margin-top: -20px;" id="text" rows="4" cols="50"></textarea><br><br>
+    <button onclick="submitData()">Verstuur</button><br><br>
+</body>
+</html>
