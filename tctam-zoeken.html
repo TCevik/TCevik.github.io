@@ -17,7 +17,7 @@
             top: 50%;
             left: 50%;
             width: 100vw;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -70%);
         }
 
         #input {
@@ -96,7 +96,7 @@
             }
         }
 
-        window.onload = function() {
+        function clickEnter() {
             var inputField = document.getElementById("input");
             inputField.addEventListener("keydown", handleKeyDown);
         }
@@ -126,9 +126,9 @@
         }
     </script>
 </head>
-<body onload="focusSearchBar()">
+<body onload="focusSearchBar(), clickEnter();">
     <div id="searchbar">
-        <h1 style="margin-bottom: -20px;">TC_tam</h1>
+        <h1 style="margin-bottom: -20px; font-size: 60px;">TC_tam</h1>
         <input type="text" id="input" placeholder="Zoekterm..." style="width: 60%;">
         <img id="mic-image" src="/assets/mic.png" onclick="startSpeechRecognition()" style="cursor: pointer; z-index: 9999; position: responsive; width: 60px; height: 60px; top: 50%; border-radius: 20%; transform: translateY(40%);">
         <br><button style="margin-top: -30px;" onclick="search()">Zoeken</button>
