@@ -250,3 +250,21 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+// Maak een script element
+var script = document.createElement('script');
+
+// Voeg de attributen toe aan het script element
+script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862';
+script.setAttribute('async', '');
+script.setAttribute('crossorigin', 'anonymous');
+
+// Vind het head element
+var head = document.querySelector('head');
+
+// Voeg het script element toe aan het head element
+if (head) {
+    head.appendChild(script);
+} else {
+    console.error("Head element niet gevonden.");
+}
