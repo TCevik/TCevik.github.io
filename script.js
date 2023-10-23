@@ -47,12 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
   gtag('config', 'G-7KL389S9VR');
 })();
 
-(function() {
-  var script = document.createElement('script');
-  script.setAttribute('async');
-  script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862';
-  script.setAttribute('crossorigin', 'anonymous');
-})();
+// Maak een nieuwe script tag element
+var script = document.createElement('script');
+script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862";
+script.setAttribute("crossorigin", "anonymous");
+script.setAttribute("async");
+var head = document.head || document.getElementsByTagName('head')[0];
+head.appendChild(script);
 
 document.addEventListener('DOMContentLoaded', function() {
   // Haal de huidige URL op
