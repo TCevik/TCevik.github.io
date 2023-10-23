@@ -60,7 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const currentURL = window.location.pathname;
 
   // Controleer of de URL begint met '/games/' of '/games?' (en optionele queryparameters)
-  if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?')) {
+if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') && 
+    !currentURL.startsWith('/sites/') && !currentURL.startsWith('/sites?')) {
     // Voeg een knop toe aan de pagina
     const loginButton = document.createElement("button");
     loginButton.style.position = "fixed";
