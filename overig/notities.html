@@ -93,9 +93,11 @@
             }
         };
 
-        setTimeout(() => {
-            load();
-        }, 500);
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(() => {
+                load();
+            }, 500);
+        });
     </script>
 </body>
 </html> 
