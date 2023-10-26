@@ -273,7 +273,11 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.setAttribute("id", "showCodeButton");
   showCodeButton.textContent = ">";
   showCodeButton.style.position = "fixed";
-  showCodeButton.style.left = "10px";
+  showCodeButton.style.left = "-5px";
+  showCodeButton.style.borderTopLeftRadius = "0px"
+  showCodeButton.style.borderBottomLeftRadius = "0px"
+  showCodeButton.style.paddingTop = "10px"
+  showCodeButton.style.paddingBottom = "10px"
   showCodeButton.style.top = "50%";
   showCodeButton.style.transform = "translateY(-50%)";
   showCodeButton.style.transition = "opacity 0.5s";
