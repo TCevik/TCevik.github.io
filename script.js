@@ -250,3 +250,133 @@ function setFavicon(faviconLink) {
   link.href = faviconLink;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  var showCodeButton = document.createElement("button");
+  showCodeButton.setAttribute("id", "showCodeButton");
+  showCodeButton.textContent = ">";
+  showCodeButton.style.position = "fixed";
+  showCodeButton.style.left = "10px";
+  showCodeButton.style.top = "50%";
+  showCodeButton.style.transform = "translateY(-50%)";
+  showCodeButton.style.transition = "opacity 0.5s"; // Fade-effect toegepast op de knop
+  document.body.appendChild(showCodeButton);
+
+  var closeButton = document.createElement("button"); // De knop voor het sluiten van het menu
+  closeButton.setAttribute("id", "closeButton");
+  closeButton.style.display = "none";
+  closeButton.textContent = "X";
+  closeButton.style.backgroundColor = "var(--background-color)";
+  closeButton.style.color = "var(--text-color)";
+  closeButton.style.position = "fixed";
+  closeButton.style.left = "5px";
+  closeButton.style.top = "5px";
+  closeButton.style.zIndex = "3";
+  closeButton.style.transition = "opacity 0.5s"; // Fade-effect toegepast op de knop
+  document.body.appendChild(closeButton);
+
+  var menuVisible = false; // Een variabele om bij te houden of het menu zichtbaar is
+
+  showCodeButton.addEventListener("click", function () {
+      if (!menuVisible) {
+          var codeElement = document.createElement("div");
+          codeElement.setAttribute("id", "menu");
+          codeElement.style.opacity = 0; // Stel de oorspronkelijke opaciteit van het menu in op 0
+          codeElement.style.transition = "opacity 0.5s"; // Stel de overgangseigenschap in voor de opaciteit
+          codeElement.innerHTML = code;
+          document.body.appendChild(codeElement);
+          setTimeout(function () {
+              codeElement.style.opacity = 1; // Stel de uiteindelijke opaciteit in op 1 om in te faden
+          }, 0);
+          showCodeButton.style.opacity = 0; // Fade-effect voor het knopelement
+          closeButton.style.display = "block"; // Laat de knop voor het sluiten van het menu zien
+          closeButton.style.opacity = 1; // Fade-effect voor het knopelement
+          menuVisible = true;
+      }
+  });
+
+  closeButton.addEventListener("click", function () {
+      var menu = document.getElementById("menu");
+      if (menu) {
+          menu.style.opacity = 0; // Stel de opaciteit in op 0 om uit te faden
+          setTimeout(function () {
+              menu.remove();
+          }, 500); // Wacht tot de overgang is voltooid voordat het menu wordt verwijderd
+          showCodeButton.style.opacity = 1; // Fade-effect voor het knopelement
+          closeButton.style.opacity = 0; // Fade-effect voor het knopelement
+          setTimeout(function () {
+              closeButton.style.display = "none"; // Verberg de knop voor het sluiten van het menu
+          }, 500); // Wacht tot de overgang is voltooid voordat de knop wordt verborgen
+          menuVisible = false;
+      }
+  });
+});
+
+
+          var code = `
+          <td id="menu">
+          <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+          <button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
+          <button id="ex-bt" onclick="window.location.href='tctam-zoeken'">TC_tam zoeken</button>
+          <button onclick="window.location.href='games/alle-games'">Games</button>
+          <button onclick="window.location.href='verhalen/alle-verhalen'">Mijn verhalen</button>
+
+          <h3 id="algemeen">Algemeen</h3>
+          <button onclick="scrollToOverMij();">Over mij</button>
+          <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+      
+          <h3 style="margin-top: 50px;" id="overig">Overig</h3>
+          <button onclick="window.location.href='overig/bing-chat'">Bing Ai (GPT 4)</button>
+          <button onclick="window.location.href='overig/myinstants'">MyInstants</button>
+          <button onclick="window.location.href='overig/kahoot-spam'">Kahoot spam/hack</button>
+          <button onclick="window.location.href='overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+          <button onclick="window.location.href='overig/notities'">Notities</button>
+          <button onclick="window.location.href='overig/ide'">IDE</button>
+          <button onclick="window.location.href='overig/tts'">TTS</button>
+          
+          <h3 style="margin-top: 50px;" id="ex-pag">Login Pagina's</h3>
+          <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
+                  
+          <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
+          <button onclick="window.location.href='web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
+          <button onclick="window.location.href='school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
+          <button onclick="window.location.href='school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
+          <button onclick="window.location.href='school-hacks/bookmarklets'">Bookmarklets</button>
+          <button onclick="window.location.href='school-hacks/dns-unblock'">DNS Unblock</button>
+          <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
+          <button onclick="window.location.href='school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
+      
+              <h4 id="extensiehacks">Extensie Hacks</h4>
+              <button onclick="window.location.href='school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
+              <button onclick="window.location.href='school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
+              <button onclick="window.location.href='school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
+      
+              <h4 id="proxysemulators">Proxys - Emulators</h4>
+              <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
+              <button onclick="window.location.href='school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
+              <button onclick="window.location.href='school-hacks/proxys-emulators/proxy'">Proxy met tab verberger (gebruik bovenste zoekbalk)</button>
+
+          <h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
+          <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
+          <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
+          <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
+          <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
+      </td>
+          `;
