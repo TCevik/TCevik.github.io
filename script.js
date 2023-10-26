@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
 
-  var menuVisible = false;
+  var menuVisible = true; // Menu is standaard zichtbaar
 
   showCodeButton.addEventListener("click", function () {
     if (!menuVisible) {
@@ -358,20 +358,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Check for existing cookie on page load
+  var currentPage = window.location.pathname;
   var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  if (cookieValue === "true") {
-    var codeElement = document.createElement("div");
-    codeElement.setAttribute("id", "menu");
-    codeElement.style.opacity = 1;
-    codeElement.style.transition = "opacity 0.5s";
-    codeElement.innerHTML = code;
-    document.body.appendChild(codeElement);
-    showCodeButton.style.opacity = 0;
-    closeButton.style.display = "block";
-    closeButton.style.opacity = 1;
+  if (cookieValue === "true" || currentPage === "/") {
     menuVisible = true;
   }
 });
+
 
 
           var code = `
