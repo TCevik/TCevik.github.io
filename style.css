@@ -39,6 +39,24 @@ body {
   }
 }
 
+#menu button {
+  width: 95%;
+  margin-top: 10px;
+}
+
+#menu {
+    width: 20%;
+    position: fixed;
+    max-height: 100vh;
+    overflow-y: auto;
+    background-color: var(--background-color);
+    z-index: 2;
+    top: 0%;
+    bottom: 0%;
+    left: 0;
+    border-right: var(--h1234-color) 3px solid;
+}
+
 #top-left-button {
   position: fixed;
   left: 5px;
