@@ -7,7 +7,6 @@ body {
   position: relative;
   width: 95%;
   text-align: center;
-  overflow-x: hidden;
   transition: 0.5s;
 }
 
@@ -25,6 +24,7 @@ body {
   --button-padding: 7px;
   --button-bgcolor: #379429;
   --button-shadow: #2e7a22;
+  overflow-x: hidden;
 }
 
 /* dark mode */
