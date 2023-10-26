@@ -378,9 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <td id="menu">
           <button onclick="window.location.href='/'">Home</button>
           <h3 id="algemeen">Algemeen</h3>
-          <button onclick="scrollToOverMij();">Over mij</button>
           <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
-          <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
           <button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
           <button id="ex-bt" onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
           <button onclick="window.location.href='/games/alle-games'">Games</button>
