@@ -276,10 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.style.left = "10px";
   showCodeButton.style.top = "50%";
   showCodeButton.style.transform = "translateY(-50%)";
-  showCodeButton.style.transition = "opacity 0.5s"; // Fade-effect toegepast op de knop
+  showCodeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(showCodeButton);
 
-  var closeButton = document.createElement("button"); // De knop voor het sluiten van het menu
+  var closeButton = document.createElement("button");
   closeButton.setAttribute("id", "closeButton");
   closeButton.style.display = "none";
   closeButton.textContent = "X";
@@ -289,44 +289,65 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.left = "5px";
   closeButton.style.top = "5px";
   closeButton.style.zIndex = "3";
-  closeButton.style.transition = "opacity 0.5s"; // Fade-effect toegepast op de knop
+  closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
 
-  var menuVisible = false; // Een variabele om bij te houden of het menu zichtbaar is
+  var menuVisible = false;
 
   showCodeButton.addEventListener("click", function () {
-      if (!menuVisible) {
-          var codeElement = document.createElement("div");
-          codeElement.setAttribute("id", "menu");
-          codeElement.style.opacity = 0; // Stel de oorspronkelijke opaciteit van het menu in op 0
-          codeElement.style.transition = "opacity 0.5s"; // Stel de overgangseigenschap in voor de opaciteit
-          codeElement.innerHTML = code;
-          document.body.appendChild(codeElement);
-          setTimeout(function () {
-              codeElement.style.opacity = 1; // Stel de uiteindelijke opaciteit in op 1 om in te faden
-          }, 0);
-          showCodeButton.style.opacity = 0; // Fade-effect voor het knopelement
-          closeButton.style.display = "block"; // Laat de knop voor het sluiten van het menu zien
-          closeButton.style.opacity = 1; // Fade-effect voor het knopelement
-          menuVisible = true;
-      }
+    if (!menuVisible) {
+      var codeElement = document.createElement("div");
+      codeElement.setAttribute("id", "menu");
+      codeElement.style.opacity = 0;
+      codeElement.style.transition = "opacity 0.5s";
+      codeElement.innerHTML = code;
+      document.body.appendChild(codeElement);
+      setTimeout(function () {
+        codeElement.style.opacity = 1;
+      }, 0);
+      showCodeButton.style.opacity = 0;
+      closeButton.style.display = "block";
+      closeButton.style.opacity = 1;
+      menuVisible = true;
+
+      // Save menu visibility to cookie
+      document.cookie = "menuVisible=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    }
   });
 
   closeButton.addEventListener("click", function () {
-      var menu = document.getElementById("menu");
-      if (menu) {
-          menu.style.opacity = 0; // Stel de opaciteit in op 0 om uit te faden
-          setTimeout(function () {
-              menu.remove();
-          }, 500); // Wacht tot de overgang is voltooid voordat het menu wordt verwijderd
-          showCodeButton.style.opacity = 1; // Fade-effect voor het knopelement
-          closeButton.style.opacity = 0; // Fade-effect voor het knopelement
-          setTimeout(function () {
-              closeButton.style.display = "none"; // Verberg de knop voor het sluiten van het menu
-          }, 500); // Wacht tot de overgang is voltooid voordat de knop wordt verborgen
-          menuVisible = false;
-      }
+    var menu = document.getElementById("menu");
+    if (menu) {
+      menu.style.opacity = 0;
+      setTimeout(function () {
+        menu.remove();
+      }, 500);
+      showCodeButton.style.opacity = 1;
+      closeButton.style.opacity = 0;
+      setTimeout(function () {
+        closeButton.style.display = "none";
+      }, 500);
+      menuVisible = false;
+
+      // Save menu visibility to cookie
+      document.cookie = "menuVisible=false; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    }
   });
+
+  // Check for existing cookie on page load
+  var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  if (cookieValue === "true") {
+    var codeElement = document.createElement("div");
+    codeElement.setAttribute("id", "menu");
+    codeElement.style.opacity = 1;
+    codeElement.style.transition = "opacity 0.5s";
+    codeElement.innerHTML = code;
+    document.body.appendChild(codeElement);
+    showCodeButton.style.opacity = 0;
+    closeButton.style.display = "block";
+    closeButton.style.opacity = 1;
+    menuVisible = true;
+  }
 });
 
 
