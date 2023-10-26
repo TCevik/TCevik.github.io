@@ -334,6 +334,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  document.addEventListener("click", function (event) {
+    var menu = document.getElementById("menu");
+    var showCodeButton = document.getElementById("showCodeButton");
+    var closeButton = document.getElementById("closeButton");
+
+    // Als het menu open is en er ergens anders dan op het menu wordt geklikt, sluit dan het menu.
+    if (menu && !menu.contains(event.target) && event.target !== showCodeButton) {
+      menu.style.opacity = 0;
+      setTimeout(function () {
+        menu.remove();
+      }, 500);
+      showCodeButton.style.opacity = 1;
+      closeButton.style.opacity = 0;
+      setTimeout(function () {
+        closeButton.style.display = "none";
+      }, 500);
+      menuVisible = false;
+
+      // Save menu visibility to cookie
+      document.cookie = "menuVisible=false; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    }
+  });
+
   // Check for existing cookie on page load
   var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   if (cookieValue === "true") {
