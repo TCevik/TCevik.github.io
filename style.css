@@ -97,16 +97,9 @@ button {
   padding: var(--button-padding);
   font-size: var(--font-size);
   margin: 0.3%;
-  transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s, box-shadow 0.2s;
+  transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s;
   transform-origin: center;
   z-index: 1;
-  box-shadow: 0 5px 0 var(--button-shadow);
-}
-
-button:active {
-  box-shadow: none;
-  transform: translateY(5px);
-  padding: var(--button-padding);
 }
 
 button:hover {

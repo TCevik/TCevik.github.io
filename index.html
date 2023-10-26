@@ -215,8 +215,17 @@
 
             #menu {
                 width: 20%;
-                border-radius: 10px;
+                position: fixed;
+                max-height: 100vh;
+                overflow-y: auto;
+                background-color: var(--background-color);
+                z-index: 2;
+                top: 0%;
+                bottom: 0%;
+                left: 0;
+                border-right: var(--h1234-color) 3px solid;
             }
+
             
             .dropdown-content {
                 max-height: 0;
@@ -229,8 +238,6 @@
         </style>
 
         <td id="menu">
-            <br>
-            <br>
             <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
             <button id="ex-bt" onclick="window.location.href='login-exclusive'">Exclusieve Pagina's</button>
             <button id="ex-bt" onclick="window.location.href='tctam-zoeken'">TC_tam zoeken</button>
@@ -279,7 +286,7 @@
             <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
         </td>
 
-        <td id="info" style="position: absolute; width: calc(100% - menu);">
+        <td id="info" style="position: absolute; width: calc(100% - 20%); right: 0;">
             <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
             <h3>Door Tamer Çevik</h3>
             <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
