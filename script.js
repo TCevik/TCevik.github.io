@@ -268,17 +268,6 @@ function setFavicon(faviconLink) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
   var showCodeButton = document.createElement("button");
   showCodeButton.setAttribute("id", "showCodeButton");
@@ -303,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
 
-  var menuVisible = true; // Menu is standaard zichtbaar
+  var menuVisible = false;
 
   showCodeButton.addEventListener("click", function () {
     if (!menuVisible) {
@@ -371,6 +360,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // Check for existing cookie on page load
   var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   if (cookieValue === "true") {
+    var codeElement = document.createElement("div");
+    codeElement.setAttribute("id", "menu");
+    codeElement.style.opacity = 1;
+    codeElement.style.transition = "opacity 0.5s";
+    codeElement.innerHTML = code;
+    document.body.appendChild(codeElement);
+    showCodeButton.style.opacity = 0;
+    closeButton.style.display = "block";
+    closeButton.style.opacity = 1;
     menuVisible = true;
   }
 });
