@@ -425,3 +425,60 @@ var code = `
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">View Site Code</button>
 </td>
 `;
+
+
+const canvas = document.createElement('canvas');
+canvas.id = 'backgroundCanvas';
+document.body.appendChild(canvas);
+
+const style = canvas.style;
+style.position = 'fixed';
+style.top = '0';
+style.left = '0';
+style.zIndex = '-1';
+
+const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+let stars = [];
+let count = 200;
+
+for (let i = 0; i < count; i++) {
+    stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.2,
+        alpha: Math.random(),
+        decreasing: true
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < count; i++) {
+        let star = stars[i];
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + star.alpha + ')';
+        ctx.fill();
+
+        if (star.decreasing) {
+            star.alpha -= 0.005;
+            if (star.alpha < 0.1) star.decreasing = false;
+        } else {
+            star.alpha += 0.005;
+            if (star.alpha > 0.95) star.decreasing = true;
+        }
+    }
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+window.addEventListener('resize', function () {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
