@@ -378,50 +378,50 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-          var code = `
-          <td id="menu">
-          <button onclick="window.location.href='/'">Home</button>
-          <h3 id="algemeen">Algemeen</h3>
-          <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
-          <button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
-          <button id="ex-bt" onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
-          <button onclick="window.location.href='/games/alle-games'">Games</button>
-          <button onclick="window.location.href='/verhalen/alle-verhalen'">Mijn verhalen</button>
-      
-          <h3 style="margin-top: 50px;" id="overig">Overig</h3>
-          <button onclick="window.location.href='/overig/bing-chat'">Bing Ai (GPT 4)</button>
-          <button onclick="window.location.href='/overig/myinstants'">MyInstants</button>
-          <button onclick="window.location.href='/overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
-          <button onclick="window.location.href='/overig/notities'">Notities</button>
-          <button onclick="window.location.href='/overig/ide'">IDE</button>
-          <button onclick="window.location.href='/overig/tts'">TTS</button>
-          
-          <h3 style="margin-top: 50px;" id="ex-pag">Login Pagina's</h3>
-          <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
-                  
-          <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
-          <button onclick="window.location.href='/web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
-          <button onclick="window.location.href='/school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
-          <button onclick="window.location.href='/school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
-          <button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
-          <button onclick="window.location.href='/school-hacks/dns-unblock'">DNS Unblock</button>
-          <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
-          <button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
-      
-              <h4 id="extensiehacks">Extensie Hacks</h4>
-              <button onclick="window.location.href='/school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
-              <button onclick="window.location.href='/school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
-              <button onclick="window.location.href='/school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
-      
-              <h4 id="proxysemulators">Proxys - Emulators</h4>
-              <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
-              <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
-              <button onclick="window.location.href='/school-hacks/proxys-emulators/proxy'">Proxy met tab verberger (gebruik bovenste zoekbalk)</button>
+var code = `
+<td id="menu">
+    <button onclick="window.location.href='/'">Home</button>
+    <h3 id="algemeen">Algemeen</h3>
+    <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+    <button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
+    <button id="ex-bt" onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
+    <button onclick="window.location.href='/games/alle-games'">Games</button>
+    <button onclick="window.location.href='/verhalen/alle-verhalen'">Mijn verhalen</button>
 
-          <h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
-          <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
-          <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
-          <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-          <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
-      </td>
-          `;
+    <h3 style="margin-top: 50px;" id="overig">Overig</h3>
+    <button onclick="window.location.href='/overig/bing-chat'">Bing Ai (GPT 4)</button>
+    <button onclick="window.location.href='/overig/myinstants'">MyInstants</button>
+    <button onclick="window.location.href='/overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+    <button onclick="window.location.href='/overig/notities'">Notities</button>
+    <button onclick="window.location.href='/overig/ide'">IDE</button>
+    <button onclick="window.location.href='/overig/tts'">TTS</button>
+
+    <h3 style="margin-top: 50px;" id="ex-pag">Login Pagina's</h3>
+    <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
+
+    <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
+    <button onclick="window.location.href='/web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
+    <button onclick="window.location.href='/school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
+    <button onclick="window.location.href='/school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
+    <button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
+    <button onclick="window.location.href='/school-hacks/dns-unblock'">DNS Unblock</button>
+    <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
+    <button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
+
+    <h4 id="extensiehacks">Extensie Hacks</h4>
+    <button onclick="window.location.href='/school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
+    <button onclick="window.location.href='/school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
+    <button onclick="window.location.href='/school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
+
+    <h4 id="proxysemulators">Proxys - Emulators</h4>
+    <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
+    <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
+    <button onclick="window.location.href='/school-hacks/proxys-emulators/proxy'">Proxy met tab verberger (gebruik bovenste zoekbalk)</button>
+
+    <h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
+    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
+    <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
+    <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
+    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
+</td>
+`;
