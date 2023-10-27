@@ -115,7 +115,7 @@ var messages = [
   "Hier was je bezig, bij TC_tam!",
   "TC_tam: blijf bij mij!",
   "Let goed op TC_tam!",
-  "TC_tam: kom je snel terug?",
+  "TC_tam: kom je snel Back?",
   "TC_tam: wat doe je nou?",
   "TC_tam: hier moet je zijn!"
 ];
@@ -143,7 +143,7 @@ function getCookie(name) {
   return null;
 }
 
-// Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
+// Functie om de titel Back te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
 function restoreTitle() {
   const stopTabNamesCookie = getCookie("stopTabNames");
 
