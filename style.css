@@ -7,7 +7,7 @@ body {
   position: relative;
   width: 95%;
   text-align: center;
-  transition: 1s;
+  transition: 1s, all ease;
 }
 
 /* light mode and default mode */
