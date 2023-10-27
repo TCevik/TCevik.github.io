@@ -388,13 +388,13 @@ var code = `
     <button onclick="window.location.href='/games/all-games'">Games</button>
     <button onclick="window.location.href='/stories/all-stories'">My Stories</button>
 
-    <h3 style="margin-top: 50px;" id="miscellaneous">Miscellaneous</h3>
-    <button onclick="window.location.href='/miscellaneous/bing-chat'">Bing Ai (GPT 4)</button>
-    <button onclick="window.location.href='/miscellaneous/myinstants'">MyInstants</button>
-    <button onclick="window.location.href='/miscellaneous/hz-sounds'">Play Sounds from 20 - 20,000 Hz (including school bell)</button>
-    <button onclick="window.location.href='/miscellaneous/notes'">Notes</button>
-    <button onclick="window.location.href='/miscellaneous/ide'">IDE</button>
-    <button onclick="window.location.href='/miscellaneous/tts'">TTS</button>
+    <h3 style="margin-top: 50px;" id="other">Other</h3>
+    <button onclick="window.location.href='/other/bing-chat'">Bing Ai (GPT 4)</button>
+    <button onclick="window.location.href='/other/myinstants'">MyInstants</button>
+    <button onclick="window.location.href='/other/hz-sounds'">Play Sounds from 20 - 20,000 Hz (including school bell)</button>
+    <button onclick="window.location.href='/other/notes'">Notes</button>
+    <button onclick="window.location.href='/other/ide'">IDE</button>
+    <button onclick="window.location.href='/other/tts'">TTS</button>
 
     <h3 style="margin-top: 50px;" id="login-pages">Login Pages</h3>
     <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
