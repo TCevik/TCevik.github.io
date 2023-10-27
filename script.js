@@ -444,42 +444,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let stars = [];
   let count = 500;
 
-  for (let i = 0; i < count; i++) {
+  function generateStars() {
+    stars = [];
+    for (let i = 0; i < count; i++) {
       stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 1.2,
-          alpha: Math.random(),
-          decreasing: true
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.2,
+        alpha: Math.random(),
+        decreasing: true
       });
+    }
   }
 
+  generateStars();
+
   function draw() {
-      ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < count; i++) {
-          let star = stars[i];
-          ctx.beginPath();
-          ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-          ctx.fillStyle = 'rgba(255, 255, 255, ' + star.alpha + ')';
-          ctx.fill();
+    for (let i = 0; i < count; i++) {
+      let star = stars[i];
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + star.alpha + ')';
+      ctx.fill();
 
-          if (star.decreasing) {
-              star.alpha -= 0.005;
-              if (star.alpha < 0.1) star.decreasing = false;
-          } else {
-              star.alpha += 0.005;
-              if (star.alpha > 0.95) star.decreasing = true;
-          }
+      if (star.decreasing) {
+        star.alpha -= 0.005;
+        if (star.alpha < 0.1) star.decreasing = false;
+      } else {
+        star.alpha += 0.005;
+        if (star.alpha > 0.95) star.decreasing = true;
       }
+    }
 
-      requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
   }
 
   draw();
 
   window.addEventListener('resize', function () {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    generateStars();
   });
 });
