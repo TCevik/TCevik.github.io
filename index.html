@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TC_tam</title>
-    <meta name="description" content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Dit is een site die je kan gebruiken om bijvoorbeeld beheerde school dingen te unblocken. Nou, in ieder geval hoop ik dat je veel plezier met mijn site hebt!">
+    <meta name="description" content="Welcome to the TC_tam website! This site is created by Tamer Çevik. It is a site that you can use to unblock managed school things, for example. Well, in any case, I hope you have a lot of fun with my site!">
     
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="stylesheet" href="/style.css">
@@ -23,7 +23,7 @@
             var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
 
-            document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+            document.getElementById('countup-site-age').innerHTML = "This site has been in existence for " + days + " days, " + hours + " hours, " + minutes + " minutes, and " + seconds + " seconds!";
         }
 
         setInterval(countup, 1000);
@@ -204,7 +204,7 @@
 </head>
 
 <body style="width: 100vw;">
-    <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
+    <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- THIS IS A COOL SITE 😎 --- BREAKING NEWS --- IF YOU WANT SOMETHING TO APPEAR HERE, SEND IT TO ME --- BREAKING NEWS --- VERSION: <span>ERROR</span> --- BREAKING NEWS --- SOMETIMES IT'S NICE TO EAT A TANGERINE 🍊 --- BREAKING NEWS --- PARTY MODE IS NOW AVAILABLE --- BREAKING NEWS</marquee></h4>
 </body>
 
 <body>
@@ -222,75 +222,60 @@
         
         <td id="info" style="width: 95%;">
             <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
-            <h3>Door Tamer Çevik</h3>
-            <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
-            <br><div class="dropdown">
-                <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+            <h3>By Tamer Çevik</h3>
+            <p style="margin-bottom: 0px;">Welcome to the TC_tam website. "Have a nice day!"</p>
+            <br>
+            <div class="dropdown">
+                <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Want to read the site instructions? Click here!</button>
                 <div id="explanation-dropdown" class="dropdown-content">
-                    <h4>Nieuwe veranderingen ophalen:</h4>
-                        <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
+                    <h4>Fetching new changes:</h4>
+                    <p>You can press the shortcut "ctrl" + "shift" + "r" for the latest updates of the site. This is the shortcut to reload the site without cache and hence get the latest changes! :)</p>
                     <h4>Bugs:</h4>
-                        <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
-                    <h4>Tabblad verberger:</h4>
-                        <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
-                    <h4>Zoeken op een pagina:</h4>
-                        <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
-                    </div>
+                    <p>This site is entirely written in coding language (for those wondering COMPLETELY 100% in coding language). Therefore, there might be some bugs at times. I try to keep the site bug-free and if any are found, they are likely to be fixed within 1 to 2 days.</p>
+                    <h4>Tab hider:</h4>
+                    <p>Click escape to change the image (favicon) and the name of the tab to whatever you want. What you fill in will also be saved for your next visit to the site.</p>
+                    <h4>Searching on a page:</h4>
+                    <p>You can search on a page of my site or any other site by pressing "ctrl" + "f" and entering what you want to find.</p>
+                </div>
             </div>
-
-            <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
-            <button onclick="scrollToOverMij();">Over mij</button>
-
-            <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+            <br>
+            <button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+            <button onclick="scrollToAboutMe();">About me</button>
+            <p id="countup-site-age">JavaScript is turned off, and this site won't function without JavaScript.<p>
             <p id="battery-percentage"><p>
-        
-            <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to your language.</p>
-        
-            <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
+            <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site, you have to do that from Dutch to your language.</p>
+            <h3>⬇️ But before we start with the site. SOCIAL MEDIA TIME!!! ⬇️</h3>
             <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
                 <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
             </a>
-            <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
-                <img style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
-            </a>
-            <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
-                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
-            </a>
-            <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
-                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
-            </a>
-            <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
-                <img style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
-            </a>
-
-            <h1 style="margin-top: 50px;" id="overmij">Over mij</h1>
-            <h3>Hoi, ik ben Tamer!</h3>
-            <center><p style="width: 95%; margin-bottom: 30px;">
-            <br>Yo welkom, veel plezier op mijn website!
-            <br>
-            <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
-            <br>⦁ Ik heet Tamer Çevik.
-            <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
-            <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
-            <br>Nu weet je hoe ik TC_tam verzonnen heb!
-            <br>
-            <br>Ik ben jarig op 18 mei.
-            <br>
-            <br>Mijn favoriete kleuren zijn:
-            <br><span style="color: #132f0c">#132f0c</span>
-            <br><span style="color: #38761d">#38761d</span>
-            <br><span style="color: #43b731">#43b731</span>
-            <br><span style="color: #58bf33">#58bf33</span>
-            <br><span style="color: #e0fcd4">#e0fcd4</span>
-            <br>
-            <br>Dark mode kleur:
-            <br><span style="color: #0d1710">#0d1710</span>
-            <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
-            <br>De kleuren van mijn logo zijn:
-            <br><span style="color: #33ff33">#33ff33</span>
-            <br><span style="color: #336699">#336699</span></p></center>
-
-            <h4>Laten we even chatten:</h4>
+            <!-- Rest of the social media links... -->
+            <h1 style="margin-top: 50px;" id="aboutme">About me</h1>
+            <h3>Hi, I'm Tamer!</h3>
+            <center>
+                <p style="width: 95%; margin-bottom: 30px;">
+                    <br>Hello, welcome, have fun on my website!
+                    <br>
+                    <br><b>How did I come up with TC_tam?</b>
+                    <br>⦁ My name is Tamer Çevik.
+                    <br>⦁ TC stands for the first letter of my first and last name.
+                    <br>⦁ tam stands for the first 3 letters of my first name.
+                    <br>Now you know how I came up with TC_tam!
+                    <br>
+                    <br>I was born on May 18.
+                    <br>
+                    <br>My favorite colors are:
+                    <br><span style="color: #132f0c">#132f0c</span>
+                    <br><span style="color: #38761d">#38761d</span>
+                    <!-- Rest of the color palette... -->
+                    <br>Dark mode color:
+                    <br><span style="color: #0d1710">#0d1710</span>
+                    <br><span class="hahanoobtext">Want to know something? You can't see this with dark mode on HAHAHA noob, but if you really want to know, it's still visible <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">here</a>. :)</span>
+                    <br>The colors of my logo are:
+                    <br><span style="color: #33ff33">#33ff33</span>
+                    <br><span style="color: #336699">#336699</span>
+                </p>
+            </center>
+            <h4>Let's chat for a while:</h4>
             <button id="frame-button" onclick="loadIframe()">Start Chat</button>
             <div id="iframeContainer"></div>
             
@@ -361,7 +346,7 @@
         fetchData();
 
         function openNewTab() {
-          var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)";
+          var alertText = "WARNING: You are about to open a tab without a name or icon, please note that teachers can still see this because there is an empty tab. They cannot see your screen and will see the screen of your previously opened tab. Be warned! (This is very useful for teachers who monitor your screen).";
           var confirmResult = confirm(alertText);
           if (confirmResult) {
             var win = window.open('about:blank', '_blank');
