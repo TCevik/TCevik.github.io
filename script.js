@@ -391,7 +391,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <h3 style="margin-top: 50px;" id="overig">Overig</h3>
           <button onclick="window.location.href='/overig/bing-chat'">Bing Ai (GPT 4)</button>
           <button onclick="window.location.href='/overig/myinstants'">MyInstants</button>
-          <button onclick="window.location.href='/overig/kahoot-spam'">Kahoot spam/hack</button>
           <button onclick="window.location.href='/overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
           <button onclick="window.location.href='/overig/notities'">Notities</button>
           <button onclick="window.location.href='/overig/ide'">IDE</button>
