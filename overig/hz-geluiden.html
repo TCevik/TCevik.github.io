@@ -12,14 +12,12 @@
         function playSound() {
             var frequencyInput = document.getElementById("frequency-input");
             var durationInput = document.getElementById("duration-input");
-            var delayInput = document.getElementById("delay-input");
             
             var frequency = parseInt(frequencyInput.value);
             var duration = parseInt(durationInput.value);
-            var delay = parseInt(delayInput.value);
             
-            if (isNaN(frequency) || isNaN(duration) || isNaN(delay)) {
-                alert("Voer geldige waarden in voor frequentie, duur en vertraging.");
+            if (isNaN(frequency) || isNaN(duration)) {
+                alert("Voer geldige waarden in voor frequentie en duur.");
                 return;
             }
             
@@ -38,12 +36,6 @@
 
             setTimeout(function() {
                 oscillator.stop();
-                // Check if the delay is greater than 0 and replay the sound
-                if (delay > 0) {
-                    setTimeout(function() {
-                        playSound();
-                    }, delay);
-                }
             }, duration);
         }
     </script>
@@ -60,9 +52,6 @@
     <p>1000ms = 1sec | 1500ms = 1,5sec</p>
     <label for="duration-input">Speelduur (ms):</label>
     <input id="duration-input" min="0" value="2500">
-    <br>
-    <label for="delay-input">Speel opnieuw na stop in (ms):</label>
-    <input id="delay-input" min="0" value="0" placeholder="0 = niet herhalen">
     <br>
     <button onclick="playSound()">Speel geluid af</button>
 </body>
