@@ -106,18 +106,18 @@
             var overlay = document.createElement("div");
             overlay.classList.add("overlay");
             document.body.appendChild(overlay);
-
+                
             var popup = document.createElement("div");
             popup.classList.add("popup");
             popup.style.opacity = 0;
             popup.style.top = "50px";
             popup.style.bottom = "50px";
-            popup.style.transition = "opacity 0.5s";
+            popup.style.transition = "opacity 0.3s";
             popup.style.width = "calc(100vw - 150px)";
             popup.style.position = "fixed";
-            popup.style.left = "calc(100vw / 2)";
-            popup.style.transform = "translate(-50%)";
-
+            popup.style.left = "50%";
+            popup.style.transform = "translateX(-50%)";
+                
             var closeBtn = document.createElement("button");
             closeBtn.classList.add("close");
             closeBtn.innerHTML = "Sluiten";
@@ -131,7 +131,8 @@
                 document.body.style.overflowY = "auto";
                 setTimeout(function () {
                     document.body.removeChild(popup);
-                }, 500);
+                    document.body.removeChild(overlay);
+                }, 300);
             };
         
             popup.appendChild(closeBtn);
@@ -151,8 +152,8 @@
         
             var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
             elementsToBlur.forEach(function (element) {
-                element.style.transition = "filter 0.5s";
-                element.style.filter = "blur(3px)";
+                element.style.transition = "filter 0.3s";
+                element.style.filter = "blur(2px)";
             });
         
             overlay.style.position = "fixed";
