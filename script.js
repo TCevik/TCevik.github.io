@@ -276,8 +276,8 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.style.left = "-5px";
   showCodeButton.style.borderTopLeftRadius = "0px"
   showCodeButton.style.borderBottomLeftRadius = "0px"
-  showCodeButton.style.paddingTop = "50px"
-  showCodeButton.style.paddingBottom = "50px"
+  showCodeButton.style.paddingTop = "25px"
+  showCodeButton.style.paddingBottom = "25px"
   showCodeButton.style.top = "50%";
   showCodeButton.style.transform = "translateY(-50%)";
   showCodeButton.style.transition = "opacity 0.5s";
