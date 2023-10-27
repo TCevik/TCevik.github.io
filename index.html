@@ -31,7 +31,7 @@
         function updateBatteryLevel() {
             navigator.getBattery().then(function(battery) {
                 var batteryLevel = battery.level * 100;
-                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + Math.round(batteryLevel) + "%";
+                document.getElementById("battery-percentage").innerHTML = "Battery level: " + Math.round(batteryLevel) + "%";
             });
         }
 
@@ -41,7 +41,7 @@
             if ('getBattery' in navigator) {
                 updateBatteryLevel();
             } else {
-                document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
+                document.getElementById("battery-percentage").innerHTML = "Batterylevel couldn't be seen.";
             }
         });
 
@@ -306,7 +306,7 @@
         </td>
     </table>
 
-    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
+    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Secret button</button>
     <script>
         function loadIframe() {
             var button = document.getElementById('frame-button');
@@ -350,7 +350,7 @@
                 }
             })
             .catch(error => {
-                console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
+                console.error('Error with recieving GitHub Workflow-runs:', error);
             });
         }
 
