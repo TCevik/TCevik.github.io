@@ -442,7 +442,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let height = canvas.height = window.innerHeight;
 
   let stars = [];
-  let count = 200;
+  let count = 500;
 
   for (let i = 0; i < count; i++) {
       stars.push({
