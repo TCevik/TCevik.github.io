@@ -1,12 +1,12 @@
-Hallo mensen,
+Hello everyone,
 
-Welkom op de TC_tam site, gemaakt door Tamer Çevik.
-Je kunt hier allemaal handige tools vinden en gebruiken.
+Welcome to the TC_tam site, created by Tamer Çevik.
+Here, you can find and use a variety of useful tools.
 
-Zo kan je als je school bijvoorbeeld allemaal dingen blokkeerd de proxy's gebruiken. Of allemaal handige bookmarklets vinden om ook je school te hacken.
-Of misschien als je school niet wil hacken kun je gewoon wat verhalen over mij lezen.
-Of als dit je allemaal niet aanstaat, kan je ook gewoon games spelen.
+For instance, if your school blocks certain things, you can use proxies. You can also discover handy bookmarklets for hacking at your school.
+Alternatively, if you're not into hacking, you can simply read some stories about me.
+And if none of this appeals to you, you can also just play games.
 
-Er is gewoon een hoop te doen en er komt steeds meer en meer bij!.
+There's plenty to do, and more is being added all the time!
 
-Veel succes!
+Best of luck!

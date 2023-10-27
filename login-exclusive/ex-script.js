@@ -3,7 +3,7 @@ const loggedIn = localStorage.getItem('loggedIn'); {
   if (loggedIn === 'true') {
 
   } else {
-    alert("Dit is een exclusieve pagina. Maak een account om door te gaan.")
+    alert("This is an exclusive page. Create an account to continiue.")
     window.location.href = '/tctam-chat';
   }
 }

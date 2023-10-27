@@ -1,12 +1,17 @@
+// Initialize Firebase Realtime Database
 const database = firebase.database();
+
+// Get necessary elements by their IDs
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-const chatOutput = document.getElementById('chat-output'); 
+const chatOutput = document.getElementById('chat-output');
 
+// Variables to keep track of last message times and Enter key status
 let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
-let enterKeyEnabled = true; // Houd bij of de Enter-toets is ingeschakeld
+let enterKeyEnabled = true;
 
+// Check if a user can send a message based on email and time since last message
 function canSendMessage(email) {
     const currentTime = Date.now();
     if (email === 'tam.cevik123@gmail.com' || email === 'tamer.cevik@vlietlandcollege.nl' || email === 'timo.witteveen@vlietlandcollege.nl') {
@@ -18,6 +23,7 @@ function canSendMessage(email) {
     }
 }
 
+// Update the last message time for a specific email
 function updateLastMessageTime(email) {
     const currentTime = Date.now();
     if (email === 'tam.cevik123@gmail.com') {
@@ -27,6 +33,7 @@ function updateLastMessageTime(email) {
     }
 }
 
+// Function to send a message to the database
 function sendMessage(email, message) {
     const timestamp = Date.now();
     const messageData = {
@@ -38,18 +45,20 @@ function sendMessage(email, message) {
     database.ref('chat').push(messageData);
 }
 
+// Update the send button status based on email verification
 function updateSendButtonStatus(emailVerified) {
     if (emailVerified) {
         sendButton.disabled = false;
-        sendButton.textContent = 'Verzend';
-        enterKeyEnabled = true; // Schakel de Enter-toets in
+        sendButton.textContent = 'Send';
+        enterKeyEnabled = true;
     } else {
         sendButton.disabled = true;
-        sendButton.textContent = 'Verifieer je e-mail om te verzenden';
-        enterKeyEnabled = false; // Schakel de Enter-toets uit
+        sendButton.textContent = 'Verify your email to send';
+        enterKeyEnabled = false;
     }
 }
 
+// Event listener for the send button click
 sendButton.addEventListener('click', () => {
     const email = firebase.auth().currentUser.email;
     const message = messageInput.value;
@@ -60,11 +69,12 @@ sendButton.addEventListener('click', () => {
             messageInput.value = '';
             updateLastMessageTime(email);
         } else {
-            alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
+            alert('Please wait before sending a new message.');
         }
     }
 });
 
+// Event listener for the Enter key press
 messageInput.addEventListener('keydown', (event) => {
     const email = firebase.auth().currentUser.email;
     const message = messageInput.value;
@@ -76,45 +86,48 @@ messageInput.addEventListener('keydown', (event) => {
                 messageInput.value = '';
                 updateLastMessageTime(email);
             } else {
-                alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
+                alert('Please wait before sending a new message.');
             }
         }
     }
 });
 
-// Voeg e-mailverificatie toe
+// Function to check if email is verified
 function checkEmailVerification() {
     const user = firebase.auth().currentUser;
     if (user) {
         updateSendButtonStatus(user.emailVerified);
 
         if (!user.emailVerified) {
-            alert('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
+            alert('Your email is not verified. A verification email has been sent.');
             user.sendEmailVerification().catch((error) => {
-                console.error('Fout bij het verzenden van de bevestigingsmail:', error);
+                console.error('Error sending verification email:', error);
             });
         }
     }
 }
 
+// Check authentication state change
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         checkEmailVerification();
     }
 });
 
+// Listen for new child added to 'chat' in the database
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
     const message = messageData.message;
 
     const messageElement = document.createElement('div');
-    const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
+    const messageContent = linkifyText(message); // Function to convert links in text to clickable <a> tags
     messageElement.innerHTML = email + ': ' + messageContent;
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
 
+// Function to convert text into clickable links
 function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function (url) {

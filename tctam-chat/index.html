@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,23 +11,23 @@
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
     <div id="user-info" style="display: none;">
         <span id="user-email"></span>
-        <button id="logout-btn">Uitloggen</button>
-        <button id="change-password-btn">Wachtwoord wijzigen</button>
+        <button id="logout-btn">Logout</button>
+        <button id="change-password-btn">Change Password</button>
     </div>
       
     <div id="login">
-        <h1>Inloggen / Registreren</h1>
+        <h1>Login / Register</h1>
         <form id="login-form">
-            <input type="email" id="login-email" placeholder="E-mailadres" required>
-            <input type="password" id="login-password" placeholder="Wachtwoord" required>
-            <button type="submit">Inloggen / Registreren</button>
-            <button id="reset-password-btn">Wachtwoord resetten</button>
+            <input type="email" id="login-email" placeholder="Email" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login / Register</button>
+            <button id="reset-password-btn">Reset Password</button>
         </form>
     </div>
 
     <div id="chat" style="display: none;">
-        <input type="text" id="message-input" placeholder="Voer een bericht in" maxlength="500" autocomplete="off">
-        <button id="send-button">Verzenden</button>
+        <input type="text" id="message-input" placeholder="Enter a message" maxlength="500" autocomplete="off">
+        <button id="send-button">Send</button>
         <div id="chat-output"></div>
     </div>
 
@@ -60,14 +60,14 @@
     </style>
 
     <script>
-      /* accepteer popupChat */
+      /* accept popupChat */
       document.addEventListener('DOMContentLoaded', function () {
         if (!localStorage.getItem('acceptPopupChat')) {
           var popupChat = document.createElement('div');
           popupChat.id = 'popupChat';
           popupChat.className = 'popupChat';
         
-          var text = 'Disclaimer chat: Deze chat is een open chat waar gebruikers vrij zijn om te communiceren. Er zijn geen regels voor wat er gezegd of gedeeld mag worden. Dit betekent dat er ook 18+ content kan voorkomen. Gebruikers onder de 18 jaar wordt geadviseerd deze chat alleen onder toezicht van een volwassene te gebruiken.';
+          var text = 'Chat Disclaimer: This chat is an open chat where users are free to communicate. There are no rules about what can be said or shared. This means that adult content may also be present. Users under the age of 18 are advised to use this chat only under adult supervision.';
           popupChat.innerHTML = text;
         
           var button = document.createElement('button');
@@ -87,7 +87,7 @@
             localStorage.setItem('acceptPopupChat', 'true');
           });
         
-          popupChat.appendChild(document.createElement('br')); // Nieuwe regel toegevoegd
+          popupChat.appendChild(document.createElement('br')); // Added new line
           popupChat.appendChild(button);
         
           document.body.appendChild(popupChat);

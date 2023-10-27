@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>IDE</title>
@@ -32,7 +32,7 @@
         window.addEventListener('beforeunload', function (e) {
             e.preventDefault();
             e.returnValue = '';
-            return 'Wil je zeker de site verlaten?';
+            return 'Are you sure you want to leave the site?';
         });
 
         function updateEmbed() {
@@ -59,7 +59,7 @@
                 elem.requestFullscreen();
             } else if (elem.mozRequestFullScreen) { /* Firefox */
                 elem.mozRequestFullScreen();
-            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari, and Opera */
                 elem.webkitRequestFullscreen();
             } else if (elem.msRequestFullscreen) { /* IE/Edge */
                 elem.msRequestFullscreen();
@@ -70,27 +70,27 @@
 <body>
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
     <h1>IDE</h1>
-    <p>Vul code in en bewonder je prestatie</p>
+    <p>Enter code and admire your achievement</p>
 
-    <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
+    <textarea id="html-code" rows="25" cols="30" placeholder="Type your HTML code here..." oninput="updateEmbed(), highlightCode()">
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>[NAAM VAN TABBLAD]</title>
+    <title>[TAB NAME]</title>
     <link rel="stylesheet" href="https://tcevik.github.io/style.css">
     <script src="https://tcevik.github.io/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
-    <h1>[Titel]</h1>
-    <p>[Woord woord woord. Woord woord woord. Woord woord woord.]
-        <br>[Woord woord woord. Woord woord woord. Woord woord woord.]</p>
+    <h1>[Title]</h1>
+    <p>[Word word word. Word word word. Word word word.]
+        <br>[Word word word. Word word word. Word word word.]</p>
 </body>
 </html>
     </textarea>
-    <button id="fullscreenButton" onclick="toggleFullscreen()">Volledig scherm</button>
+    <button id="fullscreenButton" onclick="toggleFullscreen()">Fullscreen</button>
 
     <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
 </body>

@@ -1,98 +1,101 @@
+// Initialize Firebase authentication
 var auth = firebase.auth();
+
+// Get the necessary elements by their IDs
 var loginForm = document.getElementById('login');
 var userInfo = document.getElementById('user-info');
-var chat = document.getElementById('chat'); // Voeg chat toe aan je code
+var chat = document.getElementById('chat'); // Add chat to your code
 
-// Functie om inlogformulier en gebruikersinformatie te tonen/verbergen
+// Function to toggle between showing/hiding the login form and user information
 function toggleUI(isLoggedIn) {
     loginForm.style.display = isLoggedIn ? 'none' : 'block';
     userInfo.style.display = isLoggedIn ? 'block' : 'none';
     chat.style.display = isLoggedIn ? 'block' : 'none';
 }
 
-// Inlogstatus controleren bij het laden van de pagina
+// Check login status on page load
 window.addEventListener('load', function () {
     var loggedIn = localStorage.getItem('loggedIn');
-    toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
+    toggleUI(loggedIn === 'true'); // Convert the value to a boolean
 });
 
-// Inloggen / Registreren
+// Login / Register
 document.getElementById('login-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var loginEmail = document.getElementById('login-email').value;
     var loginPassword = document.getElementById('login-password').value;
 
+    // Try to log in, if fails, attempt to register
     auth.signInWithEmailAndPassword(loginEmail, loginPassword)
         .then(function (userCredential) {
             var user = userCredential.user;
-            console.log('Gebruiker ingelogd:', user.email);
-            alert('Ingelogd!');
+            console.log('User logged in:', user.email);
+            alert('Logged in!');
             toggleUI(true);
-            localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
-            localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
+            localStorage.setItem('loggedIn', 'true'); // Set loggedIn to 'true' upon login
+            localStorage.setItem('userEmail', user.email); // Save the user's email
             location.reload();
         })
         .catch(function (error) {
-            // Als inloggen mislukt, probeer te registreren
             auth.createUserWithEmailAndPassword(loginEmail, loginPassword)
                 .then(function (userCredential) {
-                    console.log('Gebruiker geregistreerd:', userCredential.user.email);
-                    alert('Registratie gelukt!');
+                    console.log('User registered:', userCredential.user.email);
+                    alert('Registration successful!');
                     toggleUI(true);
-                    localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij registratie
+                    localStorage.setItem('loggedIn', 'true'); // Set loggedIn to 'true' upon registration
                 })
                 .catch(function (error) {
-                    console.error('Fout bij inloggen/registreren:', error.message);
-                    alert('Fout bij inloggen/registreren: ' + error.message);
+                    console.error('Error with logging in/registering:', error.message);
+                    alert('Error with logging in/registering: ' + error.message);
                 });
         });
 });
 
-// Uitloggen
+// Logout
 document.getElementById('logout-btn').addEventListener('click', function () {
     auth.signOut()
         .then(function () {
-            console.log('Gebruiker uitgelogd');
+            console.log('User logged out');
             toggleUI(false);
             localStorage.setItem('loggedIn', 'false');
         })
         .catch(function (error) {
-            console.error('Fout bij uitloggen:', error.message);
+            console.error('Error with logging out:', error.message);
         });
 });
 
-// Voeg code toe om wachtwoord te wijzigen
+// Add code to change password
 document.getElementById('change-password-btn').addEventListener('click', function () {
     var user = firebase.auth().currentUser;
 
     if (user) {
-        var newPassword = prompt("Voer uw nieuwe wachtwoord in:");
+        var newPassword = prompt("Enter your new password:");
 
         if (newPassword !== null) {
             user.updatePassword(newPassword)
                 .then(function () {
-                    alert('Wachtwoord is succesvol gewijzigd.');
+                    alert('Password successfully changed.');
                 })
                 .catch(function (error) {
-                    console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
-                    alert('Fout bij het wijzigen van het wachtwoord: ' + error.message);
+                    console.error('Error changing password:', error.message);
+                    alert('Error changing password: ' + error.message);
                 });
         }
     }
 });
 
-// Voeg code toe om wachtwoord te resetten
+// Add code to reset password
 document.getElementById('reset-password-btn').addEventListener('click', function () {
-    var userEmail = prompt("Voer uw e-mailadres in om uw wachtwoord te resetten:");
+    var userEmail = prompt("Enter your email address to reset your password:");
 
     if (userEmail !== null) {
         firebase.auth().sendPasswordResetEmail(userEmail)
             .then(function () {
-                alert('Een e-mail met instructies voor het resetten van uw wachtwoord is verzonden naar ' + userEmail);
+                alert('An email with instructions to reset your password has been sent to ' + userEmail);
             })
             .catch(function (error) {
-                console.error('Fout bij het verzenden van de wachtwoordreset-e-mail:', error.message);
-                alert('Fout bij het verzenden van de wachtwoordreset-e-mail: ' + error.message);
+                console.error('Error sending password reset email:', error.message);
+                alert('Error sending password reset email: ' + error.message);
             });
     }
 });
