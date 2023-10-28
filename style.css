@@ -241,5 +241,11 @@ textarea::placeholder {
   background-color: #58bf33;
 }
 
-.skiptranslate, #google_translate_element {display: none;}
+.skiptranslate, #google_translate_element {display: none !important;}
 body {top: 0px !important;}
+.skiptranslate:hover {
+  text-decoration: none !important;
+}
+.skiptranslate > span {
+  color: var(--text-color) !important;
+}
