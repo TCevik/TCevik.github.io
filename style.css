@@ -23,7 +23,8 @@ body {
   --h3-font-size: 26px;
   --h4-font-size: 22px;
   --button-padding: 7px;
-  --button-bgcolor: #0B6600;
+  --button-bgcolor: #379429;
+  --button-shadow: #2e7a22;
   overflow-x: hidden;
 }
 
@@ -34,7 +35,8 @@ body {
     --text-color: #ffffff;
     --h1234-color: #7fff48;
     --custom-link-color: #33ff33;
-    --button-bgcolor: #0B6600;
+    --button-bgcolor: #38761d;
+    --button-shadow: #2c5c17;
   }
 }
 
