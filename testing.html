@@ -10,11 +10,8 @@
     </style>
 
     <script>
-        let detectedLanguage = window.navigator.language || window.navigator.userLanguage;
-        alert(detectedLanguage);
-
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'NL'}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'nl-NL'}, 'google_translate_element');
         }
 
         let lang = window.navigator.languages ? window.navigator.languages[0] : null;
