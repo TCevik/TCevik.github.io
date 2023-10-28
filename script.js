@@ -425,3 +425,32 @@ var code = `
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
 </td>
 `;
+
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+      pageLanguage: 'nl',
+  }, 'google_translate_element');
+
+  var userLanguage = window.navigator.language.toLowerCase().split("-")[0];
+
+  setTimeout(function() {
+      var selectElement = document.querySelector('#google_translate_element select');
+      selectElement.value = userLanguage;
+      selectElement.dispatchEvent(new Event('change'));
+  }, 1000);
+}
+
+function loadTranslateScript() {
+  let script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+  document.head.appendChild(script);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var newDiv = document.createElement('div');
+  newDiv.id = 'google_translate_element';
+  document.body.appendChild(newDiv);
+});
+
+document.addEventListener('DOMContentLoaded', loadTranslateScript);

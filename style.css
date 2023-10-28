@@ -240,3 +240,6 @@ textarea::placeholder {
 ::-moz-progress-bar {
   background-color: #58bf33;
 }
+
+.skiptranslate, #google_translate_element {display: none;}
+body {top: 0px !important;}
