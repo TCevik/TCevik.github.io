@@ -6,24 +6,22 @@
 
     <style>
     .skiptranslate, #google_translate_element {display: none;}
-    body {min-height: 0px !important; position: static !important; top: 0px !important;}
+    body {top: 0px !important;}
     </style>
 
     <script>
-        let lang = window.navigator.languages ? window.navigator.languages[0] : null;
-        lang = lang || window.navigator.language || window.navigator.browserLanguage || window.navigator.userLanguage;
-
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'nl',
             }, 'google_translate_element');
 
+            var userLanguage = window.navigator.language.toLowerCase().split("-")[0];
+
             setTimeout(function() {
-                // Set the default language to Spanish
                 var selectElement = document.querySelector('#google_translate_element select');
-                selectElement.value = 'en';
+                selectElement.value = userLanguage;
                 selectElement.dispatchEvent(new Event('change'));
-            }, 100);
+            }, 1000);
         }
     
         function loadTranslateScript() {
@@ -47,6 +45,5 @@
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
     <h1>Hallo hoe gaat het daddy</h1>
     <p>Met mij gaat het verdomme mega goed bro!</p>
-    <div id="google_translate_element"></div>
 </body>
 </html>
