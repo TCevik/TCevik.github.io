@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Testing</title>
 
-    
+    <style>
+    .skiptranslate, #google_translate_element {display: none;}
+    body {min-height: 0px !important; position: static !important; top: 0px !important;}
+    </style>
 
     <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-        }
-
         let lang = window.navigator.languages ? window.navigator.languages[0] : null;
         lang = lang || window.navigator.language || window.navigator.browserLanguage || window.navigator.userLanguage;
 
-        let shortLang = lang;
-        if (shortLang.indexOf('-') !== -1)
-            shortLang = shortLang.split('-')[0];
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'nl',
+            }, 'google_translate_element');
 
-        if (shortLang.indexOf('_') !== -1)
-            shortLang = shortLang.split('_')[0];
-
-        console.log(lang, shortLang);
-
+            setTimeout(function() {
+                // Set the default language to Spanish
+                var selectElement = document.querySelector('#google_translate_element select');
+                selectElement.value = 'en';
+                selectElement.dispatchEvent(new Event('change'));
+            }, 100);
+        }
+    
         function loadTranslateScript() {
             let script = document.createElement('script');
             script.type = 'text/javascript';
@@ -30,14 +33,20 @@
             document.head.appendChild(script);
         }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            var newDiv = document.createElement('div');
+            newDiv.id = 'google_translate_element';
+            document.body.appendChild(newDiv);
+        });
+
         document.addEventListener('DOMContentLoaded', loadTranslateScript);
     </script>
 
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
-    <h1>Welkom op de TC_tam Website!</h1>
-    <p>Hoe gaat het met jullie? Met mij heel goed!</p>
-    <p>Hello everyone! How are you guys?</p>
+    <h1>Hallo hoe gaat het daddy</h1>
+    <p>Met mij gaat het verdomme mega goed bro!</p>
+    <div id="google_translate_element"></div>
 </body>
 </html>
