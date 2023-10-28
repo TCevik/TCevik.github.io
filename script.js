@@ -389,6 +389,7 @@ var code = `
     <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
     <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock-2'">Chrome Emulator 2</button>
     <button onclick="window.location.href='/school-hacks/proxys-emulators/proxy'">Proxy met tab verberger (gebruik bovenste zoekbalk)</button>
+    <button onclick="window.location.href='/school-hacks/proxys-emulators/proxy-best'">Beste proxy (wachtwoord = sharkie4life)</button>
 
     <h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
