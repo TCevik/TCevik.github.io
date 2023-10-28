@@ -423,7 +423,7 @@ var code = `
 </td>
 `;
 
-/* function googleTranslateElementInit() {
+function googleTranslateElementInit() {
   new google.translate.TranslateElement({
       pageLanguage: 'nl',
   }, 'google_translate_element');
@@ -434,7 +434,7 @@ var code = `
       var selectElement = document.querySelector('#google_translate_element select');
       selectElement.value = userLanguage;
       selectElement.dispatchEvent(new Event('change'));
-  }, 1000);
+  }, 2000);
 }
 
 function loadTranslateScript() {
@@ -450,4 +450,4 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.appendChild(newDiv);
 });
 
-document.addEventListener('DOMContentLoaded', loadTranslateScript); */
+document.addEventListener('DOMContentLoaded', loadTranslateScript);
