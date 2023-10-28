@@ -248,23 +248,6 @@ function setFavicon(faviconLink) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
   var showCodeButton = document.createElement("button");
   showCodeButton.setAttribute("id", "showCodeButton");
@@ -451,3 +434,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', loadTranslateScript);
+
+var metaTag = document.createElement('meta');
+metaTag.name = 'viewport';
+metaTag.content = 'width=device-width, initial-scale=1';
+
+var head = document.querySelector('head');
+head.appendChild(metaTag);
