@@ -10,12 +10,24 @@
     </style>
 
     <script>
+        let detectedLanguage = window.navigator.language || window.navigator.userLanguage;
+        alert(detectedLanguage);
+
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'nl'}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'NL'}, 'google_translate_element');
         }
 
-        let lang = window.navigator.language || window.navigator.userLanguage || window.navigator.browserLanguage || window.navigator.systemLanguage;
-        console.log(lang);
+        let lang = window.navigator.languages ? window.navigator.languages[0] : null;
+        lang = lang || window.navigator.language || window.navigator.browserLanguage || window.navigator.userLanguage;
+
+        let shortLang = lang;
+        if (shortLang.indexOf('-') !== -1)
+            shortLang = shortLang.split('-')[0];
+
+        if (shortLang.indexOf('_') !== -1)
+            shortLang = shortLang.split('_')[0];
+
+        console.log(lang, shortLang);
 
         function loadTranslateScript() {
             let script = document.createElement('script');
