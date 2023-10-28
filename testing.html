@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <title>Testing</title>
 
-    <style>
-    .skiptranslate, #google_translate_element {display: none;}
-    body {min-height: 0px !important; position: static !important; top: 0px !important;}
-    </style>
+
 
     <script>
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'nld'}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
 
         let lang = window.navigator.languages ? window.navigator.languages[0] : null;
@@ -33,7 +30,9 @@
             document.head.appendChild(script);
         }
 
-        document.addEventListener('DOMContentLoaded', loadTranslateScript);
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadTranslateScript, 500);
+        });
     </script>
 
 </head>
