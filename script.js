@@ -88,9 +88,6 @@ if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
 
     updateLoginButton();
 
-    // Voer de callback-functie elke seconde uit
-    setInterval(updateLoginButtonCallback, 1000);
-
     // Voeg een click event listener toe aan de knop
     loginButton.addEventListener("click", function() {
         const loggedIn = localStorage.getItem('loggedIn');
