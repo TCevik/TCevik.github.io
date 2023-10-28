@@ -11,20 +11,11 @@
 
     <script>
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'nl'}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
 
-        let lang = window.navigator.languages ? window.navigator.languages[0] : null;
-        lang = lang || window.navigator.language || window.navigator.browserLanguage || window.navigator.userLanguage;
-
-        let shortLang = lang;
-        if (shortLang.indexOf('-') !== -1)
-            shortLang = shortLang.split('-')[0];
-
-        if (shortLang.indexOf('_') !== -1)
-            shortLang = shortLang.split('_')[0];
-
-        console.log(lang, shortLang);
+        let lang = window.navigator.language || window.navigator.userLanguage || window.navigator.browserLanguage || window.navigator.systemLanguage;
+        console.log(lang);
 
         function loadTranslateScript() {
             let script = document.createElement('script');
@@ -41,5 +32,6 @@
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
     <h1>Welkom op de TC_tam Website!</h1>
     <p>Hoe gaat het met jullie? Met mij heel goed!</p>
+    <p>Hello everyone!</p>
 </body>
 </html>
