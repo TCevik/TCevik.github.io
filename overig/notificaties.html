@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Aanmelden voor notificaties</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+
+    <script>
+        function stuurNotificatie() {
+            if (!("Notification" in window)) {
+                alert("Deze browser ondersteunt geen desktop notificaties.");
+            } else if (Notification.permission === "granted") {
+                toonNotificatie();
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission(function (permission) {
+                    if (permission === "granted") {
+                        toonNotificatie();
+                    }
+                });
+            }
+        }
+
+        function toonNotificatie() {
+            var notificatieOpties = {
+                body: "Dit is een voorbeeld van een notificatie.",
+                icon: "https://tcevik.github.io/favicon.ico"
+            };
+            var notificatie = new Notification("Nieuwe Notificatie", notificatieOpties);
+        }
+    </script>
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <h1>Aanmelden voor notificaties</h1>
+    <p>Klik op de knop en sta notificaties toe om ingelicht te worden als er belangrijk nieuws is.</p>
+
+    <button onclick="stuurNotificatie()">Stuur Notificatie</button>
+</body>
+</html>

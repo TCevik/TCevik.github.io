@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notitie maker</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <button id="top-left-button" onclick="window.location.href='/'">Home</button>
+    <h1>Notities</h1>
+    <p>Hier kan je notities maken!!!</p>
+
+    <button id="save-button" onclick="saveData()">Opslaan</button>
+    <br><textarea id="input" rows="25" cols="100" maxlength="100000"></textarea>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+            authDomain: "tctam-d04b8.firebaseapp.com",
+            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tctam-d04b8",
+            storageBucket: "tctam-d04b8.appspot.com",
+            messagingSenderId: "793882705601",
+            appId: "1:793882705601:web:118e6ea26069867d0b5e40",
+            measurementId: "G-Q00YFYX8SP"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        function saveData() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Je moet ingelogd zijn om notities op te slaan.");
+                return;
+            }
+
+            if (!user.emailVerified) {
+                alert("Je moet je e-mailadres verifiëren om notities op te slaan.");
+                return;
+            }
+
+            let userEmail = "Niet_beschikbaar";
+            if (user.email !== null) {
+                userEmail = user.email.replace(/\./g, '_'); // Vervang de punten door underscores
+            }
+
+            const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+
+            const userNote = document.getElementById('input').value;
+            nameRef.set({
+                text: userNote,
+                userEmail: userEmail
+            }, function(error) {
+                if (error) {
+                    alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
+                } else {
+                    alert("Data is succesvol opgeslagen.");
+                }
+            });
+        }
+
+        function load() {
+            const user = auth.currentUser;
+            if (user) {
+                let userEmail = "Niet_beschikbaar";
+                if (user.email !== null) {
+                    userEmail = user.email.replace(/\./g, '_');
+                }
+
+                const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+                nameRef.once('value', function(snapshot) {
+                    const userData = snapshot.val();
+                    if (userData && userData.text) {
+                        document.getElementById('input').value = userData.text;
+                    }
+                }, function(error) {
+                    alert("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
+                });
+            }
+        };
+
+        setTimeout(() => {
+            load();
+        }, 2000);
+    </script>
+</body>
+</html> 

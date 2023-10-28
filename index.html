@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TC_tam</title>
+    <meta name="description" content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Dit is een site die je kan gebruiken om bijvoorbeeld beheerde school dingen te unblocken. Nou, in ieder geval hoop ik dat je veel plezier met mijn site hebt!">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    
+    <script>
+        function countup() {
+            var now = new Date();
+            var startDate = new Date(2023, 4, 21, 20, 6, 16);
+            var timeElapsed = now - startDate;
+
+            var days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+
+            document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+        }
+
+        setInterval(countup, 1000);
+
+        function updateBatteryLevel() {
+            navigator.getBattery().then(function(battery) {
+                var batteryLevel = battery.level * 100;
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + Math.round(batteryLevel) + "%";
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setInterval(updateBatteryLevel, 1000);
+        
+            if ('getBattery' in navigator) {
+                updateBatteryLevel();
+            } else {
+                document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
+            }
+        });
+
+        function scrollToOverMij() {
+            var destination = document.getElementById("overmij").offsetTop;
+        
+            window.scrollTo({
+                top: destination,
+                behavior: "smooth"
+            });
+        }
+
+        function scrollToSecret() {
+            var destination = document.getElementById("hiddenButton").offsetTop;
+        
+            window.scrollTo({
+                top: destination,
+                behavior: "smooth"
+            });
+        }
+
+        var keySequence = [];
+
+        document.addEventListener('keydown', function(event) {
+            keySequence.push(event.key);
+        
+            if (keySequence.join('') === 'ballondoos') {
+                showButton();
+                setTimeout(scrollToSecret, 100);
+            }
+        });
+
+        function showButton() {
+            var button = document.getElementById('hiddenButton');
+            button.style.display = 'inline';
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var button = document.getElementById("hiddenButton");
+            var scale = 1.0;
+            var grow = true;
+        
+            button.style.transition = "transform 0.2s ease-in-out";
+        
+            setInterval(function() {
+                if (grow) {
+                    scale += 0.1;
+                    if (scale >= 1.1) {
+                        grow = false;
+                    }
+                } else {
+                    scale -= 0.1;
+                    if (scale <= 1.0) {
+                        grow = true;
+                    }
+                }
+                button.style.transform = "scale(" + scale + ")";
+            }, 200);
+        });
+
+        function togglePopup(category) {
+            var overlay = document.createElement("div");
+            overlay.classList.add("overlay");
+            document.body.appendChild(overlay);
+                
+            var popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.style.opacity = 0;
+            popup.style.top = "50px";
+            popup.style.bottom = "50px";
+            popup.style.transition = "opacity 0.3s";
+            popup.style.width = "calc(100vw - 150px)";
+            popup.style.position = "fixed";
+            popup.style.left = "50%";
+            popup.style.transform = "translateX(-50%)";
+                
+            var closeBtn = document.createElement("button");
+            closeBtn.classList.add("close");
+            closeBtn.innerHTML = "Sluiten";
+            closeBtn.onclick = function () {
+                popup.style.opacity = 0;
+                overlay.style.display = "none";
+                var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+                elementsToBlur.forEach(function (element) {
+                    element.style.filter = "none";
+                });
+                document.body.style.overflowY = "auto";
+                setTimeout(function () {
+                    document.body.removeChild(popup);
+                    document.body.removeChild(overlay);
+                }, 300);
+            };
+        
+            popup.appendChild(closeBtn);
+        
+            var dropdownContent = document.getElementById(category + "-dropdown");
+            var contentClone = dropdownContent.cloneNode(true);
+            contentClone.style.maxHeight = "65vh";
+            contentClone.style.overflowY = "auto";
+        
+            popup.appendChild(contentClone);
+        
+            document.body.appendChild(popup);
+        
+            void popup.offsetWidth;
+        
+            popup.style.opacity = 1;
+        
+            var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+            elementsToBlur.forEach(function (element) {
+                element.style.transition = "filter 0.3s";
+                element.style.filter = "blur(2px)";
+            });
+        
+            overlay.style.position = "fixed";
+            overlay.style.top = 0;
+            overlay.style.left = 0;
+            overlay.style.width = "100%";
+            overlay.style.height = "100%";
+            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+            overlay.style.zIndex = 999;
+        
+            document.body.style.overflowY = "hidden";
+        }
+
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return `rgb(${r},${g},${b})`;
+        }
+
+        function changePageColors() {
+            const randomColor = getRandomColor();
+            document.body.style.backgroundColor = randomColor;
+        
+            const allTextElements = document.querySelectorAll('body *');
+            allTextElements.forEach(element => {
+                const textRandomColor = getRandomColor();
+                element.style.color = textRandomColor;
+            });
+        }
+
+        function partyTimer() {
+            var interval = setInterval(changePageColors, 100);
+        }
+
+        window.onload = function() {
+            if (window.location.href.endsWith("?partymode")) {
+                partyTimer();
+            }
+        };
+
+        function activatePartyMode() {
+            // window.location.href = window.location.href + "?partymode";
+        
+            partyTimer();
+        }
+    </script>
+</head>
+
+<body style="width: 100vw;">
+    <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
+</body>
+
+<body>
+    <table>
+        <style>
+            .dropdown-content {
+                max-height: 0;
+                overflow: auto;
+            }
+
+            .dropdown-content h4 {
+                margin-bottom: -15px;
+            }
+        </style>
+        
+        <td id="info" style="width: 95%;">
+            <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
+            <h3>Door Tamer Çevik</h3>
+            <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
+            <br><div class="dropdown">
+                <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+                <div id="explanation-dropdown" class="dropdown-content">
+                    <h4>Nieuwe veranderingen ophalen:</h4>
+                        <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
+                    <h4>Bugs:</h4>
+                        <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
+                    <h4>Tabblad verberger:</h4>
+                        <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
+                    <h4>Zoeken op een pagina:</h4>
+                        <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
+                    </div>
+            </div>
+
+            <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+            <button onclick="scrollToOverMij();">Over mij</button>
+
+            <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+            <p id="battery-percentage"><p>
+        
+            <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to your language.</p>
+        
+            <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
+            <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
+            </a>
+            <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
+            </a>
+            <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
+            </a>
+            <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
+            </a>
+            <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
+                <img style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
+            </a>
+
+            <h1 style="margin-top: 50px;" id="overmij">Over mij</h1>
+            <h3>Hoi, ik ben Tamer!</h3>
+            <center><p style="width: 95%; margin-bottom: 30px;">
+            <br>Yo welkom, veel plezier op mijn website!
+            <br>
+            <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
+            <br>⦁ Ik heet Tamer Çevik.
+            <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
+            <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+            <br>Nu weet je hoe ik TC_tam verzonnen heb!
+            <br>
+            <br>Ik ben jarig op 18 mei.
+            <br>
+            <br>Mijn favoriete kleuren zijn:
+            <br><span style="color: #132f0c">#132f0c</span>
+            <br><span style="color: #38761d">#38761d</span>
+            <br><span style="color: #43b731">#43b731</span>
+            <br><span style="color: #58bf33">#58bf33</span>
+            <br><span style="color: #e0fcd4">#e0fcd4</span>
+            <br>
+            <br>Dark mode kleur:
+            <br><span style="color: #0d1710">#0d1710</span>
+            <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
+            <br>De kleuren van mijn logo zijn:
+            <br><span style="color: #33ff33">#33ff33</span>
+            <br><span style="color: #336699">#336699</span></p></center>
+
+            <h4>Laten we even chatten:</h4>
+            <button id="frame-button" onclick="loadIframe()">Start Chat</button>
+            <div id="iframeContainer"></div>
+            
+            <style>
+                .hahanoobtext {
+                    display: none;
+                }
+        
+                @media (prefers-color-scheme: dark) {
+                    .hahanoobtext {
+                        display: block;
+                    }
+                }
+            </style>
+        </td>
+    </table>
+
+    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
+    <script>
+        function loadIframe() {
+            var button = document.getElementById('frame-button');
+            var iframe = document.createElement('iframe');
+            button.disabled = true;
+            iframe.style.borderRadius = '10px';
+            iframe.style.border = 'var(--h1234-color) solid 3px';
+            iframe.style.width = '800px';
+            iframe.style.height = '600px';
+            iframe.style.opacity = '0';
+            iframe.src = 'https://tcevik.github.io/tctam-chat/';
+            iframe.scrolling = 'no';
+            document.getElementById('iframeContainer').appendChild(iframe);
+        
+            // Toegevoegde code voor uitfaden en display none
+            setTimeout(function() {
+                iframe.style.transition = 'opacity 1s';
+                button.style.transition = 'opacity 1s';
+                button.style.opacity = '0';
+                setTimeout(function() {
+                    button.style.display = 'none';
+                    iframe.style.opacity = '100';
+                }, 1000);
+            }, 30);
+        }
+
+        function fetchData() {
+            fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
+                method: 'GET',
+                headers: {
+                    'Authorization': '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',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const runsAmount = data.total_count;
+                var element = document.getElementById('runsAmountNews');
+
+                if (element) {
+                    element.textContent = runsAmount;
+                }
+            })
+            .catch(error => {
+                console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
+            });
+        }
+
+        setInterval(fetchData, 5000);
+
+        fetchData();
+
+        function openNewTab() {
+          var alertText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)";
+          var confirmResult = confirm(alertText);
+          if (confirmResult) {
+            var win = window.open('about:blank', '_blank');
+            var iframeHeight = window.innerHeight;
+            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title>');
+            win.document.write('<link rel="icon" type="image/x-icon" href="https://tcevik.github.io/assets/asfalt-light.png">');
+            win.document.write('</head><body style="margin: 0; overflow: hidden;">');
+            win.document.write('<iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe>');
+            win.document.close();
+            win.focus();
+          }
+        }
+    </script>
+</body>
+</html>

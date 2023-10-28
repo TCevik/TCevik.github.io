@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>TTS</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+
+    <style>
+      textarea {
+        width: 95%;
+      }
+    </style>
+
+</head>
+<body>
+    <button id="top-left-button" onclick="window.location.href='/';">Home</button>
+    <h1>TTS</h1>
+    <p>Vul wat text in en het doet precies wat het zegt.</p>
+    
+    <textarea id="text-to-read" rows="10" cols="50"></textarea>
+    <br><button id="read-button" onclick="readText();">Lees voor</button>
+    
+    <script>
+        function readText() {
+            var text = document.getElementById("text-to-read").value;
+            var speech = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>
