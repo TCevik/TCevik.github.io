@@ -9,7 +9,7 @@
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
-    <div id="user-info" style="position: fixed; left: 50%; transform: translateX(-50%); display: none;">
+    <div id="user-info">
         <span id="user-email"></span>
         <button id="logout-btn">Uitloggen</button>
         <button id="change-password-btn">Wachtwoord wijzigen</button>
@@ -29,7 +29,7 @@
 
     <div id="chat" style="display: none;">
         <div id="chat-output"></div>
-        <div id="ui-input">
+        <div id="ui-input" style="position: fixed; width: 100%;">
             <input type="text" id="message-input" placeholder="Voer een bericht in" maxlength="500" autocomplete="off">
             <button id="send-button">Verzenden</button>
         </div>
@@ -60,6 +60,13 @@
         .popupChat button {
             padding-top: 3px;
             padding-bottom: 2px;
+        }
+
+        .user-info {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
         }
     </style>
 
