@@ -109,7 +109,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const message = messageData.message;
 
     const messageElement = document.createElement('div');
-    const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
+    const messageContent = linkifyText(message);
 
     messageElement.textContent = email + ': ';
     messageElement.appendChild(messageContent);
@@ -131,6 +131,8 @@ function linkifyText(text) {
         messageNode.appendChild(linkNode);
         lastIndex = index + url.length;
     });
-    messageNode.appendChild(document.createTextNode(text.substring(lastIndex)));
+    if (lastIndex < text.length) {
+        messageNode.appendChild(document.createTextNode(text.substring(lastIndex)));
+    }
     return messageNode;
 }
