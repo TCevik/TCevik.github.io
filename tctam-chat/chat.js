@@ -111,13 +111,13 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
-    const emailElement = document.createElement('strong'); // Gebruik een <strong> tag voor het dikgedrukt weergeven van de e-mail
+    const emailElement = document.createElement('strong');
     emailElement.textContent = email + ': ';
     messageElement.appendChild(emailElement);
 
     messageElement.appendChild(messageContent);
 
-    chatOutput.insertBefore(messageElement, chatOutput.firstChild);
+    chatOutput.appendChild(messageElement);
 });
 
 function linkifyText(text) {
