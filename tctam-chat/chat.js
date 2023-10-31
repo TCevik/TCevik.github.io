@@ -118,6 +118,17 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(messageContent);
 
     chatOutput.appendChild(messageElement);
+
+    const allMessages = document.querySelectorAll('div#chatOutput > div');
+    const lastMessage = allMessages[allMessages.length - 1];
+    const secondLastMessage = allMessages[allMessages.length - 2];
+
+    if (secondLastMessage) {
+        secondLastMessage.style.marginBottom = '0';
+    }
+
+    lastMessage.style.marginBottom = '30px';
+
     window.scrollTo(0, document.body.scrollHeight);
 });
 
