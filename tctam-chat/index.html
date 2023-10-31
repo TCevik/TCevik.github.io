@@ -7,7 +7,7 @@
     <script src="https://tcevik.github.io/script.js"></script>
     <title>TC_tam Chat App</title>
 </head>
-<body style="width: 100%;">
+<body style="width: 100%; overflow-y: hidden;">
     <div id="user-info">
         <span id="user-email"></span>
         <button id="logout-btn">Uitloggen</button>
@@ -27,7 +27,7 @@
     </div>
 
     <div id="chat" style="display: none;">
-        <div id="chat-output"></div>
+        <div style="overflow-y: auto;" id="chat-output"></div>
         <div id="ui-input">
             <input type="text" id="message-input" placeholder="Voer een bericht in" maxlength="500" autocomplete="off">
             <button id="send-button">Verzenden</button>
@@ -68,7 +68,7 @@
         }
 
         #ui-input {
-            position: flex;
+            position: absolute;
             width: 100vw;
             border-top: 3px solid var(--h1234-color);
             border-top-right-radius: 50px;
