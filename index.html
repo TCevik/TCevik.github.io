@@ -149,7 +149,7 @@
         }
 
         function randomNumber() {
-          var randomNumber = Math.floor(Math.random() * 10) + 1;
+          var randomNumber = Math.floor(Math.random() * 7) + 1;
 
           if (randomNumber === 5) {
             const loggedIn = localStorage.getItem('loggedIn');
@@ -199,8 +199,15 @@
                 </div>
 
                 <div id="login-popup" class="popup-content">
-                    <h4>Nieuwe veranderingen ophalen:</h4>
-                        <p>Je kunt nu inloggen voor extra functies!</p>
+                    <h2>TC_tam: De beste tijd van je leven</h2>
+                        <p>Meld je nu aan en krijg toegang tot:</p>
+                        <ul>
+                          <p>Nieuwe bèta functies</p>
+                          <p style="margin-top: -20px;">Coole functies zoals TC_tam chatten</p>
+                          <p style="margin-top: -20px;">Een community van gelijkgestemden</p>
+                        </ul>
+                        <p>Meld je nu aan en ervaar het zelf!</p>
+                        
                         <button onclick="window.location.href='/tctam-chat'">Inloggen</button>
                 </div>
 
