@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.setAttribute("id", "showCodeButton");
   showCodeButton.textContent = ">";
   showCodeButton.style.position = "fixed";
-  showCodeButton.style.left = "-5px";
+  showCodeButton.style.left = "0px";
   showCodeButton.style.borderTopLeftRadius = "0px"
   showCodeButton.style.borderBottomLeftRadius = "0px"
   showCodeButton.style.paddingTop = "25px"
