@@ -119,10 +119,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     chatOutput.appendChild(messageElement);
     
-    const isLastMessage = chatOutput.children[chatOutput.children.length - 1] === messageElement;
-    if (isLastMessage) {
-        isLastMessage.style.marginBottom = '30px';
-    }
+    messageElement.style.marginBottom = '10px';
     
     window.scrollTo(0, document.body.scrollHeight);
 });
