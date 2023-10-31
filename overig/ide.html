@@ -9,10 +9,6 @@
     
 
     <style>
-        textarea {
-            width: 95%;
-        }
-
         #embedFrame {
             width: 95%;
             color: var(--text-color);
@@ -67,12 +63,12 @@
         }
     </script>
 </head>
-<body>
+<body onload="updateEmbed()">
     <button id="top-left-button" onclick="window.location.href='/'">Home</button>
     <h1>IDE</h1>
     <p>Vul code in en bewonder je prestatie</p>
 
-    <textarea id="html-code" rows="25" cols="30" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
+    <textarea id="html-code" rows="25" style="width: 90%;" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
 <!DOCTYPE html>
 <html lang="nl">
 <head>
