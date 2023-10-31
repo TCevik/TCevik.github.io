@@ -56,9 +56,7 @@ function redirect() {
       const urlParamValue = urlParams.get('url');
       if (urlParamValue) {
         alert('Er is een URL gedetecteerd na het vraagteken: ' + urlParamValue);
-        setTimeout(function() {
-          window.location.href = urlParamValue;
-        }, 1000);
+        window.location.href = urlParamValue;
       }
     }
 }
