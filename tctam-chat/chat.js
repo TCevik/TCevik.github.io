@@ -103,6 +103,9 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
+const chatOutput = document.getElementById('chat-output');
+const fixedChatbar = document.getElementById('message-input');
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
@@ -118,9 +121,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(messageContent);
 
     chatOutput.appendChild(messageElement);
-    
+
     messageElement.style.marginBottom = '10px';
-    
+
+    // Dynamisch aanpassen van de positie van de vaste chatbalk
+    fixedChatbar.style.bottom = chatOutput.clientHeight + 'px';
     window.scrollTo(0, document.body.scrollHeight);
 });
 
