@@ -435,3 +435,68 @@ metaTag.content = 'width=device-width, initial-scale=1';
 
 var head = document.querySelector('head');
 head.appendChild(metaTag);
+
+function togglePopup(category) {
+  var overlay = document.createElement("div");
+  overlay.classList.add("overlay");
+  document.body.appendChild(overlay);
+      
+  var popup = document.createElement("div");
+  popup.classList.add("popup");
+  popup.style.opacity = 0;
+  popup.style.top = "50px";
+  popup.style.bottom = "50px";
+  popup.style.transition = "opacity 0.3s";
+  popup.style.width = "calc(100vw - 150px)";
+  popup.style.position = "fixed";
+  popup.style.left = "50%";
+  popup.style.transform = "translateX(-50%)";
+      
+  var closeBtn = document.createElement("button");
+  closeBtn.classList.add("close");
+  closeBtn.innerHTML = "Sluiten";
+  closeBtn.onclick = function () {
+      popup.style.opacity = 0;
+      overlay.style.display = "none";
+      var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+      elementsToBlur.forEach(function (element) {
+          element.style.filter = "none";
+      });
+      document.body.style.overflowY = "auto";
+      setTimeout(function () {
+          document.body.removeChild(popup);
+          document.body.removeChild(overlay);
+      }, 300);
+  };
+
+  popup.appendChild(closeBtn);
+
+  var popupContent = document.getElementById(category + "-popup");
+  var contentClone = popupContent.cloneNode(true);
+  contentClone.style.maxHeight = "65vh";
+  contentClone.style.overflowY = "auto";
+
+  popup.appendChild(contentClone);
+
+  document.body.appendChild(popup);
+
+  void popup.offsetWidth;
+
+  popup.style.opacity = 1;
+
+  var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+  elementsToBlur.forEach(function (element) {
+      element.style.transition = "filter 0.3s";
+      element.style.filter = "blur(2px)";
+  });
+
+  overlay.style.position = "fixed";
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  overlay.style.zIndex = 999;
+
+  document.body.style.overflowY = "hidden";
+}

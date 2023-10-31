@@ -114,71 +114,6 @@
             }, 200);
         });
 
-        function togglePopup(category) {
-            var overlay = document.createElement("div");
-            overlay.classList.add("overlay");
-            document.body.appendChild(overlay);
-                
-            var popup = document.createElement("div");
-            popup.classList.add("popup");
-            popup.style.opacity = 0;
-            popup.style.top = "50px";
-            popup.style.bottom = "50px";
-            popup.style.transition = "opacity 0.3s";
-            popup.style.width = "calc(100vw - 150px)";
-            popup.style.position = "fixed";
-            popup.style.left = "50%";
-            popup.style.transform = "translateX(-50%)";
-                
-            var closeBtn = document.createElement("button");
-            closeBtn.classList.add("close");
-            closeBtn.innerHTML = "Sluiten";
-            closeBtn.onclick = function () {
-                popup.style.opacity = 0;
-                overlay.style.display = "none";
-                var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
-                elementsToBlur.forEach(function (element) {
-                    element.style.filter = "none";
-                });
-                document.body.style.overflowY = "auto";
-                setTimeout(function () {
-                    document.body.removeChild(popup);
-                    document.body.removeChild(overlay);
-                }, 300);
-            };
-        
-            popup.appendChild(closeBtn);
-        
-            var dropdownContent = document.getElementById(category + "-dropdown");
-            var contentClone = dropdownContent.cloneNode(true);
-            contentClone.style.maxHeight = "65vh";
-            contentClone.style.overflowY = "auto";
-        
-            popup.appendChild(contentClone);
-        
-            document.body.appendChild(popup);
-        
-            void popup.offsetWidth;
-        
-            popup.style.opacity = 1;
-        
-            var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
-            elementsToBlur.forEach(function (element) {
-                element.style.transition = "filter 0.3s";
-                element.style.filter = "blur(2px)";
-            });
-        
-            overlay.style.position = "fixed";
-            overlay.style.top = 0;
-            overlay.style.left = 0;
-            overlay.style.width = "100%";
-            overlay.style.height = "100%";
-            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-            overlay.style.zIndex = 999;
-        
-            document.body.style.overflowY = "hidden";
-        }
-
         function getRandomColor() {
             const r = Math.floor(Math.random() * 256);
             const g = Math.floor(Math.random() * 256);
@@ -212,6 +147,21 @@
         
             partyTimer();
         }
+
+        window.onload = function() {
+          var randomNumber = Math.floor(Math.random() * 10) + 1;
+
+          if (randomNumber === 1) {
+            const loggedIn = localStorage.getItem('loggedIn');
+            if (loggedIn === 'false') {
+              togglePopup('login');
+            } else {
+              console.log("The user is already logged in.");
+            }
+          } else {
+              console.log("The random number wasn't 1: " + randomNumber);
+          }
+        };
     </script>
 </head>
 
@@ -222,12 +172,12 @@
 <body onload="countdown(); countup();">
     <table>
         <style>
-            .dropdown-content {
+            .popup-content {
                 max-height: 0;
                 overflow: auto;
             }
 
-            .dropdown-content h4 {
+            .popup-content h4 {
                 margin-bottom: -15px;
             }
         </style>
@@ -236,9 +186,8 @@
             <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
             <h2 style="font-size: 26px;">Door Tamer Çevik</h3>
             <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
-            <br><div class="dropdown">
                 <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
-                <div id="explanation-dropdown" class="dropdown-content">
+                <div id="explanation-popup" class="popup-content">
                     <h4>Nieuwe veranderingen ophalen:</h4>
                         <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
                     <h4>Bugs:</h4>
@@ -247,8 +196,13 @@
                         <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
                     <h4>Zoeken op een pagina:</h4>
                         <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
-                    </div>
-            </div>
+                </div>
+
+                <div id="login-popup" class="popup-content">
+                    <h4>Nieuwe veranderingen ophalen:</h4>
+                        <p>Je kunt nu inloggen voor extra functies!</p>
+                        <button onclick="window.location.href='/tctam-chat'">Inloggen</button>
+                </div>
 
             <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
             <button onclick="scrollToOverMij();">Over mij</button>
