@@ -110,7 +110,9 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
-    messageElement.textContent = email + ': ' + messageContent;
+
+    const messageNode = document.createTextNode(email + ': ' + messageContent);
+    messageElement.appendChild(messageNode);
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
@@ -118,6 +120,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function (url) {
-        return '&lt;a href="' + url + '" target="_blank"&gt;' + url + '&lt;/a&gt;';
+        return `${url}`;
     });
 }
