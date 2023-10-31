@@ -100,6 +100,7 @@ function checkEmailVerification() {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         checkEmailVerification();
+        deleteOldMessages();
     }
 });
 
@@ -147,17 +148,15 @@ function linkifyText(text) {
 }
 
 function deleteOldMessages() {
-    const currentTime = Date.now();
-    const threeDaysInMilliseconds = 3 * 24 * 60 * 60 * 1000; // 3 dagen in milliseconden
     const messagesRef = database.ref('chat');
-
     messagesRef.once('value', (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-            const messageData = childSnapshot.val();
-            const messageTime = messageData.timestamp;
-            if (currentTime - messageTime > threeDaysInMilliseconds) {
-                messagesRef.child(childSnapshot.key).remove();
-            }
-        });
+        const messages = snapshot.val();
+        const messageCount = Object.keys(messages).length;
+        if (messageCount > 300) {
+            const messagesToDelete = Object.keys(messages).slice(0, messageCount - 300);
+            messagesToDelete.forEach((messageKey) => {
+                messagesRef.child(messageKey).remove();
+            });
+        }
     });
 }
