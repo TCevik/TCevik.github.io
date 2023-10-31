@@ -118,6 +118,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(messageContent);
 
     chatOutput.appendChild(messageElement);
+    window.scrollTo(0, document.body.scrollHeight);
 });
 
 function linkifyText(text) {
