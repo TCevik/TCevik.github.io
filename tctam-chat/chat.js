@@ -103,7 +103,7 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-const uiInput = document.getElementById('ui-input'); // stel dit in op je eigen element
+const uiInput = document.getElementById('ui-input');
 
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
