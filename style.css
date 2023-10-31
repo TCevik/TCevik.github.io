@@ -42,6 +42,7 @@ body {
 
 #menu button {
   width: 95%;
+  z-index: 999999;
   margin-top: 10px;
 }
 
