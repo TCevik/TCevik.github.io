@@ -31,6 +31,9 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
             localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
             localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
             location.reload();
+            setTimeout(() => {
+                redirect();
+            }, 1000);
         })
         .catch(function (error) {
             // Als inloggen mislukt, probeer te registreren
@@ -47,6 +50,20 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
                 });
         });
 });
+
+function redirect() {
+    const queryString = window.location.search;
+    if (queryString) {
+      const urlParams = new URLSearchParams(queryString);
+      const urlParamValue = urlParams.get('url');
+      if (urlParamValue) {
+        alert('Er is een URL gedetecteerd na het vraagteken: ' + urlParamValue);
+        setTimeout(function() {
+          window.location.href = urlParamValue;
+        }, 1000);
+      }
+    }
+}
 
 // Uitloggen
 document.getElementById('logout-btn').addEventListener('click', function () {
