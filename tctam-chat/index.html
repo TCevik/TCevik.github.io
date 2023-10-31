@@ -27,7 +27,7 @@
     </div>
 
     <div id="chat" style="display: none;">
-        <div style="margin-bottom: 100px !important;" id="chat-output"></div>
+        <div id="chat-output"></div>
         <div id="ui-input">
             <input type="text" id="message-input" placeholder="Voer een bericht in" maxlength="500" autocomplete="off">
             <button id="send-button">Verzenden</button>
@@ -68,7 +68,7 @@
         }
 
         #ui-input {
-            position: fixed;
+            position: flex;
             width: 100vw;
             border-top: 3px solid var(--h1234-color);
             border-top-right-radius: 50px;
