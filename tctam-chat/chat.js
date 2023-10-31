@@ -98,17 +98,14 @@ function checkEmailVerification() {
 }
 
 firebase.auth().onAuthStateChanged((user) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const customLink = urlParams.get('link');
-
-    // Controleren op '/?link' in de URL
-    if (window.location.search.startsWith("/?")) {
-        if (customLink) {
-            window.location.href = customLink;
-        }
+    checkEmailVerification();
+    const url = window.location.href;
+    const splitUrl = url.split("?");
+    if (splitUrl.length > 1) {
+        const customLink = splitUrl[1];
+        window.location.href = customLink;
     } else {
         if (user) {
-            checkEmailVerification();
             deleteOldMessages();
         }
     }
