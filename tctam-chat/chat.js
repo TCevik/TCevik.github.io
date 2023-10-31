@@ -111,7 +111,10 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
-    messageElement.textContent = email + ': ';
+    const emailElement = document.createElement('strong'); // Gebruik een <strong> tag voor het dikgedrukt weergeven van de e-mail
+    emailElement.textContent = email + ': ';
+    messageElement.appendChild(emailElement);
+
     messageElement.appendChild(messageContent);
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
