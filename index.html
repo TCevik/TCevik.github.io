@@ -26,6 +26,20 @@
 
         setInterval(countup, 1000);
 
+        var countDownDate = new Date("January 1, " + (new Date().getFullYear() + 1) + " 00:00:00").getTime();
+
+        function countdown() {
+          var now = new Date().getTime();
+          var distance = countDownDate - now;
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          document.getElementById("aftellen").innerHTML = " Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot het nieuw jaar is!";
+        };
+
+        setInterval(countdown, 1000);
+
         function updateBatteryLevel() {
             navigator.getBattery().then(function(battery) {
                 var batteryLevel = battery.level * 100;
@@ -205,7 +219,7 @@
     <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
 </body>
 
-<body>
+<body onload="countdown(); countup();">
     <table>
         <style>
             .dropdown-content {
@@ -241,9 +255,8 @@
 
             <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
             <p id="battery-percentage"><p>
-        
-            <p style="margin-top: -10px; margin-bottom: 30px;">This site is written in Dutch, so if you want to translate the site you have to do that from Dutch to your language.</p>
-        
+            <p id="aftellen"></p>
+                
             <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
             <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
                 <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
