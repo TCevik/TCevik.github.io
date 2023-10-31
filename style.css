@@ -181,6 +181,7 @@ textarea {
   background-color: var(--background-color);
   font-family: Lexend, Arial, sans-serif;
   text-align: left;
+  resize: none;
 }
 
 textarea:hover,
