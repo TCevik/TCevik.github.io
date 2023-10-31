@@ -62,7 +62,7 @@ document.getElementById('logout-btn').addEventListener('click', function () {
 });
 
 // Voeg code toe om wachtwoord te wijzigen
-document.getElementById('change-password-btn').addEventListener('click', function () {
+function changePassword() {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -79,7 +79,7 @@ document.getElementById('change-password-btn').addEventListener('click', functio
                 });
         }
     }
-});
+}
 
 // Voeg code toe om wachtwoord te resetten
 document.getElementById('reset-password-btn').addEventListener('click', function () {
