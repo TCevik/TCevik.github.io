@@ -153,7 +153,7 @@
 
           if (randomNumber === 5) {
             const loggedIn = localStorage.getItem('loggedIn');
-            if (loggedIn === 'false') {
+            if (loggedIn !== 'true') {
               togglePopup('login');
             } else {
               console.log("The user is already logged in.");
