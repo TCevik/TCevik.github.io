@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 body {
-  position: absolute;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
   width: 95%;
+  text-align: center;
 }
 
 /* light mode and default mode */
@@ -20,9 +23,6 @@ body {
   --button-shadow: #2e7a22;
   overflow-x: hidden;
   transition: 0.5s;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0;
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: Lexend, Arial, sans-serif;
