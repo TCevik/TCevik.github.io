@@ -121,7 +121,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     
     const isLastMessage = chatOutput.children[chatOutput.children.length - 1] === messageElement;
     if (isLastMessage) {
-        messageElement.style.marginBottom = '30px';
+        isLastMessage.style.marginBottom = '30px';
     }
     
     window.scrollTo(0, document.body.scrollHeight);
