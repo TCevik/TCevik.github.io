@@ -104,7 +104,7 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 const chatOutput = document.getElementById('chat-output');
-const fixedChatbar = document.getElementById('message-input');
+const messageInput = document.getElementById('message-input'); // stel dit in op je eigen element
 
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
@@ -124,8 +124,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     messageElement.style.marginBottom = '10px';
 
-    // Dynamisch aanpassen van de positie van de vaste chatbalk
-    fixedChatbar.style.bottom = chatOutput.clientHeight + 'px';
+    chatOutput.style.height = `calc(100% - ${messageInput.clientHeight}px)`;
+
     window.scrollTo(0, document.body.scrollHeight);
 });
 
