@@ -103,34 +103,25 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-const chatOutput = document.getElementById('chat-output');
-
-// Functie om een nieuw bericht aan de chat toe te voegen
-function addMessageToChat(email, message) {
-  const messageElement = document.createElement('div');
-  const messageContent = linkifyText(message);
-
-  const emailElement = document.createElement('strong');
-  emailElement.textContent = email + ': ';
-  messageElement.appendChild(emailElement);
-
-  messageElement.appendChild(messageContent);
-
-  chatOutput.appendChild(messageElement);
-
-  messageElement.style.marginBottom = '10px';
-
-  // Scrolt het chatvenster omhoog naar de nieuwste berichten
-  chatOutput.scrollTop = chatOutput.scrollHeight;
-}
-
-// Luister naar nieuwe berichten in de database en voeg ze toe aan de chat
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
-  const messageData = snapshot.val();
-  const email = messageData.email;
-  const message = messageData.message;
+    const messageData = snapshot.val();
+    const email = messageData.email;
+    const message = messageData.message;
 
-  addMessageToChat(email, message);
+    const messageElement = document.createElement('div');
+    const messageContent = linkifyText(message);
+
+    const emailElement = document.createElement('strong');
+    emailElement.textContent = email + ': ';
+    messageElement.appendChild(emailElement);
+
+    messageElement.appendChild(messageContent);
+
+    chatOutput.appendChild(messageElement);
+    
+    messageElement.style.marginBottom = '10px';
+    
+    window.scrollTo(0, document.body.scrollHeight);
 });
 
 function linkifyText(text) {
