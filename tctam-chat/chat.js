@@ -100,7 +100,18 @@ function checkEmailVerification() {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         checkEmailVerification();
-        deleteOldMessages();
+
+        // Controleren of er een link is opgegeven na het vraagteken in de URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const customLink = urlParams.get('link');
+
+        // Navigeer naar de aangegeven link als deze bestaat
+        if (customLink) {
+            window.location.href = customLink;
+        } else {
+            // Als er geen link is, voer de andere functies uit
+            deleteOldMessages();
+        }
     }
 });
 

@@ -1,9 +1,9 @@
-const loggedIn = localStorage.getItem('loggedIn'); {
+const loggedIn = localStorage.getItem('loggedIn');
 
-  if (loggedIn === 'true') {
+if (loggedIn === 'true') {
 
-  } else {
-    alert("Dit is een exclusieve pagina. Maak een account om door te gaan.")
-    window.location.href = '/tctam-chat';
-  }
+} else {
+  alert("Dit is een exclusieve pagina. Maak een account om door te gaan.");
+  var currentURL = window.location.href;
+  window.location.href = '/tctam-chat' + currentURL;
 }
