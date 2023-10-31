@@ -30,8 +30,8 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
             toggleUI(true);
             localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
             localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
-            location.reload();
             redirect();
+            location.reload();
         })
         .catch(function (error) {
             // Als inloggen mislukt, probeer te registreren
