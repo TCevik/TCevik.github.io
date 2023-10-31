@@ -253,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.style.paddingTop = "25px"
   showCodeButton.style.paddingBottom = "25px"
   showCodeButton.style.top = "50%";
+  menu.style.zIndex = "9999"
   showCodeButton.style.transform = "translateY(-50%)";
   showCodeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(showCodeButton);
@@ -266,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.position = "fixed";
   closeButton.style.left = "5px";
   closeButton.style.top = "5px";
-  closeButton.style.zIndex = "3";
+  closeButton.style.zIndex = "9999";
   closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
 
@@ -275,6 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.addEventListener("click", function () {
     if (!menuVisible) {
       var codeElement = document.createElement("div");
+      menu.style.zIndex = "9998"
       codeElement.setAttribute("id", "menu");
       codeElement.style.opacity = 0;
       codeElement.style.transition = "opacity 0.5s";
