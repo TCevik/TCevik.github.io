@@ -118,6 +118,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(messageContent);
 
     chatOutput.appendChild(messageElement);
+    chatOutput.style.marginBottom = "50px"
     
     messageElement.style.marginBottom = '10px';
     
