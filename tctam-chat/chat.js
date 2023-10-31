@@ -98,18 +98,17 @@ function checkEmailVerification() {
 }
 
 firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        checkEmailVerification();
+    const urlParams = new URLSearchParams(window.location.search);
+    const customLink = urlParams.get('link');
 
-        // Controleren of er een link is opgegeven na het vraagteken in de URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const customLink = urlParams.get('link');
-
-        // Navigeer naar de aangegeven link als deze bestaat
+    // Controleren op '/?link' in de URL
+    if (window.location.search.startsWith("/?")) {
         if (customLink) {
             window.location.href = customLink;
-        } else {
-            // Als er geen link is, voer de andere functies uit
+        }
+    } else {
+        if (user) {
+            checkEmailVerification();
             deleteOldMessages();
         }
     }
