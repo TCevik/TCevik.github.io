@@ -104,7 +104,7 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 const chatOutput = document.getElementById('chat-output');
-const messageInput = document.getElementById('message-input'); // stel dit in op je eigen element
+const uiInput = document.getElementById('ui-input'); // stel dit in op je eigen element
 
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
@@ -124,7 +124,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     messageElement.style.marginBottom = '10px';
 
-    chatOutput.style.height = `calc(100% - ${messageInput.clientHeight}px)`;
+    chatOutput.style.height = `calc(100% - ${uiInput.clientHeight}px)`;
 
     window.scrollTo(0, document.body.scrollHeight);
 });
