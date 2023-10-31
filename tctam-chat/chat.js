@@ -145,3 +145,19 @@ function linkifyText(text) {
     }
     return messageNode;
 }
+
+function deleteOldMessages() {
+    const currentTime = Date.now();
+    const threeDaysInMilliseconds = 3 * 24 * 60 * 60 * 1000; // 3 dagen in milliseconden
+    const messagesRef = database.ref('chat');
+
+    messagesRef.once('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            const messageData = childSnapshot.val();
+            const messageTime = messageData.timestamp;
+            if (currentTime - messageTime > threeDaysInMilliseconds) {
+                messagesRef.child(childSnapshot.key).remove();
+            }
+        });
+    });
+}
