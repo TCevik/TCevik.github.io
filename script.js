@@ -458,6 +458,7 @@ function togglePopup(category) {
   closeBtn.style.position = "fixed"
   closeBtn.style.top = "20px"
   closeBtn.style.right = "35px"
+  closeBtn.style.cursor = "pointer"
   closeBtn.style.fontSize = "1.4em"
   closeBtn.onclick = function () {
       popup.style.opacity = 0;
