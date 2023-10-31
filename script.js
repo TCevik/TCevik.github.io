@@ -452,9 +452,13 @@ function togglePopup(category) {
   popup.style.left = "50%";
   popup.style.transform = "translateX(-50%)";
       
-  var closeBtn = document.createElement("button");
+  var closeBtn = document.createElement("b");
   closeBtn.classList.add("close");
-  closeBtn.innerHTML = "Sluiten";
+  closeBtn.innerHTML = "X";
+  closeBtn.style.position = "fixed"
+  closeBtn.style.top = "20px"
+  closeBtn.style.right = "35px"
+  closeBtn.style.fontSize = "1.4em"
   closeBtn.onclick = function () {
       popup.style.opacity = 0;
       overlay.style.display = "none";
