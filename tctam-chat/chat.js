@@ -125,7 +125,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.style.marginBottom = '10px';
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
-    deleteOldMessages();
 });
 
 function linkifyText(text) {
