@@ -98,24 +98,11 @@ function checkEmailVerification() {
 }
 
 firebase.auth().onAuthStateChanged((user) => {
-    checkEmailVerification();
-    const urlParams = new URLSearchParams(window.location.search);
-    const customLink = urlParams.get('link');
-
-    // Controleren op '/?link' in de URL
-    if (window.location.search.startsWith("/?")) {
-        if (customLink) {
-            setTimeout(() => {
-                window.location.href = customLink;
-            }, 1000); // Vertraging van 1000 ms
-        }
-    } else {
-        if (user) {
-            deleteOldMessages();
-        }
+    if (user) {
+        checkEmailVerification();
+        deleteOldMessages();
     }
 });
-
 
 const uiInput = document.getElementById('ui-input');
 
