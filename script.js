@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Controleer of de URL begint met '/games/' of '/games?' (en optionele queryparameters)
 if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') && 
     !currentURL.startsWith('/sites/') && !currentURL.startsWith('/sites?') &&
+    !currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
     !currentURL.startsWith('/tctam-chat/') && !currentURL.startsWith('/tctam-chat?')) {
     // Voeg een knop toe aan de pagina
     const loginButton = document.createElement("button");
