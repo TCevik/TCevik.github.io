@@ -148,10 +148,10 @@
             partyTimer();
         }
 
-        window.onload = function() {
+        function randomNumber() {
           var randomNumber = Math.floor(Math.random() * 10) + 1;
 
-          if (randomNumber === 1) {
+          if (randomNumber === 5) {
             const loggedIn = localStorage.getItem('loggedIn');
             if (loggedIn === 'false') {
               togglePopup('login');
@@ -159,7 +159,7 @@
               console.log("The user is already logged in.");
             }
           } else {
-              console.log("The random number wasn't 1: " + randomNumber);
+              console.log("The random number wasn't 5: " + randomNumber);
           }
         };
     </script>
@@ -169,7 +169,7 @@
     <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
 </body>
 
-<body onload="countdown(); countup();">
+<body onload="countdown(); countup(); randomNumber();">
     <table>
         <style>
             .popup-content {
@@ -186,7 +186,7 @@
             <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
             <h2 style="font-size: 26px;">Door Tamer Çevik</h3>
             <p style="margin-bottom: 0px;">Welkom op de TC_tam website. "Fijne dag!"</p>
-                <button style="margin-top: -30px; padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+                <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
                 <div id="explanation-popup" class="popup-content">
                     <h4>Nieuwe veranderingen ophalen:</h4>
                         <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
