@@ -111,15 +111,26 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message); // Functie om links in tekst om te zetten naar klikbare <a> tags
 
-    const messageNode = document.createTextNode(email + ': ' + messageContent);
-    messageElement.appendChild(messageNode);
+    messageElement.textContent = email + ': ';
+    messageElement.appendChild(messageContent);
 
     chatOutput.insertBefore(messageElement, chatOutput.firstChild);
 });
 
 function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function (url) {
-        return `${url}`;
+    const messageNode = document.createElement('span');
+    let lastIndex = 0;
+    text.replace(urlRegex, function (url, index) {
+        const before = text.substring(lastIndex, index);
+        const linkNode = document.createElement('a');
+        linkNode.href = url;
+        linkNode.target = "_blank";
+        linkNode.textContent = url;
+        messageNode.appendChild(document.createTextNode(before));
+        messageNode.appendChild(linkNode);
+        lastIndex = index + url.length;
     });
+    messageNode.appendChild(document.createTextNode(text.substring(lastIndex)));
+    return messageNode;
 }
