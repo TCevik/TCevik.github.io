@@ -7,6 +7,7 @@ body {
   position: relative;
   width: 95%;
   text-align: center;
+  transition: 0.5s;
 }
 
 /* light mode and default mode */
@@ -24,7 +25,6 @@ body {
   --button-bgcolor: #379429;
   --button-shadow: #2e7a22;
   overflow-x: hidden;
-  transition: 0.5s;
   font-family: Lexend, Arial, sans-serif;
 }
 
