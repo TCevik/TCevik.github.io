@@ -8,21 +8,24 @@
     <link rel="stylesheet" href="/style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="/script.js"></script>
+    
 </head>
 
 <body>
+    
     <h1>Notities</h1>
-    <p style="margin-top: -10px;">Hier kan je notities maken!!!</p>
-    <p style="margin-top: -10px;" id="save">Opgeslagen</p>
+    <p>Hier kan je notities maken!!!</p>
 
-    <br><textarea id="input" rows="25" style="margin-top: -30px; width: 90%;" maxlength="1000000" disabled="true" oninput="document.getElementById('save').textContent = 'Kijk uit je hebt niet opgeslagen veranderingen';"></textarea>
+    <button id="save-button" onclick="saveData()">Opslaan</button>
+    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="100000" disabled="true"></textarea>
 
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
             authDomain: "tctam-d04b8.firebaseapp.com",
+            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tctam-d04b8",
             storageBucket: "tctam-d04b8.appspot.com",
             messagingSenderId: "793882705601",
@@ -30,21 +33,13 @@
             measurementId: "G-Q00YFYX8SP"
         };
 
-        // Firebase-initialisatie
+        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
 
-        const db = firebase.firestore();
+        const database = firebase.database();
         const auth = firebase.auth();
-
-        let typingTimer;
-        const doneTypingInterval = 2000;
-
-        function resetTimer() {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(saveData, doneTypingInterval);
-        }
 
         function saveData() {
             const user = auth.currentUser;
@@ -60,50 +55,48 @@
 
             let userEmail = "Niet_beschikbaar";
             if (user.email !== null) {
-                userEmail = user.email
+                userEmail = user.email.replace(/\./g, '_'); // Vervang de punten door underscores
             }
 
-            db.collection('userdata').doc(userEmail).set({
-                note: document.getElementById('input').value,
-            })
-            .then(() => {
-                document.getElementById('save').textContent = 'Opgeslagen';
-            })
-            .catch((error) => {
-                alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
+            const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+
+            const userNote = document.getElementById('input').value;
+            nameRef.set({
+                text: userNote,
+                userEmail: userEmail
+            }, function(error) {
+                if (error) {
+                    alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
+                } else {
+                    alert("Data is succesvol opgeslagen.");
+                }
             });
         }
 
         function load() {
-            document.getElementById('save').textContent = 'Opgeslagen';
             document.getElementById("input").disabled = false;
             const user = auth.currentUser;
             if (user) {
                 let userEmail = "Niet_beschikbaar";
                 if (user.email !== null) {
-                    userEmail = user.email
+                    userEmail = user.email.replace(/\./g, '_');
                 }
 
-                db.collection('userdata').doc(userEmail).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        document.getElementById('input').value = doc.data().note;
+                const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+                nameRef.once('value', function(snapshot) {
+                    const userData = snapshot.val();
+                    if (userData && userData.text) {
+                        document.getElementById('input').value = userData.text;
                     }
-                })
-                .catch((error) => {
-                    alert("Er is een fout opgetreden bij het ophalen van de gegevens: " + error);
+                }, function(error) {
+                    alert("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
                 });
             }
         };
-
-        document.getElementById('input').addEventListener('input', resetTimer);
-
-        document.getElementById('save').textContent = 'Laden...';
 
         setTimeout(() => {
             load();
         }, 2000);
     </script>
 </body>
-
 </html>
