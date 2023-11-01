@@ -126,7 +126,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.appendChild(messageElement);
 
     messageElement.style.marginBottom = '10px';
-    messageElement.style.marginRight = '20px';
+    messageElement.style.marginLeft = '20px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
 
