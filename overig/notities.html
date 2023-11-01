@@ -58,7 +58,7 @@
             }
 
             db.collection('userdata').doc(userEmail).set({
-                text: document.getElementById('input').value,
+                note: document.getElementById('input').value,
             })
             .then(() => {
                 alert("Data is succesvol opgeslagen.");
@@ -81,7 +81,7 @@
                 db.collection('userdata').doc(userEmail).get()
                 .then((doc) => {
                     if (doc.exists) {
-                        document.getElementById('input').value = doc.data().text;
+                        document.getElementById('input').value = doc.data().note;
                     }
                 })
                 .catch((error) => {
