@@ -46,12 +46,13 @@
         }
 
         window.onload(); {
-          if (user) {
-            var allowedEmails = ["tamer.cevik@vlietlandcollege.nl", "tam.cevik123@gmail.com"];
-            if (!allowedEmails.includes(user.email)) {
-              window.location.href = "/";
+            const user = auth.currentUser;
+            if (user) {
+                var allowedEmails = ["tamer.cevik@vlietlandcollege.nl", "tam.cevik123@gmail.com"];
+                if (!allowedEmails.includes(user.email)) {
+                    window.location.href = "/";
+                }
             }
-          }
         }
         
         function saveData() {
