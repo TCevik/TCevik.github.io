@@ -54,7 +54,7 @@
 
             let userEmail = "Niet_beschikbaar";
             if (user.email !== null) {
-                userEmail = user.email.replace(/\./g, '_'); // Vervang de punten door underscores
+                userEmail = user.email // .replace(/\./g, '_'); // Vervang de punten door underscores
             }
 
             db.collection('userdata').doc(userEmail).set({
@@ -74,7 +74,7 @@
             if (user) {
                 let userEmail = "Niet_beschikbaar";
                 if (user.email !== null) {
-                    userEmail = user.email.replace(/\./g, '_');
+                    userEmail = user.email // .replace(/\./g, '_');
                 }
 
                 db.collection('userdata').doc(userEmail).get()
