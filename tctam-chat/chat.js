@@ -111,7 +111,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const email = messageData.email;
     const message = messageData.message;
 
-    const tabElement = document.createElement('div'); // Tab element
     const emailElement = document.createElement('div'); // Email element
     const messageElement = document.createElement('div'); // Bericht element
 
@@ -128,7 +127,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     emailElement.style.fontWeight = 'bold';
 
-    chatOutput.appendChild(tabElement);
     chatOutput.appendChild(emailElement);
     chatOutput.appendChild(messageElement);
 
