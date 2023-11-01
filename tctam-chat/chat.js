@@ -114,26 +114,24 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
+    // Code voor het verwijderen van het gedeelte achter de '@'
     const modifiedEmail = email.replace(/@.*/g, '');
 
     const emailElement = document.createElement('strong');
     emailElement.textContent = modifiedEmail + ': ';
-    messageElement.appendChild(emailElement);
 
-    messageElement.appendChild(messageContent);
+    chatOutput.appendChild(emailElement); // Plaats het e-mailelement eerst in het chatOutput
 
-    // Voeg de CSS-stijl direct toe aan de elementen
+    messageElement.appendChild(messageContent); // Voeg daarna het bericht toe aan het berichtelement
+
+    chatOutput.appendChild(messageElement); // Voeg het berichtelement toe aan het chatOutput
+
+    emailElement.style.display = 'block'; // Zet het e-mailelement als blok, zodat het boven het bericht komt te staan
+
     messageElement.style.marginBottom = '10px';
     messageElement.style.marginLeft = '20px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
-
-    emailElement.style.marginBottom = '10px';
-    emailElement.style.marginLeft = '20px';
-    emailElement.style.wordBreak = 'break-word';
-    emailElement.style.textAlign =  'left';
-
-    chatOutput.appendChild(messageElement);
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
 });
