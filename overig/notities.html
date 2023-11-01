@@ -69,6 +69,7 @@
         }
 
         function load() {
+            document.getElementById('input').value = '';
             document.getElementById("input").disabled = false;
             const user = auth.currentUser;
             if (user) {
