@@ -106,6 +106,9 @@ firebase.auth().onAuthStateChanged((user) => {
 
 const uiInput = document.getElementById('ui-input');
 
+let prevEmail = null;
+let prevMessageElement = null;
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
@@ -117,32 +120,37 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     // Code voor het verwijderen van het gedeelte achter de '@'
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    const emailElement = document.createElement('strong');
-    emailElement.textContent = modifiedEmail + ': ';
+    if (prevEmail === modifiedEmail) {
+        prevMessageElement.appendChild(document.createElement('br')); // Voeg een line break toe
+        prevMessageElement.appendChild(messageContent); // Voeg het bericht toe aan het vorige berichtelement
+    } else {
+        const emailElement = document.createElement('strong');
+        emailElement.textContent = modifiedEmail + ': ';
 
-    chatOutput.appendChild(emailElement); // Plaats het e-mailelement eerst in het chatOutput
+        chatOutput.appendChild(emailElement); // Plaats het e-mailelement eerst in het chatOutput
+        messageElement.appendChild(messageContent); // Voeg daarna het bericht toe aan het berichtelement
+        chatOutput.appendChild(messageElement); // Voeg het berichtelement toe aan het chatOutput
 
-    messageElement.appendChild(messageContent); // Voeg daarna het bericht toe aan het berichtelement
+        emailElement.style.display = 'block'; // Zet het e-mailelement als blok, zodat het boven het bericht komt te staan
+        emailElement.style.marginBottom = '5px';
+        emailElement.style.marginLeft = '20px';
+        emailElement.style.wordBreak = 'break-word';
+        emailElement.style.textAlign = 'left';
 
-    chatOutput.appendChild(messageElement); // Voeg het berichtelement toe aan het chatOutput
+        messageElement.style.marginBottom = '20px';
+        messageElement.style.marginLeft = '30px';
+        messageElement.style.wordBreak = 'break-word';
+        messageElement.style.textAlign = 'left';
+        messageElement.style.paddingLeft = '5px';
+        messageElement.style.paddingBottom = '2px';
+        messageElement.style.paddingTop = '2px';
+        messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
 
-    emailElement.style.display = 'block'; // Zet het e-mailelement als blok, zodat het boven het bericht komt te staan
+        chatOutput.scrollTop = chatOutput.scrollHeight;
 
-    emailElement.style.marginBottom = '5px';
-    emailElement.style.marginLeft = '20px';
-    emailElement.style.wordBreak = 'break-word';
-    emailElement.style.textAlign = 'left';
-
-    messageElement.style.marginBottom = '20px';
-    messageElement.style.marginLeft = '30px';
-    messageElement.style.wordBreak = 'break-word';
-    messageElement.style.textAlign = 'left';
-    messageElement.style.paddingLeft = '5px';
-    messageElement.style.paddingBottom = '2px';
-    messageElement.style.paddingTop = '2px';
-    messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
-
-    chatOutput.scrollTop = chatOutput.scrollHeight;
+        prevEmail = modifiedEmail;
+        prevMessageElement = messageElement;
+    }
 });
 
 function linkifyText(text) {
