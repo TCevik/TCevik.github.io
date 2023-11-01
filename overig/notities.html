@@ -59,7 +59,6 @@
 
             db.collection('userdata').doc(userEmail).set({
                 text: document.getElementById('input').value,
-                userEmail: userEmail
             })
             .then(() => {
                 alert("Data is succesvol opgeslagen.");
