@@ -15,8 +15,8 @@
 <body>
     <h1>Notities</h1>
     <p>Hier kan je notities maken!!!</p>
+    <p id="save"></p>
 
-    <button id="save-button" onclick="saveData()">Opslaan</button>
     <br><textarea id="input" rows="25" style="width: 90%;" maxlength="1000000" disabled="true">Laden...</textarea>
 
     <script>
@@ -30,13 +30,21 @@
             measurementId: "G-Q00YFYX8SP"
         };
 
-        // Initialize Firebase
+        // Firebase-initialisatie
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
 
         const db = firebase.firestore();
         const auth = firebase.auth();
+
+        let typingTimer;
+        const doneTypingInterval = 10;
+
+        function resetTimer() {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(saveData, doneTypingInterval);
+        }
 
         function saveData() {
             const user = auth.currentUser;
@@ -59,7 +67,7 @@
                 note: document.getElementById('input').value,
             })
             .then(() => {
-                alert("Data is succesvol opgeslagen.");
+                document.getElementById('save').value = 'Opgeslagen';
             })
             .catch((error) => {
                 alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
@@ -88,9 +96,12 @@
             }
         };
 
+        document.getElementById('input').addEventListener('input', resetTimer);
+
         setTimeout(() => {
             load();
         }, 2000);
     </script>
 </body>
+
 </html>
