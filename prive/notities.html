@@ -45,6 +45,15 @@
             typingTimer = setTimeout(saveData, doneTypingInterval);
         }
 
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            var allowedEmails = ["tamer.cevik@vlietlandcollege.nl", "tam.cevik123@gmail.com"];
+            if (!allowedEmails.includes(user.email)) {
+              window.location.href = "/";
+            }
+          }
+        });
+
         function saveData() {
             const user = auth.currentUser;
             if (!user) {
@@ -62,7 +71,7 @@
                 userEmail = user.email
             }
 
-            db.collection('userdata').doc(userEmail).set({
+            db.collection('tamer').doc('notities').set({
                 note: document.getElementById('input').value,
             })
             .then(() => {
@@ -83,7 +92,7 @@
                     userEmail = user.email
                 }
 
-                db.collection('userdata').doc(userEmail).get()
+                db.collection('tamer').doc('notities').get()
                 .then((doc) => {
                     if (doc.exists) {
                         document.getElementById('input').value = doc.data().note;
@@ -104,5 +113,4 @@
         }, 2000);
     </script>
 </body>
-
 </html>
