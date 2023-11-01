@@ -123,6 +123,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.appendChild(messageElement);
 
     messageElement.style.marginBottom = '10px';
+    messageElement.style.textAlign = 'left';
     messageElement.style.wordBreak = 'break-word';
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
