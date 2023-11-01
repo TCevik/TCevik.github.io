@@ -128,8 +128,13 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     emailElement.style.display = 'block'; // Zet het e-mailelement als blok, zodat het boven het bericht komt te staan
 
-    messageElement.style.marginBottom = '10px';
-    messageElement.style.marginLeft = '20px';
+    emailElement.style.marginBottom = '5px';
+    emailElement.style.marginLeft = '20px';
+    emailElement.style.wordBreak = 'break-word';
+    emailElement.style.textAlign = 'left';
+
+    messageElement.style.marginBottom = '20px';
+    messageElement.style.marginLeft = '30px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
 
