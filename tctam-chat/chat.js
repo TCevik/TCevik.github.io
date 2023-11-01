@@ -111,32 +111,23 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const email = messageData.email;
     const message = messageData.message;
 
-    const emailElement = document.createElement('div'); // Email element
-    const messageElement = document.createElement('div'); // Bericht element
-
+    const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
     // Code voor het verwijderen van het gedeelte achter de '@'
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    emailElement.textContent = modifiedEmail;
-    messageElement.textContent = '    ' + messageContent;
+    const emailElement = document.createElement('strong');
+    emailElement.textContent = modifiedEmail + ': ';
+    messageElement.appendChild(emailElement);
 
-    emailElement.style.marginLeft = '20px';
-    messageElement.style.marginLeft = '20px';
+    messageElement.appendChild(messageContent);
 
-    emailElement.style.fontWeight = 'bold';
-
-    chatOutput.appendChild(emailElement);
     chatOutput.appendChild(messageElement);
 
-    emailElement.style.marginBottom = '10px';
     messageElement.style.marginBottom = '10px';
-
-    emailElement.style.wordBreak = 'break-word';
+    messageElement.style.marginLeft = '20px';
     messageElement.style.wordBreak = 'break-word';
-
-    emailElement.style.textAlign = 'left';
     messageElement.style.textAlign = 'left';
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
