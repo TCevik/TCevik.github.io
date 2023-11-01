@@ -19,7 +19,7 @@
     <p>Hier kan je notities maken!!!</p>
 
     <button id="save-button" onclick="saveData()">Opslaan</button>
-    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="100000"></textarea>
+    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="100000" disabled="true"></textarea>
 
     <script>
         const firebaseConfig = {
@@ -54,7 +54,7 @@
 
             let userEmail = "Niet_beschikbaar";
             if (user.email !== null) {
-                userEmail = user.email // .replace(/\./g, '_'); // Vervang de punten door underscores
+                userEmail = user.email
             }
 
             db.collection('userdata').doc(userEmail).set({
@@ -70,11 +70,12 @@
         }
 
         function load() {
+            document.getElementById("input").disabled = false;
             const user = auth.currentUser;
             if (user) {
                 let userEmail = "Niet_beschikbaar";
                 if (user.email !== null) {
-                    userEmail = user.email // .replace(/\./g, '_');
+                    userEmail = user.email
                 }
 
                 db.collection('userdata').doc(userEmail).get()
