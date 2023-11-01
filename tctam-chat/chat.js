@@ -123,6 +123,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     if (prevEmail === modifiedEmail) {
         prevMessageElement.appendChild(document.createElement('br')); // Voeg een line break toe
         prevMessageElement.appendChild(messageContent); // Voeg het bericht toe aan het vorige berichtelement
+
+        chatOutput.scrollTop = chatOutput.scrollHeight;
     } else {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
