@@ -114,8 +114,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
+    // Code voor het verwijderen van het gedeelte achter de '@'
+    const modifiedEmail = email.replace(/@.*/g, '');
+
     const emailElement = document.createElement('strong');
-    emailElement.textContent = email + ': ';
+    emailElement.textContent = modifiedEmail + ': ';
     messageElement.appendChild(emailElement);
 
     messageElement.appendChild(messageContent);
@@ -123,8 +126,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.appendChild(messageElement);
 
     messageElement.style.marginBottom = '10px';
-    messageElement.style.textAlign = 'left';
     messageElement.style.wordBreak = 'break-word';
+    messageElement.style.textAlign = 'left';
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
 });
