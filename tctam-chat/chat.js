@@ -123,23 +123,15 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(messageContent);
 
     // Voeg de CSS-stijl direct toe aan de elementen
-    messageElement.style.position = 'relative';
-    messageElement.style.display = 'inline-block';
     messageElement.style.marginBottom = '10px';
     messageElement.style.marginLeft = '20px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
 
-    emailElement.style.position = 'absolute';
-    emailElement.style.top = '-20px';
-    emailElement.style.left = '0';
-    emailElement.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    emailElement.style.padding = '2px 5px';
-
-    messageContent.style.position = 'relative';
-    messageContent.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    messageContent.style.padding = '5px';
-    messageContent.style.borderRadius = '5px';
+    emailElement.style.marginBottom = '10px';
+    emailElement.style.marginLeft = '20px';
+    emailElement.style.wordBreak = 'break-word';
+    emailElement.style.textAlign =  'left';
 
     chatOutput.appendChild(messageElement);
 
