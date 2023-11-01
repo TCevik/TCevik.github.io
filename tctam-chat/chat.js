@@ -137,7 +137,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.style.marginLeft = '30px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
-    messageElement.style.borderLeft = 'solid 2px var(--h1234-color)';
+    messageElement.style.paddingLeft = '3px';
+    messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
 });
