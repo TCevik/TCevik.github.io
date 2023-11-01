@@ -15,9 +15,9 @@
 <body>
     <h1>Notities</h1>
     <p>Hier kan je notities maken!!!</p>
-    <p id="save"></p>
+    <p id="save">Opgeslagen</p>
 
-    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="1000000" disabled="true">Laden...</textarea>
+    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="1000000" disabled="true" oninput="document.getElementById('save').textContent = 'Kijk uit je hebt niet opgeslagen veranderingen';"></textarea>
 
     <script>
         const firebaseConfig = {
@@ -67,7 +67,7 @@
                 note: document.getElementById('input').value,
             })
             .then(() => {
-                document.getElementById('save').value = 'Opgeslagen';
+                document.getElementById('save').textContent = 'Opgeslagen';
             })
             .catch((error) => {
                 alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
@@ -75,7 +75,7 @@
         }
 
         function load() {
-            document.getElementById('input').value = '';
+            document.getElementById('save').textContent = 'Opgeslagen';
             document.getElementById("input").disabled = false;
             const user = auth.currentUser;
             if (user) {
@@ -97,6 +97,8 @@
         };
 
         document.getElementById('input').addEventListener('input', resetTimer);
+
+        document.getElementById('save').textContent = 'Laden...';
 
         setTimeout(() => {
             load();
