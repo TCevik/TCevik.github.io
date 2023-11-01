@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="/style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="/script.js"></script>
-    
+
 </head>
 
 <body>
-    
+
     <h1>Notities</h1>
     <p>Hier kan je notities maken!!!</p>
 
@@ -25,7 +25,6 @@
         const firebaseConfig = {
             apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
             authDomain: "tctam-d04b8.firebaseapp.com",
-            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tctam-d04b8",
             storageBucket: "tctam-d04b8.appspot.com",
             messagingSenderId: "793882705601",
@@ -38,7 +37,7 @@
             firebase.initializeApp(firebaseConfig);
         }
 
-        const database = firebase.database();
+        const db = firebase.firestore();
         const auth = firebase.auth();
 
         function saveData() {
@@ -58,18 +57,15 @@
                 userEmail = user.email.replace(/\./g, '_'); // Vervang de punten door underscores
             }
 
-            const nameRef = database.ref('userdata/' + userEmail + '/notes/');
-
-            const userNote = document.getElementById('input').value;
-            nameRef.set({
-                text: userNote,
+            db.collection('userdata').doc(userEmail).set({
+                text: document.getElementById('input').value,
                 userEmail: userEmail
-            }, function(error) {
-                if (error) {
-                    alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
-                } else {
-                    alert("Data is succesvol opgeslagen.");
-                }
+            })
+            .then(() => {
+                alert("Data is succesvol opgeslagen.");
+            })
+            .catch((error) => {
+                alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
             });
         }
 
@@ -81,14 +77,14 @@
                     userEmail = user.email.replace(/\./g, '_');
                 }
 
-                const nameRef = database.ref('userdata/' + userEmail + '/notes/');
-                nameRef.once('value', function(snapshot) {
-                    const userData = snapshot.val();
-                    if (userData && userData.text) {
-                        document.getElementById('input').value = userData.text;
+                db.collection('userdata').doc(userEmail).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        document.getElementById('input').value = doc.data().text;
                     }
-                }, function(error) {
-                    alert("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
+                })
+                .catch((error) => {
+                    alert("Er is een fout opgetreden bij het ophalen van de gegevens: " + error);
                 });
             }
         };
@@ -98,4 +94,5 @@
         }, 2000);
     </script>
 </body>
-</html> 
+
+</html>
