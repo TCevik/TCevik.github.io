@@ -57,7 +57,7 @@
                 userEmail = user.email
             }
 
-            db.collection('userdata').doc(userEmail).set({
+            db.collection('userdata').doc(userEmail).collection('notes').set({
                 text: document.getElementById('input').value,
                 userEmail: userEmail
             })
@@ -78,7 +78,7 @@
                     userEmail = user.email
                 }
 
-                db.collection('userdata').doc(userEmail).get()
+                db.collection('userdata').doc(userEmail).collection('notes').get()
                 .then((doc) => {
                     if (doc.exists) {
                         document.getElementById('input').value = doc.data().text;
