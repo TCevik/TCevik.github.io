@@ -109,7 +109,7 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 
-database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
+database.ref('chat').on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
     const message = messageData.message;
@@ -153,6 +153,21 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         prevEmail = modifiedEmail;
         prevMessageElement = messageElement;
     }
+
+    // Toevoeging voor het toevoegen van een 'X' en verwijderen van bericht
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.style.marginLeft = '10px';
+    deleteButton.style.color = 'red';
+    deleteButton.style.cursor = 'pointer';
+
+    deleteButton.addEventListener('click', () => {
+        database.ref('chat').child(snapshot.key).set({
+            message: 'Dit bericht is verwijderd door de auteur'
+        });
+    });
+
+    messageElement.appendChild(deleteButton);
 });
 
 function linkifyText(text) {
