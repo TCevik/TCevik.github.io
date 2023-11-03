@@ -109,7 +109,6 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 let isFirstMessage = true;
-let messageContainer = document.createElement('div');
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
@@ -133,25 +132,23 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
-        messageContainer.appendChild(emailElement); // Voeg toe aan de messageContainer in plaats van chatOutput
+        chatOutput.appendChild(emailElement);
         emailElement.style.display = 'block';
-        emailElement.style.marginBottom = '5px';
+        emailElement.style.marginBottom = '20px'; // 20px tussen emails van verschillende gebruikers
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-        emailElement.style.marginTop = '20px';
 
-        if (!isFirstMessage) {
-            messageContainer.style.marginBottom = '50px'; // 50px tussen email van vorige gebruiker en bericht
+        if (prevEmail !== null) {
+            messageElement.style.marginTop = '20px'; // 20px tussen berichten van verschillende gebruikers
         }
         prevEmail = modifiedEmail;
-        isFirstMessage = false;
     } else {
-        messageContainer.style.marginBottom = '0px'; // Marge tussen berichten van dezelfde gebruiker
+        messageElement.style.marginTop = '5px'; // Dichter bij elkaar als het van dezelfde gebruiker is
     }
 
     messageElement.appendChild(messageContent);
-    messageContainer.appendChild(messageElement); // Voeg het bericht toe aan de messageContainer
+    chatOutput.appendChild(messageElement);
 
     messageElement.style.marginBottom = '5px'; // Aangepast van 20px naar 5px
     messageElement.style.marginLeft = '50px';
@@ -164,13 +161,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     messageElement.setAttribute('data-key', snapshot.key);
 
-    chatOutput.appendChild(messageContainer); // Voeg de messageContainer toe aan de chatOutput
-
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
-        const deleteButton = document.createElement('p');
+        const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.style.padding = '0px';
         deleteButton.style.marginLeft = '10px';
