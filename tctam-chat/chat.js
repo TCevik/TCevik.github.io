@@ -141,11 +141,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.textAlign = 'left';
 
         if (prevEmail !== null) {
-            messageElement.style.marginTop = '20px'; // 20px tussen berichten van verschillende gebruikers
+            messageElement.style.marginTop = '5px';
         }
         prevEmail = modifiedEmail;
     } else {
-        messageElement.style.marginTop = '5px'; // Dichter bij elkaar als het van dezelfde gebruiker is
+        messageElement.style.marginTop = '0px';
     }
 
     messageElement.appendChild(messageContent);
