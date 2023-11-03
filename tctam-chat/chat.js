@@ -114,6 +114,10 @@ database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
+        const deletedEmail = deletedMessageElement.previousElementSibling;
+        if (deletedEmail && deletedEmail.tagName === 'STRONG') {
+            deletedEmail.remove();
+        }
         deletedMessageElement.remove();
     }
 });
