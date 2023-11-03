@@ -190,13 +190,14 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
-        deleteButton.style.padding = '0px';
-        deleteButton.style.margin = '0px';
-        deleteButton.style.backgroundColor = 'transparent';
-        deleteButton.style.borderColor = 'transparent';
+        deleteButton.style.padding = '0';
+        deleteButton.style.margin = '0';
+        deleteButton.style.background = 'none';
+        deleteButton.style.border = 'none';
         deleteButton.style.marginLeft = '10px';
         deleteButton.style.color = 'red';
-        deleteButton.style.cursor = 'pointer';
+        deleteButton.style.fontSize = 'inherit';
+        deleteButton.style.cursor = 'pointer';        
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
