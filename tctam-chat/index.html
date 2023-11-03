@@ -18,7 +18,7 @@
         <h1>Inloggen / Registreren</h1>
         <form id="login-form">
             <input type="email" id="login-email" placeholder="E-mailadres" required>
-            <input type="password" id="login-password" placeholder="Wachtwoord" required>
+            <br><input type="password" id="login-password" placeholder="Wachtwoord" required>
             <br><button type="submit">Inloggen / Registreren</button>
             <br>
             <br><a style="margin-right: 20px; cursor: pointer;" id="reset-password-btn" onclick="changePassword();">Wachtwoord Vergeten</a>
@@ -44,6 +44,27 @@
     <script src="chat.js"></script>
 
     <style>
+        #login-email {
+          border-bottom-right-radius: 0px;
+          border-bottom-left-radius: 0px;
+          border-top-right-radius: 20px;
+          border-top-left-radius: 20px;
+          border-width: 2px;
+          margin-bottom: 0px;
+          width: 300px;
+        }
+
+        #login-password {
+          border-top-right-radius: 0px;
+          border-top-left-radius: 0px;
+          border-bottom-right-radius: 20px;
+          border-bottom-left-radius: 20px;
+          border-width: 2px;
+          margin-top: 0px;
+          margin-bottom: 5px;
+          width: 300px;
+        }
+
         .popupChat {
           position: fixed;
           z-index: 10000;
