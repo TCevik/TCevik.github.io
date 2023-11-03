@@ -117,7 +117,9 @@ database.ref('chat').on('child_removed', (snapshot) => {
     if (deletedMessageElement) {
         deletedMessageElement.remove();
         if (prevMessageElement && prevMessageElement.getAttribute('data-key') === deletedMessageKey) {
-            prevMessageElement.previousElementSibling.remove(); // Verwijder e-mail
+            if (prevMessageElement.previousElementSibling) {
+                prevMessageElement.previousElementSibling.remove(); // Verwijder e-mail
+            }
         }
     }
 });
@@ -132,7 +134,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (prevEmail !== modifiedEmail) {
+    if (prevEmail !== modifiedEmail || isFirstMessage) {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
@@ -144,7 +146,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
 
-        if (prevEmail !== null) {
+        if (prevEmail !== null && !isFirstMessage) {
             messageElement.style.marginTop = '5px';
         }
         prevEmail = modifiedEmail;
@@ -185,6 +187,10 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
         messageElement.appendChild(deleteButton);
     }
+
+    // Update prevMessageElement
+    prevMessageElement = messageElement;
+    isFirstMessage = false;
 });
 
 function linkifyText(text) {
