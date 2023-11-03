@@ -164,10 +164,10 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.cursor = 'pointer';
 
         deleteButton.addEventListener('click', () => {
-            database.ref('chat').child(snapshot.key).set({
+            database.ref('chat').child(snapshot.key).update({
                 message: 'Dit bericht is verwijderd door de auteur'
             });
-        });
+        });        
 
         messageElement.appendChild(deleteButton);
     }
