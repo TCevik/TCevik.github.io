@@ -150,7 +150,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (!emailMap[modifiedEmail]) {
+    if (prevEmail !== modifiedEmail) {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
         chatOutput.appendChild(emailElement);
@@ -161,15 +161,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
         emailMap[modifiedEmail] = true;
+        prevEmail = modifiedEmail;
     }
 
-    if (prevEmail !== modifiedEmail) {
-        messageElement.style.marginTop = isFirstMessage ? '0px' : '5px';
-        isFirstMessage = false;
-        prevEmail = modifiedEmail;
-    } else {
-        messageElement.style.marginTop = '0px';
-    }
+    messageElement.style.marginTop = isFirstMessage ? '0px' : '5px';
+    isFirstMessage = false;
 
     messageElement.appendChild(messageContent);
     chatOutput.appendChild(messageElement);
@@ -198,7 +194,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.marginLeft = '10px';
         deleteButton.style.color = 'red';
         deleteButton.style.fontSize = 'inherit';
-        deleteButton.style.cursor = 'pointer';        
+        deleteButton.style.cursor = 'pointer';
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
