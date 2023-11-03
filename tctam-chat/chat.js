@@ -107,12 +107,22 @@ firebase.auth().onAuthStateChanged((user) => {
 const uiInput = document.getElementById('ui-input');
 
 let prevEmail = null;
-let prevMessageElement = null;
-let isFirstMessage = true;
 let emailMap = {};
+
+function updateEmailMap(email, action) {
+    if (action === 'add') {
+        emailMap[email] = true;
+    } else if (action === 'remove') {
+        delete emailMap[email];
+    }
+}
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
+    const deletedMessageData = snapshot.val();
+    const deletedEmail = deletedMessageData.email;
+    updateEmailMap(deletedEmail, 'remove');
+
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
         const nextMessageElement = deletedMessageElement.nextElementSibling;
@@ -121,19 +131,19 @@ database.ref('chat').on('child_removed', (snapshot) => {
             const nextMessageData = database.ref(`chat/${nextMessageKey}`).once('value').then((snapshot) => {
                 const nextMessageEmail = snapshot.val().email;
                 if (prevEmail !== nextMessageEmail) {
-                    const deletedEmail = deletedMessageElement.previousElementSibling;
-                    if (deletedEmail && deletedEmail.tagName === 'STRONG') {
-                        deletedEmail.remove();
+                    const deletedEmailElement = deletedMessageElement.previousElementSibling;
+                    if (deletedEmailElement && deletedEmailElement.tagName === 'STRONG') {
+                        deletedEmailElement.remove();
+                        updateEmailMap(prevEmail, 'remove');
                     }
-                    delete emailMap[prevEmail];
                 }
             });
         } else {
-            const deletedEmail = deletedMessageElement.previousElementSibling;
-            if (deletedEmail && deletedEmail.tagName === 'STRONG') {
-                deletedEmail.remove();
+            const deletedEmailElement = deletedMessageElement.previousElementSibling;
+            if (deletedEmailElement && deletedEmailElement.tagName === 'STRONG') {
+                deletedEmailElement.remove();
+                updateEmailMap(prevEmail, 'remove');
             }
-            delete emailMap[prevEmail];
         }
         deletedMessageElement.remove();
     }
@@ -159,7 +169,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-        emailMap[modifiedEmail] = true;
+        updateEmailMap(modifiedEmail, 'add');
     }
 
     messageElement.appendChild(messageContent);
