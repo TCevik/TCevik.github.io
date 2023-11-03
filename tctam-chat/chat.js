@@ -109,6 +109,15 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 
+// Toevoeging voor het verwijderen van het bericht
+database.ref('chat').on('child_removed', (snapshot) => {
+    const deletedMessageKey = snapshot.key;
+    const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
+    if (deletedMessageElement) {
+        deletedMessageElement.remove();
+    }
+});
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
@@ -148,25 +157,25 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         messageElement.style.paddingTop = '2px';
         messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
 
+        messageElement.setAttribute('data-key', snapshot.key); // Voeg een attribuut 'data-key' toe aan het berichtelement
+
         chatOutput.scrollTop = chatOutput.scrollHeight;
 
         prevEmail = modifiedEmail;
         prevMessageElement = messageElement;
     }
 
-    // Toevoeging voor het toevoegen van een 'X' en verwijderen van bericht
+    // Toevoeging voor het toevoegen van een 'X' en het verwijderen van het bericht
     const currentUserEmail = firebase.auth().currentUser.email; // Krijg het e-mailadres van de huidige gebruiker
     if (currentUserEmail === email) {
-        const deleteButton = document.createElement('p');
+        const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.style.marginLeft = '10px';
         deleteButton.style.color = 'red';
         deleteButton.style.cursor = 'pointer';
 
         deleteButton.addEventListener('click', () => {
-            database.ref('chat').child(snapshot.key).update({
-                message: 'Dit bericht is verwijderd door de auteur'
-            });
+            database.ref('chat').child(snapshot.key).remove(); // Verwijder het bericht uit de database
         });        
 
         messageElement.appendChild(deleteButton);
