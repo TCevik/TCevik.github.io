@@ -119,55 +119,9 @@ function updateEmailMap(email, action) {
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
-    const deletedMessageData = snapshot.val();
-    const deletedEmail = deletedMessageData.email;
-    updateEmailMap(deletedEmail, 'remove');
-
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
-        const nextMessageElement = deletedMessageElement.nextElementSibling;
-        if (nextMessageElement) {
-            const nextMessageKey = nextMessageElement.getAttribute('data-key');
-            const nextMessageData = database.ref(`chat/${nextMessageKey}`).once('value').then((snapshot) => {
-                const nextMessageEmail = snapshot.val().email;
-                if (prevEmail !== nextMessageEmail) {
-                    const deletedEmailElement = deletedMessageElement.previousElementSibling;
-                    if (deletedEmailElement && deletedEmailElement.tagName === 'STRONG') {
-                        deletedEmailElement.remove();
-                        updateEmailMap(prevEmail, 'remove');
-                    }
-                }
-            });
-        } else {
-            const deletedEmailElement = deletedMessageElement.previousElementSibling;
-            if (deletedEmailElement && deletedEmailElement.tagName === 'STRONG') {
-                deletedEmailElement.remove();
-                updateEmailMap(prevEmail, 'remove');
-            }
-        }
-        deletedMessageElement.remove();
-
-        // Remove consecutive messages with the same email
-        let currentElement = deletedMessageElement.nextElementSibling;
-        while (currentElement) {
-            const currentEmailElement = currentElement.querySelector('strong');
-            if (currentEmailElement) {
-                const currentEmail = currentEmailElement.textContent.replace(/: /g, '');
-                if (currentEmail === deletedEmail) {
-                    const nextElement = currentElement.nextElementSibling;
-                    currentElement.remove();
-                    if (nextElement && nextElement.tagName === 'DIV') {
-                        currentElement = nextElement;
-                    } else {
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
+        deletedMessageElement.innerHTML = '<i>Dit bericht is verwijderd door de auteur</i>';
     }
 });
 
