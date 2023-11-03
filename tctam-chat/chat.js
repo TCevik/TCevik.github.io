@@ -106,6 +106,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
 const uiInput = document.getElementById('ui-input');
 
+let prevEmail = null;
 let emailMap = {};
 
 database.ref('chat').on('child_removed', (snapshot) => {
@@ -128,9 +129,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
-    if (!emailMap[email]) {
+    const modifiedEmail = email.replace(/@.*/g, '');
+
+    if (!emailMap[modifiedEmail]) {
         const emailElement = document.createElement('strong');
-        emailElement.textContent = email + ': ';
+        emailElement.textContent = modifiedEmail + ': ';
         chatOutput.appendChild(emailElement);
         emailElement.style.display = 'block';
         emailElement.style.marginTop = '10px';
@@ -138,7 +141,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '10px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-        emailMap[email] = true;
+        emailMap[modifiedEmail] = true;
+    }
+
+    if (prevEmail !== modifiedEmail) {
+        prevEmail = modifiedEmail;
     }
 
     messageElement.style.marginTop = '5px';
@@ -157,6 +164,26 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.setAttribute('data-key', snapshot.key);
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
+
+    const currentUserEmail = firebase.auth().currentUser.email;
+    if (currentUserEmail === email) {
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.style.padding = '0';
+        deleteButton.style.margin = '0';
+        deleteButton.style.background = 'none';
+        deleteButton.style.border = 'none';
+        deleteButton.style.marginLeft = '10px';
+        deleteButton.style.color = 'red';
+        deleteButton.style.fontSize = 'inherit';
+        deleteButton.style.cursor = 'pointer';
+
+        deleteButton.addEventListener('click', () => {
+            database.ref('chat').child(snapshot.key).remove();
+        });
+
+        messageElement.appendChild(deleteButton);
+    }
 });
 
 function linkifyText(text) {
