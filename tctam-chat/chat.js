@@ -170,7 +170,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
-        const deleteButton = document.createElement('button');
+        const deleteButton = document.createElement('p');
         deleteButton.textContent = 'X';
         deleteButton.style.padding = '0px';
         deleteButton.style.marginLeft = '10px';
