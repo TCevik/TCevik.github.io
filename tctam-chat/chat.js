@@ -157,7 +157,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     // Toevoeging voor het toevoegen van een 'X' en verwijderen van bericht
     const currentUserEmail = firebase.auth().currentUser.email; // Krijg het e-mailadres van de huidige gebruiker
     if (currentUserEmail === email) {
-        const deleteButton = document.createElement('button');
+        const deleteButton = document.createElement('p');
         deleteButton.textContent = 'X';
         deleteButton.style.marginLeft = '10px';
         deleteButton.style.color = 'red';
