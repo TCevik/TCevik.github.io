@@ -108,6 +108,7 @@ const uiInput = document.getElementById('ui-input');
 
 let prevEmail = null;
 let prevMessageElement = null;
+let deletedMessages = []; // array om de sleutels van verwijderde berichten bij te houden
 
 // Toevoeging voor het verwijderen van het bericht
 database.ref('chat').on('child_removed', (snapshot) => {
@@ -115,6 +116,7 @@ database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
         deletedMessageElement.remove();
+        deletedMessages = deletedMessages.filter(key => key !== deletedMessageKey); // verwijder de sleutel uit de array
     }
 });
 
@@ -176,6 +178,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove(); // Verwijder het bericht uit de database
+            deletedMessages.push(snapshot.key); // voeg de sleutel toe aan de array van verwijderde berichten
         });        
 
         messageElement.appendChild(deleteButton);
