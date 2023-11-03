@@ -187,22 +187,27 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
-    if (currentUserEmail === email) {
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'X';
-        deleteButton.style.padding = '0px';
-        deleteButton.style.backgroundColor = 'transparent';
-        deleteButton.style.borderColor = 'transparent';
-        deleteButton.style.marginLeft = '10px';
-        deleteButton.style.color = 'red';
-        deleteButton.style.cursor = 'pointer';
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.style.padding = '0px';
+    deleteButton.style.backgroundColor = 'transparent';
+    deleteButton.style.borderColor = 'transparent';
+    deleteButton.style.marginLeft = '10px';
+    deleteButton.style.color = 'red';
+    deleteButton.style.cursor = 'pointer';
 
-        deleteButton.addEventListener('click', () => {
-            database.ref('chat').child(snapshot.key).remove();
-        });
-
+    if (currentUserEmail === 'tam.cevik123@gmail.com') {
+        messageElement.appendChild(deleteButton);
+    } else {
+        const emailElement = document.createElement('strong');
+        emailElement.textContent = modifiedEmail + ': ';
+        messageElement.insertBefore(emailElement, messageElement.firstChild);
         messageElement.appendChild(deleteButton);
     }
+
+    deleteButton.addEventListener('click', () => {
+        database.ref('chat').child(snapshot.key).remove();
+    });
 });
 
 function linkifyText(text) {
