@@ -114,9 +114,23 @@ database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
-        const deletedEmail = deletedMessageElement.previousElementSibling;
-        if (deletedEmail && deletedEmail.tagName === 'STRONG') {
-            deletedEmail.remove();
+        const nextMessageElement = deletedMessageElement.nextElementSibling;
+        if (nextMessageElement) {
+            const nextMessageKey = nextMessageElement.getAttribute('data-key');
+            const nextMessageData = database.ref(`chat/${nextMessageKey}`).once('value').then((snapshot) => {
+                const nextMessageEmail = snapshot.val().email;
+                if (prevEmail !== nextMessageEmail) {
+                    const deletedEmail = deletedMessageElement.previousElementSibling;
+                    if (deletedEmail && deletedEmail.tagName === 'STRONG') {
+                        deletedEmail.remove();
+                    }
+                }
+            });
+        } else {
+            const deletedEmail = deletedMessageElement.previousElementSibling;
+            if (deletedEmail && deletedEmail.tagName === 'STRONG') {
+                deletedEmail.remove();
+            }
         }
         deletedMessageElement.remove();
     }
