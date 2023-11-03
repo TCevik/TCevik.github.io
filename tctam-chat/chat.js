@@ -117,6 +117,17 @@ database.ref('chat').on('child_removed', (snapshot) => {
     }
 });
 
+let prevEmail = null;
+let prevMessageElement = null;
+
+database.ref('chat').on('child_removed', (snapshot) => {
+    const deletedMessageKey = snapshot.key;
+    const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
+    if (deletedMessageElement) {
+        deletedMessageElement.remove();
+    }
+});
+
 database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
@@ -127,17 +138,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    messageElement.appendChild(messageContent);
-    chatOutput.appendChild(messageElement);
-
-    if (prevEmail === modifiedEmail) {
-        prevMessageElement.appendChild(document.createElement('br'));
-        prevMessageElement.appendChild(messageContent);
-        chatOutput.scrollTop = chatOutput.scrollHeight;
-    } else {
-        prevEmail = modifiedEmail;
-        prevMessageElement = messageElement;
-
+    if (prevEmail !== modifiedEmail) {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
@@ -147,7 +148,15 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
+
+        messageElement.style.marginTop = '20px';
+        prevEmail = modifiedEmail;
+    } else {
+        messageElement.style.marginTop = '5px';
     }
+
+    messageElement.appendChild(messageContent);
+    chatOutput.appendChild(messageElement);
 
     messageElement.style.marginBottom = '20px';
     messageElement.style.marginLeft = '50px';
