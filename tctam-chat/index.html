@@ -110,41 +110,5 @@
             z-index: 9999;
         }
     </style>
-
-    <script>
-      /* accepteer popupChat */
-      document.addEventListener('DOMContentLoaded', function () {
-        if (!localStorage.getItem('acceptPopupChat')) {
-          var popupChat = document.createElement('div');
-          popupChat.id = 'popupChat';
-          popupChat.className = 'popupChat';
-        
-          var text = 'Disclaimer chat: Deze chat is een open chat waar gebruikers vrij zijn om te communiceren. Er zijn geen regels voor wat er gezegd of gedeeld mag worden. Dit betekent dat er ook 18+ content kan voorkomen. Gebruikers onder de 18 jaar wordt geadviseerd deze chat alleen onder toezicht van een volwassene te gebruiken.';
-          popupChat.innerHTML = text;
-        
-          var button = document.createElement('button');
-          button.innerHTML = 'Ok';
-        
-          button.addEventListener('click', function () {
-            var opacity = 1;
-            var intervalId = setInterval(function () {
-              opacity -= 0.05;
-              popupChat.style.opacity = opacity;
-              if (opacity <= 0) {
-                clearInterval(intervalId);
-                popupChat.style.display = 'none';
-              }
-            }, 15);
-          
-            localStorage.setItem('acceptPopupChat', 'true');
-          });
-        
-          popupChat.appendChild(document.createElement('br')); // Nieuwe regel toegevoegd
-          popupChat.appendChild(button);
-        
-          document.body.appendChild(popupChat);
-        }
-      });
-    </script>
 </body>
 </html>
