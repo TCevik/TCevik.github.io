@@ -109,6 +109,7 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 let isFirstMessage = true;
+let emailMap = {};
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
@@ -124,6 +125,7 @@ database.ref('chat').on('child_removed', (snapshot) => {
                     if (deletedEmail && deletedEmail.tagName === 'STRONG') {
                         deletedEmail.remove();
                     }
+                    delete emailMap[prevEmail];
                 }
             });
         } else {
@@ -131,6 +133,7 @@ database.ref('chat').on('child_removed', (snapshot) => {
             if (deletedEmail && deletedEmail.tagName === 'STRONG') {
                 deletedEmail.remove();
             }
+            delete emailMap[prevEmail];
         }
         deletedMessageElement.remove();
     }
@@ -146,10 +149,9 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (prevEmail !== modifiedEmail) {
+    if (!emailMap[modifiedEmail]) {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
-
         chatOutput.appendChild(emailElement);
         emailElement.style.display = 'block';
         emailElement.style.marginTop = '40px';
@@ -157,10 +159,12 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
+        emailMap[modifiedEmail] = true;
+    }
 
-        if (prevEmail !== null) {
-            messageElement.style.marginTop = '5px';
-        }
+    if (prevEmail !== modifiedEmail) {
+        messageElement.style.marginTop = isFirstMessage ? '0px' : '5px';
+        isFirstMessage = false;
         prevEmail = modifiedEmail;
     } else {
         messageElement.style.marginTop = '0px';
