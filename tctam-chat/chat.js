@@ -119,6 +119,7 @@ database.ref('chat').on('child_removed', (snapshot) => {
 
 let prevEmail = null;
 let prevMessageElement = null;
+let isFirstMessage = true;
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
@@ -149,8 +150,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
 
-        messageElement.style.marginTop = '20px';
+        if (!isFirstMessage) {
+            messageElement.style.marginTop = '20px';
+        }
         prevEmail = modifiedEmail;
+        isFirstMessage = false;
     } else {
         messageElement.style.marginTop = '5px';
     }
