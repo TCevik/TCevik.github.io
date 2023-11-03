@@ -127,7 +127,14 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (prevEmail !== modifiedEmail) {
+    messageElement.appendChild(messageContent);
+    chatOutput.appendChild(messageElement);
+
+    if (prevEmail === modifiedEmail) {
+        prevMessageElement.appendChild(document.createElement('br'));
+        prevMessageElement.appendChild(messageContent);
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+    } else {
         prevEmail = modifiedEmail;
         prevMessageElement = messageElement;
 
@@ -140,15 +147,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-    }
-
-    messageElement.appendChild(messageContent);
-    chatOutput.appendChild(messageElement);
-
-    if (prevEmail === modifiedEmail) {
-        messageElement.style.marginTop = '5px';
-    } else {
-        messageElement.style.marginTop = '20px';
     }
 
     messageElement.style.marginBottom = '20px';
