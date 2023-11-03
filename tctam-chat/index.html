@@ -93,14 +93,15 @@
         }
 
         #chat-output {
+            height: calc(100vh - 15vh);
             max-height: 75vh;
             overflow: auto;
         }
-
+        
         #ui-input {
             position: fixed;
             width: 100vw;
-            max-height: 15vh;
+            height: 15vh; /* Aangepast naar 'height' in plaats van 'max-height' */
             border-top: 3px solid var(--h1234-color);
             border-top-right-radius: 50px;
             border-top-left-radius: 50px;
