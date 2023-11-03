@@ -108,7 +108,7 @@ const uiInput = document.getElementById('ui-input');
 
 let prevEmail = null;
 let prevMessageElement = null;
-let messageId = 0; // Toegevoegde messageId
+let isFirstMessage = true;
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
@@ -124,47 +124,45 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const message = messageData.message;
 
     const messageElement = document.createElement('div');
-    const messageContent = document.createElement('p'); // Toegevoegde regel
-
-    messageContent.textContent = message; // Toegevoegde regel
+    const messageContent = linkifyText(message);
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (prevEmail === modifiedEmail) {
-        prevMessageElement.appendChild(document.createElement('br'));
-        prevMessageElement.appendChild(messageContent);
-        chatOutput.scrollTop = chatOutput.scrollHeight;
-    } else {
+    if (prevEmail !== modifiedEmail) {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
         chatOutput.appendChild(emailElement);
-        messageElement.appendChild(messageContent);
-        chatOutput.appendChild(messageElement);
-
         emailElement.style.display = 'block';
         emailElement.style.marginBottom = '5px';
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
 
-        messageElement.style.marginBottom = '20px';
-        messageElement.style.marginLeft = '50px';
-        messageElement.style.wordBreak = 'break-word';
-        messageElement.style.textAlign = 'left';
-        messageElement.style.paddingLeft = '5px';
-        messageElement.style.paddingBottom = '2px';
-        messageElement.style.paddingTop = '2px';
-        messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
-
-        messageElement.setAttribute('data-key', snapshot.key);
-        messageElement.setAttribute('data-message-id', messageId); // Toegevoegde messageId
-
-        chatOutput.scrollTop = chatOutput.scrollHeight;
-
+        if (!isFirstMessage) {
+            messageElement.style.marginTop = '20px';
+        }
         prevEmail = modifiedEmail;
-        prevMessageElement = messageElement;
+        isFirstMessage = false;
+    } else {
+        messageElement.style.marginTop = '5px';
     }
+
+    messageElement.appendChild(messageContent);
+    chatOutput.appendChild(messageElement);
+
+    messageElement.style.marginBottom = '20px';
+    messageElement.style.marginLeft = '50px';
+    messageElement.style.wordBreak = 'break-word';
+    messageElement.style.textAlign = 'left';
+    messageElement.style.paddingLeft = '5px';
+    messageElement.style.paddingBottom = '2px';
+    messageElement.style.paddingTop = '2px';
+    messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
+
+    messageElement.setAttribute('data-key', snapshot.key);
+
+    chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
@@ -175,16 +173,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.cursor = 'pointer';
 
         deleteButton.addEventListener('click', () => {
-            const messageId = messageElement.getAttribute('data-message-id');
-            database.ref('chat').orderByChild('messageId').equalTo(parseInt(messageId)).once('child_added', (snapshot) => { // Aangepast 'limitToLast' naar 'once'
-                database.ref('chat').child(snapshot.key).remove();
-            });
+            database.ref('chat').child(snapshot.key).remove();
         });
 
         messageElement.appendChild(deleteButton);
     }
-
-    messageId++; // Verhoog de messageId voor elk nieuw bericht
 });
 
 function linkifyText(text) {
