@@ -109,7 +109,7 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 
-database.ref('chat').on('child_added', (snapshot) => {
+database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added', (snapshot) => {
     const messageData = snapshot.val();
     const email = messageData.email;
     const message = messageData.message;
@@ -155,19 +155,22 @@ database.ref('chat').on('child_added', (snapshot) => {
     }
 
     // Toevoeging voor het toevoegen van een 'X' en verwijderen van bericht
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'X';
-    deleteButton.style.marginLeft = '10px';
-    deleteButton.style.color = 'red';
-    deleteButton.style.cursor = 'pointer';
+    const currentUserEmail = firebase.auth().currentUser.email; // Krijg het e-mailadres van de huidige gebruiker
+    if (currentUserEmail === email) {
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.style.marginLeft = '10px';
+        deleteButton.style.color = 'red';
+        deleteButton.style.cursor = 'pointer';
 
-    deleteButton.addEventListener('click', () => {
-        database.ref('chat').child(snapshot.key).set({
-            message: 'Dit bericht is verwijderd door de auteur'
+        deleteButton.addEventListener('click', () => {
+            database.ref('chat').child(snapshot.key).set({
+                message: 'Dit bericht is verwijderd door de auteur'
+            });
         });
-    });
 
-    messageElement.appendChild(deleteButton);
+        messageElement.appendChild(deleteButton);
+    }
 });
 
 function linkifyText(text) {
