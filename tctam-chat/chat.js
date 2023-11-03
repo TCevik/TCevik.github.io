@@ -135,7 +135,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         chatOutput.appendChild(emailElement);
         emailElement.style.display = 'block';
         emailElement.style.marginTop = '40px';
-        emailElement.style.marginBottom = '40px';
+        emailElement.style.marginBottom = '5px';
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
