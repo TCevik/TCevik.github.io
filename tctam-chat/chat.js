@@ -107,25 +107,24 @@ firebase.auth().onAuthStateChanged((user) => {
 const uiInput = document.getElementById('ui-input');
 
 let prevEmail = null;
-let prevMessageElement = null;
-let isFirstMessage = true;
 let emailMap = {};
+let isFirstMessage = true;
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
-        const nextMessageElement = deletedMessageElement.nextElementSibling;
-        if (nextMessageElement) {
-            const nextMessageKey = nextMessageElement.getAttribute('data-key');
-            const nextMessageData = database.ref(`chat/${nextMessageKey}`).once('value').then((snapshot) => {
-                const nextMessageEmail = snapshot.val().email;
-                if (prevEmail !== nextMessageEmail) {
+        const prevMessageElement = deletedMessageElement.previousElementSibling;
+        if (prevMessageElement) {
+            const prevMessageKey = prevMessageElement.getAttribute('data-key');
+            const prevMessageData = database.ref(`chat/${prevMessageKey}`).once('value').then((snapshot) => {
+                const prevMessageEmail = snapshot.val().email;
+                if (prevEmail !== prevMessageEmail) {
                     const deletedEmail = deletedMessageElement.previousElementSibling;
                     if (deletedEmail && deletedEmail.tagName === 'STRONG') {
                         deletedEmail.remove();
                     }
-                    delete emailMap[prevEmail];
+                    delete emailMap[prevMessageEmail];
                 }
             });
         } else {
@@ -143,6 +142,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageData = snapshot.val();
     const email = messageData.email;
     const message = messageData.message;
+
+    const chatOutput = document.getElementById('chatOutput');
 
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
