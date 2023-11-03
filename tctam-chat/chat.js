@@ -109,7 +109,6 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 
-// Toevoeging voor het verwijderen van het bericht
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
@@ -126,23 +125,21 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
-    // Code voor het verwijderen van het gedeelte achter de '@'
     const modifiedEmail = email.replace(/@.*/g, '');
 
     if (prevEmail === modifiedEmail) {
-        prevMessageElement.appendChild(document.createElement('br')); // Voeg een line break toe
-        prevMessageElement.appendChild(messageContent); // Voeg het bericht toe aan het vorige berichtelement
-
+        prevMessageElement.appendChild(document.createElement('br'));
+        prevMessageElement.appendChild(messageContent);
         chatOutput.scrollTop = chatOutput.scrollHeight;
     } else {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
-        chatOutput.appendChild(emailElement); // Plaats het e-mailelement eerst in het chatOutput
-        messageElement.appendChild(messageContent); // Voeg daarna het bericht toe aan het berichtelement
-        chatOutput.appendChild(messageElement); // Voeg het berichtelement toe aan het chatOutput
+        chatOutput.appendChild(emailElement);
+        messageElement.appendChild(messageContent);
+        chatOutput.appendChild(messageElement);
 
-        emailElement.style.display = 'block'; // Zet het e-mailelement als blok, zodat het boven het bericht komt te staan
+        emailElement.style.display = 'block';
         emailElement.style.marginBottom = '5px';
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
@@ -157,7 +154,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         messageElement.style.paddingTop = '2px';
         messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
 
-        messageElement.setAttribute('data-key', snapshot.key); // Voeg een attribuut 'data-key' toe aan het berichtelement
+        messageElement.setAttribute('data-key', snapshot.key);
 
         chatOutput.scrollTop = chatOutput.scrollHeight;
 
@@ -165,8 +162,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         prevMessageElement = messageElement;
     }
 
-    // Toevoeging voor het toevoegen van een 'X' en het verwijderen van het bericht
-    const currentUserEmail = firebase.auth().currentUser.email; // Krijg het e-mailadres van de huidige gebruiker
+    const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
@@ -175,7 +171,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.cursor = 'pointer';
 
         deleteButton.addEventListener('click', () => {
-            database.ref('chat').child(snapshot.key).remove(); // Verwijder het bericht uit de database
+            database.ref('chat').child(snapshot.key).remove();
         });        
 
         messageElement.appendChild(deleteButton);
