@@ -113,8 +113,12 @@ let isFirstMessage = true;
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
+
     if (deletedMessageElement) {
         deletedMessageElement.remove();
+        if (prevMessageElement && prevMessageElement.getAttribute('data-key') === deletedMessageKey) {
+            prevMessageElement.previousElementSibling.remove(); // Verwijder e-mail
+        }
     }
 });
 
