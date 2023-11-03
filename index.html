@@ -47,6 +47,34 @@
             });
         }
 
+        // Bereken de volgende verjaardag
+        function getNextBirthday() {
+          const today = new Date();
+          const currentYear = today.getFullYear();
+          let nextBirthday = new Date(currentYear, 4, 18);
+        
+          if (nextBirthday < today) {
+            nextBirthday.setFullYear(currentYear + 1, 4, 18);
+          }
+      
+          return nextBirthday;
+        }
+
+        function countdownToBirthday() {
+          const nextBirthday = getNextBirthday();
+          const now = new Date();
+          const timeLeft = nextBirthday - now;
+        
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+          document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
+        }
+
+        setInterval(countdownToBirthday, 1000);
+
         document.addEventListener("DOMContentLoaded", function() {
             setInterval(updateBatteryLevel, 1000);
         
@@ -169,7 +197,7 @@
     <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
 </body>
 
-<body onload="countdown(); countup(); randomNumber();">
+<body onload="countdown(); countup(); countdownToBirthday(); randomNumber();">
     <table>
         <style>
             .popup-content {
@@ -247,6 +275,7 @@
             <br>Nu weet je hoe ik TC_tam verzonnen heb!
             <br>
             <br>Ik ben jarig op 18 mei.
+            <p style="margin-top: -20px;" id="birthday"><p>
             <br>
             <br>Mijn favoriete kleuren zijn:
             <br><span style="color: #132f0c">#132f0c</span>
