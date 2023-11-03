@@ -168,6 +168,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
+        deleteButton.style.padding = '0px';
         deleteButton.style.marginLeft = '10px';
         deleteButton.style.color = 'red';
         deleteButton.style.cursor = 'pointer';
