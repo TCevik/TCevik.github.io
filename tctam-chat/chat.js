@@ -139,6 +139,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
+        emailElement.style.marginTop = '20px';
 
         if (!isFirstMessage) {
             messageContainer.style.marginBottom = '50px'; // 50px tussen email van vorige gebruiker en bericht
@@ -146,7 +147,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         prevEmail = modifiedEmail;
         isFirstMessage = false;
     } else {
-        messageContainer.style.marginBottom = '5px'; // Marge tussen berichten van dezelfde gebruiker
+        messageContainer.style.marginBottom = '0px'; // Marge tussen berichten van dezelfde gebruiker
     }
 
     messageElement.appendChild(messageContent);
