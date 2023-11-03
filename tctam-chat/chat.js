@@ -106,6 +106,15 @@ firebase.auth().onAuthStateChanged((user) => {
 
 const uiInput = document.getElementById('ui-input');
 
+database.ref('chat').orderByChild('timestamp').limitToLast(1).on('value', (snapshot) => {
+    const messages = snapshot.val();
+    if (!messages) {
+        const noMessageElement = document.createElement('div');
+        noMessageElement.textContent = "Er zijn op dit moment geen berichten beschikbaar. Stuur er eens een paar zou ik zeggen!";
+        chatOutput.appendChild(noMessageElement);
+    }
+});
+
 let prevEmail = null;
 let emailMap = {};
 

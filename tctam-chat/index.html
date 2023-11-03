@@ -84,18 +84,16 @@
         }
 
         #user-info {
-            position: fixed;
+            position: relative;
             width: 100vw;
             display: none;
             z-index: -1;
-        }
-
-        #user-info button {
-            z-index: 9999;
+            border-bottom: 3px solid var(--h1234-color);
+            background-color: var(--background-color);
         }
 
         #chat-output {
-            max-height: 85vh;
+            max-height: 70vh;
             overflow: auto;
         }
 
