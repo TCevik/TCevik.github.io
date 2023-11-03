@@ -145,7 +145,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         prevEmail = modifiedEmail;
         isFirstMessage = false;
     } else {
-        messageElement.style.marginTop = '5px';
+        messageElement.style.marginTop = '0px';
     }
 
     messageElement.appendChild(messageContent);
