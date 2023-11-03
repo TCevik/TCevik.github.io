@@ -149,20 +149,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (!emailMap[modifiedEmail]) {
-        const emailElement = document.createElement('strong');
-        emailElement.textContent = modifiedEmail + ': ';
-        chatOutput.appendChild(emailElement);
-        emailElement.style.display = 'block';
-        emailElement.style.marginTop = '5px';
-        emailElement.style.marginBottom = '5px';
-        emailElement.style.marginLeft = '40px';
-        emailElement.style.wordBreak = 'break-word';
-        emailElement.style.textAlign = 'left';
-        emailMap[modifiedEmail] = true;
-    }
-
-    if (prevEmail !== modifiedEmail) {
+    if (prevEmail !== modifiedEmail || !emailMap[modifiedEmail]) {
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
         chatOutput.appendChild(emailElement);
