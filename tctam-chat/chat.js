@@ -108,17 +108,6 @@ const uiInput = document.getElementById('ui-input');
 
 let prevEmail = null;
 let prevMessageElement = null;
-
-database.ref('chat').on('child_removed', (snapshot) => {
-    const deletedMessageKey = snapshot.key;
-    const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
-    if (deletedMessageElement) {
-        deletedMessageElement.remove();
-    }
-});
-
-let prevEmail = null;
-let prevMessageElement = null;
 let messageId = 0; // Toegevoegde messageId
 
 database.ref('chat').on('child_removed', (snapshot) => {
@@ -135,7 +124,9 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const message = messageData.message;
 
     const messageElement = document.createElement('div');
-    const messageContent = linkifyText(message);
+    const messageContent = document.createElement('p'); // Toegevoegde regel
+
+    messageContent.textContent = message; // Toegevoegde regel
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
@@ -185,7 +176,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
         deleteButton.addEventListener('click', () => {
             const messageId = messageElement.getAttribute('data-message-id');
-            database.ref('chat').orderByChild('messageId').equalTo(parseInt(messageId)).limitToLast(1).once('child_added', (snapshot) => {
+            database.ref('chat').orderByChild('messageId').equalTo(parseInt(messageId)).once('child_added', (snapshot) => { // Aangepast 'limitToLast' naar 'once'
                 database.ref('chat').child(snapshot.key).remove();
             });
         });
