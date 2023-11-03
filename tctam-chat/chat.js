@@ -149,13 +149,18 @@ database.ref('chat').on('child_removed', (snapshot) => {
 
         // Remove consecutive messages with the same email
         let currentElement = deletedMessageElement.nextElementSibling;
-        while (currentElement && currentElement.getAttribute('data-key')) {
-            const currentEmail = currentElement.querySelector('strong').textContent.replace(/: /g, '');
-            if (currentEmail === deletedEmail) {
-                const nextElement = currentElement.nextElementSibling;
-                currentElement.remove();
-                if (nextElement && nextElement.tagName === 'DIV') {
-                    currentElement = nextElement;
+        while (currentElement) {
+            const currentEmailElement = currentElement.querySelector('strong');
+            if (currentEmailElement) {
+                const currentEmail = currentEmailElement.textContent.replace(/: /g, '');
+                if (currentEmail === deletedEmail) {
+                    const nextElement = currentElement.nextElementSibling;
+                    currentElement.remove();
+                    if (nextElement && nextElement.tagName === 'DIV') {
+                        currentElement = nextElement;
+                    } else {
+                        break;
+                    }
                 } else {
                     break;
                 }
