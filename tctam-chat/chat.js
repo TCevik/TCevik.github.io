@@ -140,18 +140,18 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.textAlign = 'left';
 
         if (!isFirstMessage) {
-            messageElement.style.marginTop = '20px';
+            messageElement.style.marginTop = '50px'; // 50px tussen berichten van verschillende gebruikers
         }
         prevEmail = modifiedEmail;
         isFirstMessage = false;
     } else {
-        messageElement.style.marginTop = '0px';
+        messageElement.style.marginTop = '5px'; // Dichter bij elkaar als het van dezelfde gebruiker is
     }
 
     messageElement.appendChild(messageContent);
     chatOutput.appendChild(messageElement);
 
-    messageElement.style.marginBottom = '20px';
+    messageElement.style.marginBottom = '5px'; // Aangepast van 20px naar 5px
     messageElement.style.marginLeft = '50px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
