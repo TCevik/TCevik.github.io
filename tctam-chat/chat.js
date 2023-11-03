@@ -191,6 +191,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.style.padding = '0px';
+        deleteButton.style.margin = '0px';
         deleteButton.style.backgroundColor = 'transparent';
         deleteButton.style.borderColor = 'transparent';
         deleteButton.style.marginLeft = '10px';
