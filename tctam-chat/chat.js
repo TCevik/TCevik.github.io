@@ -109,6 +109,7 @@ const uiInput = document.getElementById('ui-input');
 let prevEmail = null;
 let prevMessageElement = null;
 let isFirstMessage = true;
+let messageContainer = document.createElement('div');
 
 database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
@@ -132,7 +133,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
-        chatOutput.appendChild(emailElement);
+        messageContainer.appendChild(emailElement); // Voeg toe aan de messageContainer in plaats van chatOutput
         emailElement.style.display = 'block';
         emailElement.style.marginBottom = '5px';
         emailElement.style.marginLeft = '40px';
@@ -140,16 +141,16 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.textAlign = 'left';
 
         if (!isFirstMessage) {
-            messageElement.style.marginTop = '50px'; // 50px tussen berichten van verschillende gebruikers
+            messageContainer.style.marginBottom = '50px'; // 50px tussen email van vorige gebruiker en bericht
         }
         prevEmail = modifiedEmail;
         isFirstMessage = false;
     } else {
-        messageElement.style.marginTop = '5px'; // Dichter bij elkaar als het van dezelfde gebruiker is
+        messageContainer.style.marginBottom = '5px'; // Marge tussen berichten van dezelfde gebruiker
     }
 
     messageElement.appendChild(messageContent);
-    chatOutput.appendChild(messageElement);
+    messageContainer.appendChild(messageElement); // Voeg het bericht toe aan de messageContainer
 
     messageElement.style.marginBottom = '5px'; // Aangepast van 20px naar 5px
     messageElement.style.marginLeft = '50px';
@@ -161,6 +162,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
 
     messageElement.setAttribute('data-key', snapshot.key);
+
+    chatOutput.appendChild(messageContainer); // Voeg de messageContainer toe aan de chatOutput
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
