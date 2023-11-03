@@ -145,6 +145,12 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(messageContent);
     chatOutput.appendChild(messageElement);
 
+    if (prevEmail === modifiedEmail) {
+        messageElement.style.marginTop = '5px';
+    } else {
+        messageElement.style.marginTop = '20px';
+    }
+
     messageElement.style.marginBottom = '20px';
     messageElement.style.marginLeft = '50px';
     messageElement.style.wordBreak = 'break-word';
