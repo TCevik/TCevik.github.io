@@ -127,40 +127,36 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     const modifiedEmail = email.replace(/@.*/g, '');
 
-    if (prevEmail === modifiedEmail) {
-        prevMessageElement.appendChild(document.createElement('br'));
-        prevMessageElement.appendChild(messageContent);
-        chatOutput.scrollTop = chatOutput.scrollHeight;
-    } else {
+    if (prevEmail !== modifiedEmail) {
+        prevEmail = modifiedEmail;
+        prevMessageElement = messageElement;
+
         const emailElement = document.createElement('strong');
         emailElement.textContent = modifiedEmail + ': ';
 
         chatOutput.appendChild(emailElement);
-        messageElement.appendChild(messageContent);
-        chatOutput.appendChild(messageElement);
-
         emailElement.style.display = 'block';
         emailElement.style.marginBottom = '5px';
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-
-        messageElement.style.marginBottom = '20px';
-        messageElement.style.marginLeft = '50px';
-        messageElement.style.wordBreak = 'break-word';
-        messageElement.style.textAlign = 'left';
-        messageElement.style.paddingLeft = '5px';
-        messageElement.style.paddingBottom = '2px';
-        messageElement.style.paddingTop = '2px';
-        messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
-
-        messageElement.setAttribute('data-key', snapshot.key);
-
-        chatOutput.scrollTop = chatOutput.scrollHeight;
-
-        prevEmail = modifiedEmail;
-        prevMessageElement = messageElement;
     }
+
+    messageElement.appendChild(messageContent);
+    chatOutput.appendChild(messageElement);
+
+    messageElement.style.marginBottom = '20px';
+    messageElement.style.marginLeft = '50px';
+    messageElement.style.wordBreak = 'break-word';
+    messageElement.style.textAlign = 'left';
+    messageElement.style.paddingLeft = '5px';
+    messageElement.style.paddingBottom = '2px';
+    messageElement.style.paddingTop = '2px';
+    messageElement.style.borderLeft = 'solid 4px var(--h1234-color)';
+
+    messageElement.setAttribute('data-key', snapshot.key);
+
+    chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
@@ -172,7 +168,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
-        });        
+        });
 
         messageElement.appendChild(deleteButton);
     }
