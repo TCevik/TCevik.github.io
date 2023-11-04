@@ -535,21 +535,21 @@ function notification(message) {
     notification.style.alignItems = 'center';
     notification.style.zIndex = '99999';
 
-    var messageElement = document.createElement('span');
-    messageElement.textContent = message;
-    messageElement.style.flex = '1';
-    notification.appendChild(messageElement);
+    var notificationElement = document.createElement('span');
+    notificationElement.textContent = message;
+    notificationElement.style.flex = '1';
+    notification.appendChild(notificationElement);
 
-    var closeButton = document.createElement('span');
-    closeButton.textContent = 'X';
-    closeButton.style.marginLeft = '5px';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.fontWeight = 'bold';
-    closeButton.style.userSelect = 'none';
-    closeButton.onclick = function() {
+    var closeNotificationButton = document.createElement('span');
+    closeNotificationButton.textContent = 'X';
+    closeNotificationButton.style.marginLeft = '5px';
+    closeNotificationButton.style.cursor = 'pointer';
+    closeNotificationButton.style.fontWeight = 'bold';
+    closeNotificationButton.style.userSelect = 'none';
+    closeNotificationButton.onclick = function() {
         removeNotification();
     };
-    notification.appendChild(closeButton);
+    notification.appendChild(closeNotificationButton);
 
     document.body.appendChild(notification);
     existingNotification = notification;
