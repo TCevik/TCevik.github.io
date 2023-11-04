@@ -208,7 +208,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     messageElement.addEventListener('mouseover', () => {
         timeElement.style.display = 'inline';
-        messageElement.style.backgroundColor = 'var(--h1234-color)';
+        messageElement.style.color = 'var(--h1234-color)';
     });
 
     messageElement.addEventListener('mouseout', () => {
