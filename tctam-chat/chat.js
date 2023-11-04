@@ -205,10 +205,9 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     timeElement.style.marginLeft = '30px';
     timeElement.style.color = 'var(--h1234-color)';
     timeElement.style.paddingLeft = '5px';
-    timeElement.style.paddingRight = '5px';
     timeElement.style.backgroundColor = 'var(--background-color)';
-    timeElement.style.position = 'absolute'; // Add this line
-    timeElement.style.right = '-20px'; // Add this line
+    timeElement.style.position = 'absolute';
+    timeElement.style.right = '0px';
 
     messageElement.appendChild(timeElement);
 
