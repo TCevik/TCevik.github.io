@@ -203,14 +203,17 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     timeElement.style.color = 'var(--h1234-color)';
     messageElement.appendChild(timeElement);
 
-    timeElement.style.display = 'none'; // Initial state: hidden
+    timeElement.style.display = 'none';
+    messageElement.style.backgroundColor = 'transparent';
 
     messageElement.addEventListener('mouseover', () => {
         timeElement.style.display = 'inline';
+        messageElement.style.backgroundColor = '#808080';
     });
 
     messageElement.addEventListener('mouseout', () => {
         timeElement.style.display = 'none';
+        messageElement.style.backgroundColor = 'transparent';
     });
 
     prevEmail = modifiedEmail;
