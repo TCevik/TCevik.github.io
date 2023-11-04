@@ -186,7 +186,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.background = 'none';
         deleteButton.style.border = 'none';
         deleteButton.style.position = 'absolute'; // Add this line
-        deleteButton.style.right = '0'; // Add this line
+        deleteButton.style.right = '-40px'; // Add this line
         deleteButton.style.color = 'red';
         deleteButton.style.fontSize = 'inherit';
         deleteButton.style.cursor = 'pointer';
@@ -204,7 +204,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     timeElement.textContent = ' (' + messageTime + ')';
     timeElement.style.marginLeft = '30px';
     timeElement.style.color = 'var(--h1234-color)';
-    timeElement.style.backgroundColorcolor = 'var(--background-color)';
+    timeElement.style.backgroundColor = 'var(--background-color)';
     timeElement.style.position = 'absolute'; // Add this line
     timeElement.style.right = '20px'; // Add this line
 
