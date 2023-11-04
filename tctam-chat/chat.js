@@ -164,6 +164,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.style.marginTop = '0px';
     messageElement.style.marginBottom = '0px';
     messageElement.style.marginLeft = '50px';
+    messageElement.style.marginRight = '50px';
     messageElement.style.wordBreak = 'break-word';
     messageElement.style.textAlign = 'left';
     messageElement.style.paddingLeft = '5px';
