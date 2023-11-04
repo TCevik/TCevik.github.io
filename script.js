@@ -523,7 +523,7 @@ function notification(message) {
     notification.style.position = 'fixed';
     notification.style.bottom = '20px';
     notification.style.left = '20px';
-    notification.style.maxWidth = '50%';
+    notification.style.maxWidth = '90%';
     notification.style.wordBreak = 'break-word';
     notification.style.backgroundColor = 'var(--background-color)';
     notification.style.padding = '10px';
