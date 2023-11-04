@@ -532,6 +532,7 @@ function notification(message) {
   notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
   notification.style.display = 'flex';
   notification.style.alignItems = 'center';
+  notification.style.zIndex = '99999';
 
   var messageElement = document.createElement('span');
   messageElement.textContent = message;
