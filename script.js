@@ -376,7 +376,6 @@ var code = `
     <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
     <button onclick="window.location.href='/web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
     <button onclick="window.location.href='/school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
-    <button onclick="window.location.href='/school-hacks/persoonlijk-account-toevoegen'">Persoonlijk account toevoegen</button>
     <button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
     <button onclick="window.location.href='/school-hacks/dns-unblock'">DNS Unblock</button>
     <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
