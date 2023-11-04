@@ -178,7 +178,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const timeElement = document.createElement('i');
     const messageTime = new Date(timestamp).toLocaleString();
     timeElement.textContent = ' (' + messageTime + ')';
-    timeElement.style.marginLeft = '10px';
+    timeElement.style.textAlign = 'right';
+    timeElement.style.marginLeft = '30px';
     messageElement.appendChild(timeElement);
 
     const currentUserEmail = firebase.auth().currentUser.email;
