@@ -175,6 +175,12 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
+    const timeElement = document.createElement('i');
+    const messageTime = new Date(timestamp).toLocaleString();
+    timeElement.textContent = ' (' + messageTime + ')';
+    timeElement.style.marginLeft = '10px';
+    messageElement.appendChild(timeElement);
+
     const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
@@ -188,11 +194,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.fontSize = 'inherit';
         deleteButton.style.cursor = 'pointer';
         deleteButton.style.userSelect = 'none';
-
-        const timeElement = document.createElement('i');
-        const messageTime = new Date(timestamp).toLocaleString();
-        timeElement.textContent = ' (' + messageTime + ')';
-        messageElement.appendChild(timeElement);
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
@@ -236,8 +237,4 @@ function deleteOldMessages() {
             });
         }
     });
-}
-
-focusInput(); {
-    document.getElementById("message-input").focus();
 }
