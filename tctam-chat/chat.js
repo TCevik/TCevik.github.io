@@ -175,13 +175,6 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
-    const timeElement = document.createElement('i');
-    const messageTime = new Date(timestamp).toLocaleString();
-    timeElement.textContent = ' (' + messageTime + ')';
-    timeElement.style.marginLeft = '30px';
-    timeElement.style.color = 'var(--h1234-color)';
-    messageElement.appendChild(timeElement);
-
     const currentUserEmail = firebase.auth().currentUser.email;
     if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
@@ -202,6 +195,23 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
         messageElement.appendChild(deleteButton);
     }
+
+    const timeElement = document.createElement('i');
+    const messageTime = new Date(timestamp).toLocaleString();
+    timeElement.textContent = ' (' + messageTime + ')';
+    timeElement.style.marginLeft = '30px';
+    timeElement.style.color = 'var(--h1234-color)';
+    messageElement.appendChild(timeElement);
+
+    timeElement.style.display = 'none'; // Initial state: hidden
+
+    messageElement.addEventListener('mouseover', () => {
+        timeElement.style.display = 'inline';
+    });
+
+    messageElement.addEventListener('mouseout', () => {
+        timeElement.style.display = 'none';
+    });
 
     prevEmail = modifiedEmail;
 });
