@@ -194,7 +194,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
-            Notification('Bericht succesvol verwijderd.')
+            Notification('Bericht succesvol verwijderd.');
         });
 
         messageElement.appendChild(deleteButton);
