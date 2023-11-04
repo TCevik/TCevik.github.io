@@ -231,3 +231,7 @@ function deleteOldMessages() {
         }
     });
 }
+
+focusInput(); {
+    document.getElementById("message-input").focus();
+}
