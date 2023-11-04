@@ -505,3 +505,50 @@ function togglePopup(category) {
 
   document.body.style.overflowY = "hidden";
 }
+
+var existingNotification = null;
+
+function removeNotification() {
+    if (existingNotification) {
+        document.body.removeChild(existingNotification);
+    }
+}
+
+function notification(message) {
+  removeNotification();
+
+  var notification = document.createElement('div');
+  notification.setAttribute('id', 'customNotification');
+  notification.style.position = 'fixed';
+  notification.style.bottom = '20px';
+  notification.style.left = '20px';
+  notification.style.maxWidth = '50%';
+  notification.style.wordBreak = 'break-word';
+  notification.style.backgroundColor = 'var(--background-color)';
+  notification.style.padding = '10px';
+  notification.style.border = '1px solid var(--text-color)';
+  notification.style.borderRadius = '5px';
+  notification.style.textAlign = 'left';
+  notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
+  notification.style.display = 'flex';
+  notification.style.alignItems = 'center';
+
+  var messageElement = document.createElement('span');
+  messageElement.textContent = message;
+  messageElement.style.flex = '1';
+  notification.appendChild(messageElement);
+
+  var closeButton = document.createElement('span');
+  closeButton.textContent = 'X';
+  closeButton.style.marginLeft = '5px';
+  closeButton.style.cursor = 'pointer';
+  closeButton.style.fontWeight = 'bold';
+  closeButton.style.userSelect = 'none';
+  closeButton.onclick = function() {
+      document.body.removeChild(notification);
+  };
+  notification.appendChild(closeButton);
+
+  document.body.appendChild(notification);
+  existingNotification = notification;
+}
