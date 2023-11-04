@@ -204,16 +204,16 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     messageElement.appendChild(timeElement);
 
     timeElement.style.display = 'none';
-    messageElement.style.backgroundColor = 'transparent';
+    messageElement.style.color = 'var(--text-color)';
 
     messageElement.addEventListener('mouseover', () => {
         timeElement.style.display = 'inline';
-        messageElement.style.backgroundColor = '#808080';
+        messageElement.style.backgroundColor = 'var(--h1234-color)';
     });
 
     messageElement.addEventListener('mouseout', () => {
         timeElement.style.display = 'none';
-        messageElement.style.backgroundColor = 'transparent';
+        messageElement.style.color = 'var(--text-color)';
     });
 
     prevEmail = modifiedEmail;
