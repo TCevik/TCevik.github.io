@@ -138,6 +138,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageData = snapshot.val();
     const email = messageData.email;
     const message = messageData.message;
+    const timestamp = messageData.timestamp;
 
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
@@ -187,6 +188,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.fontSize = 'inherit';
         deleteButton.style.cursor = 'pointer';
         deleteButton.style.userSelect = 'none';
+
+        const timeElement = document.createElement('i');
+        const messageTime = new Date(timestamp).toLocaleString();
+        timeElement.textContent = ' (' + messageTime + ')';
+        messageElement.appendChild(timeElement);
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
