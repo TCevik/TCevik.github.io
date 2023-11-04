@@ -47,9 +47,9 @@ function savePictosToFirebase() {
         pictosRef.set({
             pictos
         }).then(function () {
-            alert("De picto's zijn succesvol opgeslagen.");
+            notification("De picto's zijn succesvol opgeslagen.");
         }).catch(function (error) {
-            alert("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
+            notification("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
         });
     } else {
         if (askEmails.includes(email)) {
@@ -60,12 +60,12 @@ function savePictosToFirebase() {
             pictosRef.set({
                 pictos
             }).then(function () {
-                alert("De picto's zijn succesvol aangevraagd.");
+                notification("De picto's zijn succesvol aangevraagd.");
             }).catch(function (error) {
-                alert("Er is een fout opgetreden bij het aanvragen van de pictogrammen: " + error);
+                notification("Er is een fout opgetreden bij het aanvragen van de pictogrammen: " + error);
             });
         } else {
-            alert("Deze gebruiker heeft geen toestemming om de picto's op te slaan of aan te vragen.");
+            notification("Deze gebruiker heeft geen toestemming om de picto's op te slaan of aan te vragen.");
         }
     }
 }
@@ -94,9 +94,9 @@ function askedPictos() {
                     }).then(function () {
                         var pictosRef = firestore.collection('pictos').doc('preview');
                         pictosRef.delete();
-                        alert("De picto's zijn succesvol opgeslagen.");
+                        notification("De picto's zijn succesvol opgeslagen.");
                     }).catch(function (error) {
-                        alert("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
+                        notification("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
                     });
                 } else {
                     var pictosRef = firestore.collection('pictos').doc('preview');
@@ -106,7 +106,7 @@ function askedPictos() {
                 return;
             }
         }).catch(function (error) {
-            alert("Er is een fout opgetreden: " + error);
+            notification("Er is een fout opgetreden: " + error);
         });
     }
 }
@@ -133,7 +133,7 @@ function loadPictosFromDatabase() {
             }
         }
     }).catch(function (error) {
-        alert("Er is een fout opgetreden bij het laden van pictogrammen: " + error);
+        notification("Er is een fout opgetreden bij het laden van pictogrammen: " + error);
     });
 }
 

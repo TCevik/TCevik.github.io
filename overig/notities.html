@@ -44,12 +44,12 @@
         function saveData() {
             const user = auth.currentUser;
             if (!user) {
-                alert("Je moet ingelogd zijn om notities op te slaan.");
+                notification("Je moet ingelogd zijn om notities op te slaan.");
                 return;
             }
 
             if (!user.emailVerified) {
-                alert("Je moet je e-mailadres verifiëren om notities op te slaan.");
+                notification("Je moet je e-mailadres verifiëren om notities op te slaan.");
                 return;
             }
 
@@ -66,9 +66,9 @@
                 userEmail: userEmail
             }, function(error) {
                 if (error) {
-                    alert("Data kon niet worden opgeslagen. Foutmelding: " + error);
+                    notification("Data kon niet worden opgeslagen. Foutmelding: " + error);
                 } else {
-                    alert("Data is succesvol opgeslagen.");
+                    notification("Data is succesvol opgeslagen.");
                 }
             });
         }
@@ -89,7 +89,7 @@
                         document.getElementById('input').value = userData.text;
                     }
                 }, function(error) {
-                    alert("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
+                    notification("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
                 });
             }
         };

@@ -44,9 +44,9 @@ function setUserName() {
     !forbiddenNames.includes(userName.toLowerCase())
   ) {
     localStorage.setItem('UserName', userName);
-    alert('Bedankt! Je gebruikersnaam is opgeslagen.');
+    notification('Bedankt! Je gebruikersnaam is opgeslagen.');
   } else {
-    alert('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
+    notification('Je moet een geldige gebruikersnaam invoeren om door te gaan.');
     setUserName();
   }
 }

@@ -11,7 +11,7 @@
     <script>
         function stuurNotificatie() {
             if (!("Notification" in window)) {
-                alert("Deze browser ondersteunt geen desktop notificaties.");
+                notification("Deze browser ondersteunt geen desktop notificaties.");
             } else if (Notification.permission === "granted") {
                 toonNotificatie();
             } else if (Notification.permission !== 'denied') {

@@ -17,12 +17,12 @@
             var duration = parseInt(durationInput.value);
             
             if (isNaN(frequency) || isNaN(duration)) {
-                alert("Voer geldige waarden in voor frequentie en duur.");
+                notification("Voer geldige waarden in voor frequentie en duur.");
                 return;
             }
             
             if (frequency < 20 || frequency > 20000) {
-                alert("De frequentie moet tussen 20 en 20.000 liggen.");
+                notification("De frequentie moet tussen 20 en 20.000 liggen.");
                 return;
             }
             

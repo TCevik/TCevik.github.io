@@ -60,7 +60,7 @@ sendButton.addEventListener('click', () => {
             messageInput.value = '';
             updateLastMessageTime(email);
         } else {
-            alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
+            notification('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
         }
     }
 });
@@ -76,7 +76,7 @@ messageInput.addEventListener('keydown', (event) => {
                 messageInput.value = '';
                 updateLastMessageTime(email);
             } else {
-                alert('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
+                notification('Je moet even wachten voordat je een nieuw bericht kunt sturen.');
             }
         }
     }
@@ -89,7 +89,7 @@ function checkEmailVerification() {
         updateSendButtonStatus(user.emailVerified);
 
         if (!user.emailVerified) {
-            alert('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
+            notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
             user.sendEmailVerification().catch((error) => {
                 console.error('Fout bij het verzenden van de bevestigingsmail:', error);
             });
