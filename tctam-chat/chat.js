@@ -199,9 +199,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const timeElement = document.createElement('i');
     const messageTime = new Date(timestamp).toLocaleString();
     timeElement.textContent = ' (' + messageTime + ')';
+    timeElement.style.marginLeft = '30px';
     timeElement.style.color = 'var(--h1234-color)';
-    timeElement.style.marginLeft = 'auto';
-    timeElement.style.marginRight = '10px';
     messageElement.appendChild(timeElement);
 
     timeElement.style.display = 'none';
