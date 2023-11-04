@@ -186,6 +186,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.color = 'red';
         deleteButton.style.fontSize = 'inherit';
         deleteButton.style.cursor = 'pointer';
+        deleteButton.style.userSelect = 'none';
 
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
