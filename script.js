@@ -251,6 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.style.borderTopLeftRadius = "0px"
   showCodeButton.style.borderBottomLeftRadius = "0px"
   showCodeButton.style.paddingTop = "25px"
+  showCodeButton.style.userSelect = "none"
   showCodeButton.style.paddingBottom = "25px"
   showCodeButton.style.top = "50%";
   showCodeButton.style.transform = "translateY(-50%)";
