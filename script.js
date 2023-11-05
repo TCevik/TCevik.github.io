@@ -451,6 +451,7 @@ function togglePopup(category) {
   popup.style.width = "calc(100vw - 150px)";
   popup.style.position = "fixed";
   popup.style.left = "50%";
+  popup.style.zIndex = 999999;
   popup.style.transform = "translateX(-50%)";
       
   var closeBtn = document.createElement("b");
@@ -461,6 +462,7 @@ function togglePopup(category) {
   closeBtn.style.right = "35px"
   closeBtn.style.cursor = "pointer"
   closeBtn.style.fontSize = "1.4em"
+  closeBtn.style.zIndex = 999999;
   closeBtn.onclick = function () {
       popup.style.opacity = 0;
       overlay.style.display = "none";
@@ -502,7 +504,7 @@ function togglePopup(category) {
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = 999999;
+  overlay.style.zIndex = 999997;
 
   document.body.style.overflowY = "hidden";
 }
