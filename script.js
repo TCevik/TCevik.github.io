@@ -253,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.style.paddingTop = "25px"
   showCodeButton.style.userSelect = "none"
   showCodeButton.style.paddingBottom = "25px"
+  showCodeButton.style.zIndex = '99999';
   showCodeButton.style.top = "50%";
   showCodeButton.style.transform = "translateY(-50%)";
   showCodeButton.style.transition = "opacity 0.5s";
@@ -267,6 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.position = "fixed";
   closeButton.style.left = "5px";
   closeButton.style.top = "5px";
+  closeButton.style.zIndex = '99999';
   closeButton.style.zIndex = "3";
   closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
