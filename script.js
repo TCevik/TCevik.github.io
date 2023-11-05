@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showCodeButton.style.paddingTop = "25px"
   showCodeButton.style.userSelect = "none"
   showCodeButton.style.paddingBottom = "25px"
-  showCodeButton.style.zIndex = '99998';
+  showCodeButton.style.zIndex = '9998';
   showCodeButton.style.top = "50%";
   showCodeButton.style.transform = "translateY(-50%)";
   showCodeButton.style.transition = "opacity 0.5s";
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.position = "fixed";
   closeButton.style.left = "5px";
   closeButton.style.top = "5px";
-  closeButton.style.zIndex = '99998';
+  closeButton.style.zIndex = '9998';
   closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
 
@@ -451,7 +451,7 @@ function togglePopup(category) {
   popup.style.width = "calc(100vw - 150px)";
   popup.style.position = "fixed";
   popup.style.left = "50%";
-  popup.style.zIndex = 999999;
+  popup.style.zIndex = 999;
   popup.style.transform = "translateX(-50%)";
       
   var closeBtn = document.createElement("b");
@@ -462,7 +462,7 @@ function togglePopup(category) {
   closeBtn.style.right = "35px"
   closeBtn.style.cursor = "pointer"
   closeBtn.style.fontSize = "1.4em"
-  closeBtn.style.zIndex = 999999;
+  closeBtn.style.zIndex = 999;
   closeBtn.onclick = function () {
       popup.style.opacity = 0;
       overlay.style.display = "none";
@@ -504,7 +504,7 @@ function togglePopup(category) {
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = 999997;
+  overlay.style.zIndex = 997;
 
   document.body.style.overflowY = "hidden";
 }
@@ -536,7 +536,7 @@ function notification(message) {
     notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
     notification.style.display = 'flex';
     notification.style.alignItems = 'center';
-    notification.style.zIndex = '99999';
+    notification.style.zIndex = '9999';
 
     var notificationElement = document.createElement('span');
     notificationElement.textContent = message;
