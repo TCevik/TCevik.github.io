@@ -502,7 +502,7 @@ function togglePopup(category) {
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = 999;
+  overlay.style.zIndex = 999999;
 
   document.body.style.overflowY = "hidden";
 }
