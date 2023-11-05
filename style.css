@@ -52,7 +52,7 @@ body {
     max-height: 100vh;
     overflow-y: auto;
     background-color: var(--background-color);
-    z-index: 9998;
+    z-index: 9997;
     top: 0%;
     bottom: 0%;
     left: 0;
