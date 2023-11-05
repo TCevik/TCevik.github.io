@@ -269,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.left = "5px";
   closeButton.style.top = "5px";
   closeButton.style.zIndex = '99999';
-  closeButton.style.zIndex = "3";
   closeButton.style.transition = "opacity 0.5s";
   document.body.appendChild(closeButton);
 
