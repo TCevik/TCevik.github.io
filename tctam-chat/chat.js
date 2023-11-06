@@ -143,11 +143,9 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
-    const modifiedEmail = email.replace(/@.*/g, '');
-
-    if (prevEmail !== modifiedEmail || !emailMap[modifiedEmail]) {
+    if (prevEmail !== email || !emailMap[email]) {
         const emailElement = document.createElement('strong');
-        emailElement.textContent = modifiedEmail + ': ';
+        emailElement.textContent = email + ': ';
         chatOutput.appendChild(emailElement);
         emailElement.style.display = 'block';
         emailElement.style.marginTop = '5px';
@@ -155,7 +153,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-        updateEmailMap(modifiedEmail, 'add');
+        updateEmailMap(email, 'add');
     }
 
     messageElement.appendChild(messageContent);
@@ -225,7 +223,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         messageElement.style.color = 'var(--text-color)';
     });
 
-    prevEmail = modifiedEmail;
+    prevEmail = email;
 });
 
 function linkifyText(text) {
