@@ -46,27 +46,7 @@
 
 </head>
 <body style="width: 100%;">
-    <div id="user-info">
-        <span id="user-email"></span>
-        <button id="logout-btn">Uitloggen</button>
-        <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
-    </div>
-      
-    <div id="login">
-        <h1>Inloggen / Registreren</h1>
-        <form id="login-form">
-            <input type="email" id="login-email" placeholder="E-mailadres" required>
-            <br><input type="password" id="login-password" placeholder="Wachtwoord" required>
-            <br><button type="submit">Inloggen / Registreren</button>
-            <br>
-            <br><a style="margin-right: 20px; cursor: pointer; width: 15%;" id="reset-password-btn">Wachtwoord Vergeten</a>
-            <a style="cursor: pointer;" id="reset-password-btn" onclick="notification('Sorry, dit kan niet opgelost worden! Probeer je email te herrinneren of maak een nieuw account.');">Email Vergeten</a>
-        </form>
-        <br>
-        <button id="google-login-btn">Inloggen met Google</button>
-    </div>
-
-    <div id="chat" style="display: none;">
+    <div id="chat">
         <div id="chat-output" style="position: relative;"></div>
         
         <div id="ui-input">
@@ -79,80 +59,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
-    <script src="/tctam-chat/firebase-config.js"></script>
-    <script src="/tctam-chat/firebase-auth.js"></script>
+    <script src="/auth/firebase-config.js"></script>
     <script src="/tctam-chat/chat.js"></script>
-
-    <script>
-        document.getElementById('google-login-btn').addEventListener('click', () => {
-            loginWithGoogle();
-        });
-
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-        // Functie om in te loggen met Google
-        function loginWithGoogle() {
-            firebase.auth()
-                .signInWithPopup(googleProvider)
-                .then((result) => {
-                    const user = result.user;
-                    console.log('Gebruiker ingelogd met Google:', user.email);
-                    notification('Ingelogd met Google!');
-                    toggleUI(true);
-                    localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('userEmail', user.email);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error('Fout bij inloggen met Google:', errorCode, errorMessage);
-                    notification('Fout bij inloggen met Google: ' + errorMessage);
-                });
-        }
-    </script>
+    <script src="/login-exclusive/ex-script.js"></script>
 
     <style>
-        #login {
-          position: absolute;
-          top: 40%;
-          left: 50%;
-          width: 80%;
-          transform: translate(-50%, -50%);
-        }
-
-        #login-email {
-          border-bottom-right-radius: 0px;
-          border-bottom-left-radius: 0px;
-          border-top-right-radius: 20px;
-          border-top-left-radius: 20px;
-          border-width: 2px;
-          margin-bottom: 0px;
-          width: 40%;
-        }
-
-        #login-password {
-          border-top-right-radius: 0px;
-          border-top-left-radius: 0px;
-          border-bottom-right-radius: 20px;
-          border-bottom-left-radius: 20px;
-          border-width: 2px;
-          margin-top: 0px;
-          margin-bottom: 5px;
-          width: 40%;
-        }
-
-        #user-info {
-            position: relative;
-            width: 100vw;
-            display: none;
-            border-bottom: 3px solid var(--h1234-color);
-            background-color: var(--background-color);
-            z-index: 5;
-        }
-
         #chat-output {
             height: calc(100vh - 15vh);
-            max-height: 75vh;
+            max-height: 80vh;
             overflow: auto;
         }
         
