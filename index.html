@@ -220,8 +220,8 @@
             function getEmailFromFirebase() {
                 setTimeout(() => {
                     var user = firebase.auth().currentUser;
-                    var userEmail = user ? user.email : 'Welkom op de TC_tam website. "Fijne dag!"';
-                    document.getElementById("welcome").innerHTML = 'Welkom ' + userEmail + ', ik hoop dat je nog een fijne dag hebt!';
+                    var userEmail = user ? user.email : 'gebruiker';
+                    document.getElementById("welcome").innerHTML = 'Hallo ' + userEmail + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
                 }, 1000);
             }
         
