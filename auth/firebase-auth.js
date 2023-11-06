@@ -32,9 +32,22 @@ firebase.auth().onAuthStateChanged((user) => {
         setTimeout(() => {
             checkEmailVerification();
             getEmailFromFirebase();
+            redirectToUrl();
         }, "1000");
     }
 });
+
+redirectToUrl(); {
+    var currentUrl = window.location.href;
+    
+    if (currentUrl.includes("?")) {
+        var parts = currentUrl.split("?");
+        if (parts[1]) {
+            var redirectTo = parts[1];
+            window.location.href = redirectTo;
+        }
+    }
+}
 
 // Inlogstatus controleren bij het laden van de pagina
 window.addEventListener('load', function () {
