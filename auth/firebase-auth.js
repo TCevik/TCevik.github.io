@@ -23,7 +23,9 @@ function checkEmailVerification() {
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        checkEmailVerification();
+        setTimeout(() => {
+            checkEmailVerification();
+        }, "1000");
     }
 });
 
