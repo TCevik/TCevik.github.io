@@ -55,8 +55,6 @@
             <br>
             <br><a style="margin-right: 20px; cursor: pointer; width: 15%;" id="reset-password-btn">Wachtwoord Vergeten</a>
             <a style="cursor: pointer;" id="reset-password-btn" onclick="notification('Sorry, dit kan niet opgelost worden! Probeer je email te herrinneren of maak een nieuw account.');">Email Vergeten</a>
-            <br>
-            <br><button onclick="getVerifMail();">Krijg verificatie mail</button>
         </form>
         <br>
         <button class="google-btn" id="google-login-btn" onclick="loginWithGoogle();">
@@ -74,7 +72,7 @@
         <input style="margin-right: 0px;" type="text" id="pic-input" maxlength="1000" placeholder="Vul de URL van je profielfoto in" required>
         <button id="save-pic-btn" onclick="savePic()">Opslaan</button>
         <br>
-        <br><button id="send-verif" onclick="getVerifMail()">Opslaan</button>
+        <br><button onclick="getVerifMail();">Krijg verificatie mail</button>
         <br>
         <br><button id="logout-btn">Uitloggen</button>
         <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
