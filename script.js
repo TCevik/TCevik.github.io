@@ -347,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Check for existing cookie on page load
-  var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  /* var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   if (cookieValue === "true") {
     var codeElement = document.createElement("div");
     codeElement.setAttribute("id", "menu");
@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeButton.style.display = "block";
     closeButton.style.opacity = 1;
     menuVisible = true;
-  }
+  } */
 });
 
 
