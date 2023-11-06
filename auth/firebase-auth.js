@@ -85,23 +85,21 @@ document.getElementById('logout-btn').addEventListener('click', function () {
         });
 });
 
-// Voeg code toe om wachtwoord te wijzigen
 function changePassword() {
     var user = firebase.auth().currentUser;
+    var newPassword = document.getElementById("changePasswordInput").value;
 
-    if (user) {
-        var newPassword = prompt("New password:");
-
-        if (newPassword !== null) {
-            user.updatePassword(newPassword)
-                .then(function () {
-                    notification('Wachtwoord is succesvol gewijzigd.');
-                })
-                .catch(function (error) {
-                    console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
-                    notification('Fout bij het wijzigen van het wachtwoord: ' + error.message);
-                });
-        }
+    if (user && newPassword !== "") {
+        user.updatePassword(newPassword)
+            .then(function () {
+                notification('Wachtwoord is succesvol gewijzigd.');
+            })
+            .catch(function (error) {
+                console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
+                notification('Fout bij het wijzigen van het wachtwoord: ' + error.message);
+            });
+    } else {
+        notification('Vul alstublieft een nieuw wachtwoord in.');
     }
 }
 
