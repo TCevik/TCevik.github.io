@@ -39,13 +39,14 @@ function updateSendButtonStatus(emailVerified) {
     }
 }
 
-function sendMessage(email, message, displayName) {
+function sendMessage(email, message, displayName, photoURL) {
     const timestamp = Date.now();
     const messageData = {
         timestamp: timestamp,
         email: email,
         displayName: displayName,
         message: message,
+        photoURL: photoURL,
     };
 
     database.ref('chat').push(messageData);
@@ -56,10 +57,11 @@ sendButton.addEventListener('click', () => {
     const email = user.email;
     const displayName = user.displayName ? user.displayName : email;
     const message = messageInput.value;
+    const photoURL = user.photoURL ? user.photoURL : 'https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg';
 
     if (message.trim() !== '') {
         if (canSendMessage(email)) {
-            sendMessage(email, message, displayName);
+            sendMessage(email, message, displayName, photoURL);
             messageInput.value = '';
             updateLastMessageTime(email);
         } else {
@@ -73,11 +75,12 @@ messageInput.addEventListener('keydown', (event) => {
     const email = user.email;
     const displayName = user.displayName ? user.displayName : email;
     const message = messageInput.value;
+    const photoURL = user.photoURL ? user.photoURL : 'https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg';
 
     if (event.key === 'Enter' && enterKeyEnabled) {
         if (message.trim() !== '') {
             if (canSendMessage(email)) {
-                sendMessage(email, message, displayName);
+                sendMessage(email, message, displayName, photoURL);
                 messageInput.value = '';
                 updateLastMessageTime(email);
             } else {
