@@ -92,14 +92,16 @@ messageInput.addEventListener('keydown', (event) => {
 
 // Voeg e-mailverificatie toe
 function checkEmailVerification() {
-    const user = firebase.auth().currentUser;
-    if (user) {
-        updateSendButtonStatus(user.emailVerified);
+    setTimeout(() => {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            updateSendButtonStatus(user.emailVerified);
 
-        if (!user.emailVerified) {
-            notification('Je e-mailadres is nog niet geverifieerd. Ga naar je account om automatisch een mail te krijgen.');
+            if (!user.emailVerified) {
+                notification('Je e-mailadres is nog niet geverifieerd. Ga naar je account om automatisch een mail te krijgen.');
+            }
         }
-    }
+    }, "1000");
 }
 
 firebase.auth().onAuthStateChanged((user) => {
