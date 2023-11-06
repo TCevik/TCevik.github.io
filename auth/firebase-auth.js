@@ -26,7 +26,7 @@ function getUserDataFromFirebase() {
     var userEmail = user ? user.email : "Geen e-mail gevonden";
     var userName = user ? (user.displayName ? user.displayName : "Naam niet ingesteld") : "Geen gebruiker ingelogd";
 
-    document.getElementById("user-email").innerHTML = 'Je email is:' + userEmail;
+    document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
     document.getElementById("name-input").value = userName;
 }
 
