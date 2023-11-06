@@ -104,6 +104,7 @@ firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         deleteOldMessages();
         checkSendbuttonStatus();
+        location.reload();
     }
 });
 
