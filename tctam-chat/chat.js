@@ -97,7 +97,7 @@ function checkEmailVerification() {
         updateSendButtonStatus(user.emailVerified);
 
         if (!user.emailVerified) {
-            notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
+            notification('Je e-mailadres is nog niet geverifieerd. Ga naar je account om automatisch een mail te krijgen.');
             user.sendEmailVerification().catch((error) => {
                 console.error('Fout bij het verzenden van de bevestigingsmail:', error);
             });
