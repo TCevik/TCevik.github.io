@@ -7,19 +7,6 @@ let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
 let enterKeyEnabled = true;
 
-let shouldReload = false;
-
-window.onfocus = function () {
-    if (shouldReload) {
-        updateSendButtonStatus(user.emailVerified);
-    }
-};
-
-window.onblur = function () {
-    shouldReload = true;
-};
-
-
 function canSendMessage(email) {
     const currentTime = Date.now();
     if (email === 'tam.cevik123@gmail.com' || email === 'tamer.cevik@vlietlandcollege.nl') {
