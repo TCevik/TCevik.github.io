@@ -202,15 +202,6 @@
 <script src="/auth/firebase-config.js"></script>
 <script src="/auth/firebase-auth.js"></script>
 
-<script>
-    function getEmailFromFirebase() {
-        var user = firebase.auth().currentUser;
-        var userEmail = user ? user.email : "Geen e-mail gevonden";
-        var welcomeMessage = user ? 'Welkom terug op de website ' + userEmail + '!' : 'Welkom op de TC_tam website. "Fijne dag!"';
-        document.getElementById("welcome").innerHTML = welcomeMessage;
-    }
-</script>
-
 <body onload="countdown(); countup(); countdownToBirthday(); randomNumber(); getEmailFromFirebase();">
     <table>
         <style>
@@ -325,6 +316,13 @@
 
     <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
     <script>
+        function getEmailFromFirebase() {
+            var user = firebase.auth().currentUser;
+            var userEmail = user ? user.email : "Geen e-mail gevonden";
+            var welcomeMessage = user ? 'Welkom terug op de website ' + userEmail + '!' : 'Welkom op de TC_tam website. "Fijne dag!"';
+            document.getElementById("welcome").innerHTML = welcomeMessage;
+        }
+
         function loadIframe() {
             var button = document.getElementById('frame-button');
             var iframe = document.createElement('iframe');
