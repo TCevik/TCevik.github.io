@@ -93,15 +93,19 @@
     <script>
         function saveName() {
             var name = document.getElementById('name-input').value;
-            var user = firebase.auth().currentUser;
-
-            user.updateProfile({
-                displayName: name
-            }).then(function() {
-                notification('Gebruikersnaam succesvol bijgewerkt: ' + name);
-            }).catch(function(error) {
-                notification('Fout bij het bijwerken van de gebruikersnaam: ' + error);
-            });
+            if (name.trim().length >= 6) {
+                var user = firebase.auth().currentUser;
+            
+                user.updateProfile({
+                    displayName: name
+                }).then(function() {
+                    notification('Gebruikersnaam succesvol bijgewerkt: ' + name);
+                }).catch(function(error) {
+                    notification('Fout bij het bijwerken van de gebruikersnaam: ' + error);
+                });
+            } else {
+                notification('De gebruikersnaam moet minimaal 6 tekens bevatten en mag niet alleen spaties zijn.');
+            }
         }
 
         const googleProvider = new firebase.auth.GoogleAuthProvider();
