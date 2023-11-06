@@ -90,19 +90,6 @@ messageInput.addEventListener('keydown', (event) => {
     }
 });
 
-// Herlaad alleen bij focus
-let shouldReload = false;
-
-window.onfocus = function () {
-    if (shouldReload) {
-        location.reload();
-    }
-};
-
-window.onblur = function () {
-    shouldReload = true;
-};
-
 // Voeg e-mailverificatie toe
 function checkEmailVerification() {
     const user = firebase.auth().currentUser;
