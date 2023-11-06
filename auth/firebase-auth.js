@@ -101,6 +101,20 @@ function changePassword() {
                 user.updatePassword(newPassword)
                     .then(function () {
                         notification('Wachtwoord is succesvol gewijzigd.');
+
+                        // Opslaan in Google-wachtwoordmanager
+                        var credential = new PasswordCredential({
+                            id: user.email,
+                            password: newPassword,
+                        });
+
+                        navigator.credentials.store(credential).then(function () {
+                            console.log('Wachtwoord is opgeslagen in de wachtwoordmanager.');
+                            notification('Wachtwoord is opgeslagen in de wachtwoordmanager.');
+                        }).catch(function (error) {
+                            console.error('Fout bij het opslaan van het wachtwoord:', error);
+                            notification('Fout bij het opslaan van het wachtwoord:', error);
+                        });
                     })
                     .catch(function (error) {
                         console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
