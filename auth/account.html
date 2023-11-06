@@ -72,8 +72,6 @@
         <input style="margin-right: 0px;" type="text" id="pic-input" maxlength="1000" placeholder="Vul de URL van je profielfoto in" required>
         <button id="save-pic-btn" onclick="savePic()">Opslaan</button>
         <br>
-        <br><button onclick="getVerifMail();">Krijg verificatie mail</button>
-        <br>
         <br><button id="logout-btn">Uitloggen</button>
         <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
     </div>
@@ -96,20 +94,6 @@
     <script src="/auth/firebase-auth.js"></script>
 
     <script>
-        function getVerifMail() {
-            setTimeout(() => {
-                const user = firebase.auth().currentUser;
-                if (user) {
-                    if (!user.emailVerified) {
-                        notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
-                        user.sendEmailVerification().catch((error) => {
-                            notification('Fout bij het verzenden van de bevestigingsmail:' + error);
-                        });
-                    }
-                }
-            }, "1000");
-        }
-
         function savePic() {
             var pic = document.getElementById('pic-input').value;
             if (pic.trim().length >= 5) {
