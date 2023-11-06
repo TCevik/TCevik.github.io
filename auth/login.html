@@ -76,7 +76,6 @@
     <script>
         const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-        // Functie om in te loggen met Google
         function loginWithGoogle() {
             firebase.auth()
                 .signInWithPopup(googleProvider)
@@ -86,7 +85,6 @@
                     notification('Ingelogd met Google! (' + user.email + ')');
                     toggleUI(true);
                     localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('userEmail', user.email);
                 })
                 .catch((error) => {
                     const errorCode = error.code;
