@@ -116,7 +116,17 @@
                 .then((result) => {
                     const user = result.user;
                     console.log('Gebruiker ingelogd met Google:', user.email);
-                    notification('Ingelogd met Google! (' + user.email + ')');
+                
+                    // Opslaan van de profielfoto-URL in de Firebase-database
+                    const userProfile = {
+                        profilePicture: user.photoURL // Dit is de URL van de profielfoto
+                    };
+                
+                    // Code om userProfile naar de Firebase-database te schrijven
+                    // Voeg hier je eigen code toe om de photoURL op te slaan
+                
+                    const notificationMessage = 'Ingelogd met Google! (' + user.email + ') Profielfoto URL: ' + user.photoURL;
+                    notification(notificationMessage);
                     toggleUI(true);
                     localStorage.setItem('loggedIn', 'true');
                 })
