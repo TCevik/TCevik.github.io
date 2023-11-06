@@ -91,7 +91,7 @@ messageInput.addEventListener('keydown', (event) => {
 });
 
 // Voeg e-mailverificatie toe
-function checkEmailVerification() {
+function checkEmailVerificationC() {
     setTimeout(() => {
         const user = firebase.auth().currentUser;
         if (user) {
@@ -106,7 +106,7 @@ function checkEmailVerification() {
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        checkEmailVerification();
+        checkEmailVerificationC();
         deleteOldMessages();
     }
 });
