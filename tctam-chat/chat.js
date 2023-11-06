@@ -51,13 +51,7 @@ function updateSendButtonStatus(emailVerified) {
 }
 
 sendButton.addEventListener('click', () => {
-    const user = firebase.auth().currentUser;
-    let email;
-    if (user.displayName) {
-        email = user.displayName;
-    } else {
-        email = user.email;
-    }
+    const email = firebase.auth().currentUser.email;
     const message = messageInput.value;
 
     if (message.trim() !== '') {
@@ -76,15 +70,6 @@ messageInput.addEventListener('keydown', (event) => {
     const message = messageInput.value;
 
     if (event.key === 'Enter' && enterKeyEnabled) {
-        const user = firebase.auth().currentUser;
-        let email;
-        if (user.displayName) {
-            email = user.displayName;
-        } else {
-            email = user.email;
-        }
-        const message = messageInput.value;
-
         if (message.trim() !== '') {
             if (canSendMessage(email)) {
                 sendMessage(email, message);
@@ -158,9 +143,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
 
-    if (prevEmail !== email || !emailMap[email]) {
+    const modifiedEmail = email.replace(/@.*/g, '');
+
+    if (prevEmail !== modifiedEmail || !emailMap[modifiedEmail]) {
         const emailElement = document.createElement('strong');
-        emailElement.textContent = email + ': ';
+        emailElement.textContent = modifiedEmail + ': ';
         chatOutput.appendChild(emailElement);
         emailElement.style.display = 'block';
         emailElement.style.marginTop = '5px';
@@ -168,7 +155,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.marginLeft = '40px';
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
-        updateEmailMap(email, 'add');
+        updateEmailMap(modifiedEmail, 'add');
     }
 
     messageElement.appendChild(messageContent);
@@ -191,8 +178,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
-    const currentUserDisplayName = firebase.auth().currentUser.displayName;
-    if (currentUserEmail === email || currentUserDisplayName) {
+    if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.style.padding = '0';
@@ -239,7 +225,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         messageElement.style.color = 'var(--text-color)';
     });
 
-    prevEmail = email;
+    prevEmail = modifiedEmail;
 });
 
 function linkifyText(text) {
