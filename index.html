@@ -190,13 +190,6 @@
               console.log("The random number wasn't 5: " + randomNumber);
           }
         };
-
-        function getEmailFromFirebase() {
-            var user = firebase.auth().currentUser;
-            var userEmail = user ? user.email : "Geen e-mail gevonden";
-            var welcomeMessage = user ? 'Welkom terug op de website ' + userEmail + '!' : 'Welkom op de TC_tam website. "Fijne dag!"';
-            document.getElementById("welcome").innerHTML = welcomeMessage;
-        }
     </script>
 </head>
 
@@ -208,6 +201,15 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
 <script src="/auth/firebase-config.js"></script>
 <script src="/auth/firebase-auth.js"></script>
+
+<script>
+    function getEmailFromFirebase() {
+        var user = firebase.auth().currentUser;
+        var userEmail = user ? user.email : "Geen e-mail gevonden";
+        var welcomeMessage = user ? 'Welkom terug op de website ' + userEmail + '!' : 'Welkom op de TC_tam website. "Fijne dag!"';
+        document.getElementById("welcome").innerHTML = welcomeMessage;
+    }
+</script>
 
 <body onload="countdown(); countup(); countdownToBirthday(); randomNumber(); getEmailFromFirebase();">
     <table>
