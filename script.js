@@ -86,10 +86,10 @@ if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
       const loggedIn = localStorage.getItem('loggedIn');
   
       if (loggedIn === 'true') {
-          window.open("/auth/account", "_blank", "width=75%,height=80%");
+          window.open("/auth/account", "_blank", "width=800px,height=500px");
       } else {
           // Navigeer naar de opgegeven URL voor inloggen
-          window.open("/auth/account", "_blank", "width=75%,height=80%");
+          window.open("/auth/account", "_blank", "width=800px,height=500px");
       }
     });
   }
