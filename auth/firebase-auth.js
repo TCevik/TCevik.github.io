@@ -69,12 +69,12 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
 document.getElementById('logout-btn').addEventListener('click', function () {
     auth.signOut()
         .then(function () {
-            console.log('Gebruiker uitgelogd');
+            notification('Gebruiker uitgelogd');
             toggleUI(false);
             localStorage.setItem('loggedIn', 'false');
         })
         .catch(function (error) {
-            console.error('Fout bij uitloggen:', error.message);
+            notification('Fout bij uitloggen:', error.message);
         });
 });
 
@@ -83,7 +83,7 @@ function changePassword() {
     var user = firebase.auth().currentUser;
 
     if (user) {
-        var newPassword = prompt("Voer uw nieuwe wachtwoord in:");
+        var newPassword = prompt("New password:");
 
         if (newPassword !== null) {
             user.updatePassword(newPassword)
@@ -100,7 +100,7 @@ function changePassword() {
 
 // Voeg code toe om wachtwoord te resetten
 document.getElementById('reset-password-btn').addEventListener('click', function () {
-    var userEmail = prompt("Voer uw e-mailadres in om uw wachtwoord te resetten:");
+    var userEmail = prompt("Enter your email:");
 
     if (userEmail !== null) {
         firebase.auth().sendPasswordResetEmail(userEmail)

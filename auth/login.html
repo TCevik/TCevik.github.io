@@ -82,7 +82,7 @@
                 .then((result) => {
                     const user = result.user;
                     console.log('Gebruiker ingelogd met Google:', user.email);
-                    notification('Ingelogd met Google! (', user.email, ')');
+                    notification('Ingelogd met Google! (' + user.email + ')');
                     toggleUI(true);
                     localStorage.setItem('loggedIn', 'true');
                     localStorage.setItem('userEmail', user.email);
