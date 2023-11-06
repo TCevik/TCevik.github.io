@@ -22,7 +22,6 @@ function getUserDataFromFirebase() {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         setTimeout(() => {
-            checkEmailVerification();
             getUserDataFromFirebase();
             redirectToUrl();
         }, "2500");
