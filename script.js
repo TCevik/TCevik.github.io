@@ -516,41 +516,45 @@ function removeNotification() {
 }
 
 function notification(message) {
-    removeNotification();
+  removeNotification();
 
-    var notification = document.createElement('div');
-    notification.setAttribute('id', 'customNotification');
-    notification.style.position = 'fixed';
-    notification.style.bottom = '20px';
-    notification.style.left = '20px';
-    notification.style.maxWidth = '90%';
-    notification.style.wordBreak = 'break-word';
-    notification.style.backgroundColor = 'var(--background-color)';
-    notification.style.padding = '10px';
-    notification.style.border = '1px solid var(--text-color)';
-    notification.style.borderRadius = '5px';
-    notification.style.textAlign = 'left';
-    notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
-    notification.style.display = 'flex';
-    notification.style.alignItems = 'center';
-    notification.style.zIndex = '9999';
+  var notification = document.createElement('div');
+  notification.setAttribute('id', 'customNotification');
+  notification.style.position = 'fixed';
+  notification.style.bottom = '20px';
+  notification.style.left = '20px';
+  notification.style.maxWidth = '90%';
+  notification.style.wordBreak = 'break-word';
+  notification.style.backgroundColor = 'var(--background-color)';
+  notification.style.padding = '10px';
+  notification.style.border = '1px solid var(--text-color)';
+  notification.style.borderRadius = '5px';
+  notification.style.textAlign = 'left';
+  notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
+  notification.style.display = 'flex';
+  notification.style.alignItems = 'center';
+  notification.style.zIndex = '9999';
 
-    var notificationElement = document.createElement('span');
-    notificationElement.textContent = message;
-    notificationElement.style.flex = '1';
-    notification.appendChild(notificationElement);
+  var notificationElement = document.createElement('span');
+  notificationElement.textContent = message;
+  notificationElement.style.flex = '1';
+  notification.appendChild(notificationElement);
 
-    var closeNotificationButton = document.createElement('span');
-    closeNotificationButton.textContent = 'X';
-    closeNotificationButton.style.marginLeft = '5px';
-    closeNotificationButton.style.cursor = 'pointer';
-    closeNotificationButton.style.fontWeight = 'bold';
-    closeNotificationButton.style.userSelect = 'none';
-    closeNotificationButton.onclick = function() {
-        removeNotification();
-    };
-    notification.appendChild(closeNotificationButton);
+  var closeNotificationButton = document.createElement('span');
+  closeNotificationButton.textContent = 'X';
+  closeNotificationButton.style.marginLeft = '5px';
+  closeNotificationButton.style.cursor = 'pointer';
+  closeNotificationButton.style.fontWeight = 'bold';
+  closeNotificationButton.style.userSelect = 'none';
+  closeNotificationButton.onclick = function() {
+      removeNotification();
+  };
+  notification.appendChild(closeNotificationButton);
 
-    document.body.appendChild(notification);
-    existingNotification = notification;
+  document.body.appendChild(notification);
+  existingNotification = notification;
+
+  setTimeout(function() {
+      removeNotification();
+  }, 7500);
 }
