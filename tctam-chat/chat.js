@@ -167,15 +167,32 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         updateEmailMap(email, 'add');
 
         const imgElement = document.createElement('img');
-        imgElement.src = photoURL;
-        imgElement.style.width = '35px';
-        imgElement.style.height = '35px';
-        imgElement.style.borderRadius = '15px';        
-        imgElement.style.border = 'var(--text-color) solid 2px';
-        imgElement.style.marginTop = '20px';
-        imgElement.style.display = 'inline-block';
-        imgElement.style.marginRight = '5px';
-        emailElement.insertBefore(imgElement, emailElement.firstChild);
+        let urlChecked = false;
+
+        function checkImageURL(url, callback) {
+            imgElement.onload = () => callback(true);
+            imgElement.onerror = () => callback(false);
+            imgElement.src = url;
+        }
+
+        checkImageURL(photoURL, function (response) {
+            if (!urlChecked) {
+                if (response) {
+                    imgElement.src = photoURL;
+                } else {
+                    imgElement.src =
+                        'https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg';
+                }
+                imgElement.style.width = '35px';
+                imgElement.style.height = '35px';
+                imgElement.style.borderRadius = '15px';
+                imgElement.style.marginTop = '20px';
+                imgElement.style.display = 'inline-block';
+                imgElement.style.marginRight = '5px';
+                emailElement.insertBefore(imgElement, emailElement.firstChild);
+                urlChecked = true;
+            }
+        });
     }
 
     messageElement.appendChild(messageContent);
