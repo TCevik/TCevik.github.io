@@ -37,7 +37,7 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-redirectToUrl(); {
+function redirectToUrl() {
     var currentUrl = window.location.href;
     
     if (currentUrl.includes("?")) {
