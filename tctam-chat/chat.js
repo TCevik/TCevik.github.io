@@ -148,6 +148,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     const displayName = messageData.displayName;
     const message = messageData.message;
     const timestamp = messageData.timestamp;
+    const photoURL = messageData.photoURL;
 
     const messageElement = document.createElement('div');
     const messageContent = linkifyText(message);
@@ -164,6 +165,17 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.wordBreak = 'break-word';
         emailElement.style.textAlign = 'left';
         updateEmailMap(email, 'add');
+
+        const imgElement = document.createElement('img');
+        imgElement.src = photoURL;
+        imgElement.style.width = '35px';
+        imgElement.style.height = '35px';
+        imgElement.style.borderRadius = '15px';        
+        imgElement.style.border = 'var(--text-color) solid 2px';
+        imgElement.style.marginTop = '20px';
+        imgElement.style.display = 'inline-block';
+        imgElement.style.marginRight = '5px';
+        emailElement.insertBefore(imgElement, emailElement.firstChild);
     }
 
     messageElement.appendChild(messageContent);
