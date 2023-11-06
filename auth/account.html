@@ -110,6 +110,22 @@
                     notification('Fout bij inloggen met Google: ' + errorMessage);
                 });
         }
+
+        // Haal de huidige URL op
+        var currentUrl = window.location.href;
+            
+        // Controleer of er een vraagteken aanwezig is in de URL
+        if (currentUrl.includes("?")) {
+            // Splits de URL bij het vraagteken om de parameters te scheiden
+            var parts = currentUrl.split("?");
+            // Controleer of er een tweede deel is na het vraagteken
+            if (parts[1]) {
+                // Haal de URL op die na het vraagteken staat
+                var redirectTo = parts[1];
+                // Navigeer naar de URL die achter het vraagteken staat
+                window.location.href = redirectTo;
+            }
+        }
     </script>
 
     <style>
