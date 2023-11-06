@@ -27,18 +27,6 @@ function updateLastMessageTime(email) {
     }
 }
 
-function updateSendButtonStatus(emailVerified) {
-    if (emailVerified) {
-        sendButton.disabled = false;
-        sendButton.textContent = 'Verzend';
-        enterKeyEnabled = true; // Schakel de Enter-toets in
-    } else {
-        sendButton.disabled = true;
-        sendButton.textContent = 'Verifieer je e-mail om te verzenden';
-        enterKeyEnabled = false; // Schakel de Enter-toets uit
-    }
-}
-
 function sendMessage(email, message, displayName, photoURL) {
     const timestamp = Date.now();
     const messageData = {
@@ -90,21 +78,8 @@ messageInput.addEventListener('keydown', (event) => {
     }
 });
 
-// Voeg e-mailverificatie toe
-function checkEmailVerification() {
-    const user = firebase.auth().currentUser;
-    if (user) {
-        updateSendButtonStatus(user.emailVerified);
-
-        if (!user.emailVerified) {
-            notification('Je e-mailadres is nog niet geverifieerd. Ga naar je accountdashboard om de mail te ontvangen.');
-        }
-    }
-}
-
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        checkEmailVerification();
         deleteOldMessages();
     }
 });
