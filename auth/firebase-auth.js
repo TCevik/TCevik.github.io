@@ -19,6 +19,22 @@ function getUserDataFromFirebase() {
     document.getElementById("pic-input").value = photoURL;
 }
 
+firebase.auth().onAuthStateChanged(function(user) {
+    if (window.location.href === 'https://tcevik.github.io/auth/account') {
+        if (user) {
+            if (!user.emailVerified) {
+                setTimeout(function() {
+                    user.sendEmailVerification().then(function() {
+                        notification('Verificatie e-mail verstuurd.');
+                    }).catch(function(error) {
+                        notification('Fout bij het versturen van de verificatie e-mail:' + error);
+                    });
+                }, 1000);
+            }
+        }
+    }
+});
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         setTimeout(() => {
