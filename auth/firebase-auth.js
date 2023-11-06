@@ -9,16 +9,18 @@ function toggleUI(isLoggedIn) {
 }
 
 function checkEmailVerification() {
-    const user = firebase.auth().currentUser;
-    if (user) {
+    setTimeout(() => {
+        const user = firebase.auth().currentUser;
+        if (user) {
 
-        if (!user.emailVerified) {
-            notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
-            user.sendEmailVerification().catch((error) => {
-                notification('Fout bij het verzenden van de bevestigingsmail:' + error);
-            });
+            if (!user.emailVerified) {
+                notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
+                user.sendEmailVerification().catch((error) => {
+                    notification('Fout bij het verzenden van de bevestigingsmail:' + error);
+                });
+            }
         }
-    }
+    }, "3000");
 }
 
 function getUserDataFromFirebase() {
