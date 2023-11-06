@@ -38,7 +38,7 @@ firebase.auth().onAuthStateChanged((user) => {
             checkEmailVerification();
             getUserDataFromFirebase();
             redirectToUrl();
-        }, "1000");
+        }, "2500");
     }
 });
 

@@ -91,19 +91,19 @@ messageInput.addEventListener('keydown', (event) => {
 });
 
 // Voeg e-mailverificatie toe
-function checkEmailVerification() {
+function checkSendbuttonStatus() {
     const user = firebase.auth().currentUser;
     if (user) {
         updateSendButtonStatus(user.emailVerified);
     }
 }
 
-setInterval(checkEmailVerification, 2000);
+setInterval(checkSendbuttonStatus, 2000);
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        checkEmailVerification();
         deleteOldMessages();
+        checkSendbuttonStatus();
     }
 });
 
