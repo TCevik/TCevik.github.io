@@ -16,6 +16,28 @@ window.addEventListener('load', function () {
     toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
 });
 
+// Configureer de Firebase UI
+var ui = new firebaseui.auth.AuthUI(auth);
+
+// Configureer de Google-inlogoptie
+var uiConfig = {
+    callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            return true;
+        }
+    },
+    signInSuccessUrl: 'https://tcevik.github.io/tctam-chat/',
+    signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ],
+    // Om aanvullende privacybeleid en voorwaarden te definiëren
+    tosUrl: 'https://tcevik.github.io/terms-of-service',
+    privacyPolicyUrl: 'https://tcevik.github.io/privacy-policy'
+};
+
+// Toon de Firebase UI-widget op de pagina
+ui.start('#login-form', uiConfig);
+
 // Inloggen / Registreren
 document.getElementById('login-form').addEventListener('submit', function (e) {
     e.preventDefault();
