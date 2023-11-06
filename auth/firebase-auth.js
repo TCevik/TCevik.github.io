@@ -24,7 +24,7 @@ firebase.auth().onAuthStateChanged((user) => {
         setTimeout(() => {
             getUserDataFromFirebase();
             redirectToUrl();
-        }, "2500");
+        }, "1000");
     }
 });
 
