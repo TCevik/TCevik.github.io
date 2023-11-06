@@ -97,10 +97,7 @@ function checkEmailVerification() {
         updateSendButtonStatus(user.emailVerified);
 
         if (!user.emailVerified) {
-            notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
-            user.sendEmailVerification().catch((error) => {
-                console.error('Fout bij het verzenden van de bevestigingsmail:', error);
-            });
+            notification('Je e-mailadres is nog niet geverifieerd. Ga naar je <a href="https://tcevik.github.io/auth/account">accountdashboard</a> om de mail te ontvangen.');
         }
     }
 }
