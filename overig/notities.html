@@ -33,11 +33,6 @@
                 return;
             }
 
-            if (!user.emailVerified) {
-                notification("Je moet je e-mailadres verifiëren om notities op te slaan.");
-                return;
-            }
-
             let userEmail = "Niet_beschikbaar";
             if (user.email !== null) {
                 userEmail = user.email.replace(/\./g, '_');
