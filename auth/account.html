@@ -57,7 +57,10 @@
             <a style="cursor: pointer;" id="reset-password-btn" onclick="notification('Sorry, dit kan niet opgelost worden! Probeer je email te herrinneren of maak een nieuw account.');">Email Vergeten</a>
         </form>
         <br>
-        <button id="google-login-btn" onclick="loginWithGoogle();">Inloggen met Google</button>
+        <button class="google-btn" id="google-login-btn" onclick="loginWithGoogle();">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png" alt="Google Logo">
+            Log in met Google
+        </button>
     </div>
 
     <div id="dashboard" style="display: none;">
@@ -96,6 +99,33 @@
     </script>
 
     <style>
+        .google-btn {
+            display: inline-block !important;
+            background-color: white !important;
+            color: black !important;
+            padding: 10px 20px !important;
+            border: none !important;
+            border-radius: 5px !important;
+            font-size: 16px !important;
+            cursor: pointer !important;
+        }
+
+        .google-btn img {
+            width: 25px !important;
+            height: 25px !important;
+            vertical-align: middle !important;
+            margin-right: 10px !important;
+        }
+
+        .google-btn:hover, .google-btn:focus {
+            background-color: white !important;
+            color: black !important;
+            border: none !important;
+            border-radius: 5px !important;
+            padding: 10px 20px !important;
+            filter: none !important;
+        }
+
         #login {
           position: absolute;
           top: 40%;
