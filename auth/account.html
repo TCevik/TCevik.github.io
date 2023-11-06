@@ -66,12 +66,22 @@
     <div id="dashboard" style="display: none;">
         <h3 id="user-email"></h3>
         <button id="logout-btn">Uitloggen</button>
-
+    
         <h3>Verander je wachtwoord:</h3>
-        <input id="oldPasswordInput" type="password" placeholder="Huidig wachtwoord"></input><br>
-        <input id="newPasswordInput" type="password" placeholder="Nieuw wachtwoord"></input><br>
+        <input id="oldPasswordInput" type="password" placeholder="Huidig wachtwoord" onfocus="showInput('oldPasswordInput')" onblur="hideInput('oldPasswordInput')"></input><br>
+        <input id="newPasswordInput" type="password" placeholder="Nieuw wachtwoord" onfocus="showInput('newPasswordInput')" onblur="hideInput('newPasswordInput')"></input><br>
         <button id="changePasswordBtn" onclick="changePassword()">Opslaan</button>
     </div>
+    
+    <script>
+        function showInput(id) {
+            document.getElementById(id).setAttribute('type', 'text');
+        }
+    
+        function hideInput(id) {
+            document.getElementById(id).setAttribute('type', 'password');
+        }
+    </script>    
 
 
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
