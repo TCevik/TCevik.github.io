@@ -87,20 +87,33 @@ document.getElementById('logout-btn').addEventListener('click', function () {
 
 function changePassword() {
     var user = firebase.auth().currentUser;
-    var newPassword = document.getElementById("changePasswordInput").value;
+    var oldPassword = document.getElementById("oldPasswordInput").value;
+    var newPassword = document.getElementById("newPasswordInput").value;
 
-    if (user && newPassword !== "") {
-        user.updatePassword(newPassword)
-            .then(function () {
-                notification('Wachtwoord is succesvol gewijzigd.');
-            })
-            .catch(function (error) {
-                console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
-                notification('Fout bij het wijzigen van het wachtwoord: ' + error.message);
-            });
-    } else {
-        notification('Vul alstublieft een nieuw wachtwoord in.');
-    }
+    var credential = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        oldPassword
+    );
+
+    user.reauthenticateWithCredential(credential)
+        .then(function () {
+            if (newPassword !== "") {
+                user.updatePassword(newPassword)
+                    .then(function () {
+                        notification('Wachtwoord is succesvol gewijzigd.');
+                    })
+                    .catch(function (error) {
+                        console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
+                        notification('Fout bij het wijzigen van het wachtwoord: ' + error.message);
+                    });
+            } else {
+                notification('Vul alstublieft een nieuw wachtwoord in.');
+            }
+        })
+        .catch(function (error) {
+            console.error('Fout bij authenticatie:', error.message);
+            notification('Fout bij authenticatie: ' + error.message);
+        });
 }
 
 // Voeg code toe om wachtwoord te resetten
