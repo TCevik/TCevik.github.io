@@ -69,6 +69,9 @@
         <input style="margin-right: 0px;" type="text" id="name-input" maxlength="30" placeholder="Voer je naam in" required>
         <button id="save-name-btn" onclick="saveName()">Opslaan</button>
         <br>
+        <input style="margin-right: 0px;" type="text" id="pic-input" maxlength="1000" placeholder="Vul de URL van je profielfoto in" required>
+        <button id="save-pic-btn" onclick="savePic()">Opslaan</button>
+        <br>
         <br><button id="logout-btn">Uitloggen</button>
         <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
     </div>
@@ -91,6 +94,23 @@
     <script src="/auth/firebase-auth.js"></script>
 
     <script>
+        function savePic() {
+            var pic = document.getElementById('pic-input').value;
+            if (pic.trim().length >= 5) {
+                var user = firebase.auth().currentUser;
+            
+                user.updateProfile({
+                    photoURL: pic
+                }).then(function() {
+                    notification('Profielfoto succesvol bijgewerkt: ' + pic);
+                }).catch(function(error) {
+                    notification('Fout bij het bijwerken van de profielfoto: ' + error);
+                });
+            } else {
+                notification('De foto-URL moet minimaal 5 tekens bevatten en mag niet alleen spaties zijn.');
+            }
+        }
+
         function saveName() {
             var name = document.getElementById('name-input').value;
             if (name.trim().length >= 6) {
