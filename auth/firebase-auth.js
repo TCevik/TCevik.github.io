@@ -1,14 +1,32 @@
 var auth = firebase.auth();
 var loginForm = document.getElementById('login');
-var userInfo = document.getElementById('user-info');
 var chat = document.getElementById('dashboard'); // Voeg chat toe aan je code
 
 // Functie om inlogformulier en gebruikersinformatie te tonen/verbergen
 function toggleUI(isLoggedIn) {
     loginForm.style.display = isLoggedIn ? 'none' : 'block';
-    userInfo.style.display = isLoggedIn ? 'block' : 'none';
     dashboard.style.display = isLoggedIn ? 'block' : 'none';
 }
+
+function checkEmailVerification() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+        updateSendButtonStatus(user.emailVerified);
+
+        if (!user.emailVerified) {
+            notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
+            user.sendEmailVerification().catch((error) => {
+                alert('Fout bij het verzenden van de bevestigingsmail:', error);
+            });
+        }
+    }
+}
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        checkEmailVerification();
+    }
+});
 
 // Inlogstatus controleren bij het laden van de pagina
 window.addEventListener('load', function () {

@@ -46,12 +46,6 @@
 
 </head>
 <body style="width: 100%;">
-    <div id="user-info">
-        <span id="user-email"></span>
-        <button id="logout-btn">Uitloggen</button>
-        <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
-    </div>
-      
     <div id="login">
         <h1>Inloggen / Registreren</h1>
         <form id="login-form">
@@ -66,8 +60,10 @@
         <button id="google-login-btn">Inloggen met Google</button>
     </div>
 
-    <div id="dashboard" style="dispay: none;">
+    <div id="dashboard" style="display: none;">
         <h3 id="userEmail"></h3>
+        <button id="logout-btn">Uitloggen</button>
+        <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
     </div>
 
 
@@ -136,15 +132,6 @@
           margin-top: 0px;
           margin-bottom: 5px;
           width: 40%;
-        }
-
-        #user-info {
-            position: relative;
-            width: 100vw;
-            display: none;
-            border-bottom: 3px solid var(--h1234-color);
-            background-color: var(--background-color);
-            z-index: 5;
         }
     </style>
 </body>
