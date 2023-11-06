@@ -5,7 +5,7 @@ const chatOutput = document.getElementById('chat-output');
 
 let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
-let enterKeyEnabled = true; // Houd bij of de Enter-toets is ingeschakeld
+let enterKeyEnabled = true;
 
 function canSendMessage(email) {
     const currentTime = Date.now();
