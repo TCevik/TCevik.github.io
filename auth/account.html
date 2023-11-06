@@ -97,10 +97,10 @@
             user.updateProfile({
                 displayName: name
             }).then(function() {
-                notification('Gebruikersnaam succesvol bijgewerkt: ', name);
+                notification('Gebruikersnaam succesvol bijgewerkt: ' + name);
                 document.getElementById('user-name').textContent = 'Naam: ' + name;
             }).catch(function(error) {
-                notification('Fout bij het bijwerken van de gebruikersnaam: ', error);
+                notification('Fout bij het bijwerken van de gebruikersnaam: ' + error);
             });
         }
 
