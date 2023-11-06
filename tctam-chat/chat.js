@@ -51,7 +51,13 @@ function updateSendButtonStatus(emailVerified) {
 }
 
 sendButton.addEventListener('click', () => {
-    const email = firebase.auth().currentUser.email;
+    const user = firebase.auth().currentUser;
+    let email;
+    if (user.displayName) {
+        email = user.displayName;
+    } else {
+        email = user.email;
+    }
     const message = messageInput.value;
 
     if (message.trim() !== '') {
