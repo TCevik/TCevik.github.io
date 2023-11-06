@@ -1,6 +1,6 @@
 var auth = firebase.auth();
 var loginForm = document.getElementById('login');
-var chat = document.getElementById('dashboard'); // Voeg chat toe aan je code
+var dashboard = document.getElementById('dashboard');
 
 // Functie om inlogformulier en gebruikersinformatie te tonen/verbergen
 function toggleUI(isLoggedIn) {

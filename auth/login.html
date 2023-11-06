@@ -61,7 +61,6 @@
     </div>
 
     <div id="dashboard" style="display: none;">
-        <h3 id="userEmail"></h3>
         <button id="logout-btn">Uitloggen</button>
         <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
     </div>
@@ -74,13 +73,6 @@
     <script src="/auth/firebase-auth.js"></script>
 
     <script>
-        const userEmail = user.email;
-        document.getElementById('userEmail').innerHTML = `Je email is ${userEmail}`;
-
-        document.getElementById('google-login-btn').addEventListener('click', () => {
-            loginWithGoogle();
-        });
-
         const googleProvider = new firebase.auth.GoogleAuthProvider();
 
         // Functie om in te loggen met Google
@@ -90,7 +82,7 @@
                 .then((result) => {
                     const user = result.user;
                     console.log('Gebruiker ingelogd met Google:', user.email);
-                    notification('Ingelogd met Google!');
+                    notification('Ingelogd met Google! (', user.email, ')');
                     toggleUI(true);
                     localStorage.setItem('loggedIn', 'true');
                     localStorage.setItem('userEmail', user.email);
