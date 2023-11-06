@@ -97,8 +97,8 @@
                     console.log('Gebruiker ingelogd met Google:', user.email);
                     notification('Ingelogd met Google!');
                     toggleUI(true);
-                    localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
-                    localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('userEmail', user.email);
                 })
                 .catch((error) => {
                     const errorCode = error.code;
