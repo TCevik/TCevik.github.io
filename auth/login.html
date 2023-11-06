@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://tcevik.github.io/style.css">
+    <script src="https://tcevik.github.io/script.js"></script>
+    <title>TC_tam Account</title>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var tekstElement = document.createElement('div');
+            var counter = 0;
+            tekstElement.textContent = 'Laden';
+            tekstElement.style.display = 'block';
+            tekstElement.style.position = 'fixed';
+            tekstElement.style.top = '0';
+            tekstElement.style.left = '0';
+            tekstElement.style.width = '100%';
+            tekstElement.style.height = '100%';
+            tekstElement.style.backgroundColor = 'var(--background-color)';
+            tekstElement.style.zIndex = '99999';
+            tekstElement.style.textAlign = 'center';
+            tekstElement.style.fontSize = '30px';
+            tekstElement.style.paddingTop = '50vh';
+            document.body.appendChild(tekstElement);
+
+            setInterval(function() {
+                counter++;
+                if (counter % 4 === 0) {
+                    tekstElement.textContent = 'Laden';
+                } else if (counter % 4 === 1) {
+                    tekstElement.textContent = 'Laden.';
+                } else if (counter % 4 === 2) {
+                    tekstElement.textContent = 'Laden..';
+                } else {
+                    tekstElement.textContent = 'Laden...';
+                }
+            }, 300);
+        
+            setTimeout(function() {
+                tekstElement.style.display = 'none';
+            }, 1500);
+        });
+    </script>
+
+</head>
+<body style="width: 100%;">
+    <div id="user-info">
+        <span id="user-email"></span>
+        <button id="logout-btn">Uitloggen</button>
+        <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
+    </div>
+      
+    <div id="login">
+        <h1>Inloggen / Registreren</h1>
+        <form id="login-form">
+            <input type="email" id="login-email" placeholder="E-mailadres" required>
+            <br><input type="password" id="login-password" placeholder="Wachtwoord" required>
+            <br><button type="submit">Inloggen / Registreren</button>
+            <br>
+            <br><a style="margin-right: 20px; cursor: pointer; width: 15%;" id="reset-password-btn">Wachtwoord Vergeten</a>
+            <a style="cursor: pointer;" id="reset-password-btn" onclick="notification('Sorry, dit kan niet opgelost worden! Probeer je email te herrinneren of maak een nieuw account.');">Email Vergeten</a>
+        </form>
+        <br>
+        <button id="google-login-btn">Inloggen met Google</button>
+    </div>
+
+    <div id="dashboard" style="dispay: none;">
+        <h3 id="userEmail"></h3>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+    <script src="/auth/firebase-config.js"></script>
+    <script src="/auth/firebase-auth.js"></script>
+
+    <script>
+        const userEmail = user.email;
+        document.getElementById('userEmail').innerHTML = `Je email is ${userEmail}`;
+
+        document.getElementById('google-login-btn').addEventListener('click', () => {
+            loginWithGoogle();
+        });
+
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        // Functie om in te loggen met Google
+        function loginWithGoogle() {
+            firebase.auth()
+                .signInWithPopup(googleProvider)
+                .then((result) => {
+                    const user = result.user;
+                    console.log('Gebruiker ingelogd met Google:', user.email);
+                    notification('Ingelogd met Google!');
+                    toggleUI(true);
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('userEmail', user.email);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error('Fout bij inloggen met Google:', errorCode, errorMessage);
+                    notification('Fout bij inloggen met Google: ' + errorMessage);
+                });
+        }
+    </script>
+
+    <style>
+        #login {
+          position: absolute;
+          top: 40%;
+          left: 50%;
+          width: 80%;
+          transform: translate(-50%, -50%);
+        }
+
+        #login-email {
+          border-bottom-right-radius: 0px;
+          border-bottom-left-radius: 0px;
+          border-top-right-radius: 20px;
+          border-top-left-radius: 20px;
+          border-width: 2px;
+          margin-bottom: 0px;
+          width: 40%;
+        }
+
+        #login-password {
+          border-top-right-radius: 0px;
+          border-top-left-radius: 0px;
+          border-bottom-right-radius: 20px;
+          border-bottom-left-radius: 20px;
+          border-width: 2px;
+          margin-top: 0px;
+          margin-bottom: 5px;
+          width: 40%;
+        }
+
+        #user-info {
+            position: relative;
+            width: 100vw;
+            display: none;
+            border-bottom: 3px solid var(--h1234-color);
+            background-color: var(--background-color);
+            z-index: 5;
+        }
+    </style>
+</body>
+</html>
