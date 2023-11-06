@@ -84,12 +84,22 @@ if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
     // Voeg een click event listener toe aan de knop
     loginButton.addEventListener("click", function() {
       const loggedIn = localStorage.getItem('loggedIn');
-  
+    
       if (loggedIn === 'true') {
-          window.open("/auth/account", "_blank", "width=800px,height=500px");
+          const popupWidth = Math.floor(window.outerWidth * 0.75);
+          const popupHeight = Math.floor(window.outerHeight * 0.8);
+          const leftPosition = (window.screen.width - popupWidth) / 2;
+          const topPosition = (window.screen.height - popupHeight) / 2;
+      
+          window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
       } else {
           // Navigeer naar de opgegeven URL voor inloggen
-          window.open("/auth/account", "_blank", "width=800px,height=500px");
+          const popupWidth = Math.floor(window.outerWidth * 0.75);
+          const popupHeight = Math.floor(window.outerHeight * 0.8);
+          const leftPosition = (window.screen.width - popupWidth) / 2;
+          const topPosition = (window.screen.height - popupHeight) / 2;
+      
+          window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
       }
     });
   }
