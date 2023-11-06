@@ -50,7 +50,7 @@
         <h1>Inloggen / Registreren</h1>
         <form id="login-form">
             <input type="email" id="login-email" placeholder="E-mailadres" required>
-            <br><input type="password" id="login-password" placeholder="Wachtwoord" required>
+            <br><input type="password" onfocus="showInput('login-password')" onblur="hideInput('login-password')" id="login-password" placeholder="Wachtwoord" required>
             <br><button type="submit">Inloggen / Registreren</button>
             <br>
             <br><a style="margin-right: 20px; cursor: pointer; width: 15%;" id="reset-password-btn">Wachtwoord Vergeten</a>
