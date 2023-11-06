@@ -91,20 +91,21 @@ messageInput.addEventListener('keydown', (event) => {
 });
 
 // Voeg e-mailverificatie toe
-function checkSendbuttonStatus() {
+function checkEmailVerification() {
     const user = firebase.auth().currentUser;
     if (user) {
         updateSendButtonStatus(user.emailVerified);
+
+        if (!user.emailVerified) {
+            notification("Je e-mailadres is nog niet geverifieerd. Ga naar je " + <a href="https://tcevik.github.io/auth/account">accountdashboard</a> + " om de mail te ontvangen.");
+        }
     }
 }
 
-setInterval(checkSendbuttonStatus, 2000);
-
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+        checkEmailVerification();
         deleteOldMessages();
-        checkSendbuttonStatus();
-        location.reload();
     }
 });
 
