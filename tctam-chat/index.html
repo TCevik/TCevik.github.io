@@ -63,7 +63,7 @@
             <a style="cursor: pointer;" id="reset-password-btn" onclick="notification('Sorry, dit kan niet opgelost worden! Probeer je email te herrinneren of maak een nieuw account.');">Email Vergeten</a>
         </form>
         <br>
-        <button id="google-login-btn">Inloggen met Google</button>
+        <button id="google-login-btn" onclick="loginWithGoogle();">Inloggen met Google</button>
     </div>
 
     <div id="chat" style="display: none;">
@@ -82,33 +82,6 @@
     <script src="/tctam-chat/firebase-config.js"></script>
     <script src="/tctam-chat/firebase-auth.js"></script>
     <script src="/tctam-chat/chat.js"></script>
-
-    <script>
-        // Google Auth provider
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-        // Inloggen met Google
-        function loginWithGoogle() {
-            firebase.auth()
-                .signInWithPopup(googleProvider)
-                .then((result) => {
-                    // Dit is wat er gebeurt na een succesvolle inlogpoging
-                    const user = result.user;
-                    // Voeg hier je eigen logica toe, zoals het omleiden van gebruikers, enz.
-                })
-                .catch((error) => {
-                    // Dit is wat er gebeurt bij een fout tijdens het inloggen
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    notification(errorCode, errorMessage);
-                });
-        }
-
-        // Inloggen met Google bij klik op de knop
-        document.getElementById('google-login-btn').addEventListener('click', () => {
-            loginWithGoogle();
-        });    
-    </script>      
 
     <style>
         #login {
