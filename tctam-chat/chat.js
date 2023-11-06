@@ -76,6 +76,15 @@ messageInput.addEventListener('keydown', (event) => {
     const message = messageInput.value;
 
     if (event.key === 'Enter' && enterKeyEnabled) {
+        const user = firebase.auth().currentUser;
+        let email;
+        if (user.displayName) {
+            email = user.displayName;
+        } else {
+            email = user.email;
+        }
+        const message = messageInput.value;
+    
         if (message.trim() !== '') {
             if (canSendMessage(email)) {
                 sendMessage(email, message);
