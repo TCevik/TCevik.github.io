@@ -21,10 +21,17 @@ function checkEmailVerification() {
     }
 }
 
+function getEmailFromFirebase() {
+    var user = firebase.auth().currentUser;
+    var userEmail = user ? user.email : "Geen e-mail gevonden";
+    document.getElementById("user-email").innerHTML = userEmail;
+}
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         setTimeout(() => {
             checkEmailVerification();
+            getEmailFromFirebase();
         }, "1000");
     }
 });
