@@ -100,46 +100,21 @@ document.getElementById('logout-btn').addEventListener('click', function () {
 
 function changePassword() {
     var user = firebase.auth().currentUser;
-    var oldPassword = document.getElementById("oldPasswordInput").value;
-    var newPassword = document.getElementById("newPasswordInput").value;
 
-    var credential = firebase.auth.EmailAuthProvider.credential(
-        user.email,
-        oldPassword
-    );
+    if (user) {
+        var newPassword = prompt("New password:");
 
-    user.reauthenticateWithCredential(credential)
-        .then(function () {
-            if (newPassword !== "") {
-                user.updatePassword(newPassword)
-                    .then(function () {
-                        notification('Wachtwoord is succesvol gewijzigd.');
-
-                        // Opslaan in Google-wachtwoordmanager
-                        var credential = new PasswordCredential({
-                            id: user.email,
-                            password: newPassword,
-                        });
-
-                        navigator.credentials.store(credential).then(function () {
-                            console.log('Wachtwoord is opgeslagen in de wachtwoordmanager.');
-                        }).catch(function (error) {
-                            console.error('Fout bij het opslaan van het wachtwoord in de wachtwoordmanager:', error);
-                            notification('Fout bij het opslaan van het wachtwoord in de wachtwoordmanager:', error);
-                        });
-                    })
-                    .catch(function (error) {
-                        console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
-                        notification('Fout bij het wijzigen van het wachtwoord: ' + error.message);
-                    });
-            } else {
-                notification('Vul alstublieft een nieuw wachtwoord in.');
-            }
-        })
-        .catch(function (error) {
-            console.error('Fout bij authenticatie:', error.message);
-            notification('Fout bij authenticatie: ' + error.message);
-        });
+        if (newPassword !== null) {
+            user.updatePassword(newPassword)
+                .then(function () {
+                    notification('Wachtwoord is succesvol gewijzigd.');
+                })
+                .catch(function (error) {
+                    console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
+                    notification('Fout bij het wijzigen van het wachtwoord: ' + error.message);
+                });
+        }
+    }
 }
 
 // Voeg code toe om wachtwoord te resetten
