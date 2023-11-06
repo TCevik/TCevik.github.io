@@ -27,7 +27,7 @@ function getUserDataFromFirebase() {
     var userName = user ? (user.displayName ? user.displayName : "Naam niet ingesteld") : "Geen gebruiker ingelogd";
 
     document.getElementById("user-email").innerHTML = userEmail;
-    document.getElementById("user-name").innerHTML = "Naam: " + userName;
+    document.getElementById("name-input").value = userName;
 }
 
 firebase.auth().onAuthStateChanged((user) => {
