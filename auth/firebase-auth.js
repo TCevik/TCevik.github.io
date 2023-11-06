@@ -110,10 +110,9 @@ function changePassword() {
 
                         navigator.credentials.store(credential).then(function () {
                             console.log('Wachtwoord is opgeslagen in de wachtwoordmanager.');
-                            notification('Wachtwoord is opgeslagen in de wachtwoordmanager.');
                         }).catch(function (error) {
-                            console.error('Fout bij het opslaan van het wachtwoord:', error);
-                            notification('Fout bij het opslaan van het wachtwoord:', error);
+                            console.error('Fout bij het opslaan van het wachtwoord in de wachtwoordmanager:', error);
+                            notification('Fout bij het opslaan van het wachtwoord in de wachtwoordmanager:', error);
                         });
                     })
                     .catch(function (error) {
