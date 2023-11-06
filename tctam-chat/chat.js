@@ -98,6 +98,7 @@ function checkEmailVerification() {
 
         if (!user.emailVerified) {
             notification('Je e-mailadres is nog niet geverifieerd. Ga naar je account om automatisch een mail te krijgen.');
+            location.reload();
         }
     }
 }
