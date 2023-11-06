@@ -87,10 +87,10 @@ if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
         const loggedIn = localStorage.getItem('loggedIn');
 
         if (loggedIn === 'true') {
-            window.location.href = "/tctam-chat";
+            window.location.href = "/auth/account";
         } else {
             // Navigeer naar de opgegeven URL voor inloggen
-            window.location.href = "/tctam-chat";
+            window.location.href = "/auth/account";
         }
     });
   }
@@ -362,6 +362,7 @@ var code = `
     <button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
     <button id="ex-bt" onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
     <button onclick="window.location.href='/games/alle-games'">Games</button>
+    <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
     <button onclick="window.location.href='/verhalen/alle-verhalen'">Mijn verhalen</button>
 
     <h3 style="margin-top: 50px;" id="overig">Overig</h3>
@@ -371,9 +372,6 @@ var code = `
     <button onclick="window.location.href='/overig/notities'">Notities</button>
     <button onclick="window.location.href='/overig/ide'">IDE</button>
     <button onclick="window.location.href='/overig/tts'">TTS</button>
-
-    <h3 style="margin-top: 50px;" id="ex-pag">Login Pagina's</h3>
-    <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
 
     <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
     <button onclick="window.location.href='/web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
