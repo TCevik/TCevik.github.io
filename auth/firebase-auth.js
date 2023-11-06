@@ -88,8 +88,7 @@ document.getElementById('logout-btn').addEventListener('click', function () {
 function changePassword() {
     var user = firebase.auth().currentUser;
     var oldPassword = document.getElementById("oldPasswordInput").value;
-    var newPasswordInput = document.getElementById("newPasswordInput");
-    var newPassword = newPasswordInput.value;
+    var newPassword = document.getElementById("newPasswordInput").value;
 
     var credential = firebase.auth.EmailAuthProvider.credential(
         user.email,
@@ -102,12 +101,6 @@ function changePassword() {
                 user.updatePassword(newPassword)
                     .then(function () {
                         notification('Wachtwoord is succesvol gewijzigd.');
-                        newPasswordInput.type = "text"; // To make the new password visible
-                        newPasswordInput.focus(); // To focus on the new password input field
-                        newPasswordInput.setSelectionRange(newPassword.length, newPassword.length); // To keep the cursor at the end of the text
-                        newPasswordInput.onblur = function() {
-                            newPasswordInput.type = "password"; // To hide the new password after leaving the input field
-                        };
                     })
                     .catch(function (error) {
                         console.error('Fout bij het wijzigen van het wachtwoord:', error.message);
