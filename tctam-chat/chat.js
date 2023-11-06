@@ -84,7 +84,7 @@ messageInput.addEventListener('keydown', (event) => {
             email = user.email;
         }
         const message = messageInput.value;
-    
+
         if (message.trim() !== '') {
             if (canSendMessage(email)) {
                 sendMessage(email, message);
@@ -191,7 +191,8 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
-    if (currentUserEmail === email) {
+    const currentUserDisplayName = firebase.auth().currentUser.displayName;
+    if (currentUserEmail === email || currentUserDisplayName) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.style.padding = '0';
