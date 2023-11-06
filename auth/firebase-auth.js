@@ -15,7 +15,7 @@ function checkEmailVerification() {
         if (!user.emailVerified) {
             notification('Je e-mailadres is nog niet geverifieerd. Een bevestigingsmail is verzonden.');
             user.sendEmailVerification().catch((error) => {
-                notification('Fout bij het verzenden van de bevestigingsmail:', error);
+                notification('Fout bij het verzenden van de bevestigingsmail:' + error);
             });
         }
     }
