@@ -40,7 +40,7 @@
 
             let userEmail = "Niet_beschikbaar";
             if (user.email !== null) {
-                userEmail = user.email.replace(/\./g, '_');
+                userEmail = user.email.replace(/\./g, '.');
             }
 
             const nameRef = database.ref('userdata/' + userEmail + '/notes/');
@@ -64,7 +64,7 @@
             if (user) {
                 let userEmail = "Niet_beschikbaar";
                 if (user.email !== null) {
-                    userEmail = user.email.replace(/\./g, '_');
+                    userEmail = user.email.replace(/\./g, '.');
                 }
 
                 const nameRef = database.ref('userdata/' + userEmail + '/notes/');
