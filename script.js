@@ -553,9 +553,4 @@ function notification(message) {
 
     document.body.appendChild(notification);
     existingNotification = notification;
-
-    // Verwijder de notificatie na 7500 milliseconden
-    setTimeout(function() {
-        removeNotification();
-    }, 7500);
 }
