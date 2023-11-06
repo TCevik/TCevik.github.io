@@ -87,6 +87,26 @@
         document.getElementById('google-login-btn').addEventListener('click', () => {
             loginWithGoogle();
         });
+
+        // Functie om in te loggen met Google
+        function loginWithGoogle() {
+            firebase.auth()
+                .signInWithPopup(googleProvider)
+                .then((result) => {
+                    const user = result.user;
+                    console.log('Gebruiker ingelogd met Google:', user.email);
+                    notification('Ingelogd met Google!');
+                    toggleUI(true);
+                    localStorage.setItem('loggedIn', 'true'); // Stel loggedIn in op 'true' bij inloggen
+                    localStorage.setItem('userEmail', user.email); // Sla de gebruikers-e-mail op
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error('Fout bij inloggen met Google:', errorCode, errorMessage);
+                    notification('Fout bij inloggen met Google: ' + errorMessage);
+                });
+        }
     </script>
 
     <style>
