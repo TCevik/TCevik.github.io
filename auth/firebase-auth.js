@@ -21,17 +21,20 @@ function checkEmailVerification() {
     }
 }
 
-function getEmailFromFirebase() {
+function getUserDataFromFirebase() {
     var user = firebase.auth().currentUser;
     var userEmail = user ? user.email : "Geen e-mail gevonden";
+    var userName = user ? (user.displayName ? user.displayName : "Naam niet ingesteld") : "Geen gebruiker ingelogd";
+
     document.getElementById("user-email").innerHTML = userEmail;
+    document.getElementById("user-name").innerHTML = "Naam: " + userName;
 }
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         setTimeout(() => {
             checkEmailVerification();
-            getEmailFromFirebase();
+            getUserDataFromFirebase();
             redirectToUrl();
         }, "1000");
     }
