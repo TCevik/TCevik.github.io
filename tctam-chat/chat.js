@@ -97,7 +97,7 @@ function checkEmailVerification() {
         updateSendButtonStatus(user.emailVerified);
 
         if (!user.emailVerified) {
-            notification("Je e-mailadres is nog niet geverifieerd. Ga naar je " + <a href="https://tcevik.github.io/auth/account">accountdashboard</a> + " om de mail te ontvangen.");
+            notification('Je e-mailadres is nog niet geverifieerd. Ga naar je accountdashboard om de mail te ontvangen.');
         }
     }
 }
