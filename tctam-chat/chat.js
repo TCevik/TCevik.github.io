@@ -27,17 +27,6 @@ function updateLastMessageTime(email) {
     }
 }
 
-function sendMessage(email, message) {
-    const timestamp = Date.now();
-    const messageData = {
-        timestamp: timestamp,
-        email: email,
-        message: message,
-    };
-
-    database.ref('chat').push(messageData);
-}
-
 function updateSendButtonStatus(emailVerified) {
     if (emailVerified) {
         sendButton.disabled = false;
@@ -50,13 +39,27 @@ function updateSendButtonStatus(emailVerified) {
     }
 }
 
+function sendMessage(email, message, displayName) {
+    const timestamp = Date.now();
+    const messageData = {
+        timestamp: timestamp,
+        email: email,
+        displayName: displayName,
+        message: message,
+    };
+
+    database.ref('chat').push(messageData);
+}
+
 sendButton.addEventListener('click', () => {
-    const email = firebase.auth().currentUser.email;
+    const user = firebase.auth().currentUser;
+    const email = user.email;
+    const displayName = user.displayName ? user.displayName : email;
     const message = messageInput.value;
 
     if (message.trim() !== '') {
         if (canSendMessage(email)) {
-            sendMessage(email, message);
+            sendMessage(email, message, displayName);
             messageInput.value = '';
             updateLastMessageTime(email);
         } else {
@@ -66,13 +69,15 @@ sendButton.addEventListener('click', () => {
 });
 
 messageInput.addEventListener('keydown', (event) => {
-    const email = firebase.auth().currentUser.email;
+    const user = firebase.auth().currentUser;
+    const email = user.email;
+    const displayName = user.displayName ? user.displayName : email;
     const message = messageInput.value;
 
     if (event.key === 'Enter' && enterKeyEnabled) {
         if (message.trim() !== '') {
             if (canSendMessage(email)) {
-                sendMessage(email, message);
+                sendMessage(email, message, displayName);
                 messageInput.value = '';
                 updateLastMessageTime(email);
             } else {
