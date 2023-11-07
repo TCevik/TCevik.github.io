@@ -28,16 +28,25 @@ function updateLastMessageTime(email) {
 }
 
 function sendMessage(email, message, displayName, photoURL) {
-    const timestamp = Date.now();
-    const messageData = {
-        timestamp: timestamp,
-        email: email,
-        displayName: displayName,
-        message: message,
-        photoURL: photoURL,
-    };
+    const user = firebase.auth().currentUser;
+    if (!user.emailVerified) {
+        user.sendEmailVerification().then(function() {
+            notification('Er is een verificatie-email gestuurd naar ' + user.email + '. Check je inbox voor de mail');
+        }).catch(function(error) {
+            notification(error);
+        });
+    } else {
+        const timestamp = Date.now();
+        const messageData = {
+            timestamp: timestamp,
+            email: email,
+            displayName: displayName,
+            message: message,
+            photoURL: photoURL,
+        };
 
-    database.ref('chat').push(messageData);
+        database.ref('chat').push(messageData);
+    }
 }
 
 sendButton.addEventListener('click', () => {
