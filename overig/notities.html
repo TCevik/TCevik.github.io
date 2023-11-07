@@ -11,43 +11,72 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="/script.js"></script>
     <script src="/auth/firebase-config.js"></script>
+    
 </head>
 
 <body>
+    
     <h1>Notities</h1>
     <p>Hier kan je notities maken!!!</p>
 
     <button id="save-button" onclick="saveData()">Opslaan</button>
-    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="1000000" disabled="true"></textarea>
+    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="100000" disabled="true"></textarea>
 
     <script>
         const database = firebase.database();
         const auth = firebase.auth();
 
         function saveData() {
-            var notes = document.getElementById('input').value;
-            var user = firebase.auth().currentUser;
-            
-            user.updateProfile({
-                photoURL: notes
-            }).then(function() {
-                notification('Notities succesvol bijgewerkt: ' + notes);
-            }).catch(function(error) {
-                notification('Fout bij het bijwerken van de notities: ' + error);
+            const user = auth.currentUser;
+            if (!user) {
+                notification("Je moet ingelogd zijn om notities op te slaan.");
+                return;
+            }
+
+            let userEmail = "Niet_beschikbaar";
+            if (user.email !== null) {
+                userEmail = user.email.replace(/\./g, '_');
+            }
+
+            const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+
+            const userNote = document.getElementById('input').value;
+            nameRef.set({
+                text: userNote,
+                userEmail: userEmail
+            }, function(error) {
+                if (error) {
+                    notification("Data kon niet worden opgeslagen. Foutmelding: " + error);
+                } else {
+                    notification("Data is succesvol opgeslagen.");
+                }
             });
         }
 
         function load() {
-            var user = firebase.auth().currentUser;
-            var notes = user ? user.photoURL : "";
-
-            document.getElementById("input").value = notes;
             document.getElementById("input").disabled = false;
-        }
+            const user = auth.currentUser;
+            if (user) {
+                let userEmail = "Niet_beschikbaar";
+                if (user.email !== null) {
+                    userEmail = user.email.replace(/\./g, '_');
+                }
+
+                const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+                nameRef.once('value', function(snapshot) {
+                    const userData = snapshot.val();
+                    if (userData && userData.text) {
+                        document.getElementById('input').value = userData.text;
+                    }
+                }, function(error) {
+                    notification("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
+                });
+            }
+        };
 
         setTimeout(() => {
             load();
-        }, 1000);
+        }, 2000);
     </script>
 </body>
 </html>
