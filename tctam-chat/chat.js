@@ -19,20 +19,11 @@ function canSendMessage(email) {
 }
 
 function updateLastMessageTime(email) {
-    const user = firebase.auth().currentUser;
-    if (!user.emailVerified) {
-        user.sendEmailVerification().then(function() {
-            notification('Er is een verificatie-email gestuurd naar ' + user.email + '. Check je inbox voor de mail voordat je een bericht kunt sturen.');
-        }).catch(function(error) {
-            console.error(error);
-        });
+    const currentTime = Date.now();
+    if (email === 'tam.cevik123@gmail.com') {
+        lastMessageTimeForSpecialEmail = currentTime;
     } else {
-        const currentTime = Date.now();
-        if (email === 'tam.cevik123@gmail.com') {
-            lastMessageTimeForSpecialEmail = currentTime;
-        } else {
-            lastMessageTime = currentTime;
-        }
+        lastMessageTime = currentTime;
     }
 }
 
