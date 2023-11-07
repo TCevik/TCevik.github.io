@@ -144,6 +144,11 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.textAlign = 'left';
         updateEmailMap(email, 'add');
 
+        if (email === 'tam.cevik123@gmail.com' || email === 'tamer.cevik@vlietlandcollege.nl') {
+            emailElement.style.color = 'var(--h1234-color)';
+            emailElement.style.fontSize = '1.1em';
+        }        
+
         const imgElement = document.createElement('img');
         let urlChecked = false;
 
