@@ -24,7 +24,7 @@ firebase.auth().onAuthStateChanged((user) => {
         setTimeout(() => {
             if (!user.emailVerified) {
                 user.sendEmailVerification().then(function() {
-                    notification('Er is een verificatie-email gestuurd naar ' + user.email + '. Check je inbox voor de mail');
+                    notification('Er is een verificatie-email gestuurd naar ' + user.email + '. Check je inbox voor de mail.');
                 }).catch(function(error) {
                     notification(error);
                 });
