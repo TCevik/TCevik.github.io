@@ -254,7 +254,7 @@ function setFavicon(faviconLink) {
 document.addEventListener("DOMContentLoaded", function () {
   var showCodeButton = document.createElement("button");
   showCodeButton.setAttribute("id", "showCodeButton");
-  showCodeButton.textContent = "〉";
+  showCodeButton.textContent = ">";
   showCodeButton.style.position = "fixed";
   showCodeButton.style.left = "-5px";
   showCodeButton.style.borderTopLeftRadius = "0px"
