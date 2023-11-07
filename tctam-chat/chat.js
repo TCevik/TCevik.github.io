@@ -164,7 +164,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
                 imgElement.style.width = '35px';
                 imgElement.style.height = '35px';
                 imgElement.style.borderRadius = '15px';
-                imgElement.style.marginTop = '20px';
+                imgElement.style.marginTop = '0px';
                 imgElement.style.display = 'inline-block';
                 imgElement.style.marginRight = '5px';
                 emailElement.insertBefore(imgElement, emailElement.firstChild);
