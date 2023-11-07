@@ -21,10 +21,14 @@ function getUserDataFromFirebase() {
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+        if (!user.emailVerified) {
+            sendVerificationEmail(user.email);
+            notification('Er is een verificatie-email gestuurd. Check je inbox voor de mail');
+        }
         setTimeout(() => {
             getUserDataFromFirebase();
             redirectToUrl();
-        }, "1000");
+        }, 1000);
     }
 });
 
