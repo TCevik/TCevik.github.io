@@ -243,6 +243,13 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     prevEmail = email;
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var chatOutput = document.getElementById('chatOutput'); // Vervang 'chatOutput' door de juiste ID van je element
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+    }, 1000);
+});
+
 function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const messageNode = document.createElement('span');
