@@ -19,34 +19,34 @@ function canSendMessage(email) {
 }
 
 function updateLastMessageTime(email) {
-    const currentTime = Date.now();
-    if (email === 'tam.cevik123@gmail.com') {
-        lastMessageTimeForSpecialEmail = currentTime;
+    const user = firebase.auth().currentUser;
+    if (!user.emailVerified) {
+        user.sendEmailVerification().then(function() {
+            notification('Er is een verificatie-email gestuurd naar ' + user.email + '. Check je inbox voor de mail voordat je een bericht kunt sturen.');
+        }).catch(function(error) {
+            console.error(error);
+        });
     } else {
-        lastMessageTime = currentTime;
+        const currentTime = Date.now();
+        if (email === 'tam.cevik123@gmail.com') {
+            lastMessageTimeForSpecialEmail = currentTime;
+        } else {
+            lastMessageTime = currentTime;
+        }
     }
 }
 
 function sendMessage(email, message, displayName, photoURL) {
-    const user = firebase.auth().currentUser;
-    if (!user.emailVerified) {
-        user.sendEmailVerification().then(function() {
-            notification('Er is een verificatie-email gestuurd naar ' + user.email + '. Check je inbox voor de mail');
-        }).catch(function(error) {
-            notification(error);
-        });
-    } else {
-        const timestamp = Date.now();
-        const messageData = {
-            timestamp: timestamp,
-            email: email,
-            displayName: displayName,
-            message: message,
-            photoURL: photoURL,
-        };
+    const timestamp = Date.now();
+    const messageData = {
+        timestamp: timestamp,
+        email: email,
+        displayName: displayName,
+        message: message,
+        photoURL: photoURL,
+    };
 
-        database.ref('chat').push(messageData);
-    }
+    database.ref('chat').push(messageData);
 }
 
 sendButton.addEventListener('click', () => {
