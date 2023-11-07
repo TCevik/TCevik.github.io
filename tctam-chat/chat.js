@@ -147,6 +147,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         if (email === 'tam.cevik123@gmail.com' || email === 'tamer.cevik@vlietlandcollege.nl') {
             emailElement.style.color = 'var(--h1234-color)';
             emailElement.style.fontSize = '1.1em';
+            emailElement.style.fontStyle = "italic";
         }        
 
         const imgElement = document.createElement('img');
