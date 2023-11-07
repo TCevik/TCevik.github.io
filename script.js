@@ -564,22 +564,3 @@ function notification(message) {
     document.body.appendChild(notification);
     existingNotification = notification;
 }
-
-const scripts = [
-  "https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js",
-  "https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js",
-  "https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js",
-  "/auth/firebase-config.js",
-  "/auth/firebase-auth.js"
-];
-
-const addScriptsToBody = () => {
-  const body = document.getElementsByTagName("body")[0];
-  scripts.forEach(src => {
-      const script = document.createElement("script");
-      script.src = src;
-      body.insertBefore(script, body.firstChild);
-  });
-};
-
-window.onload = addScriptsToBody;
