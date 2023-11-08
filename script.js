@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const loginButton = document.createElement("div");
       loginButton.style.position = "fixed";
-      loginButton.style.top = "3px";
-      loginButton.style.right = "3px";
+      loginButton.style.top = "6px";
+      loginButton.style.right = "6px";
       document.body.appendChild(loginButton);
 
       function updateLoginButton() {
