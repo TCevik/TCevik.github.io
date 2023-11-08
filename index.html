@@ -216,16 +216,18 @@
             
         <script>
             var auth = firebase.auth();
-        
-            function getEmailFromFirebase() {
+                    
+            function getUserDataFromFirebase() {
                 setTimeout(() => {
                     var user = firebase.auth().currentUser;
+                    var displayName = user ? user.displayName : null;
                     var userEmail = user ? user.email : 'gebruiker';
-                    document.getElementById("welcome").innerHTML = 'Hallo ' + userEmail + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
+                    var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
+                    document.getElementById("welcome").innerHTML = welcomeMessage;
                 }, 1000);
             }
-        
-            getEmailFromFirebase();
+            
+            getUserDataFromFirebase();
         </script>
         
         <td id="info" style="width: 95%;">
