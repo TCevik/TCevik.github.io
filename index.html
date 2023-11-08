@@ -214,18 +214,15 @@
         <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
         <script src="/auth/firebase-config.js"></script>
             
-        <script>
-            var auth = firebase.auth();
-        
-            function getEmailFromFirebase() {
+        <script>                  
+            function getEmailFromCookie() {
                 setTimeout(() => {
-                    var user = firebase.auth().currentUser;
-                    var userEmail = user ? user.email : 'gebruiker';
-                    document.getElementById("welcome").innerHTML = 'Hallo ' + userEmail + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
+                    var userDisplayName = document.cookie.replace(/(?:(?:^|.*;\s*)userDisplayName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                    document.getElementById("welcome").innerHTML = 'Hallo ' + userDisplayName + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
                 }, 1000);
             }
-        
-            getEmailFromFirebase();
+
+            getEmailFromCookie();
         </script>
         
         <td id="info" style="width: 95%;">
