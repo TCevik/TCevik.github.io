@@ -31,12 +31,12 @@ firebase.auth().onAuthStateChanged((user) => {
             }
             getUserDataFromFirebase();
             redirectToUrl();
-            saveProfilePic();
+            saveProfileData();
         }, 1000);
     }
 });
 
-function saveProfilePic() {
+function saveProfileData() {
     const user = firebase.auth().currentUser;
     const photoURL = user.photoURL;
     const email = user.email
@@ -45,7 +45,7 @@ function saveProfilePic() {
     document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
     document.cookie = `userDisplayName=${displayName}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
     document.cookie = `userEmail=${email}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-  }
+}
   
 
 function redirectToUrl() {
