@@ -39,12 +39,8 @@ firebase.auth().onAuthStateChanged((user) => {
 function saveProfileData() {
     const user = firebase.auth().currentUser;
     const photoURL = user.photoURL;
-    const email = user.email
-    const displayName = user.displayName ? user.displayName : email;
   
     document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-    document.cookie = `userDisplayName=${displayName}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-    document.cookie = `userEmail=${email}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 }
   
 
@@ -96,23 +92,19 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
         });
 });
 
-// uitloggen
+// Uitloggen
 document.getElementById('logout-btn').addEventListener('click', function () {
     auth.signOut()
         .then(function () {
             notification('Gebruiker uitgelogd');
             toggleUI(false);
             localStorage.setItem('loggedIn', 'false');
-
-            document.cookie = 'userPhotoURL=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-            document.cookie = 'userDisplayName=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-            document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            document.cookie = `https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
         })
         .catch(function (error) {
             notification('Fout bij uitloggen:', error.message);
         });
 });
-
 
 function changePassword() {
     var user = firebase.auth().currentUser;
