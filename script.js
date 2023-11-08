@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
               img.alt = "User Photo";
               img.style.width = "50px";
               img.style.height = "50px";
+              img.style.cursor = "pointer";
               img.style.borderRadius = "50%";
               loginButton.appendChild(img);
               loginButton.addEventListener("click", function() {
