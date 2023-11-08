@@ -96,21 +96,23 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
         });
 });
 
-// Uitloggen
+// uitloggen
 document.getElementById('logout-btn').addEventListener('click', function () {
     auth.signOut()
         .then(function () {
             notification('Gebruiker uitgelogd');
             toggleUI(false);
             localStorage.setItem('loggedIn', 'false');
-            document.cookie = 'userPhotoURL=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-            document.cookie = 'userDisplayName=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-            document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+
+            document.cookie = 'userPhotoURL=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            document.cookie = 'userDisplayName=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
         })
         .catch(function (error) {
             notification('Fout bij uitloggen:', error.message);
         });
 });
+
 
 function changePassword() {
     var user = firebase.auth().currentUser;
