@@ -48,63 +48,74 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Haal de huidige URL op
   const currentURL = window.location.pathname;
 
-  // Controleer of de URL begint met '/games/' of '/games?' (en optionele queryparameters)
-if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') && 
-    !currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
-    !currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
-    // Voeg een knop toe aan de pagina
-    const loginButton = document.createElement("button");
-    loginButton.style.position = "fixed";
-    loginButton.style.top = "3px";
-    loginButton.style.right = "3px";
-    document.body.appendChild(loginButton);
+  if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') && 
+      !currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
+      !currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
 
-    // Functie om de tekst van de knop te updaten op basis van de loggedIn-cookie
-    function updateLoginButton() {
-        const loggedIn = localStorage.getItem('loggedIn');
+      const loginButton = document.createElement("button");
+      loginButton.style.position = "fixed";
+      loginButton.style.top = "3px";
+      loginButton.style.right = "3px";
+      document.body.appendChild(loginButton);
 
-        if (loggedIn === 'true') {
-            loginButton.textContent = "Account";
-        } else {
-            loginButton.textContent = "Inloggen";
-        }
-    }
+      function updateLoginButton() {
+          const loggedIn = localStorage.getItem('loggedIn');
 
-    // Maak een callback-functie
-    const updateLoginButtonCallback = () => {
-        // Voer de functie `updateLoginButton()` uit
-        updateLoginButton();
-    };
-
-    updateLoginButton();
-
-    // Voeg een click event listener toe aan de knop
-    loginButton.addEventListener("click", function() {
-      const loggedIn = localStorage.getItem('loggedIn');
-    
-      if (loggedIn === 'true') {
-          const popupWidth = Math.floor(window.outerWidth * 0.75);
-          const popupHeight = Math.floor(window.outerHeight * 0.8);
-          const leftPosition = (window.screen.width - popupWidth) / 2;
-          const topPosition = (window.screen.height - popupHeight) / 2;
-      
-          window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-      } else {
-          // Navigeer naar de opgegeven URL voor inloggen
-          const popupWidth = Math.floor(window.outerWidth * 0.75);
-          const popupHeight = Math.floor(window.outerHeight * 0.8);
-          const leftPosition = (window.screen.width - popupWidth) / 2;
-          const topPosition = (window.screen.height - popupHeight) / 2;
-      
-          window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+          if (loggedIn === 'true') {
+              let userPhotoURL = getCookie('userPhotoURL');
+              if (!userPhotoURL || !isValidURL(userPhotoURL)) {
+                  userPhotoURL = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
+              }
+              loginButton.innerHTML = `<img src="${userPhotoURL}" alt="User Photo" style="width: 30px; height: 30px; border-radius: 50%;">`;
+          } else {
+              loginButton.textContent = "Inloggen";
+          }
       }
-    });
+
+      function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      function isValidURL(string) {
+          try {
+              new URL(string);
+              return true;
+          } catch (_) {
+              return false;  
+          }
+      }
+
+      const updateLoginButtonCallback = () => {
+          updateLoginButton();
+      };
+
+      updateLoginButton();
+
+      loginButton.addEventListener("click", function() {
+          const loggedIn = localStorage.getItem('loggedIn');
+      
+          if (loggedIn === 'true') {
+              const popupWidth = Math.floor(window.outerWidth * 0.75);
+              const popupHeight = Math.floor(window.outerHeight * 0.8);
+              const leftPosition = (window.screen.width - popupWidth) / 2;
+              const topPosition = (window.screen.height - popupHeight) / 2;
+          
+              window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+          } else {
+              const popupWidth = Math.floor(window.outerWidth * 0.75);
+              const popupHeight = Math.floor(window.outerHeight * 0.8);
+              const leftPosition = (window.screen.width - popupWidth) / 2;
+              const topPosition = (window.screen.height - popupHeight) / 2;
+          
+              window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+          }
+      });
   }
 });
-
 
 var originalTitle = document.title; // Bewaar de oorspronkelijke titel van het tabblad
 

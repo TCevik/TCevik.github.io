@@ -31,9 +31,18 @@ firebase.auth().onAuthStateChanged((user) => {
             }
             getUserDataFromFirebase();
             redirectToUrl();
+            saveProfilePic();
         }, 1000);
     }
 });
+
+function saveProfilePic() {
+    const user = firebase.auth().currentUser;
+    const photoURL = user.photoURL;
+  
+    document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+  }
+  
 
 function redirectToUrl() {
     var currentUrl = window.location.href;
