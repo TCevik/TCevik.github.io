@@ -104,7 +104,7 @@
                     photoURL: pic
                 }).then(function() {
                     notification('Profielfoto succesvol bijgewerkt: ' + pic);
-                    saveProfileData();
+                    location.reload();
                 }).catch(function(error) {
                     notification('Fout bij het bijwerken van de profielfoto: ' + error);
                 });
@@ -122,7 +122,7 @@
                     displayName: name
                 }).then(function() {
                     notification('Gebruikersnaam succesvol bijgewerkt: ' + name);
-                    saveProfileData();
+                    location.reload();
                 }).catch(function(error) {
                     notification('Fout bij het bijwerken van de gebruikersnaam: ' + error);
                 });
