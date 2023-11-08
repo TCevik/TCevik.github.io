@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
               if (!userPhotoURL || !isValidURL(userPhotoURL)) {
                   userPhotoURL = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
               }
-              loginButton.innerHTML = `<img src="${userPhotoURL}" alt="User Photo" style="width: 30px; height: 30px; border-radius: 50%;">`;
+              loginButton.innerHTML = `<img src="${userPhotoURL}" alt="User Photo" style="width: 50px; height: 50px; border-radius: 50%;">`;
           } else {
               loginButton.textContent = "Inloggen";
           }
