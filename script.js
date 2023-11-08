@@ -83,10 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
                   window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
               });
           } else {
-              const loginLink = document.createElement("a");
+              const loginLink = document.createElement("button");
               loginLink.textContent = "Inloggen";
-              loginLink.href = "/auth/account";
-              loginButton.appendChild(loginLink);
+              loginLink.onclick = function() {
+                  window.location.href = "/auth/account"; // Navigeer naar de opgegeven URL wanneer de knop wordt geklikt
+              };
+              loginButton.appendChild(loginLink);            
           }
       }
 
