@@ -209,16 +209,23 @@
                 margin-bottom: -15px;
             }
         </style>
+
+        <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+        <script src="/auth/firebase-config.js"></script>
             
-        <script>                  
-            function getEmailFromCookie() {
+        <script>
+            var auth = firebase.auth();
+        
+            function getEmailFromFirebase() {
                 setTimeout(() => {
-                    var userDisplayName = document.cookie.replace(/(?:(?:^|.*;\s*)userDisplayName\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-                    document.getElementById("welcome").innerHTML = 'Hallo ' + userDisplayName + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
+                    var user = firebase.auth().currentUser;
+                    var userEmail = user ? user.email : 'gebruiker';
+                    document.getElementById("welcome").innerHTML = 'Hallo ' + userEmail + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
                 }, 1000);
             }
-
-            getEmailFromCookie();
+        
+            getEmailFromFirebase();
         </script>
         
         <td id="info" style="width: 95%;">
