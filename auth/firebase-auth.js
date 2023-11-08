@@ -39,8 +39,8 @@ firebase.auth().onAuthStateChanged((user) => {
 function saveProfilePic() {
     const user = firebase.auth().currentUser;
     const photoURL = user.photoURL;
-    const displayName = user.displayName ? user.displayName : email;
     const email = user.email
+    const displayName = user.displayName ? user.displayName : email;
   
     document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
     document.cookie = `userDisplayName=${displayName}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
