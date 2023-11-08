@@ -258,21 +258,21 @@ function setFavicon(faviconLink) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  var showCodeButton = document.createElement("button");
-  showCodeButton.setAttribute("id", "showCodeButton");
-  showCodeButton.textContent = ">";
-  showCodeButton.style.position = "fixed";
-  showCodeButton.style.left = "-5px";
-  showCodeButton.style.borderTopLeftRadius = "0px"
-  showCodeButton.style.borderBottomLeftRadius = "0px"
-  showCodeButton.style.paddingTop = "25px"
-  showCodeButton.style.userSelect = "none"
-  showCodeButton.style.paddingBottom = "25px"
-  showCodeButton.style.zIndex = '997';
-  showCodeButton.style.top = "50%";
-  showCodeButton.style.transform = "translateY(-50%)";
-  showCodeButton.style.transition = "opacity 0.5s";
-  document.body.appendChild(showCodeButton);
+  var showmenuCodeButton = document.createElement("button");
+  showmenuCodeButton.setAttribute("id", "showmenuCodeButton");
+  showmenuCodeButton.textContent = ">";
+  showmenuCodeButton.style.position = "fixed";
+  showmenuCodeButton.style.left = "-5px";
+  showmenuCodeButton.style.borderTopLeftRadius = "0px"
+  showmenuCodeButton.style.borderBottomLeftRadius = "0px"
+  showmenuCodeButton.style.paddingTop = "25px"
+  showmenuCodeButton.style.userSelect = "none"
+  showmenuCodeButton.style.paddingBottom = "25px"
+  showmenuCodeButton.style.zIndex = '997';
+  showmenuCodeButton.style.top = "50%";
+  showmenuCodeButton.style.transform = "translateY(-50%)";
+  showmenuCodeButton.style.transition = "opacity 0.5s";
+  document.body.appendChild(showmenuCodeButton);
 
   var closeButton = document.createElement("button");
   closeButton.setAttribute("id", "closeButton");
@@ -289,18 +289,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var menuVisible = false;
 
-  showCodeButton.addEventListener("click", function () {
+  showmenuCodeButton.addEventListener("click", function () {
     if (!menuVisible) {
-      var codeElement = document.createElement("div");
-      codeElement.setAttribute("id", "menu");
-      codeElement.style.opacity = 0;
-      codeElement.style.transition = "opacity 0.5s";
-      codeElement.innerHTML = code;
-      document.body.appendChild(codeElement);
+      var menuCodeElement = document.createElement("div");
+      menuCodeElement.setAttribute("id", "menu");
+      menuCodeElement.style.opacity = 0;
+      menuCodeElement.style.transition = "opacity 0.5s";
+      menuCodeElement.innerHTML = menuCode;
+      document.body.appendChild(menuCodeElement);
       setTimeout(function () {
-        codeElement.style.opacity = 1;
+        menuCodeElement.style.opacity = 1;
       }, 0);
-      showCodeButton.style.opacity = 0;
+      showmenuCodeButton.style.opacity = 0;
       closeButton.style.display = "block";
       closeButton.style.opacity = 1;
       menuVisible = true;
@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         menu.remove();
       }, 500);
-      showCodeButton.style.opacity = 1;
+      showmenuCodeButton.style.opacity = 1;
       closeButton.style.opacity = 0;
       setTimeout(function () {
         closeButton.style.display = "none";
@@ -331,16 +331,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.addEventListener("click", function (event) {
     var menu = document.getElementById("menu");
-    var showCodeButton = document.getElementById("showCodeButton");
+    var showmenuCodeButton = document.getElementById("showmenuCodeButton");
     var closeButton = document.getElementById("closeButton");
 
     // Als het menu open is en er ergens anders dan op het menu wordt geklikt, sluit dan het menu.
-    if (menu && !menu.contains(event.target) && event.target !== showCodeButton) {
+    if (menu && !menu.contains(event.target) && event.target !== showmenuCodeButton) {
       menu.style.opacity = 0;
       setTimeout(function () {
         menu.remove();
       }, 500);
-      showCodeButton.style.opacity = 1;
+      showmenuCodeButton.style.opacity = 1;
       closeButton.style.opacity = 0;
       setTimeout(function () {
         closeButton.style.display = "none";
@@ -355,13 +355,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Check for existing cookie on page load
   /* var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   if (cookieValue === "true") {
-    var codeElement = document.createElement("div");
-    codeElement.setAttribute("id", "menu");
-    codeElement.style.opacity = 1;
-    codeElement.style.transition = "opacity 0.5s";
-    codeElement.innerHTML = code;
-    document.body.appendChild(codeElement);
-    showCodeButton.style.opacity = 0;
+    var menuCodeElement = document.createElement("div");
+    menuCodeElement.setAttribute("id", "menu");
+    menuCodeElement.style.opacity = 1;
+    menuCodeElement.style.transition = "opacity 0.5s";
+    menuCodeElement.innerHTML = menuCode;
+    document.body.appendChild(menuCodeElement);
+    showmenuCodeButton.style.opacity = 0;
     closeButton.style.display = "block";
     closeButton.style.opacity = 1;
     menuVisible = true;
@@ -369,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-var code = `
+var menuCode = `
 <td id="menu">
     <button onclick="window.location.href='/'">Home</button>
     <h3 id="algemeen">Algemeen</h3>
@@ -410,7 +410,7 @@ var code = `
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
     <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
     <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de code van de site</button>
+    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de menuCode van de site</button>
 </td>
 `;
 
