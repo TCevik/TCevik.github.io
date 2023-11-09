@@ -27,14 +27,17 @@
     <script src="/login-exclusive/ex-script.js"></script>
 
     <style>
+        body {
+            overflow: hidden;
+        }
+
         #chat-output {
             height: calc(100vh - 15vh);
-            max-height: 80vh;
             overflow: auto;
         }
         
         #ui-input {
-            position: fixed;
+            position: absolute;
             width: 100vw;
             height: 15vh;
             border-top: 3px solid var(--h1234-color);
