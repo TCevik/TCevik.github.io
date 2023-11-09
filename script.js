@@ -377,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var menuCode = `
 <td id="menu">
     <button onclick="window.location.href='/'">Home</button>
+    <button onclick="runBookmarklet()">Run JavaScript/Bookmarklet Code</button>
     <h3 id="algemeen">Algemeen</h3>
     <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
     <button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
@@ -418,6 +419,20 @@ var menuCode = `
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de menuCode van de site</button>
 </td>
 `;
+
+function runBookmarklet() {
+  var bookmarklet = prompt("Javascript here:");
+  if (bookmarklet) {
+    bookmarklet = bookmarklet.replace(/^javascript:/i, '');
+    try {
+      var script = document.createElement('script');
+      script.textContent = bookmarklet;
+      document.body.appendChild(script);
+    } catch (e) {
+      alert("Something went wrong: " + e);
+    }
+  }
+}
 
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
