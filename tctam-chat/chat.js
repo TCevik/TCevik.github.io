@@ -210,6 +210,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         deleteButton.style.position = 'absolute'; // Add this line
         deleteButton.style.right = '-40px'; // Add this line
         deleteButton.style.color = 'red';
+        deleteButton.style.zIndex = '1';
         deleteButton.style.fontSize = 'inherit';
         deleteButton.style.cursor = 'pointer';
         deleteButton.style.userSelect = 'none';
