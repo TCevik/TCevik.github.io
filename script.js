@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') && 
       !currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
-      !currentURL.startsWith('/tctam-chat/') && !currentURL.startsWith('/tctam-chat?') &&
       !currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
 
       const loginButton = document.createElement("div");
