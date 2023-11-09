@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var menuCode = `
 <td id="menu">
     <button onclick="window.location.href='/'">Home</button>
-    <button onclick="runBookmarklet()">Run JavaScript/Bookmarklet Code</button>
+    <button onclick="runBookmarklet()">JavaScript/Bookmarklet Code</button>
     <h3 id="algemeen">Algemeen</h3>
     <button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
     <button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
