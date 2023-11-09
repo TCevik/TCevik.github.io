@@ -84,11 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
                   window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
               });
           } else {
-              const loginLink = document.createElement("button");
-              loginLink.textContent = "Inloggen";
-              loginLink.onclick = function() {
-                  window.location.href = "/auth/account"; // Navigeer naar de opgegeven URL wanneer de knop wordt geklikt
-              };
+                const loginLink = document.createElement("button");
+                loginLink.textContent = "Inloggen";
+                loginLink.onclick = function() {
+                    const popupWidth = Math.floor(window.outerWidth * 0.75);
+                    const popupHeight = Math.floor(window.outerHeight * 0.8);
+                    const leftPosition = (window.screen.width - popupWidth) / 2;
+                    const topPosition = (window.screen.height - popupHeight) / 2;
+                    window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+            };
               loginButton.appendChild(loginLink);            
           }
       }
