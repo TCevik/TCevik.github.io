@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
               const img = document.createElement("img");
               img.src = userPhotoURL;
               img.alt = "User Photo";
-              img.style.width = "70px";
-              img.style.height = "70px";
+              img.style.width = "50px";
+              img.style.height = "50px";
               img.style.cursor = "pointer";
               img.style.borderRadius = "50%";
               loginButton.appendChild(img);
