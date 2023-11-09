@@ -8,6 +8,7 @@ body {
   width: 95%;
   text-align: center;
   transition: 0.5s;
+  scroll-behavior: smooth;
 }
 
 /* light mode and default mode */
