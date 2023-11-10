@@ -119,29 +119,6 @@
             button.style.display = 'inline';
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            var button = document.getElementById("hiddenButton");
-            var scale = 1.0;
-            var grow = true;
-        
-            button.style.transition = "transform 0.2s ease-in-out";
-        
-            setInterval(function() {
-                if (grow) {
-                    scale += 0.1;
-                    if (scale >= 1.1) {
-                        grow = false;
-                    }
-                } else {
-                    scale -= 0.1;
-                    if (scale <= 1.0) {
-                        grow = true;
-                    }
-                }
-                button.style.transform = "scale(" + scale + ")";
-            }, 200);
-        });
-
         function getRandomColor() {
             const r = Math.floor(Math.random() * 256);
             const g = Math.floor(Math.random() * 256);
@@ -340,7 +317,12 @@
         </td>
     </table>
 
-    <button id="hiddenButton" style="margin-top: 3000px; display: none; font-size: 1.0em;" onclick="openNewTab()">Geheime knop</button>
+    <span style="margin-top: 3000px; display: none;" id="hiddenButton"></span>
+        <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
+        <button style="font-size: 1.0em;" onclick="openNewTab()">Open Blank Tab</button>
+        <button style="font-size: 1.0em;" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
+    </span>
+
     <script>
         function loadIframe() {
             var button = document.getElementById('frame-button');
@@ -393,18 +375,48 @@
         fetchData();
 
         function openNewTab() {
-          var reminderText = "WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)";
-          var confirmResult = confirm(reminderText);
-          if (confirmResult) {
-            var win = window.open('about:blank', '_blank');
-            var iframeHeight = window.innerHeight;
-            win.document.write('<!DOCTYPE html><html style="overflow: hidden;"><head><title>‎</title>');
-            win.document.write('<link rel="icon" type="image/x-icon" href="https://tcevik.github.io/assets/asfalt-light.png">');
-            win.document.write('</head><body style="margin: 0; overflow: hidden;">');
-            win.document.write('<iframe src="/" style="width: 100%; height: ' + iframeHeight + 'px; border: none;"></iframe>');
-            win.document.close();
-            win.focus();
-          }
+            var newTab = window.open('about:blank', '_blank');
+            var iframe = newTab.document.createElement('iframe');
+            iframe.src = 'https://tcevik.github.io';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            newTab.document.body.appendChild(iframe);
+            
+            var link = newTab.document.createElement('link');
+            link.rel = 'icon';
+            link.type = 'image/x-icon';
+            link.href = 'https://tcevik.github.io/assets/asfalt-light.png';
+            
+            var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
+            head.appendChild(link);
+            
+            newTab.document.title = '‎';
+            };
+
+        function openSecretTab() {
+            var tabName = prompt('Voer de naam van het tabblad in:');
+            var faviconLink = prompt('Voer de favicon-link in:');
+
+            if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
+                var newTab = window.open('about:blank', '_blank');
+                var iframe = newTab.document.createElement('iframe');
+                iframe.src = 'https://tcevik.github.io';
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                newTab.document.body.appendChild(iframe);
+                
+                var link = newTab.document.createElement('link');
+                link.rel = 'icon';
+                link.type = 'image/x-icon';
+                link.href = faviconLink;
+                
+                var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
+                head.appendChild(link);
+                
+                newTab.document.title = tabName;
+            } else {
+                alert('Tabbladnaam en favicon-link mogen niet leeg zijn.');
+            }
         }
     </script>
 </body>
