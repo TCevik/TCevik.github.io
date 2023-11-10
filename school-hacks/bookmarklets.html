@@ -11,16 +11,13 @@
     <h1>Bookmarklets</h1>
     <p>Hier kan je verschillende hele handige bookmarklets vinden. Dit heette op mijn vorige site "Bookmarkies" voor degene die dat wil weten.
     <br>Sleep ze gewoon naar je bookmarkbalk en klik erop om ze te gebruiken. LET OP: dit kan geblokkeerd zijn als je dit voor school gebruikt. En heb je dan geen bookmarkbalk, druk dan op "ctrl + shift + b".</p>
-    
-    
 
     <a class="bookmarklet" href="javascript:(function()%7B(function()%7Bvar%20r%3D_%3D%3Eeruda.initDesktop()%3Bif(!window.eruda)%7Bvar%20s%3Ddocument.createElement(%22script%22)%3Bs.src%3D%22https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FBinBashBanana%2Ferudesktop%40master%2Fdist%2Feruda.js%22%3Bs.onload%3Dr%3Bs.onerror%3D_%3D%3Enotification(%22Failed%20to%20load%20script%22)%3Bdocument.body.appendChild(s)%7Delse%20r()%7D)()%3B%7D)()%3B">Inspecteren</a>
-    <p><b>YouTube Premium</b>
-    <br>javascript: setInterval(function() {  if(document.getElementsByClassName("video-ads")[0].innerHTML !==""){     var banner = false;     for(var i = 0; i < document.getElementsByClassName("ytp-ad-overlay-close-button").length; i++){       document.getElementsByClassName("ytp-ad-overlay-close-button")[i].click();       banner = true;    }     if(banner === false){       document.getElementsByClassName("html5-main-video")[0].currentTime = document.getElementsByClassName("html5-main-video")[0].duration;       document.getElementsByClassName("ytp-ad-skip-button")[0].click();    }   }}, 1000);</p>
+    <a class="bookmarklet" href='javascript: setInterval(function() {  if(document.getElementsByClassName("video-ads")[0].innerHTML !==""){     var banner = false;     for(var i = 0; i < document.getElementsByClassName("ytp-ad-overlay-close-button").length; i++){       document.getElementsByClassName("ytp-ad-overlay-close-button")[i].click();       banner = true;    }     if(banner === false){       document.getElementsByClassName("html5-main-video")[0].currentTime = document.getElementsByClassName("html5-main-video")[0].duration;       document.getElementsByClassName("ytp-ad-skip-button")[0].click();    }   }}, 1000);'>YouTube Premium</a>
     <a class="bookmarklet" href="javascript:document.body.contentEditable = 'true'; document.designMode='on'; void 0">Edit pagina (gewoon typen)</a>
     <a class="bookmarklet" href="javascript:expr=prompt('Som...(bijvoorbeeld: 2*3+7/8-3)','');if(expr!=null){with(Math){evl=parseFloat(eval(expr))};if(isNaN(evl)){notification('SERIEUS, niet een leeg vak doen! TYP EEN SOM!%27)}else{notification(evl)}}else{void(null)}">Rekenmachine boven de site (docenten kunnen dit niet zien)</a>
     <a class="bookmarklet" href="javascript:(function(){ [].slice.call(document.querySelectorAll('img, .gist')).forEach(function(elem) { elem.remove(); }); })()">Verwijder foto's op site</a>
     <a class="bookmarklet" href="javascript:(function(){var i, nd; function copyChildren(a,b){var i, nn; for(i=0;i<a.childNodes.length;++i) { nn = a.childNodes[i].cloneNode(true); if(nd.importNode) nn = nd.importNode(nn, true); b.appendChild(nn); } } nd=window.open().document; nd.open(); nd.close(); /*140681*/ copyChildren(document.getElementsByTagName('head')[0], nd.getElementsByTagName('head')[0]); copyChildren(document.body, nd.body);})();">Copy de site waarop je nu bent</a>
-    <a class="bookmarklet" href="javascript:alert("Are You Sure?");alert("Use At Your Own Risk");alert("Ready? IF NO RELOAD NOW.");setTimeout(() => {while (true) {while(1)location.reload(1)}}, 1000);">Chromebook Crasher</a>
+    <a class="bookmarklet" href='javascript:alert("Are You Sure?");alert("Use At Your Own Risk");alert("Ready? IF NO RELOAD NOW.");setTimeout(() => {while (true) {while(1)location.reload(1)}}, 1000);'>Chromebook Crasher</a>
 </body>
 </html>
