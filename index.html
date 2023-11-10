@@ -109,14 +109,14 @@
             keySequence.push(event.key);
         
             if (keySequence.join('') === 'snoepwolk') {
-                showButton();
+                showMenu();
                 setTimeout(scrollToSecret, 100);
             }
         });
 
-        function showButton() {
-            var button = document.getElementById('hiddenButton');
-            button.style.display = 'inline';
+        function showMenu() {
+            var menu = document.getElementById('showMenu');
+            menu.style.display = 'inline';
         }
 
         function getRandomColor() {
