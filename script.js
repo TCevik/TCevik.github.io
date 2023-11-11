@@ -417,7 +417,7 @@ var menuCode = `
     <button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
     <button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
     <button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de menuCode van de site</button>
+    <button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de broncode van de site</button>
 </td>
 `;
 
