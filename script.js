@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
               const img = document.createElement("img");
               img.src = userPhotoURL;
               img.alt = "User Photo";
+              img.style.userSelect = "none";
               img.style.width = "50px";
               img.style.height = "50px";
               img.style.cursor = "pointer";
