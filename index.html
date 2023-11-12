@@ -248,18 +248,6 @@
                     audio.play();
                   }, 150);
                 }
-
-                firebase.auth().onAuthStateChanged(function(user) {
-                    if (user) {
-                        if (user.email === "sercandenizcevik11@gmail.com" || user.email === "sercevik11@gmail.com") {
-                            document.getElementById("poopButton").style.display = "none";
-                        } else {
-                            
-                        }
-                    } else {
-
-                    }
-                });
             </script>
 
             <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
