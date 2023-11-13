@@ -333,14 +333,14 @@
     <center><div style="margin-top: 3000px; display: none;" id="showMenu"></span>
         <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
         <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van die website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
-        <div id="loginMessage" style="color: red;">Log eerst in en ontvang een verificatie email door naar je account te gaan.</div>
+        <div id="loginMessage" style="color: red;">Log eerst in om deze functie te gebruiken.</div>
         <button style="font-size: 1.0em; display:none;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
         <button style="font-size: 1.0em; display:none;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
     </div></center>
 
     <script>
         firebase.auth().onAuthStateChanged(function(user) {
-            if (user && user.emailVerified) {
+            if (user) {
                 document.getElementById('loginMessage').style.display = 'none';
                 document.getElementById('openNewTabBtn').style.display = 'block';
                 document.getElementById('openSecretTabBtn').style.display = 'block';
