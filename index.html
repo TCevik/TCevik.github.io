@@ -283,26 +283,48 @@
         <p>Dit is trouwens niet dreigend bedoeld, sorry als dat zo klinkt. Ik ben gewoon teleurgesteld/emotioneel.</p>
     </div></center>
 
-    <center><div id="tctam-fans" style="width: 90%; border: var(--h1234-color) 3px solid; border-radius: 25px; margin-top: 60px; display: flex;">
-        <iframe style="background-color: white; border-radius: 25px;" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true" width="30%" height="800px" frameborder="0"></iframe>
-
-        <div style="display: flex;">
+    <center><div id="tctam-fans" style="height: 800px;">
+        <iframe style="background-color: white; border-radius: 25px; position: absolute;" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true" width="30%" height="800px" frameborder="0"></iframe>
+        <div style="background-color: white; border-radius: 25px;"></div>
+        <div style="width: 65%; display: flex; flex-wrap: wrap; justify-content: space-between;">
             <div id="fan-info">
-                <img id="fan-pic" width="95px" height="95px" src="https://tcevik.github.io/favicon.ico">
+                <img id="fan-pic" width="auto" height="95px" src="https://tcevik.github.io/favicon.ico">
                 <h4 id="fan-name">Tamer Çevik</h4>
                 <p id="fan-text">Hoi ik ben Tamer, de eigenaar van deze site!</p>
             </div>
                 
             <div id="fan-info">
-                <img id="fan-pic" width="95px" height="95px" src="https://media.istockphoto.com/id/187722063/photo/funny-man-with-watermelon-helmet-and-goggles.jpg?s=612x612&w=0&k=20&c=gRAm8vtLqdOU8a-mJVt6m_Wnv8pLpa3TBh2vRQP4208=">
+                <img id="fan-pic" width="auto" height="95px" src="https://media.istockphoto.com/id/187722063/photo/funny-man-with-watermelon-helmet-and-goggles.jpg?s=612x612&w=0&k=20&c=gRAm8vtLqdOU8a-mJVt6m_Wnv8pLpa3TBh2vRQP4208=">
                 <h4 id="fan-name">Sercan Çevik</h4>
                 <p id="fan-text">Hoi ik ben Sercan, het broertje van Tamer!</p>
+            </div>
+
+            <div id="fan-info">
+                <img id="fan-pic" width="auto" height="95px" src="https://www.umass.edu/natural-sciences/sites/g/files/ijdqth206/files/styles/text_area_full_xl/public/2023-03/hubble-feature.png?itok=pvR9PTGq">
+                <h4 id="fan-name">Troll Face</h4>
+                <p id="fan-text">Hoi ik ben Troll, ik troll deze hele site!</p>
             </div>
         </div>
 
         <style>
+            #tctam-fans {
+                display: flex;
+                flex-wrap: wrap;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                max-height: 800px;
+                width: 90%;
+                border: var(--h1234-color) 3px solid;
+                border-radius: 25px;
+                margin-top: 60px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
             #fan-pic {
                 margin-bottom: -20px;
+                max-width: 200px;
             }
             
             #fan-name {
