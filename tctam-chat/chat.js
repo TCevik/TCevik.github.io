@@ -117,6 +117,7 @@ database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
         deletedMessageElement.innerHTML = '<i>Dit bericht is verwijderd door de auteur</i>';
+        deletedMessageElement.style.color = "var(--text-color)";
     }
 });
 
