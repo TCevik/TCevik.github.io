@@ -256,21 +256,29 @@ function linkifyText(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const messageNode = document.createElement('span');
     let lastIndex = 0;
-    text.replace(urlRegex, function (url, index) {
-        const before = text.substring(lastIndex, index);
+
+    while ((match = urlRegex.exec(text)) !== null) {
+        const before = text.substring(lastIndex, match.index);
         const linkNode = document.createElement('a');
-        linkNode.href = url;
+        linkNode.href = match[0];
         linkNode.target = "_blank";
-        linkNode.textContent = url;
-        messageNode.appendChild(document.createTextNode(before));
+        linkNode.textContent = match[0];
+
+        const normalTextNode = document.createTextNode(before);
+
+        messageNode.appendChild(normalTextNode);
         messageNode.appendChild(linkNode);
-        lastIndex = index + url.length;
-    });
-    if (lastIndex < text.length) {
-        messageNode.appendChild(document.createTextNode(text.substring(lastIndex)));
+
+        lastIndex = urlRegex.lastIndex;
     }
+
+    const remainingText = text.substring(lastIndex);
+    const remainingTextNode = document.createTextNode(remainingText);
+    messageNode.appendChild(remainingTextNode);
+
     return messageNode;
 }
+
 
 function deleteOldMessages() {
     const messagesRef = database.ref('chat');
