@@ -175,198 +175,194 @@
 </body>
 
 <body onload="countdown(); countup(); countdownToBirthday(); randomNumber();">
-    <table>
-        <style>
-            .popup-content {
-                max-height: 0;
-                overflow: auto;
-            }
+    <style>
+        .popup-content {
+            max-height: 0;
+            overflow: auto;
+        }
 
-            .popup-content h4 {
-                margin-bottom: -15px;
+        .popup-content h4 {
+            margin-bottom: -15px;
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="/auth/firebase-config.js"></script>
+            
+    <script>
+        var auth = firebase.auth();
+                
+        function displayUserName() {
+            setTimeout(() => {
+                var user = firebase.auth().currentUser;
+                var displayName = user ? user.displayName : null;
+                var userEmail = user ? user.email : 'gebruiker';
+                var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
+                document.getElementById("welcome").innerText = welcomeMessage;
+            }, 1000);
+        }
+        
+        displayUserName();
+    </script>
+        
+    <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
+    <h2 style="font-size: 26px;">Door Tamer Çevik</h3>
+    <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
+        <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+        <div id="explanation-popup" class="popup-content">
+            <h4>Nieuwe veranderingen ophalen:</h4>
+                <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
+            <h4>Bugs:</h4>
+                <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
+            <h4>Tabblad verberger:</h4>
+                <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
+            <h4>Zoeken op een pagina:</h4>
+                <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
+        </div>
+
+    <div id="login-popup" class="popup-content">
+        <h2>TC_tam Account</h2>
+            <p>Meld je nu aan en krijg toegang tot:</p>
+            <ul>
+              <p>- Gebruik nieuwe bèta functies die zo nu en dan uitrollen</p>
+              <p style="margin-top: -20px;">- Maak gebruik van coole functies zoals de <a href="/tctam-chat">TC_tam chat</a></p>
+              <p style="margin-top: -20px;">- Speel exclusieve <a href="/games/alle-games.html">games</a> die niet iedereen kan spelen (komt binnenkort)</p>
+            </ul>
+            <p>Meld je nu aan en ervaar het zelf!</p>
+            
+            <button onclick="window.location.href='/auth/account?https://tcevik.github.io'">Inloggen</button>
+    </div>
+
+    <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+    <button onclick="scrollToOverMij();">Over mij</button>
+    <button onclick="poopSound();">💩</button>
+    <br><button onclick="window.location.href='/verhalen/alle-verhalen'">Hier kan je lezen over nfc tags clonen.</button>
+            
+    <script>
+        function poopSound() {
+          var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
+          var interval = setInterval(function() {
+            audio.currentTime = 0;
+            audio.play();
+          }, 150);
+        }
+    </script>
+
+    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+    <p id="aftellen">‎</p>
+    <p id="battery-percentage">‎<p>
+        
+    <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
+    <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
+        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
+    </a>
+    <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
+        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
+    </a>
+    <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
+        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
+    </a>
+    <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
+        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
+    </a>
+    <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
+        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
+    </a>
+
+    <center><div style="display: none; width: 90%; border: var(--h1234-color) 3px solid; border-radius: 25px; margin-top: 60px;">
+        <h3>Goed nieuws voor de leerlingen (niet de docenten):</h3>
+        <p>Mijn school heeft recentelijk mijn Chromebook weer beheerd. Dat ik ze vertrouwd had was echt MEGA dom van mij en dat ga ik absoluut niet meer doen, en heb daarom besloten om de school vanaf nu niks meer te vertellen.</p>
+        <p>Ik heb 2 dingen die gaan komen:
+        <br>- er komt een blog over de tags clonen (ik had dit al aan de leerlingen willen vertellen, maar deed het niet omdat ik de school aardig vond, nu niet meer dus)
+        <br>- er komt een blog over w--- a--v-l en de gevolgen daarvan (maar wat dat precies is, is nog een verrassing en er komen steeds letters bij)
+        <br>
+        <br>(Ps: deze tutorials komen als blogs naar buiten en blijven algemeen zodat ik natuurlijk geen illegale dingen verspreid. Dat gaat me wel lukken, geloof me.)
+        <br>
+        <br>Als ik na 1 januari 2024 nog een beheerde Chromebook heb, zal ik deze tutorials maken. (ik heb nu nog even geen zin) Check de site voor updates!</p>
+        <p>Dit is trouwens niet dreigend bedoeld, sorry als dat zo klinkt. Ik ben gewoon teleurgesteld/emotioneel.</p>
+    </div></center>
+
+    <center><div id="tctam-fans" style="width: 90%; border: var(--h1234-color) 3px solid; border-radius: 25px; margin-top: 60px; display: flex;">
+        <iframe style="background-color: white; border-radius: 25px;" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true" width="30%" height="800px" frameborder="0"></iframe>
+
+        <div style="display: flex;">
+            <div id="fan-info">
+                <img id="fan-pic" width="95px" height="95px" src="https://tcevik.github.io/favicon.ico">
+                <h4 id="fan-name">Tamer Çevik</h4>
+                <p id="fan-text">Hoi ik ben Tamer, de eigenaar van deze site!</p>
+            </div>
+                
+            <div id="fan-info">
+                <img id="fan-pic" width="95px" height="95px" src="https://media.istockphoto.com/id/187722063/photo/funny-man-with-watermelon-helmet-and-goggles.jpg?s=612x612&w=0&k=20&c=gRAm8vtLqdOU8a-mJVt6m_Wnv8pLpa3TBh2vRQP4208=">
+                <h4 id="fan-name">Sercan Çevik</h4>
+                <p id="fan-text">Hoi ik ben Sercan, het broertje van Tamer!</p>
+            </div>
+        </div>
+
+        <style>
+            #fan-pic {
+                margin-bottom: -20px;
+            }
+            
+            #fan-name {
+                margin-bottom: -20px;
+            }
+            
+            #fan-text {
+                margin-bottom: 40px;
+            }
+            
+            #fan-info {
+                margin: 10px;
+                width: 45%;
             }
         </style>
+    </div></center>
 
-        <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
-        <script src="/auth/firebase-config.js"></script>
+    <h3 style="margin-top: 50px; font-size: 2.2em;" id="overmij">Over mij</h3>
+    <h4>Hoi, ik ben Tamer!</h4>
+    <center><p style="width: 95%; margin-bottom: 30px;">
+    <br>Yo welkom, veel plezier op mijn website!
+    <br>
+    <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
+    <br>⦁ Ik heet Tamer Çevik.
+    <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
+    <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+    <br>Nu weet je hoe ik TC_tam verzonnen heb!
+    <br>
+    <br>Ik ben jarig op 18 mei.
+    <p style="margin-top: -20px;" id="birthday"><p>
+    <br>
+    <br>Mijn favoriete kleuren zijn:
+    <br><span style="color: #132f0c">#132f0c</span>
+    <br><span style="color: #38761d">#38761d</span>
+    <br><span style="color: #43b731">#43b731</span>
+    <br><span style="color: #58bf33">#58bf33</span>
+    <br><span style="color: #e0fcd4">#e0fcd4</span>
+    <br>
+    <br>Dark mode kleur:
+    <br><span style="color: #0d1710">#0d1710</span>
+    <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
+    <br>De kleuren van mijn logo zijn:
+    <br><span style="color: #33ff33">#33ff33</span>
+    <br><span style="color: #336699">#336699</span></p></center>
+
+    <h4>Laten we even chatten:</h4>
+    <button id="frame-button" onclick="loadIframe()">Start Chat</button>
+    <div id="iframeContainer"></div>
             
-        <script>
-            var auth = firebase.auth();
-                    
-            function displayUserName() {
-                setTimeout(() => {
-                    var user = firebase.auth().currentUser;
-                    var displayName = user ? user.displayName : null;
-                    var userEmail = user ? user.email : 'gebruiker';
-                    var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
-                    document.getElementById("welcome").innerText = welcomeMessage;
-                }, 1000);
+    <style>
+        .hahanoobtext {
+            display: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hahanoobtext {
+                display: block;
             }
-            
-            displayUserName();
-        </script>
-        
-        <td id="info" style="width: 95%;">
-            <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
-            <h2 style="font-size: 26px;">Door Tamer Çevik</h3>
-            <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
-                <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
-                <div id="explanation-popup" class="popup-content">
-                    <h4>Nieuwe veranderingen ophalen:</h4>
-                        <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
-                    <h4>Bugs:</h4>
-                        <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
-                    <h4>Tabblad verberger:</h4>
-                        <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
-                    <h4>Zoeken op een pagina:</h4>
-                        <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
-                </div>
-
-                <div id="login-popup" class="popup-content">
-                    <h2>TC_tam Account</h2>
-                        <p>Meld je nu aan en krijg toegang tot:</p>
-                        <ul>
-                          <p>- Gebruik nieuwe bèta functies die zo nu en dan uitrollen</p>
-                          <p style="margin-top: -20px;">- Maak gebruik van coole functies zoals de <a href="/tctam-chat">TC_tam chat</a></p>
-                          <p style="margin-top: -20px;">- Speel exclusieve <a href="/games/alle-games.html">games</a> die niet iedereen kan spelen (komt binnenkort)</p>
-                        </ul>
-                        <p>Meld je nu aan en ervaar het zelf!</p>
-                        
-                        <button onclick="window.location.href='/auth/account?https://tcevik.github.io'">Inloggen</button>
-                </div>
-
-            <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
-            <button onclick="scrollToOverMij();">Over mij</button>
-            <button onclick="poopSound();">💩</button>
-            <br><button onclick="window.location.href='/verhalen/alle-verhalen'">Hier kan je lezen over nfc tags clonen.</button>
-            
-            <script>
-                function poopSound() {
-                  var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
-                  var interval = setInterval(function() {
-                    audio.currentTime = 0;
-                    audio.play();
-                  }, 150);
-                }
-            </script>
-
-            <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
-            <p id="aftellen">‎</p>
-            <p id="battery-percentage">‎<p>
-                
-            <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
-            <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
-                <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
-            </a>
-            <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
-                <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
-            </a>
-            <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
-                <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
-            </a>
-            <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
-                <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
-            </a>
-            <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
-                <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
-            </a>
-
-            <center><div style="display: none; width: 90%; border: var(--h1234-color) 3px solid; border-radius: 25px; margin-top: 60px;">
-                <h3>Goed nieuws voor de leerlingen (niet de docenten):</h3>
-                <p>Mijn school heeft recentelijk mijn Chromebook weer beheerd. Dat ik ze vertrouwd had was echt MEGA dom van mij en dat ga ik absoluut niet meer doen, en heb daarom besloten om de school vanaf nu niks meer te vertellen.</p>
-                <p>Ik heb 2 dingen die gaan komen:
-                <br>- er komt een blog over de tags clonen (ik had dit al aan de leerlingen willen vertellen, maar deed het niet omdat ik de school aardig vond, nu niet meer dus)
-                <br>- er komt een blog over w--- a--v-l en de gevolgen daarvan (maar wat dat precies is, is nog een verrassing en er komen steeds letters bij)
-                <br>
-                <br>(Ps: deze tutorials komen als blogs naar buiten en blijven algemeen zodat ik natuurlijk geen illegale dingen verspreid. Dat gaat me wel lukken, geloof me.)
-                <br>
-                <br>Als ik na 1 januari 2024 nog een beheerde Chromebook heb, zal ik deze tutorials maken. (ik heb nu nog even geen zin) Check de site voor updates!</p>
-                <p>Dit is trouwens niet dreigend bedoeld, sorry als dat zo klinkt. Ik ben gewoon teleurgesteld/emotioneel.</p>
-            </div></center>
-
-            <center><div id="tctam-fans" style="width: 90%; border: var(--h1234-color) 3px solid; border-radius: 25px; margin-top: 60px; display: flex;">
-                <iframe style="background-color: white; border-radius: 25px;" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true" width="30%" height="800px" frameborder="0"></iframe>
-
-                <div style="display: flex;">
-                    <div id="fan-info">
-                        <img id="fan-pic" width="95px" height="95px" src="https://tcevik.github.io/favicon.ico">
-                        <h4 id="fan-name">Tamer Çevik</h4>
-                        <p id="fan-text">Hoi ik ben Tamer, de eigenaar van deze site!</p>
-                    </div>
-                
-                    <div id="fan-info">
-                        <img id="fan-pic" width="95px" height="95px" src="https://media.istockphoto.com/id/187722063/photo/funny-man-with-watermelon-helmet-and-goggles.jpg?s=612x612&w=0&k=20&c=gRAm8vtLqdOU8a-mJVt6m_Wnv8pLpa3TBh2vRQP4208=">
-                        <h4 id="fan-name">Sercan Çevik</h4>
-                        <p id="fan-text">Hoi ik ben Sercan, het broertje van Tamer!</p>
-                    </div>
-                </div>
-
-                <style>
-                    #fan-pic {
-                        margin-bottom: -20px;
-                    }
-
-                    #fan-name {
-                        margin-bottom: -20px;
-                    }
-
-                    #fan-text {
-                        margin-bottom: 40px;
-                    }
-
-                    #fan-info {
-                        margin: 10px;
-                        width: 45%;
-                    }
-                </style>
-            </div></center>
-
-            <h3 style="margin-top: 50px; font-size: 2.2em;" id="overmij">Over mij</h3>
-            <h4>Hoi, ik ben Tamer!</h4>
-            <center><p style="width: 95%; margin-bottom: 30px;">
-            <br>Yo welkom, veel plezier op mijn website!
-            <br>
-            <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
-            <br>⦁ Ik heet Tamer Çevik.
-            <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
-            <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
-            <br>Nu weet je hoe ik TC_tam verzonnen heb!
-            <br>
-            <br>Ik ben jarig op 18 mei.
-            <p style="margin-top: -20px;" id="birthday"><p>
-            <br>
-            <br>Mijn favoriete kleuren zijn:
-            <br><span style="color: #132f0c">#132f0c</span>
-            <br><span style="color: #38761d">#38761d</span>
-            <br><span style="color: #43b731">#43b731</span>
-            <br><span style="color: #58bf33">#58bf33</span>
-            <br><span style="color: #e0fcd4">#e0fcd4</span>
-            <br>
-            <br>Dark mode kleur:
-            <br><span style="color: #0d1710">#0d1710</span>
-            <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
-            <br>De kleuren van mijn logo zijn:
-            <br><span style="color: #33ff33">#33ff33</span>
-            <br><span style="color: #336699">#336699</span></p></center>
-
-            <h4>Laten we even chatten:</h4>
-            <button id="frame-button" onclick="loadIframe()">Start Chat</button>
-            <div id="iframeContainer"></div>
-            
-            <style>
-                .hahanoobtext {
-                    display: none;
-                }
-        
-                @media (prefers-color-scheme: dark) {
-                    .hahanoobtext {
-                        display: block;
-                    }
-                }
-            </style>
-        </td>
-    </table>
+        }
+    </style>
 
     <center><div style="margin-top: 3000px; display: none;" id="showMenu"></span>
         <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
