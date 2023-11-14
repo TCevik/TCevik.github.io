@@ -1,5 +1,5 @@
 {
-    "name": "TC_tam Website",
+    "name": "TC_tam Website - Tamer Çevik",
     "short_name": "TC_tam",
     "start_url": "https://tcevik.github.io",
     "display": "standalone",
@@ -9,7 +9,7 @@
       {
         "src": "https://tcevik.github.io/favicon.ico",
         "type": "image/x-icon",
-        "sizes": "64x64"
+        "sizes": "128x128"
       }
     ]
   }
