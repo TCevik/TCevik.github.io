@@ -194,7 +194,7 @@
         <script>
             var auth = firebase.auth();
                     
-            function getUserDataFromFirebase() {
+            function displayUserName() {
                 setTimeout(() => {
                     var user = firebase.auth().currentUser;
                     var displayName = user ? user.displayName : null;
@@ -204,13 +204,13 @@
                 }, 1000);
             }
             
-            getUserDataFromFirebase();
+            displayUserName();
         </script>
         
         <td id="info" style="width: 95%;">
             <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
             <h2 style="font-size: 26px;">Door Tamer Çevik</h3>
-            <p style="margin-bottom: 0px;" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
+            <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
                 <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
                 <div id="explanation-popup" class="popup-content">
                     <h4>Nieuwe veranderingen ophalen:</h4>
