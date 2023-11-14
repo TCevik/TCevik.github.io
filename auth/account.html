@@ -47,7 +47,7 @@
 </head>
 <body style="width: 100%;">
     <div id="login">
-        <h1 id="login-text" onload="changeLoginText();">Inloggen / Registreren</h1>
+        <h1 id="login-text">Inloggen / Registreren</h1>
         <form id="login-form">
             <input type="email" id="login-email" placeholder="E-mailadres" required>
             <br><input type="password" onfocus="showInput('login-password')" onblur="hideInput('login-password')" id="login-password" placeholder="Wachtwoord" required>
@@ -95,14 +95,6 @@
     <script src="/auth/firebase-auth.js"></script>
 
     <script>
-        function changeLoginText() {
-            var currentUrl = window.location.href;
-                
-            if (currentUrl.includes("?")) {
-                document.getElementById("login-text").innerText = "Je moet eerst inloggen voordat je deze functie kan gebruiken.";
-            }
-        }
-
         function savePic() {
             var pic = document.getElementById('pic-input').value;
             if (pic.trim().length >= 5) {
