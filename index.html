@@ -200,7 +200,7 @@
                     var displayName = user ? user.displayName : null;
                     var userEmail = user ? user.email : 'gebruiker';
                     var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
-                    document.getElementById("welcome").innerHTML = welcomeMessage;
+                    document.getElementById("welcome").innerText = welcomeMessage;
                 }, 1000);
             }
             
