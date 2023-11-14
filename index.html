@@ -315,11 +315,13 @@
     </style>
 
     <center><div id="tctam-fans" style="height: 600px;">
-        <iframe style="background-color: white; border-radius: 25px; position: absolute;" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true" width="30%" height="600px" frameborder="0"></iframe>
-        <div style="background-color: white; border-radius: 25px;"></div>
+        <div id="fan-form">
+            <iframe style="background-color: white; border-radius: 25px; position: absolute;" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true" width="30%" height="600px" frameborder="0"></iframe>
+            <div style="background-color: white; border-radius: 25px;"></div>
+        </div>
     
         <!-- alle fans hieronder-->
-        <div style="width: 65%; display: flex; flex-wrap: wrap; justify-content: space-between;">
+        <div id="fans" style="width: 65%; display: flex; flex-wrap: wrap; justify-content: space-between;">
             <div id="fan-info">
                 <img id="fan-pic" width="auto" height="95px" src="https://tcevik.github.io/favicon.ico">
                 <h4 id="fan-name">Tamer Çevik</h4>
@@ -374,6 +376,17 @@
         </div>
     
         <style>
+            /* Media query voor schermen kleiner dan 400px breed */
+            @media screen and (max-width: 600px) {
+              #fan-form {
+                display: none; /* Verberg fan-form */
+              }
+          
+              #fans {
+                width: 100%; /* Volledige breedte voor schermen kleiner dan 400px */
+              }
+            }
+
             #tctam-fans {
                 display: flex;
                 flex-wrap: wrap;
