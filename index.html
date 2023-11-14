@@ -422,7 +422,8 @@
             head.appendChild(link);
             
             newTab.document.title = '‎';
-            };
+            newTab.document.body.style.overflow = 'hidden';
+        };
 
         function openSecretTab() {
             var tabName = prompt('Voer de naam van het tabblad in:');
@@ -445,6 +446,7 @@
                 head.appendChild(link);
                 
                 newTab.document.title = tabName;
+                newTab.document.body.style.overflow = 'hidden';
             } else {
                 alert('Tabbladnaam en favicon-link mogen niet leeg zijn.');
             }
