@@ -396,17 +396,10 @@ var menuCode = `
     <button onclick="window.location.href='/overig/tts'">TTS</button>
 
     <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
-    <button onclick="window.location.href='/web-tricks/chromebook-downgraden'">Chromebook Downgraden</button>
-    <button onclick="window.location.href='/school-hacks/chromebook-uit-beheer'">Chromebook uit beheer halen</button>
+    <button onclick="window.location.href='/alle-methoden'">Alle methoden</button>
     <button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
-    <button onclick="window.location.href='/school-hacks/dns-unblock'">DNS Unblock</button>
     <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
     <button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
-
-    <h4 id="extensiehacks">Extensie Hacks</h4>
-    <button onclick="window.location.href='/school-hacks/extensie-hacks/ultimate-ext-crasher'">Ultimate Extension Crasher</button>
-    <button onclick="window.location.href='/school-hacks/extensie-hacks/unblock-zonder-meekijk-2.0'">Unblock Zonder Meekijk 2.0</button>
-    <button onclick="window.location.href='/school-hacks/extensie-hacks/extensie-stopper'">Extensie Stopper</button>
 
     <h4 id="proxysemulators">Proxys - Emulators</h4>
     <button onclick="window.location.href='/school-hacks/proxys-emulators/chrome-unblock'">Chrome Emulator</button>
