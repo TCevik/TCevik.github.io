@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
   showmenuCodeButton.style.paddingTop = "25px"
   showmenuCodeButton.style.userSelect = "none"
   showmenuCodeButton.style.paddingBottom = "25px"
-  showmenuCodeButton.style.zIndex = '997';
+  showmenuCodeButton.style.zIndex = '996';
   showmenuCodeButton.style.top = "50%";
   showmenuCodeButton.style.transform = "translateY(-50%)";
   showmenuCodeButton.style.transition = "opacity 0.5s";
@@ -306,6 +306,9 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         menuCodeElement.style.opacity = 1;
       }, 0);
+      setTimeout(function () {
+        showmenuCodeButton.style.display = "none";
+      }, 500);
       showmenuCodeButton.style.opacity = 0;
       closeButton.style.display = "block";
       closeButton.style.opacity = 1;
@@ -323,6 +326,9 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         menu.remove();
       }, 500);
+      showmenuCodeButton.style.display = "block";
+      showmenuCodeButton.style.opacity = 0;
+      menuCodeElement.style.transition = "opacity 0.5s";
       showmenuCodeButton.style.opacity = 1;
       closeButton.style.opacity = 0;
       setTimeout(function () {
@@ -357,21 +363,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.cookie = "menuVisible=false; expires=Fri, 31 Dec 9999 23:59:59 GMT";
     }
   });
-
-  // Check for existing cookie on page load
-  /* var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)menuVisible\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  if (cookieValue === "true") {
-    var menuCodeElement = document.createElement("div");
-    menuCodeElement.setAttribute("id", "menu");
-    menuCodeElement.style.opacity = 1;
-    menuCodeElement.style.transition = "opacity 0.5s";
-    menuCodeElement.innerHTML = menuCode;
-    document.body.appendChild(menuCodeElement);
-    showmenuCodeButton.style.opacity = 0;
-    closeButton.style.display = "block";
-    closeButton.style.opacity = 1;
-    menuVisible = true;
-  } */
 });
 
 
