@@ -1,16 +1,25 @@
 {
-    "name": "TC_tam Website - Tamer Çevik",
-    "short_name": "TC_tam",
-    "start_url": "https://tcevik.github.io",
-    "display": "standalone",
-    "background_color": "var(--background_color)",
-    "theme_color": "var(--h1234-color)",
-    "icons": [
-      {
-        "src": "https://tcevik.github.io/favicon.ico",
-        "type": "image/x-icon",
-        "sizes": "128x128"
-      }
-    ]
-  }
+  "name": "TC_tam Website",
+  "short_name": "TC_tam",
+  "start_url": "https://tcevik.github.io",
+  "description": "Dit is de TC_tam website! Door Tamer Çevik.",
+  "display": "standalone",
+  "background_color": "#0d1710",
+  "theme_color": "var(--h1234-color)",
+  "icons": [
+    {
+      "src": "https://tcevik.github.io/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "128x128"
+    }, {
+      "src": "https://tcevik.github.io/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "256x256"
+    }, {
+      "src": "https://tcevik.github.io/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "512x512"
+    }
+  ]
+}
   
