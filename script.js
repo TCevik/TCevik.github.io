@@ -306,10 +306,6 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         menuCodeElement.style.opacity = 1;
       }, 0);
-      setTimeout(function () {
-        showmenuCodeButton.style.display = "none";
-      }, 500);
-      showmenuCodeButton.style.opacity = 0;
       closeButton.style.display = "block";
       closeButton.style.opacity = 1;
       menuVisible = true;
@@ -326,8 +322,6 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         menu.remove();
       }, 500);
-      showmenuCodeButton.style.display = "block";
-      showmenuCodeButton.style.opacity = 0;
       menuCodeElement.style.transition = "opacity 0.5s";
       showmenuCodeButton.style.opacity = 1;
       closeButton.style.opacity = 0;
