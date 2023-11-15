@@ -209,17 +209,17 @@
     <h1 style="margin-top: 45px; margin-bottom: -20px;">TC_tam</h1>
     <h2 style="font-size: 26px;">Door Tamer Çevik</h3>
     <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
-        <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
-        <div id="explanation-popup" class="popup-content">
-            <h4>Nieuwe veranderingen ophalen:</h4>
-                <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
-            <h4>Bugs:</h4>
-                <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
-            <h4>Tabblad verberger:</h4>
-                <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
-            <h4>Zoeken op een pagina:</h4>
-                <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
-        </div>
+    <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+    <div id="explanation-popup" class="popup-content">
+        <h4>Nieuwe veranderingen ophalen:</h4>
+            <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
+        <h4>Bugs:</h4>
+            <p>Deze site is volledig geschreven in codeertaal (voor de gene die zich afvragen HELEMAAL 100% in codeertaal). Het kan dus voorkomen dat er soms bugs in zitten. Ik probeer de site bugvrij te houden en als er toch een gevonden wordt, wordt deze waarschijnlijk binnen 1 à 2 dagen opgelost.</p>
+        <h4>Tabblad verberger:</h4>
+            <p>Klik op escape om het plaatje (favicon) en de naam van het tabblad te veranderen in wat je wilt. Wat je invult wordt ook opgeslagen voor je volgende bezoek op de site.</p>
+        <h4>Zoeken op een pagina:</h4>
+            <p>Je kunt zoeken op een pagina van mijn site of elke andere site door op "ctrl" + "f" te drukken en in te vullen wat je wil vinden.</p>
+    </div>
 
     <div id="login-popup" class="popup-content">
         <h2>TC_tam Account</h2>
@@ -234,10 +234,48 @@
             <button onclick="window.location.href='/auth/account?https://tcevik.github.io'">Inloggen</button>
     </div>
 
-    <br><button onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
-    <button onclick="scrollToOverMij();">Over mij</button>
-    <button onclick="poopSound();">💩</button>
-    <br><button onclick="window.location.href='/verhalen/alle-verhalen'">Hier kan je lezen over nfc tags clonen.</button>
+    <br><button id="partymode-button" onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
+    <button id="aboutme" onclick="scrollToOverMij();">Over mij</button>
+    <button id="poopsound" onclick="poopSound();">💩</button>
+    <br><button id="read-story" onclick="window.location.href='/verhalen/alle-verhalen'">Hier kan je lezen over nfc tags clonen.</button>
+
+    <style>
+        #partymode-button {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 25px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0px;
+            width: 150px;
+        }
+
+        #aboutme {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0px;
+            width: 120px;
+        }
+
+        #poopsound {
+            border-top-right-radius: 25px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0px;
+            width: 40px;
+        }
+
+        #read-story {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 12px;
+            margin: 5px;
+            width: 320px;
+        }
+    </style>
             
     <script>
         function poopSound() {
