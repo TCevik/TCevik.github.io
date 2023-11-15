@@ -4,7 +4,7 @@
   "start_url": "https://tcevik.github.io",
   "description": "Dit is de TC_tam website! Door Tamer Çevik.",
   "display": "standalone",
-  "background_color": "#0d1710",
+  "background_color": "var(--background-color)",
   "theme_color": "var(--h1234-color)",
   "icons": [
     {
