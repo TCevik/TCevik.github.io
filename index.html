@@ -164,6 +164,27 @@
               console.log("The random number wasn't 5: " + randomNumber);
           }
         };
+
+        var alleElementen = document.querySelectorAll("*");
+        alleElementen.forEach(function(element) {
+            element.style.opacity = 0;
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fadeInElements();
+
+            function fadeInElements() {
+                var elements = document.querySelectorAll('*');
+            
+                elements.forEach(function(element, index) {
+                    element.style.opacity = 0;
+                    setTimeout(function() {
+                        element.style.transition = "opacity 0.5s ease-in-out";
+                        element.style.opacity = 1;
+                    }, 10 * index);
+                });
+            }
+        });
     </script>
 </head>
 
@@ -204,50 +225,9 @@
     </script>
 
     <div id="title">
-        <h1 style="margin-top: 45px;"></h1>
-        <h2 style="font-size: 26px; margin-top: -10px;"></h2>
+        <h1 style="margin-top: 45px;">TC_tam</h1>
+        <h2 style="font-size: 26px; margin-top: -10px;">Door Tamer Çevik</h2>
     </div>
-    
-    <style>
-        #title span {
-            opacity: 0;
-            display: inline-block;
-            animation: fadeIn 1s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
-
-    <script>
-        const title = document.getElementById('title');
-        const h1Content = "TC_tam";
-        const h2Content = "Door Tamer Çevik";
-
-        function createLetterElements(content, parent) {
-            content.split('').forEach(char => {
-                if (char === ' ') {
-                    parent.appendChild(document.createTextNode(' '));
-                } else {
-                    const span = document.createElement('span');
-                    span.textContent = char;
-                    parent.appendChild(span);
-                }
-            });
-        }
-
-        createLetterElements(h1Content, title.querySelector('h1'));
-        createLetterElements(h2Content, title.querySelector('h2'));
-
-        const spans = title.querySelectorAll('span');
-
-        spans.forEach((span, index) => {
-            span.style.animationDelay = `${index * 100}ms`;
-        });
-    </script>
     
     <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
     <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
