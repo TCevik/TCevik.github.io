@@ -49,7 +49,7 @@ body {
 }
 
 #menu {
-    width: 250px;
+    width: 300px;
     position: fixed;
     max-height: 100vh;
     overflow-y: auto;
