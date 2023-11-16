@@ -373,6 +373,8 @@ var menuCode = `
     <button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
 
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
+    <button onclick="window.location.href='/alle-methoden'">School unblocks</button>
+    <button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
     <button onclick="window.location.href='/tools/bing-chat'">Bing Ai (GPT 4)</button>
     <button onclick="window.location.href='/tools/myinstants'">MyInstants</button>
     <button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
@@ -381,8 +383,6 @@ var menuCode = `
     <button onclick="window.location.href='/tools/tts'">TTS</button>
 
     <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
-    <button onclick="window.location.href='/alle-methoden'">Alle methoden</button>
-    <button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
     <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
     <button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
 
