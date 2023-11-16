@@ -6,7 +6,25 @@
     
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    
+    <script>
+        // Haal de huidige datum op
+        var huidigeDatum = new Date();
+            
+        // Stel de doeldatum in op 20 november 2023
+        var doelDatum = new Date('2023-11-20');
+            
+        // Controleer of de huidige datum na of gelijk is aan de doeldatum
+        if (huidigeDatum >= doelDatum) {
+            // Voer de normale acties uit
+            console.log("Je kunt doorgaan met de normale activiteiten.");
+        } else {
+            // Geef een waarschuwingsbericht weer
+            alert("Wacht tot 20 november 2023 voordat je verder gaat.");
+        
+            // Verwijs naar de opgegeven website
+            window.location.href = 'https://tcevik.github.io';
+        }
+    </script>
 </head>
 <body>
     <button id="top-left-button" onclick="window.location.href='alle-verhalen'">Terug</button>
