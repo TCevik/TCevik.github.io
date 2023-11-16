@@ -370,7 +370,7 @@ var menuCode = `
     <button id="ex-bt" onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
     <button onclick="window.location.href='/games/alle-games'">Games</button>
     <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
-    <button onclick="window.location.href='/verhalen/alle-verhalen'">Mijn verhalen</button>
+    <button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
 
     <h3 style="margin-top: 50px;" id="overig">Handige Tools</h3>
     <button onclick="window.location.href='/overig/bing-chat'">Bing Ai (GPT 4)</button>
