@@ -47,7 +47,6 @@
             });
         }
 
-        // Bereken de volgende verjaardag
         function getNextBirthday() {
           const today = new Date();
           const currentYear = today.getFullYear();
@@ -147,9 +146,7 @@
             }
         };
 
-        function activatePartyMode() {
-            // window.location.href = window.location.href + "?partymode";
-        
+        function activatePartyMode() {        
             partyTimer();
         }
 
@@ -233,7 +230,7 @@
         function createLetterElements(content, parent) {
             content.split('').forEach(char => {
                 if (char === ' ') {
-                    parent.appendChild(document.createTextNode(' ')); // Add a space
+                    parent.appendChild(document.createTextNode(' '));
                 } else {
                     const span = document.createElement('span');
                     span.textContent = char;
@@ -531,12 +528,12 @@
                 document.getElementById('loginMessage').style.display = 'none';
                 document.getElementById('openNewTabBtn').style.display = 'block';
                 secretTabBtn.style.display = 'block';
-                secretTabBtn.disabled = false; // De knop is klikbaar als de gebruiker is ingelogd
+                secretTabBtn.disabled = false;
             } else {
                 document.getElementById('loginMessage').style.display = 'block';
                 document.getElementById('openNewTabBtn').style.display = 'block';
                 secretTabBtn.style.display = 'block';
-                secretTabBtn.disabled = true; // De knop is niet klikbaar als de gebruiker niet is ingelogd
+                secretTabBtn.disabled = true;
             }
         });
 
@@ -553,7 +550,6 @@
             iframe.scrolling = 'no';
             document.getElementById('iframeContainer').appendChild(iframe);
         
-            // Toegevoegde code voor uitfaden en display none
             setTimeout(function() {
                 iframe.style.transition = 'opacity 1s';
                 button.style.transition = 'opacity 1s';
