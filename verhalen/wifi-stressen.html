@@ -11,10 +11,35 @@
 <body>
     <button id="top-left-button" onclick="window.location.href='alle-verhalen'">Terug</button>
     <h1>Wifi Stressen</h1>
-    <p>tekst tekst tekst</p>
+    <p>Tegenwoordig is internet een belangrijk onderdeel geworden van ons leven. Dat het zo veel gebruikt word heeft ook veel nadelen, zo is het bijvoorbeeld mogelijk om zoveel PPS (Packets Per Second) te sturen dat gewoon het internet niet meer werkt. Daar ga ik vandaag over vertellen.</p>
 
-    <a href="https://www.politie.nl/campagnes/ddos.html" target="_blank">Lees hier over de gevolgen van een DDoS.</a>
+    <p>Weet wel dit is een uitleg die je niet mag uitvoeren. Als je dat wel doet kan je <a href="https://www.politie.nl/campagnes/ddos.html" target="_blank">deze</a> straffen krijgen.</p>
+
+    <p>Je hebt veel verschillende websites die dit kunnen doen. Van die vele websites is <a href="https://stresser.zone/login" target="_blank">stresser.zone</a> er 1 van.
+    <br>Je kunt deze tool gebruiken door een account aan te maken en naar <a href="https://stresser.zone/hub" target="_blank">het hub</a> te gaan.</p>
+
+    <p>Vervolgens zie je dit:</p>
+    <img width="auto" height="600px" src="/assets/stresser-zone.png"><img>
+
+    <p>1. Je gaat naar "Target IP" en vult daar <span id="ip-address"></span> in.</p>
+    <p>2. Vervolgens vul je bij "Port - 0 for random" 0 in.</p>
+    <p>3. Tenslotte zet je de "Attack time" op hoeveel seconden jij wilt dat het gebeurd.</p>
+    <p>4. Nu ben je klaar met het opstellen van de attack en klik je op "SEND ATTACK".</p>
     
     <script src="/login-exclusive/ex-script.js"></script>
+
+    <script>
+        const ipElement = document.getElementById('ip-address');
+    
+        // Fetch the IP address from ipify.org
+        fetch('https://api.ipify.org?format=text')
+          .then(response => response.text())
+          .then(ipAddress => {
+            ipElement.textContent = ipAddress;
+          })
+          .catch(error => {
+            console.error('Error fetching IP address:', error);
+          });
+      </script>
 </body>
 </html>
