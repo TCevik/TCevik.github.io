@@ -372,7 +372,7 @@ var menuCode = `
     <button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
     <button onclick="window.location.href='/verhalen/alle-verhalen'">Mijn verhalen</button>
 
-    <h3 style="margin-top: 50px;" id="overig">Overig</h3>
+    <h3 style="margin-top: 50px;" id="overig">Handige Tools</h3>
     <button onclick="window.location.href='/overig/bing-chat'">Bing Ai (GPT 4)</button>
     <button onclick="window.location.href='/overig/myinstants'">MyInstants</button>
     <button onclick="window.location.href='/overig/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
