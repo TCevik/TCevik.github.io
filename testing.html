@@ -3,13 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Email</title>
+    <title>Page Content Checker</title>
 </head>
 <body>
-    <div id="welcome">rtg</div>
 
 <script>
-    alert("Are You Sure?");alert("Use At Your Own Risk");alert("Ready? IF NO RELOAD NOW.");setTimeout(() => {while (true) {while(1)location.reload(1)}}, 1000);
+    // Functie om de pagina-inhoud op te halen en te vergelijken
+    async function checkPageContent() {
+        try {
+            // Haal de parameters achter het domein op
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Krijg de waarde van de parameter 'page'
+            const pageParam = urlParams.get('page');
+            
+            // Stel de URL samen met de parameter
+            const url = `https://raw.githubusercontent.com/TCevik/TCevik.github.io/main/${pageParam}.html`;
+
+            // Haal de pagina-inhoud op met fetch
+            const response = await fetch(url);
+            const pageContent = await response.text();
+
+            // Vergelijk de pagina-inhoud met de huidige pagina
+            if (pageContent === document.documentElement.outerHTML) {
+                console.log('De pagina-inhoud komt overeen.');
+            } else {
+                console.log('De pagina-inhoud komt niet overeen. De pagina wordt opnieuw geladen.');
+                // Herlaad de pagina
+                location.reload(true);
+            }
+            
+            // Als de pagina-inhoud overeenkomt, voeg de code in
+            if (pageContent === document.documentElement.outerHTML) {
+                const newScript = document.createElement('script');
+                newScript.innerHTML = pageContent;
+                document.body.appendChild(newScript);
+                console.log('De code is toegevoegd aan de huidige pagina.');
+            }
+        } catch (error) {
+            console.error('Er is een fout opgetreden bij het ophalen of toevoegen van de pagina-inhoud:', error);
+        }
+    }
+
+    // Voer de functie uit wanneer de pagina is geladen
+    window.addEventListener('load', checkPageContent);
 </script>
+
 </body>
 </html>
