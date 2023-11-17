@@ -146,16 +146,29 @@
         var countDownDate = new Date("January 1, " + (new Date().getFullYear() + 1) + " 00:00:00").getTime();
 
         function countdown() {
-          var now = new Date().getTime();
-          var distance = countDownDate - now;
-          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          document.getElementById("aftellen").innerHTML = " Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot het nieuw jaar is!";
-        };
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
 
-        setInterval(countdown, 1000);
+            if (new Date().getMonth() === 0 && new Date().getDate() === 1) {
+                document.getElementById("aftellen").innerHTML = "Gelukkig nieuw jaar!";
+                return;
+            }
+        
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        
+            if (days < 50) {
+                document.getElementById("aftellen").style.display = "block";
+            } else {
+                document.getElementById("aftellen").style.display = "none";
+            }
+        
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("aftellen").innerHTML = " Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot het nieuw jaar is!";
+        }
+
+        setInt erval(countdown, 1000);
 
         function updateBatteryLevel() {
             navigator.getBattery().then(function(battery) {
