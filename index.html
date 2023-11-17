@@ -168,7 +168,7 @@
             document.getElementById("aftellen").innerHTML = " Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot het nieuw jaar is!";
         }
 
-        setInt erval(countdown, 1000);
+        setInterval(countdown, 1000);
 
         function updateBatteryLevel() {
             navigator.getBattery().then(function(battery) {
