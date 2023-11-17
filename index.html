@@ -321,6 +321,7 @@
     
     <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
     <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
+    <button id="toggleButtonDevmode">Toggle Dev Mode</button>
     <div id="explanation-popup" class="popup-content">
         <h4>Nieuwe veranderingen ophalen:</h4>
             <p>Je kunt op de sneltoets "crtl" + "shift" + "r" drukken voor de laatste updates van de site. Dit is de sneltoets om de site te herladen zonder cache en dus de nieuwste veranderingen! :)</p>
@@ -618,8 +619,6 @@
             span.style.animationDelay = `${index * 100}ms`;
         });
 
-
-
         var auth = firebase.auth();
                 
         function displayUserName() {
@@ -636,6 +635,36 @@
         setTimeout(() => {
             displayUserName();
         }, 2000);
+
+        function toggleDevModeCookie() {
+          const currentStatus = getCookie("devModeOn") === "true";
+        
+          document.cookie = "devModeOn=" + (!currentStatus) + "; path=/";
+        
+          updateButtonText();
+          location.reload();
+        }
+
+        function getCookie(name) {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+              return cookie.substring(name.length + 1);
+            }
+          }
+          return null;
+        }
+
+        function updateButtonText() {
+          const devModeButton = document.getElementById("toggleButtonDevmode");
+          const devModeStatus = getCookie("devModeOn") === "true";
+          devModeButton.innerText = devModeStatus ? "Dev Mode is aan" : "Dev Mode is uit";
+        }
+
+        document.getElementById("toggleButtonDevmode").addEventListener("click", toggleDevModeCookie);
+
+        updateButtonText();
     </script>
 </body>
 </html>

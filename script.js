@@ -572,3 +572,39 @@ function notification(message) {
       notification.style.maxHeight = 0.9 * screenHeight + 'px';
   }
 }
+
+function redirectConsole() {
+  const devModeOn = document.cookie.split(';').some((item) => item.trim().startsWith('devModeOn=true'));
+        
+  if (devModeOn) {
+    const originalConsole = window.console;
+
+    const customConsole = {
+      log: function (message) {
+        originalConsole.log(message);
+        notification('Log: ' + message);
+      },
+      error: function (message) {
+        originalConsole.error(message);
+        notification('Error: ' + message);
+      },
+      warn: function (message) {
+        originalConsole.warn(message);
+        notification('Warning: ' + message);
+      },
+    };
+
+    window.console = customConsole;
+  }
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+}
+
+if (!getCookie('devModeOn')) {
+  setCookie('devModeOn', 'false', 365);
+}
+
+redirectConsole();
