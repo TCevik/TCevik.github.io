@@ -172,14 +172,20 @@
 </body>
 
 <body onload="countdown(); countup(); countdownToBirthday(); randomNumber();">
+    <style>
+        .popup-content {
+            max-height: 0;
+            overflow: auto;
+        }
+
+        .popup-content h4 {
+            margin-bottom: -15px;
+        }
+    </style>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
     <script src="/auth/firebase-config.js"></script>
-
-    <div id="title">
-        <h1 style="margin-top: 45px;"></h1>
-        <h2 style="font-size: 26px; margin-top: -10px;"></h2>
-    </div>
             
     <script>
         var auth = firebase.auth();
@@ -195,10 +201,28 @@
         }
         
         displayUserName();
-        setTimeout(() => {
-            displayUserName();
-        }, 2000);
+    </script>
 
+    <div id="title">
+        <h1 style="margin-top: 45px;"></h1>
+        <h2 style="font-size: 26px; margin-top: -10px;"></h2>
+    </div>
+    
+    <style>
+        #title span {
+            opacity: 0;
+            display: inline-block;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <script>
         const title = document.getElementById('title');
         const h1Content = "TC_tam";
         const h2Content = "Door Tamer Çevik";
@@ -221,7 +245,7 @@
         const spans = title.querySelectorAll('span');
 
         spans.forEach((span, index) => {
-            span.style.animationDelay = `${index * 150}ms`;
+            span.style.animationDelay = `${index * 100}ms`;
         });
     </script>
     
@@ -258,27 +282,6 @@
     <br><button id="read-story" onclick="window.location.href='/blogs/alle-blogs'">Hier kan je lezen over nfc tags clonen.</button>
 
     <style>
-        .popup-content {
-            max-height: 0;
-            overflow: auto;
-        }
-
-        .popup-content h4 {
-            margin-bottom: -15px;
-        }
-
-        #title span {
-            opacity: 0;
-            display: inline-block;
-            animation: fadeIn 1s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
         #partymode-button {
             border-top-right-radius: 0px;
             border-top-left-radius: 25px;
@@ -314,25 +317,10 @@
             margin: 5px;
             width: 320px;
         }
-
-        p, button, h1, h2, h3, h4 {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
     </style>
-
+            
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var elementsToFadeIn = document.querySelectorAll('p, button, h1, h2, h3, h4');
-
-        elementsToFadeIn.forEach(function(element) {
-          element.style.opacity = '1';
-          element.style.transform = 'translateY(0)';
-        });
-      });
-
-      function poopSound() {
+        function poopSound() {
           var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
           var interval = setInterval(function() {
             audio.currentTime = 0;
