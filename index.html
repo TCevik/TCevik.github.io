@@ -10,6 +10,123 @@
     <script src="/script.js"></script>
     <link rel="manifest" href="/manifest.json">
 
+    <style>
+        .popup-content {
+            max-height: 0;
+            overflow: auto;
+        }
+
+        .popup-content h4 {
+            margin-bottom: -15px;
+        }
+
+        #title span {
+            opacity: 0;
+            display: inline-block;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        #partymode-button {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 25px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0px;
+            width: 150px;
+        }
+
+        #aboutme {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0px;
+            width: 120px;
+        }
+
+        #poopsound {
+            border-top-right-radius: 25px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin: 0px;
+            width: 40px;
+        }
+
+        #read-story {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 12px;
+            margin: 5px;
+            width: 320px;
+        }
+
+        .hahanoobtext {
+            display: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hahanoobtext {
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+          #fan-form {
+            display: none;
+          }
+        
+          #fans {
+            width: 100%;
+          }
+
+          #fan-info {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+
+            #tctam-fans {
+                display: flex;
+                flex-wrap: wrap;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                max-height: 800px;
+                width: 90%;
+                border: var(--h1234-color) 3px solid;
+                border-radius: 25px;
+                margin-top: 60px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        
+            #fan-pic {
+                margin-bottom: -20px;
+                max-width: 200px;
+            }
+            
+            #fan-name {
+                margin-bottom: -20px;
+            }
+            
+            #fan-text {
+                margin-bottom: 40px;
+            }
+            
+            #fan-info {
+                margin: 10px;
+                width: 225px;
+            }
+    </style>
+
     <script>
         function countup() {
             var now = new Date();
@@ -164,6 +281,14 @@
               console.log("The random number wasn't 5: " + randomNumber);
           }
         };
+
+        function poopSound() {
+            var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
+            var interval = setInterval(function() {
+                audio.currentTime = 0;
+                audio.play();
+            }, 150);
+        }
     </script>
 </head>
 
@@ -172,82 +297,14 @@
 </body>
 
 <body onload="countdown(); countup(); countdownToBirthday(); randomNumber();">
-    <style>
-        .popup-content {
-            max-height: 0;
-            overflow: auto;
-        }
-
-        .popup-content h4 {
-            margin-bottom: -15px;
-        }
-    </style>
-
     <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
     <script src="/auth/firebase-config.js"></script>
-            
-    <script>
-        var auth = firebase.auth();
-                
-        function displayUserName() {
-            setTimeout(() => {
-                var user = firebase.auth().currentUser;
-                var displayName = user ? user.displayName : null;
-                var userEmail = user ? user.email : 'gebruiker';
-                var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
-                document.getElementById("welcome").innerText = welcomeMessage;
-            }, 1000);
-        }
-        
-        displayUserName();
-    </script>
 
     <div id="title">
         <h1 style="margin-top: 45px;"></h1>
         <h2 style="font-size: 26px; margin-top: -10px;"></h2>
     </div>
-    
-    <style>
-        #title span {
-            opacity: 0;
-            display: inline-block;
-            animation: fadeIn 1s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
-
-    <script>
-        const title = document.getElementById('title');
-        const h1Content = "TC_tam";
-        const h2Content = "Door Tamer Çevik";
-
-        function createLetterElements(content, parent) {
-            content.split('').forEach(char => {
-                if (char === ' ') {
-                    parent.appendChild(document.createTextNode(' '));
-                } else {
-                    const span = document.createElement('span');
-                    span.textContent = char;
-                    parent.appendChild(span);
-                }
-            });
-        }
-
-        createLetterElements(h1Content, title.querySelector('h1'));
-        createLetterElements(h2Content, title.querySelector('h2'));
-
-        const spans = title.querySelectorAll('span');
-
-        spans.forEach((span, index) => {
-            span.style.animationDelay = `${index * 100}ms`;
-        });
-    </script>
     
     <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
     <button style="padding: 5px;" onclick="togglePopup('explanation')">Wil je de instructies van de site lezen, Klik hier!</button>
@@ -280,54 +337,6 @@
     <button id="poopsound" onclick="poopSound();">💩</button>
     <br><button id="read-story" style="border-radius: 0px; margin-bottom: 0px;" onclick="window.location.href='/blogs/alle-blogs'">Hier kan je lezen over wifi stressen.</button>
     <br><button id="read-story" onclick="window.location.href='/blogs/alle-blogs'">Hier kan je lezen over nfc tags clonen.</button>
-
-    <style>
-        #partymode-button {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 25px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin: 0px;
-            width: 150px;
-        }
-
-        #aboutme {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin: 0px;
-            width: 120px;
-        }
-
-        #poopsound {
-            border-top-right-radius: 25px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin: 0px;
-            width: 40px;
-        }
-
-        #read-story {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 12px;
-            border-bottom-left-radius: 12px;
-            margin: 5px;
-            width: 320px;
-        }
-    </style>
-            
-    <script>
-        function poopSound() {
-          var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
-          var interval = setInterval(function() {
-            audio.currentTime = 0;
-            audio.play();
-          }, 150);
-        }
-    </script>
 
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
     <p id="aftellen">‎</p>
@@ -381,18 +390,6 @@
     <h4>Laten we even chatten:</h4>
     <button id="frame-button" onclick="loadIframe()">Start Chat</button>
     <div id="iframeContainer"></div>
-            
-    <style>
-        .hahanoobtext {
-            display: none;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .hahanoobtext {
-                display: block;
-            }
-        }
-    </style>
 
     <center><div id="tctam-fans" style="height: 600px;">
         <div id="fan-form">
@@ -460,56 +457,6 @@
             
             -->
         </div>
-    
-        <style>
-            @media screen and (max-width: 600px) {
-              #fan-form {
-                display: none;
-              }
-          
-              #fans {
-                width: 100%;
-              }
-
-              #fan-info {
-                width: 100%;
-                max-width: 100%;
-              }
-            }
-
-            #tctam-fans {
-                display: flex;
-                flex-wrap: wrap;
-                overflow-x: hidden;
-                overflow-y: scroll;
-                max-height: 800px;
-                width: 90%;
-                border: var(--h1234-color) 3px solid;
-                border-radius: 25px;
-                margin-top: 60px;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-            }
-        
-            #fan-pic {
-                margin-bottom: -20px;
-                max-width: 200px;
-            }
-            
-            #fan-name {
-                margin-bottom: -20px;
-            }
-            
-            #fan-text {
-                margin-bottom: 40px;
-            }
-            
-            #fan-info {
-                margin: 10px;
-                width: 225px;
-            }
-        </style>
     </div></center>
 
     <center><div style="margin-top: 3000px; display: none;" id="showMenu"></span>
@@ -632,6 +579,50 @@
                 alert('Tabbladnaam en favicon-link mogen niet leeg zijn.');
             }
         }
+
+        const title = document.getElementById('title');
+        const h1Content = "TC_tam";
+        const h2Content = "Door Tamer Çevik";
+
+        function createLetterElements(content, parent) {
+            content.split('').forEach(char => {
+                if (char === ' ') {
+                    parent.appendChild(document.createTextNode(' '));
+                } else {
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    parent.appendChild(span);
+                }
+            });
+        }
+
+        createLetterElements(h1Content, title.querySelector('h1'));
+        createLetterElements(h2Content, title.querySelector('h2'));
+
+        const spans = title.querySelectorAll('span');
+
+        spans.forEach((span, index) => {
+            span.style.animationDelay = `${index * 100}ms`;
+        });
+
+
+
+        var auth = firebase.auth();
+                
+        function displayUserName() {
+            setTimeout(() => {
+                var user = firebase.auth().currentUser;
+                var displayName = user ? user.displayName : null;
+                var userEmail = user ? user.email : 'gebruiker';
+                var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
+                document.getElementById("welcome").innerText = welcomeMessage;
+            }, 1000);
+        }
+        
+        displayUserName();
+        setTimeout(() => {
+            displayUserName();
+        }, 2000);
     </script>
 </body>
 </html>
