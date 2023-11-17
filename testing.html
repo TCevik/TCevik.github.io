@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Content Checker</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
 </head>
 <body>
 
 <script>
-    // Functie om de pagina-inhoud op te halen en te vergelijken
-    async function checkPageContent() {
+        // Functie om de pagina-inhoud op te halen en te vergelijken
+        async function checkPageContent() {
         try {
             // Haal de parameters achter het domein op
             const urlParams = new URLSearchParams(window.location.search);
@@ -18,7 +20,7 @@
             const pageParam = urlParams.get('page');
             
             // Stel de URL samen met de parameter
-            const url = `https://raw.githubusercontent.com/TCevik/TCevik.github.io/main/${pageParam}.html`;
+            const url = `https://raw.githubusercontent.com/TCevik/TCevik.github.io/main/${pageParam || 'index'}.html`;
 
             // Haal de pagina-inhoud op met fetch
             const response = await fetch(url);
@@ -29,18 +31,11 @@
                 console.log('De pagina-inhoud komt overeen.');
             } else {
                 console.log('De pagina-inhoud komt niet overeen. De pagina wordt opnieuw geladen.');
-                // Herlaad de pagina
-            }
-            
-            // Als de pagina-inhoud overeenkomt, voeg de code in
-            if (pageContent === document.documentElement.outerHTML) {
-                const newScript = document.createElement('script');
-                newScript.innerHTML = pageContent;
-                document.body.appendChild(newScript);
-                console.log('De code is toegevoegd aan de huidige pagina.');
+                // Toon een melding
+                showNotification("Kijk uit! Dit is een gemodificeerde pagina");
             }
         } catch (error) {
-            console.error('Er is een fout opgetreden bij het ophalen of toevoegen van de pagina-inhoud:', error);
+            console.error('Er is een fout opgetreden bij het ophalen van de pagina-inhoud:', error);
         }
     }
 
