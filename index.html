@@ -341,7 +341,7 @@
             </ul>
             <p>Meld je nu aan en ervaar het zelf!</p>
             
-            <button onclick="window.location.href='/auth/account?https://tcevik.github.io'">Inloggen</button>
+            <button onclick="window.location.href='/auth/account?/'">Inloggen</button>
     </div>
 
     <br><button id="partymode-button" onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
@@ -412,7 +412,7 @@
         <!-- alle fans hieronder -->
         <div id="fans" style="width: 65%; display: flex; flex-wrap: wrap; justify-content: center;">
             <div id="fan-info">
-                <img id="fan-pic" height="95px" src="https://tcevik.github.io/favicon.ico">
+                <img id="fan-pic" height="95px" src="/favicon.ico">
                 <h4 id="fan-name">Tamer Çevik</h4>
                 <p id="fan-text">Hoi ik ben Tamer, de eigenaar van deze site!</p>
             </div>
@@ -505,7 +505,7 @@
             iframe.style.width = '90%';
             iframe.style.height = '600px';
             iframe.style.opacity = '0';
-            iframe.src = 'https://tcevik.github.io/tctam-chat/';
+            iframe.src = '/tctam-chat/';
             iframe.scrolling = 'no';
             document.getElementById('iframeContainer').appendChild(iframe);
         
@@ -548,7 +548,7 @@
         function openNewTab() {
             var newTab = window.open('about:blank', '_blank');
             var iframe = newTab.document.createElement('iframe');
-            iframe.src = 'https://tcevik.github.io';
+            iframe.src = '/';
             iframe.style.width = '100%';
             iframe.style.height = '100%';
             newTab.document.body.appendChild(iframe);
@@ -556,7 +556,7 @@
             var link = newTab.document.createElement('link');
             link.rel = 'icon';
             link.type = 'image/x-icon';
-            link.href = 'https://tcevik.github.io/assets/asfalt-light.png';
+            link.href = '/assets/asfalt-light.png';
             
             var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
             head.appendChild(link);
@@ -572,7 +572,7 @@
             if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
                 var newTab = window.open('about:blank', '_blank');
                 var iframe = newTab.document.createElement('iframe');
-                iframe.src = 'https://tcevik.github.io';
+                iframe.src = '/';
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
                 newTab.document.body.appendChild(iframe);
