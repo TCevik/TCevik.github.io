@@ -641,7 +641,6 @@
         
           document.cookie = "devModeOn=" + (!currentStatus) + "; path=/";
         
-          updateButtonText();
           location.reload();
         }
 
@@ -659,7 +658,7 @@
         function updateButtonText() {
           const devModeButton = document.getElementById("toggleButtonDevmode");
           const devModeStatus = getCookie("devModeOn") === "true";
-          devModeButton.innerText = devModeStatus ? "Dev Mode is aan" : "Dev Mode is uit";
+          devModeButton.innerText = devModeStatus ? "Dev Mode staat aan" : "Dev Mode staat uit";
         }
 
         document.getElementById("toggleButtonDevmode").addEventListener("click", toggleDevModeCookie);
