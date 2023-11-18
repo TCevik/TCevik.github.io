@@ -296,9 +296,8 @@
         };
 
         function poopSound() {
-            var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
             var interval = setInterval(function() {
-                audio.currentTime = 0;
+                var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
                 audio.play();
             }, 150);
         }
