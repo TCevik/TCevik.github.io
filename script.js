@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.style.left = "5px";
   closeButton.style.top = "5px";
   closeButton.style.zIndex = '997';
-  closeButton.style.transition = "opacity 0.5s";
+  closeButton.style.transition = "opacity 0.5s, border-color 0.5s";
   document.body.appendChild(closeButton);
 
   var menuVisible = false;
