@@ -1,12 +1,15 @@
-Hallo mensen,
+Hallo allemaal,
 
-Welkom op de TC_tam site, gemaakt door Tamer Çevik.
-Je kunt hier allemaal handige tools vinden en gebruiken.
+Welkom op de TC_tam site, een plek voor iedereen die op zoek is naar handige tools en informatie.
 
-Zo kan je als je school bijvoorbeeld allemaal dingen blokkeerd de proxy's gebruiken. Of allemaal handige bookmarklets vinden om ook je school te hacken.
-Of misschien als je school niet wil hacken kun je gewoon wat blogs over mij lezen.
-Of als dit je allemaal niet aanstaat, kan je ook gewoon games spelen.
+Of je nu op school zit en je school je toegang tot bepaalde websites of applicaties blokkeert, of je gewoon op zoek bent naar een manier om je online privacy te beschermen, op deze site vind je wat je zoekt.
 
-Er is gewoon een hoop te doen en er komt steeds meer en meer bij!.
+Hier zijn enkele van de handige tools die je op deze site kunt vinden:
 
-Veel succes!
+Proxy's: Proxy's zijn een geweldige manier om je IP-adres te verbergen en toegang te krijgen tot websites die anders geblokkeerd zouden zijn.
+Bookmarklets: Bookmarklets zijn kleine scripts die je kunt toevoegen aan je bookmarksbalk. Ze kunnen worden gebruikt om verschillende taken uit te voeren, zoals het hacken van schoolwebsites of het openen van proxy's met één klik.
+Blogs: In mijn blogs vind je informatie over een breed scala aan onderwerpen, van technologie tot privacy tot hacking.
+Games: Als je even wilt ontspannen, kun je een van de games op deze site spelen.
+Er is altijd iets nieuws te ontdekken op de TC_tam site, dus kom regelmatig terug om te zien wat er nieuw is!
+
+Veel plezier!
