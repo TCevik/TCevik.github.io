@@ -545,3 +545,11 @@ function notification(message) {
       notification.style.maxHeight = 0.9 * screenHeight + 'px';
   }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  var currentUrl = window.location.href;
+
+  if (currentUrl.includes("/blogs/") || currentUrl.includes("/blogs?")) {
+      document.body.style.textAlign = "left";
+  }
+});
