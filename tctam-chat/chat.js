@@ -286,8 +286,8 @@ function deleteOldMessages() {
     messagesRef.once('value', (snapshot) => {
         const messages = snapshot.val();
         const messageCount = Object.keys(messages).length;
-        if (messageCount > 300) {
-            const messagesToDelete = Object.keys(messages).slice(0, messageCount - 300);
+        if (messageCount > 150) {
+            const messagesToDelete = Object.keys(messages).slice(0, messageCount - 150);
             messagesToDelete.forEach((messageKey) => {
                 messagesRef.child(messageKey).remove();
             });
