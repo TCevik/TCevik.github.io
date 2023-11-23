@@ -1,40 +1,34 @@
-// In service-worker.js
-
-const cacheName = 'mijn-site-cache-v1';
-const apiUrl = 'https://api.github.com/repos/TCevik/TCevik.github.io/contents/';
-const offlinePage = '/404.html';
+const CACHE_NAME = 'tctam-site-cache';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      return cache.addAll([offlinePage]);
+    caches.open(CACHE_NAME).then(function(cache) {
+      // Voeg de bestanden toe aan de cache
+      return cache.addAll([
+        '/index.html',
+        '/style.css',
+        '/script.js',
+        '/manifest.json',
+        '/offline.html',
+      ]);
     })
   );
 });
 
 self.addEventListener('fetch', function(event) {
-  const requestUrl = new URL(event.request.url);
-
-  if (requestUrl.origin === location.origin) {
-    event.respondWith(
-      caches.match(event.request).then(function(response) {
-        return response || fetch(event.request);
-      }).catch(function() {
-        return caches.match(offlinePage);
-      })
-    );
-  } else if (requestUrl.origin === 'https://api.github.com') {
-    // Haal bestanden van de GitHub API op en sla ze op in de cache
-    event.respondWith(
-      fetch(event.request).then(function(response) {
-        const clonedResponse = response.clone();
-        caches.open(cacheName).then(function(cache) {
-          cache.put(event.request, clonedResponse);
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      // Controleer of de gevraagde bron in de cache beschikbaar is
+      return response || fetch(event.request).then(function(response) {
+        // Als de bron niet in de cache is, sla deze op in de cache
+        return caches.open(CACHE_NAME).then(function(cache) {
+          cache.put(event.request, response.clone());
+          return response;
         });
-        return response;
       }).catch(function() {
-        return caches.match(offlinePage);
-      })
-    );
-  }
+        // Als het ophalen mislukt en er geen cache is, toon offline.html
+        return caches.match('/offline.html');
+      });
+    })
+  );
 });
