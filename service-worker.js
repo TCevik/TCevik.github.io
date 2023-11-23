@@ -2,7 +2,7 @@
 
 const cacheName = 'mijn-site-cache-v1';
 const apiUrl = 'https://api.github.com/repos/TCevik/TCevik.github.io/contents/';
-const offlinePage = '/offline.html';
+const offlinePage = '/404.html';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -33,7 +33,7 @@ self.addEventListener('fetch', function(event) {
         });
         return response;
       }).catch(function() {
-        return caches.match(event.request);
+        return caches.match(offlinePage);
       })
     );
   }
