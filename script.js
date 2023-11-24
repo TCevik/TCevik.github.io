@@ -263,20 +263,6 @@ function setFavicon(faviconLink) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
-function runBookmarklet() {
-  var bookmarklet = prompt("Javascript here:");
-  if (bookmarklet) {
-    bookmarklet = bookmarklet.replace(/^javascript:/i, '');
-    try {
-      var script = document.createElement('script');
-      script.textContent = bookmarklet;
-      document.body.appendChild(script);
-    } catch (e) {
-      alert("Something went wrong: " + e);
-    }
-  }
-}
-
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
       pageLanguage: 'nl',
@@ -459,78 +445,6 @@ if ('serviceWorker' in navigator) {
       console.error('Fout bij het registreren van de Service Worker:', error);
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var buttons = [
   { text: "Home", link: "/" },
