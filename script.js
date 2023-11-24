@@ -657,7 +657,7 @@ var buttons = [
       { text: "IDE", link: "/tools/ide" },
       { text: "TTS", link: "/tools/tts" },
   ]},
-  { text: "School Hacks (2)", submenu: [
+  { text: "School Antwoorden (2)", submenu: [
     { text: "Antwoorden HAVO 2 Nieuw Nederlands", link: "https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view" },
     { text: "Antwoorden HAVO 3 Nieuw Nederlands", link: "/school-hacks/antwoorden/nieuw-nederlands-havo3" },
   ]},
