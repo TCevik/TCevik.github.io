@@ -248,3 +248,50 @@ textarea::placeholder {
 
 body {top: 0px !important;}
 .skiptranslate, #google_translate_element {display: none !important;}
+
+#navbar a, .submenu a {
+  size: 20px ;
+  border-radius: 5px;
+  padding: 10px;
+  text-decoration: none;
+  border: none;
+  color: white;
+  background-color: var(--button-bgcolor);
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+}
+
+#navbar a {
+  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.submenu a {
+  margin: 5px !important;
+  margin-top: -5px !important;
+}
+
+#navbar {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#navbar a:hover, .submenu a:hover {
+  background-color:white;
+  color: black;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.submenuItem {
+  display: block;
+}

@@ -563,3 +563,233 @@ if ('serviceWorker' in navigator) {
       console.error('Fout bij het registreren van de Service Worker:', error);
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var buttons = [
+  { text: "Home", link: "/" },
+  { text: "Algemeen (6)", submenu: [
+    { text: "Mijn YouTube Kanaal", link: "https://www.youtube.com/@YT.TC_tam?sub_confirmation=1" },
+    { text: "Exclusieve Pagina's", link: "/login-exclusive" },
+    { text: "TC_tam Zoeken", link: "/tctam-zoeken" },
+    { text: "Games", link: "/games/alle-games" },
+    { text: "TC_tam Chat", link: "/tctam-chat" },
+    { text: "Mijn Blogs", link: "/blogs/alle-blogs" },
+  ]},
+  { text: "Handige Tools (9)", submenu: [
+      { text: "Alle Schoolhacks", link: "/alle-methoden" },
+      { text: "Bookmarklets", link: "/school-hacks/bookmarklets" },
+      { text: "Live Klok", link: "/tools/live-clock" },
+      { text: "Bing Ai (GPT 4)", link: "/tools/bing-chat" },
+      { text: "MyInstants", link: "/tools/myinstants" },
+      { text: "Speel geluiden van 20 - 20.000 hz (inc schoolbel)", link: "/tools/hz-geluiden" },
+      { text: "Notities", link: "/tools/notities" },
+      { text: "IDE", link: "/tools/ide" },
+      { text: "TTS", link: "/tools/tts" },
+  ]},
+  { text: "School Hacks (2)", submenu: [
+    { text: "Antwoorden HAVO 2 Nieuw Nederlands", link: "https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view" },
+    { text: "Antwoorden HAVO 3 Nieuw Nederlands", link: "/school-hacks/antwoorden/nieuw-nederlands-havo3" },
+  ]},
+  { text: "Over De Website (4)", submenu: [
+    { text: "Meld een bug", link: "https://github.com/TCevik/TCevik.github.io/issues/new" },
+    { text: "Terms of Service", link: "/terms-of-service" },
+    { text: "Privacy Policy", link: "/privacy-policy" },
+    { text: "Bekijk de code van de site", link: "https://github.com/TCevik/TCevik.github.io" },
+  ]}
+];
+
+document.addEventListener("DOMContentLoaded", function () {
+  sideMenuNav();
+});
+
+function sideMenuNav() {
+  var sideBar = document.createElement("div");
+  sideBar.id = "sidebar";
+  sideBar.style.backgroundColor = "var(--background-color)";
+  sideBar.style.color = "#fff";
+  sideBar.style.borderRight = "1px solid var(--h1234-color)"
+  sideBar.style.width = "0";
+  sideBar.style.height = "100%";
+  sideBar.style.position = "fixed";
+  sideBar.style.top = "0";
+  sideBar.style.left = "-10px";
+  sideBar.style.zIndex = "9998";
+  sideBar.style.overflowX = "hidden";
+  sideBar.style.transition = "0.5s";
+
+  var openButton = document.createElement("button");
+  openButton.textContent = ">";
+  openButton.style.position = "fixed";
+  openButton.style.left = "-5px";
+  openButton.style.borderTopLeftRadius = "0px"
+  openButton.style.borderBottomLeftRadius = "0px"
+  openButton.style.paddingTop = "25px"
+  openButton.style.userSelect = "none"
+  openButton.style.paddingBottom = "25px"
+  openButton.style.zIndex = '996';
+  openButton.style.top = "50%";
+  openButton.style.transform = "translateY(-50%)";
+
+  function adjustOpenButtonPosition() {
+      if (sideBar.style.width === "275px") {
+          openButton.style.left = "260px"; // 270px vanaf de linkerkant als de sideBar zichtbaar is
+      } else {
+          openButton.style.left = "-5px"; // 20px vanaf de linkerkant als de sideBar niet zichtbaar is
+      }
+  }
+  
+  openButton.addEventListener("click", function () {
+      if (sideBar.style.width === "275px") {
+          sideBar.style.width = "0";
+          openButton.style.transition = "left 0.5s ease"; // Voeg een overgang toe aan de left-eigenschap
+      } else {
+          sideBar.style.width = "275px";
+          openButton.style.transition = "left 0.5s ease"; // Voeg een overgang toe aan de left-eigenschap
+      }
+      adjustOpenButtonPosition(); // Pas de positie van de openButton aan bij het openen/sluiten van de sideBar
+  });
+
+  document.addEventListener("click", function (event) {
+      if (
+          event.target !== openButton &&
+          event.target !== sideBar &&
+          !sideBar.contains(event.target) // Controleer of het geklikte element zich niet binnen het zijmenu bevindt
+      ) {
+          if (sideBar.style.width === "275px") {
+              sideBar.style.width = "0";
+              openButton.style.transition = "left 0.5s ease";
+              adjustOpenButtonPosition();
+          }
+      }
+  });
+  
+  // Voeg een event listener toe om de overgang te resetten wanneer deze is voltooid
+  openButton.addEventListener("transitionend", function () {
+      openButton.style.transition = ""; // Reset de overgang
+  });
+
+  document.body.appendChild(openButton);
+  document.body.appendChild(sideBar);
+
+  buttons.forEach(function (buttonInfo) {
+      var button = document.createElement("a");
+      button.className = "sidebarButton";
+      button.style.display = "block";
+      button.style.cursor = "pointer";
+      button.style.padding = "10px";
+      button.style.marginTop = "10px";
+      button.style.textDecoration = "none";
+      button.style.color = "#fff";
+      button.textContent = buttonInfo.text;
+  
+      if (buttonInfo.link) {
+          button.href = buttonInfo.link;
+          button.addEventListener("click", function (event) {
+              event.preventDefault();
+              openLink(buttonInfo.link);
+          });
+      } else if (buttonInfo.submenu) {
+          button.classList.add("dropdown");
+          var submenu = document.createElement("div");
+          submenu.className = "submenu";
+          button.appendChild(submenu);
+      
+          button.addEventListener("mouseover", function () {
+              submenu.style.display = "block";
+              submenu.style.left = "15px";
+              submenu.style.width = "195px";
+              submenu.style.transform = "translateY(10px)";
+              submenu.style.wordWrap = "break-word";
+          });
+      
+          button.addEventListener("mouseout", function () {
+              submenu.style.display = "none";
+          });
+      
+          buttonInfo.submenu.forEach(function (submenuItem) {
+              var submenuLink = document.createElement("a");
+              submenuLink.textContent = submenuItem.text;
+              submenuLink.href = submenuItem.link;
+              submenuLink.className = "submenuItem";
+              submenu.appendChild(submenuLink);
+          });
+      }
+  
+      sideBar.appendChild(button);
+  });
+
+  function openLink(link) {
+      window.location.href = link;
+  }
+}
