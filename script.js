@@ -689,6 +689,7 @@ function sideMenuNav() {
   sideBar.style.transition = "0.5s";
 
   var openButton = document.createElement("button");
+  openButton.id = "openButton";
   openButton.textContent = ">";
   openButton.style.position = "fixed";
   openButton.style.left = "-5px";
