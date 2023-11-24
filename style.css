@@ -260,9 +260,14 @@ textarea::placeholder {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
 }
 
+.sidebarButton {
+  text-wrap: nowrap;
+}
+
 .subMenu a {
   margin: 5px !important;
   margin-top: -5px !important;
+  text-wrap: wrap !important;
 }
 
 .subMenu a:hover {
