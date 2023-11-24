@@ -446,42 +446,44 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-var buttons = [
-  { text: "Home", link: "/" },
-  { text: "Algemeen (6)", subMenu: [
-    { text: "Mijn YouTube Kanaal", link: "https://www.youtube.com/@YT.TC_tam?sub_confirmation=1" },
-    { text: "Exclusieve Pagina's", link: "/login-exclusive" },
-    { text: "TC_tam Zoeken", link: "/tctam-zoeken" },
-    { text: "Games", link: "/games/alle-games" },
-    { text: "TC_tam Chat", link: "/tctam-chat" },
-    { text: "Mijn Blogs", link: "/blogs/alle-blogs" },
-  ]},
-  { text: "Handige Tools (9)", subMenu: [
-      { text: "Alle Schoolhacks", link: "/alle-methoden" },
-      { text: "Bookmarklets", link: "/school-hacks/bookmarklets" },
-      { text: "Live Klok", link: "/tools/live-clock" },
-      { text: "Bing Ai (GPT 4)", link: "/tools/bing-chat" },
-      { text: "MyInstants", link: "/tools/myinstants" },
-      { text: "Speel geluiden van 20 - 20.000 hz (inc schoolbel)", link: "/tools/hz-geluiden" },
-      { text: "Notities", link: "/tools/notities" },
-      { text: "IDE", link: "/tools/ide" },
-      { text: "TTS", link: "/tools/tts" },
-  ]},
-  { text: "School Antwoorden (2)", subMenu: [
-    { text: "Antwoorden HAVO 2 Nieuw Nederlands", link: "https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view" },
-    { text: "Antwoorden HAVO 3 Nieuw Nederlands", link: "/school-hacks/antwoorden/nieuw-nederlands-havo3" },
-  ]},
-  { text: "Over De Website (4)", subMenu: [
-    { text: "Meld een bug", link: "https://github.com/TCevik/TCevik.github.io/issues/new" },
-    { text: "Terms of Service", link: "/terms-of-service" },
-    { text: "Privacy Policy", link: "/privacy-policy" },
-    { text: "Bekijk de code van de site", link: "https://github.com/TCevik/TCevik.github.io" },
-  ]}
-];
-
 document.addEventListener("DOMContentLoaded", function () {
   sideMenuNav();
 });
+
+var buttons = [
+	{ text: "Home", link: "/" },
+	{ text: "Games", link: "/games/alle-games" },
+	{ text: "Alle Schoolhacks", link: "/alle-methoden" },
+	{ text: "Bookmarklets", link: "/school-hacks/bookmarklets" },
+	{ text: "Algemeen (3)", subMenu: [
+	  	{ text: "Exclusieve Pagina's", link: "/login-exclusive" },
+	  	{ text: "TC_tam Zoeken", link: "/tctam-zoeken" },
+	  	{ text: "Mijn Blogs", link: "/blogs/alle-blogs" },
+	]},
+	{ text: "Sociaal (2)", subMenu: [
+		{ text: "Mijn YouTube Kanaal", link: "https://www.youtube.com/@YT.TC_tam?sub_confirmation=1" },
+		{ text: "TC_tam Chat", link: "/tctam-chat" },
+	]},
+	{ text: "Handige Tools (9)", subMenu: [
+		{ text: "Live Klok", link: "/tools/live-clock" },
+		{ text: "Bing Ai (GPT 4)", link: "/tools/bing-chat" },
+		{ text: "MyInstants", link: "/tools/myinstants" },
+		{ text: "Speel geluiden van 20 - 20.000 hz (inc schoolbel)", link: "/tools/hz-geluiden" },
+		{ text: "Notities", link: "/tools/notities" },
+		{ text: "IDE", link: "/tools/ide" },
+		{ text: "TTS", link: "/tools/tts" },
+	]},
+	{ text: "School Antwoorden (2)", subMenu: [
+	  { text: "Antwoorden HAVO 2 Nieuw Nederlands", link: "https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view" },
+	  { text: "Antwoorden HAVO 3 Nieuw Nederlands", link: "/school-hacks/antwoorden/nieuw-nederlands-havo3" },
+	]},
+	{ text: "Over De Website (4)", subMenu: [
+	  { text: "Meld een bug", link: "https://github.com/TCevik/TCevik.github.io/issues/new" },
+	  { text: "Terms of Service", link: "/terms-of-service" },
+	  { text: "Privacy Policy", link: "/privacy-policy" },
+	  { text: "Bekijk de code van de site", link: "https://github.com/TCevik/TCevik.github.io" },
+	]}
+];
 
 function sideMenuNav() {
   var sideBar = document.createElement("div");
