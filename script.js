@@ -638,7 +638,7 @@ if ('serviceWorker' in navigator) {
 
 var buttons = [
   { text: "Home", link: "/" },
-  { text: "Algemeen (6)", submenu: [
+  { text: "Algemeen (6)", subMenu: [
     { text: "Mijn YouTube Kanaal", link: "https://www.youtube.com/@YT.TC_tam?sub_confirmation=1" },
     { text: "Exclusieve Pagina's", link: "/login-exclusive" },
     { text: "TC_tam Zoeken", link: "/tctam-zoeken" },
@@ -646,7 +646,7 @@ var buttons = [
     { text: "TC_tam Chat", link: "/tctam-chat" },
     { text: "Mijn Blogs", link: "/blogs/alle-blogs" },
   ]},
-  { text: "Handige Tools (9)", submenu: [
+  { text: "Handige Tools (9)", subMenu: [
       { text: "Alle Schoolhacks", link: "/alle-methoden" },
       { text: "Bookmarklets", link: "/school-hacks/bookmarklets" },
       { text: "Live Klok", link: "/tools/live-clock" },
@@ -657,11 +657,11 @@ var buttons = [
       { text: "IDE", link: "/tools/ide" },
       { text: "TTS", link: "/tools/tts" },
   ]},
-  { text: "School Antwoorden (2)", submenu: [
+  { text: "School Antwoorden (2)", subMenu: [
     { text: "Antwoorden HAVO 2 Nieuw Nederlands", link: "https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view" },
     { text: "Antwoorden HAVO 3 Nieuw Nederlands", link: "/school-hacks/antwoorden/nieuw-nederlands-havo3" },
   ]},
-  { text: "Over De Website (4)", submenu: [
+  { text: "Over De Website (4)", subMenu: [
     { text: "Meld een bug", link: "https://github.com/TCevik/TCevik.github.io/issues/new" },
     { text: "Terms of Service", link: "/terms-of-service" },
     { text: "Privacy Policy", link: "/privacy-policy" },
@@ -758,30 +758,30 @@ function sideMenuNav() {
               event.preventDefault();
               openLink(buttonInfo.link);
           });
-      } else if (buttonInfo.submenu) {
-          button.classList.add("dropdown");
-          var submenu = document.createElement("div");
-          submenu.className = "submenu";
-          button.appendChild(submenu);
+      } else if (buttonInfo.subMenu) {
+          button.classList.add("dropDown");
+          var subMenu = document.createElement("div");
+          subMenu.className = "subMenu";
+          button.appendChild(subMenu);
       
           button.addEventListener("mouseover", function () {
-              submenu.style.display = "block";
-              submenu.style.left = "15px";
-              submenu.style.width = "195px";
-              submenu.style.transform = "translateY(10px)";
-              submenu.style.wordWrap = "break-word";
+              subMenu.style.display = "block";
+              subMenu.style.left = "15px";
+              subMenu.style.width = "195px";
+              subMenu.style.transform = "translateY(10px)";
+              subMenu.style.wordWrap = "break-word";
           });
       
           button.addEventListener("mouseout", function () {
-              submenu.style.display = "none";
+              subMenu.style.display = "none";
           });
       
-          buttonInfo.submenu.forEach(function (submenuItem) {
-              var submenuLink = document.createElement("a");
-              submenuLink.textContent = submenuItem.text;
-              submenuLink.href = submenuItem.link;
-              submenuLink.className = "submenuItem";
-              submenu.appendChild(submenuLink);
+          buttonInfo.subMenu.forEach(function (subMenuItem) {
+              var subMenuLink = document.createElement("a");
+              subMenuLink.textContent = subMenuItem.text;
+              subMenuLink.href = subMenuItem.link;
+              subMenuLink.className = "subMenuItem";
+              subMenu.appendChild(subMenuLink);
           });
       }
   

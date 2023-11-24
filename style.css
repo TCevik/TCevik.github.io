@@ -248,7 +248,7 @@ textarea::placeholder {
   background-color: #58bf33;
 }
 
-.submenu a {
+.subMenu a {
   size: 20px ;
   border-radius: 5px;
   padding: 10px;
@@ -260,26 +260,26 @@ textarea::placeholder {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
 }
 
-.submenu a {
+.subMenu a {
   margin: 5px !important;
   margin-top: -5px !important;
 }
 
-.submenu a:hover {
+.subMenu a:hover {
   background-color:white;
   color: black;
 }
 
-.dropdown {
+.dropDown {
   position: relative;
 }
 
-.submenu {
+.subMenu {
   display: none;
   position: absolute;
   z-index: 1;
 }
 
-.submenuItem {
+.subMenuItem {
   display: block;
 }
