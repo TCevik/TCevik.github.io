@@ -492,7 +492,7 @@ function sideMenuNav() {
 	sideBar.style.height = "100%";
 	sideBar.style.position = "fixed";
 	sideBar.style.top = "0";
-	sideBar.style.left = "-5px";
+	sideBar.style.left = "0px";
 	sideBar.style.zIndex = "9998";
 	sideBar.style.overflowX = "hidden";
 	sideBar.style.transition = "0.5s";
@@ -516,9 +516,11 @@ function sideMenuNav() {
   
 	function adjustOpenButtonPosition() {
 	  if (sideBar.style.width === "275px") {
-		openButton.style.left = "265px";
+		openButton.style.left = "270px";
+    openButton.textContent = "<";
 	  } else {
 		openButton.style.left = "-5px";
+    openButton.textContent = ">";
 	  }
 	}
   
