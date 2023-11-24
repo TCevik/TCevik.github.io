@@ -260,12 +260,6 @@ textarea::placeholder {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
 }
 
-#navbar a {
-  margin: 5px;
-  padding-top: 5px;
-  margin-bottom: 10px;
-}
-
 .submenu a {
   margin: 5px !important;
   margin-top: -5px !important;
