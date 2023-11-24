@@ -510,13 +510,13 @@ function sideMenuNav() {
 	openButton.style.paddingTop = "75px";
 	openButton.style.userSelect = "none";
 	openButton.style.paddingBottom = "75px";
-	openButton.style.zIndex = "996";
+	openButton.style.zIndex = "9999";
 	openButton.style.top = "50%";
 	openButton.style.transform = "translateY(-50%)";
   
 	function adjustOpenButtonPosition() {
 	  if (sideBar.style.width === "275px") {
-		openButton.style.left = "270px";
+		openButton.style.left = "272px";
     openButton.textContent = "<";
 	  } else {
 		openButton.style.left = "-5px";
