@@ -748,7 +748,6 @@ function sideMenuNav() {
       button.style.display = "block";
       button.style.cursor = "pointer";
       button.style.padding = "10px";
-      button.style.marginTop = "10px";
       button.style.textDecoration = "none";
       button.style.color = "#fff";
       button.textContent = buttonInfo.text;
