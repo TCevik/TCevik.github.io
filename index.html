@@ -536,6 +536,23 @@
         setTimeout(() => {
             displayUserName();
         }, 2000);
+
+        // Wacht tot de pagina volledig is geladen
+        window.addEventListener('load', function() {
+            let loadCount = localStorage.getItem('loadCount') || 0;
+        
+            loadCount++;
+        
+            if (loadCount < 3) {
+                let openButton = document.getElementById('openButton');
+            
+                if (openButton) {
+                    openButton.textContent = 'Klik hier voor het menu';
+                }
+            }
+        
+            localStorage.setItem('loadCount', loadCount);
+        });
     </script>
 </body>
 </html>
