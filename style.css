@@ -248,43 +248,7 @@ textarea::placeholder {
   background-color: #58bf33;
 }
 
-.subMenu a {
-  size: 20px ;
-  border-radius: 5px;
-  padding: 10px;
-  text-decoration: none;
-  border: none;
-  color: white;
-  background-color: var(--button-bgcolor);
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
-}
-
-.sidebarButton {
-  text-wrap: nowrap;
-}
-
-.subMenu a {
-  margin: 5px !important;
-  margin-top: -5px !important;
-  text-wrap: wrap !important;
-}
-
-.subMenu a:hover {
-  background-color:white;
-  color: black;
-}
-
-.dropDown {
-  position: relative;
-}
-
-.subMenu {
-  display: none;
-  position: absolute;
-  z-index: 1;
-}
-
-.subMenuItem {
-  display: block;
+#sidebar button {
+  width: 100%;
+  text-align: center;
 }

@@ -450,158 +450,107 @@ document.addEventListener("DOMContentLoaded", function () {
   sideMenuNav();
 });
 
-var buttons = [
-	{ text: "Home", link: "/" },
-	{ text: "Games", link: "/games/alle-games" },
-	{ text: "Alle Schoolhacks", link: "/alle-methoden" },
-	{ text: "Bookmarklets", link: "/school-hacks/bookmarklets" },
-	{ text: "Algemeen (3)", subMenu: [
-	  	{ text: "Exclusieve Pagina's", link: "/login-exclusive" },
-	  	{ text: "TC_tam Zoeken", link: "/tctam-zoeken" },
-	  	{ text: "Mijn Blogs", link: "/blogs/alle-blogs" },
-	]},
-	{ text: "Sociaal (2)", subMenu: [
-		{ text: "Mijn YouTube Kanaal", link: "https://www.youtube.com/@YT.TC_tam?sub_confirmation=1" },
-		{ text: "TC_tam Chat", link: "/tctam-chat" },
-	]},
-	{ text: "Handige Tools (9)", subMenu: [
-		{ text: "Live Klok", link: "/tools/live-clock" },
-		{ text: "Bing Ai (GPT 4)", link: "/tools/bing-chat" },
-		{ text: "MyInstants", link: "/tools/myinstants" },
-		{ text: "Speel geluiden van 20 - 20.000 hz (inc schoolbel)", link: "/tools/hz-geluiden" },
-		{ text: "Notities", link: "/tools/notities" },
-		{ text: "IDE", link: "/tools/ide" },
-		{ text: "TTS", link: "/tools/tts" },
-	]},
-	{ text: "School Antwoorden (2)", subMenu: [
-	  { text: "Antwoorden HAVO 2 Nieuw Nederlands", link: "https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view" },
-	  { text: "Antwoorden HAVO 3 Nieuw Nederlands", link: "/school-hacks/antwoorden/nieuw-nederlands-havo3" },
-	]},
-	{ text: "Over De Website (4)", subMenu: [
-	  { text: "Meld een bug", link: "https://github.com/TCevik/TCevik.github.io/issues/new" },
-	  { text: "Terms of Service", link: "/terms-of-service" },
-	  { text: "Privacy Policy", link: "/privacy-policy" },
-	  { text: "Bekijk de code van de site", link: "https://github.com/TCevik/TCevik.github.io" },
-	]}
-];
+var buttons = `
+	<button onclick="window.location.href='/'">Home</button>
+	<h3 id="algemeen">Algemeen</h3>
+	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+	<button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
+	<button id="ex-bt" onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
+	<button onclick="window.location.href='/games/alle-games'">Games</button>
+	<button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
+	<button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
+
+	<h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
+	<button onclick="window.location.href='/alle-methoden'">School unblocks</button>
+	<button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
+	<button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
+	<button onclick="window.location.href='/tools/bing-chat'">Bing Ai (GPT 4)</button>
+	<button onclick="window.location.href='/tools/myinstants'">MyInstants</button>
+	<button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+	<button onclick="window.location.href='/tools/notities'">Notities</button>
+	<button onclick="window.location.href='/tools/ide'">IDE</button>
+	<button onclick="window.location.href='/tools/tts'">TTS</button>
+
+	<h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
+	<button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
+	<button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
+
+	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
+	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
+	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
+	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
+	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de broncode van de site</button>
+`;
 
 function sideMenuNav() {
-  var sideBar = document.createElement("div");
-  sideBar.id = "sidebar";
-  sideBar.style.backgroundColor = "var(--background-color)";
-  sideBar.style.color = "#fff";
-  sideBar.style.borderRight = "1px solid var(--h1234-color)"
-  sideBar.style.width = "0";
-  sideBar.style.height = "100%";
-  sideBar.style.position = "fixed";
-  sideBar.style.top = "0";
-  sideBar.style.left = "-10px";
-  sideBar.style.zIndex = "9998";
-  sideBar.style.overflowX = "hidden";
-  sideBar.style.transition = "0.5s";
-
-  var openButton = document.createElement("button");
-  openButton.id = "openButton";
-  openButton.textContent = ">";
-  openButton.style.position = "fixed";
-  openButton.style.left = "-5px";
-  openButton.style.borderTopLeftRadius = "0px"
-  openButton.style.borderBottomLeftRadius = "0px"
-  openButton.style.paddingTop = "75px"
-  openButton.style.userSelect = "none"
-  openButton.style.paddingBottom = "75px"
-  openButton.style.zIndex = '996';
-  openButton.style.top = "50%";
-  openButton.style.transform = "translateY(-50%)";
-
-  function adjustOpenButtonPosition() {
-      if (sideBar.style.width === "275px") {
-          openButton.style.left = "260px"; // 270px vanaf de linkerkant als de sideBar zichtbaar is
-      } else {
-          openButton.style.left = "-5px"; // 20px vanaf de linkerkant als de sideBar niet zichtbaar is
-      }
-  }
+	var sideBar = document.createElement("div");
+	sideBar.id = "sidebar";
+	sideBar.style.backgroundColor = "var(--background-color)";
+	sideBar.style.color = "#fff";
+	sideBar.style.borderRight = "1px solid var(--h1234-color)";
+	sideBar.style.width = "0";
+	sideBar.style.height = "100%";
+	sideBar.style.position = "fixed";
+	sideBar.style.top = "0";
+	sideBar.style.left = "-10px";
+	sideBar.style.zIndex = "9998";
+	sideBar.style.overflowX = "hidden";
+	sideBar.style.transition = "0.5s";
   
-  openButton.addEventListener("click", function () {
-      if (sideBar.style.width === "275px") {
-          sideBar.style.width = "0";
-          openButton.style.transition = "left 0.5s ease"; // Voeg een overgang toe aan de left-eigenschap
-      } else {
-          sideBar.style.width = "275px";
-          openButton.style.transition = "left 0.5s ease"; // Voeg een overgang toe aan de left-eigenschap
-      }
-      adjustOpenButtonPosition(); // Pas de positie van de openButton aan bij het openen/sluiten van de sideBar
-  });
-
-  document.addEventListener("click", function (event) {
-      if (
-          event.target !== openButton &&
-          event.target !== sideBar &&
-          !sideBar.contains(event.target) // Controleer of het geklikte element zich niet binnen het zijmenu bevindt
-      ) {
-          if (sideBar.style.width === "275px") {
-              sideBar.style.width = "0";
-              openButton.style.transition = "left 0.5s ease";
-              adjustOpenButtonPosition();
-          }
-      }
-  });
+	// Voeg de knoppen toe aan de sidebar
+	sideBar.innerHTML = buttons;
   
-  // Voeg een event listener toe om de overgang te resetten wanneer deze is voltooid
-  openButton.addEventListener("transitionend", function () {
-      openButton.style.transition = ""; // Reset de overgang
-  });
-
-  document.body.appendChild(openButton);
-  document.body.appendChild(sideBar);
-
-  buttons.forEach(function (buttonInfo) {
-      var button = document.createElement("a");
-      button.className = "sidebarButton";
-      button.style.display = "block";
-      button.style.cursor = "pointer";
-      button.style.padding = "10px";
-      button.style.textDecoration = "none";
-      button.style.color = "#fff";
-      button.textContent = buttonInfo.text;
+	var openButton = document.createElement("button");
+	openButton.id = "openButton";
+	openButton.textContent = ">";
+	openButton.style.position = "fixed";
+	openButton.style.left = "-5px";
+	openButton.style.borderTopLeftRadius = "0px";
+	openButton.style.borderBottomLeftRadius = "0px";
+	openButton.style.paddingTop = "75px";
+	openButton.style.userSelect = "none";
+	openButton.style.paddingBottom = "75px";
+	openButton.style.zIndex = "996";
+	openButton.style.top = "50%";
+	openButton.style.transform = "translateY(-50%)";
   
-      if (buttonInfo.link) {
-          button.href = buttonInfo.link;
-          button.addEventListener("click", function (event) {
-              event.preventDefault();
-              openLink(buttonInfo.link);
-          });
-      } else if (buttonInfo.subMenu) {
-          button.classList.add("dropDown");
-          var subMenu = document.createElement("div");
-          subMenu.className = "subMenu";
-          button.appendChild(subMenu);
-      
-          button.addEventListener("mouseover", function () {
-              subMenu.style.display = "block";
-              subMenu.style.left = "15px";
-              subMenu.style.width = "195px";
-              subMenu.style.transform = "translateY(10px)";
-              subMenu.style.wordWrap = "break-word";
-          });
-      
-          button.addEventListener("mouseout", function () {
-              subMenu.style.display = "none";
-          });
-      
-          buttonInfo.subMenu.forEach(function (subMenuItem) {
-              var subMenuLink = document.createElement("a");
-              subMenuLink.textContent = subMenuItem.text;
-              subMenuLink.href = subMenuItem.link;
-              subMenuLink.className = "subMenuItem";
-              subMenu.appendChild(subMenuLink);
-          });
-      }
+	function adjustOpenButtonPosition() {
+	  if (sideBar.style.width === "275px") {
+		openButton.style.left = "260px";
+	  } else {
+		openButton.style.left = "-5px";
+	  }
+	}
   
-      sideBar.appendChild(button);
-  });
-
-  function openLink(link) {
-      window.location.href = link;
-  }
+	openButton.addEventListener("click", function () {
+	  if (sideBar.style.width === "275px") {
+		sideBar.style.width = "0";
+		openButton.style.transition = "left 0.5s ease";
+	  } else {
+		sideBar.style.width = "275px";
+		openButton.style.transition = "left 0.5s ease";
+	  }
+	  adjustOpenButtonPosition();
+	});
+  
+	document.addEventListener("click", function (event) {
+	  if (
+		event.target !== openButton &&
+		event.target !== sideBar &&
+		!sideBar.contains(event.target)
+	  ) {
+		if (sideBar.style.width === "275px") {
+		  sideBar.style.width = "0";
+		  openButton.style.transition = "left 0.5s ease";
+		  adjustOpenButtonPosition();
+		}
+	  }
+	});
+  
+	openButton.addEventListener("transitionend", function () {
+	  openButton.style.transition = "";
+	});
+  
+	document.body.appendChild(openButton);
+	document.body.appendChild(sideBar);
 }
