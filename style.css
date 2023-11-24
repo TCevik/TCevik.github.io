@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+body {top: 0px !important;}
+.skiptranslate, #google_translate_element {display: none !important;}
 body {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -246,9 +248,6 @@ textarea::placeholder {
   background-color: #58bf33;
 }
 
-body {top: 0px !important;}
-.skiptranslate, #google_translate_element {display: none !important;}
-
 #navbar a, .submenu a {
   size: 20px ;
   border-radius: 5px;
@@ -263,7 +262,7 @@ body {top: 0px !important;}
 
 #navbar a {
   margin: 5px;
-  margin-top: 5px;
+  padding-top: 5px;
   margin-bottom: 10px;
 }
 
