@@ -248,7 +248,7 @@ textarea::placeholder {
   background-color: #58bf33;
 }
 
-#navbar a, .submenu a {
+.submenu a {
   size: 20px ;
   border-radius: 5px;
   padding: 10px;
@@ -265,12 +265,7 @@ textarea::placeholder {
   margin-top: -5px !important;
 }
 
-#navbar {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-#navbar a:hover, .submenu a:hover {
+.submenu a:hover {
   background-color:white;
   color: black;
 }
