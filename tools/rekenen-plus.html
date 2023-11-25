@@ -36,6 +36,8 @@
 				var result = document.getElementById("result");
 				result.textContent = "Incorrect!";
 				result.style.color = "red";
+				var audio = new Audio('/assets/wrong-answer.mp3');
+    			audio.play();
 			}
 
 			document.getElementById("score").textContent = score;
