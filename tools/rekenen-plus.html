@@ -30,13 +30,13 @@
 				result.textContent = "Correct!";
 				result.style.color = "green";
 				score++;
-				var audio = new Audio('/assets/correct-sound.mp3');
+				var audio = new Audio('/assets/rekenen-plus/correct-sound.mp3');
     			audio.play();
 			} else {
 				var result = document.getElementById("result");
 				result.textContent = "Incorrect!";
 				result.style.color = "red";
-				var audio = new Audio('/assets/wrong-answer.mp3');
+				var audio = new Audio('/assets/rekenen-plus/wrong-answer.mp3');
     			audio.play();
 			}
 
