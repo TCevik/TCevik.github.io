@@ -1,6 +1,6 @@
 /* accepteer acceptTosPpPopup */
 document.addEventListener('DOMContentLoaded', function () {
-	var tosAndPpVersion = 1
+	var tosAndPpVersion = 1;
 	if (!localStorage.getItem('acceptacceptTosPpPopup' + tosAndPpVersion)) {
 		var acceptTosPpPopup = document.createElement('div');
 		acceptTosPpPopup.id = 'acceptTosPpPopup';

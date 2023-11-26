@@ -141,15 +141,6 @@ button:focus {
   border-radius: 10px;
 }
 
-.bookmarklet {
-  border-radius: 25px;
-  background-color: #38761d;
-  margin: 1%;
-  color: #33ff33;
-  display: inline-block;
-  padding: 10px;
-}
-
 img {
   border-radius: 15px;
 }
@@ -199,7 +190,7 @@ textarea::placeholder {
   color: var(--text-color);
 }
 
-.acceptacceptTosPpPopup {
+.acceptTosPpPopup {
   position: fixed;
   z-index: 9999;
   bottom: 10px;
