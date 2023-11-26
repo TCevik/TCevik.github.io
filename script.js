@@ -1,12 +1,13 @@
-/* accepteer popup */
+/* accepteer acceptTosPpPopup */
 document.addEventListener('DOMContentLoaded', function () {
-  if (!localStorage.getItem('acceptPopup')) {
-    var popup = document.createElement('div');
-    popup.id = 'popup';
-    popup.className = 'popup';
+  var tosAndPpVersion = 1
+  if (!localStorage.getItem('acceptacceptTosPpPopup' + tosAndPpVersion)) {
+    var acceptTosPpPopup = document.createElement('div');
+    acceptTosPpPopup.id = 'acceptTosPpPopup';
+    acceptTosPpPopup.className = 'acceptTosPpPopup';
 
-    var text = 'Door het gebruik van deze site of het proberen van de inhoud ervan ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
-    popup.innerHTML = text;
+    var text = 'Door het gebruik van deze site ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
+    acceptTosPpPopup.innerHTML = text;
 
     var button = document.createElement('button');
     button.innerHTML = 'Ok';
@@ -15,19 +16,19 @@ document.addEventListener('DOMContentLoaded', function () {
       var opacity = 1;
       var intervalId = setInterval(function () {
         opacity -= 0.05;
-        popup.style.opacity = opacity;
+        acceptTosPpPopup.style.opacity = opacity;
         if (opacity <= 0) {
           clearInterval(intervalId);
-          popup.style.display = 'none';
+          acceptTosPpPopup.style.display = 'none';
         }
       }, 15);
 
-      localStorage.setItem('acceptPopup', 'true');
+      localStorage.setItem('acceptacceptTosPpPopup' + tosAndPpVersion, 'true');
     });
 
-    popup.appendChild(button);
+    acceptTosPpPopup.appendChild(button);
 
-    document.body.appendChild(popup);
+    document.body.appendChild(acceptTosPpPopup);
   }
 });
 
