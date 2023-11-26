@@ -1,168 +1,168 @@
 /* accepteer acceptTosPpPopup */
 document.addEventListener('DOMContentLoaded', function () {
-  var tosAndPpVersion = 1
-  if (!localStorage.getItem('acceptacceptTosPpPopup' + tosAndPpVersion)) {
-    var acceptTosPpPopup = document.createElement('div');
-    acceptTosPpPopup.id = 'acceptTosPpPopup';
-    acceptTosPpPopup.className = 'acceptTosPpPopup';
+	var tosAndPpVersion = 1
+	if (!localStorage.getItem('acceptacceptTosPpPopup' + tosAndPpVersion)) {
+		var acceptTosPpPopup = document.createElement('div');
+		acceptTosPpPopup.id = 'acceptTosPpPopup';
+		acceptTosPpPopup.className = 'acceptTosPpPopup';
 
-    var text = 'Door het gebruik van deze site ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
-    acceptTosPpPopup.innerHTML = text;
+		var text = 'Door het gebruik van deze site ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
+		acceptTosPpPopup.innerHTML = text;
 
-    var button = document.createElement('button');
-    button.innerHTML = 'Ok';
+		var button = document.createElement('button');
+		button.innerHTML = 'Ok';
 
-    button.addEventListener('click', function () {
-      var opacity = 1;
-      var intervalId = setInterval(function () {
-        opacity -= 0.05;
-        acceptTosPpPopup.style.opacity = opacity;
-        if (opacity <= 0) {
-          clearInterval(intervalId);
-          acceptTosPpPopup.style.display = 'none';
-        }
-      }, 15);
+		button.addEventListener('click', function () {
+			var opacity = 1;
+			var intervalId = setInterval(function () {
+				opacity -= 0.05;
+				acceptTosPpPopup.style.opacity = opacity;
+				if (opacity <= 0) {
+					clearInterval(intervalId);
+					acceptTosPpPopup.style.display = 'none';
+				}
+			}, 15);
 
-      localStorage.setItem('acceptacceptTosPpPopup' + tosAndPpVersion, 'true');
-    });
+			localStorage.setItem('acceptacceptTosPpPopup' + tosAndPpVersion, 'true');
+		});
 
-    acceptTosPpPopup.appendChild(button);
+		acceptTosPpPopup.appendChild(button);
 
-    document.body.appendChild(acceptTosPpPopup);
-  }
+		document.body.appendChild(acceptTosPpPopup);
+	}
 });
 
 /* google analytics */
-(function() {
-  var script = document.createElement('script');
-  script.async = true;
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-7KL389S9VR';
+(function () {
+	var script = document.createElement('script');
+	script.async = true;
+	script.src = 'https://www.googletagmanager.com/gtag/js?id=G-7KL389S9VR';
 
-  var firstScript = document.getElementsByTagName('script')[0];
-  firstScript.parentNode.insertBefore(script, firstScript);
+	var firstScript = document.getElementsByTagName('script')[0];
+	firstScript.parentNode.insertBefore(script, firstScript);
 
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+	gtag('js', new Date());
 
-  gtag('config', 'G-7KL389S9VR');
+	gtag('config', 'G-7KL389S9VR');
 })();
 
-document.addEventListener('DOMContentLoaded', function() {
-  const currentURL = window.location.pathname;
+document.addEventListener('DOMContentLoaded', function () {
+	const currentURL = window.location.pathname;
 
-  if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') && 
-      !currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
-      !currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
+	if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
+		!currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
+		!currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
 
-      const loginButton = document.createElement("div");
-      loginButton.style.position = "fixed";
-      loginButton.style.top = "6px";
-      loginButton.style.right = "6px";
-      loginButton.style.zIndex = "9999px";
-      document.body.appendChild(loginButton);
+		const loginButton = document.createElement("div");
+		loginButton.style.position = "fixed";
+		loginButton.style.top = "6px";
+		loginButton.style.right = "6px";
+		loginButton.style.zIndex = "9999px";
+		document.body.appendChild(loginButton);
 
-      function updateLoginButton() {
-          const loggedIn = localStorage.getItem('loggedIn');
+		function updateLoginButton() {
+			const loggedIn = localStorage.getItem('loggedIn');
 
-          if (loggedIn === 'true') {
-              let userPhotoURL = getCookie('userPhotoURL');
-              if (!userPhotoURL || !isValidURL(userPhotoURL)) {
-                  userPhotoURL = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
-              }
-              const img = document.createElement("img");
-              img.src = userPhotoURL;
-              img.alt = "User Photo";
-              img.style.userSelect = "none";
-              img.style.width = "50px";
-              img.style.height = "50px";
-              img.style.cursor = "pointer";
-              img.style.borderRadius = "50%";
-              loginButton.appendChild(img);
-              loginButton.addEventListener("click", function() {
-                  const popupWidth = Math.floor(window.outerWidth * 0.75);
-                  const popupHeight = Math.floor(window.outerHeight * 0.8);
-                  const leftPosition = (window.screen.width - popupWidth) / 2;
-                  const topPosition = (window.screen.height - popupHeight) / 2;
-                  window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-              });
-          } else {
-                const loginLink = document.createElement("button");
-                loginLink.textContent = "Inloggen";
-                loginLink.onclick = function() {
-                    const popupWidth = Math.floor(window.outerWidth * 0.75);
-                    const popupHeight = Math.floor(window.outerHeight * 0.8);
-                    const leftPosition = (window.screen.width - popupWidth) / 2;
-                    const topPosition = (window.screen.height - popupHeight) / 2;
-                    window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-            };
-              loginButton.appendChild(loginLink);            
-          }
-      }
+			if (loggedIn === 'true') {
+				let userPhotoURL = getCookie('userPhotoURL');
+				if (!userPhotoURL || !isValidURL(userPhotoURL)) {
+					userPhotoURL = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
+				}
+				const img = document.createElement("img");
+				img.src = userPhotoURL;
+				img.alt = "User Photo";
+				img.style.userSelect = "none";
+				img.style.width = "50px";
+				img.style.height = "50px";
+				img.style.cursor = "pointer";
+				img.style.borderRadius = "50%";
+				loginButton.appendChild(img);
+				loginButton.addEventListener("click", function () {
+					const popupWidth = Math.floor(window.outerWidth * 0.75);
+					const popupHeight = Math.floor(window.outerHeight * 0.8);
+					const leftPosition = (window.screen.width - popupWidth) / 2;
+					const topPosition = (window.screen.height - popupHeight) / 2;
+					window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+				});
+			} else {
+				const loginLink = document.createElement("button");
+				loginLink.textContent = "Inloggen";
+				loginLink.onclick = function () {
+					const popupWidth = Math.floor(window.outerWidth * 0.75);
+					const popupHeight = Math.floor(window.outerHeight * 0.8);
+					const leftPosition = (window.screen.width - popupWidth) / 2;
+					const topPosition = (window.screen.height - popupHeight) / 2;
+					window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+				};
+				loginButton.appendChild(loginLink);
+			}
+		}
 
-      function getCookie(name) {
-          const value = `; ${document.cookie}`;
-          const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop().split(';').shift();
-      }
+		function getCookie(name) {
+			const value = `; ${document.cookie}`;
+			const parts = value.split(`; ${name}=`);
+			if (parts.length === 2) return parts.pop().split(';').shift();
+		}
 
-      function isValidURL(string) {
-          try {
-              new URL(string);
-              return true;
-          } catch (_) {
-              return false;  
-          }
-      }
+		function isValidURL(string) {
+			try {
+				new URL(string);
+				return true;
+			} catch (_) {
+				return false;
+			}
+		}
 
-      updateLoginButton();
-  }
+		updateLoginButton();
+	}
 });
 
 var originalTitle = document.title; // Bewaar de oorspronkelijke titel van het tabblad
 
 // Array met de berichten die we willen weergeven wanneer de focus verloren is
 var messages = [
-  "TC_tam mist je!",
-  "TC_tam zit hier!",
-  "Hier was je bezig, bij TC_tam!",
-  "TC_tam: blijf bij mij!",
-  "Let goed op TC_tam!",
-  "TC_tam: kom je snel terug?",
-  "TC_tam: wat doe je nou?",
-  "TC_tam: hier moet je zijn!"
+	"TC_tam mist je!",
+	"TC_tam zit hier!",
+	"Hier was je bezig, bij TC_tam!",
+	"TC_tam: blijf bij mij!",
+	"Let goed op TC_tam!",
+	"TC_tam: kom je snel terug?",
+	"TC_tam: wat doe je nou?",
+	"TC_tam: hier moet je zijn!"
 ];
 
 var currentMessageIndex = 0; // Index van het huidige bericht
 
 function changeTitle() {
-  const stopTabNamesCookie = getCookie("stopTabNames");
+	const stopTabNamesCookie = getCookie("stopTabNames");
 
-  if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
-    const randomIndex = Math.floor(Math.random() * messages.length);
-    document.title = messages[randomIndex];
-  }
+	if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
+		const randomIndex = Math.floor(Math.random() * messages.length);
+		document.title = messages[randomIndex];
+	}
 }
 
 // Functie om een cookie op te halen op basis van de naam
 function getCookie(name) {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(name + '=')) {
-      return cookie.substring(name.length + 1);
-    }
-  }
-  return null;
+	const cookies = document.cookie.split(';');
+	for (let i = 0; i < cookies.length; i++) {
+		const cookie = cookies[i].trim();
+		if (cookie.startsWith(name + '=')) {
+			return cookie.substring(name.length + 1);
+		}
+	}
+	return null;
 }
 
 // Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
 function restoreTitle() {
-  const stopTabNamesCookie = getCookie("stopTabNames");
+	const stopTabNamesCookie = getCookie("stopTabNames");
 
-  if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
-    document.title = originalTitle;
-  }
+	if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
+		document.title = originalTitle;
+	}
 }
 
 // Luister naar het focusverlies van het tabblad en herstel van de focus
@@ -171,124 +171,124 @@ window.addEventListener("focus", restoreTitle); */
 
 // Controleer of de pagina geladen is
 document.addEventListener("DOMContentLoaded", function () {
-  // Kijk of er een cookie "tabName" is
-  var tabNameCookie = getCookie("tabName");
-  var faviconCookie = getCookie("faviconLink");
-  
-  // Als er een cookie is, stel de tabbladnaam in op de waarde van het cookie
-  if (tabNameCookie) {
-    document.title = tabNameCookie;
-  }
-  
-  // Als er een favicon-cookie is, stel de favicon in op basis van de link in het cookie
-  if (faviconCookie) {
-    setFavicon(faviconCookie);
-  }
+	// Kijk of er een cookie "tabName" is
+	var tabNameCookie = getCookie("tabName");
+	var faviconCookie = getCookie("faviconLink");
+
+	// Als er een cookie is, stel de tabbladnaam in op de waarde van het cookie
+	if (tabNameCookie) {
+		document.title = tabNameCookie;
+	}
+
+	// Als er een favicon-cookie is, stel de favicon in op basis van de link in het cookie
+	if (faviconCookie) {
+		setFavicon(faviconCookie);
+	}
 });
 
 // Eventlistener voor het indrukken van de backspace-toets
 document.addEventListener("keydown", function (event) {
-  // Controleer of de backspace-toets is ingedrukt
-  if (event.key === "Escape" && document.activeElement) {
-    // Vraag de gebruiker om de naam van het tabblad in te vullen
-    var tabName = prompt("Vul hier de naam van het tabblad in (vul reset in om alles weer normaal te krijgen):");
-    
-    // Controleer of de gebruiker "reset" heeft ingevoerd
-    if (tabName === "reset") {
-      // Verwijder het cookie "tabName"
-      deleteCookie("tabName");
-      
-      // Verwijder het cookie "faviconLink"
-      deleteCookie("faviconLink");
-      
-      // Zet de cookie "stopTabNames" op false
-      setCookie("stopTabNames", "false");
+	// Controleer of de backspace-toets is ingedrukt
+	if (event.key === "Escape" && document.activeElement) {
+		// Vraag de gebruiker om de naam van het tabblad in te vullen
+		var tabName = prompt("Vul hier de naam van het tabblad in (vul reset in om alles weer normaal te krijgen):");
 
-      location.reload();
-    } else if (tabName !== null && tabName !== "") {
-      // Stel de tabbladnaam in op de ingevoerde waarde
-      document.title = tabName;
-      
-      // Sla de naam op in een cookie genaamd "tabName"
-      setCookie("tabName", tabName);
-      
-      // Vraag de gebruiker om de link naar een afbeelding in te voeren
-      var faviconLink = prompt("Vul hier de link naar een afbeelding in voor de favicon (laat leeg om geen favicon te gebruiken):");
-      
-      // Sla de link op in een cookie genaamd "faviconLink"
-      setCookie("faviconLink", faviconLink);
-      
-      // Als er een favicon-link is ingevoerd, stel de favicon in
-      if (faviconLink) {
-        setFavicon(faviconLink);
-      }
-      
-      // Zet de cookie "stopTabNames" op true
-      setCookie("stopTabNames", "true");
-    }
-  }
+		// Controleer of de gebruiker "reset" heeft ingevoerd
+		if (tabName === "reset") {
+			// Verwijder het cookie "tabName"
+			deleteCookie("tabName");
+
+			// Verwijder het cookie "faviconLink"
+			deleteCookie("faviconLink");
+
+			// Zet de cookie "stopTabNames" op false
+			setCookie("stopTabNames", "false");
+
+			location.reload();
+		} else if (tabName !== null && tabName !== "") {
+			// Stel de tabbladnaam in op de ingevoerde waarde
+			document.title = tabName;
+
+			// Sla de naam op in een cookie genaamd "tabName"
+			setCookie("tabName", tabName);
+
+			// Vraag de gebruiker om de link naar een afbeelding in te voeren
+			var faviconLink = prompt("Vul hier de link naar een afbeelding in voor de favicon (laat leeg om geen favicon te gebruiken):");
+
+			// Sla de link op in een cookie genaamd "faviconLink"
+			setCookie("faviconLink", faviconLink);
+
+			// Als er een favicon-link is ingevoerd, stel de favicon in
+			if (faviconLink) {
+				setFavicon(faviconLink);
+			}
+
+			// Zet de cookie "stopTabNames" op true
+			setCookie("stopTabNames", "true");
+		}
+	}
 });
 
 // Functie om een cookie te verwijderen
 function deleteCookie(name) {
-  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
 // Functie om een cookie in te stellen
 function setCookie(name, value) {
-  document.cookie = name + "=" + value + "; path=/";
+	document.cookie = name + "=" + value + "; path=/";
 }
 
 // Functie om een cookie op te halen
 function getCookie(name) {
-  var nameEQ = name + "=";
-  var cookies = document.cookie.split(";");
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i];
-    while (cookie.charAt(0) === " ") {
-      cookie = cookie.substring(1, cookie.length);
-    }
-    if (cookie.indexOf(nameEQ) === 0) {
-      return cookie.substring(nameEQ.length, cookie.length);
-    }
-  }
-  return null;
+	var nameEQ = name + "=";
+	var cookies = document.cookie.split(";");
+	for (var i = 0; i < cookies.length; i++) {
+		var cookie = cookies[i];
+		while (cookie.charAt(0) === " ") {
+			cookie = cookie.substring(1, cookie.length);
+		}
+		if (cookie.indexOf(nameEQ) === 0) {
+			return cookie.substring(nameEQ.length, cookie.length);
+		}
+	}
+	return null;
 }
 
 // Functie om de favicon van de pagina in te stellen
 function setFavicon(faviconLink) {
-  var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-  link.type = 'image/x-icon';
-  link.rel = 'icon';
-  link.href = faviconLink;
-  document.getElementsByTagName('head')[0].appendChild(link);
+	var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+	link.type = 'image/x-icon';
+	link.rel = 'icon';
+	link.href = faviconLink;
+	document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-      pageLanguage: 'nl',
-  }, 'google_translate_element');
+	new google.translate.TranslateElement({
+		pageLanguage: 'nl',
+	}, 'google_translate_element');
 
-  var userLanguage = window.navigator.language.toLowerCase().split("-")[0];
+	var userLanguage = window.navigator.language.toLowerCase().split("-")[0];
 
-  setTimeout(function() {
-      var selectElement = document.querySelector('#google_translate_element select');
-      selectElement.value = userLanguage;
-      selectElement.dispatchEvent(new Event('change'));
-  }, 2000);
+	setTimeout(function () {
+		var selectElement = document.querySelector('#google_translate_element select');
+		selectElement.value = userLanguage;
+		selectElement.dispatchEvent(new Event('change'));
+	}, 2000);
 }
 
 function loadTranslateScript() {
-  let script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-  document.head.appendChild(script);
+	let script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+	document.head.appendChild(script);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var newDiv = document.createElement('div');
-  newDiv.id = 'google_translate_element';
-  document.body.appendChild(newDiv);
+document.addEventListener('DOMContentLoaded', function () {
+	var newDiv = document.createElement('div');
+	newDiv.id = 'google_translate_element';
+	document.body.appendChild(newDiv);
 });
 
 document.addEventListener('DOMContentLoaded', loadTranslateScript);
@@ -301,154 +301,154 @@ var head = document.querySelector('head');
 head.appendChild(metaTag);
 
 function togglePopup(category) {
-  var overlay = document.createElement("div");
-  overlay.classList.add("overlay");
-  document.body.appendChild(overlay);
-      
-  var popup = document.createElement("div");
-  popup.classList.add("popup");
-  popup.style.opacity = 0;
-  popup.style.top = "50px";
-  popup.style.bottom = "50px";
-  popup.style.transition = "opacity 0.3s";
-  popup.style.width = "calc(100vw - 150px)";
-  popup.style.position = "fixed";
-  popup.style.left = "50%";
-  popup.style.zIndex = 999;
-  popup.style.transform = "translateX(-50%)";
-      
-  var closeBtn = document.createElement("b");
-  closeBtn.classList.add("close");
-  closeBtn.innerHTML = "X";
-  closeBtn.style.position = "fixed"
-  closeBtn.style.top = "20px"
-  closeBtn.style.right = "35px"
-  closeBtn.style.cursor = "pointer"
-  closeBtn.style.fontSize = "1.4em"
-  closeBtn.style.zIndex = 999;
-  closeBtn.onclick = function () {
-      popup.style.opacity = 0;
-      overlay.style.display = "none";
-      var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
-      elementsToBlur.forEach(function (element) {
-          element.style.filter = "none";
-      });
-      document.body.style.overflowY = "auto";
-      setTimeout(function () {
-          document.body.removeChild(popup);
-          document.body.removeChild(overlay);
-      }, 300);
-  };
+	var overlay = document.createElement("div");
+	overlay.classList.add("overlay");
+	document.body.appendChild(overlay);
 
-  popup.appendChild(closeBtn);
+	var popup = document.createElement("div");
+	popup.classList.add("popup");
+	popup.style.opacity = 0;
+	popup.style.top = "50px";
+	popup.style.bottom = "50px";
+	popup.style.transition = "opacity 0.3s";
+	popup.style.width = "calc(100vw - 150px)";
+	popup.style.position = "fixed";
+	popup.style.left = "50%";
+	popup.style.zIndex = 999;
+	popup.style.transform = "translateX(-50%)";
 
-  var popupContent = document.getElementById(category + "-popup");
-  var contentClone = popupContent.cloneNode(true);
-  contentClone.style.maxHeight = "65vh";
-  contentClone.style.overflowY = "auto";
+	var closeBtn = document.createElement("b");
+	closeBtn.classList.add("close");
+	closeBtn.innerHTML = "X";
+	closeBtn.style.position = "fixed"
+	closeBtn.style.top = "20px"
+	closeBtn.style.right = "35px"
+	closeBtn.style.cursor = "pointer"
+	closeBtn.style.fontSize = "1.4em"
+	closeBtn.style.zIndex = 999;
+	closeBtn.onclick = function () {
+		popup.style.opacity = 0;
+		overlay.style.display = "none";
+		var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+		elementsToBlur.forEach(function (element) {
+			element.style.filter = "none";
+		});
+		document.body.style.overflowY = "auto";
+		setTimeout(function () {
+			document.body.removeChild(popup);
+			document.body.removeChild(overlay);
+		}, 300);
+	};
 
-  popup.appendChild(contentClone);
+	popup.appendChild(closeBtn);
 
-  document.body.appendChild(popup);
+	var popupContent = document.getElementById(category + "-popup");
+	var contentClone = popupContent.cloneNode(true);
+	contentClone.style.maxHeight = "65vh";
+	contentClone.style.overflowY = "auto";
 
-  void popup.offsetWidth;
+	popup.appendChild(contentClone);
 
-  popup.style.opacity = 1;
+	document.body.appendChild(popup);
 
-  var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
-  elementsToBlur.forEach(function (element) {
-      element.style.transition = "filter 0.3s";
-      element.style.filter = "blur(2px)";
-  });
+	void popup.offsetWidth;
 
-  overlay.style.position = "fixed";
-  overlay.style.top = 0;
-  overlay.style.left = 0;
-  overlay.style.width = "100%";
-  overlay.style.height = "100%";
-  overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = 998;
+	popup.style.opacity = 1;
 
-  document.body.style.overflowY = "hidden";
+	var elementsToBlur = document.querySelectorAll('body > *:not(.popup)');
+	elementsToBlur.forEach(function (element) {
+		element.style.transition = "filter 0.3s";
+		element.style.filter = "blur(2px)";
+	});
+
+	overlay.style.position = "fixed";
+	overlay.style.top = 0;
+	overlay.style.left = 0;
+	overlay.style.width = "100%";
+	overlay.style.height = "100%";
+	overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+	overlay.style.zIndex = 998;
+
+	document.body.style.overflowY = "hidden";
 }
 
 var existingNotification = null;
 
 function removeNotification() {
-    if (existingNotification) {
-        document.body.removeChild(existingNotification);
-        existingNotification = null;
-    }
+	if (existingNotification) {
+		document.body.removeChild(existingNotification);
+		existingNotification = null;
+	}
 }
 
 function notification(message) {
-  removeNotification();
+	removeNotification();
 
-  var notification = document.createElement('div');
-  notification.setAttribute('id', 'customNotification');
-  notification.style.position = 'fixed';
-  notification.style.bottom = '20px';
-  notification.style.left = '20px';
-  notification.style.wordBreak = 'break-word';
-  notification.style.backgroundColor = 'var(--background-color)';
-  notification.style.padding = '10px';
-  notification.style.border = '1px solid var(--text-color)';
-  notification.style.borderRadius = '5px';
-  notification.style.textAlign = 'left';
-  notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
-  notification.style.display = 'flex';
-  notification.style.alignItems = 'center';
-  notification.style.zIndex = '9999';
+	var notification = document.createElement('div');
+	notification.setAttribute('id', 'customNotification');
+	notification.style.position = 'fixed';
+	notification.style.bottom = '20px';
+	notification.style.left = '20px';
+	notification.style.wordBreak = 'break-word';
+	notification.style.backgroundColor = 'var(--background-color)';
+	notification.style.padding = '10px';
+	notification.style.border = '1px solid var(--text-color)';
+	notification.style.borderRadius = '5px';
+	notification.style.textAlign = 'left';
+	notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
+	notification.style.display = 'flex';
+	notification.style.alignItems = 'center';
+	notification.style.zIndex = '9999';
 
-  var notificationElement = document.createElement('span');
-  notificationElement.textContent = message;
-  notificationElement.style.flex = '1';
-  notification.appendChild(notificationElement);
+	var notificationElement = document.createElement('span');
+	notificationElement.textContent = message;
+	notificationElement.style.flex = '1';
+	notification.appendChild(notificationElement);
 
-  var closeNotificationButton = document.createElement('span');
-  closeNotificationButton.textContent = 'X';
-  closeNotificationButton.style.marginLeft = '5px';
-  closeNotificationButton.style.cursor = 'pointer';
-  closeNotificationButton.style.fontWeight = 'bold';
-  closeNotificationButton.style.userSelect = 'none';
-  closeNotificationButton.onclick = function() {
-      removeNotification();
-  };
-  notification.appendChild(closeNotificationButton);
+	var closeNotificationButton = document.createElement('span');
+	closeNotificationButton.textContent = 'X';
+	closeNotificationButton.style.marginLeft = '5px';
+	closeNotificationButton.style.cursor = 'pointer';
+	closeNotificationButton.style.fontWeight = 'bold';
+	closeNotificationButton.style.userSelect = 'none';
+	closeNotificationButton.onclick = function () {
+		removeNotification();
+	};
+	notification.appendChild(closeNotificationButton);
 
-  document.body.appendChild(notification);
-  existingNotification = notification;
+	document.body.appendChild(notification);
+	existingNotification = notification;
 
-  var screenHeight = window.innerHeight;
-  var notificationHeight = notification.getBoundingClientRect().height;
+	var screenHeight = window.innerHeight;
+	var notificationHeight = notification.getBoundingClientRect().height;
 
-  if (notificationHeight > 0.9 * screenHeight) {
-      notificationElement.textContent = "Deze notificatie is te lang om weer te geven.";
-      notification.style.overflowY = 'none';
-      notification.style.maxHeight = 0.9 * screenHeight + 'px';
-  }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  var currentUrl = window.location.href;
-
-  if (currentUrl.includes("/blogs/") || currentUrl.includes("/blogs?")) {
-      document.body.style.textAlign = "left";
-  }
-});
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(function(registration) {
-      console.log('Service Worker geregistreerd met scope:', registration.scope);
-    })
-    .catch(function(error) {
-      console.error('Fout bij het registreren van de Service Worker:', error);
-    });
+	if (notificationHeight > 0.9 * screenHeight) {
+		notificationElement.textContent = "Deze notificatie is te lang om weer te geven.";
+		notification.style.overflowY = 'none';
+		notification.style.maxHeight = 0.9 * screenHeight + 'px';
+	}
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  sideMenuNav();
+	var currentUrl = window.location.href;
+
+	if (currentUrl.includes("/blogs/") || currentUrl.includes("/blogs?")) {
+		document.body.style.textAlign = "left";
+	}
+});
+
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('/service-worker.js')
+		.then(function (registration) {
+			console.log('Service Worker geregistreerd met scope:', registration.scope);
+		})
+		.catch(function (error) {
+			console.error('Fout bij het registreren van de Service Worker:', error);
+		});
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+	sideMenuNav();
 });
 
 var buttons = `
@@ -497,10 +497,10 @@ function sideMenuNav() {
 	sideBar.style.zIndex = "9998";
 	sideBar.style.overflowX = "hidden";
 	sideBar.style.transition = "0.5s";
-  
+
 	// Voeg de knoppen toe aan de sidebar
 	sideBar.innerHTML = buttons;
-  
+
 	var openButton = document.createElement("button");
 	openButton.id = "openButton";
 	openButton.textContent = ">";
@@ -514,46 +514,46 @@ function sideMenuNav() {
 	openButton.style.zIndex = "9999";
 	openButton.style.top = "50%";
 	openButton.style.transform = "translateY(-50%)";
-  
+
 	function adjustOpenButtonPosition() {
-	  if (sideBar.style.width === "275px") {
-		openButton.style.left = "272px";
-    openButton.textContent = "<";
-	  } else {
-		openButton.style.left = "-5px";
-    openButton.textContent = ">";
-	  }
-	}
-  
-	openButton.addEventListener("click", function () {
-	  if (sideBar.style.width === "275px") {
-		sideBar.style.width = "0";
-		openButton.style.transition = "left 0.5s ease";
-	  } else {
-		sideBar.style.width = "275px";
-		openButton.style.transition = "left 0.5s ease";
-	  }
-	  adjustOpenButtonPosition();
-	});
-  
-	document.addEventListener("click", function (event) {
-	  if (
-		event.target !== openButton &&
-		event.target !== sideBar &&
-		!sideBar.contains(event.target)
-	  ) {
 		if (sideBar.style.width === "275px") {
-		  sideBar.style.width = "0";
-		  openButton.style.transition = "left 0.5s ease";
-		  adjustOpenButtonPosition();
+			openButton.style.left = "272px";
+			openButton.textContent = "<";
+		} else {
+			openButton.style.left = "-5px";
+			openButton.textContent = ">";
 		}
-	  }
+	}
+
+	openButton.addEventListener("click", function () {
+		if (sideBar.style.width === "275px") {
+			sideBar.style.width = "0";
+			openButton.style.transition = "left 0.5s ease";
+		} else {
+			sideBar.style.width = "275px";
+			openButton.style.transition = "left 0.5s ease";
+		}
+		adjustOpenButtonPosition();
 	});
-  
+
+	document.addEventListener("click", function (event) {
+		if (
+			event.target !== openButton &&
+			event.target !== sideBar &&
+			!sideBar.contains(event.target)
+		) {
+			if (sideBar.style.width === "275px") {
+				sideBar.style.width = "0";
+				openButton.style.transition = "left 0.5s ease";
+				adjustOpenButtonPosition();
+			}
+		}
+	});
+
 	openButton.addEventListener("transitionend", function () {
-	  openButton.style.transition = "";
+		openButton.style.transition = "";
 	});
-  
+
 	document.body.appendChild(openButton);
 	document.body.appendChild(sideBar);
 }
