@@ -442,6 +442,7 @@ function sideMenuNav() {
 	openButton.style.userSelect = "none";
 	openButton.style.paddingBottom = "75px";
 	openButton.style.zIndex = "9999";
+	openButton.style.minWidth = "35px";
 	openButton.style.top = "50%";
 	openButton.style.transform = "translateY(-50%)";
 
