@@ -392,6 +392,7 @@ var buttons = `
 	<h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
 	<button onclick="window.location.href='/alle-methoden'">School unblocks</button>
 	<button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
+	<button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
 	<button onclick="window.location.href='/tools/bing-chat'">Bing Ai (GPT 4)</button>
 	<button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>

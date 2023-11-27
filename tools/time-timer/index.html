@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en" style="--time: 300;" data-lt-installed="true">
+
+<head>
+	<title>Time Timer</title>
+	<link rel="stylesheet" href="/style.css">
+	<script src="/script.js"></script>
+
+	<style>
+		body {
+		  	display: flex;
+		  	justify-content: center;
+		  	align-items: center;
+		  	height: 100vh;
+		  	margin: 0 auto;
+		}
+
+		blockquote,
+		pre,
+		ol,
+		ul,
+		figure {
+			padding: 0;
+			margin: 0;
+		}
+
+		img {
+			max-width: 100%;
+			display: block;
+			height: auto;
+			border: none;
+		}
+
+		article,
+		aside,
+		figure,
+		footer,
+		header,
+		aside,
+		main,
+		nav {
+			display: block;
+		}
+
+		*,
+		*:before,
+		*:after {
+			box-sizing: border-box;
+		}
+
+		iframe {
+			border: none;
+		}
+
+		:root {
+			--red: #ff002b;
+		}
+
+		/* Typography */
+
+		body {
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			display: grid;
+			grid-template-rows: 40px auto 1fr;
+			min-height: 100vh;
+			background: var(--background-color);
+		}
+
+		@media (min-height: 700px) {
+			body {
+				grid-template-rows: 0.5fr auto 1fr;
+				align-items: flex-end;
+			}
+		}
+
+		#time {
+			color: var(--text-color);
+		}
+
+		#goto-pictos-button {
+			position: absolute;
+			font-size: 20px;
+			top: 2px;
+			right: 5px;
+			padding: 10px 10px;
+			background-color: var(--button-bgcolor);
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.timer-container {
+		  	display: flex;
+		  	flex-direction: column;
+		  	justify-content: center;
+		  	align-items: center;
+			height: 100vh; /* 100% van de viewporthoogte */
+		}
+
+		.timer {
+			border-color: #000000;
+			position: relative;
+			width: 320px;
+			border: 10px solid;
+			border-radius: 10px;
+			margin-bottom: 20px;
+			background: #fff;
+			cursor: pointer;
+
+			border-radius: 50px;
+			background: #fff;
+			box-shadow: 20px 20px 60px #aea9aa, -20px -20px 60px #ffffff;
+		}
+
+		label {
+			display: block;
+			font-weight: 700;
+			font-size: 0.8em;
+			text-transform: uppercase;
+			text-align: center;
+		}
+
+		:root {
+			--time: 0;
+		}
+
+		.hand {
+			position: absolute;
+			width: 85%;
+			height: 85%;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-50%) translateY(-50%) translateY(-0.25vmin);
+			background: conic-gradient(white 0deg,
+					white calc(var(--time) * 1deg),
+					var(--red) calc(var(--time) * 1deg),
+					var(--red) 360deg);
+			border-radius: 100%;
+		}
+
+		.no-gradient .hand {
+			z-index: 2;
+		}
+
+		.no-gradient .hand::after {
+			transform: translateX(-50%) translateY(-100%) rotate(calc(var(--time) * 1deg));
+			transform-origin: bottom center;
+			content: '';
+			height: 45%;
+			width: 5px;
+			background: var(--red);
+			position: absolute;
+			z-index: 100;
+			left: 50%;
+			top: 50%;
+		}
+
+		.hand svg {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			left: 0;
+			top: 0;
+		}
+
+		.sizer {
+			height: 0;
+			padding-bottom: 100%;
+		}
+
+		li {
+			color: #000000;
+		}
+
+		.subdivisions li {
+			width: 5px;
+			height: 50%;
+			position: absolute;
+			list-style: none;
+			top: 0%;
+			left: 50%;
+			margin: -0.25vmin;
+			transform: rotate(30deg);
+			transform-origin: 50% 100%;
+		}
+
+		.subdivisions li:before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 15%;
+			height: 2rem;
+			width: 100%;
+			background: #2c3e50;
+		}
+
+		.subdivisions li:nth-child(5n + 1):before {
+			height: 4rem;
+		}
+
+		.subdivisions li:nth-child(5n + 1):after {
+			transform: translateX(-50%);
+			position: absolute;
+			left: 50%;
+		}
+
+		.subdivisions li:nth-child(1):after {
+			content: '0';
+		}
+
+		.subdivisions li:nth-child(6):after {
+			content: '55';
+		}
+
+		.subdivisions li:nth-child(11):after {
+			content: '50';
+		}
+
+		.subdivisions li:nth-child(16):after {
+			content: '45';
+		}
+
+		.subdivisions li:nth-child(21):after {
+			content: '40';
+		}
+
+		.subdivisions li:nth-child(26):after {
+			content: '35';
+		}
+
+		.subdivisions li:nth-child(31):after {
+			content: '30';
+		}
+
+		.subdivisions li:nth-child(36):after {
+			content: '25';
+		}
+
+		.subdivisions li:nth-child(41):after {
+			content: '20';
+		}
+
+		.subdivisions li:nth-child(46):after {
+			content: '15';
+		}
+
+		.subdivisions li:nth-child(51):after {
+			content: '10';
+		}
+
+		.subdivisions li:nth-child(56):after {
+			content: '5';
+		}
+
+		.subdivisions li:nth-child(1) {
+			transform: rotate(0deg);
+		}
+
+		.subdivisions li:nth-child(2) {
+			transform: rotate(6deg);
+		}
+
+		.subdivisions li:nth-child(3) {
+			transform: rotate(12deg);
+		}
+
+		.subdivisions li:nth-child(4) {
+			transform: rotate(18deg);
+		}
+
+		.subdivisions li:nth-child(5) {
+			transform: rotate(24deg);
+		}
+
+		.subdivisions li:nth-child(6) {
+			transform: rotate(30deg);
+		}
+
+		.subdivisions li:nth-child(7) {
+			transform: rotate(36deg);
+		}
+
+		.subdivisions li:nth-child(8) {
+			transform: rotate(42deg);
+		}
+
+		.subdivisions li:nth-child(9) {
+			transform: rotate(48deg);
+		}
+
+		.subdivisions li:nth-child(10) {
+			transform: rotate(54deg);
+		}
+
+		.subdivisions li:nth-child(11) {
+			transform: rotate(60deg);
+		}
+
+		.subdivisions li:nth-child(12) {
+			transform: rotate(66deg);
+		}
+
+		.subdivisions li:nth-child(13) {
+			transform: rotate(72deg);
+		}
+
+		.subdivisions li:nth-child(14) {
+			transform: rotate(78deg);
+		}
+
+		.subdivisions li:nth-child(15) {
+			transform: rotate(84deg);
+		}
+
+		.subdivisions li:nth-child(16) {
+			transform: rotate(90deg);
+		}
+
+		.subdivisions li:nth-child(17) {
+			transform: rotate(96deg);
+		}
+
+		.subdivisions li:nth-child(18) {
+			transform: rotate(102deg);
+		}
+
+		.subdivisions li:nth-child(19) {
+			transform: rotate(108deg);
+		}
+
+		.subdivisions li:nth-child(20) {
+			transform: rotate(114deg);
+		}
+
+		.subdivisions li:nth-child(21) {
+			transform: rotate(120deg);
+		}
+
+		.subdivisions li:nth-child(22) {
+			transform: rotate(126deg);
+		}
+
+		.subdivisions li:nth-child(23) {
+			transform: rotate(132deg);
+		}
+
+		.subdivisions li:nth-child(24) {
+			transform: rotate(138deg);
+		}
+
+		.subdivisions li:nth-child(25) {
+			transform: rotate(144deg);
+		}
+
+		.subdivisions li:nth-child(26) {
+			transform: rotate(150deg);
+		}
+
+		.subdivisions li:nth-child(27) {
+			transform: rotate(156deg);
+		}
+
+		.subdivisions li:nth-child(28) {
+			transform: rotate(162deg);
+		}
+
+		.subdivisions li:nth-child(29) {
+			transform: rotate(168deg);
+		}
+
+		.subdivisions li:nth-child(30) {
+			transform: rotate(174deg);
+		}
+
+		.subdivisions li:nth-child(31) {
+			transform: rotate(180deg);
+		}
+
+		.subdivisions li:nth-child(32) {
+			transform: rotate(186deg);
+		}
+
+		.subdivisions li:nth-child(33) {
+			transform: rotate(192deg);
+		}
+
+		.subdivisions li:nth-child(34) {
+			transform: rotate(198deg);
+		}
+
+		.subdivisions li:nth-child(35) {
+			transform: rotate(204deg);
+		}
+
+		.subdivisions li:nth-child(36) {
+			transform: rotate(210deg);
+		}
+
+		.subdivisions li:nth-child(37) {
+			transform: rotate(216deg);
+		}
+
+		.subdivisions li:nth-child(38) {
+			transform: rotate(222deg);
+		}
+
+		.subdivisions li:nth-child(39) {
+			transform: rotate(228deg);
+		}
+
+		.subdivisions li:nth-child(40) {
+			transform: rotate(234deg);
+		}
+
+		.subdivisions li:nth-child(41) {
+			transform: rotate(240deg);
+		}
+
+		.subdivisions li:nth-child(42) {
+			transform: rotate(246deg);
+		}
+
+		.subdivisions li:nth-child(43) {
+			transform: rotate(252deg);
+		}
+
+		.subdivisions li:nth-child(44) {
+			transform: rotate(258deg);
+		}
+
+		.subdivisions li:nth-child(45) {
+			transform: rotate(264deg);
+		}
+
+		.subdivisions li:nth-child(46) {
+			transform: rotate(270deg);
+		}
+
+		.subdivisions li:nth-child(47) {
+			transform: rotate(276deg);
+		}
+
+		.subdivisions li:nth-child(48) {
+			transform: rotate(282deg);
+		}
+
+		.subdivisions li:nth-child(49) {
+			transform: rotate(288deg);
+		}
+
+		.subdivisions li:nth-child(50) {
+			transform: rotate(294deg);
+		}
+
+		.subdivisions li:nth-child(51) {
+			transform: rotate(300deg);
+		}
+
+		.subdivisions li:nth-child(52) {
+			transform: rotate(306deg);
+		}
+
+		.subdivisions li:nth-child(53) {
+			transform: rotate(312deg);
+		}
+
+		.subdivisions li:nth-child(54) {
+			transform: rotate(318deg);
+		}
+
+		.subdivisions li:nth-child(55) {
+			transform: rotate(324deg);
+		}
+
+		.subdivisions li:nth-child(56) {
+			transform: rotate(330deg);
+		}
+
+		.subdivisions li:nth-child(57) {
+			transform: rotate(336deg);
+		}
+
+		.subdivisions li:nth-child(58) {
+			transform: rotate(342deg);
+		}
+
+		.subdivisions li:nth-child(59) {
+			transform: rotate(348deg);
+		}
+
+		.subdivisions li:nth-child(60) {
+			transform: rotate(354deg);
+		}
+
+		.timer-running .input-group {
+			opacity: 0;
+		}
+
+		.input-group {
+			position: relative;
+			z-index: 1;
+		}
+
+		.timer-button {
+			width: 100px;
+			height: 20px;
+			border-radius: 5px 5px 0 0;
+			background: var(--button-bgcolor);
+			border: none;
+			box-shadow: none;
+			cursor: pointer;
+			position: absolute;
+			z-index: 1;
+			outline: none;
+			top: -30px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.timer-button:focus {
+			opacity: 0.5;
+		}
+
+		.timer-running .timer-button {
+			background: var(--red);
+		}
+
+		.timer-finished .timer {
+			animation: wobble 1s ease-in-out;
+		}
+
+		input {
+			font: inherit;
+			background: transparent;
+			border: 2px solid var(--text-color);
+			padding: 0.5em;
+			width: 5rem;
+			text-align: center;
+			margin: 0.5rem auto;
+			display: inline-block;
+		}
+
+		[type='submit'] {
+			-webkit-appearance: none;
+			appearance: none;
+			cursor: pointer;
+			background: var(--button-bgcolor);
+			color: #fff;
+			font-weight: 700;
+			border-color: var(--text-color);
+		}
+
+		.footer {
+			text-align: center;
+			padding: 2rem 0;
+		}
+
+		.footer .logo {
+			display: block;
+			margin: 0 auto;
+			width: 182px;
+		}
+
+		.footer a {
+			font-weight: 700;
+		}
+
+		:root {
+			--wobble-aggression: 1%;
+		}
+
+		@keyframes wobble {
+			from {
+				transform: translate3d(0, 0, 0);
+			}
+
+			15% {
+				transform: translate3d(calc(var(--wobble-aggression) * -5), 0, 0) rotate3d(0, 0, 1, -5deg);
+			}
+
+			30% {
+				transform: translate3d(calc(var(--wobble-aggression) * 4), 0, 0) rotate3d(0, 0, 1, 3deg);
+			}
+
+			45% {
+				transform: translate3d(calc(var(--wobble-aggression) * -3), 0, 0) rotate3d(0, 0, 1, -3deg);
+			}
+
+			60% {
+				transform: translate3d(calc(var(--wobble-aggression) * 2), 0, 0) rotate3d(0, 0, 1, 2deg);
+			}
+
+			75% {
+				transform: translate3d(calc(var(--wobble-aggression) * -1), 0, 0) rotate3d(0, 0, 1, -1deg);
+			}
+
+			to {
+				transform: translate3d(0, 0, 0);
+			}
+		}
+	</style>
+</head>
+
+<body class="timer-paused">
+	<span></span>
+	<div class="timer-container">
+		<div class="timer">
+			<button type="button" class="timer-button" aria-label="Start/Stop"></button>
+			<div class="hand"></div>
+			<div class="sizer"></div>
+			<ul class="subdivisions">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+
+		<form style="text-align: center; align-content: center;" class="input-group">
+			<label for="time">Hoeveel minuten moet de timer duren?</label>
+			<input type="number" id="time" value="10" name="time" min="1" max="60" oninput="validateMinutes()">
+			<input type="submit" value="Start">
+		</form>
+
+		<script>
+			function validateMinutes() {
+				var timeInput = document.getElementById("time");
+				var minutes = parseInt(timeInput.value);
+
+				if (isNaN(minutes) || minutes < 1 || minutes > 60) {
+					timeInput.setCustomValidity("Minuten moeten tussen 1 en 60 liggen.");
+				} else {
+					timeInput.setCustomValidity("");
+				}
+			}
+		</script>
+
+		<footer role="contentinfo" class="footer">
+			<img style="opacity: 0; border-radius: 25px; margin-top: -40px; margin-bottom: 0px; width: 362px;"
+				class="img" src="lol" alt="Toukle">
+		</footer>
+
+		<audio class="ding" src="/tools/time-timer/time-timer-sound.wav" preload="auto"></audio>
+
+		<script>
+			const lerp = (x, y, a) => x * (1 - a) + y * a;
+			const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
+			const invlerp = (x, y, a) => clamp((a - x) / (y - x));
+			const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
+
+			(() => {
+
+				try {
+					const test = document.createElement('div')
+					test.style.background = 'conic-gradient(red, blue)';
+					document.body.appendChild(test);
+					const styles = window.getComputedStyle(test);
+					if (styles.backgroundImage === 'none') {
+						document.body.classList.add('no-gradient');
+						document.body.removeChild(test);
+					}
+				} catch (e) { }
+
+
+				const timeInput = document.querySelector('[name="time"]');
+				const timerEl = document.querySelector('.timer');
+				const form = document.querySelector('.input-group');
+				const ding = document.querySelector('.ding');
+
+				let timeRemaining = Number(timeInput.value);
+				setTimeCSS();
+
+				let timer;
+				const MINUTE = 1 * 1000 * 60;
+
+				timerEl.addEventListener('click', toggleTimer);
+				form.addEventListener('submit', (event) => {
+					event.preventDefault();
+					toggleTimer();
+				})
+
+				function toggleTimer(params) {
+					timer ? stopTimer() : startTimer();
+				}
+
+				function startTimer() {
+					document.body.classList.add('timer-running');
+					document.body.classList.remove('timer-paused');
+					document.body.classList.remove('timer-finished');
+
+					timeRemaining = Number(timeInput.value) + 1;
+					tick();
+				}
+
+				function tick() {
+					timeRemaining--;
+					setTimeCSS();
+
+					if (!timeRemaining) {
+						stopTimer();
+						return;
+					}
+
+					timer = window.setTimeout(tick, MINUTE);
+				}
+
+				function setTimeCSS() {
+					document.documentElement.style.setProperty(
+						'--time',
+						360 - range(0, 60, 0, 360, Number(timeRemaining))
+					);
+				}
+
+				function stopTimer() {
+					document.body.classList.add('timer-paused');
+					document.body.classList.add('timer-finished');
+					document.body.classList.remove('timer-running');
+
+					if (ding) {
+						ding.play();
+					}
+
+					if (timer) {
+						window.clearTimeout(timer);
+						timer = null;
+					}
+
+					setTimeout(() => {
+						document.body.classList.remove('timer-finished');
+					}, 1000);
+				}
+			})();
+		</script>
+</body>
+
+</html>
