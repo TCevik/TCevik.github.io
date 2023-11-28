@@ -448,8 +448,8 @@ function sideMenuNav() {
 	openButton.style.transform = "translateY(-50%)";
 
 	function adjustOpenButtonPosition() {
-		if (sideBar.style.width === "275px") {
-			openButton.style.left = "272px";
+		if (sideBar.style.width === "300px") {
+			openButton.style.left = "297px";
 			openButton.textContent = "<";
 		} else {
 			openButton.style.left = "-5px";
@@ -458,11 +458,11 @@ function sideMenuNav() {
 	}
 
 	openButton.addEventListener("click", function () {
-		if (sideBar.style.width === "275px") {
+		if (sideBar.style.width === "300px") {
 			sideBar.style.width = "0";
 			openButton.style.transition = "left 0.5s ease";
 		} else {
-			sideBar.style.width = "275px";
+			sideBar.style.width = "300px";
 			openButton.style.transition = "left 0.5s ease";
 		}
 		adjustOpenButtonPosition();
@@ -474,7 +474,7 @@ function sideMenuNav() {
 			event.target !== sideBar &&
 			!sideBar.contains(event.target)
 		) {
-			if (sideBar.style.width === "275px") {
+			if (sideBar.style.width === "300px") {
 				sideBar.style.width = "0";
 				openButton.style.transition = "left 0.5s ease";
 				adjustOpenButtonPosition();
