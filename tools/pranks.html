@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pranks</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+</head>
+<body>
+    
+    <h1>Pranks</h1>
+    <p>Klik op een plaatje om hem full screen te maken</p>
+    <img src="/assets/pranks/browser-op-slot.png" alt="Browser op slot">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var image = document.querySelector('img');
+                
+            image.addEventListener('click', function () {
+                if (image.requestFullscreen) {
+                    image.requestFullscreen();
+                } else if (image.mozRequestFullScreen) { // Firefox
+                    image.mozRequestFullScreen();
+                } else if (image.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                    image.webkitRequestFullscreen();
+                } else if (image.msRequestFullscreen) { // IE/Edge
+                    image.msRequestFullscreen();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

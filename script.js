@@ -396,6 +396,7 @@ var buttons = `
 	<button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
 	<button onclick="window.location.href='/tools/bing-chat'">Bing Ai (GPT 4)</button>
+	<button onclick="window.location.href='/tools/pranks'">Pranks</button>
 	<button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>
 	<button onclick="window.location.href='/tools/myinstants'">MyInstants</button>
 	<button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
