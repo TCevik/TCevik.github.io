@@ -381,6 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 var buttons = `
 	<button onclick="window.location.href='/'">Home</button>
+	<button onclick="runBookmarklet();">Run Bookmarklet / JavaScript</button>
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
 	<button id="ex-bt" onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
@@ -488,3 +489,17 @@ function sideMenuNav() {
 	document.body.appendChild(openButton);
 	document.body.appendChild(sideBar);
 }
+
+function runBookmarklet() {
+	var bookmarklet = prompt("Javascript here:");
+	if (bookmarklet) {
+	  bookmarklet = bookmarklet.replace(/^javascript:/i, '');
+	  try {
+		var script = document.createElement('script');
+		script.textContent = bookmarklet;
+		document.body.appendChild(script);
+	  } catch (e) {
+		alert("Something went wrong: " + e);
+	  }
+	}
+  }
