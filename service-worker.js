@@ -14,11 +14,9 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Return the cached response if present
         return response || fetch(event.request);
       })
       .catch(error => {
-        // If both cache and network fail, show an offline page
         return caches.match('/offline.html');
       })
   );
