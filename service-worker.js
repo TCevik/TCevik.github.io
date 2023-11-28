@@ -1,6 +1,7 @@
 const CACHE_NAME = 'my-site-cache-v1';
 const urlsToCache = [
-  '/offline.html'
+  '/offline.html',
+  '/assets/offline-img.png'
 ];
 
 self.addEventListener('install', event => {

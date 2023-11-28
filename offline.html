@@ -3,11 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Je bent offline</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    
+    <style>
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0 auto;
+        }
+
+        h1, p {
+            color: black;
+        }
+    </style>
+
+    <script>
+        function checkWifiAndReload() {
+            if (navigator.connection && navigator.connection.type) {
+                if (navigator.connection.type === 'wifi') {
+                    location.reload();
+                }
+            }
+        }
+    
+        setInterval(checkWifiAndReload, 500);
+    </script>
 </head>
 <body>
     <h1>Oeps, je hebt geen verbinding!</h1>
     <p>Deze pagina kon helaas niet worden geladen, controleer je verbinding.</p>
+    <img width="150px" src="assets/offline-img.png" alt="Offline Image">
 </body>
 </html>
