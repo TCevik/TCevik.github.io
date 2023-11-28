@@ -24,20 +24,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var image = document.querySelector('img');
-                
-            image.addEventListener('click', function () {
-                if (image.requestFullscreen) {
-                    image.requestFullscreen();
-                } else if (image.mozRequestFullScreen) { // Firefox
-                    image.mozRequestFullScreen();
-                } else if (image.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                    image.webkitRequestFullscreen();
-                } else if (image.msRequestFullscreen) { // IE/Edge
-                    image.msRequestFullscreen();
-                }
+            var images = document.querySelectorAll('img');
+    
+            images.forEach(function (image) {
+                image.addEventListener('click', function () {
+                    if (image.requestFullscreen) {
+                        image.requestFullscreen();
+                    } else if (image.mozRequestFullScreen) { // Firefox
+                        image.mozRequestFullScreen();
+                    } else if (image.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                        image.webkitRequestFullscreen();
+                    } else if (image.msRequestFullscreen) { // IE/Edge
+                        image.msRequestFullscreen();
+                    }
+                });
             });
         });
-    </script>
+    </script>    
 </body>
 </html>
