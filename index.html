@@ -77,7 +77,6 @@
             width: 90%;
             border: var(--h1234-color) 3px solid;
             border-radius: 25px;
-            margin-top: 60px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -322,8 +321,9 @@
     <button id="frame-button" onclick="loadIframe()">Start Chat</button>
     <div id="iframeContainer"></div>
 
+    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam site</button>
     <center><div id="tctam-fans" style="height: 600px;">
-        <iframe src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+        <iframe id="tctam-fans-iframe" src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
     </div></center>
 
     <center><div style="margin-top: 3000px; display: none;" id="showMenu"></span>
@@ -335,6 +335,10 @@
     </div></center>
 
     <script>
+        function vervangFansIframe() {
+            document.getElementById("tctam-fans-iframe").src = "https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true";
+        }
+
         firebase.auth().onAuthStateChanged(function(user) {
             var secretTabBtn = document.getElementById('openSecretTabBtn');
         
