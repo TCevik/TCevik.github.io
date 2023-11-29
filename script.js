@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		acceptTosPpPopup.id = 'acceptTosPpPopup';
 		acceptTosPpPopup.className = 'acceptTosPpPopup';
 
-		var text = 'Door het gebruik van deze site ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
+		var text = 'Door deze site te gebruiken ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
 		acceptTosPpPopup.innerHTML = text;
 
 		var button = document.createElement('button');
