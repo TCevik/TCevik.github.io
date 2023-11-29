@@ -130,7 +130,7 @@
                     clearInterval(intervalId);
                     playImmediately(frequency, duration);
                 }
-            }, 1000);  // Controleer elke seconde
+            }, 10);  // Controleer elke seconde
         }
     </script>
 </head>
@@ -146,7 +146,7 @@
     <label for="duration-input">Speelduur (ms):</label>
     <input id="duration-input" min="0" value="2500">
     <br>
-    <label for="time-input">Specifieke tijd (uur:minuut):</label>
+    <label for="time-input">Specifieke tijd om te spelen (uur:minuut):</label>
     <input id="time-input" placeholder="laat leeg voor meteen">
     <br>
     <button onclick="playSound()">Speel geluid af</button>
