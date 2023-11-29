@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var buttons = `
-	<center><button onclick="window.location.href='/'">Home</button>
+	<button onclick="window.location.href='/'">Home</button>
 	<button onclick="runBookmarklet();">Run Bookmarklet / JavaScript</button>
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
@@ -418,7 +418,7 @@ var buttons = `
 	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de broncode van de site</button></center>
+	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de broncode van de site</button>
 `;
 
 function sideMenuNav() {
