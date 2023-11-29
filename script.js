@@ -414,6 +414,7 @@ var buttons = `
 	<button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
 
 	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
+	<button onclick="window.open('/status')">TC_tam Website Status</button>
 	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam Website Status</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .status-container {
+            display: block;
+            text-align: left;
+            width: 40%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+        #status-showcase {
+            width: 40%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-item {
+            margin-right: 25px;
+            margin-bottom: 10px;
+        }
+
+        .green-dot {
+            width: 15px;
+            height: 15px;
+            background-color: greenyellow;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .orange-dot {
+            width: 15px;
+            height: 15px;
+            background-color: orange;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .red-dot {
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>TC_tam Website Status</h1>
+
+    <div id="status-showcase">
+        <div class="status-item">
+            <div class="green-dot"></div>
+            = Werkend
+        </div>
+        <div class="status-item">
+            <div class="orange-dot"></div>
+            = Slechter
+        </div>
+        <div class="status-item">
+            <div class="red-dot"></div>
+            = Onbruikbaar
+        </div>
+    </div>
+
+    <div id="status">
+        <div class="status-container">
+            <div class="status-item">
+                <div class="green-dot"></div>
+                TC_tam Website
+            </div>
+            <div class="status-item">
+                <div class="green-dot"></div>
+                TC_tam Chat
+            </div>
+            <div class="status-item">
+                <div class="green-dot"></div>
+                TC_tam Accounts
+            </div>
+            <div class="status-item">
+                <div class="green-dot"></div>
+                tctam.nl Domein
+            </div>
+        </div>
+    </div>
+</body>
+</html>
