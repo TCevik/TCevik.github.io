@@ -3,24 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
     <title>Je bent offline</title>
-    
-    <style>
-        body {
-            background-color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0 auto;
-        }
-
-        h1, p {
-            color: black;
-        }
-    </style>
 
     <script>
         function checkWifiAndReload() {
@@ -32,12 +17,19 @@
         }
     
         setInterval(checkWifiAndReload, 500);
+
+        function goBack() {
+            // Gebruik de window.history om terug te gaan naar de vorige pagina
+            window.history.back();
+        }
     </script>
 </head>
 <body>
     <h1>Oeps, je hebt geen verbinding!</h1>
     <p>Deze pagina kon helaas niet worden geladen, controleer je verbinding.</p>
 
-    <p style="color: grey;">TC_tam - Tamer Çevik ©</p>
+    <button onclick="goBack()">Terug</button>
+
+    <p style="position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px;">TC_tam - Tamer Çevik ©</p>
 </body>
 </html>
