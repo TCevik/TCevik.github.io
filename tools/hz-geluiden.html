@@ -78,7 +78,7 @@
                     // Update de afteltimer
                     updateCountdown(getTimeDifference(currentHours, currentMinutes, currentSeconds, hours, minutes));
                 }
-            }, 1000);  // Controleer elke seconde
+            }, 10);  // Controleer elke seconde
         }
 
         function getTimeDifference(currentHours, currentMinutes, currentSeconds, targetHours, targetMinutes) {
