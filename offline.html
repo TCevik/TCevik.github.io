@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
     <title>Je bent offline</title>
+    
+    <style>
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0 auto;
+        }
+
+        h1, p {
+            color: black;
+        }
+    </style>
 
     <script>
         function checkWifiAndReload() {
@@ -30,6 +45,6 @@
 
     <button onclick="goBack()">Terug</button>
 
-    <p style="position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px;">TC_tam - Tamer Çevik ©</p>
+    <p style="color: grey;">TC_tam - Tamer Çevik ©</p>
 </body>
 </html>
