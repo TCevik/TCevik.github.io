@@ -2,7 +2,7 @@
   "name": "TC_tam Website",
   "short_name": "TC_tam",
   "start_url": "/",
-  "description": "Dit is de TC_tam website! Door Tamer Çevik.",
+  "description": "Dit is de TC_tam website! Gemaakt door Tamer Çevik.",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
