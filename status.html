@@ -26,6 +26,8 @@
         .status-item {
             margin-right: 25px;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
 
         .green-dot {
@@ -54,6 +56,15 @@
             display: inline-block;
             margin-right: 5px;
         }
+
+        .initial-dot {
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -78,45 +89,53 @@
     <div id="status">
         <div class="status-container">
             <div class="status-item">
-                <div id="website-status" class=""></div>
-                TC_tam Website
+                <div id="website-status" class="initial-dot"></div>
+                <p id="website-status-text">TC_tam Website</p>
             </div>
             <div class="status-item">
-                <div class="green-dot"></div>
+                <div class="initial-dot"></div>
                 TC_tam Chat
             </div>
             <div class="status-item">
-                <div class="green-dot"></div>
+                <div class="initial-dot"></div>
                 TC_tam Accounts
             </div>
             <div class="status-item">
-                <div class="green-dot"></div>
+                <div class="initial-dot"></div>
                 tctam.nl Domein
             </div>
         </div>
     </div>
 
     <script>
-                document.addEventListener("DOMContentLoaded", function () {
-            // Hier krijg je het laadtijdobject van performance.timing
-            var laadtijdObject = performance.timing;
+        document.addEventListener("DOMContentLoaded", function () {
+            var pingURL = "https://tctam.nl";
 
-            // Hier bereken je de daadwerkelijke laadtijd
-            var laadtijd = laadtijdObject.loadEventEnd - laadtijdObject.navigationStart;
+            var startTime = new Date().getTime();
 
-            // Hier kies je de kleur op basis van de laadtijd
-            var kleur;
-            if (laadtijd < 300) {
-                kleur = "green";
-            } else if (laadtijd >= 300 && laadtijd <= 1500) {
-                kleur = "orange";
-            } else {
-                kleur = "red";
-            }
-        
-            // Hier update je de status dots binnen de specifieke status-container
-            var websiteStatus = document.querySelector("#website-status");
-            websiteStatus.className = kleur + "-dot";
+            var xhr = new XMLHttpRequest();
+
+            xhr.onload = function () {
+                var pingTime = new Date().getTime() - startTime;
+
+                var kleur;
+                if (pingTime < 150) {
+                    kleur = "green";
+                } else if (pingTime >= 150 && pingTime <= 500) {
+                    kleur = "orange";
+                } else {
+                    kleur = "red";
+                }
+
+                var websiteStatus = document.querySelector("#website-status");
+                websiteStatus.className = kleur + "-dot";
+
+                var websiteStatusText = document.getElementById("website-status-text");
+                websiteStatusText.innerText = "TC_tam Website - Ping tijd: " + pingTime + " ms";
+            };
+
+            xhr.open("GET", pingURL, true);
+            xhr.send();
         });
     </script>
 </body>
