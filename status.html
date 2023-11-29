@@ -71,14 +71,14 @@
         </div>
         <div class="status-item">
             <div class="red-dot"></div>
-            = Onbruikbaar
+            = Langzaam
         </div>
     </div>
 
     <div id="status">
         <div class="status-container">
             <div class="status-item">
-                <div class="green-dot"></div>
+                <div id="website-status" class=""></div>
                 TC_tam Website
             </div>
             <div class="status-item">
@@ -95,5 +95,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            // Hier krijg je het laadtijdobject van performance.timing
+            var laadtijdObject = performance.timing;
+
+            // Hier bereken je de daadwerkelijke laadtijd
+            var laadtijd = laadtijdObject.loadEventEnd - laadtijdObject.navigationStart;
+
+            // Hier kies je de kleur op basis van de laadtijd
+            var kleur;
+            if (laadtijd < 300) {
+                kleur = "green";
+            } else if (laadtijd >= 300 && laadtijd <= 1500) {
+                kleur = "orange";
+            } else {
+                kleur = "red";
+            }
+        
+            // Hier update je de status dots binnen de specifieke status-container
+            var websiteStatus = document.querySelector("#website-status");
+            websiteStatus.className = kleur + "-dot";
+        });
+    </script>
 </body>
 </html>
