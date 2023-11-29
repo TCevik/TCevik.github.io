@@ -300,6 +300,12 @@ metaTag.content = 'width=device-width, initial-scale=1';
 var head = document.querySelector('head');
 head.appendChild(metaTag);
 
+var manifestLink = document.createElement('link');
+manifestLink.rel = 'manifest';
+manifestLink.href = '/app.webmanifest';
+var headElement = document.head || document.getElementsByTagName('head')[0];
+headElement.insertBefore(manifestLink, headElement.firstChild);
+
 var existingNotification = null;
 
 function removeNotification() {
