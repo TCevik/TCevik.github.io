@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	const currentURL = window.location.pathname;
 
 	if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
+		!currentURL.startsWith('/picto-planner/') && !currentURL.startsWith('/picto-planner?') &&
 		!currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
 
 		const loginButton = document.createElement("div");

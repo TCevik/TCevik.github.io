@@ -25,7 +25,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const request = event.request;
-  
+
   event.respondWith(
     caches.open(CACHE_NAME).then(cache => {
       return cache.match(request).then(response => {
@@ -42,9 +42,10 @@ self.addEventListener('fetch', event => {
 
         // Als er wifi is, verwijder de oude cache en haal altijd een nieuwe versie op
         if (navigator.onLine) {
-          fetchPromise.then(networkResponse => {
+          return fetchPromise.then(networkResponse => {
             cache.delete(request); // Verwijder oude cache
             cache.put(request, networkResponse.clone()); // Sla nieuwe op
+            return networkResponse;
           });
         }
 
