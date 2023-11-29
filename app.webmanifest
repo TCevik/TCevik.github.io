@@ -3,7 +3,7 @@
   "short_name": "TC_tam",
   "start_url": "/",
   "description": "Dit is de TC_tam website! Gemaakt door Tamer Çevik.",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "icons": [
