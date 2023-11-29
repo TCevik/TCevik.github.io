@@ -1,22 +1,10 @@
 const CACHE_NAME = 'my-site-cache-v1';
 const OFFLINE_PAGE = '/offline.html';
-const GITHUB_API_URL = 'https://api.github.com/repos/TCevik/TCevik.github.io/contents';
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      // Haal de bestanden op van de GitHub-repository en sla ze op in de cache
-      return fetch(GITHUB_API_URL)
-        .then(response => response.json())
-        .then(files => {
-          return Promise.all(files.map(file => {
-            const url = file.type === 'file' ? file.download_url : `${GITHUB_API_URL}/${file.name}`;
-            return fetch(url).then(response => {
-              return cache.put(url, response);
-            });
-          }));
-        });
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => cache.add(OFFLINE_PAGE))
   );
 });
 
