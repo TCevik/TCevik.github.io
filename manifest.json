@@ -1,11 +1,11 @@
 {
   "name": "TC_tam Website",
   "short_name": "TC_tam",
-  "start_url": "https://tcevik.github.io",
+  "start_url": "/",
   "description": "Dit is de TC_tam website! Door Tamer Çevik.",
   "display": "standalone",
-  "background_color": "var(--background-color)",
-  "theme_color": "var(--h1234-color)",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "https://tcevik.github.io/favicon.ico",
