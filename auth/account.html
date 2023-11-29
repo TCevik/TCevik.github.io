@@ -149,6 +149,23 @@
                     notification('Fout bij inloggen met Google: ' + errorMessage);
                 });
         }
+
+        // Voeg code toe om wachtwoord te resetten
+        document.getElementById('reset-password-btn').addEventListener('click', function () {
+            var userEmail = document.getElementById('login-email').value;
+            if (userEmail.trim() !== "") {
+                firebase.auth().sendPasswordResetEmail(userEmail)
+                    .then(function () {
+                        notification('Een e-mail met instructies voor het resetten van uw wachtwoord is verzonden naar ' + userEmail);
+                    })
+                    .catch(function (error) {
+                        console.error('Fout bij het verzenden van de wachtwoordreset-e-mail:', error.message);
+                        notification('Fout bij het verzenden van de wachtwoordreset-e-mail: ' + error.message);
+                    });
+            } else {
+                notification('Voer een geldig e-mailadres in.');
+            }
+        });
     </script>
 
     <style>

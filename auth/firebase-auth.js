@@ -124,19 +124,3 @@ function changePassword() {
         }
     }
 }
-
-// Voeg code toe om wachtwoord te resetten
-document.getElementById('reset-password-btn').addEventListener('click', function () {
-    var userEmail = prompt("Enter your email:");
-
-    if (userEmail !== null) {
-        firebase.auth().sendPasswordResetEmail(userEmail)
-            .then(function () {
-                notification('Een e-mail met instructies voor het resetten van uw wachtwoord is verzonden naar ' + userEmail);
-            })
-            .catch(function (error) {
-                console.error('Fout bij het verzenden van de wachtwoordreset-e-mail:', error.message);
-                notification('Fout bij het verzenden van de wachtwoordreset-e-mail: ' + error.message);
-            });
-    }
-});
