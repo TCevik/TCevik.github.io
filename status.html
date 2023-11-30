@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title>TC_tam Website Status</title>
-    
+
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
@@ -67,8 +68,9 @@
         }
     </style>
 </head>
+
 <body>
-    
+
     <h1>TC_tam Website Status</h1>
 
     <div id="status-showcase">
@@ -108,35 +110,46 @@
     </div>
 
     <script>
+        function ping(url) {
+            const startTime = new Date().getTime();
+
+            return fetch(url)
+                .then(response => {
+                    const endTime = new Date().getTime();
+                    const pingTime = endTime - startTime;
+                    return pingTime;
+                })
+                .catch(error => {
+                    throw new Error(`Er is een fout opgetreden: ${error.message}`);
+                    Notification(`Er is een fout opgetreden: ${error.message}`);
+                });
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             var pingURL = "https://tcevik.github.io";
 
-            var startTime = new Date().getTime();
+            ping(pingURL)
+                .then(pingTime => {
+                    var kleur;
+                    if (pingTime < 150) {
+                        kleur = "green";
+                    } else if (pingTime >= 150 && pingTime <= 500) {
+                        kleur = "orange";
+                    } else {
+                        kleur = "red";
+                    }
 
-            var xhr = new XMLHttpRequest();
+                    var websiteStatus = document.querySelector("#website-status");
+                    websiteStatus.className = kleur + "-dot";
 
-            xhr.onload = function () {
-                var pingTime = new Date().getTime() - startTime;
-
-                var kleur;
-                if (pingTime < 150) {
-                    kleur = "green";
-                } else if (pingTime >= 150 && pingTime <= 500) {
-                    kleur = "orange";
-                } else {
-                    kleur = "red";
-                }
-
-                var websiteStatus = document.querySelector("#website-status");
-                websiteStatus.className = kleur + "-dot";
-
-                var websiteStatusText = document.getElementById("website-status-text");
-                websiteStatusText.innerText = "TC_tam Website - Ping tijd: " + pingTime + " ms";
-            };
-
-            xhr.open("GET", pingURL, true);
-            xhr.send();
+                    var websiteStatusText = document.getElementById("website-status-text");
+                    websiteStatusText.innerText = "TC_tam Website - Ping tijd: " + pingTime + " ms";
+                })
+                .catch(error => {
+                    Notification(error.message);
+                });
         });
     </script>
 </body>
+
 </html>
