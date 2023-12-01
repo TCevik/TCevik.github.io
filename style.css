@@ -142,35 +142,15 @@ button:focus {
 }
 
 img {
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
-input {
-  border-radius: 25px;
+input,
+textarea {
+  border-radius: 10px;
   padding: 10px;
   outline: none;
   margin: 20px;
-  border: solid var(--text-color);
-  font-size: var(--text-size);
-  color: var(--text-color);
-  transition: border-color 0.3s;
-  background-color: var(--background-color);
-  font-family: Lexend, Arial, sans-serif;
-}
-
-input:hover,
-input:focus {
-  border: solid #58bf33;
-}
-
-input::placeholder {
-  color: var(--text-color);
-}
-
-textarea {
-  border-radius: 25px;
-  padding: 10px;
-  outline: none;
   border: solid var(--text-color);
   font-size: var(--text-size);
   color: var(--text-color);
@@ -181,11 +161,14 @@ textarea {
   resize: none;
 }
 
+input:hover,
+input:focus,
 textarea:hover,
 textarea:focus {
   border: solid #58bf33;
 }
 
+input::placeholder,
 textarea::placeholder {
   color: var(--text-color);
 }
