@@ -334,7 +334,7 @@ var buttons = `
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
 	<button onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
-	<button onclick="window.location.href='/tctam-zoeken'">TC_tam zoeken</button>
+	<button onclick="window.location.href='/tools/tctam-zoeken'">TC_tam zoeken</button>
 	<button onclick="window.location.href='/games/alle-games'">Games</button>
 	<button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
 	<button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
