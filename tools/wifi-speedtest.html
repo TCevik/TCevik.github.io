@@ -45,7 +45,7 @@
                 // Controleer of de speedtest 10 seconden heeft geduurd
                 if (elapsedSeconds < duration) {
                     // Blijf de afbeelding opnieuw downloaden
-                    image.src = '/assets/speedtest-img.jpg';
+                    image.src = 'https://wallpapers.com/images/hd/green-bench-in-park-p6emimadkuw47fw0.jpg';
                 } else {
                     // Bereken en toon de gemiddelde snelheden
                     const averageDownloadSpeed = ((totalDownloadedBytes / duration) * 8 / 1000000).toFixed(2);
@@ -58,7 +58,7 @@
 
             // Start de timer en laad de afbeelding voor de eerste keer
             startTime = new Date().getTime();
-            image.src = '/assets/speedtest-img.jpg';
+            image.src = 'https://wallpapers.com/images/hd/green-bench-in-park-p6emimadkuw47fw0.jpg';
         }
     </script>
 </body>
