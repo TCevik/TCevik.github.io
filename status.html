@@ -103,8 +103,8 @@
                 TC_tam Accounts
             </div>
             <div class="status-item">
-                <div class="red-dot"></div>
-                tctam.nl Domein
+                <div id="tctamnl-status" class="initial-dot"></div>
+                <p id="tctamnl-status-text">tctam.nl Domein</p>
             </div>
         </div>
     </div>
@@ -126,28 +126,57 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            var pingURL = "https://tcevik.github.io";
+            setTimeout(() => {
+                var pingURL = "/";
 
-            ping(pingURL)
-                .then(pingTime => {
-                    var kleur;
-                    if (pingTime < 150) {
-                        kleur = "green";
-                    } else if (pingTime >= 150 && pingTime <= 500) {
-                        kleur = "orange";
-                    } else {
-                        kleur = "red";
-                    }
+                ping(pingURL)
+                    .then(pingTime => {
+                        var kleur;
+                        if (pingTime < 100) {
+                            kleur = "green";
+                        } else if (pingTime >= 100 && pingTime <= 300) {
+                            kleur = "orange";
+                        } else {
+                            kleur = "red";
+                        }
 
-                    var websiteStatus = document.querySelector("#website-status");
-                    websiteStatus.className = kleur + "-dot";
+                        var websiteStatus = document.getElementById("website-status");
+                        websiteStatus.className = kleur + "-dot";
 
-                    var websiteStatusText = document.getElementById("website-status-text");
-                    websiteStatusText.innerText = "TC_tam Website - Ping tijd: " + pingTime + " ms";
-                })
-                .catch(error => {
-                    Notification(error.message);
-                });
+                        var websiteStatusText = document.getElementById("website-status-text");
+                        websiteStatusText.innerText = "TC_tam Website - Ping tijd: " + pingTime + " ms";
+                    })
+                    .catch(error => {
+                        Notification(error.message);
+                    });
+                }, "600");
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                var pingURL = "https://tctam.nl";
+
+                ping(pingURL)
+                    .then(pingTime => {
+                        var kleur;
+                        if (pingTime < 100) {
+                            kleur = "green";
+                        } else if (pingTime >= 100 && pingTime <= 300) {
+                            kleur = "orange";
+                        } else {
+                            kleur = "red";
+                        }
+
+                        var websiteStatus = document.getElementById("tctamnl-status");
+                        websiteStatus.className = kleur + "-dot";
+
+                        var websiteStatusText = document.getElementById("tctamnl-status-text");
+                        websiteStatusText.innerText = "tctam.nl Domein - Ping tijd: " + pingTime + " ms";
+                    })
+                    .catch(error => {
+                        Notification(error.message);
+                    });
+                }, "600");
         });
     </script>
 </body>
