@@ -352,6 +352,7 @@ var buttons = `
 	<button onclick="window.location.href='/tools/notities'">Notities</button>
 	<button onclick="window.location.href='/tools/ide'">IDE</button>
 	<button onclick="window.location.href='/tools/tts'">TTS</button>
+	<button onclick="window.location.href='/tools/wifi-speedtest.html'">Time Timer</button>
 
 	<h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
 	<button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
