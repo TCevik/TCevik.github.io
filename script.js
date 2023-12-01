@@ -118,56 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 });
 
-var originalTitle = document.title; // Bewaar de oorspronkelijke titel van het tabblad
-
-// Array met de berichten die we willen weergeven wanneer de focus verloren is
-var messages = [
-	"TC_tam mist je!",
-	"TC_tam zit hier!",
-	"Hier was je bezig, bij TC_tam!",
-	"TC_tam: blijf bij mij!",
-	"Let goed op TC_tam!",
-	"TC_tam: kom je snel terug?",
-	"TC_tam: wat doe je nou?",
-	"TC_tam: hier moet je zijn!"
-];
-
-var currentMessageIndex = 0; // Index van het huidige bericht
-
-function changeTitle() {
-	const stopTabNamesCookie = getCookie("stopTabNames");
-
-	if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
-		const randomIndex = Math.floor(Math.random() * messages.length);
-		document.title = messages[randomIndex];
-	}
-}
-
-// Functie om een cookie op te halen op basis van de naam
-function getCookie(name) {
-	const cookies = document.cookie.split(';');
-	for (let i = 0; i < cookies.length; i++) {
-		const cookie = cookies[i].trim();
-		if (cookie.startsWith(name + '=')) {
-			return cookie.substring(name.length + 1);
-		}
-	}
-	return null;
-}
-
-// Functie om de titel terug te zetten naar de oorspronkelijke titel wanneer de focus wordt hersteld
-function restoreTitle() {
-	const stopTabNamesCookie = getCookie("stopTabNames");
-
-	if (stopTabNamesCookie === null || stopTabNamesCookie === "false") {
-		document.title = originalTitle;
-	}
-}
-
-// Luister naar het focusverlies van het tabblad en herstel van de focus
-/* window.addEventListener("blur", changeTitle);
-window.addEventListener("focus", restoreTitle); */
-
 // Controleer of de pagina geladen is
 document.addEventListener("DOMContentLoaded", function () {
 	// Kijk of er een cookie "tabName" is
@@ -200,9 +150,6 @@ document.addEventListener("keydown", function (event) {
 			// Verwijder het cookie "faviconLink"
 			deleteCookie("faviconLink");
 
-			// Zet de cookie "stopTabNames" op false
-			setCookie("stopTabNames", "false");
-
 			location.reload();
 		} else if (tabName !== null && tabName !== "") {
 			// Stel de tabbladnaam in op de ingevoerde waarde
@@ -222,8 +169,6 @@ document.addEventListener("keydown", function (event) {
 				setFavicon(faviconLink);
 			}
 
-			// Zet de cookie "stopTabNames" op true
-			setCookie("stopTabNames", "true");
 		}
 	}
 });
@@ -386,7 +331,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 var buttons = `
 	<button onclick="window.location.href='/'">Home</button>
-	<button onclick="runBookmarklet();">Run Bookmarklet / JavaScript</button>
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
 	<button onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
@@ -496,17 +440,3 @@ function sideMenuNav() {
 	document.body.appendChild(openButton);
 	document.body.appendChild(sideBar);
 }
-
-function runBookmarklet() {
-	var bookmarklet = prompt("Javascript here:");
-	if (bookmarklet) {
-	  bookmarklet = bookmarklet.replace(/^javascript:/i, '');
-	  try {
-		var script = document.createElement('script');
-		script.textContent = bookmarklet;
-		document.body.appendChild(script);
-	  } catch (e) {
-		alert("Something went wrong: " + e);
-	  }
-	}
-  }
