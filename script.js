@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	gtag('config', 'G-7KL389S9VR');
 })();
 
+// profielfoto
 document.addEventListener('DOMContentLoaded', function () {
 	const currentURL = window.location.pathname;
 
@@ -258,6 +259,10 @@ if ('serviceWorker' in navigator) {
 		.catch(function (error) {
 			console.error('Fout bij het registreren van de Service Worker:', error);
 		});
+}
+
+if (window.location.href === "https://free-tctam.github.io/") {
+	window.location.href = "https://tcevik.github.io/";
 }
 
 var existingNotification = null;
