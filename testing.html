@@ -12,7 +12,7 @@
             if ('BeforeInstallPromptEvent' in window) {
                 showResult("Hey, wil jij nou de TC_tam app downloaden? Het kost je maar 10 seconden!");
             } else {
-                showResult("Sorry, maar jij kan de TC_tam app niet downloaden met deze browser.");
+                return;
             }
             document.querySelector("#install").addEventListener("click", installApp);
         });
