@@ -8,23 +8,23 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "https://tctam.nl/favicon.ico",
+      "src": "/favicon.ico",
       "type": "image/png",
       "sizes": "64x64"
     }, {
-      "src": "https://tctam.nl/favicon.ico",
+      "src": "/favicon.ico",
       "type": "image/png",
       "sizes": "128x128"
     }, {
-      "src": "https://tctam.nl/favicon.ico",
+      "src": "/favicon.ico",
       "type": "image/png",
       "sizes": "256x256"
     }, {
-      "src": "https://tctam.nl/favicon.ico",
+      "src": "/favicon.ico",
       "type": "image/png",
       "sizes": "512x512"
     }, {
-      "src": "https://tctam.nl/favicon.ico",
+      "src": "/favicon.ico",
       "type": "image/png",
       "sizes": "500x500"
     }
