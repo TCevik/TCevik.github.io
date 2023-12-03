@@ -3,95 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>TC_tam</title>
-    <meta name="description" content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Dit is een site die je kan gebruiken om bijvoorbeeld beheerde school dingen te unblocken. Nou, in ieder geval hoop ik dat je veel plezier met mijn site hebt!">
-    
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-
-    <style>
-        #title span {
-            opacity: 0;
-            display: inline-block;
-            animation: fadeIn 2s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        #partymode-button {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 25px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin: 0px;
-            width: 150px;
-        }
-
-        #aboutme {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin: 0px;
-            width: 120px;
-        }
-
-        #poopsound {
-            border-top-right-radius: 25px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin: 0px;
-            width: 40px;
-        }
-
-        #shareURL {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            margin-top: 5px !important;
-            margin: 0px;
-            width: 320px;
-        }
-
-        #read-story {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-            border-bottom-right-radius: 12px;
-            border-bottom-left-radius: 12px;
-            margin: 5px;
-            width: 320px;
-        }
-
-        .hahanoobtext {
-            display: none;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .hahanoobtext {
-                display: block;
-            }
-        }
-
-        #tctam-fans {
-            display: flex;
-            flex-wrap: wrap;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            height: 800px;
-            width: 90%;
-            border: var(--h1234-color) 3px solid;
-            border-radius: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="/auth/firebase-config.js"></script>
 
     <script>
         function countup() {
@@ -107,151 +23,50 @@
             document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
         }
 
-        setInterval(countup, 1000);
-
-        var countDownDate = new Date("January 1, " + (new Date().getFullYear() + 1) + " 00:00:00").getTime();
-
-        function countdown() {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-
-            if (new Date().getMonth() === 0 && new Date().getDate() === 1) {
-                document.getElementById("aftellen").innerHTML = "Gelukkig nieuw jaar!";
-                return;
-            }
-        
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        
-            if (days < 50) {
-                document.getElementById("aftellen").style.display = "block";
-            } else {
-                document.getElementById("aftellen").style.display = "none";
-            }
-        
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("aftellen").innerHTML = " Nog " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden tot het nieuw jaar is!";
-        }
-
-        setInterval(countdown, 1000);
-
-        function updateBatteryLevel() {
-            navigator.getBattery().then(function(battery) {
-                var batteryLevel = battery.level * 100;
-                document.getElementById("battery-percentage").innerHTML = "Batterijniveau: " + Math.round(batteryLevel) + "%";
-            });
-        }
+        setInterval(countup, 100);
 
         function getNextBirthday() {
-          const today = new Date();
-          const currentYear = today.getFullYear();
-          let nextBirthday = new Date(currentYear, 4, 18);
-        
-          if (nextBirthday < today) {
-            nextBirthday.setFullYear(currentYear + 1, 4, 18);
-          }
-      
-          return nextBirthday;
-        }
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            let nextBirthday = new Date(currentYear, 4, 18);
 
-        function countdownToBirthday() {
-          const nextBirthday = getNextBirthday();
-          const now = new Date();
-          const timeLeft = nextBirthday - now;
-        
-          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-        
-          document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
-        }
-
-        setInterval(countdownToBirthday, 1000);
-
-        document.addEventListener("DOMContentLoaded", function() {
-            setInterval(updateBatteryLevel, 1000);
-        
-            if ('getBattery' in navigator) {
-                updateBatteryLevel();
-            } else {
-                document.getElementById("battery-percentage").innerHTML = "Batterijniveau kan niet worden opgehaald.";
+            if (nextBirthday < today) {
+                nextBirthday.setFullYear(currentYear + 1, 4, 18);
             }
-        });
 
-        function scrollToOverMij() {
-            var destination = document.getElementById("overmij").offsetTop;
-        
-            window.scrollTo({
-                top: destination,
-                behavior: "smooth"
-            });
+            return nextBirthday;
         }
 
-        function scrollToSecret() {
-            var destination = document.getElementById("showMenu").offsetTop;
-        
-            window.scrollTo({
-                top: destination,
-                behavior: "smooth"
-            });
-        }
+        function calculateAge() {
+            const birthdate = new Date(2009, 4, 18); // Jouw geboortedatum hier
+            const today = new Date();
+            let age = today.getFullYear() - birthdate.getFullYear();
 
-        var keySequence = [];
-
-        document.addEventListener('keydown', function(event) {
-            keySequence.push(event.key);
-        
-            if (keySequence.join('') === 'ballondoos') {
-                showMenu();
-                setTimeout(scrollToSecret, 100);
+            // Aanpassen als de verjaardag nog niet heeft plaatsgevonden dit jaar
+            if (today < new Date(today.getFullYear(), birthdate.getMonth(), birthdate.getDate())) {
+                age--;
             }
-        });
 
-        function showMenu() {
-            var menu = document.getElementById('showMenu');
-            menu.style.display = 'inline';
+            return age;
         }
 
-        function getRandomColor() {
-            const r = Math.floor(Math.random() * 256);
-            const g = Math.floor(Math.random() * 256);
-            const b = Math.floor(Math.random() * 256);
-            return `rgb(${r},${g},${b})`;
+        function updateAgeAndCountdown() {
+            const age = calculateAge();
+            document.getElementById('age').innerHTML = `Ik ben Tamer, een ${age} jarige jongen die websites maakt.`;
+
+            const nextBirthday = getNextBirthday();
+            const now = new Date();
+            const timeLeft = nextBirthday - now;
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
         }
 
-        function changePageColors() {
-            const randomColor = getRandomColor();
-            document.body.style.backgroundColor = randomColor;
-        
-            const allTextElements = document.querySelectorAll('body *');
-            allTextElements.forEach(element => {
-                const textRandomColor = getRandomColor();
-                element.style.color = textRandomColor;
-            });
-        }
-
-        function partyTimer() {
-            var interval = setInterval(changePageColors, 100);
-        }
-
-        window.onload = function() {
-            if (window.location.href.endsWith("/?partymode")) {
-                partyTimer();
-            }
-        };
-
-        function activatePartyMode() {        
-            partyTimer();
-        }
-
-        function poopSound() {
-            var interval = setInterval(function() {
-                var audio = new Audio('https://www.myinstants.com/media/sounds/dry-fart.mp3');
-                audio.play();
-            }, 150);
-        }
+        setInterval(updateAgeAndCountdown, 100);
 
         window.addEventListener("DOMContentLoaded", async event => {
             if (!('share' in navigator)) {
@@ -282,29 +97,81 @@
             }
         }
     </script>
-</head>
-
-<body style="width: 100vw;">
-    <h4 style="margin-bottom: -30px; margin-top: 10px; border-bottom: var(--h1234-color) solid 3px;"><marquee style="width: 100vw;">BREAKING NEWS --- DIT IS EEN COOLE SITE 😎 --- BREAKING NEWS --- WIL JE NOU DAT HIER IETS KOMT TE STAAN STUUR DAT NAAR MIJ --- BREAKING NEWS --- <span>VERSIE: </span><span id="runsAmountNews">ERROR</span> --- BREAKING NEWS --- SOMETIMES ITS FIJN TO EAT A MANDERIJN 🍊 --- BREAKING NEWS --- PARTY MODE IS NU BESCHIKBAAR --- BREAKING NEWS</marquee></h4>
-</body>
-
-<body onload="countdown(); countup(); countdownToBirthday();">
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
-    <script src="/auth/firebase-config.js"></script>
-
-    <div id="title">
-        <h1 style="margin-top: 45px;"></h1>
-        <h2 style="font-size: 26px; margin-top: -10px;"></h2>
-    </div>
-    
-    <p style="margin-bottom: 0px;" onload="displayUserName()" id="welcome">Welkom op de TC_tam website. "Fijne dag!"</p>
-
-    <p>Verspreid dit bericht naar zo veel mogelijk mensen! Als de gebruikers in 2 weken van 200 naar 400 gaat heb ik wat leuks!</p>
-    <h3 style="width: 95%; margin: 0 auto;">Voor de niet-geblokkeerde TC_tam site ga je naar google en zoek naar TC_tam. Vervolgens klik je in het GROENE rondje voor de niet geblokkeerde site. (ik update die knop weer als die weer geblokkeerd word)</h3>
-    <br><img id="tctam-search" src="/assets/tctam-search.png" alt="ongeblokkeerde site">
 
     <style>
+        #openSecretTabBtn {
+            margin-top: 10px !important;
+        }
+
+        #title {
+            border: var(--h1234-color) 3px solid;
+            width: 90%;
+            max-width: 500px;
+            padding: 0 5px;
+            margin: 0 auto;
+            border-radius: 50vw;
+            margin-top: 20vh;
+        }
+
+        .title-text {
+            font-size: 3em;
+        }
+
+        #countup-site-age {
+            margin-top: 60px;
+            font-size: 1.2em;
+        }
+
+        #social-media {
+            margin-top: 60px;
+        }
+
+        #background-ball {
+            position: absolute;
+            left: 50%;
+            margin-top: 20vh;
+            margin: 0 auto;
+            padding: 0 5px;
+            transform: translate(-50%);
+            width: 90%;
+            max-width: 500px;
+            height: 150px;
+            z-index: -1;
+            filter: blur(100px);
+            background-color: #7fff48;
+            border-radius: 50vw;
+            opacity: var(--bg-ball-opacity);
+            transition: opacity 0.5s;
+        }
+
+        /* light mode */
+        :root {
+          --bg-ball-opacity: 0;
+        }
+
+        /* dark mode */
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --bg-ball-opacity: 1;
+          }
+        }
+
+        .n-t-e-o {
+            display: inline-block;
+        }
+
+        #title span {
+            opacity: 0;
+            display: inline-block;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
         #tctam-search {
             width: 600px;
         }
@@ -314,201 +181,111 @@
                 width: 95%;
             }
         }
-    </style>
-    
-    <br>
-    <br>
 
-    <br><button id="partymode-button" onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
-    <button id="aboutme" onclick="scrollToOverMij();">Over mij</button>
-    <button id="poopsound" onclick="poopSound();">💩</button>
-    <br><button id="shareURL">Deel deze website</button>
-    <br><button id="read-story" onclick="window.location.href='/blogs/alle-blogs'">Hier kan je al mijn blogs lezen.</button>
+        #tctam-fans {
+            display: flex;
+            flex-wrap: wrap;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 800px;
+            width: 90%;
+            border: var(--h1234-color) 3px solid;
+            border-radius: var(--border-radius2);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body onload="countup(); countdownToBirthday();">
+    <div id="background-ball"></div>
+
+    <div id="title">
+        <h1 class="title-text" style="margin-top: 10px;"></h1>
+        <h2 class="title-text" style="margin-top: -10px;"></h2>
+    </div>
 
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
-    <p id="aftellen">‎</p>
-    <p id="battery-percentage">‎<p>
-        
-    <h3>⬇️ Maaaaar, voordat we met de site gaan beginnen. SOCIAL MEDIA TIME!!! ⬇️</h3>
-    <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
-        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
-    </a>
-    <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
-        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
-    </a>
-    <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
-        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
-    </a>
-    <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
-        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
-    </a>
-    <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
-        <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
-    </a>
 
-    <h3 style="margin-top: 50px; font-size: 2.2em;" id="overmij">Over mij</h3>
-    <h4>Hoi, ik ben Tamer!</h4>
-    <p style="width: 95%; margin: 0 auto; margin-bottom: 30px;">
-    <br>Yo welkom, veel plezier op mijn website!
-    <br>
-    <br><b>Hoe heb ik TC_tam dan verzonnen?</b>
-    <br>⦁ Ik heet Tamer Çevik.
-    <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
-    <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
-    <br>Nu weet je hoe ik TC_tam verzonnen heb!
-    <br>
-    <br>Ik ben jarig op 18 mei.
-    <p style="margin-top: -20px;" id="birthday"><p>
-    <br>
-    <br>Mijn favoriete kleuren zijn:
-    <br><span style="color: #132f0c">#132f0c</span>
-    <br><span style="color: #38761d">#38761d</span>
-    <br><span style="color: #43b731">#43b731</span>
-    <br><span style="color: #58bf33">#58bf33</span>
-    <br><span style="color: #e0fcd4">#e0fcd4</span>
-    <br>
-    <br>Dark mode kleur:
-    <br><span style="color: #0d1710">#0d1710</span>
-    <br><span class="hahanoobtext">Wil je eens iets weten? Die kan je niet zien met dark mode aan HAHAHA noob, maar als je het echt heel graag wil weten dan is het <a href="https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif">hier</a> alsnog te zien. :)</span>
-    <br>De kleuren van mijn logo zijn:
-    <br><span style="color: #33ff33">#33ff33</span>
-    <br><span style="color: #336699">#336699</span>
-    <br>
-    <br>(Ik heb deze HEX code's hier ook echt niet gezet zodat ik ze makkelijk kan verkrijgen, neuuhhhh.)</p>
+    <h4 style="width: 95%; margin: 0 auto;">Voor de niet-geblokkeerde TC_tam site ga je naar google en zoek naar TC_tam. Vervolgens klik je in het GROENE rondje voor de niet geblokkeerde site. (ik update die knop weer als die weer geblokkeerd word)</h4>
+    <br><img id="tctam-search" src="/assets/tctam-search.png" alt="ongeblokkeerde site">
 
-    <h4>Laten we even chatten:</h4>
-    <button id="frame-button" onclick="loadIframe()">Start Chat</button>
-    <div id="iframeContainer"></div>
+    <div id="social-media">
+        <h3>Social Media:</h3>
+        <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
+        </a>
+        <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
+        </a>
+        <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
+        </a>
+        <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
+        </a>
+        <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
+        </a>
+    </div>
+
+    <div style="background-color: var(--bg-accent-color); margin: 0 auto; padding: 20px; width: max-content; border-radius: var(--border-radius3); margin-top: 20px;">
+        <button id="shareURL" style="margin-top: -3px; width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
+            <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px" src="/assets/share-icon.png" alt="Deel icon">
+            Deel deze website
+        </button>
+
+        <br><div class="n-t-e-o">
+            <img src="/favicon.ico" width="200px" style="margin-left: 20px;" alt="TC_tam Logo">
+        </div>
+
+        <div class="n-t-e-o">
+            <h3 style="margin-left: 50px; width: 90%; text-align: left;" id="age">Ik ben Tamer, een  jarige jongen die websites maakt.</h3>
+            <p style="margin-left: 50px; width: 90%; text-align: left;">Hoe heb ik TC_tam bedacht?
+            <br>⦁ Ik heet Tamer Çevik.
+            <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
+            <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+            <br>Nu weet je hoe ik TC_tam verzonnen heb!</p>
+            <p style="margin-top: -5px; margin-left: 50px; width: 90%; text-align: left;" id="birthday"><p>
+        </div>
+    </div>
 
     <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam site</button>
-    <center><div id="tctam-fans" style="height: 600px; overflow: hidden;">
+    <div id="tctam-fans" style="margin: 0 auto; height: 600px; overflow: hidden;">
         <iframe id="tctam-fans-iframe" src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
-    </div></center>
+    </div>
 
-    <center><div style="margin-top: 3000px; display: none;" id="showMenu"></span>
+    <div style="margin: 0 auto; display: none;" id="showMenu"></span>
         <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
         <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van die website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
         <button style="font-size: 1.0em; display:none;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
         <div id="loginMessage" style="color: red;">Log eerst in om de eigen naam en favicon functie te gebruiken. De blank tab kan je wel al gebruiken.</div>
         <button style="font-size: 1.0em; display:none;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
-    </div></center>
+    </div>
 
     <script>
+        /* change tctam fans iframe */
         function vervangFansIframe() {
             document.getElementById("tctam-fans-iframe").src = "https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true";
         }
 
-        firebase.auth().onAuthStateChanged(function(user) {
-            var secretTabBtn = document.getElementById('openSecretTabBtn');
+        /* show navigation button */
+        window.addEventListener('load', function() {
+            let loadCount = localStorage.getItem('loadCount') || 0;
         
-            if (user) {
-                document.getElementById('loginMessage').style.display = 'none';
-                document.getElementById('openNewTabBtn').style.display = 'block';
-                secretTabBtn.style.display = 'block';
-                secretTabBtn.disabled = false;
-            } else {
-                document.getElementById('loginMessage').style.display = 'block';
-                document.getElementById('openNewTabBtn').style.display = 'block';
-                secretTabBtn.style.display = 'block';
-                secretTabBtn.disabled = true;
-            }
-        });
-
-        function loadIframe() {
-            var button = document.getElementById('frame-button');
-            var iframe = document.createElement('iframe');
-            button.disabled = true;
-            iframe.style.borderRadius = '10px';
-            iframe.style.border = 'var(--h1234-color) solid 3px';
-            iframe.style.width = '90%';
-            iframe.style.height = '600px';
-            iframe.style.opacity = '0';
-            iframe.src = '/tctam-chat/';
-            iframe.scrolling = 'no';
-            document.getElementById('iframeContainer').appendChild(iframe);
+            loadCount++;
         
-            setTimeout(function() {
-                iframe.style.transition = 'opacity 1s';
-                button.style.transition = 'opacity 1s';
-                button.style.opacity = '0';
-                setTimeout(function() {
-                    button.style.display = 'none';
-                    iframe.style.opacity = '100';
-                }, 1000);
-            }, 30);
-        }
-
-        function fetchData() {
-            fetch('https://api.github.com/repos/tcevik/tcevik.github.io/actions/runs', {
-                method: 'GET',
-                headers: {
-                    'Authorization': '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',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                const runsAmount = data.total_count;
-                var element = document.getElementById('runsAmountNews');
-
-                if (element) {
-                    element.textContent = runsAmount;
+            if (loadCount < 2) {
+                let openButton = document.getElementById('openButton');
+            
+                if (openButton) {
+                    openButton.textContent = "Klik hier voor het menu met alle pagina's (Dit gaat weg na 1x de pagina reloaden)";
+                    openButton.style.maxWidth = '150px';
                 }
-            })
-            .catch(error => {
-                console.error('Fout bij het ophalen van de GitHub Workflow-runs:', error);
-            });
-        }
-
-        setInterval(fetchData, 5000);
-
-        fetchData();
-
-        function openNewTab() {
-            var newTab = window.open('about:blank', '_blank');
-            var iframe = newTab.document.createElement('iframe');
-            iframe.src = '/';
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            newTab.document.body.appendChild(iframe);
-            
-            var link = newTab.document.createElement('link');
-            link.rel = 'icon';
-            link.type = 'image/x-icon';
-            link.href = '/assets/asfalt-light.png';
-            
-            var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
-            head.appendChild(link);
-            
-            newTab.document.title = '‎';
-            newTab.document.body.style.overflow = 'hidden';
-        };
-
-        function openSecretTab() {
-            var tabName = prompt('Voer de naam van het tabblad in:');
-            var faviconLink = prompt('Voer de favicon-link in:');
-
-            if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
-                var newTab = window.open('about:blank', '_blank');
-                var iframe = newTab.document.createElement('iframe');
-                iframe.src = '/';
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                newTab.document.body.appendChild(iframe);
-                
-                var link = newTab.document.createElement('link');
-                link.rel = 'icon';
-                link.type = 'image/x-icon';
-                link.href = faviconLink;
-                
-                var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
-                head.appendChild(link);
-                
-                newTab.document.title = tabName;
-                newTab.document.body.style.overflow = 'hidden';
-            } else {
-                alert('Tabbladnaam en favicon-link mogen niet leeg zijn.');
             }
-        }
+        
+            localStorage.setItem('loadCount', loadCount);
+        });
 
         const title = document.getElementById('title');
         const h1Content = "TC_tam";
@@ -534,41 +311,7 @@
         spans.forEach((span, index) => {
             span.style.animationDelay = `${index * 100}ms`;
         });
-
-        var auth = firebase.auth();
-                
-        function displayUserName() {
-            setTimeout(() => {
-                var user = firebase.auth().currentUser;
-                var displayName = user ? user.displayName : null;
-                var userEmail = user ? user.email : 'gebruiker';
-                var welcomeMessage = 'Hallo ' + (displayName ? displayName : userEmail) + ', ik hoop dat je een leuk bezoek hebt op deze website. "Fijne dag!"';
-                document.getElementById("welcome").innerText = welcomeMessage;
-            }, 1000);
-        }
-        
-        displayUserName();
-        setTimeout(() => {
-            displayUserName();
-        }, 2000);
-
-        // Wacht tot de pagina volledig is geladen
-        window.addEventListener('load', function() {
-            let loadCount = localStorage.getItem('loadCount') || 0;
-        
-            loadCount++;
-        
-            if (loadCount < 2) {
-                let openButton = document.getElementById('openButton');
-            
-                if (openButton) {
-                    openButton.textContent = "Klik hier voor het menu met alle pagina's (Dit gaat weg na 1x de pagina reloaden)";
-                    openButton.style.maxWidth = '150px';
-                }
-            }
-        
-            localStorage.setItem('loadCount', loadCount);
-        });
     </script>
+    <script src="/assets/additional-js/about-blank-hack.js"></script>
 </body>
 </html>
