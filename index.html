@@ -156,10 +156,6 @@
           }
         }
 
-        .n-t-e-o {
-            display: inline-block;
-        }
-
         #title span {
             opacity: 0;
             display: inline-block;
@@ -179,6 +175,12 @@
         @media (max-width: 600px) {
             #tctam-search {
                 width: 95%;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            #tctam-logo {
+                display: none;
             }
         }
 
@@ -229,26 +231,28 @@
         </a>
     </div>
 
-    <div id="aboutme" style="background-color: var(--bg-accent-color); margin: 0 auto; padding: 20px; width: max-content; border-radius: var(--border-radius3); margin-top: 20px;">
-        <button id="shareURL" style="margin-top: -3px; width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
+    <div id="aboutme" style="width: 80%; background-color: var(--bg-accent-color); padding: 20px; margin: 0 auto; border-radius: var(--border-radius3); margin-top: 20px; display: flex; flex-direction: column; align-items: center;">
+        <button id="shareURL" style="width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
             <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px" src="/assets/share-icon.png" alt="Deel icon">
             Deel deze website
         </button>
-
-        <br><div class="n-t-e-o">
-            <img src="/favicon.ico" width="200px" style="margin-left: 20px;" alt="TC_tam Logo">
-        </div>
-
-        <div class="n-t-e-o">
-            <h3 style="margin-left: 50px; width: 90%; text-align: left;" id="age">Ik ben Tamer, een  jarige jongen die websites maakt.</h3>
-            <p style="margin-left: 50px; width: 90%; text-align: left;">Hoe heb ik TC_tam bedacht?
-            <br>⦁ Ik heet Tamer Çevik.
-            <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
-            <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
-            <br>Nu weet je hoe ik TC_tam verzonnen heb!</p>
-            <p style="margin-top: -5px; margin-left: 50px; width: 90%; text-align: left;" id="birthday"><p>
-        </div>
-    </div>
+    
+        <div style="display: flex; width: 100%; justify-content: space-between; margin-top: 20px;">
+            <div id="tctam-logo" style="margin-top: -3px; width: 200px; margin-right: 20px; text-align: right;">
+                <img src="/favicon.ico" width="200px" style="max-width: 100%;" alt="TC_tam Logo">
+            </div>
+        
+            <div style="margin-top: -30px; flex-grow: 1; text-align: left;">
+                <h3 id="age">Ik ben Tamer, een (leeftijd) jarige jongen die websites maakt.</h3>
+                <p>Hoe heb ik TC_tam bedacht?
+                    <br>⦁ Ik heet Tamer Çevik.
+                    <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
+                    <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+                    <br>Nu weet je hoe ik TC_tam verzonnen heb!</p>
+                <p class="aboutme-text" id="birthday"></p>
+            </div> 
+        </div>        
+    </div>    
 
     <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam site</button>
     <div id="tctam-fans" style="margin: 0 auto; height: 600px; overflow: hidden;">
