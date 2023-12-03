@@ -8,13 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://tctam.nl/style.css">
     <script>
-        navigator.serviceWorker.register("dummy-sw.js");
-
         window.addEventListener("DOMContentLoaded", async event => {
             if ('BeforeInstallPromptEvent' in window) {
-                showResult("⏳ BeforeInstallPromptEvent supported but not fired yet");
+                showResult("Hey, wil jij nou de TC_tam app downloaden?");
             } else {
-                showResult("❌ BeforeInstallPromptEvent NOT supported");
+                showResult("Sorry, maar jij kan de TC_tam app niet downloaden met deze browser.");
             }
             document.querySelector("#install").addEventListener("click", installApp);
         });
@@ -28,8 +26,6 @@
             deferredPrompt = e;
             // Show your customized install prompt for your PWA
             document.querySelector("#install").style.display = "block";
-            showResult("✅ BeforeInstallPromptEvent fired", true);
-
         });
 
         window.addEventListener('appinstalled', (e) => {
@@ -71,7 +67,7 @@
     <div class="container">
         <h1>Installation Prompt Demo</h1>
         <p class="instructions">Load this PWA in a browser supporting beforeinstallprompt.</p>
-        <section class="toolbar"><button id="install">Install this App</button></section>
+        <button id="install">Installeer de TC_tam app</button>
         <output></output>
     </div>
 </body>
