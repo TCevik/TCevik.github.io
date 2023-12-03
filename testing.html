@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="/auth/firebase-config.js"></script>
+
+    <script>
+        function countup() {
+            var now = new Date();
+            var startDate = new Date(2023, 4, 21, 20, 6, 16);
+            var timeElapsed = now - startDate;
+
+            var days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+
+            document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+        }
+
+        setInterval(countup, 1000);
+    </script>
+
+    <style>
+        #openSecretTabBtn {
+            margin-top: 10px !important;
+        }
+
+        #title {
+            border: var(--h1234-color) 3px solid;
+            width: 90%;
+            max-width: 500px;
+            padding: 0 5px;
+            margin: 0 auto;
+            border-radius: 50vw;
+            margin-top: 20vh;
+        }
+
+        .title-text {
+            font-size: 3em;
+        }
+
+        #countup-site-age {
+            margin-top: 60px;
+            font-size: 1.2em;
+        }
+
+        #social-media {
+            margin-top: 60px;
+        }
+
+        #background-ball {
+            position: absolute;
+            left: 50%;
+            margin-top: 20vh;
+            margin: 0 auto;
+            padding: 0 5px;
+            transform: translate(-50%);
+            width: 90%;
+            max-width: 500px;
+            height: 150px;
+            z-index: -1;
+            filter: blur(100px);
+            background-color: #7fff48;
+            border-radius: 50vw;
+            opacity: var(--bg-ball-opacity);
+            transition: opacity 0.5s;
+        }
+
+        /* light mode */
+        :root {
+          --bg-ball-opacity: 0;
+        }
+
+        /* dark mode */
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --bg-ball-opacity: 1;
+          }
+        }
+    </style>
+</head>
+<body onload="countup();">
+    <div id="background-ball"></div>
+
+    <div id="title">
+        <h1 class="title-text" style="margin-top: 10px;">TC_tam</h1>
+        <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
+    </div>
+
+    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+
+    <div id="social-media">
+        <h3>Social Media:</h3>
+        <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
+        </a>
+        <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
+        </a>
+        <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
+        </a>
+        <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
+        </a>
+        <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
+        </a>
+    </div>
+
+    
+
+    <div style="margin: 0 auto; display: none;" id="showMenu"></span>
+        <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
+        <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van die website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
+        <button style="font-size: 1.0em; display:none;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
+        <div id="loginMessage" style="color: red;">Log eerst in om de eigen naam en favicon functie te gebruiken. De blank tab kan je wel al gebruiken.</div>
+        <button style="font-size: 1.0em; display:none;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
+    </div>
+
+    <script>
+        /* show navigation button */
+        window.addEventListener('load', function() {
+            let loadCount = localStorage.getItem('loadCount') || 0;
+        
+            loadCount++;
+        
+            if (loadCount < 2) {
+                let openButton = document.getElementById('openButton');
+            
+                if (openButton) {
+                    openButton.textContent = "Klik hier voor het menu met alle pagina's (Dit gaat weg na 1x de pagina reloaden)";
+                    openButton.style.maxWidth = '150px';
+                }
+            }
+        
+            localStorage.setItem('loadCount', loadCount);
+        });
+    </script>
+    <script src="/assets/about-blank-hack.js"></script>
+</body>
+</html>
