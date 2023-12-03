@@ -24,6 +24,8 @@
             deferredPrompt = e;
             document.querySelector("#install").style.display = "block";
             document.querySelector("#install").style.margin = "0 auto";
+            document.querySelector("#install-text").style.display = "block";
+            document.querySelector("#install-text").style.margin = "0 auto";
         });
 
         window.addEventListener('appinstalled', (e) => {
@@ -54,8 +56,8 @@
 </head>
 
 <body>
-    <p id="install-text"></p>
-    <button id="install">Installeer de TC_tam app</button>
+    <p style="display: none;" id="install-text"></p>
+    <button style="display: none;" id="install">Installeer de TC_tam app</button>
 </body>
 
 </html>
