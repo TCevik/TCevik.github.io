@@ -30,7 +30,7 @@
         });
 
         window.addEventListener('appinstalled', (e) => {
-            showResult("✅ AppInstalled fired", true);
+            showResult("✅ AppInstalled fired");
         });
 
         async function installApp() {
@@ -43,7 +43,7 @@
                 deferredPrompt = null;
                 // Act on the user's choice
                 if (outcome === 'accepted') {
-                    showResult('😀 User accepted the install prompt.', true);
+                    showResult('😀 User accepted the install prompt.');
                 } else if (outcome === 'dismissed') {
                     showResult('😟 User dismissed the install prompt');
                 }
@@ -53,24 +53,17 @@
             }
         }
 
-        function showResult(text, append = false) {
-            if (append) {
-                document.querySelector("output").innerHTML += "<br>" + text;
-            } else {
-                document.querySelector("output").innerHTML = text;
-            }
+        function showResult(message) {
+            const installText = document.querySelector("#install-text");
+            installText.textContent = message;
         }
     </script>
     <link rel="manifest" href="https://tctam.nl/app.webmanifest">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Installation Prompt Demo</h1>
-        <p class="instructions">Load this PWA in a browser supporting beforeinstallprompt.</p>
-        <button id="install">Installeer de TC_tam app</button>
-        <output></output>
-    </div>
+    <p id="install-text"></p>
+    <button id="install">Installeer de TC_tam app</button>
 </body>
 
 </html>
