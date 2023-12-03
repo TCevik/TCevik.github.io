@@ -28,6 +28,8 @@ body {
   --button-bgcolor: #379429;
   --button-shadow: #2e7a22;
   --border-radius: 10px;
+  --border-radius2: 25px;
+  --border-radius3: 50vw;
   overflow-x: hidden;
   transition: 0.5s;
   font-family: Lexend, Arial, sans-serif;
