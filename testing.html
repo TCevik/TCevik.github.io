@@ -26,6 +26,7 @@
             deferredPrompt = e;
             // Show your customized install prompt for your PWA
             document.querySelector("#install").style.display = "block";
+            document.querySelector("#install").style.margin = "0 auto";
         });
 
         window.addEventListener('appinstalled', (e) => {
