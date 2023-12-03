@@ -49,6 +49,16 @@
             width: 40px;
         }
 
+        #shareURL {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            margin-top: 5px !important;
+            margin: 0px;
+            width: 320px;
+        }
+
         #read-story {
             border-top-right-radius: 0px;
             border-top-left-radius: 0px;
@@ -242,6 +252,35 @@
                 audio.play();
             }, 150);
         }
+
+        window.addEventListener("DOMContentLoaded", async event => {
+            if (!('share' in navigator)) {
+                document.querySelector("#shareURL").style.display = "none"
+                return;
+            }
+
+            document.querySelector("#shareURL").addEventListener("click", shareURL);
+        });
+
+        async function shareURL() {
+            share({
+                title: "TC_tam, beste site ooit!",
+                url: "/"
+            });
+        }
+
+        async function share(toShare) {
+            if (navigator.canShare(toShare)) {
+                try {
+                    await navigator.share(toShare);
+                    notification("Link gedeeld!")
+                } catch (e) {
+                    console.error("Content was not shared by the user")
+                }
+            } else {
+                notification("Dit kan niet worden gedeeld met dit apparaat en/of browser")
+            }
+        }
     </script>
 </head>
 
@@ -283,6 +322,7 @@
     <br><button id="partymode-button" onclick="activatePartyMode()">!!!PARTYMODE!!!</button>
     <button id="aboutme" onclick="scrollToOverMij();">Over mij</button>
     <button id="poopsound" onclick="poopSound();">💩</button>
+    <br><button id="shareURL">Deel deze website</button>
     <br><button id="read-story" onclick="window.location.href='/blogs/alle-blogs'">Hier kan je al mijn blogs lezen.</button>
 
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
