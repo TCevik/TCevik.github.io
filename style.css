@@ -191,7 +191,7 @@ textarea::placeholder {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background-color: grey;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -204,7 +204,7 @@ textarea::placeholder {
 }
 
 ::-moz-scrollbar-track {
-  background-color: transparent;
+  background-color: grey;
 }
 
 ::-moz-scrollbar-thumb {
