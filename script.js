@@ -470,7 +470,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 window.addEventListener('appinstalled', (e) => {
-    showResult("Aan het installeren.");
+    showResult("Aan het installeren...");
     document.querySelector("#install").style.display="none";
 });
 
