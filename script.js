@@ -336,6 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 var buttons = `
 	<button onclick="window.location.href='/'">Home</button>
+	<p style="display: none;" id="install-text"></p>
+    <button style="display: none;" id="install">Installeer de TC_tam app</button>
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
 	<button onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
@@ -444,4 +446,49 @@ function sideMenuNav() {
 
 	document.body.appendChild(openButton);
 	document.body.appendChild(sideBar);
+}
+
+/* installeer TC_tam website */
+window.addEventListener("DOMContentLoaded", async event => {
+    if ('BeforeInstallPromptEvent' in window) {
+        showResult("Hey, wil jij nou de TC_tam app downloaden? Het kost je maar 10 seconden!");
+    } else {
+        return;
+    }
+    document.querySelector("#install").addEventListener("click", installApp);
+});
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.querySelector("#install").style.display = "block";
+    document.querySelector("#install").style.margin = "0 auto";
+    document.querySelector("#install-text").style.display = "block";
+    document.querySelector("#install-text").style.margin = "0 auto";
+});
+
+window.addEventListener('appinstalled', (e) => {
+    showResult("Aan het installeren.");
+    document.querySelector("#install").style.display="none";
+});
+
+async function installApp() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (outcome === 'accepted') {
+            showResult('Nice, veel plezier met de TC_tam app!');
+            document.querySelector("#install").style.display="none";
+        } else if (outcome === 'dismissed') {
+            showResult('Jammer, ik hoop dat je hem de volgende keer wel zal installeren.');
+        }
+    }
+}
+
+function showResult(message) {
+    const installText = document.querySelector("#install-text");
+    installText.textContent = message;
 }
