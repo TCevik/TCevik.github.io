@@ -15,11 +15,6 @@
                 showResult("Sorry, maar jij kan de TC_tam app niet downloaden met deze browser.");
             }
             document.querySelector("#install").addEventListener("click", installApp);
-
-            // Controleer of de app al is geïnstalleerd en verberg de tekst en knop indien nodig
-            if (await isAppInstalled()) {
-                hideInstallButton();
-            }
         });
 
         let deferredPrompt;
@@ -39,7 +34,6 @@
         async function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                showResult("🆗 Installation Dialog opened");
                 const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 if (outcome === 'accepted') {
@@ -51,21 +45,9 @@
             }
         }
 
-        async function isAppInstalled() {
-            // Gebruik getInstalledRelatedApps om te controleren of de app is geïnstalleerd
-            const relatedApps = await navigator.getInstalledRelatedApps();
-            return relatedApps.length > 0;
-        }
-
         function showResult(message) {
             const installText = document.querySelector("#install-text");
             installText.textContent = message;
-        }
-
-        function hideInstallButton() {
-            // Verberg de tekst en knop
-            document.querySelector("#install-text").style.display = "none";
-            document.querySelector("#install").style.display = "none";
         }
     </script>
     <link rel="manifest" href="https://tctam.nl/app.webmanifest">
