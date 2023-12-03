@@ -451,7 +451,7 @@ function sideMenuNav() {
 /* installeer TC_tam website */
 window.addEventListener("DOMContentLoaded", async event => {
     if ('BeforeInstallPromptEvent' in window) {
-        showResult("Hey, wil jij nou de TC_tam app downloaden? Het kost je maar 10 seconden!");
+        showInstallationResult("Hey, wil jij nou de TC_tam app downloaden? Het kost je maar 10 seconden!");
     } else {
         return;
     }
@@ -470,7 +470,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 window.addEventListener('appinstalled', (e) => {
-    showResult("Aan het installeren...");
+    showInstallationResult("Aan het installeren...");
     document.querySelector("#install").style.display="none";
 });
 
@@ -480,15 +480,15 @@ async function installApp() {
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
         if (outcome === 'accepted') {
-            showResult('Nice, veel plezier met de TC_tam app!');
+            showInstallationResult('Nice, veel plezier met de TC_tam app!');
             document.querySelector("#install").style.display="none";
         } else if (outcome === 'dismissed') {
-            showResult('Jammer, ik hoop dat je hem de volgende keer wel zal installeren.');
+            showInstallationResult('Jammer, ik hoop dat je hem de volgende keer wel zal installeren.');
         }
     }
 }
 
-function showResult(message) {
+function showInstallationResult(message) {
     const installText = document.querySelector("#install-text");
     installText.textContent = message;
 }
