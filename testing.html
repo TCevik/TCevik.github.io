@@ -32,9 +32,8 @@
         });
 
         window.addEventListener('appinstalled', (e) => {
-            showResult("✅ AppInstalled fired");
-            // Verberg de tekst en knop na installatie
-            hideInstallButton();
+            showResult("Aan het installeren.");
+            document.querySelector("#install").style.display="none";
         });
 
         async function installApp() {
