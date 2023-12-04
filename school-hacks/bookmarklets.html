@@ -28,6 +28,5 @@
     <a class="bookmarklet" href="javascript:expr=prompt('Som...(bijvoorbeeld: 2*3+7/8-3)','');if(expr!=null){with(Math){evl=parseFloat(eval(expr))};if(isNaN(evl)){notification('SERIEUS, niet een leeg vak doen! TYP EEN SOM!%27)}else{notification(evl)}}else{void(null)}">Rekenmachine boven de site (docenten kunnen dit niet zien)</a>
     <a class="bookmarklet" href="javascript:(function(){ [].slice.call(document.querySelectorAll('img, .gist')).forEach(function(elem) { elem.remove(); }); })()">Verwijder foto's op site</a>
     <a class="bookmarklet" href="javascript:(function(){var i, nd; function copyChildren(a,b){var i, nn; for(i=0;i<a.childNodes.length;++i) { nn = a.childNodes[i].cloneNode(true); if(nd.importNode) nn = nd.importNode(nn, true); b.appendChild(nn); } } nd=window.open().document; nd.open(); nd.close(); /*140681*/ copyChildren(document.getElementsByTagName('head')[0], nd.getElementsByTagName('head')[0]); copyChildren(document.body, nd.body);})();">Copy de site waarop je nu bent</a>
-    <a class="bookmarklet" href='javascript:alert("Are You Sure?");alert("Use At Your Own Risk");alert("Ready? IF NO RELOAD NOW.");setTimeout(() => {while (true) {while(1)location.reload(1)}}, 1000);'>Chromebook Crasher</a>
 </body>
 </html>
