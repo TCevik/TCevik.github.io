@@ -50,6 +50,16 @@ body {
   }
 }
 
+.diff-color-section {
+  width: 80%;
+  background-color: var(--bg-accent-color);
+  padding: 20px;
+  margin: 0 auto;
+  border-radius: var(--border-radius3);
+  margin-top: 20px;
+  align-items: center;
+}
+
 #menu button {
   width: 95%;
   z-index: 9999;
