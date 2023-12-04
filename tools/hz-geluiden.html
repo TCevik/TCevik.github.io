@@ -6,19 +6,15 @@
     
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+    
 
     <script>
-        var intervalId;  // Variabele om het interval bij te houden
-
         function playSound() {
             var frequencyInput = document.getElementById("frequency-input");
             var durationInput = document.getElementById("duration-input");
-            var timeInput = document.getElementById("time-input");
-            var countdownElement = document.getElementById("countdown");
             
             var frequency = parseInt(frequencyInput.value);
             var duration = parseInt(durationInput.value);
-            var timeString = timeInput.value;
             
             if (isNaN(frequency) || isNaN(duration)) {
                 notification("Voer geldige waarden in voor frequentie en duur.");
@@ -29,17 +25,7 @@
                 notification("De frequentie moet tussen 20 en 20.000 liggen.");
                 return;
             }
-
-            if (timeString === "") {
-                // Als er geen tijd is ingevoerd, speel het geluid af met de opgegeven duur
-                playImmediately(frequency, duration);
-            } else {
-                // Als er een tijd is ingevoerd, wacht tot dat tijdstip en speel het geluid af
-                playAtSpecificTime(frequency, duration, timeString, countdownElement);
-            }
-        }
-
-        function playImmediately(frequency, duration) {
+            
             var audio = new AudioContext();
             var oscillator = audio.createOscillator();
             oscillator.type = 'sine';
@@ -51,65 +37,12 @@
             setTimeout(function() {
                 oscillator.stop();
             }, duration);
-
-            updateCountdown(duration);
-        }
-
-        function playAtSpecificTime(frequency, duration, timeString, countdownElement) {
-            // Clear eerst eventuele lopende interval
-            clearInterval(intervalId);
-
-            intervalId = setInterval(function() {
-                var currentTime = new Date();
-                var currentHours = currentTime.getHours();
-                var currentMinutes = currentTime.getMinutes();
-                var currentSeconds = currentTime.getSeconds();
-
-                var timeArray = timeString.split(":");
-                var hours = parseInt(timeArray[0]);
-                var minutes = parseInt(timeArray[1]);
-
-                // Controleer of de opgegeven tijd is bereikt
-                if (currentHours === hours && currentMinutes === minutes && currentSeconds === 0) {
-                    // Stop het interval en speel het geluid af
-                    clearInterval(intervalId);
-                    playImmediately(frequency, duration);
-                } else {
-                    // Update de afteltimer
-                    updateCountdown(getTimeDifference(currentHours, currentMinutes, currentSeconds, hours, minutes));
-                }
-            }, 10);  // Controleer elke seconde
-        }
-
-        function getTimeDifference(currentHours, currentMinutes, currentSeconds, targetHours, targetMinutes) {
-            var currentInMinutes = currentHours * 60 + currentMinutes;
-            var targetInMinutes = targetHours * 60 + targetMinutes;
-            var timeDifferenceInSeconds = (targetInMinutes - currentInMinutes) * 60 - currentSeconds;
-            return timeDifferenceInSeconds * 1000;
-        }
-
-        function updateCountdown(duration) {
-            var countdownElement = document.getElementById("countdown");
-
-            var countdownInterval = setInterval(function() {
-                duration -= 1000;
-                if (duration <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownElement.innerText = "Tijd tot het geluid: 0:00";
-                    document.getElementById("playbutton").style.opacity = "1";
-                } else {
-                    document.getElementById("playbutton").style.opacity = "0";
-                    var minutes = Math.floor(duration / 60000);
-                    var seconds = Math.floor((duration % 60000) / 1000);
-                    countdownElement.innerText = "Tijd tot het geluid: " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-                }
-            }, 1000);
         }
     </script>
 </head>
 <body>
     <h1>HZ Invullen</h1>
-    <p>De frequentie 440 Hz en tijd 2500ms wordt op veel scholen gebruikt als schoolbel, dus vul dat in voor de schoolbel. (als je de pagina herlaadt dan staan de goede nummers alvast ingevuld) 🔔</p>
+    <p>De frequentie 440 Hz en tijd 2500ms wordt op veel scholen gebruikt als schoolbel, dus vul dat in voor de schoolbel. (als je de pagina herlaad dan staan de goede nummers alvast ingevuld) 🔔</p>
     <p>De frequentie 12000 Hz zorgt ervoor dat je oren van je hoofd rotten. 😂📢</p>
     <p>De frequentie 4000 Hz voor 30 sec op max volume zorgt ervoor dat je piepstrophobia krijgt. 🚫</p>
     <label for="frequency-input">Frequentie (Hz):</label>
@@ -119,11 +52,6 @@
     <label for="duration-input">Speelduur (ms):</label>
     <input id="duration-input" min="0" value="2500">
     <br>
-    <label for="time-input">Specifieke tijd om te spelen (uur:minuut):</label>
-    <input id="time-input" placeholder="laat leeg voor meteen">
-    <br>
-    <div id="countdown">Tijd tot het geluid: 0:00</div>
-    <br>
-    <button id="playbutton" onclick="playSound()">Speel geluid af</button>
+    <button onclick="playSound()">Speel geluid af</button>
 </body>
 </html>
