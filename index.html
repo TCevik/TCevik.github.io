@@ -203,8 +203,8 @@
     <div id="background-ball"></div>
 
     <div id="title">
-        <h1 class="title-text" style="margin-top: 10px;"></h1>
-        <h2 class="title-text" style="margin-top: -10px;"></h2>
+        <h1 class="title-text" style="margin-top: 10px;">TC_tam</h1>
+        <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
     </div>
 
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
@@ -302,31 +302,6 @@
             }
         
             localStorage.setItem('loadCount', loadCount);
-        });
-
-        const title = document.getElementById('title');
-        const h1Content = "TC_tam";
-        const h2Content = "Door Tamer Çevik";
-
-        function createLetterElements(content, parent) {
-            content.split('').forEach(char => {
-                if (char === ' ') {
-                    parent.appendChild(document.createTextNode(' '));
-                } else {
-                    const span = document.createElement('span');
-                    span.textContent = char;
-                    parent.appendChild(span);
-                }
-            });
-        }
-
-        createLetterElements(h1Content, title.querySelector('h1'));
-        createLetterElements(h2Content, title.querySelector('h2'));
-
-        const spans = title.querySelectorAll('span');
-
-        spans.forEach((span, index) => {
-            span.style.animationDelay = `${index * 100}ms`;
         });
     </script>
     <script src="/assets/additional-js/about-blank-hack.js"></script>
