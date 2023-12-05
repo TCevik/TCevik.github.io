@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Aankondigingen</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="/script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-remote-config.js"></script>
+    <script src="/auth/firebase-config.js"></script>
 </head>
 <body>
 
@@ -18,23 +18,22 @@
 </div>
 
 <script>
-    import { initializeApp } from "firebase/app";
-    import { getRemoteConfig } from "firebase/remote-config";
+    const remoteConfig = firebase.remoteConfig();
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
-        authDomain: "tctam-d04b8.firebaseapp.com",
-        databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "tctam-d04b8",
-        storageBucket: "tctam-d04b8.appspot.com",
-        messagingSenderId: "793882705601",
-        appId: "1:793882705601:web:118e6ea26069867d0b5e40",
-        measurementId: "G-Q00YFYX8SP"
+    const remoteConfigSettings = {
+        minimumFetchIntervalMillis: 1000,
     };
+    remoteConfig.settings = remoteConfigSettings;
 
-    const app = initializeApp(firebaseConfig);
-
-    const remoteConfig = getRemoteConfig(app);
+    // Aankondigingen ophalen
+    remoteConfig.fetchAndActivate()
+        .then(() => {
+            const aannouncement = remoteConfig.getString('announcement_message');
+            document.getElementById('announcementText').innerText = aannouncement;
+        })
+        .catch((error) => {
+            console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
+        });
 </script>
 </body>
 </html>

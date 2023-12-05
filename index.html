@@ -5,8 +5,8 @@
     <title>TC_tam</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-remote-config.js"></script>
     <script src="/auth/firebase-config.js"></script>
 
     <script>
@@ -228,7 +228,7 @@
 <body onload="countup(); countdownToBirthday();">
     <div id="announcements" class="diff-color-section2">
         <h4 style="margin: 0px; margin-bottom: -30px; transform: translate(0%, -120%);">Aankondigingen:</h4>
-        <p style="margin: 0px;">Fijne Sinterklaas allemaal!</p>
+        <p id="announcementText" style="margin: 0px;">Laden...</p>
     </div>
 
     <div id="background-ball"></div>
@@ -312,6 +312,23 @@
     </div>
 
     <script>
+        const remoteConfig = firebase.remoteConfig();
+
+        const remoteConfigSettings = {
+            minimumFetchIntervalMillis: 1000,
+        };
+        remoteConfig.settings = remoteConfigSettings;
+
+        // Aankondigingen ophalen
+        remoteConfig.fetchAndActivate()
+            .then(() => {
+                const aannouncement = remoteConfig.getString('announcement_message');
+                document.getElementById('announcementText').innerText = aannouncement;
+            })
+            .catch((error) => {
+                console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
+            });
+
         /* change tctam fans iframe */
         function vervangFansIframe() {
             document.getElementById("tctam-fans-iframe").src = "https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform?embedded=true";
