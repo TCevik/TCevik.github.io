@@ -226,7 +226,7 @@
     </style>
 </head>
 <body onload="countup(); countdownToBirthday();">
-    <div id="announcements" class="diff-color-section2">
+    <div id="announcements"style="display: none; opacity: 0;" class="diff-color-section2">
         <h4 style="margin: 0px; margin-bottom: -30px; transform: translate(0%, -120%);">Aankondigingen:</h4>
         <p id="announcementText" style="margin: 0px;">Laden...</p>
     </div>
@@ -319,11 +319,45 @@
         };
         remoteConfig.settings = remoteConfigSettings;
 
-        // Aankondigingen ophalen
         remoteConfig.fetchAndActivate()
             .then(() => {
-                const aannouncement = remoteConfig.getString('announcement_message');
-                document.getElementById('announcementText').innerText = aannouncement;
+                const announcement = remoteConfig.getString('announcement_message');
+                const announcementElement = document.getElementById('announcementText');
+                const announcementBox = document.getElementById('announcements');
+            
+                // Controleren of de aankondiging leeg is of niet bestaat
+                if (announcement && announcement.trim() !== "") {
+                    // Aankondiging weergeven als deze niet leeg is
+                    announcementElement.innerText = announcement;
+                
+                    // Aankondigingselement onzichtbaar maken en de opacity instellen op 0
+                    announcementBox.style.opacity = '0';
+                    announcementBox.style.display = 'block';
+                
+                    // Functie om de fade-in-animatie toe te passen
+                    function fadeIn(element, duration) {
+                        let opacity = 0;
+                        const interval = 10;
+                        const delta = 1 / (duration / interval);
+                    
+                        function increaseOpacity() {
+                            opacity += delta;
+                            element.style.opacity = String(opacity);
+                        
+                            if (opacity >= 1) {
+                                clearInterval(fadeInterval);
+                            }
+                        }
+                    
+                        const fadeInterval = setInterval(increaseOpacity, interval);
+                    }
+                
+                    // Roep de fade-in-functie aan met de gewenste duur (bijv. 1000 ms)
+                    fadeIn(announcementBox, 1000);
+                } else {
+                    // Aankondigingselement verbergen als deze leeg is of niet bestaat
+                    announcementBox.style.display = 'none';
+                }
             })
             .catch((error) => {
                 console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
