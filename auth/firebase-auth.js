@@ -12,11 +12,9 @@ function getUserDataFromFirebase() {
     var user = firebase.auth().currentUser;
     var userEmail = user ? user.email : "Geen e-mail gevonden";
     var userName = user ? (user.displayName ? user.displayName : "") : "Geen gebruiker ingelogd";
-    var phoneNumber = user ? (user.phoneNumber ? user.phoneNumber : "") : "Geen telefoonnummer opgegeven";
     var photoURL = user ? (user.photoURL ? user.photoURL : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg") : "Geen profielfoto gevonden";
 
     document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
-    document.getElementById("phone-number").value = phoneNumber;
     document.getElementById("name-input").value = userName;
     document.getElementById("pic-input").value = photoURL;
 }
