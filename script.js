@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		loginButton.style.position = "fixed";
 		loginButton.style.top = "6px";
 		loginButton.style.right = "6px";
-		loginButton.style.zIndex = "9999px";
+		loginButton.style.zIndex = "9999";
 		document.body.appendChild(loginButton);
 
 		function updateLoginButton() {
@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				img.style.userSelect = "none";
 				img.style.width = "50px";
 				img.style.height = "50px";
-				img.style.zIndex = "9999";
 				img.style.cursor = "pointer";
 				img.style.borderRadius = "50%";
 				loginButton.appendChild(img);
