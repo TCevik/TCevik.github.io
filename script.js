@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				img.style.userSelect = "none";
 				img.style.width = "50px";
 				img.style.height = "50px";
+				img.styke.zIndex = "9999"
 				img.style.cursor = "pointer";
 				img.style.borderRadius = "50%";
 				loginButton.appendChild(img);
