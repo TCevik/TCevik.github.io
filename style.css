@@ -26,8 +26,9 @@ body {
   --h4-font-size: 22px;
   --button-padding: 7px;
   --button-bgcolor: #379429;
-  --button-shadow: #2e7a22;
-  --bg-accent-color: #e0fde9;
+  --button-shadow: hsl(112, 56%, 31%);
+  --bg-accent-color1: #e0fde9;
+  --bg-accent-color2: #c6ffd8;
   --border-radius: 10px;
   --border-radius2: 25px;
   --border-radius3: 50px;
@@ -46,13 +47,24 @@ body {
     --custom-link-color: #33ff33;
     --button-bgcolor: #38761d;
     --button-shadow: #2c5c17;
-    --bg-accent-color: #16301f;
+    --bg-accent-color1: #16301f;
+    --bg-accent-color2: #133820;
   }
 }
 
-.diff-color-section {
+.diff-color-section1 {
   width: 80%;
-  background-color: var(--bg-accent-color);
+  background-color: var(--bg-accent-color1);
+  padding: 20px;
+  margin: 0 auto;
+  border-radius: var(--border-radius3);
+  margin-top: 20px;
+  align-items: center;
+}
+
+.diff-color-section2 {
+  width: 80%;
+  background-color: var(--bg-accent-color2);
   padding: 20px;
   margin: 0 auto;
   border-radius: var(--border-radius3);
