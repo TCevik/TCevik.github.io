@@ -16,6 +16,7 @@ function getUserDataFromFirebase() {
     var photoURL = user ? (user.photoURL ? user.photoURL : "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg") : "Geen profielfoto gevonden";
 
     document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
+    document.getElementById("phone-number").value = phoneNumber;
     document.getElementById("name-input").value = userName;
     document.getElementById("pic-input").value = photoURL;
 }
