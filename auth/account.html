@@ -42,6 +42,27 @@
                 tekstElement.style.display = 'none';
             }, 1500);
         });
+
+        function savePhoneNumber() {
+            var phoneNumber = document.getElementById('phone-number').value;
+            if (phoneNumber.trim().length >= 10) {
+                var user = firebase.auth().currentUser;
+            
+                // Voeg het telefoonnummer toe aan het user object
+                user.phoneNumber = phoneNumber;
+            
+                // Update de gebruikersinformatie
+                user.updateProfile({
+                    phoneNumber: phoneNumber
+                }).then(function() {
+                    notification('Telefoonnummer succesvol opgeslagen: ' + phoneNumber);
+                }).catch(function(error) {
+                    notification('Fout bij het opslaan van het telefoonnummer: ' + error);
+                });
+            } else {
+                notification('Voer een geldig telefoonnummer in.');
+            }
+        }
     </script>
 
 </head>
@@ -68,6 +89,9 @@
         <h3 style="margin-bottom: -10px;">Je gebruikersnaam is:</h3>
         <input style="margin-right: 0px;" type="text" id="name-input" maxlength="30" placeholder="Voer je naam in" required>
         <button id="save-name-btn" onclick="saveName()">Opslaan</button>
+        <h3 style="margin-bottom: -10px;">Je telefoonnummer is:</h3>
+        <input style="margin-right: 0px;" type="tel" id="phone-number" maxlength="15" placeholder="Voer je telefoonnummer in" required>
+        <button id="save-phone-btn" onclick="savePhoneNumber()">Opslaan</button>
         <br>
         <h3 style="margin-bottom: -10px;">Je profielfoto is:</h3>
         <input style="margin-right: 0px;" type="text" id="pic-input" maxlength="1000" placeholder="Vul de URL van je profielfoto in" required>
