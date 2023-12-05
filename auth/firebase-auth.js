@@ -60,6 +60,15 @@ function redirectToUrl() {
 window.addEventListener('load', function () {
     var loggedIn = localStorage.getItem('loggedIn');
     toggleUI(loggedIn === 'true'); // Converteer de waarde naar een boolean
+
+    var currentUrl = window.location.href;
+    if (currentUrl.includes("?")) {
+        var parts = currentUrl.split("?");
+        if (parts[1]) {
+            var redirectToUrl = parts[1];
+            notification("Log eerst in om verder te gaan naar" + redirectToUrl);
+        }
+    }
 });
 
 // Inloggen / Registreren
