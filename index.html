@@ -96,6 +96,23 @@
                 notification("Dit kan niet worden gedeeld met dit apparaat en/of browser")
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var announcements = document.getElementById("announcements");
+
+            window.addEventListener("scroll", function() {
+                // Bereken de nieuwe verticale verschuiving op basis van het scrollen
+                var translateY = Math.max(-80, -1 * window.scrollY) + "%";
+
+                // Zorg ervoor dat het element boven het scherm verdwijnt
+                if (translateY === "-80%") {
+                    translateY = "-150%";
+                }
+
+                // Pas de transform eigenschap van het element aan
+                announcements.style.transform = "translate(-50%, " + translateY + ")";
+            });
+        });
     </script>
 
     <style>
@@ -197,9 +214,22 @@
             justify-content: space-between;
             align-items: flex-start;
         }
+
+        #announcements {
+            position: fixed;
+            transform: translate(-50%);
+            top: 0%;
+            left: 50%;
+            z-index: 2;
+            transition: transform 0.5s ease-out; /* Voeg een vloeiende overgang toe */
+        }
     </style>
 </head>
 <body onload="countup(); countdownToBirthday();">
+    <div id="announcements" class="diff-color-section">
+        <p style="margin: 0px;"><b>Aankondigingen: </b>Fijne Sinterklaas allemaal!</p>
+    </div>
+
     <div id="background-ball"></div>
 
     <div id="title">
