@@ -33,17 +33,14 @@
                 return;
             }
 
-            let userEmail = "Niet_beschikbaar";
-            if (user.email !== null) {
-                userEmail = user.email.replace(/\./g, '_');
-            }
+            const userId = user.uid; // Gebruik de Firebase UID van de gebruiker
 
-            const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+            const nameRef = database.ref('userdata/' + userId + '/notes/');
 
             const userNote = document.getElementById('input').value;
             nameRef.set({
                 text: userNote,
-                userEmail: userEmail
+                userId: userId // Opslaan onder de UID van de gebruiker
             }, function(error) {
                 if (error) {
                     notification("Data kon niet worden opgeslagen. Foutmelding: " + error);
@@ -57,12 +54,9 @@
             document.getElementById("input").disabled = false;
             const user = auth.currentUser;
             if (user) {
-                let userEmail = "Niet_beschikbaar";
-                if (user.email !== null) {
-                    userEmail = user.email.replace(/\./g, '_');
-                }
+                const userId = user.uid; // Gebruik de Firebase UID van de gebruiker
 
-                const nameRef = database.ref('userdata/' + userEmail + '/notes/');
+                const nameRef = database.ref('userdata/' + userId + '/notes/');
                 nameRef.once('value', function(snapshot) {
                     const userData = snapshot.val();
                     if (userData && userData.text) {
