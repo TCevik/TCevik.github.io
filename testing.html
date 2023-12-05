@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Aankondigingen</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-remote-config.js"></script>
-
-    <script>
-        import { initializeApp } from "firebase/app";
-    </script>
-
-    <script src="/auth/firebase-config.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="/script.js"></script>
 </head>
 <body>
 
@@ -21,21 +18,23 @@
 </div>
 
 <script>
-    const app = initializeApp(firebaseConfig);
-    const remoteConfig = getRemoteConfig(app);
+    import { initializeApp } from "firebase/app";
+    import { getRemoteConfig } from "firebase/remote-config";
 
-    remoteConfig.fetchAndActivate()
-    .then(() => {
-        alert('Configuratie opgehaald en geactiveerd.');
-        const announcementText = remoteConfig.getString('announcement_message');
-        alert('Aankondigingstekst:', announcementText);
-        document.getElementById('announcementText').innerText = announcementText;
-    })
-    .catch((error) => {
-        alert('Fout bij ophalen van configuratie:', error);
-        alert('Error message:', error.message);
-        alert('Error stack:', error.stack);
-    });
+    const firebaseConfig = {
+        apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+        authDomain: "tctam-d04b8.firebaseapp.com",
+        databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "tctam-d04b8",
+        storageBucket: "tctam-d04b8.appspot.com",
+        messagingSenderId: "793882705601",
+        appId: "1:793882705601:web:118e6ea26069867d0b5e40",
+        measurementId: "G-Q00YFYX8SP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    const remoteConfig = getRemoteConfig(app);
 </script>
 </body>
 </html>
