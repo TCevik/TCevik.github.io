@@ -52,6 +52,10 @@ body {
   }
 }
 
+#profilePic {
+  z-index: 9999 !important;
+}
+
 .diff-color-section1 {
   width: 80%;
   background-color: var(--bg-accent-color1);
