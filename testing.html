@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Aankondigingen</title>
-    <script src="/auth/firebase-config.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-remote-config.js"></script>
+
+    <script>
+        import { initializeApp } from "firebase/app";
+    </script>
+
+    <script src="/auth/firebase-config.js"></script>
 </head>
 <body>
 
@@ -16,7 +21,8 @@
 </div>
 
 <script>
-    const remoteConfig = firebase.remoteConfig();
+    const app = initializeApp(firebaseConfig);
+    const remoteConfig = getRemoteConfig(app);
 
     remoteConfig.fetchAndActivate()
     .then(() => {
