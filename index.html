@@ -241,9 +241,6 @@
 
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
 
-    <h4 style="width: 95%; margin: 0 auto;">Voor de niet-geblokkeerde TC_tam site ga je naar google en zoek naar TC_tam. Vervolgens klik je in het GROENE rondje voor de niet geblokkeerde site. (ik update die knop weer als die weer geblokkeerd word)</h4>
-    <br><img id="tctam-search" src="/assets/tctam-search.png" alt="ongeblokkeerde site">
-
     <div id="social-media">
         <h3>Social Media:</h3>
         <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
@@ -329,7 +326,7 @@
                 // Controleren of de aankondiging leeg is of niet bestaat
                 if (announcement && announcement.trim() !== "") {
                     // Aankondiging weergeven als deze niet leeg is
-                    announcementElement.innerText = announcement;
+                    announcementElement.innerHTML = announcement;
                 
                     // Aankondigingselement onzichtbaar maken en de opacity instellen op 0
                     announcementBox.style.opacity = '0';
