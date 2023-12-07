@@ -99,8 +99,10 @@ var buttons = `
 	<button onclick="window.location.href='/'">Home</button>
 	<p style="display: none;" id="install-text"></p>
     <button style="display: none;" id="install">Installeer de TC_tam app</button>
+
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+	<button onclick="window.location.href='/games'">Games</button>
 
 	<h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
 	<button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
