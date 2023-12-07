@@ -85,14 +85,15 @@
     <script>
         var auth = firebase.auth();
 
-        
+
 
         function checkLoginStatus() {
-            const user = firebase.auth().currentUser;
-
-            if (!user) {
-                window.location.href = "/auth/login-register";
-            }
+            auth.onAuthStateChanged(function(user) {
+                if (!user) {
+                    // Gebruiker is ingelogd, ga naar "/auth/account"
+                    window.location.href = "/auth/account";
+                }
+            });
         }
         setInterval(checkLoginStatus, 100);
     </script>
