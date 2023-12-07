@@ -71,32 +71,6 @@ body {
   margin-top: 20px;
   align-items: center;
 }
-
-#menu button {
-  width: 95%;
-  z-index: 9999;
-  margin-top: 10px;
-}
-
-#menu {
-    width: 300px;
-    position: fixed;
-    max-height: 100vh;
-    overflow-y: auto;
-    background-color: var(--background-color);
-    z-index: 996;
-    top: 0%;
-    bottom: 0%;
-    left: 0;
-    border-right: var(--h1234-color) 3px solid;
-    text-align: center !important;
-}
-
-#top-left-button {
-  position: fixed;
-  left: 5px;
-  top: 5px;
-}
         
 h1 {
   color: var(--h1234-color);
@@ -199,18 +173,6 @@ textarea:focus {
 input::placeholder,
 textarea::placeholder {
   color: var(--text-color);
-}
-
-.acceptTosPpPopup {
-  position: fixed;
-  z-index: 9999;
-  bottom: 10px;
-  left: 10px;
-  background: var(--background-color);
-  padding: 10px;
-  border: 1px solid var(--h1234-color);
-  border-radius: var(--border-radius);
-  font-size: var(--font-size);
 }
 
 /* Change things like scrollbar and select text */
