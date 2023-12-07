@@ -336,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var buttons = `
+	<h4>Hallo mensen, even voor de duidelijkheid: de TC_tam website krijgt een grote update vandaar dat er zo weinig dingen zijn. Er komen veel dingen aan.</h4>
 	<button onclick="window.location.href='/'">Home</button>
 	<p style="display: none;" id="install-text"></p>
     <button style="display: none;" id="install">Installeer de TC_tam app</button>
