@@ -341,31 +341,17 @@ var buttons = `
     <button style="display: none;" id="install">Installeer de TC_tam app</button>
 	<h3 id="algemeen">Algemeen</h3>
 	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
-	<button onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
-	<button onclick="window.location.href='/games/alle-games'">Games</button>
-	<button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
-	<button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
 
 	<h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
-	<button onclick="window.location.href='/alle-methoden'">School unblocks</button>
-	<button onclick="window.location.href='/school-hacks/bookmarklets'">Bookmarklets</button>
 	<button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
-	<button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
-	<button onclick="window.location.href='/tools/bing-chat'">Bing Ai (GPT 4)</button>
-	<button onclick="window.location.href='/tools/pranks'">Pranks</button>
-	<button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>
-	<button onclick="window.location.href='/tools/myinstants'">MyInstants</button>
 	<button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
-	<button onclick="window.location.href='/tools/notities'">Notities</button>
 	<button onclick="window.location.href='/tools/ide'">IDE</button>
-	<button onclick="window.location.href='/tools/tts'">TTS</button>
 
-	<h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
+	<h3 style="margin-top: 50px;" id="answers">School Antwoorden</h3>
 	<button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
-	<button onclick="window.location.href='/school-hacks/antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
+	<button onclick="window.location.href='https://drive.google.com/file/d/1rxxmBaUypzZLDiGK9psBTB_Wjpie7-4Z/preview'">Antwoorden HAVO 3 Nieuw Nederlands</button>
 
 	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
-	<button onclick="window.location.href='/status'">TC_tam Website Status</button>
 	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
