@@ -37,7 +37,6 @@ if ('serviceWorker' in navigator) {
 }
 
 var existingNotification = null;
-
 function removeNotification() {
 	if (existingNotification) {
 		document.body.removeChild(existingNotification);
