@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notitie maker</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="/script.js"></script>
+    <script src="/auth/firebase-config.js"></script>
+    
+</head>
+
+<body>
+    
+    <h1>Notities</h1>
+    <p>Hier kan je notities maken!!!</p>
+
+    <button id="save-button" onclick="saveData()">Opslaan</button>
+    <br><textarea id="input" rows="25" style="width: 90%;" maxlength="100000" disabled="true"></textarea>
+
+    <script>
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        function saveData() {
+            const user = auth.currentUser;
+            if (!user) {
+                notification("Je moet ingelogd zijn om notities op te slaan.");
+                return;
+            }
+
+            const userId = user.uid; // Gebruik de Firebase UID van de gebruiker
+
+            const nameRef = database.ref('userdata/' + userId + '/notes/');
+
+            const userNote = document.getElementById('input').value;
+            nameRef.set({
+                text: userNote,
+                userId: userId // Opslaan onder de UID van de gebruiker
+            }, function(error) {
+                if (error) {
+                    notification("Data kon niet worden opgeslagen. Foutmelding: " + error);
+                } else {
+                    notification("Data is succesvol opgeslagen.");
+                }
+            });
+        }
+
+        function load() {
+            document.getElementById("input").disabled = false;
+            const user = auth.currentUser;
+            if (user) {
+                const userId = user.uid; // Gebruik de Firebase UID van de gebruiker
+
+                const nameRef = database.ref('userdata/' + userId + '/notes/');
+                nameRef.once('value', function(snapshot) {
+                    const userData = snapshot.val();
+                    if (userData && userData.text) {
+                        document.getElementById('input').value = userData.text;
+                    }
+                }, function(error) {
+                    notification("Er is een fout opgetreden bij het ophalen van de gegevens: ", error);
+                });
+            }
+        };
+
+        setTimeout(() => {
+            load();
+        }, 2000);
+    </script>
+</body>
+</html>

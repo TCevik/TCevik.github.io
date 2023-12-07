@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 50px;" id="clock"></h1>
+    
+    <script>
+        function updateClock() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // Voeg een nul toe voor getallen kleiner dan 10
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            var timeString = hours + ":" + minutes + ":" + seconds;
+
+            document.getElementById("clock").innerText = timeString;
+
+            // Update de titel van het tabblad met de huidige tijd
+            document.title = "Tijd: " + timeString;
+        }
+
+        // Update de klok elke seconde
+        setInterval(updateClock, 1000);
+
+        // Roep de functie één keer aan om de klok direct bij het laden weer te geven
+        updateClock();
+    </script>
+</body>
+</html>

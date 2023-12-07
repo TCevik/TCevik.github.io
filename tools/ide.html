@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>IDE</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    
+
+    <style>
+        #embedFrame {
+            width: 95%;
+            color: var(--text-color);
+            height: 500px;
+            margin-top: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 3px solid var(--text-color);
+            font-family: 'Lexend', sans-serif;
+            font-size: var(--font-size);
+            padding: 10px;
+            background-color: var(--background-color);
+            text-align: left;
+        }
+    </style>
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+            return 'Wil je zeker de site verlaten?';
+        });
+
+        function updateEmbed() {
+            var htmlCode = document.getElementById('html-code').value;
+            var embedFrame = document.getElementById('embedFrame');
+            embedFrame.srcdoc = htmlCode;
+        }
+
+        function handleTabKey(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                var textarea = event.target;
+                var start = textarea.selectionStart;
+                var end = textarea.selectionEnd;
+
+                textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
+                textarea.selectionStart = textarea.selectionEnd = start + 4;
+            }
+        }
+
+        function toggleFullscreen() {
+            var elem = document.getElementById('embedFrame');
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+        }
+    </script>
+</head>
+<body onload="updateEmbed()">
+    
+    <h1>IDE</h1>
+    <p>Vul code in en bewonder je prestatie</p>
+
+    <textarea id="html-code" rows="25" style="width: 90%;" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>[NAAM VAN TABBLAD]</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    
+</head>
+<body>
+    
+    <h1>[Titel]</h1>
+    <p>[Woord woord woord. Woord woord woord. Woord woord woord.]
+        <br>[Woord woord woord. Woord woord woord. Woord woord woord.]</p>
+</body>
+</html>
+    </textarea>
+    <button id="fullscreenButton" onclick="toggleFullscreen()">Volledig scherm</button>
+
+    <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
+</body>
+</html>

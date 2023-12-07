@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pranks</title>
+    
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        img {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Pranks</h1>
+    <p>Klik op een plaatje om hem full screen te maken</p>
+    
+    <img src="/assets/pranks/browser-op-slot.png" style="cursor: pointer;" alt="Browser op slot">
+    <img src="/assets/pranks/broken-screen-1.jpg" style="cursor: pointer;" alt="Broken screen 1">
+    <img src="/assets/pranks/broken-screen-2.jpg" style="cursor: pointer;" alt="Broken screen 2">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var images = document.querySelectorAll('img');
+    
+            images.forEach(function (image) {
+                image.addEventListener('click', function () {
+                    if (image.requestFullscreen) {
+                        image.requestFullscreen();
+                    } else if (image.mozRequestFullScreen) { // Firefox
+                        image.mozRequestFullScreen();
+                    } else if (image.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                        image.webkitRequestFullscreen();
+                    } else if (image.msRequestFullscreen) { // IE/Edge
+                        image.msRequestFullscreen();
+                    }
+                });
+            });
+        });
+    </script>    
+</body>
+</html>
