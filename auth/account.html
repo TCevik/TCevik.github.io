@@ -3,61 +3,65 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Account</title>
+    <title>Inloggen/Registreren</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
 
     <style>
-        .formContainer {
+        @media (max-width: 400px) {
+            .settingsContainer .settingsWrapper {
+                width: 90%;
+            }
+        }
+
+        .settingsContainer {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .formContainer .formWrapper {
+        .settingsContainer .settingsWrapper {
             background-color: var(--bg-accent-color2);
             padding: 20px 60px;
             border-radius: 10px;
+            width: 300px;
             display: flex;
             flex-direction: column;
             gap: 10px;
             align-items: center;
         }
 
-        .formContainer .formWrapper .logo {
+        .settingsContainer .settingsWrapper .logo {
             color: var(--h1234-color);
             font-weight: bold;
             font-size: 24px;
         }
 
-        .formContainer .formWrapper .title {
+        .settingsContainer .settingsWrapper .title {
             color: var(--h1234-color);
             font-size: 12px;
         }
 
-        .formContainer .formWrapper form {
+        .settingsContainer .settingsWrapper form {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .formContainer .formWrapper form input {
+        .settingsContainer .settingsWrapper form input {
             padding: 15px;
             border: none;
-            width: 250px;
             border-bottom: 1px solid var(--h1234-color);
             margin-bottom: -7px;
             background-color: var(--bg-accent-color1);
         }
 
-        .formContainer .formWrapper form input::placeholder {
+        .settingsContainer .settingsWrapper form input::placeholder {
             color: rgb(175, 175, 175);
         }
 
-        .formContainer .formWrapper button {
+        .settingsContainer .settingsWrapper button {
             color: white;
             padding: 10px;
             font-weight: bold;
@@ -68,80 +72,29 @@
 </head>
 
 <body>
-    <div class="formContainer">
-        <div class="formWrapper">
-            <span class="logo">TC_tam Inloggen</span>
-            <form>
-                <input id="displayName" type="text" placeholder="Display name">
-                <input id="email" type="email" placeholder="Email">
-                <input id="password" type="password" placeholder="Password">
-                <div style="display: flex; justify-content: center;">
-                    <button type="button" onclick="login()">Inloggen</button>
-                    <button type="button" onclick="register()">Registreren</button>
-                </div>
-            </form>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="/auth/firebase-config.js"></script>
+
+    <div class="settingsContainer">
+        <div class="settingsWrapper">
+            <span class="logo">TC_tam Account</span>
         </div>
     </div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
-            authDomain: "tctam-d04b8.firebaseapp.com",
-            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "tctam-d04b8",
-            storageBucket: "tctam-d04b8.appspot.com",
-            messagingSenderId: "793882705601",
-            appId: "1:793882705601:web:ac714f422263f4350b5e40",
-            measurementId: "G-TQLZK0WT42"
-        };
+        var auth = firebase.auth();
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        
 
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        function checkLoginStatus() {
+            const user = firebase.auth().currentUser;
 
-            if (!email || !password) {
-                notification('Email en wachtwoord zijn verplicht');
-                return;
+            if (!user) {
+                window.location.href = "/auth/login-register";
             }
-
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    notification('Inloggen gelukt:', userCredential.user);
-                })
-                .catch((error) => {
-                    notification('Inloggen mislukt:', error.message);
-                });
         }
-
-        function register() {
-            const displayName = document.getElementById('displayName').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!displayName || !email || !password) {
-                notification('Display name, email en wachtwoord zijn verplicht');
-                return;
-            }
-
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    notification('Registreren gelukt:', userCredential.user);
-
-                    userCredential.user.updateProfile({
-                        displayName: displayName
-                    }).then(() => {
-                        notification('Displaynaam opgeslagen:', displayName);
-                    }).catch((error) => {
-                        notification('Fout bij het opslaan van displaynaam:', error.message);
-                    });
-                })
-                .catch((error) => {
-                    notification('Registreren mislukt:', error.message);
-                });
-        }
+        setInterval(checkLoginStatus, 100);
     </script>
 </body>
 

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inloggen/Registreren</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        @media (max-width: 400px) {
+            .formContainer .formWrapper {
+                width: 90%;
+            }
+        }
+
+        .formContainer {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .formContainer .formWrapper {
+            background-color: var(--bg-accent-color2);
+            padding: 20px 60px;
+            border-radius: 10px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .formContainer .formWrapper .logo {
+            color: var(--h1234-color);
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .formContainer .formWrapper .title {
+            color: var(--h1234-color);
+            font-size: 12px;
+        }
+
+        .formContainer .formWrapper form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .formContainer .formWrapper form input {
+            padding: 15px;
+            border: none;
+            border-bottom: 1px solid var(--h1234-color);
+            margin-bottom: -7px;
+            background-color: var(--bg-accent-color1);
+        }
+
+        .formContainer .formWrapper form input::placeholder {
+            color: rgb(175, 175, 175);
+        }
+
+        .formContainer .formWrapper button {
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="/auth/firebase-config.js"></script>
+
+    <div class="formContainer">
+        <div class="formWrapper">
+            <span class="logo">TC_tam Inloggen</span>
+            <form id="login-form">
+                <input id="displayName" type="text" placeholder="Display name">
+                <input id="email" type="email" placeholder="Email">
+                <input id="password" type="password" placeholder="Password">
+            </form>
+            <div style="display: flex; justify-content: center;">
+                <button onclick="login()">Inloggen</button>
+                <button onclick="register()">Registreren</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var auth = firebase.auth();
+
+        // Inloggen
+        function login() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function (userCredential) {
+                    var user = userCredential.user;
+                    notification("Inloggen gelukt");
+                })
+                .catch(function (error) {
+                    notification(error.message);
+                });
+        }
+
+        // Registreren
+        function register() {
+            var displayName = document.getElementById('displayName').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            if (displayName) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(function (userCredential) {
+                        var user = userCredential.user;
+                        userCredential.user.updateProfile({
+                            displayName: displayName
+                        })
+                            .then(() => {
+                                notification("Registreren gelukt");
+                            })
+                            .catch((error) => {
+                                notification(error.message);
+                            });
+                    })
+                    .catch(function (error) {
+                        notification(error.message);
+                    });
+            } else {
+                notification("Error: vul ook een displayName in");
+            }
+        }
+
+        function checkLoginStatus() {
+            const user = firebase.auth().currentUser;
+
+            if (user) {
+                window.location.href = "/auth/account";
+            }
+        }
+        setInterval(checkLoginStatus, 100);
+    </script>
+</body>
+
+</html>
