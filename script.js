@@ -1,37 +1,3 @@
-/* accepteer acceptTosPpPopup */
-document.addEventListener('DOMContentLoaded', function () {
-	var tosAndPpVersion = 1;
-	if (!localStorage.getItem('acceptacceptTosPpPopup' + tosAndPpVersion)) {
-		var acceptTosPpPopup = document.createElement('div');
-		acceptTosPpPopup.id = 'acceptTosPpPopup';
-		acceptTosPpPopup.className = 'acceptTosPpPopup';
-
-		var text = 'Door deze site te gebruiken ga je akkoord met de <a href="/privacy-policy">privacy policy</a> en de <a href="/terms-of-service">terms of service</a>.';
-		acceptTosPpPopup.innerHTML = text;
-
-		var button = document.createElement('button');
-		button.innerHTML = 'Ok';
-
-		button.addEventListener('click', function () {
-			var opacity = 1;
-			var intervalId = setInterval(function () {
-				opacity -= 0.05;
-				acceptTosPpPopup.style.opacity = opacity;
-				if (opacity <= 0) {
-					clearInterval(intervalId);
-					acceptTosPpPopup.style.display = 'none';
-				}
-			}, 15);
-
-			localStorage.setItem('acceptacceptTosPpPopup' + tosAndPpVersion, 'true');
-		});
-
-		acceptTosPpPopup.appendChild(button);
-
-		document.body.appendChild(acceptTosPpPopup);
-	}
-});
-
 /* google analytics */
 (function () {
 	var script = document.createElement('script');
@@ -48,201 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	gtag('config', 'G-7KL389S9VR');
 })();
 
-// profielfoto
-document.addEventListener('DOMContentLoaded', function () {
-	const currentURL = window.location.pathname;
-
-	if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
-		!currentURL.startsWith('/auth/') && !currentURL.startsWith('/auth?')) {
-
-		const loginButton = document.createElement("div");
-		loginButton.style.position = "fixed";
-		loginButton.style.top = "6px";
-		loginButton.style.right = "6px";
-		loginButton.style.zIndex = "9999";
-		document.body.appendChild(loginButton);
-
-		function updateLoginButton() {
-			const loggedIn = localStorage.getItem('loggedIn');
-
-			if (loggedIn === 'true') {
-				let userPhotoURL = getCookie('userPhotoURL');
-				if (!userPhotoURL || !isValidURL(userPhotoURL)) {
-					userPhotoURL = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
-				}
-				const img = document.createElement("img");
-				img.src = userPhotoURL;
-				img.alt = "User Photo";
-				img.id = "profilePic";
-				img.style.userSelect = "none";
-				img.style.width = "50px";
-				img.style.height = "50px";
-				img.style.cursor = "pointer";
-				img.style.borderRadius = "50%";
-				loginButton.appendChild(img);
-				loginButton.addEventListener("click", function () {
-					const popupWidth = Math.floor(window.outerWidth * 0.75);
-					const popupHeight = Math.floor(window.outerHeight * 0.8);
-					const leftPosition = (window.screen.width - popupWidth) / 2;
-					const topPosition = (window.screen.height - popupHeight) / 2;
-					window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-				});
-			} else {
-				const loginLink = document.createElement("button");
-				loginLink.textContent = "Inloggen";
-				loginLink.onclick = function () {
-					const popupWidth = Math.floor(window.outerWidth * 0.75);
-					const popupHeight = Math.floor(window.outerHeight * 0.8);
-					const leftPosition = (window.screen.width - popupWidth) / 2;
-					const topPosition = (window.screen.height - popupHeight) / 2;
-					window.open("/auth/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-				};
-				loginButton.appendChild(loginLink);
-			}
-		}
-
-		function getCookie(name) {
-			const value = `; ${document.cookie}`;
-			const parts = value.split(`; ${name}=`);
-			if (parts.length === 2) return parts.pop().split(';').shift();
-		}
-
-		function isValidURL(string) {
-			try {
-				new URL(string);
-				return true;
-			} catch (_) {
-				return false;
-			}
-		}
-
-		updateLoginButton();
-	}
-});
-
-// Controleer of de pagina geladen is
-document.addEventListener("DOMContentLoaded", function () {
-	// Kijk of er een cookie "tabName" is
-	var tabNameCookie = getCookie("tabName");
-	var faviconCookie = getCookie("faviconLink");
-
-	// Als er een cookie is, stel de tabbladnaam in op de waarde van het cookie
-	if (tabNameCookie) {
-		document.title = tabNameCookie;
-	}
-
-	// Als er een favicon-cookie is, stel de favicon in op basis van de link in het cookie
-	if (faviconCookie) {
-		setFavicon(faviconCookie);
-	}
-});
-
-// Eventlistener voor het indrukken van de backspace-toets
-document.addEventListener("keydown", function (event) {
-	// Controleer of de backspace-toets is ingedrukt
-	if (event.key === "Escape" && document.activeElement) {
-		// Vraag de gebruiker om de naam van het tabblad in te vullen
-		var tabName = prompt("Vul hier de naam van het tabblad in (vul reset in om alles weer normaal te krijgen):");
-
-		// Controleer of de gebruiker "reset" heeft ingevoerd
-		if (tabName === "reset") {
-			// Verwijder het cookie "tabName"
-			deleteCookie("tabName");
-
-			// Verwijder het cookie "faviconLink"
-			deleteCookie("faviconLink");
-
-			location.reload();
-		} else if (tabName !== null && tabName !== "") {
-			// Stel de tabbladnaam in op de ingevoerde waarde
-			document.title = tabName;
-
-			// Sla de naam op in een cookie genaamd "tabName"
-			setCookie("tabName", tabName);
-
-			// Vraag de gebruiker om de link naar een afbeelding in te voeren
-			var faviconLink = prompt("Vul hier de link naar een afbeelding in voor de favicon (laat leeg om geen favicon te gebruiken):");
-
-			// Sla de link op in een cookie genaamd "faviconLink"
-			setCookie("faviconLink", faviconLink);
-
-			// Als er een favicon-link is ingevoerd, stel de favicon in
-			if (faviconLink) {
-				setFavicon(faviconLink);
-			}
-
-		}
-	}
-});
-
-// Functie om een cookie te verwijderen
-function deleteCookie(name) {
-	document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-}
-
-// Functie om een cookie in te stellen
-function setCookie(name, value) {
-	document.cookie = name + "=" + value + "; path=/";
-}
-
-// Functie om een cookie op te halen
-function getCookie(name) {
-	var nameEQ = name + "=";
-	var cookies = document.cookie.split(";");
-	for (var i = 0; i < cookies.length; i++) {
-		var cookie = cookies[i];
-		while (cookie.charAt(0) === " ") {
-			cookie = cookie.substring(1, cookie.length);
-		}
-		if (cookie.indexOf(nameEQ) === 0) {
-			return cookie.substring(nameEQ.length, cookie.length);
-		}
-	}
-	return null;
-}
-
-// Functie om de favicon van de pagina in te stellen
-function setFavicon(faviconLink) {
-	var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-	link.type = 'image/x-icon';
-	link.rel = 'icon';
-	link.href = faviconLink;
-	document.getElementsByTagName('head')[0].appendChild(link);
-}
-
-function googleTranslateElementInit() {
-	new google.translate.TranslateElement({
-		pageLanguage: 'nl',
-	}, 'google_translate_element');
-
-	var userLanguage = window.navigator.language.toLowerCase().split("-")[0];
-
-	setTimeout(function () {
-		var selectElement = document.querySelector('#google_translate_element select');
-		selectElement.value = userLanguage;
-		selectElement.dispatchEvent(new Event('change'));
-	}, 2000);
-}
-
-function loadTranslateScript() {
-	let script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-	document.head.appendChild(script);
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-	var newDiv = document.createElement('div');
-	newDiv.id = 'google_translate_element';
-	document.body.appendChild(newDiv);
-});
-
-document.addEventListener('DOMContentLoaded', loadTranslateScript);
-
 var metaTag = document.createElement('meta');
 metaTag.name = 'viewport';
 metaTag.content = 'width=device-width, initial-scale=1';
-
 var head = document.querySelector('head');
 head.appendChild(metaTag);
 
@@ -262,10 +36,6 @@ if ('serviceWorker' in navigator) {
 		});
 }
 
-if (window.location.href === "https://free-tctam.github.io/") {
-	window.location.href = "https://tcevik.github.io/";
-}
-
 var existingNotification = null;
 
 function removeNotification() {
@@ -274,7 +44,6 @@ function removeNotification() {
 		existingNotification = null;
 	}
 }
-
 function notification(message) {
 	removeNotification();
 
@@ -322,14 +91,6 @@ function notification(message) {
 		notification.style.maxHeight = 0.9 * screenHeight + 'px';
 	}
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-	var currentUrl = window.location.href;
-
-	if (currentUrl.includes("/blogs/") || currentUrl.includes("/blogs?")) {
-		document.body.style.textAlign = "left";
-	}
-});
 
 document.addEventListener("DOMContentLoaded", function () {
 	sideMenuNav();
