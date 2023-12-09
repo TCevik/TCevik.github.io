@@ -340,7 +340,7 @@ var buttons = `
 	<p style="display: none;" id="install-text"></p>
     <button style="display: none;" id="install">Installeer de TC_tam app</button>
 	<h3 id="algemeen">Algemeen</h3>
-	<button onclick="window.open('https://www.youtube.com/@YT.TC_tam?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+	<button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
 	<button onclick="window.location.href='/login-exclusive'">Exclusieve Pagina's</button>
 	<button onclick="window.location.href='/games/alle-games'">Games</button>
 	<button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
