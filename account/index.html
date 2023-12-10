@@ -8,7 +8,7 @@
     <script src="/script.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var tekstElement = document.createElement('div');
             var counter = 0;
             tekstElement.textContent = 'Laden';
@@ -26,7 +26,7 @@
             tekstElement.style.paddingTop = '50vh';
             document.body.appendChild(tekstElement);
 
-            setInterval(function() {
+            setInterval(function () {
                 counter++;
                 if (counter % 4 === 0) {
                     tekstElement.textContent = 'Laden';
@@ -38,8 +38,8 @@
                     tekstElement.textContent = 'Laden...';
                 }
             }, 300);
-        
-            setTimeout(function() {
+
+            setTimeout(function () {
                 tekstElement.style.display = 'none';
             }, 1500);
         });
@@ -178,6 +178,15 @@
                 }
             }
         }
+
+        setInterval(function () {
+            const user = auth.currentUser;
+            if (!user) {
+                window.location.href = "/account/inloggen-registreren";
+            } else {
+                console.log("Wel ingelogd. Blijf waar je bent. :)");
+            }
+        }, 2000);
     </script>
 </body>
 
