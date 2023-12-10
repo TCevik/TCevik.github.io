@@ -116,7 +116,6 @@ var buttons = `
         	<button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>
         	<button onclick="window.location.href='/tools/myinstants'">MyInstants</button>
         	<button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
-        	<button onclick="window.location.href='/tools/notities'">Notities</button>
         	<button onclick="window.location.href='/tools/ide'">IDE</button>
         	<button onclick="window.location.href='/tools/tts'">TTS</button>
 
