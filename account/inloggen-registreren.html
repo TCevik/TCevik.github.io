@@ -97,11 +97,11 @@
 
         document.getElementById('register-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            var registerEmail = document.getElementById('register-email').value;
+            var registerName = document.getElementById('register-displayName').value;
             var registerEmail = document.getElementById('register-email').value;
             var registerPassword = document.getElementById('register-password').value;
 
-            auth.createUserWithEmailAndPassword(registerEmail, registerEmail)
+            auth.createUserWithEmailAndPassword(registerEmail, registerPassword)
                 .then(function (userCredential) {
                     console.log('Gebruiker geregistreerd:', userCredential.user.email);
                     notification('Gebruiker geregistreerd: ' + userCredential.user.email);
@@ -114,7 +114,6 @@
 
         document.getElementById('login-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            var loginEmail = document.getElementById('login-email').value;
             var loginEmail = document.getElementById('login-email').value;
             var loginPassword = document.getElementById('login-password').value;
 
