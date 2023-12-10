@@ -11,18 +11,42 @@
             position: fixed;
             top: 50%;
             left: 50%;
+            width: 30%;
             transform: translate(-50%, -50%);
-            width: 60%;
-            height: 80%;
-            background-color: var(--bg-accent-color2);
+            background-color: var(--bg-accent-color1);
             border: 1px solid var(--text-color);
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius1);
+            padding-bottom: 20px;
+        }
+
+        input {
+            background-color: transparent;
+            width: 70%;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form button {
+            margin-bottom: 20px;
+            width: 80%;
         }
     </style>
 </head>
 <body>
     <div class="loginForm">
+        <h4 class="title">TC_tam Inloggen</h4>
+        <form>
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Wachtwoord">
+            <button type="submit">Inloggen</button>
+        </form>
 
+        <a onclick="" style="cursor: pointer;">Wachtwoord vergeten?</a>
     </div>
 </body>
 </html>
