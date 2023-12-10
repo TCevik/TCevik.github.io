@@ -1,52 +1,69 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
-    <title>404 - Pagina niet gevonden</title>
+    <title>TC_tam Account</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
-    <style>
-        .loginForm {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 30%;
-            transform: translate(-50%, -50%);
-            background-color: var(--bg-accent-color1);
-            border: 1px solid var(--text-color);
-            border-radius: var(--border-radius1);
-            padding-bottom: 20px;
-        }
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var tekstElement = document.createElement('div');
+            var counter = 0;
+            tekstElement.textContent = 'Laden';
+            tekstElement.style.display = 'block';
+            tekstElement.style.position = 'fixed';
+            tekstElement.style.top = '0';
+            tekstElement.style.left = '0';
+            tekstElement.style.width = '100%';
+            tekstElement.style.height = '100%';
+            tekstElement.style.backgroundColor = 'var(--background-color)';
+            tekstElement.style.zIndex = '99999';
+            tekstElement.style.textAlign = 'center';
+            tekstElement.style.fontSize = '30px';
+            tekstElement.style.paddingTop = '50vh';
+            document.body.appendChild(tekstElement);
 
-        input {
-            background-color: transparent;
-            width: 70%;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        form button {
-            margin-bottom: 20px;
-            width: 80%;
-        }
-    </style>
+            setInterval(function() {
+                counter++;
+                if (counter % 4 === 0) {
+                    tekstElement.textContent = 'Laden';
+                } else if (counter % 4 === 1) {
+                    tekstElement.textContent = 'Laden.';
+                } else if (counter % 4 === 2) {
+                    tekstElement.textContent = 'Laden..';
+                } else {
+                    tekstElement.textContent = 'Laden...';
+                }
+            }, 300);
+        
+            setTimeout(function() {
+                tekstElement.style.display = 'none';
+            }, 1500);
+        });
+    </script>
 </head>
-<body>
-    <div class="loginForm">
-        <h4 class="title">TC_tam Inloggen</h4>
-        <form>
-            <input type="email" placeholder="Email">
-            <input type="password" placeholder="Wachtwoord">
-            <button type="submit">Inloggen</button>
-        </form>
 
-        <a onclick="" style="cursor: pointer;">Wachtwoord vergeten?</a>
-    </div>
+<body>
+    <h3 id="user-email"></h3>
+    <h3 style="margin-bottom: -10px;">Je gebruikersnaam is:</h3>
+    <input style="margin-right: 0px;" type="text" id="name-input" maxlength="30" placeholder="Voer je naam in" required>
+    <button id="save-name-btn" onclick="saveName()">Opslaan</button>
+    <br>
+    <h3 style="margin-bottom: -10px;">Je profielfoto is:</h3>
+    <input style="margin-right: 0px;" type="text" id="pic-input" maxlength="1000"
+        placeholder="Vul de URL van je profielfoto in" required>
+    <button id="save-pic-btn" onclick="savePic()">Opslaan</button>
+    <br>
+    <br><button id="logout-btn">Uitloggen</button>
+    <button id="change-password-btn" onclick="changePassword();">Wachtwoord wijzigen</button>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js"></script>
+    <script src="/account/config.js"></script>
+    <script src="/account/auth.js"></script>
 </body>
+
 </html>

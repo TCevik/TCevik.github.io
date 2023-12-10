@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam Account</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .loginForm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 30%;
+            transform: translate(-50%, -50%);
+            background-color: var(--bg-accent-color1);
+            border: 1px solid var(--text-color);
+            border-radius: var(--border-radius1);
+            padding-bottom: 20px;
+        }
+
+        .registerForm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 30%;
+            transform: translate(-50%, -50%);
+            background-color: var(--bg-accent-color1);
+            border: 1px solid var(--text-color);
+            border-radius: var(--border-radius1);
+            padding-bottom: 20px;
+        }
+
+        input {
+            background-color: transparent;
+            width: 70%;
+            margin: 5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form button {
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loginForm">
+        <h4 class="title">TC_tam Account</h4>
+        <p>Inloggen</p>
+        <form id="login-form">
+            <input id="login-email" type="email" placeholder="Email">
+            <input id="login-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')" onblur="hideInput('pass-r')" id="pass-r">
+            <button type="submit">Inloggen</button>
+        </form>
+
+        <p>Heb nog geen account? <a onclick="modeRegister()" style="cursor: pointer;">Registreren</a></p>
+
+        <a onclick="resetPassword()" style="cursor: pointer;">Wachtwoord vergeten?</a>
+    </div>
+
+    <div class="registerForm" style="display: none;">
+        <h4 class="title">TC_tam Account</h4>
+        <p>Registreren</p>
+        <form id="register-form">
+            <input id="register-displayName" type="text" placeholder="Display Name">
+            <input id="register-email" type="email" placeholder="Email">
+            <input id="register-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')" onblur="hideInput('pass-r')" id="pass-r">
+            <button type="submit">Inloggen</button>
+        </form>
+
+        <p>Heb al een account? <a onclick="modeLogin()" style="cursor: pointer;">Inloggen</a></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js"></script>
+    <script src="/account/config.js"></script>
+    <script src="/account/auth.js"></script>
+</body>
+
+</html>
