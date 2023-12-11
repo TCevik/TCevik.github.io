@@ -107,7 +107,7 @@
                 auth.createUserWithEmailAndPassword(registerEmail, registerPassword)
                     .then(function (userCredential) {
                         console.log('Gebruiker geregistreerd:', userCredential.user.email);
-
+                        localStorage.setItem('loggedIn', 'true');
                         return userCredential.user.updateProfile({
                             displayName: registerName
                         });
