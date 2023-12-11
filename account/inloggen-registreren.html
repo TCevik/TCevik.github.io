@@ -75,6 +75,11 @@
         <p>Heb nog geen account? <a onclick="modeRegister()" style="cursor: pointer;">Registreren</a></p>
 
         <a onclick="resetPassword()" style="cursor: pointer;">Wachtwoord vergeten?</a>
+
+        <button class="google-btn" id="google-login-btn" onclick="loginWithGoogle();">
+            <img src="/assets/google-logo.png" alt="Google Logo">
+            Log in met Google
+        </button>
     </div>
 
     <div class="registerForm" style="display: none;">
@@ -193,6 +198,26 @@
                 console.log("Niet ingelogd. Blijf waar je bent. :)");
             }
         }, 500);
+
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        function loginWithGoogle() {
+            firebase.auth()
+                .signInWithPopup(googleProvider)
+                .then((result) => {
+                    const user = result.user;
+                    console.log('Gebruiker ingelogd met Google:', user.email);
+                    notification('Ingelogd met Google! (' + user.email + ')');
+                    toggleUI(true);
+                    localStorage.setItem('loggedIn', 'true');
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error('Fout bij inloggen met Google:', errorCode, errorMessage);
+                    notification('Fout bij inloggen met Google: ' + errorMessage);
+                });
+        }
     </script>
 </body>
 
