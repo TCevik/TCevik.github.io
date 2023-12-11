@@ -105,6 +105,7 @@
                 .then(function (userCredential) {
                     console.log('Gebruiker geregistreerd:', userCredential.user.email);
                     notification('Gebruiker geregistreerd: ' + userCredential.user.email);
+                    localStorage.setItem('loggedIn', 'true');
                 })
                 .catch(function (error) {
                     console.error('Fout bij registreren:', error.message);
@@ -121,6 +122,7 @@
                 .then(function (userCredential) {
                     console.log('Gebruiker ingelogd:', userCredential.user.email);
                     notification('Gebruiker ingelogd: ' + userCredential.user.email);
+                    localStorage.setItem('loggedIn', 'true');
                 })
                 .catch(function (error) {
                     console.error('Fout bij inloggen:', error.message);
