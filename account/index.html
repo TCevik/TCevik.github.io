@@ -136,6 +136,7 @@
                     photoURL: pic
                 }).then(function () {
                     notification('Profielfoto succesvol bijgewerkt: ' + pic);
+                    location.reload()
                 }).catch(function (error) {
                     notification('Fout bij het bijwerken van de profielfoto: ' + error);
                 });
