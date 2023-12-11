@@ -103,7 +103,7 @@
             var registerEmail = document.getElementById('register-email').value;
             var registerPassword = document.getElementById('register-password').value;
 
-            if (registerName.length >= 3) {
+            if (registerName.length >= 3 && registerName.length < 30) {
                 auth.createUserWithEmailAndPassword(registerEmail, registerPassword)
                     .then(function (userCredential) {
                         console.log('Gebruiker geregistreerd:', userCredential.user.email);
@@ -122,8 +122,8 @@
                         notification('Fout bij registreren: ' + error.message);
                     });
             } else {
-                console.log('De naam moet 3 of meer tekens bevatten.');
-                notification('De naam moet 3 of meer tekens bevatten.');
+                console.log('De naam moet tussen de 3 en 30 tekens bevatten.');
+                notification('De naam moet tussen de 3 en 30 tekens bevatten.');
             }
         });
 

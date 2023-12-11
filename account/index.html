@@ -146,7 +146,7 @@
 
         function saveName() {
             var name = document.getElementById('name-input').value;
-            if (name.trim().length >= 3) {
+            if (name.trim().length >= 3 && name.trim().length <= 30) {
                 var user = firebase.auth().currentUser;
 
                 user.updateProfile({
@@ -157,7 +157,7 @@
                     notification('Fout bij het bijwerken van de gebruikersnaam: ' + error);
                 });
             } else {
-                notification('De gebruikersnaam moet minimaal 3 tekens bevatten en mag niet alleen spaties zijn.');
+                notification('De gebruikersnaam moet tussen de 3 en 30 tekens bevatten en mag niet alleen spaties zijn.');
             }
         }
 
