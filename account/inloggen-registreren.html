@@ -57,7 +57,8 @@
         <p>Inloggen</p>
         <form id="login-form">
             <input id="login-email" type="email" placeholder="Email">
-            <input id="login-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')" onblur="hideInput('pass-r')" id="pass-r">
+            <input id="login-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')"
+                onblur="hideInput('pass-r')" id="pass-r">
             <button type="submit">Inloggen</button>
         </form>
 
@@ -72,7 +73,8 @@
         <form id="register-form">
             <input id="register-displayName" type="text" placeholder="Display Name">
             <input id="register-email" type="email" placeholder="Email">
-            <input id="register-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')" onblur="hideInput('pass-r')" id="pass-r">
+            <input id="register-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')"
+                onblur="hideInput('pass-r')" id="pass-r">
             <button type="submit">Inloggen</button>
         </form>
 
@@ -88,11 +90,11 @@
         function showInput(id) {
             document.getElementById(id).setAttribute('type', 'text');
         }
-    
+
         function hideInput(id) {
             document.getElementById(id).setAttribute('type', 'password');
         }
-        
+
         var auth = firebase.auth();
 
         document.getElementById('register-form').addEventListener('submit', function (e) {
@@ -101,16 +103,28 @@
             var registerEmail = document.getElementById('register-email').value;
             var registerPassword = document.getElementById('register-password').value;
 
-            auth.createUserWithEmailAndPassword(registerEmail, registerPassword)
-                .then(function (userCredential) {
-                    console.log('Gebruiker geregistreerd:', userCredential.user.email);
-                    notification('Gebruiker geregistreerd: ' + userCredential.user.email);
-                    localStorage.setItem('loggedIn', 'true');
-                })
-                .catch(function (error) {
-                    console.error('Fout bij registreren:', error.message);
-                    notification('Fout bij registreren: ' + error.message);
-                });
+            if (registerName.length >= 3) {
+                auth.createUserWithEmailAndPassword(registerEmail, registerPassword)
+                    .then(function (userCredential) {
+                        console.log('Gebruiker geregistreerd:', userCredential.user.email);
+
+                        return userCredential.user.updateProfile({
+                            displayName: registerName
+                        });
+                    })
+                    .then(function () {
+                        console.log('Gebruikersprofiel geüpdatet met naam:', registerName);
+                        notification('Gebruiker geregistreerd en profiel geüpdatet: ' + registerName);
+                        localStorage.setItem('loggedIn', 'true');
+                    })
+                    .catch(function (error) {
+                        console.error('Fout bij registreren:', error.message);
+                        notification('Fout bij registreren: ' + error.message);
+                    });
+            } else {
+                console.log('De naam moet 3 of meer tekens bevatten.');
+                notification('De naam moet 3 of meer tekens bevatten.');
+            }
         });
 
         document.getElementById('login-form').addEventListener('submit', function (e) {
