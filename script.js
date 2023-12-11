@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					const popupHeight = Math.floor(window.outerHeight * 0.8);
 					const leftPosition = (window.screen.width - popupWidth) / 2;
 					const topPosition = (window.screen.height - popupHeight) / 2;
-					window.open("/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+					window.open("/account/inloggen-registreren", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
 				};
 				loginButton.appendChild(loginLink);
 			}
