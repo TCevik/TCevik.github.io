@@ -265,12 +265,12 @@
             <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px" src="/assets/share-icon.png" alt="Deel icon">
             Deel deze website
         </button>
-    
+
         <div style="display: flex; width: 100%; justify-content: space-between; margin-top: 20px;">
             <div id="tctam-logo" style="margin-top: -3px; width: 200px; margin-right: 20px; text-align: right;">
                 <img src="/favicon.ico" width="200px" style="max-width: 100%;" alt="TC_tam Logo">
             </div>
-        
+
             <div style="margin-top: -30px; flex-grow: 1; text-align: left;">
                 <h3 id="age">Ik ben Tamer, een (leeftijd) jarige jongen die websites maakt.</h3>
                 <p>Hoe heb ik TC_tam bedacht?
@@ -304,9 +304,8 @@
     <div style="margin: 0 auto; display: none;" id="showMenu"></span>
         <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
         <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van die website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
-        <button style="font-size: 1.0em; display:none;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
-        <div id="loginMessage" style="color: red;">Log eerst in om de eigen naam en favicon functie te gebruiken. De blank tab kan je wel al gebruiken.</div>
-        <button style="font-size: 1.0em; display:none;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
+        <button style="font-size: 1.0em;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
+        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
     </div>
 
     <script>
@@ -322,34 +321,34 @@
                 const announcement = remoteConfig.getString('announcement_message');
                 const announcementElement = document.getElementById('announcementText');
                 const announcementBox = document.getElementById('announcements');
-            
+
                 // Controleren of de aankondiging leeg is of niet bestaat
                 if (announcement && announcement.trim() !== "") {
                     // Aankondiging weergeven als deze niet leeg is
                     announcementElement.innerHTML = announcement;
-                
+
                     // Aankondigingselement onzichtbaar maken en de opacity instellen op 0
                     announcementBox.style.opacity = '0';
                     announcementBox.style.display = 'block';
-                
+
                     // Functie om de fade-in-animatie toe te passen
                     function fadeIn(element, duration) {
                         let opacity = 0;
                         const interval = 10;
                         const delta = 1 / (duration / interval);
-                    
+
                         function increaseOpacity() {
                             opacity += delta;
                             element.style.opacity = String(opacity);
-                        
+
                             if (opacity >= 1) {
                                 clearInterval(fadeInterval);
                             }
                         }
-                    
+
                         const fadeInterval = setInterval(increaseOpacity, interval);
                     }
-                
+
                     // Roep de fade-in-functie aan met de gewenste duur (bijv. 1000 ms)
                     fadeIn(announcementBox, 1000);
                 } else {
@@ -369,18 +368,18 @@
         /* show navigation button */
         window.addEventListener('load', function() {
             let loadCount = localStorage.getItem('loadCount') || 0;
-        
+
             loadCount++;
-        
+
             if (loadCount < 2) {
                 let openButton = document.getElementById('openButton');
-            
+
                 if (openButton) {
                     openButton.textContent = "Klik hier voor het menu met alle pagina's (Dit gaat weg na 1x de pagina reloaden)";
                     openButton.style.maxWidth = '150px';
                 }
             }
-        
+
             localStorage.setItem('loadCount', loadCount);
         });
     </script>
@@ -412,7 +411,7 @@
         function openSecretTab() {
             var tabName = prompt('Voer de naam van het tabblad in:');
             var faviconLink = prompt('Voer de favicon-link in:');
-        
+
             if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
                 var newTab = window.open('about:blank', '_blank');
                 var iframe = newTab.document.createElement('iframe');
@@ -456,26 +455,6 @@
             var menu = document.getElementById('showMenu');
             menu.style.display = 'inline';
         }
-
-        /* kijk of de gebruiker is ingelogd */
-        firebase.auth().onAuthStateChanged(function(user) {
-            var secretTabBtn = document.getElementById('openSecretTabBtn');
-            document.getElementById('loginMessage').style.margin = '0 auto';
-            document.getElementById('openNewTabBtn').style.margin = '0 auto';
-            secretTabBtn.style.margin = '0 auto';
-
-            if (user) {
-                document.getElementById('loginMessage').style.display = 'none';
-                document.getElementById('openNewTabBtn').style.display = 'block';
-                secretTabBtn.style.display = 'block';
-                secretTabBtn.disabled = false;
-            } else {
-                document.getElementById('loginMessage').style.display = 'block';
-                document.getElementById('openNewTabBtn').style.display = 'block';
-                secretTabBtn.style.display = 'block';
-                secretTabBtn.disabled = true;
-            }
-        });
     </script>
 </body>
 </html>
