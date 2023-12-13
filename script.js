@@ -142,11 +142,10 @@ function sideMenuNav() {
 	sideBar.style.position = "fixed";
 	sideBar.style.top = "0";
 	sideBar.style.left = "0px";
-	sideBar.style.zIndex = "9998";
+	sideBar.style.zIndex = "9999";
 	sideBar.style.overflowX = "hidden";
 	sideBar.style.transition = "0.5s";
 
-	// Voeg de knoppen toe aan de sidebar
 	sideBar.innerHTML = buttons;
 
 	var openButton = document.createElement("button");
@@ -159,14 +158,14 @@ function sideMenuNav() {
 	openButton.style.paddingTop = "75px";
 	openButton.style.userSelect = "none";
 	openButton.style.paddingBottom = "75px";
-	openButton.style.zIndex = "9999";
+	openButton.style.zIndex = "9998";
 	openButton.style.minWidth = "35px";
 	openButton.style.top = "50%";
 	openButton.style.transform = "translateY(-50%)";
 
 	function adjustOpenButtonPosition() {
 		if (sideBar.style.width === "300px") {
-			openButton.style.left = "297px";
+			openButton.style.left = "295px";
 			openButton.textContent = "<";
 		} else {
 			openButton.style.left = "-5px";
