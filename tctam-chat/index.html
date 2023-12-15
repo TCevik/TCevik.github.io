@@ -8,23 +8,19 @@
     <title>TC_tam Chat</title>
 
 </head>
-<body style="width: 100%;">
-    <div id="chat">
-        <div id="chat-output" style="position: relative;"></div>
-        
-        <div id="ui-input">
-            <input style="width: 50%;" type="text" id="message-input" placeholder="Voer een bericht in" maxlength="1024" autocomplete="off">
-            <button style="width: 20%;" id="send-button">Verzend</button>
-        </div>
+<body style="width: 100vw; height: 100vh;">
+    <div id="chat-output" style="position: relative;"></div>
+    
+    <div id="ui-input">
+        <input style="width: 50%;" type="text" id="message-input" placeholder="Voer een bericht in" maxlength="1024" autocomplete="off">
+        <button style="width: 20%;" id="send-button">Verzend</button>
     </div>
-
 
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
-    <script src="/auth/firebase-config.js"></script>
+    <script src="/account/config.js"></script>
     <script src="/tctam-chat/chat.js"></script>
-    <script src="/login-exclusive/ex-script.js"></script>
 
     <style>
         :root {
@@ -43,7 +39,7 @@
         #ui-input {
             position: absolute;
             width: 100vw;
-            max-height: 15vh;
+            max-height: calc(15vh - 3px);
             border-top: 3px solid var(--h1234-color);
             border-top-right-radius: 50px;
             border-top-left-radius: 50px;
