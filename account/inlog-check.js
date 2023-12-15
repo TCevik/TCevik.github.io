@@ -1,8 +1,7 @@
-setInterval(function () {
-    const user = auth.currentUser;
-    if (!user) {
-        window.location.href = "/account/inloggen-registreren";
-    } else {
-        console.log("Wel ingelogd. Blijf waar je bent. :)");
+document.addEventListener('DOMContentLoaded', function () {
+    var isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+  
+    if (!isLoggedIn) {
+      window.location.href = 'https://tctam.nl/account/inloggen-registreren';
     }
-}, 2000);
+  });  
