@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		loginButton.style.position = "fixed";
 		loginButton.style.top = "6px";
 		loginButton.style.right = "6px";
-		loginButton.style.zIndex = "9999px";
+		loginButton.style.zIndex = "9999";
 		document.body.appendChild(loginButton);
 
 		function updateLoginButton() {
