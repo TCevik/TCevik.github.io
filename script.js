@@ -1,58 +1,47 @@
-var existingNotification = null;
-
-function removeNotification() {
-	if (existingNotification) {
-		document.body.removeChild(existingNotification);
-		existingNotification = null;
-	}
-}
-
 function notification(message) {
-	removeNotification();
+	var notificationElement = document.createElement("div");
 
-	var notification = document.createElement('div');
-	notification.setAttribute('id', 'customNotification');
-	notification.style.position = 'fixed';
-	notification.style.bottom = '20px';
-	notification.style.left = '20px';
-	notification.style.wordBreak = 'break-word';
-	notification.style.backgroundColor = 'var(--background-color)';
-	notification.style.padding = '10px';
-	notification.style.border = '1px solid var(--text-color)';
-	notification.style.borderRadius = '5px';
-	notification.style.textAlign = 'left';
-	notification.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)';
-	notification.style.display = 'flex';
-	notification.style.alignItems = 'center';
-	notification.style.zIndex = '9999';
+	notificationElement.setAttribute('id', 'customNotification');
+	notificationElement.style.position = "fixed";
+	notificationElement.style.wordBreak = 'break-word';
+	notificationElement.style.bottom = "0";
+	notificationElement.style.backgroundColor = "var(--bg-accent-color2)";
+	notificationElement.style.color = "var(--text-color)";
+	notificationElement.style.padding = "15px";
+	notificationElement.style.border = "1px solid var(--text-color)";
+	notificationElement.style.borderRadius = "var(--border-radius2)";
+	notificationElement.style.zIndex = "99999";
+	notificationElement.style.opacity = "0";
+	notificationElement.style.marginBottom = "10px";
+	notificationElement.style.maxWidth = "90%";
+	notificationElement.style.left = "50%"; // Nieuwe regel om het element te centreren
+	notificationElement.style.transform = "translateX(-50%)"; // Nieuwe regel om het element te centreren
 
-	var notificationElement = document.createElement('span');
-	notificationElement.textContent = message;
-	notificationElement.style.flex = '1';
-	notification.appendChild(notificationElement);
+	notificationElement.innerHTML = message;
 
-	var closeNotificationButton = document.createElement('span');
-	closeNotificationButton.textContent = 'X';
-	closeNotificationButton.style.marginLeft = '5px';
-	closeNotificationButton.style.cursor = 'pointer';
-	closeNotificationButton.style.fontWeight = 'bold';
-	closeNotificationButton.style.userSelect = 'none';
-	closeNotificationButton.onclick = function () {
-		removeNotification();
-	};
-	notification.appendChild(closeNotificationButton);
+	document.body.appendChild(notificationElement);
 
-	document.body.appendChild(notification);
-	existingNotification = notification;
+	notificationElement.offsetHeight;
+
+	notificationElement.style.transition = "opacity 0.3s";
+	notificationElement.style.opacity = "1";
 
 	var screenHeight = window.innerHeight;
-	var notificationHeight = notification.getBoundingClientRect().height;
+	var notificationHeight = notificationElement.getBoundingClientRect().height;
 
-	if (notificationHeight > 0.9 * screenHeight) {
+	if (notificationHeight > 0.96 * screenHeight) {
 		notificationElement.textContent = "Deze notificatie is te lang om weer te geven.";
-		notification.style.overflowY = 'none';
-		notification.style.maxHeight = 0.9 * screenHeight + 'px';
+		notificationElement.style.overflowY = 'none';
+		notificationElement.style.maxHeight = 0.96 * screenHeight + 'px';
 	}
+
+	setTimeout(function () {
+		notificationElement.style.opacity = "0";
+
+		setTimeout(function () {
+			document.body.removeChild(notificationElement);
+		}, 300);
+	}, 3000);
 }
 
 var metaTag = document.createElement('meta');
