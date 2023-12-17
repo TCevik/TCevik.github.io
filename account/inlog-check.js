@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     var isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-  
+
     if (!isLoggedIn) {
-      window.location.href = 'https://tctam.nl/account/inloggen-registreren';
+        var currentURL = window.location.href;
+        window.location.href = '/auth/account' + '?' + currentURL;
     }
-  });  
+});  
