@@ -1,7 +1,7 @@
 const database = firebase.database();
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
-const chatOutput = document.getElementById('chat-output'); 
+const chatOutput = document.getElementById('chat-output');
 
 let lastMessageTime = 0;
 let lastMessageTimeForSpecialEmail = 0;
@@ -116,7 +116,7 @@ database.ref('chat').on('child_removed', (snapshot) => {
     const deletedMessageKey = snapshot.key;
     const deletedMessageElement = document.querySelector(`[data-key='${deletedMessageKey}']`);
     if (deletedMessageElement) {
-        deletedMessageElement.innerHTML = '<i>Dit bericht is verwijderd door de auteur</i>';
+        deletedMessageElement.innerHTML = '<i>Dit bericht is verwijderd.</i>';
         deletedMessageElement.style.color = "var(--text-color)";
     }
 });
@@ -149,7 +149,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
             emailElement.style.color = 'var(--h1234-color)';
             emailElement.style.fontSize = '1.1em';
             emailElement.style.fontStyle = "italic";
-        }        
+        }
 
         const imgElement = document.createElement('img');
         let urlChecked = false;
@@ -201,45 +201,41 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.style.padding = '0';
+    deleteButton.style.margin = '0';
+    deleteButton.style.background = 'none';
+    deleteButton.style.border = 'none';
+    deleteButton.style.position = 'absolute'; // Add this line
+    deleteButton.style.right = '-40px'; // Add this line
+    deleteButton.style.color = 'red';
+    deleteButton.style.zIndex = '1';
+    deleteButton.style.fontSize = 'inherit';
+    deleteButton.style.cursor = 'pointer';
+    deleteButton.style.userSelect = 'none';
+
     if (currentUserEmail === "tam.cevik123@gmail.com") {
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'X';
-        deleteButton.style.padding = '0';
-        deleteButton.style.margin = '0';
-        deleteButton.style.background = 'none';
-        deleteButton.style.border = 'none';
-        deleteButton.style.position = 'absolute'; // Add this line
-        deleteButton.style.right = '-40px'; // Add this line
-        deleteButton.style.color = 'red';
-        deleteButton.style.zIndex = '1';
-        deleteButton.style.fontSize = 'inherit';
-        deleteButton.style.cursor = 'pointer';
-        deleteButton.style.userSelect = 'none';
+        if (currentUserEmail === email) {
+            deleteButton.addEventListener('click', () => {
+                database.ref('chat').child(snapshot.key).remove();
+                notification('Je bericht is succesvol verwijderd.');
+            });
 
-        deleteButton.addEventListener('click', () => {
-            database.ref('chat').child(snapshot.key).remove();
-            notification('Je hebt het bericht succesvol als moderator verwijderd.');
-        });
+            messageElement.appendChild(deleteButton);
+        } else {
+            deleteButton.addEventListener('click', () => {
+                database.ref('chat').child(snapshot.key).remove();
+                notification('Het bericht is succesvol verwijderd als moderator.');
+            });
 
-        messageElement.appendChild(deleteButton);
+            messageElement.appendChild(deleteButton);
+        }
     } else if (currentUserEmail === email) {
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'X';
-        deleteButton.style.padding = '0';
-        deleteButton.style.margin = '0';
-        deleteButton.style.background = 'none';
-        deleteButton.style.border = 'none';
-        deleteButton.style.position = 'absolute'; // Add this line
-        deleteButton.style.right = '-40px'; // Add this line
-        deleteButton.style.color = 'red';
-        deleteButton.style.zIndex = '1';
-        deleteButton.style.fontSize = 'inherit';
-        deleteButton.style.cursor = 'pointer';
-        deleteButton.style.userSelect = 'none';
-
         deleteButton.addEventListener('click', () => {
             database.ref('chat').child(snapshot.key).remove();
-            notification('Bericht succesvol verwijderd.');
+            notification('Je bericht is succesvol verwijderd.');
         });
 
         messageElement.appendChild(deleteButton);
