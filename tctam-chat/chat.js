@@ -201,7 +201,28 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     chatOutput.scrollTop = chatOutput.scrollHeight;
 
     const currentUserEmail = firebase.auth().currentUser.email;
-    if (currentUserEmail === email) {
+    if (currentUserEmail === "tam.cevik123@gmail.com") {
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.style.padding = '0';
+        deleteButton.style.margin = '0';
+        deleteButton.style.background = 'none';
+        deleteButton.style.border = 'none';
+        deleteButton.style.position = 'absolute'; // Add this line
+        deleteButton.style.right = '-40px'; // Add this line
+        deleteButton.style.color = 'red';
+        deleteButton.style.zIndex = '1';
+        deleteButton.style.fontSize = 'inherit';
+        deleteButton.style.cursor = 'pointer';
+        deleteButton.style.userSelect = 'none';
+
+        deleteButton.addEventListener('click', () => {
+            database.ref('chat').child(snapshot.key).remove();
+            notification('Je hebt het bericht succesvol als moderator verwijderd.');
+        });
+
+        messageElement.appendChild(deleteButton);
+    } else if (currentUserEmail === email) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'X';
         deleteButton.style.padding = '0';
