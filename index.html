@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title>TC_tam</title>
@@ -98,10 +99,10 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var announcements = document.getElementById("announcements");
 
-            window.addEventListener("scroll", function() {
+            window.addEventListener("scroll", function () {
                 // Bereken de nieuwe verticale verschuiving op basis van het scrollen
                 var translateY = Math.max(-30, -2 * window.scrollY) + "%";
 
@@ -164,14 +165,14 @@
 
         /* light mode */
         :root {
-          --bg-ball-opacity: 0;
+            --bg-ball-opacity: 0;
         }
 
         /* dark mode */
         @media (prefers-color-scheme: dark) {
-          :root {
-            --bg-ball-opacity: 1;
-          }
+            :root {
+                --bg-ball-opacity: 1;
+            }
         }
 
         #title span {
@@ -226,8 +227,9 @@
         }
     </style>
 </head>
+
 <body onload="countup(); countdownToBirthday();">
-    <div id="announcements"style="display: none; opacity: 0;" class="diff-color-section2">
+    <div id="announcements" style="display: none; opacity: 0;" class="diff-color-section2">
         <h4 style="margin: 0px; margin-bottom: -15px; transform: translate(0%, -60%);">Aankondigingen:</h4>
         <p id="announcementText" style="margin: 0px;">Laden...</p>
     </div>
@@ -239,30 +241,43 @@
         <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
     </div>
 
-    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.<p>
+    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.
+    <p>
 
     <div id="social-media">
         <h3>Social Media:</h3>
         <a style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
-            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo" alt="Snapchat Link">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
+                src="https://play-lh.googleusercontent.com/KxeSAjPTKliCErbivNiXrd6cTwfbqUJcbSRPe_IBVK_YmwckfMRS1VIHz-5cgT09yMo"
+                alt="Snapchat Link">
         </a>
         <a style="border-bottom: none;" href="https://www.youtube.com/@YT.TC_tam?sub_confirmation=1">
-            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg" alt="YouTube Link">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
+                src="https://upload.wikimedia.org/wikipedia/commons/7/79/YouTube_social_red_square_%282017%29.svg"
+                alt="YouTube Link">
         </a>
         <a style="border-bottom: none;" href="https://www.tiktok.com/@tc_tam">
-            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw" alt="TikTok Link">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
+                src="https://play-lh.googleusercontent.com/BmUViDVOKNJe0GYJe22hsr7juFndRVbvr1fGmHGXqHfJjNAXjd26bfuGRQpVrpJ6YbA=w240-h480-rw"
+                alt="TikTok Link">
         </a>
         <a style="border-bottom: none;" href="https://www.instagram.com/tamer.cevik123/">
-            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM" alt="Instagram Link">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
+                src="https://play-lh.googleusercontent.com/VRMWkE5p3CkWhJs6nv-9ZsLAs1QOg5ob1_3qg-rckwYW7yp1fMrYZqnEFpk0IoVP4LM"
+                alt="Instagram Link">
         </a>
         <a style="border-bottom: none;" href="https://scratch.mit.edu/users/YT-TC_tam/">
-            <img loading="lazy" style="margin: 5px;" width="60px" height="60px" src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934" alt="Scratch Link">
+            <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
+                src="https://cdn-1.webcatalog.io/catalog/scratch/scratch-icon-filled-256.png?v=1675614150934"
+                alt="Scratch Link">
         </a>
     </div>
 
     <div class="diff-color-section1" id="aboutme" style="display: flex; flex-direction: column;">
-        <button id="shareURL" style="width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
-            <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px" src="/assets/share-icon.png" alt="Deel icon">
+        <button id="shareURL"
+            style="width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
+            <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px"
+                src="/assets/share-icon.png" alt="Deel icon">
             Deel deze website
         </button>
 
@@ -277,35 +292,50 @@
                     <br>⦁ Ik heet Tamer Çevik.
                     <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
                     <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
-                    <br>Nu weet je hoe ik TC_tam verzonnen heb!</p>
+                    <br>Nu weet je hoe ik TC_tam verzonnen heb!
+                </p>
                 <p class="aboutme-text" id="birthday"></p>
-            </div> 
-        </div>        
+            </div>
+        </div>
     </div>
 
     <p style="display: none; width: 60%; margin: 0 auto; margin-top: 50px !important;">
-        In mijn wereld zijn comuters en coderen gewoon mijn ding. Soms gaat er meer tijd in zitten dan gepland, maar als het resultaat
-        cool is, is alle moeite het waard geweest. Mijn beste project, dat is 100% mijn website, een soort digitale omgeving
+        In mijn wereld zijn comuters en coderen gewoon mijn ding. Soms gaat er meer tijd in zitten dan gepland, maar als
+        het resultaat
+        cool is, is alle moeite het waard geweest. Mijn beste project, dat is 100% mijn website, een soort digitale
+        omgeving
         vol met school hacks, vette games, en allerlei andere toffe dingen die ik cool vind.
         <br>
-        <br>HTML, CSS, en JavaScript gebruik ik het meest. Als webdeveloper loop ik regelmatig tegen bugs aan, maar opgeven?
+        <br>HTML, CSS, en JavaScript gebruik ik het meest. Als webdeveloper loop ik regelmatig tegen bugs aan, maar
+        opgeven?
         Dat
-        staat niet op de planning. Als iets niet loopt zoals ik het wil, moet en zal ik het fixen en kan ik nergens anders
+        staat niet op de planning. Als iets niet loopt zoals ik het wil, moet en zal ik het fixen en kan ik nergens
+        anders
         meer aan denken. En als het dan nog steeds niet lukt, bedenk ik gewoon een andere slimme oplossing.
         <br>
         <br>Fijne dag mensen!
     </p>
 
-    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam site</button>
+    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam
+        site</button>
     <div id="tctam-fans" style="margin: 0 auto; height: 600px; overflow: hidden;">
         <iframe id="tctam-fans-iframe" src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
     </div>
 
     <div style="margin: 0 auto; display: none;" id="showMenu"></span>
-        <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten die met je scherm meekijken)</p>
-        <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van die website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
+        <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet
+            wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van
+            het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien
+            het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten
+            die met je scherm meekijken)</p>
+        <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je
+            naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van die
+            website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga
+            je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de
+            docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
         <button style="font-size: 1.0em;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
-        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En Favicon</button>
+        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En
+            Favicon</button>
     </div>
 
     <script>
@@ -366,7 +396,7 @@
         }
 
         /* show navigation button */
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             let loadCount = localStorage.getItem('loadCount') || 0;
 
             loadCount++;
@@ -444,7 +474,7 @@
             });
         }
         var keySequence = [];
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             keySequence.push(event.key);
             if (keySequence.join('') === 'ballondoos') {
                 showMenu();
@@ -457,4 +487,5 @@
         }
     </script>
 </body>
+
 </html>
