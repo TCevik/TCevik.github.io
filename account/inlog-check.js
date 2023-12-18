@@ -3,6 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!isLoggedIn) {
         var currentURL = window.location.href;
-        window.location.href = '/auth/account' + '?' + currentURL;
+        window.location.href = '/account/inloggen-registreren' + '?' + currentURL;
     }
 });  
