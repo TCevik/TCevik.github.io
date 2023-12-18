@@ -86,18 +86,6 @@
             document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
         }
 
-        function redirectToUrl() {
-            var currentUrl = window.location.href;
-
-            if (currentUrl.includes("?")) {
-                var parts = currentUrl.split("?");
-                if (parts[1]) {
-                    var redirectTo = parts[1];
-                    window.location.href = redirectTo;
-                }
-            }
-        }
-
         document.getElementById('logout-btn').addEventListener('click', function () {
             auth.signOut()
                 .then(function () {
@@ -121,7 +109,6 @@
                         });
                     }
                     getUserDataFromFirebase();
-                    redirectToUrl();
                     saveProfileData();
                 }, 1000);
             }

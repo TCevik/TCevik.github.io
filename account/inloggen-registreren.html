@@ -78,7 +78,8 @@
             margin-right: 10px !important;
         }
 
-        .google-btn:hover, .google-btn:focus {
+        .google-btn:hover,
+        .google-btn:focus {
             background-color: white !important;
             color: black !important;
             border: none !important;
@@ -221,11 +222,24 @@
         setInterval(function () {
             const user = auth.currentUser;
             if (user) {
+                redirectToUrl();
                 window.location.href = "/account"
             } else {
                 console.log("Niet ingelogd. Blijf waar je bent. :)");
             }
         }, 500);
+
+        function redirectToUrl() {
+            var currentUrl = window.location.href;
+
+            if (currentUrl.includes("?")) {
+                var parts = currentUrl.split("?");
+                if (parts[1]) {
+                    var redirectTo = parts[1];
+                    window.location.href = redirectTo;
+                }
+            }
+        }
 
         const googleProvider = new firebase.auth.GoogleAuthProvider();
 
