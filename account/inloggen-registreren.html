@@ -223,7 +223,6 @@
             const user = auth.currentUser;
             if (user) {
                 redirectToUrl();
-                window.location.href = "/account"
             } else {
                 console.log("Niet ingelogd. Blijf waar je bent. :)");
             }
@@ -238,6 +237,8 @@
                     var redirectTo = parts[1];
                     window.location.href = redirectTo;
                 }
+            } else {
+                window.location.href = "/account"
             }
         }
 
