@@ -235,11 +235,23 @@
                 var parts = currentUrl.split("?");
                 if (parts[1]) {
                     var redirectTo = parts[1];
-                    window.location.href = redirectTo;
+                    setTimeout(function () {
+                        saveProfileData();
+                        setTimeout(function () {
+                            window.location.href = redirectTo;
+                        }, 1000);
+                    }, 1000);
                 }
             } else {
                 window.location.href = "/account"
             }
+        }
+
+        function saveProfileData() {
+            const user = firebase.auth().currentUser;
+            const photoURL = user.photoURL;
+
+            document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
         }
 
         const googleProvider = new firebase.auth.GoogleAuthProvider();
