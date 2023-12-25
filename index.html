@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>TC_tam</title>
-    <meta name=”Description” content=”Welkom op de TC_tam site gemaakt door Tamer Çevik! Kom zeker eens een kijkje nemen als je wil. :)”>
+    <meta name=”Description” content=”Welkom op de TC_tam site gemaakt door Tamer Çevik! Kom zeker eens een kijkje nemen
+        als je wil. :)”>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -242,6 +243,8 @@
         <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
     </div>
 
+    <button id="picto-planner-btn" onclick="window.location.href='/picto-planner'" style="margin-top: 10px; opacity: 0; transition: 0.3s;">Ga naar de TC_tam Picto Planner</button>
+
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.
     <p>
 
@@ -317,7 +320,8 @@
         <br>Fijne dag mensen!
     </p>
 
-    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam site</button>
+    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam
+        site</button>
     <div id="tctam-fans" style="margin: 0 auto; height: 600px; overflow: hidden;">
         <iframe id="tctam-fans-iframe" src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
     </div>
@@ -339,6 +343,22 @@
     </div>
 
     <script>
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                var userEmail = user.email;
+                var allowedEmails = ["sercevik11@gmail.com", "tam.cevik123@gmail.com", "sercandenizcevik@gmail.com"];
+
+                if (allowedEmails.includes(userEmail)) {
+                    document.getElementById("picto-planner-btn").style.opacity = "1";
+                } else {
+                    document.getElementById("picto-planner-btn").style.opacity = "0";
+                }
+            } else {
+                
+            }
+        });
+
+
         const remoteConfig = firebase.remoteConfig();
 
         const remoteConfigSettings = {
