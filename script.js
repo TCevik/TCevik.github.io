@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (loggedIn === 'true') {
 				let userPhotoURL = getCookie('userPhotoURL');
 				if (!userPhotoURL || !isValidURL(userPhotoURL)) {
-					userPhotoURL = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
+					userPhotoURL = "/assets/no-icon.jpg";
 				}
 				const img = document.createElement("img");
 				img.src = userPhotoURL;

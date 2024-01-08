@@ -45,7 +45,7 @@ sendButton.addEventListener('click', () => {
     const email = user.email;
     const displayName = user.displayName ? user.displayName : email;
     const message = messageInput.value;
-    const photoURL = user.photoURL ? user.photoURL : 'https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg';
+    const photoURL = user.photoURL ? user.photoURL : '/assets/no-icon.jpg';
 
     if (message.trim() !== '') {
         if (canSendMessage(email)) {
@@ -63,7 +63,7 @@ messageInput.addEventListener('keydown', (event) => {
     const email = user.email;
     const displayName = user.displayName ? user.displayName : email;
     const message = messageInput.value;
-    const photoURL = user.photoURL ? user.photoURL : 'https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg';
+    const photoURL = user.photoURL ? user.photoURL : '/assets/no-icon.jpg';
 
     if (event.key === 'Enter' && enterKeyEnabled) {
         if (message.trim() !== '') {
@@ -166,7 +166,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
                     imgElement.src = photoURL;
                 } else {
                     imgElement.src =
-                        'https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg';
+                        '/assets/no-icon.jpg';
                 }
                 imgElement.style.width = '35px';
                 imgElement.style.height = '35px';
