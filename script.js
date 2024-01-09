@@ -96,7 +96,7 @@ var buttons = `
         	<button onclick="window.location.href='/games/alle-games'">Games</button>
 			<button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
         	<button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
-			<button onclick="window.location.href='/account/inloggen-registreren'">Inloggen / Registreren</button>
+			<button id="login-register-button-nav" onclick="window.location.href='/account/inloggen-registreren'">Inloggen / Registreren</button>
 
         	<h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
         	<button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
