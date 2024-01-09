@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				});
 			} else {
 				const loginLink = document.createElement("button");
-				loginLink.textContent = "Inloggen / Registreren";
+				loginLink.textContent = "Inloggen";
 				loginLink.onclick = function () {
 					const popupWidth = Math.floor(window.outerWidth * 0.75);
 					const popupHeight = Math.floor(window.outerHeight * 0.8);
