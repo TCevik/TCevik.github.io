@@ -147,7 +147,7 @@
                         websiteStatusText.innerText = "TC_tam Website - Ping tijd: " + pingTime + " ms";
                     })
                     .catch(error => {
-                        Notification(error.message);
+                        notification(error.message);
                     });
             }, "1000");
         });
