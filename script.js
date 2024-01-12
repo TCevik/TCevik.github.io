@@ -115,7 +115,7 @@ var buttons = `
         	<button onclick="window.location.href='/school-antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
 
 			<h3 style="margin-top: 50px;" id="schoolhacks">Proxy / Emulator</h3>
-        	<button onclick="window.location.href='/proxy-emulator/rammerhead'">Proxy - Rammerhead</button>
+        	<button onclick="window.location.href='/proxy-emulator/rammerhead'">Proxy - Rammerhead (WachtW: sharkie4life)</button>
 
         	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
         	<button onclick="window.location.href='/status'">TC_tam Website Status</button>
