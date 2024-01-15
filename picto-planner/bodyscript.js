@@ -83,6 +83,9 @@ function askedPictos() {
                         var pictosRef = firestore.collection('pictos').doc('preview');
                         pictosRef.delete();
                         notification("De picto's zijn succesvol opgeslagen.");
+                        setTimeout(() => {
+                            location.reload()
+                        }, "1000");
                     }).catch(function (error) {
                         notification("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
                     });
