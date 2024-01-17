@@ -37,7 +37,10 @@
 <body>
     <h1 id="title" style="margin-bottom: -10px;">TC_tam Quiz</h1>
     <div id="hide-after-start">
-        <P style="margin-bottom: 0px;">Hallo mensen, welkom bij de TC_tam Quiz. Misschien wil je deze quiz wel doen, maar heb je geen idee wie ik ben. Nou dan heb ik goed nieuws voor je, want alle antwoorden voor de quiz staan wel ergens op mijn site. Je kan natuurlijk ook gewoon gokken, maar je kan dus ook de site doorzoeken voor de goede antwoorden.</P>
+        <P style="margin-bottom: 0px;">Hallo mensen, welkom bij de TC_tam Quiz. Misschien wil je deze quiz wel doen,
+            maar heb je geen idee wie ik ben. Nou dan heb ik goed nieuws voor je, want alle antwoorden voor de quiz
+            staan wel ergens op mijn site. Je kan natuurlijk ook gewoon gokken, maar je kan dus ook de site doorzoeken
+            voor de goede antwoorden.</P>
         <button style="margin-bottom: 50px;" onclick="loadQuestion();">Start!</button>
     </div>
 
@@ -105,7 +108,7 @@
             {
                 question: "Waar is Tamer geweest voor een rondleiding in Havo 2?",
                 options: ["Microsoft", "Epic Games", "Squla", "Cloudwise", "Google", "Meta"],
-                correctAnswer: "Google"
+                correctAnswer: "Cloudwise"
             },
         ];
 
@@ -115,7 +118,7 @@
         function loadQuestion() {
             document.getElementById("hide-after-start").style.display = "none";
             document.getElementById("title").style.marginBottom = "50px";
-            
+
             var currentQuestion = questions[currentQuestionIndex];
             var quizContainer = document.getElementById('quiz-container');
 

@@ -227,10 +227,48 @@
             z-index: 2;
             transition: transform 0.5s ease-out;
         }
+
+        /* Stijl voor de pop-up overlay */
+        .tctamquizpopup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Stijl voor de pop-up inhoud */
+        .tctamquizpopup-content {
+            width: 80%;
+            height: 90%;
+            width: 80%;
+            height: 90%;
+            padding: 20px;
+            position: relative;
+            background-color: var(--bg-accent-color2);
+            border-radius: 15px !important;
+        }
+
+        /* Sluitknop stijl */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 6;
+        }
     </style>
 </head>
 
-<body onload="countup(); countdownToBirthday();">
+<body id="body" onload="countup(); countdownToBirthday();">
     <div id="announcements" style="display: none; opacity: 0;" class="diff-color-section2">
         <h4 style="margin: 0px; margin-bottom: -15px; transform: translate(0%, -60%);">Aankondigingen:</h4>
         <p id="announcementText" style="margin: 0px;">Laden...</p>
@@ -243,10 +281,52 @@
         <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
     </div>
 
-    <button id="picto-planner-btn" onclick="window.location.href='/picto-planner'" style="margin-top: 10px; opacity: 0; transition: 0.3s;">Ga naar de TC_tam Picto Planner</button>
+    <button id="picto-planner-btn" onclick="window.location.href='/picto-planner'"
+        style="margin-top: 10px; opacity: 0; transition: 0.3s;">Ga naar de TC_tam Picto Planner</button>
 
-    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript.
+    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript
     <p>
+
+        <button onclick="openTctamQuizPopup()">Doe de TC_tam Quiz</button>
+
+    <div id="tctamquizpopup" class="tctamquizpopup-overlay">
+        <div class="tctamquizpopup-content">
+            <span style="size: 30px;" class="close-btn" onclick="closeTctamQuizPopup()">X</span>
+            <iframe id="tctam-quiz-iframe" src="/tctam-quiz"
+                style="background-color: var(--bg-accent-color2); width: 100%; height: 100%;" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function checkUrlForQuiz() {
+            var currentUrl = window.location.href;
+
+            if (currentUrl.endsWith("?tctam-quiz")) {
+                // Als de URL eindigt met "?tctam-quiz", roep dan de functie openTctamQuizPopup aan
+                openTctamQuizPopup();
+            }
+        }
+
+        window.onload = checkUrlForQuiz;
+
+        // JavaScript om de pop-up te openen
+        function openTctamQuizPopup() {
+            var tctamquizpopup = document.getElementById('tctamquizpopup');
+            tctamquizpopup.style.display = 'flex';
+            setTimeout(function () {
+                tctamquizpopup.style.opacity = 1;
+            }, 10);
+        }
+
+        // JavaScript om de pop-up te sluiten
+        function closeTctamQuizPopup() {
+            var tctamquizpopup = document.getElementById('tctamquizpopup');
+            tctamquizpopup.style.opacity = 0;
+            setTimeout(function () {
+                tctamquizpopup.style.display = 'none';
+            }, 300);
+        }
+    </script>
 
     <div id="social-media">
         <h3>Social Media:</h3>
@@ -282,8 +362,7 @@
         </a>
         <a style="border-bottom: none;" href="https://github.com/TCevik">
             <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
-                src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-                alt="Github Link">
+                src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="Github Link">
         </a>
         <a style="border-bottom: none;" href="https://x.com/YT_TC_tam">
             <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
@@ -307,12 +386,65 @@
 
             <div style="margin-top: -30px; flex-grow: 1; text-align: left;">
                 <h3 id="age">Ik ben Tamer, een (leeftijd) jarige jongen die websites maakt.</h3>
-                <p>Hoe heb ik TC_tam bedacht?
-                    <br>⦁ Ik heet Tamer Çevik.
-                    <br>⦁ TC staan voor de 1e letter van mijn voor- en achternaam.
-                    <br>⦁ tam staan voor de 3 eerste letters van mijn voornaam.
+                <p><b>Hoe heb ik TC_tam bedacht?</b>
+                    <br>- Ik heet Tamer Çevik.
+                    <br>- TC staan voor de 1e letter van mijn voor- en achternaam.
+                    <br>- tam staan voor de 3 eerste letters van mijn voornaam.
                     <br>Nu weet je hoe ik TC_tam verzonnen heb!
                 </p>
+
+                <b>Hobby's:</b>
+                <p style="margin-top: 0px;">- Ik doe karate als sport.
+                    <br>- Ik geef zwemles aan kinderen bij zwemvereniging <a href="https://evzv.nl"
+                        target="_blank">EVZV</a>.
+                    <br>- En natuurlijk maak ik ook heel graag websites.
+                </p>
+
+                <b>Later:</b>
+                <p style="margin-top: 0px;">- Ik wilde vroeger voordat ik sites maakte YouTuber worden, ik maakte een
+                    website voor mijn kanaal met Google Sites (dat is heel simpel). Maar toen ik die site had gemaakt
+                    zag ik hoe
+                    leuk ik het vind om met computers te werken dus ben ik deze site gaan maken.
+                    <br>- Mijn nieuwe plan is om als ik volwassen ben bij google te gaan werken. Daar zou
+                    ik dan willen coderen en
+                    fouten zoeken in de systemen, maar dat weet ik nog niet helemaal zeker.
+                </p>
+
+                <b>Middelbare school:</b>
+                <p style="margin-top: 0px;">- Ik doe havo op het Vlietland College in Leiden. Ik vind het een leuke
+                    school met aardige docenten. Ik woon ook in dezelfde stad, dus ik ben in 3 minuten op school. Dat is
+                    fijn als het regent, want dan hoef ik niet 15 minuten te fietsen. Helaas sneeuwt het hier in Leiden
+                    niet zo veel, maar de winter is toch mijn favoriete seizoen.
+                    <br>- Als vakkenpakket ga ik natuur en techniek kiezen, dan krijg ik de volgende vakken: <a
+                        style="cursor: pointer;" id="unfold-button" onclick="toggleSubjects()">Uitvouwen</a>
+                <div style="display: none;" id="subjects">
+                    <li style="margin-top: -20px;">Nederlands</li>
+                    <li>Engels</li>
+                    <li>Maatschappijleer</li>
+                    <li>Lichamelijke opvoeding</li>
+                    <li>CKV</li>
+                    <li>Godsdienst en levensbeschouwing</li>
+                    <li>Wiskunde B</li>
+                    <li>Natuurkunde</li>
+                    <li>Scheikunde</li>
+                    <li>Informatica</li>
+                    <li>Biologie</li>
+                </div>
+                </p>
+
+                <script>
+                    function toggleSubjects() {
+                        var subjectsDiv = document.getElementById("subjects");
+                        if (subjectsDiv.style.display === "none") {
+                            subjectsDiv.style.display = "block";
+                            document.getElementById("unfold-button").innerText = "Inklappen";
+                        } else {
+                            subjectsDiv.style.display = "none";
+                            document.getElementById("unfold-button").innerText = "Uitvouwen";
+                        }
+                    }
+                </script>
+
                 <p class="aboutme-text" id="birthday"></p>
             </div>
         </div>
@@ -352,7 +484,7 @@
                     document.getElementById("picto-planner-btn").style.opacity = "0";
                 }
             } else {
-                
+
             }
         });
 
