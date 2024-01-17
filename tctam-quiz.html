@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <style>
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .question {
+            margin-bottom: 10px;
+        }
+
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            color: black;
+            margin-bottom: 5px;
+            cursor: pointer;
+            background-color: floralwhite;
+            transition: background-color 0.3s;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="title" style="margin-bottom: -10px;">TC_tam Quiz</h1>
+    <div id="hide-after-start">
+        <P style="margin-bottom: 0px;">Hallo mensen, welkom bij de TC_tam Quiz. Misschien wil je deze quiz wel doen, maar heb je geen idee wie ik ben. Nou dan heb ik goed nieuws voor je, want alle antwoorden voor de quiz staan wel ergens op mijn site. Je kan natuurlijk ook gewoon gokken, maar je kan dus ook de site doorzoeken voor de goede antwoorden.</P>
+        <button style="margin-bottom: 50px;" onclick="loadQuestion();">Start!</button>
+    </div>
+
+    <div class="quiz-container" id="quiz-container">
+        <!-- De container waar de quiz-inhoud zal worden ingevuld -->
+    </div>
+
+    <script>
+        var questions = [
+            {
+                question: "Wat is Tamer zijn achternaam?",
+                options: ["van Dikke Hond", "Çevik", "Keviç", "Çelik"],
+                correctAnswer: "Çevik"
+            },
+            {
+                question: "Waar woont Tamer?",
+                options: ["Leiden", "Voorschoten", "zoetermeer", "Oegstgeest"],
+                correctAnswer: "Leiden"
+            },
+            {
+                question: "Wanneer Tamer jarig?",
+                options: ["1 April", "18 Mei", "13 Juni", "12 Oktober", "18 Augustus"],
+                correctAnswer: "18 Mei"
+            },
+            {
+                question: "Welk seizoen is Tamer zijn favoriet?",
+                options: ["Winter", "Lente", "Zomer", "Herfst"],
+                correctAnswer: "Winter"
+            },
+            {
+                question: "Waarom heeft Tamer deze site gemaakt?",
+                options: ["Hij verveelde zich.", "Hij maakte een schoolhacks website om school te pesten.", "Hij wilde bijzonder zijn.", "Hij wil later wat gaan doen met ICT.", "Hij maakte het voor zijn YouTube kanaal."],
+                correctAnswer: "Hij maakte het voor zijn YouTube kanaal."
+            },
+            {
+                question: "Wat is Tamer zijn lievelingskleur?",
+                options: ["Blauw", "Roze", "Geel", "Rood", "Zwart", "Wit", "Groen", "Paars", "Oranje"],
+                correctAnswer: "Groen"
+            },
+            {
+                question: "Hoeveel broertjes, zusjes, broers en/of zussen heeft Tamer?",
+                options: ["1", "2", "3", "4", "5"],
+                correctAnswer: "1"
+            },
+            {
+                question: "Hoe heet Tamer zijn broertje?",
+                options: ["Secan", "Serkan", "Sercan", "Serco", "Serko"],
+                correctAnswer: "Sercan"
+            },
+            {
+                question: "Wat is Tamer zijn lievelingsvak?",
+                options: ["Wiskunde", "Informatica", "Geschiedenis", "Engels", "Gym"],
+                correctAnswer: "Informatica"
+            },
+            {
+                question: "Op welk niveau zit Tamer?",
+                options: ["VMBO", "HAVO", "VWO"],
+                correctAnswer: "HAVO"
+            },
+            {
+                question: "Waar wil Tamer later gaan werken?",
+                options: ["Microsoft", "Epic Games", "Squla", "Cloudwise", "Google", "Meta"],
+                correctAnswer: "Google"
+            },
+            {
+                question: "Waar is Tamer geweest voor een rondleiding in Havo 2?",
+                options: ["Microsoft", "Epic Games", "Squla", "Cloudwise", "Google", "Meta"],
+                correctAnswer: "Google"
+            },
+        ];
+
+        var currentQuestionIndex = 0;
+        var score = 0;
+
+        function loadQuestion() {
+            document.getElementById("hide-after-start").style.display = "none";
+            document.getElementById("title").style.marginBottom = "50px";
+            
+            var currentQuestion = questions[currentQuestionIndex];
+            var quizContainer = document.getElementById('quiz-container');
+
+            // Toegevoegde regel om het vraagnummer te tonen
+            var questionNumberHTML = '<div>Vraag ' + (currentQuestionIndex + 1) + ' van ' + questions.length + '</div>';
+
+            // Creëer de vraag en opties
+            var questionHTML =
+                '<div class="question">' + questionNumberHTML + currentQuestion.question + '</div>' +
+                '<div class="options">' +
+                currentQuestion.options.map(function (option, index) {
+                    return '<button id="option' + index + '" onclick="checkAnswer(this)">' + option + '</button>';
+                }).join('') +
+                '</div>';
+
+            // Voeg de HTML toe aan de container
+            quizContainer.innerHTML = questionHTML;
+
+            // Schakel alle knoppen in
+            var allButtons = quizContainer.querySelectorAll('.options button');
+            allButtons.forEach(function (button) {
+                button.disabled = false;
+            });
+        }
+
+        function checkAnswer(btn) {
+            var currentQuestion = questions[currentQuestionIndex];
+
+            // Schakel alle knoppen uit
+            var allButtons = document.querySelectorAll('.options button');
+            allButtons.forEach(function (button) {
+                button.disabled = true;
+            });
+
+            if (btn.innerText === currentQuestion.correctAnswer) {
+                btn.style.backgroundColor = "green";
+                score = score + 1; // Score bijwerken
+            } else {
+                btn.style.backgroundColor = "red";
+                // Laat het goede antwoord zien in het groen
+                var correctButton = document.querySelector('#option' + currentQuestion.options.indexOf(currentQuestion.correctAnswer));
+                correctButton.style.backgroundColor = "green";
+            }
+
+            setTimeout(function () {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    // Aangepaste boodschap met score
+                    var totalQuestions = questions.length;
+                    document.getElementById('quiz-container').innerHTML = '<div class="question">Bedankt voor het spelen van de TC_tam Quiz! Je hebt ' + score + ' van de ' + totalQuestions + ' vragen goed beantwoord!</div><br><button onclick="location.reload();">Opnieuw Spelen!</button>';
+                }
+            }, 1500);
+        }
+    </script>
+
+</body>
+
+</html>
