@@ -8,6 +8,82 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+
+    <style>
+        body {
+          font-family: Roboto,sans-serif;
+        }
+        i {
+          margin-left: -30px;
+          cursor: pointer;
+        }
+        .button {
+          background-color: #141645;
+          border: none;
+          color: white;
+          padding: 11px 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+        input {
+          width: 200px;
+          padding: 12px 20px;
+          margin: 8px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+        .red-alert {
+          color: #B71C1C;
+        }
+        .center {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          text-align: center;
+        }
+        #cover-spin {
+          position:fixed;
+          width:100%;
+          left:0;right:0;top:0;bottom:0;
+          background-color: rgba(255,255,255,0.7);
+          z-index:9999;
+        }
+    
+        @-webkit-keyframes spin {
+          from {-webkit-transform:rotate(0deg);}
+          to {-webkit-transform:rotate(360deg);}
+        }
+    
+        @keyframes spin {
+          from {transform:rotate(0deg);}
+          to {transform:rotate(360deg);}
+        }
+    
+        #cover-spin::after {
+          content:'';
+          display:block;
+          position:absolute;
+          left:48%;top:40%;
+          width:40px;height:40px;
+          border-style:solid;
+          border-color:black;
+          border-top-color:transparent;
+          border-width: 4px;
+          border-radius:50%;
+          -webkit-animation: spin .8s linear infinite;
+          animation: spin .8s linear infinite;
+        }
+      </style>
+    
     <script>
         const AuthHandler = {
             init: props => {
@@ -159,12 +235,6 @@
                 AuthHandler.conf.passwordIncreaseComplexity.style.display = passing ? 'none' : ''
 
                 return passing
-            },
-            showLoadingSpinner: () => {
-                AuthHandler.conf.loading.style.display = ''
-            },
-            hideLoadingSpinner: () => {
-                AuthHandler.conf.loading.style.display = 'none'
             },
             showPasswordResetForm: () => {
                 AuthHandler.conf.passwordForm.style.display = '';
