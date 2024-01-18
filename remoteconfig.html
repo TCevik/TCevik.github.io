@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Remote Config Test</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <script src="/script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-remote-config.js"></script>
+    <script src="/account/config.js"></script>
+</head>
+<body>
+    <script>
+        const remoteConfig = firebase.remoteConfig();
+        const remoteConfigSettings = {
+            minimumFetchIntervalMillis: 100,
+        };
+        remoteConfig.settings = remoteConfigSettings;
+        remoteConfig.fetchAndActivate()
+            .then(() => {
+                var remoteConfigValue = remoteConfig.getString('test_remote_config');
+                document.body.innerHTML = remoteConfigValue;
+            })
+            .catch((error) => {
+                console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
+            });
+    </script>
+</body>
+</html>
