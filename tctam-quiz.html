@@ -171,6 +171,17 @@
                     // Aangepaste boodschap met score
                     var totalQuestions = questions.length;
                     document.getElementById('quiz-container').innerHTML = '<div class="question">Bedankt voor het spelen van de TC_tam Quiz! Je hebt ' + score + ' van de ' + totalQuestions + ' vragen goed beantwoord!</div><br><button onclick="location.reload();">Opnieuw Spelen!</button>';
+
+                    var xhr = new XMLHttpRequest();
+                    var url = 'https://discord.com/api/webhooks/1201583872652095598/gKUGR-uARhwXgHUUIJVMTTB_cWwCk--7PpzpuU67wbSDWmhX1rW8IrvZsGFv_bYHPXpB';
+                    xhr.open('POST', url, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+
+                    var message = {
+                        content: 'Iemand heeft ' + score + ' van de ' + totalQuestions + ' vragen goed in de TC_tam Quiz!'
+                    };
+
+                    xhr.send(JSON.stringify(message));
                 }
             }, 1500);
         }
