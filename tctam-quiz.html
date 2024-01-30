@@ -168,12 +168,11 @@
                 if (currentQuestionIndex < questions.length) {
                     loadQuestion();
                 } else {
-                    // Aangepaste boodschap met score
                     var totalQuestions = questions.length;
                     document.getElementById('quiz-container').innerHTML = '<div class="question">Bedankt voor het spelen van de TC_tam Quiz! Je hebt ' + score + ' van de ' + totalQuestions + ' vragen goed beantwoord!</div><br><button onclick="location.reload();">Opnieuw Spelen!</button>';
 
                     var xhr = new XMLHttpRequest();
-                    var url = 'https://discord.com/api/webhooks/1201583872652095598/gKUGR-uARhwXgHUUIJVMTTB_cWwCk--7PpzpuU67wbSDWmhX1rW8IrvZsGFv_bYHPXpB';
+                    var url = 'https://discord.com/api/webhooks/1201788429663211530/856M9XaRUm4WSf94vbyPAsU1qCsJTTGEXAMPdv6N96ZmIuc0WwhPua8JpJ8W20XSecA6';
                     xhr.open('POST', url, true);
                     xhr.setRequestHeader('Content-Type', 'application/json');
 
