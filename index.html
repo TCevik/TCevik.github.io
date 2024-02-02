@@ -306,6 +306,15 @@
             }
         }
 
+        function checkUrlForQuiz() {
+            var currentUrl = window.location.href;
+
+            if (currentUrl.endsWith("?blank-tab")) {
+                // Als de URL eindigt met "?blank-tab", roep dan de functie openTctamQuizPopup aan
+                openNewTab();
+            }
+        }
+
         window.onload = checkUrlForQuiz;
 
         // JavaScript om de pop-up te openen
