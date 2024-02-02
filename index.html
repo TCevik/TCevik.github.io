@@ -551,7 +551,7 @@
 
     <!-- about:blank script -->
     <script>
-        function checkUrlForBlankTab() {
+        function checkUrlForFunctions() {
             var currentUrl = window.location.href;
 
             if (currentUrl.endsWith("?blank-tab-google")) {
@@ -560,8 +560,11 @@
             if (currentUrl.endsWith("?blank-tab")) {
                 openNewTab();
             }
+            if (currentUrl.endsWith("?tctam-quiz")) {
+                openTctamQuizPopup();
+            }
         }
-        window.onload = checkUrlForBlankTab;
+        window.onload = checkUrlForFunctions;
 
         /* about:blank tab */
         function openNewTab() {
