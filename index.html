@@ -306,7 +306,7 @@
             }
         }
 
-        function checkUrlForQuiz() {
+        function checkUrlForBlankTab() {
             var currentUrl = window.location.href;
 
             if (currentUrl.endsWith("?blank-tab")) {
@@ -316,6 +316,7 @@
         }
 
         window.onload = checkUrlForQuiz;
+        window.onload = checkUrlForBlankTab;
 
         // JavaScript om de pop-up te openen
         function openTctamQuizPopup() {
