@@ -304,29 +304,11 @@
                 openNewTab();
                 setTimeout(function () {
                     window.close();
-                }, 300);
+                }, 1000);
             }
         }
 
         window.onload = checkUrlForBlankTab;
-
-        // JavaScript om de pop-up te openen
-        function openTctamQuizPopup() {
-            var tctamquizpopup = document.getElementById('tctamquizpopup');
-            tctamquizpopup.style.display = 'flex';
-            setTimeout(function () {
-                tctamquizpopup.style.opacity = 1;
-            }, 10);
-        }
-
-        // JavaScript om de pop-up te sluiten
-        function closeTctamQuizPopup() {
-            var tctamquizpopup = document.getElementById('tctamquizpopup');
-            tctamquizpopup.style.opacity = 0;
-            setTimeout(function () {
-                tctamquizpopup.style.display = 'none';
-            }, 300);
-        }
     </script>
 
     <center><div style="max-width: 60%;" id="social-media">
@@ -562,6 +544,24 @@
 
             localStorage.setItem('loadCount', loadCount);
         });
+
+        // JavaScript om de pop-up te openen
+        function openTctamQuizPopup() {
+            var tctamquizpopup = document.getElementById('tctamquizpopup');
+            tctamquizpopup.style.display = 'flex';
+            setTimeout(function () {
+                tctamquizpopup.style.opacity = 1;
+            }, 10);
+        }
+
+        // JavaScript om de pop-up te sluiten
+        function closeTctamQuizPopup() {
+            var tctamquizpopup = document.getElementById('tctamquizpopup');
+            tctamquizpopup.style.opacity = 0;
+            setTimeout(function () {
+                tctamquizpopup.style.display = 'none';
+            }, 300);
+        }
     </script>
 
     <!-- about:blank script -->
