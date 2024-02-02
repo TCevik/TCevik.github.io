@@ -301,8 +301,10 @@
             var currentUrl = window.location.href;
 
             if (currentUrl.endsWith("?blank-tab")) {
-                // Als de URL eindigt met "?blank-tab", roep dan de functie openTctamQuizPopup aan
                 openNewTab();
+                setTimeout(function () {
+                window.close();
+            }, 300);
             }
         }
 
