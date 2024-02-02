@@ -297,15 +297,6 @@
     </div>
 
     <script>
-        function checkUrlForQuiz() {
-            var currentUrl = window.location.href;
-
-            if (currentUrl.endsWith("?tctam-quiz")) {
-                // Als de URL eindigt met "?tctam-quiz", roep dan de functie openTctamQuizPopup aan
-                openTctamQuizPopup();
-            }
-        }
-
         function checkUrlForBlankTab() {
             var currentUrl = window.location.href;
 
@@ -315,7 +306,6 @@
             }
         }
 
-        window.onload = checkUrlForQuiz;
         window.onload = checkUrlForBlankTab;
 
         // JavaScript om de pop-up te openen
