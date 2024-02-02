@@ -436,7 +436,7 @@
             je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de
             docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
         <button style="font-size: 1.0em;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
-        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTab()">Open Tab Met Eigen Naam En
+        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTabFilling()">Open Tab Met Eigen Naam En
             Favicon</button>
     </div>
 
@@ -554,6 +554,9 @@
         function checkUrlForBlankTab() {
             var currentUrl = window.location.href;
 
+            if (currentUrl.endsWith("?blank-tab-google")) {
+                openSecretTab('Google', 'https://google.com/favicon.ico');
+            }
             if (currentUrl.endsWith("?blank-tab")) {
                 openNewTab();
             }
@@ -582,9 +585,15 @@
         };
 
         /* about:blank tab */
-        function openSecretTab() {
+        function openSecretTabFilling() {
             var tabName = prompt('Voer de naam van het tabblad in:');
-            var faviconLink = prompt('Voer de favicon-link in:');
+            var faviconLink  = prompt('Voer de favicon-link in:');
+            openSecretTab(tabName, faviconLink);
+        }
+
+        function openSecretTab(name, link) {
+            var tabName = name;
+            var faviconLink = link;
 
             if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
                 var newTab = window.open('about:blank', '_blank');

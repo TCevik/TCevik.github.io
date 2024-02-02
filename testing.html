@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    
+</head>
+<body>
+    <button onclick="openSecretTabFilling()">Open Tab</button>
+
+    <script>
+        function openSecretTabFilling() {
+            var tabName = prompt('Voer de naam van het tabblad in:');
+            var faviconLink  = prompt('Voer de favicon-link in:');
+            openSecretTab(tabName, faviconLink);
+        }
+
+        function openSecretTab(name, link) {
+            var tabName = name;
+            var faviconLink = link;
+
+            if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
+                var newTab = window.open('about:blank', '_blank');
+                var iframe = newTab.document.createElement('iframe');
+                iframe.src = '/';
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                newTab.document.body.appendChild(iframe);
+
+                var link = newTab.document.createElement('link');
+                link.rel = 'icon';
+                link.type = 'image/x-icon';
+                link.href = faviconLink;
+
+                var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
+                head.appendChild(link);
+
+                newTab.document.title = tabName;
+                newTab.document.body.style.overflow = 'hidden';
+            } else {
+                notification('Tabbladnaam en/of favicon-link mogen niet leeg zijn.');
+            }
+        }
+    </script>
+</body>
+</html>
+    
