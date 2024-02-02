@@ -556,9 +556,6 @@
 
             if (currentUrl.endsWith("?blank-tab")) {
                 openNewTab();
-                setTimeout(function () {
-                    window.close();
-                }, 1000);
             }
         }
         window.onload = checkUrlForBlankTab;
