@@ -296,21 +296,6 @@
         </div>
     </div>
 
-    <script>
-        function checkUrlForBlankTab() {
-            var currentUrl = window.location.href;
-
-            if (currentUrl.endsWith("?blank-tab")) {
-                openNewTab();
-                setTimeout(function () {
-                    window.close();
-                }, 1000);
-            }
-        }
-
-        window.onload = checkUrlForBlankTab;
-    </script>
-
     <center><div style="max-width: 60%;" id="social-media">
         <h3>Social Media:</h3>
         <a target="_blank" style="border-bottom: none;" href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL">
@@ -566,6 +551,18 @@
 
     <!-- about:blank script -->
     <script>
+        function checkUrlForBlankTab() {
+            var currentUrl = window.location.href;
+
+            if (currentUrl.endsWith("?blank-tab")) {
+                openNewTab();
+                setTimeout(function () {
+                    window.close();
+                }, 1000);
+            }
+        }
+        window.onload = checkUrlForBlankTab;
+
         /* about:blank tab */
         function openNewTab() {
             var newTab = window.open('about:blank', '_blank');
