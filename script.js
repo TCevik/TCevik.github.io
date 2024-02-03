@@ -115,6 +115,11 @@ var buttons = `
 	<h3 style="margin-top: 50px;" id="schoolhacks">Proxy / Emulator</h3>
     <button onclick="window.location.href='/proxy-emulator/rammerhead'">Proxy - Rammerhead</button>
 
+	<h3 style="margin-top: 50px;" id="archief">Archief</h3>
+    <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
+	<button onclick="window.location.href='/archief/school-hack-2'">School hack 2</button>
+    <button onclick="window.location.href='/archief/school-hack-3'">School hack 3</button>
+
 	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
 	<button onclick="window.location.href='/status'">TC_tam Website Status</button>
 	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io/issues/new', '_blank')">Meld een bug</button>
