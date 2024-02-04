@@ -18,6 +18,7 @@
     <form>
         <label for="videoLink">Voer hier de YouTube-link in:</label>
         <input type="text" id="videoLink" placeholder="Plak de link hier" required>
+        <button type="button" onclick="pasteFromClipboard()">Plakken</button>
         <button type="button" onclick="embedVideo()">Embed</button>
     </form>
 
@@ -34,6 +35,15 @@
     </div>
 
     <script>
+        function pasteFromClipboard() {
+            navigator.clipboard.readText().then(function (clipText) {
+                document.getElementById("videoLink").value = clipText;
+                setTimeout(() => {
+                    embedVideo();
+                }, 100);
+            });
+        }
+        
         function goToTutorial() {
             var tutorialSection = document.getElementById("tutorial");
             tutorialSection.scrollIntoView({ behavior: "smooth" });
