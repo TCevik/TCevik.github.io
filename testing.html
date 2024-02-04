@@ -2,48 +2,64 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Testing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Embed</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    
 </head>
 <body>
-    <button onclick="openSecretTabFilling()">Open Tab</button>
+
+    <h1>YouTube Embed</h1>
+
+    <form>
+        <label for="videoLink">Voer hier de YouTube-link in:</label>
+        <input type="text" id="videoLink" placeholder="Plak de link hier" required>
+        <button type="button" onclick="embedVideo()">Inbedden</button>
+        <button type="button" onclick="openPiP()">Open PiP</button>
+    </form>
+
+    <div id="embeddedVideo"></div>
 
     <script>
-        function openSecretTabFilling() {
-            var tabName = prompt('Voer de naam van het tabblad in:');
-            var faviconLink  = prompt('Voer de favicon-link in:');
-            openSecretTab(tabName, faviconLink);
-        }
+        function embedVideo() {
+            var videoLink = document.getElementById("videoLink").value;
+            var embeddedVideo = document.getElementById("embeddedVideo");
 
-        function openSecretTab(name, link) {
-            var tabName = name;
-            var faviconLink = link;
+            // Haal de video-id uit de YouTube-link
+            var videoId = getVideoId(videoLink);
 
-            if (tabName !== null && tabName !== '' && faviconLink !== null && faviconLink !== '') {
-                var newTab = window.open('about:blank', '_blank');
-                var iframe = newTab.document.createElement('iframe');
-                iframe.src = '/';
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                newTab.document.body.appendChild(iframe);
+            // Controleer of de link een geldige YouTube-link is
+            if (videoId) {
+                // Bouw het ingebedde videoformaat op
+                var embedCode = `https://www.youtube.com/embed/${videoId}?si=wzQ6juVpwkJjor2N`;
 
-                var link = newTab.document.createElement('link');
-                link.rel = 'icon';
-                link.type = 'image/x-icon';
-                link.href = faviconLink;
-
-                var head = newTab.document.head || newTab.document.getElementsByTagName('head')[0];
-                head.appendChild(link);
-
-                newTab.document.title = tabName;
-                newTab.document.body.style.overflow = 'hidden';
+                // Plaats de ingebedde video op de pagina
+                embeddedVideo.innerHTML = `<iframe width="560" height="315" src="${embedCode}" frameborder="0" allowfullscreen></iframe>`;
             } else {
-                notification('Tabbladnaam en/of favicon-link mogen niet leeg zijn.');
+                alert("Ongeldige YouTube-link. Voer een geldige YouTube-link in.");
             }
         }
+
+        function openPiP() {
+            var embeddedVideo = document.getElementById("embeddedVideo");
+            var videoIframe = embeddedVideo.querySelector('iframe');
+
+            if (videoIframe) {
+                if (videoIframe.requestPictureInPicture) {
+                    videoIframe.requestPictureInPicture();
+                } else {
+                    alert("Je browser ondersteunt geen Picture-in-Picture.");
+                }
+            } else {
+                alert("Er is geen video ingebed om Picture-in-Picture weer te geven.");
+            }
+        }
+
+        function getVideoId(url) {
+            var match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            return match ? match[1] : null;
+        }
     </script>
+
 </body>
 </html>
-    
