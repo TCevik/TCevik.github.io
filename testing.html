@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 </head>
-
 <body>
 
     <h1>YouTube Embed</h1>
@@ -17,7 +15,6 @@
         <label for="videoLink">Voer hier de YouTube-link in:</label>
         <input type="text" id="videoLink" placeholder="Plak de link hier" required>
         <button type="button" onclick="embedVideo()">Inbedden</button>
-        <button type="button" onclick="openPiP()">Open PiP</button>
     </form>
 
     <div id="embeddedVideo"></div>
@@ -27,29 +24,12 @@
             var videoLink = document.getElementById("videoLink").value;
             var embeddedVideo = document.getElementById("embeddedVideo");
 
-            // Haal de video-id uit de YouTube-link
             var videoId = getVideoId(videoLink);
 
-            // Controleer of de link een geldige YouTube-link is
             if (videoId) {
-                // Bouw het ingebedde videoformaat op
                 var embedCode = `https://www.youtube.com/embed/${videoId}?si=wzQ6juVpwkJjor2N`;
 
-                // Voeg een knop toe voor picture-in-picture
-                var pipButton = document.createElement("button");
-                pipButton.textContent = "PIP weergeven";
-                pipButton.addEventListener("click", function () {
-                    // Controleer of de browser PIP ondersteunt
-                    if ('pictureInPictureEnabled' in document) {
-                        embeddedVideo.querySelector('iframe').requestPictureInPicture();
-                    } else {
-                        alert("Deze browser ondersteunt geen Picture-in-Picture.");
-                    }
-                });
-
-                // Plaats de ingebedde video en de PIP-knop op de pagina
                 embeddedVideo.innerHTML = `<iframe width="560" height="315" src="${embedCode}" frameborder="0" allowfullscreen></iframe>`;
-                embeddedVideo.appendChild(pipButton);
             } else {
                 alert("Ongeldige YouTube-link. Voer een geldige YouTube-link in.");
             }
@@ -62,5 +42,4 @@
     </script>
 
 </body>
-
 </html>
