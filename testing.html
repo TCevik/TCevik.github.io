@@ -47,10 +47,8 @@
             var videoIframe = embeddedVideo.querySelector("iframe");
 
             if (document.hidden) {
-                // Als de pagina niet zichtbaar is, stop de video niet
                 videoIframe.src += "&autoplay=1";
             } else {
-                // Als de pagina zichtbaar is, speel de video af
                 videoIframe.src = videoIframe.src.replace("&autoplay=1", "");
             }
         });
