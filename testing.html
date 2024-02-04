@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 </head>
+
 <body>
 
     <h1>YouTube Embed</h1>
@@ -33,25 +35,23 @@
                 // Bouw het ingebedde videoformaat op
                 var embedCode = `https://www.youtube.com/embed/${videoId}?si=wzQ6juVpwkJjor2N`;
 
-                // Plaats de ingebedde video op de pagina
+                // Voeg een knop toe voor picture-in-picture
+                var pipButton = document.createElement("button");
+                pipButton.textContent = "PIP weergeven";
+                pipButton.addEventListener("click", function () {
+                    // Controleer of de browser PIP ondersteunt
+                    if ('pictureInPictureEnabled' in document) {
+                        embeddedVideo.querySelector('iframe').requestPictureInPicture();
+                    } else {
+                        alert("Deze browser ondersteunt geen Picture-in-Picture.");
+                    }
+                });
+
+                // Plaats de ingebedde video en de PIP-knop op de pagina
                 embeddedVideo.innerHTML = `<iframe width="560" height="315" src="${embedCode}" frameborder="0" allowfullscreen></iframe>`;
+                embeddedVideo.appendChild(pipButton);
             } else {
                 alert("Ongeldige YouTube-link. Voer een geldige YouTube-link in.");
-            }
-        }
-
-        function openPiP() {
-            var embeddedVideo = document.getElementById("embeddedVideo");
-            var videoIframe = embeddedVideo.querySelector('iframe');
-
-            if (videoIframe) {
-                if (videoIframe.requestPictureInPicture) {
-                    videoIframe.requestPictureInPicture();
-                } else {
-                    alert("Je browser ondersteunt geen Picture-in-Picture.");
-                }
-            } else {
-                alert("Er is geen video ingebed om Picture-in-Picture weer te geven.");
             }
         }
 
@@ -62,4 +62,5 @@
     </script>
 
 </body>
+
 </html>
