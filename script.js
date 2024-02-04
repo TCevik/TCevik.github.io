@@ -97,6 +97,7 @@ var buttons = `
 	<button id="login-register-button-nav" onclick="window.location.href='/account/inloggen-registreren'">Inloggen / Registreren</button>
 
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
+	<button onclick="window.location.href='/tools/yt-player-background'">YouTube video spelen in de achtergrond</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
     <button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
