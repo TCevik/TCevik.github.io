@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Controleer of een getal een priemgetal is</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+</head>
+
+<body>
+    <h2>Controleer of een getal een priemgetal is</h2>
+    <p>Voer een getal in:</p>
+    <input id="num" type="number">
+    <button onclick="checkPrime()">Controleer</button>
+    <p id="result"></p>
+    <script>
+        function checkPrime() {
+            var num = document.getElementById("num").value;
+            var flag = 0;
+            var n = Math.abs(num);
+            for (i = 2; i <= n / 2; i++) {
+                if (n % i == 0) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 0) {
+                document.getElementById("result").innerHTML = num + " is een priemgetal.";
+            } else {
+                document.getElementById("result").innerHTML = num + " is geen priemgetal.";
+            }
+        }
+    </script>
+</body>
+
+</html>
