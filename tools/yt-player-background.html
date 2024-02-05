@@ -15,6 +15,9 @@
 
     <button onclick="goToTutorial()">Hoe te gebruiken?</button>
 
+    <br><button onclick="openLink('https://youtube.com')">Open YouTube</button>
+    <button onclick="openLink('https://music.youtube.com')">Open YouTube Music</button>
+
     <form>
         <label for="videoLink">Voer hier de YouTube-link in:</label>
         <input type="text" id="videoLink" placeholder="Plak de link hier" required>
@@ -32,10 +35,16 @@
             <br>4. Sluit dit tabblad en na 1 - 10 seconden zou de video gaan moeten spelen in de achtergrond.
             <br>5. Nu zou je het scherm uit kunnen zetten, of een andere app gebruiken terwijl de video blijft doorgaan.
         </p>
-        <p>Als dit niet werkt moet je bij stap 4 zodra je het tab hebt gesloten, in de melding (bij de melidingen van je telefoon of tablet) op play klikken. De melding verdwijnt en gaat de video na 3 seconden spelen.</p>
+        <p>Als dit niet werkt moet je bij stap 4 zodra je het tab hebt gesloten, in de melding (bij de melidingen van je
+            telefoon of tablet) op play klikken. De melding verdwijnt en gaat de video na 3 seconden spelen.</p>
     </div>
 
     <script>
+        function openLink(link) {
+            var youtubeMusicLink = link;
+            window.open(youtubeMusicLink, '_blank');
+        }
+
         function pasteFromClipboard() {
             navigator.clipboard.readText().then(function (clipText) {
                 document.getElementById("videoLink").value = clipText;
@@ -44,7 +53,7 @@
                 }, 100);
             });
         }
-        
+
         function goToTutorial() {
             var tutorialSection = document.getElementById("tutorial");
             tutorialSection.scrollIntoView({ behavior: "smooth" });
