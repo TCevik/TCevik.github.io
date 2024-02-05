@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube video spelen in de achtergrond</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+</head>
+
+<body>
+
+    <h1>YouTube video spelen in de achtergrond</h1>
+
+    <button onclick="goToTutorial()">Hoe te gebruiken?</button>
+
+    <br><button onclick="openLink('https://youtube.com')">Open YouTube</button>
+    <button onclick="openLink('https://music.youtube.com')">Open YouTube Music</button>
+
+    <form>
+        <label for="videoLink">Voer hier de YouTube-link in:</label>
+        <input type="text" id="videoLink" placeholder="Plak de link hier" required>
+        <button type="button" onclick="pasteFromClipboard()">Plakken</button>
+        <button type="button" onclick="embedVideo()">Embed</button>
+    </form>
+
+    <div id="embeddedVideo"></div>
+
+    <div id="tutorial">
+        <h3>Dit is hoe het werkt:</h3>
+        <p>1. Ga op je telefoon of tablet naar deze pagina.
+            <br>2. Doe de link van de video die je in de achtergrond wil afspelen in het textvak en klik op "Embed".
+            <br>3. Start de video.
+            <br>4. Sluit dit tabblad en na 1 - 10 seconden zou de video gaan moeten spelen in de achtergrond.
+            <br>5. Nu zou je het scherm uit kunnen zetten, of een andere app gebruiken terwijl de video blijft doorgaan.
+        </p>
+        <p>Als dit niet werkt moet je bij stap 4 zodra je het tab hebt gesloten, in de melding (bij de melidingen van je
+            telefoon of tablet) op play klikken. De melding verdwijnt en gaat de video na 3 seconden spelen.</p>
+    </div>
+
+    <script>
+        function openLink(link) {
+            var youtubeMusicLink = link;
+            window.open(youtubeMusicLink, '_blank');
+        }
+
+        function pasteFromClipboard() {
+            navigator.clipboard.readText().then(function (clipText) {
+                document.getElementById("videoLink").value = clipText;
+                setTimeout(() => {
+                    embedVideo();
+                }, 100);
+            });
+        }
+
+        function goToTutorial() {
+            var tutorialSection = document.getElementById("tutorial");
+            tutorialSection.scrollIntoView({ behavior: "smooth" });
+        }
+
+        function embedVideo() {
+            var videoLink = document.getElementById("videoLink").value;
+            var embeddedVideo = document.getElementById("embeddedVideo");
+
+            var videoId = getVideoId(videoLink);
+
+            if (videoId) {
+                var embedCode = `https://www.youtube.com/embed/${videoId}?si=wzQ6juVpwkJjor2N`;
+
+                embeddedVideo.innerHTML = `<iframe width="560" height="315" src="${embedCode}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+                alert("Ongeldige YouTube-link. Voer een geldige YouTube-link in.");
+            }
+        }
+
+        function getVideoId(url) {
+            var match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            return match ? match[1] : null;
+        }
+
+        document.addEventListener("visibilitychange", function () {
+            var embeddedVideo = document.getElementById("embeddedVideo");
+            var videoIframe = embeddedVideo.querySelector("iframe");
+
+            if (document.hidden) {
+                videoIframe.src += "&autoplay=1";
+            } else {
+                videoIframe.src = videoIframe.src.replace("&autoplay=1", "");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
