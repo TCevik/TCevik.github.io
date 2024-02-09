@@ -10,7 +10,7 @@
     {
       "src": "/tctam-logo.png",
       "type": "image/png",
-      "sizes": "64x64"
+      "sizes": "500x500"
     }, {
       "src": "/tctam-logo.png",
       "type": "image/png",
@@ -26,7 +26,7 @@
     }, {
       "src": "/tctam-logo.png",
       "type": "image/png",
-      "sizes": "500x500"
+      "sizes": "64x64"
     }
   ]
 }
