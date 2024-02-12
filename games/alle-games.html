@@ -164,28 +164,7 @@
     <button onclick="document.getElementById('cookie-hack').style.display = 'block'">Cookie Clicker Hack</button>
     <center><iframe id="cookie-hack" src="https://coderpatsy.bitbucket.io/cookies/editor.html" style="display: none; border: 1px solid var(--h1234-color); border-radius: var(--border-radius2); width: 80%; height: 600px;" frameborder="0"></iframe></center>
 
-
     <h3>Request een game:</h3>
     <iframe id="request-game" src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform" style="border-radius: var(--border-radius2); width: 80%; height: 800px;" frameborder="0"></iframe>
-
-    <script>
-        function kopieerTekst() {
-            var tekstElement = document.getElementById("cookie-clicker-code");
-
-            var tekstVeld = document.createElement("textarea");
-
-            tekstVeld.value = tekstElement.innerText;
-
-            document.body.appendChild(tekstVeld);
-
-            tekstVeld.select();
-
-            document.execCommand('copy');
-
-            document.body.removeChild(tekstVeld);
-
-            notification("Tekst gekopieerd");
-        }
-    </script>
 </body>
 </html>
