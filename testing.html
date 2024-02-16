@@ -1,36 +1,46 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Controleer of een getal een priemgetal is</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Focus</title>
+<link rel="stylesheet" href="/style.css">
+<script src="/script.js"></script>
+<style>
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 999999999;
+    }
+    #overlay img {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+    }
+</style>
 </head>
-
 <body>
-    <h2>Controleer of een getal een priemgetal is</h2>
-    <p>Voer een getal in:</p>
-    <input id="num" type="number">
-    <button onclick="checkPrime()">Controleer</button>
-    <p id="result"></p>
-    <script>
-        function checkPrime() {
-            var num = document.getElementById("num").value;
-            var flag = 0;
-            var n = Math.abs(num);
-            for (i = 2; i <= n / 2; i++) {
-                if (n % i == 0) {
-                    flag = 1;
-                    break;
-                }
-            }
-            if (flag == 0) {
-                document.getElementById("result").innerHTML = num + " is een priemgetal.";
-            } else {
-                document.getElementById("result").innerHTML = num + " is geen priemgetal.";
-            }
-        }
-    </script>
-</body>
+<h1>Original Site Content</h1>
+<p>This is the content of the original site.</p>
+<div id="overlay">
+    <img src="/assets/hacks/cloudwise-hack.png" alt="Overlay Image">
+</div>
+<script>
+    window.addEventListener('blur', function() {
+        document.getElementById('overlay').style.display = 'block';
+    });
 
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 8 && document.getElementById('overlay').style.display === 'block') {
+            document.getElementById('overlay').style.display = 'none';
+        }
+    });
+</script>
+</body>
 </html>
