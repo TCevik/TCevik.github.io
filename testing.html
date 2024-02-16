@@ -37,9 +37,7 @@
     <script>
         window.addEventListener('blur', function () {
             document.getElementById('overlay').style.display = 'block';
-            var nieuweURL = "https://cloudwise-portal.appspot.com/#/apps/";
-            history.pushState(null, null, nieuweURL);
-            console.log("De URL is veranderd naar: " + nieuweURL);
+            window.history.pushState("null", "Cloudwise - Vlietland College", "https://cloudwise-portal.appspot.com/#/apps/");
         });
 
         document.addEventListener('keydown', function (event) {
