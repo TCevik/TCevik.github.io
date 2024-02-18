@@ -1,33 +1,84 @@
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>TTS</title>
-    
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
-    
 
-    <style>
-      textarea {
-        width: 95%;
-      }
-    </style>
+<head>
+  <meta charset="UTF-8">
+  <title>TTS</title>
+
+  <link rel="stylesheet" href="/style.css">
+  <script src="/script.js"></script>
+
+
+  <style>
+    textarea {
+      width: 95%;
+    }
+  </style>
 
 </head>
+
 <body>
-    <h1>TTS</h1>
-    <p>Vul wat text in en het doet precies wat het zegt.</p>
+  <h1>TTS</h1>
+  <p>Vul wat tekst in en het doet precies wat het zegt.</p>
+
+  <textarea id="text-to-read" rows="10"></textarea>
+  <br><button id="read-button" onclick="readText();">Lees voor</button>
+  <button id="speak-button" onclick="startRecording();">Spreek in</button>
+
+  <audio id="speak-sound" src="/assets/google-now-voice.mp3"></audio>
+
+  <script>
+    var isPlaying = false; // Variabele om de afspeelstatus bij te houden
+
+    function readText() {
+      var text = document.getElementById("text-to-read").value;
+      var speech = new SpeechSynthesisUtterance(text);
+      var button = document.getElementById("read-button");
+      button.disabled = true; // Deactiveer de knop
+      button.innerText = 'Laden...';
+      speech.onstart = function () {
+        isPlaying = true; // Zet de afspeelstatus op waar tijdens het afspelen
+        updateButtonText(); // Update de tekst van de knop
+      };
+      speech.onend = function () {
+        isPlaying = false; // Zet de afspeelstatus op onwaar wanneer het afspelen is voltooid
+        updateButtonText(); // Update de tekst van de knop
+      };
+      window.speechSynthesis.speak(speech);
+    }
+
+    // Functie om spraakopname te starten
+    function startRecording() {
+      var button = document.getElementById("speak-button");
+      var recognition = new webkitSpeechRecognition(); // Instantie van spraakherkenning
+      recognition.lang = "nl-NL"; // Taal instellen op Nederlands
+      recognition.onresult = function (event) {
+        button.disabled = false;
+        button.innerText = 'Spreek in';
+        var result = event.results[0][0].transcript; // De herkende tekst
+        document.getElementById("text-to-read").value = result; // Plaats de herkende tekst in het tekstvak
+      }
+      recognition.start(); // Start de spraakherkenning
+      button.disabled = true;
+      button.innerText = 'Aan het luisteren...';
+      playSound(); // Speel het geluid af
+    }
     
-    <textarea id="text-to-read" rows="10"></textarea>
-    <br><button id="read-button" onclick="readText();">Lees voor</button>
-    
-    <script>
-        function readText() {
-            var text = document.getElementById("text-to-read").value;
-            var speech = new SpeechSynthesisUtterance(text);
-            window.speechSynthesis.speak(speech);
-        }
-    </script>
+    function playSound() {
+      var audio = document.getElementById("speak-sound");
+      audio.play();
+    }
+
+    function updateButtonText() {
+      var button = document.getElementById("read-button");
+      if (isPlaying) {
+        button.innerText = 'Aan het spelen...'; // Als aan het afspelen, update de tekst van de knop
+      } else {
+        button.disabled = false; // Activeer de knop wanneer het afspelen is voltooid
+        button.innerText = 'Lees voor'; // Update de tekst van de knop
+      }
+    }
+  </script>
 </body>
+
 </html>

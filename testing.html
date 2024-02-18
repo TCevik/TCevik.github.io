@@ -1,50 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Focus</title>
+    <title>YouTube video spelen in de achtergrond</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    <style>
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 999999999;
-        }
-
-        #overlay img {
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
 </head>
 
 <body>
-    <h1>Original Site Content</h1>
-    <p>This is the content of the original site.</p>
-    <div id="overlay">
-        <img src="/assets/hacks/cloudwise-hack.png" alt="Overlay Image">
-    </div>
-    <script>
-        window.addEventListener('blur', function () {
-            document.getElementById('overlay').style.display = 'block';
-        });
 
-        document.addEventListener('keydown', function (event) {
-            if (event.keyCode === 8 && document.getElementById('overlay').style.display === 'block') {
-                document.getElementById('overlay').style.display = 'none';
+    <h1>YouTube video spelen in de achtergrond</h1>
+
+    <br><button onclick="openLink('https://youtube.com')">Open YouTube</button>
+    <button onclick="openLink('https://music.youtube.com')">Open YouTube Music</button>
+
+    <form>
+        <label for="videoLink">Voer hier de YouTube-link in:</label>
+        <input type="text" id="videoLink" placeholder="Plak de link hier" required>
+        <button type="button" onclick="pasteFromClipboard()">Plakken</button>
+        <button type="button" onclick="embedVideo()">Embed</button>
+    </form>
+
+    <div id="embeddedVideo"></div>
+
+    <script>
+        function openLink(link) {
+            var youtubeMusicLink = link;
+            window.open(youtubeMusicLink, '_blank');
+        }
+
+        function pasteFromClipboard() {
+            navigator.clipboard.readText().then(function (clipText) {
+                document.getElementById("videoLink").value = clipText;
+                setTimeout(() => {
+                    embedVideo();
+                }, 100);
+            });
+        }
+
+        function embedVideo() {
+            var videoLink = document.getElementById("videoLink").value;
+            var embeddedVideo = document.getElementById("embeddedVideo");
+
+            var videoId = getVideoId(videoLink);
+
+            if (videoId) {
+                var embedCode = `https://www.youtube.com/embed/${videoId}?si=wzQ6juVpwkJjor2N`;
+
+                // Set the embedded video with an additional ID for easier selection
+                embeddedVideo.innerHTML = `<iframe id="youtubeFrame" width="560" height="315" src="${embedCode}" frameborder="0" allowfullscreen></iframe>`;
+
+                // Get the embedded iframe
+                var youtubeFrame = document.getElementById('youtubeFrame');
+
+                // Add event listener for when the iframe is loaded
+                youtubeFrame.onload = function() {
+                    // Start the loop after the video is loaded
+                    setTimeout(loopVideo, 1000);
+                };
+            } else {
+                alert("Ongeldige YouTube-link. Voer een geldige YouTube-link in.");
             }
-        });
+        }
+
+        function loopVideo() {
+            // Get the embedded iframe
+            var youtubeFrame = document.getElementById('youtubeFrame');
+
+            // Get the YouTube player object
+            var player = youtubeFrame.contentWindow.document.querySelector('video');
+
+            // Check if the player is ready
+            if (player) {
+                // Randomly determine the stop duration between 5 and 10 seconds
+                var stopDuration = Math.floor(Math.random() * 6) + 5;
+
+                // Pause the video after the stop duration
+                setTimeout(function() {
+                    player.pause();
+
+                    // Resume the video after 5 seconds
+                    setTimeout(function() {
+                        player.play();
+                        // Call loopVideo again to continue the loop
+                        loopVideo();
+                    }, 5000);
+                }, stopDuration * 1000);
+            } else {
+                // If the player is not ready, retry after a short delay
+                setTimeout(loopVideo, 1000);
+            }
+        }
+
+        function getVideoId(url) {
+            var match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            return match ? match[1] : null;
+        }
     </script>
+
 </body>
 
 </html>
