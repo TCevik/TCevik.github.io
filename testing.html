@@ -1,105 +1,53 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube video spelen in de achtergrond</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortnite Gegevens</title>
+<link rel="stylesheet" href="/style.css">
+<script src="/script.js"></script>
 </head>
-
 <body>
 
-    <h1>YouTube video spelen in de achtergrond</h1>
+<h1>Fortnite Gegevens</h1>
+<div id="fortnite-gegevens"></div>
 
-    <br><button onclick="openLink('https://youtube.com')">Open YouTube</button>
-    <button onclick="openLink('https://music.youtube.com')">Open YouTube Music</button>
+<script>
+// Functie om Fortnite gegevens op te halen en weer te geven
+function haalEnToonFortniteGegevens() {
+    // Jouw API Key
+    var api_key = "808591ed-1cad-4e55-8470-09997682ab54";
+    // De URL van de Fortnite API
+    var url = "https://fortnite-api.com/v2/stats/br/v2/6ad89fadc47c474eaece76b07c20e132";
 
-    <form>
-        <label for="videoLink">Voer hier de YouTube-link in:</label>
-        <input type="text" id="videoLink" placeholder="Plak de link hier" required>
-        <button type="button" onclick="pasteFromClipboard()">Plakken</button>
-        <button type="button" onclick="embedVideo()">Embed</button>
-    </form>
-
-    <div id="embeddedVideo"></div>
-
-    <script>
-        function openLink(link) {
-            var youtubeMusicLink = link;
-            window.open(youtubeMusicLink, '_blank');
-        }
-
-        function pasteFromClipboard() {
-            navigator.clipboard.readText().then(function (clipText) {
-                document.getElementById("videoLink").value = clipText;
-                setTimeout(() => {
-                    embedVideo();
-                }, 100);
-            });
-        }
-
-        function embedVideo() {
-            var videoLink = document.getElementById("videoLink").value;
-            var embeddedVideo = document.getElementById("embeddedVideo");
-
-            var videoId = getVideoId(videoLink);
-
-            if (videoId) {
-                var embedCode = `https://www.youtube.com/embed/${videoId}?si=wzQ6juVpwkJjor2N`;
-
-                // Set the embedded video with an additional ID for easier selection
-                embeddedVideo.innerHTML = `<iframe id="youtubeFrame" width="560" height="315" src="${embedCode}" frameborder="0" allowfullscreen></iframe>`;
-
-                // Get the embedded iframe
-                var youtubeFrame = document.getElementById('youtubeFrame');
-
-                // Add event listener for when the iframe is loaded
-                youtubeFrame.onload = function() {
-                    // Start the loop after the video is loaded
-                    setTimeout(loopVideo, 1000);
-                };
+    // Maak een HTTP-verzoek met JavaScript
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.setRequestHeader("Authorization", api_key);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                toonFortniteGegevens(response);
             } else {
-                alert("Ongeldige YouTube-link. Voer een geldige YouTube-link in.");
+                document.getElementById('fortnite-gegevens').innerHTML = "Er is een fout opgetreden bij het ophalen van de gegevens. Status code: " + xhr.status;
             }
         }
+    };
+    xhr.send();
+}
 
-        function loopVideo() {
-            // Get the embedded iframe
-            var youtubeFrame = document.getElementById('youtubeFrame');
+// Functie om Fortnite gegevens weer te geven
+function toonFortniteGegevens(data) {
+    var fortniteDiv = document.getElementById('fortnite-gegevens');
+    fortniteDiv.innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+}
 
-            // Get the YouTube player object
-            var player = youtubeFrame.contentWindow.document.querySelector('video');
-
-            // Check if the player is ready
-            if (player) {
-                // Randomly determine the stop duration between 5 and 10 seconds
-                var stopDuration = Math.floor(Math.random() * 6) + 5;
-
-                // Pause the video after the stop duration
-                setTimeout(function() {
-                    player.pause();
-
-                    // Resume the video after 5 seconds
-                    setTimeout(function() {
-                        player.play();
-                        // Call loopVideo again to continue the loop
-                        loopVideo();
-                    }, 5000);
-                }, stopDuration * 1000);
-            } else {
-                // If the player is not ready, retry after a short delay
-                setTimeout(loopVideo, 1000);
-            }
-        }
-
-        function getVideoId(url) {
-            var match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-            return match ? match[1] : null;
-        }
-    </script>
+// Haal en toon Fortnite gegevens wanneer de pagina geladen is
+window.onload = function() {
+    haalEnToonFortniteGegevens();
+};
+</script>
 
 </body>
-
 </html>
