@@ -433,7 +433,7 @@
                                     var response = JSON.parse(xhr.responseText);
                                     toonSpecifiekeFortniteGegevens(response);
                                 } else {
-                                    document.getElementById('fortnite-gegevens').innerHTML = "Er is een fout opgetreden bij het ophalen van de gegevens. Status code: " + xhr.status;
+                                    document.getElementById('fortnite-gegevens').innerHTML = "Er is een fout opgetreden bij het ophalen van mijn Fortnite statistieken. Error code: " + xhr.status;
                                 }
                             }
                         };
@@ -449,15 +449,15 @@
                         var kd = data.data.stats.all.overall.kd;
             
                         var fortniteDiv = document.getElementById('fortnite-gegevens');
-                        fortniteDiv.innerHTML = "<p><b>Bezigheden</b>" +
-                            "<br>Mijn favorite game is Fortnite." +
-                            "<br>Ik speel het vaak en dit zijn mijn stats (dit update automatisch):" +
+                        fortniteDiv.innerHTML = "<p><b>Mijn Fortnite stats:</b>" +
+                            "<br>Ik speel vaak Fortnite en dit zijn mijn statistieken (dit update automatisch):" +
                             "<br>- Mijn epic is: " + epicNaam +
                             "<br>- Ik ben op dit moment level: " + level +
                             "<br>- Ik heb " + kills + " kills gemaakt." +
                             "<br>- Ik heb " + minutesPlayed + " minuten Fortnite gespeeld." +
                             "<br>- Ik win ongeveer " + winRate + "% van mijn potjes." +
-                            "<br>- Mijn fortnite KD is: " + kd + "</p>";
+                            "<br>- Mijn fortnite KD is: " + kd +
+                            "<br>- Ik ben gestart met Fortnite in Chapter 1 Season 3.</p>";
                     }
 
                     haalEnToonFortniteGegevens();
