@@ -245,9 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const leftPosition = (window.screen.width - popupWidth) / 2;
                     const topPosition = (window.screen.height - popupHeight) / 2;
                     const newWindow = window.open("/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-                    newWindow.addEventListener("blur", function() {
-                        newWindow.close();
-                    });
                 });
             } else {
                 const loginLink = document.createElement("button");
@@ -258,9 +255,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const leftPosition = (window.screen.width - popupWidth) / 2;
                     const topPosition = (window.screen.height - popupHeight) / 2;
                     const newWindow = window.open("/account/inloggen-registreren", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-                    newWindow.addEventListener("blur", function() {
-                        newWindow.close();
-                    });
                 };
                 loginButton.appendChild(loginLink);
             }
