@@ -74,7 +74,6 @@
             var userName = user ? (user.displayName ? user.displayName : "") : "Geen gebruikersnaam gevonden";
             var photoURL = user ? (user.photoURL ? user.photoURL : "/assets/no-icon.jpg") : "Geen profielfoto gevonden";
 
-            document.cookie = `userEmail=${userEmail}; path=/`;
             document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
             document.getElementById("name-input").value = userName;
             document.getElementById("pic-input").value = photoURL;
