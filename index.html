@@ -286,7 +286,9 @@
     <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript
     <p>
 
-        <button onclick="openTctamQuizPopup()">Doe de TC_tam Quiz</button>
+    <p id="welcome-message" onload=""></p>
+
+    <button onclick="openTctamQuizPopup()">Doe de TC_tam Quiz</button>
 
     <div id="tctamquizpopup" class="tctamquizpopup-overlay">
         <div class="tctamquizpopup-content">
@@ -379,7 +381,8 @@
                     website voor mijn kanaal met Google Sites (dat is heel simpel). Maar toen ik die site had gemaakt
                     zag ik hoe
                     leuk ik het vind om met computers te werken dus ben ik deze site gaan maken.
-                    <br>- Mijn nieuwe plan is om als ik volwassen ben software engineer te worden. Als software engineer ontwerp, ontwikkel en test je softwareapplicaties.
+                    <br>- Mijn nieuwe plan is om als ik volwassen ben software engineer te worden. Als software engineer
+                    ontwerp, ontwikkel en test je softwareapplicaties.
                 </p>
 
                 <b>Middelbare school:</b>
@@ -407,6 +410,12 @@
                 <div id="fortnite-gegevens">Aan het laden...</div>
 
                 <script>
+                    var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
+                    var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
+                    if (userEmailC && userNameC) {
+                        document.getElementById('welcome-message').innerText = "Hoi " + userNameC + "! Welkom terug op de TC_tam website. Ik wens je een fijn bezoek!";
+                    }
+
                     function toggleSubjects() {
                         var subjectsDiv = document.getElementById("subjects");
                         if (subjectsDiv.style.display === "none") {
@@ -421,7 +430,7 @@
                     function haalEnToonFortniteGegevens() {
                         var api_key = "808591ed-1cad-4e55-8470-09997682ab54";
                         var url = "https://fortnite-api.com/v2/stats/br/v2/6ad89fadc47c474eaece76b07c20e132";
-            
+
                         var xhr = new XMLHttpRequest();
                         xhr.open("GET", url);
                         xhr.setRequestHeader("Authorization", api_key);
@@ -437,7 +446,7 @@
                         };
                         xhr.send();
                     }
-            
+
                     function toonSpecifiekeFortniteGegevens(data) {
                         var epicNaam = data.data.account.name;
                         var level = data.data.battlePass.level;
@@ -445,7 +454,7 @@
                         var minutesPlayed = data.data.stats.all.overall.minutesPlayed;
                         var winRate = data.data.stats.all.overall.winRate;
                         var kd = data.data.stats.all.overall.kd;
-            
+
                         var fortniteDiv = document.getElementById('fortnite-gegevens');
                         fortniteDiv.innerHTML = "<p><b>Mijn Fortnite stats:</b>" +
                             "<br>Ik speel vaak Fortnite en dit zijn mijn statistieken (dit update automatisch):" +

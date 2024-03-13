@@ -8,8 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /*
-var userEmail = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
-if (userEmail) {
-    notification("De email opgeslagen in je cookies is " + userEmail + ". Klopt dit niet? Refresh dan de pagina.");
+var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
+var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
+if (userEmailC && userNameC) {
+    notification("De email opgeslagen in je cookies is " + userEmail + " en je gebruikersnaam " + userName + ". Klopt dit niet? Refresh dan de pagina.");
 }
 */
