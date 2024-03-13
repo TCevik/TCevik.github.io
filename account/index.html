@@ -186,6 +186,25 @@
                 console.log("Wel ingelogd. Blijf waar je bent. :)");
             }
         }, 2000);
+
+        function redirectToUrl() {
+            var currentUrl = window.location.href;
+
+            if (currentUrl.includes("?")) {
+                var parts = currentUrl.split("?");
+                if (parts[1]) {
+                    var redirectTo = parts[1];
+                    setTimeout(function () {
+                        saveProfileData();
+                        setTimeout(function () {
+                            window.location.href = redirectTo;
+                        }, 1000);
+                    }, 1000);
+                }
+            }
+        }
+
+        redirectToUrl();
     </script>
 </body>
 
