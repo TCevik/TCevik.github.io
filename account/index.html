@@ -150,6 +150,7 @@
                     displayName: name
                 }).then(function () {
                     notification('Gebruikersnaam succesvol bijgewerkt: ' + name);
+                    location.reload()
                 }).catch(function (error) {
                     notification('Fout bij het bijwerken van de gebruikersnaam: ' + error);
                 });
