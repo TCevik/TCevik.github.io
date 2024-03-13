@@ -73,6 +73,7 @@
             var userEmail = user ? user.email : "Geen e-mail gevonden";
             var userName = user ? (user.displayName ? user.displayName : "") : "Geen gebruikersnaam gevonden";
             var photoURL = user ? (user.photoURL ? user.photoURL : "/assets/no-icon.jpg") : "Geen profielfoto gevonden";
+            document.cookie = "userEmail=" + userEmail + "; path=/";
 
             document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
             document.getElementById("name-input").value = userName;
@@ -91,6 +92,7 @@
                 .then(function () {
                     notification('Gebruiker uitgelogd');
                     document.cookie = `userPhotoURL=/assets/no-icon.jpg; path=/`;
+                    document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                     localStorage.setItem('loggedIn', 'false');
                 })
                 .catch(function (error) {
