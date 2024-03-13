@@ -73,25 +73,27 @@
             var userEmail = user ? user.email : "Geen e-mail gevonden";
             var userName = user ? (user.displayName ? user.displayName : "") : "Geen gebruikersnaam gevonden";
             var photoURL = user ? (user.photoURL ? user.photoURL : "/assets/no-icon.jpg") : "Geen profielfoto gevonden";
-            document.cookie = "userEmail=" + userEmail + "; path=/";
-            document.cookie = "userName=" + userName + "; path=/";
 
             document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
             document.getElementById("name-input").value = userName;
             document.getElementById("pic-input").value = photoURL;
-            
-            var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
-            var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
-            if (userEmailC && userNameC) {
-                notification("De email opgeslagen in je cookies is " + userEmail + " en je gebruikersnaam " + userName + ". Klopt dit niet? Refresh dan de pagina.");
-            }
         }
 
         function saveProfileData() {
             const user = firebase.auth().currentUser;
             const photoURL = user.photoURL;
+            const userEmail = user.displayName;
+            const userName = user.email;
 
-            document.cookie = `userPhotoURL=${photoURL}; path=/`;
+            document.cookie = "userPhotoURL=" + photoURL + "; path=/";
+            document.cookie = "userEmail=" + userEmail + "; path=/";
+            document.cookie = "userName=" + userName + "; path=/";
+
+            var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            if (userEmailC && userNameC) {
+                notification("De email opgeslagen in je cookies is " + userEmail + " en je gebruikersnaam " + userName + ". Klopt dit niet? Refresh dan de pagina.");
+            }
         }
 
         document.getElementById('logout-btn').addEventListener('click', function () {
