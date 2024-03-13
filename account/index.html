@@ -83,14 +83,14 @@
             const user = firebase.auth().currentUser;
             const photoURL = user.photoURL;
 
-            document.cookie = `userPhotoURL=${photoURL}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+            document.cookie = `userPhotoURL=${photoURL}; path=/`;
         }
 
         document.getElementById('logout-btn').addEventListener('click', function () {
             auth.signOut()
                 .then(function () {
                     notification('Gebruiker uitgelogd');
-                    document.cookie = `userPhotoURL=/assets/no-icon.jpg; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+                    document.cookie = `userPhotoURL=/assets/no-icon.jpg; path=/`;
                     localStorage.setItem('loggedIn', 'false');
                 })
                 .catch(function (error) {
