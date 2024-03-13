@@ -82,8 +82,8 @@
         function saveProfileData() {
             const user = firebase.auth().currentUser;
             const photoURL = user.photoURL;
-            const userEmail = user.displayName;
-            const userName = user.email;
+            const userEmail = user.email;
+            const userName = user.displayName;
 
             document.cookie = "userPhotoURL=" + photoURL + "; path=/";
             document.cookie = "userEmail=" + userEmail + "; path=/";
