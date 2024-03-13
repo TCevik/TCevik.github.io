@@ -238,12 +238,12 @@
                     setTimeout(function () {
                         saveProfileData();
                         setTimeout(function () {
-                            window.location.href = "/account/?" + redirectTo;
+                            window.location.href = redirectTo;
                         }, 1000);
                     }, 1000);
                 }
             } else {
-                window.location.href = "/account";
+                window.location.href = "/account"
             }
         }
 
