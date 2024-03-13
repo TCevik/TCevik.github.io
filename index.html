@@ -412,8 +412,24 @@
                 <script>
                     var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
                     var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
+                    function getGreeting() {
+                        var currentTime = new Date();
+                        var hour = currentTime.getHours();
+                        var greeting;
+                        if (hour >= 0 && hour < 6) {
+                            greeting = "Goedenavond";
+                        } else if (hour >= 6 && hour < 12) {
+                            greeting = "Goedemorgen";
+                        } else if (hour >= 12 && hour < 18) {
+                            greeting = "Goedemiddag";
+                        } else {
+                            greeting = "Goedenavond";
+                        }
+                        return greeting;
+                    }
                     if (userEmailC && userNameC) {
-                        document.getElementById('welcome-message').innerText = "Hoi " + userNameC + "! Welkom terug op de TC_tam website. Ik wens je een fijn bezoek!";
+                        var greeting = getGreeting();
+                        document.getElementById('welcome-message').innerText = greeting + " " + userNameC + "! Welkom terug op de TC_tam website. Ik wens je een fijn bezoek!";
                     }
 
                     function toggleSubjects() {
