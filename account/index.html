@@ -78,6 +78,9 @@
             document.getElementById("user-email").innerHTML = 'Je email is: ' + userEmail;
             document.getElementById("name-input").value = userName;
             document.getElementById("pic-input").value = photoURL;
+            
+            var userEmail = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            notification(userEmail ? "De email opgeslagen in je cookies is " + userEmail + ". Klopt dit niet? Refresh dan de pagina." : "Geen e-mail gevonden in de cookie.");
         }
 
         function saveProfileData() {
