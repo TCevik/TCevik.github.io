@@ -87,7 +87,7 @@ firebase.auth().onAuthStateChanged((user) => {
         sendButton.disabled = true; // Als de gebruiker niet geverifieerd is, schakel de verzendknop uit
         enterKeyEnabled = false; // Als de gebruiker niet geverifieerd is, schakel de enter-toets uit
         sendButton.innerText = 'Verifieer uw e-mail.'; // Bericht op de stuurknop voor niet-geverifieerde gebruikers
-        notification("Verifieer uw e-mail om berichten te verzenden. Ga naar uw profiel om de mail te ontvangen.");
+        notification("Verifieer uw e-mail om berichten te verzenden. Ga naar <a href='https://tctam.nl/account/'>uw profiel</a> om de mail te ontvangen.");
     }
 });
 
