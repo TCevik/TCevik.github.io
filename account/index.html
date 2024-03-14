@@ -102,6 +102,7 @@
                     notification('Gebruiker uitgelogd');
                     document.cookie = `userPhotoURL=/assets/no-icon.jpg; path=/`;
                     document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                    document.cookie = 'userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                     localStorage.setItem('loggedIn', 'false');
                 })
                 .catch(function (error) {
