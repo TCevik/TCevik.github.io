@@ -86,7 +86,7 @@ firebase.auth().onAuthStateChanged((user) => {
     } else {
         sendButton.disabled = true; // Als de gebruiker niet geverifieerd is, schakel de verzendknop uit
         enterKeyEnabled = false; // Als de gebruiker niet geverifieerd is, schakel de enter-toets uit
-        sendButton.innerText = 'Verifieer uw e-mail om te verzenden'; // Bericht op de stuurknop voor niet-geverifieerde gebruikers
+        sendButton.innerText = 'Verifieer uw e-mail om te verzenden. Ga naar uw profiel om de mail te ontvangen.'; // Bericht op de stuurknop voor niet-geverifieerde gebruikers
     }
 });
 
