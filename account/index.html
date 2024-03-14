@@ -85,11 +85,9 @@
             const userEmail = user.email;
             const userName = user.displayName;
 
-            var expirationDate = new Date();
-            expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-            document.cookie = "userPhotoURL=" + photoURL + "; path=/; expires=" + expirationDate.toUTCString();
-            document.cookie = "userEmail=" + userEmail + "; path=/; expires=" + expirationDate.toUTCString();
-            document.cookie = "userName=" + userName + "; path=/; expires=" + expirationDate.toUTCString();
+            document.cookie = "userPhotoURL=" + photoURL + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            document.cookie = "userEmail=" + userEmail + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            document.cookie = "userName=" + userName + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
 
             var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
             var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
@@ -104,7 +102,6 @@
                     notification('Gebruiker uitgelogd');
                     document.cookie = `userPhotoURL=/assets/no-icon.jpg; path=/`;
                     document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                    document.cookie = 'userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                     localStorage.setItem('loggedIn', 'false');
                 })
                 .catch(function (error) {

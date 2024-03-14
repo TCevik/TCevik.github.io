@@ -253,11 +253,9 @@
             const userEmail = user.email;
             const userName = user.displayName;
 
-            var expirationDate = new Date();
-            expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-            document.cookie = "userPhotoURL=" + photoURL + "; path=/; expires=" + expirationDate.toUTCString();
-            document.cookie = "userEmail=" + userEmail + "; path=/; expires=" + expirationDate.toUTCString();
-            document.cookie = "userName=" + userName + "; path=/; expires=" + expirationDate.toUTCString();
+            document.cookie = "userPhotoURL=" + photoURL + "; path=/";
+            document.cookie = "userEmail=" + userEmail + "; path=/";
+            document.cookie = "userName=" + userName + "; path=/";
 
             var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
             var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
