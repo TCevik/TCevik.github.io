@@ -8,11 +8,11 @@
 
 	<style>
 		body {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 100vh;
-			margin: 0 auto;
+		  	display: flex;
+		  	justify-content: center;
+		  	align-items: center;
+		  	height: 100vh;
+		  	margin: 0 auto;
 		}
 
 		blockquote,
@@ -92,12 +92,11 @@
 		}
 
 		.timer-container {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			height: 100vh;
-			/* 100% van de viewporthoogte */
+		  	display: flex;
+		  	flex-direction: column;
+		  	justify-content: center;
+		  	align-items: center;
+			height: 100vh; /* 100% van de viewporthoogte */
 		}
 
 		.timer {
@@ -605,7 +604,6 @@
 </head>
 
 <body class="timer-paused">
-	<div id="notification-container" style="display: none;"></div>
 	<span></span>
 	<div class="timer-container">
 		<div class="timer">
@@ -703,31 +701,24 @@
 		<audio class="ding" src="/tools/time-timer/time-timer-sound.wav" preload="auto"></audio>
 
 		<script>
+			const lerp = (x, y, a) => x * (1 - a) + y * a;
+			const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
+			const invlerp = (x, y, a) => clamp((a - x) / (y - x));
+			const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
+
 			(() => {
 
-				// Functie om melding weer te geven
-				function showNotification(message) {
-					// Controleer of de browser Web Notifications ondersteunt
-					if ('Notification' in window) {
-						// Controleer of meldingspermissies zijn verleend
-						if (Notification.permission === 'granted') {
-							// Toon melding
-							new Notification('Time Timer', {
-								body: message
-							});
-						} else if (Notification.permission !== 'denied') {
-							// Vraag toestemming voor meldingen
-							Notification.requestPermission().then(permission => {
-								if (permission === 'granted') {
-									// Toon melding
-									new Notification('Time Timer', {
-										body: message
-									});
-								}
-							});
-						}
+				try {
+					const test = document.createElement('div')
+					test.style.background = 'conic-gradient(red, blue)';
+					document.body.appendChild(test);
+					const styles = window.getComputedStyle(test);
+					if (styles.backgroundImage === 'none') {
+						document.body.classList.add('no-gradient');
+						document.body.removeChild(test);
 					}
-				}
+				} catch (e) { }
+
 
 				const timeInput = document.querySelector('[name="time"]');
 				const timerEl = document.querySelector('.timer');
@@ -763,11 +754,6 @@
 					timeRemaining--;
 					setTimeCSS();
 
-					// Toon melding als timer nog loopt
-					if (timeRemaining > 0) {
-						showNotification(`De timer loopt nog ${timeRemaining} minuten.`);
-					}
-
 					if (!timeRemaining) {
 						stopTimer();
 						return;
@@ -801,12 +787,6 @@
 						document.body.classList.remove('timer-finished');
 					}, 1000);
 				}
-
-				const lerp = (x, y, a) => x * (1 - a) + y * a;
-				const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
-				const invlerp = (x, y, a) => clamp((a - x) / (y - x));
-				const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
-
 			})();
 		</script>
 </body>
