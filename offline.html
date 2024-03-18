@@ -4,12 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Je bent offline</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
-
+    
     <style>
-        .container {
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        body {
+            background-color: white;
+            font-family: Lexend, Arial, sans-serif;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0 auto;
+            width: 80%;
             text-align: left;
+        }
+
+        h1, p {
+            color: black;
+        }
+
+        button {
+            background-color: rgb(30, 30, 30);
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 
@@ -30,20 +55,18 @@
     </script>
 </head>
 <body>
-    <div style="margin-left: 10px;" class="container">
-        <h1>Oeps, je hebt geen internetverbinding!</h1>
-        <p ">Deze pagina kon niet worden geladen, controleer je verbinding.</p>
+    <h1>Oeps, je hebt geen internetverbinding!</h1>
+    <p style="margin-top: -20px;">Deze pagina kon niet worden geladen, controleer je verbinding.</p>
 
-        <br>
+    <br>
 
-        <p>Er was eens een jongen genaamd Tamer in Codeerburg. Hij droomde ervan de beste webontwikkelaar te worden. Op een stormachtige dag brak de paniek uit: de bliksem sloeg in de centrale router en het hele dorp zat zonder internet. Tamer zag dit als een kans. Hij creëerde een offlinepagina met HTML, CSS en JavaScript vol spelletjes en raadsels. Trots verspreidde hij de pagina door het dorp door USB sticks te verkopen.</p>
-        <p>De dorpsbewoners waren enthousiast en genoten van Tamer's creatie. De offlinepagina werd een hit, zelfs buiten Codeerburg. Tamer werd een held en bewees dat waardevolle creaties mogelijk zijn zonder internet. Hij werd de belangrijkste persoon in Codeerburg en leefde nog lang en gelukkig.</p>
-        <br>
-        <p>En dit, allemaal zonder internet!</p>
+    <p>Er was eens een jongen genaamd Tamer in Codeerburg. Hij droomde ervan de beste webontwikkelaar te worden. Op een stormachtige dag brak de paniek uit: de bliksem sloeg in de centrale router en het hele dorp zat zonder internet. Tamer zag dit als een kans. Hij creëerde een offlinepagina met HTML, CSS en JavaScript vol spelletjes en raadsels. Trots verspreidde hij de pagina door het dorp door USB sticks te verkopen.</p>
+    <p>De dorpsbewoners waren enthousiast en genoten van Tamer's creatie. De offlinepagina werd een hit, zelfs buiten Codeerburg. Tamer werd een held en bewees dat waardevolle creaties mogelijk zijn zonder internet. Hij werd de belangrijkste persoon in Codeerburg en leefde nog lang en gelukkig.</p>
+    <br>
+    <p style="margin-top: -10px;">En dit, allemaal zonder internet!</p>
 
-        <br><button onclick="goBack()">Terug</button>
+    <br><button style="margin: 0px !important; margin-top: 20px !important;" onclick="goBack()">Terug</button>
 
-        <p>TC_tam<span style="vertical-align: top; font-size: 0.8em;">©</span> - Tamer Çevik</p>
-    </div>
+    <p style="color: grey;">TC_tam<span style="vertical-align: top; font-size: 0.8em;">©</span> - Tamer Çevik</p>
 </body>
 </html>
