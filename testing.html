@@ -76,10 +76,10 @@
     </label>
 
     <script>
-        function updateSwitchState() {
-            const switchState = localStorage.getItem("switchState");
+        function updateSchoolMode() {
+            const schoolMode = localStorage.getItem("schoolMode");
             const checkbox = document.getElementById('switch');
-            if (switchState === "checked") {
+            if (schoolMode === "on") {
                 checkbox.checked = true;
             } else {
                 checkbox.checked = false;
@@ -89,10 +89,10 @@
         function handleSwitchChange() {
             const checkbox = document.getElementById('switch');
             if (checkbox.checked) {
-                localStorage.setItem("switchState", "checked");
+                localStorage.setItem("schoolMode", "on");
                 notification('Switch is ingeschakeld');
             } else {
-                localStorage.setItem("switchState", "unchecked");
+                localStorage.setItem("schoolMode", "off");
                 notification('Switch is uitgeschakeld');
             }
         }
@@ -100,7 +100,7 @@
         const checkbox = document.getElementById('switch');
         checkbox.addEventListener('change', handleSwitchChange);
 
-        updateSwitchState();
+        updateSchoolMode();
     </script>
 
 </body>
