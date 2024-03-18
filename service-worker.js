@@ -11,9 +11,20 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request).catch(() => {
-        return caches.match(OFFLINE_PAGE);
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(event.request).then(response => {
+        const fetchPromise = fetch(event.request).then(networkResponse => {
+          if (event.request.method !== 'GET' || !networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+            return networkResponse;
+          }
+
+          cache.put(event.request, networkResponse.clone());
+          return networkResponse;
+        }).catch(() => {
+          return caches.match(OFFLINE_PAGE);
+        });
+
+        return response || fetchPromise;
       });
     })
   );
