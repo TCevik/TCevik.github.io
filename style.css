@@ -41,7 +41,7 @@ body {
 @media (prefers-color-scheme: dark) {
     :root {
         --background-color: #0d1710;
-        --text-color: #ffffff;
+        --text-color: #d91616;
         --h1234-color: #7fff48;
         --custom-link-color: #33ff33;
         --button-bgcolor: #38761d;
