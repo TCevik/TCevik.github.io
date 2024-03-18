@@ -118,9 +118,20 @@
                 window.addEventListener('keydown', function (event) {
                     if (event.key === 'Backspace') {
                         document.body.removeChild(overlay);
+
+                        // Titel wijzigen
+                        document.title = "Cloudwise - Vlietland College";
+
+                        // Pictogram wijzigen
+                        var icoonLink = document.querySelector("link[rel*='icon']") || document.createElement('link');
+                        icoonLink.type = 'image/x-icon';
+                        icoonLink.rel = 'icon';
+                        icoonLink.href = "https://cloudwise-portal.appspot.com/favicon.ico";
+                        document.head.appendChild(icoonLink);
                     }
                 });
-        }});
+            }
+        });
     </script>
 
 </body>
