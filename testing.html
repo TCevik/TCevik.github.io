@@ -57,7 +57,6 @@
             transform: translateX(26px);
         }
 
-        /* Rounded sliders */
         .slider.round {
             border-radius: 34px;
         }
@@ -101,6 +100,25 @@
         checkbox.addEventListener('change', handleSwitchChange);
 
         updateSchoolMode();
+
+        window.addEventListener('blur', function () {
+            var overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'url(https://tctam.nl/assets/pranks/browser-op-slot.png) center/contain no-repeat';
+            overlay.style.zIndex = '9999999';
+
+            document.body.appendChild(overlay);
+
+            window.addEventListener('keydown', function (event) {
+                if (event.key === 'Backspace') {
+                    document.body.removeChild(overlay);
+                }
+            });
+        });
     </script>
 
 </body>
