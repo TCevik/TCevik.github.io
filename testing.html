@@ -90,7 +90,6 @@
             if (checkbox.checked) {
                 localStorage.setItem("schoolMode", "on");
                 notification('Switch is ingeschakeld');
-                window.history.replaceState({}, document.title, window.location.href.split('?')[0]);
             } else {
                 localStorage.setItem("schoolMode", "off");
                 notification('Switch is uitgeschakeld');
