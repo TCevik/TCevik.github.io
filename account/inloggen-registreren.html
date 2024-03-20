@@ -12,7 +12,17 @@
             background: url(/assets/login-page-bg.jpg) no-repeat;
         }
 
-        @media screen and (max-width: 1000px) {
+        @media screen and (min-width: 500px) and (max-width: 1000px) {
+            .loginForm {
+                width: 60% !important;
+            }
+
+            .registerForm {
+                width: 60% !important;
+            }
+        }
+
+        @media screen and (min-width: 0px) and (max-width: 500px) {
             .loginForm {
                 width: 90% !important;
             }
