@@ -8,6 +8,10 @@
     <script src="/script.js"></script>
 
     <style>
+        body {
+            background: url(/assets/login-page-bg.jpg) no-repeat;
+        }
+
         @media screen and (max-width: 750px) {
             .loginForm {
                 width: 90% !important;
@@ -24,7 +28,8 @@
             left: 50%;
             width: 30%;
             transform: translate(-50%, -50%);
-            background-color: var(--bg-accent-color1);
+            background-color: transparent;
+            backdrop-filter: blur(20px);
             border: 1px solid var(--text-color);
             border-radius: var(--border-radius1);
             padding-bottom: 20px;
