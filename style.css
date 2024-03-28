@@ -143,9 +143,9 @@ button:focus {
 }
 
 button:disabled {
-    filter: brightness(0.75);
-    border: red 3px solid;
-    cursor: not-allowed;
+    filter: brightness(0.75) !important;
+    border: red 3px solid !important;
+    cursor: not-allowed !important;
 }
 
 img {
