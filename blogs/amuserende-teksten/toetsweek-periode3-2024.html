@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Toetsweek Periode 3 2024</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .page {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .container {
+            text-align: left;
+            margin-left: 20px;
+            width: 70%;
+        }
+
+        .recommended {
+            text-align: center;
+            width: 25%;
+            padding: 10px;
+            border: 1px solid var(--h1234-color);
+            border-radius: var(--border-radius1);
+            height: auto;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 800px) {
+            .page {
+                display: block;
+                justify-content: space-between;
+            }
+
+            .container {
+                text-align: center;
+                width: 90%;
+            }
+
+            .recommended {
+                text-align: center;
+                width: 90%;
+                padding: 10px;
+                border: 1px solid var(--h1234-color);
+                border-radius: var(--border-radius1);
+                height: auto;
+                margin: auto;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="container">
+            <h1>Hier zijn wat leuke verhalen uit de 3e toetsweek in Havo 3:</h1>
+            <p>Ik had de eerste dag wiskunde en aardrijkskunde. Maar natuurlijk gaat het de eerste dag gelijk fout. Voor
+                wiskunde waren er 2 toetsen een wiskunde A en wiskunde B toets, maar die toetsen zijn niet goed
+                aangegeven en heeft nu de klas een verkeerde toets gemaakt.</p>
+            <p>Natuurlijk was ik na de toets weer lekker aan het tekenen gegaan. Nou moet je eens kijken hoe mooi dat is
+                geworden, echt prachtig!</p>
+            <img src="/assets/blogs/tekening-toetsweek3-2024-dag1.jpg" width="60%" alt="foto van mijn tekeningen">
+        </div>
+
+        <div class="recommended">
+            <h3 style="margin-top: 10px">Nog meer blogs</h3>
+            <div id="recommended-buttons"></div>
+        </div>
+    </div>
+
+    <script>
+        // Functie om random knoppen toe te voegen aan de "Nog meer blogs" sectie
+        function addRecommendedButtons(buttons) {
+            var recommendedContainer = document.getElementById('recommended-buttons');
+            buttons.forEach(function (buttonText) {
+                var button = document.createElement('button');
+                button.textContent = buttonText;
+                button.classList.add('recommended-button');
+                button.style.width = "100%";
+                button.style.marginTop = "5px";
+                recommendedContainer.appendChild(button);
+            });
+        }
+
+        // Fetchen van de raw HTML
+        fetch('https://raw.githubusercontent.com/TCevik/TCevik.github.io/main/blogs/alle-blogs.html')
+            .then(response => response.text())
+            .then(data => {
+                // Extract knoppen met de class "recommended-button"
+                var parser = new DOMParser();
+                var htmlDocument = parser.parseFromString(data, 'text/html');
+                var recommendedButtons = htmlDocument.querySelectorAll('.recommended-button');
+
+                // Haal willekeurige, unieke knoppen op
+                var uniqueRandomButtons = [];
+                while (uniqueRandomButtons.length < 10) {
+                    var randomIndex = Math.floor(Math.random() * recommendedButtons.length);
+                    var buttonText = recommendedButtons[randomIndex].textContent;
+                    if (!uniqueRandomButtons.includes(buttonText)) {
+                        uniqueRandomButtons.push(buttonText);
+                    }
+                }
+
+                // Voeg de willekeurige knoppen toe aan de sectie
+                addRecommendedButtons(uniqueRandomButtons);
+            })
+            .catch(error => console.error('Er is een fout opgetreden bij het ophalen van de gegevens:', error));
+    </script>
+</body>
+
+</html>
