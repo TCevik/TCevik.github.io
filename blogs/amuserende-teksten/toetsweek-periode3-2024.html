@@ -80,12 +80,18 @@
         // Functie om random knoppen toe te voegen aan de "Nog meer blogs" sectie
         function addRecommendedButtons(buttons) {
             var recommendedContainer = document.getElementById('recommended-buttons');
-            buttons.forEach(function (buttonText) {
+            buttons.forEach(function (buttonData) {
+                var buttonText = buttonData.text;
+                var buttonLink = buttonData.link;
+
                 var button = document.createElement('button');
                 button.textContent = buttonText;
                 button.classList.add('recommended-button');
                 button.style.width = "100%";
                 button.style.marginTop = "5px";
+                button.onclick = function () {
+                    window.location.href = buttonLink;
+                };
                 recommendedContainer.appendChild(button);
             });
         }
@@ -101,13 +107,11 @@
 
                 // Haal willekeurige, unieke knoppen op
                 var uniqueRandomButtons = [];
-                while (uniqueRandomButtons.length < 10) {
-                    var randomIndex = Math.floor(Math.random() * recommendedButtons.length);
-                    var buttonText = recommendedButtons[randomIndex].textContent;
-                    if (!uniqueRandomButtons.includes(buttonText)) {
-                        uniqueRandomButtons.push(buttonText);
-                    }
-                }
+                recommendedButtons.forEach(function (button) {
+                    var buttonText = button.textContent;
+                    var buttonLink = button.getAttribute('onclick').replace("window.location.href='", "").replace("'", "");
+                    uniqueRandomButtons.push({ text: buttonText, link: buttonLink });
+                });
 
                 // Voeg de willekeurige knoppen toe aan de sectie
                 addRecommendedButtons(uniqueRandomButtons);
