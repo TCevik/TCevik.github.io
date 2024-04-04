@@ -77,7 +77,6 @@
     </div>
 
     <script>
-        // Functie om random knoppen toe te voegen aan de "Nog meer blogs" sectie
         function addRecommendedButtons(buttons) {
             var recommendedContainer = document.getElementById('recommended-buttons');
             buttons.forEach(function (buttonData) {
@@ -96,16 +95,13 @@
             });
         }
 
-        // Fetchen van de raw HTML
         fetch('https://raw.githubusercontent.com/TCevik/TCevik.github.io/main/blogs/alle-blogs.html')
             .then(response => response.text())
             .then(data => {
-                // Extract knoppen met de class "recommended-button"
                 var parser = new DOMParser();
                 var htmlDocument = parser.parseFromString(data, 'text/html');
                 var recommendedButtons = htmlDocument.querySelectorAll('.recommended-button:not([disabled])');
 
-                // Haal 10 willekeurige, unieke knoppen op
                 var uniqueRandomButtons = [];
                 var buttonIndices = [];
                 while (uniqueRandomButtons.length < 10) {
@@ -119,7 +115,6 @@
                     }
                 }
 
-                // Voeg de willekeurige knoppen toe aan de sectie
                 addRecommendedButtons(uniqueRandomButtons);
             })
             .catch(error => console.error('Er is een fout opgetreden bij het ophalen van de gegevens:', error));
