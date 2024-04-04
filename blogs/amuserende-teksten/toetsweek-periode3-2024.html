@@ -90,7 +90,7 @@
                 button.style.width = "100%";
                 button.style.marginTop = "5px";
                 button.onclick = function () {
-                    window.location.href = 'https://tctam.nl/blogs/' + buttonLink;
+                    window.location.href =  'https://tctam.nl/blogs/' + buttonLink;
                 };
                 recommendedContainer.appendChild(button);
             });
@@ -103,7 +103,7 @@
                 // Extract knoppen met de class "recommended-button"
                 var parser = new DOMParser();
                 var htmlDocument = parser.parseFromString(data, 'text/html');
-                var recommendedButtons = htmlDocument.querySelectorAll('.recommended-button');
+                var recommendedButtons = htmlDocument.querySelectorAll('.recommended-button:not([disabled])');
 
                 // Haal willekeurige, unieke knoppen op
                 var uniqueRandomButtons = [];
