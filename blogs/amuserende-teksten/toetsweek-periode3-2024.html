@@ -90,7 +90,7 @@
                 button.style.width = "100%";
                 button.style.marginTop = "5px";
                 button.onclick = function () {
-                    window.location.href =  'https://tctam.nl/blogs/' + buttonLink;
+                    window.location.href = 'https://tctam.nl/blogs/' + buttonLink;
                 };
                 recommendedContainer.appendChild(button);
             });
@@ -105,13 +105,19 @@
                 var htmlDocument = parser.parseFromString(data, 'text/html');
                 var recommendedButtons = htmlDocument.querySelectorAll('.recommended-button:not([disabled])');
 
-                // Haal willekeurige, unieke knoppen op
+                // Haal 10 willekeurige, unieke knoppen op
                 var uniqueRandomButtons = [];
-                recommendedButtons.forEach(function (button) {
-                    var buttonText = button.textContent;
-                    var buttonLink = button.getAttribute('onclick').replace("window.location.href='", "").replace("'", "");
-                    uniqueRandomButtons.push({ text: buttonText, link: buttonLink });
-                });
+                var buttonIndices = [];
+                while (uniqueRandomButtons.length < 9) {
+                    var randomIndex = Math.floor(Math.random() * recommendedButtons.length);
+                    if (!buttonIndices.includes(randomIndex)) {
+                        buttonIndices.push(randomIndex);
+                        var button = recommendedButtons[randomIndex];
+                        var buttonText = button.textContent;
+                        var buttonLink = button.getAttribute('onclick').replace("window.location.href='", "").replace("'", "");
+                        uniqueRandomButtons.push({ text: buttonText, link: buttonLink });
+                    }
+                }
 
                 // Voeg de willekeurige knoppen toe aan de sectie
                 addRecommendedButtons(uniqueRandomButtons);
