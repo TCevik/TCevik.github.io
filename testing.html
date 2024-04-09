@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Muislocatie delen</title>
+    <title>Game?</title>
     <style>
         body {
             margin: 0;
+            background: white;
         }
 
         #map {
@@ -30,7 +31,9 @@
 
 <body>
 
-    <div id="map"></div>
+    <div id="map">
+        <p id="coordinates"></p>
+    </div>
 
     <!-- Firebase scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
@@ -71,10 +74,15 @@
         let y = 0;
 
         // Function to update position of the dot
+        // Function to update position of the dot
         const updatePosition = () => {
             // Ensure x and y coordinates stay within the bounds of the map
             x = Math.max(0, Math.min(x, map.clientWidth - 30));
             y = Math.max(0, Math.min(y, map.clientHeight - 30));
+
+            // Round the coordinates to integers
+            const roundedX = Math.round(x);
+            const roundedY = Math.round(y);
 
             const dot = document.querySelector(`.${userId}`); // Select dot based on user ID
             if (!dot) { // If dot doesn't exist, create it
@@ -85,9 +93,13 @@
             }
 
             const pos = {
-                x: x,
-                y: y,
+                x: roundedX,
+                y: roundedY,
             };
+
+            // Update the text of the #coordinates element with the rounded coordinates
+            document.getElementById('coordinates').innerText = `Coordinates: (${roundedX}, ${roundedY})`;
+
             database.ref(`position/${userId}`).set(pos); // Store position in Firebase with user ID
         };
 
