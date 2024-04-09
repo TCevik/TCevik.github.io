@@ -5,13 +5,18 @@
     <meta charset="UTF-8">
     <title>Muislocatie delen</title>
     <style>
+        body {
+            margin: 0;
+        }
+
         #map {
-            width: 500px;
-            height: 500px;
-            border: 1px solid #000;
+            padding: 1px;
+            width: 100%;
+            max-width: calc(99vh * (16 / 9) - 5%);
+            height: 99vh;
+            border: 1px solid red;
             position: relative;
             overflow: hidden;
-            /* Om ervoor te zorgen dat de stip binnen het map blijft */
         }
 
         .dot {
