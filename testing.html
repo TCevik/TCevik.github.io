@@ -24,16 +24,18 @@
 </head>
 
 <body>
+
     <div id="map"></div>
 
     <!-- Firebase scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
 
     <!-- Your Firebase configuration -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyD4FPmA8qPXMowFkdBdTi_Ifp7OM04z-qo",
+            databaseURL: "https://testing-5aca1-default-rtdb.europe-west1.firebasedatabase.app/",
             authDomain: "testing-5aca1.firebaseapp.com",
             projectId: "testing-5aca1",
             storageBucket: "testing-5aca1.appspot.com",
@@ -43,15 +45,17 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-    </script>
 
-    <!-- JavaScript code -->
-    <script>
         const map = document.getElementById('map');
+        const body = document.body;
 
-        map.addEventListener('mousemove', (e) => {
+        body.addEventListener('mousemove', (e) => {
             const dot = document.querySelector('.dot');
-            if (!dot) return; // If dot doesn't exist, return
+            if (!dot) { // If dot doesn't exist, create it
+                const newDot = document.createElement('div');
+                newDot.classList.add('dot');
+                map.appendChild(newDot);
+            }
 
             const x = e.pageX - map.offsetLeft;
             const y = e.pageY - map.offsetTop;
@@ -59,11 +63,11 @@
             dot.style.left = `${x}px`;
             dot.style.top = `${y}px`;
 
-            // Update mouse position in Firebase database
-            database.ref('mouse').set({
-                x,
-                y
-            });
+            const pos = {
+                x: x,
+                y: y,
+            };
+            database.ref('mouse').set(pos);
         });
 
         // Listen for changes in mouse position from other users
