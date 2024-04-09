@@ -106,6 +106,9 @@
 
         // Remove user position when user leaves
         window.addEventListener('beforeunload', removeUserPosition);
+
+        // Listen for disconnect event
+        database.ref(`mouse/${userId}`).onDisconnect().remove();
     </script>
 </body>
 
