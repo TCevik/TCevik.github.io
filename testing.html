@@ -56,6 +56,11 @@
 
         const userId = Math.random().toString(36).substr(2, 9); // Generate a random user ID
 
+        // Function to remove user position when user leaves
+        const removeUserPosition = () => {
+            database.ref(`mouse/${userId}`).remove();
+        };
+
         body.addEventListener('mousemove', (e) => {
             const dot = document.querySelector(`.${userId}`); // Select dot based on user ID
             if (!dot) { // If dot doesn't exist, create it
@@ -76,6 +81,9 @@
                 y: y,
             };
             database.ref(`mouse/${userId}`).set(pos); // Store position in Firebase with user ID
+
+            // Set up removal of user position when user leaves
+            window.addEventListener('beforeunload', removeUserPosition);
         });
 
         // Listen for changes in mouse position from other users
@@ -95,6 +103,9 @@
             dot.style.left = `${position.x}px`;
             dot.style.top = `${position.y}px`;
         });
+
+        // Remove user position when user leaves
+        window.addEventListener('beforeunload', removeUserPosition);
     </script>
 </body>
 
