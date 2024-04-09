@@ -17,7 +17,6 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: red;
             position: absolute;
         }
     </style>
@@ -49,11 +48,20 @@
         const map = document.getElementById('map');
         const body = document.body;
 
+        const colors = ['red', 'blue', 'green', 'yellow', 'orange']; // Array of colors
+
+        const getRandomColor = () => {
+            return colors[Math.floor(Math.random() * colors.length)]; // Get a random color from the array
+        };
+
+        const userId = Math.random().toString(36).substr(2, 9); // Generate a random user ID
+
         body.addEventListener('mousemove', (e) => {
-            const dot = document.querySelector('.dot');
+            const dot = document.querySelector(`.${userId}`); // Select dot based on user ID
             if (!dot) { // If dot doesn't exist, create it
                 const newDot = document.createElement('div');
-                newDot.classList.add('dot');
+                newDot.classList.add('dot', userId); // Add user ID as class to dot
+                newDot.style.backgroundColor = getRandomColor(); // Set random color
                 map.appendChild(newDot);
             }
 
@@ -67,19 +75,21 @@
                 x: x,
                 y: y,
             };
-            database.ref('mouse').set(pos);
+            database.ref(`mouse/${userId}`).set(pos); // Store position in Firebase with user ID
         });
 
         // Listen for changes in mouse position from other users
-        database.ref('mouse').on('value', (snapshot) => {
+        database.ref('mouse').on('child_changed', (snapshot) => {
+            const userId = snapshot.key;
             const position = snapshot.val();
             if (!position) return; // If no position, return
 
-            const dot = document.querySelector('.dot');
+            let dot = document.querySelector(`.${userId}`);
             if (!dot) { // If dot doesn't exist, create it
-                const newDot = document.createElement('div');
-                newDot.classList.add('dot');
-                map.appendChild(newDot);
+                dot = document.createElement('div');
+                dot.classList.add('dot', userId); // Add user ID as class to dot
+                dot.style.backgroundColor = getRandomColor(); // Set random color
+                map.appendChild(dot);
             }
 
             dot.style.left = `${position.x}px`;
