@@ -4,105 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Switch</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    <title>Muislocatie delen</title>
     <style>
-        .switch {
+        #map {
+            width: 500px;
+            height: 500px;
+            border: 1px solid #000;
             position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
         }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
+        .dot {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-        }
-
-        input:checked+.slider {
-            background-color: var(--h1234-color);
-        }
-
-        input:focus+.slider {
-            box-shadow: 0 0 1px var(--h1234-color);
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(26px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
+            background-color: red;
+            position: absolute;
         }
     </style>
 </head>
 
 <body>
-    <h2>Geanimeerde Switch</h2>
-    <label class="switch">
-        <input type="checkbox" id="switch">
-        <span class="slider round"></span>
-    </label>
+    <div id="map"></div>
 
+    <!-- Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+
+    <!-- Your Firebase configuration -->
     <script>
-        function updateSwitchState() {
-            const switchState = localStorage.getItem("switchState");
-            const checkbox = document.getElementById('switch');
-            if (switchState === "checked") {
-                checkbox.checked = true;
-            } else {
-                checkbox.checked = false;
-            }
-        }
-
-        function handleSwitchChange() {
-            const checkbox = document.getElementById('switch');
-            if (checkbox.checked) {
-                localStorage.setItem("switchState", "checked");
-                notification('Switch is ingeschakeld');
-            } else {
-                localStorage.setItem("switchState", "unchecked");
-                notification('Switch is uitgeschakeld');
-            }
-        }
-
-        const checkbox = document.getElementById('switch');
-        checkbox.addEventListener('change', handleSwitchChange);
-
-        updateSwitchState();
+        const firebaseConfig = {
+            apiKey: "AIzaSyD4FPmA8qPXMowFkdBdTi_Ifp7OM04z-qo",
+            authDomain: "testing-5aca1.firebaseapp.com",
+            projectId: "testing-5aca1",
+            storageBucket: "testing-5aca1.appspot.com",
+            messagingSenderId: "90770517575",
+            appId: "1:90770517575:web:8f23d5180a6d69ffa48b62"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
     </script>
 
+    <!-- JavaScript code -->
+    <script>
+        const map = document.getElementById('map');
+
+        map.addEventListener('mousemove', (e) => {
+            const dot = document.querySelector('.dot');
+            if (!dot) return; // If dot doesn't exist, return
+
+            const x = e.pageX - map.offsetLeft;
+            const y = e.pageY - map.offsetTop;
+
+            dot.style.left = `${x}px`;
+            dot.style.top = `${y}px`;
+
+            // Update mouse position in Firebase database
+            database.ref('mouse').set({
+                x,
+                y
+            });
+        });
+
+        // Listen for changes in mouse position from other users
+        database.ref('mouse').on('value', (snapshot) => {
+            const position = snapshot.val();
+            if (!position) return; // If no position, return
+
+            const dot = document.querySelector('.dot');
+            if (!dot) { // If dot doesn't exist, create it
+                const newDot = document.createElement('div');
+                newDot.classList.add('dot');
+                map.appendChild(newDot);
+            }
+
+            dot.style.left = `${position.x}px`;
+            dot.style.top = `${position.y}px`;
+        });
+    </script>
 </body>
 
 </html>
