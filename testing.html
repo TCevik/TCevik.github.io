@@ -54,7 +54,7 @@
         const map = document.getElementById('map');
         const body = document.body;
 
-        const colors = ['red', 'blue', 'green', 'yellow', 'orange']; // Array of colors
+        const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'lime', 'pink', 'purple']; // Array of colors
 
         const getRandomColor = () => {
             return colors[Math.floor(Math.random() * colors.length)]; // Get a random color from the array
@@ -68,7 +68,7 @@
         };
 
         let x = 300;
-        let y = 300;
+        let y = 0;
 
         // Function to update position of the dot
         const updatePosition = () => {
@@ -144,7 +144,7 @@
                 const elapsedTime = Date.now() - startTime;
                 if (elapsedTime < jumpDuration) {
                     const progress = elapsedTime / jumpDuration;
-                    y = startY - jumpHeight * Math.sin(progress * Math.PI); // Adjusted for screen resolution
+                    y = startY + jumpHeight * Math.sin(progress * Math.PI); // Adjusted for screen resolution
                     updatePosition(); // Update position during jump
                 } else {
                     clearInterval(jumpInterval); // Stop jump interval
@@ -175,7 +175,7 @@
             }
 
             dot.style.left = `${position.x}px`;
-            dot.style.top = `${position.y}px`;
+            dot.style.bottom = `${position.y}px`;
         });
 
         database.ref('position').on('child_removed', (snapshot) => {
