@@ -73,8 +73,8 @@
         // Function to update position of the dot
         const updatePosition = () => {
             // Ensure x and y coordinates stay within the bounds of the map
-            x = Math.max(0, Math.min(x, map.clientWidth - 30)); // 30 is the width of the dot
-            y = Math.max(0, Math.min(y, map.clientHeight - 30)); // 30 is the height of the dot
+            x = Math.max(0, Math.min(x, map.clientWidth - 30));
+            y = Math.max(0, Math.min(y, map.clientHeight - 30));
 
             const dot = document.querySelector(`.${userId}`); // Select dot based on user ID
             if (!dot) { // If dot doesn't exist, create it
