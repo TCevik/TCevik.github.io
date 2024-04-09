@@ -106,6 +106,16 @@
 
         // Remove user position when user leaves
         window.addEventListener('beforeunload', removeUserPosition);
+
+        database.ref(`mouse/${userId}`).onDisconnect().remove();
+
+        database.ref('mouse').on('child_removed', (snapshot) => {
+            const userId = snapshot.key;
+            const dot = document.querySelector(`.${userId}`);
+            if (dot) {
+                dot.remove(); // Remove the dot element from the DOM
+            }
+        });
     </script>
 </body>
 
