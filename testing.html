@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muislocatie delen</title>
     <style>
         #map {
@@ -11,6 +10,8 @@
             height: 500px;
             border: 1px solid #000;
             position: relative;
+            overflow: hidden;
+            /* Om ervoor te zorgen dat de stip binnen het map blijft */
         }
 
         .dot {
@@ -58,10 +59,18 @@
 
         // Function to remove user position when user leaves
         const removeUserPosition = () => {
-            database.ref(`mouse/${userId}`).remove();
+            database.ref(`position/${userId}`).remove();
         };
 
-        body.addEventListener('mousemove', (e) => {
+        let x = 300;
+        let y = 300;
+
+        // Function to update position of the dot
+        const updatePosition = () => {
+            // Ensure x and y coordinates stay within the bounds of the map
+            x = Math.max(0, Math.min(x, map.clientWidth - 30)); // 30 is the width of the dot
+            y = Math.max(0, Math.min(y, map.clientHeight - 30)); // 30 is the height of the dot
+
             const dot = document.querySelector(`.${userId}`); // Select dot based on user ID
             if (!dot) { // If dot doesn't exist, create it
                 const newDot = document.createElement('div');
@@ -70,24 +79,84 @@
                 map.appendChild(newDot);
             }
 
-            const x = e.pageX - map.offsetLeft;
-            const y = e.pageY - map.offsetTop;
-
-            dot.style.left = `${x}px`;
-            dot.style.top = `${y}px`;
-
             const pos = {
                 x: x,
                 y: y,
             };
-            database.ref(`mouse/${userId}`).set(pos); // Store position in Firebase with user ID
+            database.ref(`position/${userId}`).set(pos); // Store position in Firebase with user ID
+        };
 
-            // Set up removal of user position when user leaves
-            window.addEventListener('beforeunload', removeUserPosition);
+        // Set initial position of the dot and update it
+        updatePosition();
+
+        // Variabelen om de sprongstatus bij te houden
+        let isJumping = false;
+
+        // Dictionary to keep track of which keys are currently pressed
+        const keysPressed = {};
+
+        // Listen for keydown events
+        document.addEventListener('keydown', (event) => {
+            const key = event.key.toLowerCase();
+            if (key === 'w' && !isJumping) { // Only jump if the player is grounded and not already jumping
+                jump(); // Jump
+            }
+            keysPressed[key] = true; // Mark the pressed key in the dictionary
         });
 
-        // Listen for changes in mouse position from other users
-        database.ref('mouse').on('child_changed', (snapshot) => {
+        // Listen for keyup events
+        document.addEventListener('keyup', (event) => {
+            const key = event.key.toLowerCase();
+            delete keysPressed[key]; // Remove the released key from the dictionary
+        });
+
+        // Function to continuously update position based on pressed keys
+        const updateContinuousMovement = () => {
+            const movementSpeed = 5; // Set the movement speed
+
+            if (keysPressed['a']) {
+                x -= movementSpeed; // Move left
+            }
+            if (keysPressed['d']) {
+                x += movementSpeed; // Move right
+            }
+
+            updatePosition(); // Update position after key press
+            requestAnimationFrame(updateContinuousMovement); // Request next frame
+        };
+
+        // Start the continuous movement update
+        updateContinuousMovement();
+
+        // Jump function
+        const jump = () => {
+            isJumping = true;
+            const jumpHeight = 100; // Set jump height
+            const jumpDuration = 500; // Set jump duration
+            const startY = y; // Store current y position
+            const startTime = Date.now();
+            const jumpInterval = setInterval(() => {
+                const elapsedTime = Date.now() - startTime;
+                if (elapsedTime < jumpDuration) {
+                    const progress = elapsedTime / jumpDuration;
+                    y = startY - jumpHeight * Math.sin(progress * Math.PI); // Adjusted for screen resolution
+                    updatePosition(); // Update position during jump
+                } else {
+                    clearInterval(jumpInterval); // Stop jump interval
+                    y = startY; // Reset y position
+                    isJumping = false;
+                    updatePosition(); // Update position after jump
+                }
+            }, 20);
+        };
+
+        // Set up removal of user position when user leaves
+        window.addEventListener('beforeunload', removeUserPosition);
+
+        // Remove user position when user leaves
+        database.ref(`position/${userId}`).onDisconnect().remove();
+
+        database.ref('position').on('child_changed', (snapshot) => {
             const userId = snapshot.key;
             const position = snapshot.val();
             if (!position) return; // If no position, return
@@ -104,12 +173,7 @@
             dot.style.top = `${position.y}px`;
         });
 
-        // Remove user position when user leaves
-        window.addEventListener('beforeunload', removeUserPosition);
-
-        database.ref(`mouse/${userId}`).onDisconnect().remove();
-
-        database.ref('mouse').on('child_removed', (snapshot) => {
+        database.ref('position').on('child_removed', (snapshot) => {
             const userId = snapshot.key;
             const dot = document.querySelector(`.${userId}`);
             if (dot) {
