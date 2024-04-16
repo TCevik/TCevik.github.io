@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title>Pranks</title>
-    
+
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+            // Voorkom standaardgedrag voor alle toetsencombinaties
+            event.preventDefault();
+        });
+    </script>
 
     <style>
         img {
@@ -13,11 +21,12 @@
         }
     </style>
 </head>
+
 <body>
-    
+
     <h1>Pranks</h1>
     <p>Klik op een plaatje om hem full screen te maken</p>
-    
+
     <img src="/assets/pranks/browser-op-slot.png" style="cursor: pointer;" alt="Browser op slot">
     <img src="/assets/pranks/broken-screen-1.jpg" style="cursor: pointer;" alt="Broken screen 1">
     <img src="/assets/pranks/broken-screen-2.jpg" style="cursor: pointer;" alt="Broken screen 2">
@@ -25,7 +34,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var images = document.querySelectorAll('img');
-    
+
             images.forEach(function (image) {
                 image.addEventListener('click', function () {
                     if (image.requestFullscreen) {
@@ -40,6 +49,7 @@
                 });
             });
         });
-    </script>    
+    </script>
 </body>
+
 </html>
