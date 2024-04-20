@@ -34,8 +34,10 @@
       var text = document.getElementById("text-to-read").value;
       var speech = new SpeechSynthesisUtterance(text);
       var button = document.getElementById("read-button");
+      var buttonSpeak = document.getElementById("speak-button");
       button.disabled = true; // Deactiveer de knop
       button.innerText = 'Laden...';
+      buttonSpeak.disabled = true; // Activeer de knop wanneer het afspelen is voltooid
       speech.onstart = function () {
         isPlaying = true; // Zet de afspeelstatus op waar tijdens het afspelen
         updateButtonText(); // Update de tekst van de knop
@@ -49,18 +51,18 @@
 
     // Functie om spraakopname te starten
     function startRecording() {
-      var button = document.getElementById("speak-button");
+      var buttonSpeak = document.getElementById("speak-button");
       var recognition = new webkitSpeechRecognition(); // Instantie van spraakherkenning
       recognition.lang = "nl-NL"; // Taal instellen op Nederlands
       recognition.onresult = function (event) {
-        button.disabled = false;
-        button.innerText = 'Spreek in';
+        buttonSpeak.disabled = false;
+        buttonSpeak.innerText = 'Spreek in';
         var result = event.results[0][0].transcript; // De herkende tekst
         document.getElementById("text-to-read").value = result; // Plaats de herkende tekst in het tekstvak
       }
       recognition.start(); // Start de spraakherkenning
-      button.disabled = true;
-      button.innerText = 'Aan het luisteren...';
+      buttonSpeak.disabled = true;
+      buttonSpeak.innerText = 'Aan het luisteren...';
       playSound(); // Speel het geluid af
     }
     
@@ -71,10 +73,13 @@
 
     function updateButtonText() {
       var button = document.getElementById("read-button");
+      var buttonSpeak = document.getElementById("speak-button");
       if (isPlaying) {
         button.innerText = 'Aan het spelen...'; // Als aan het afspelen, update de tekst van de knop
+        buttonSpeak.disabled = true; // Activeer de knop wanneer het afspelen is voltooid
       } else {
         button.disabled = false; // Activeer de knop wanneer het afspelen is voltooid
+        buttonSpeak.disabled = false; // Activeer de knop wanneer het afspelen is voltooid
         button.innerText = 'Lees voor'; // Update de tekst van de knop
       }
     }
