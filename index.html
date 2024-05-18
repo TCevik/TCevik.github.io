@@ -59,15 +59,20 @@
             document.getElementById('age').innerHTML = `Ik ben Tamer, een ${age} jarige jongen die websites maakt.`;
 
             const nextBirthday = getNextBirthday();
-            const now = new Date();
-            const timeLeft = nextBirthday - now;
+            const today = new Date();
 
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            if (today.getMonth() === 4 && today.getDate() === 18) {
+                document.getElementById('birthday').innerHTML = "Het is vandaag 18 mei, dus ik ben vandaag jarig!!! 🥳";
+            } else {
+                const timeLeft = nextBirthday - today;
 
-            document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
+            }
         }
 
         setInterval(updateAgeAndCountdown, 100);
