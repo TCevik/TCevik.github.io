@@ -182,6 +182,13 @@
             document.getElementById('health').textContent = 'Health: ' + Math.round(health);
             document.getElementById('happiness').textContent = 'Happiness: ' + Math.round(happiness);
             document.getElementById('energy').textContent = 'Energy: ' + Math.round(energy);
+
+            var expirationDate = new Date();
+            expirationDate.setFullYear(expirationDate.getFullYear() + 10);
+            document.cookie = `saturation=${saturation}; expires=${expirationDate.toUTCString()}`;
+            document.cookie = `health=${health}; expires=${expirationDate.toUTCString()}`;
+            document.cookie = `happiness=${happiness}; expires=${expirationDate.toUTCString()}`;
+            document.cookie = `energy=${energy}; expires=${expirationDate.toUTCString()}`;
         }, 1000);
     </script>
 </body>
