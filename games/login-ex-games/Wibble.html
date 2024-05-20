@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wibble - TC_tam Game</title>
+    <style>
+        body {
+            margin: 0px;
+            background-color: white;
+        }
+
+        @keyframes wibble {
+            0% {
+                transform: rotate(-8deg);
+                opacity: 0;
+            }
+
+            50% {
+                transform: rotate(8deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .wibble-letter {
+            display: inline-block;
+            animation: wibble 0.8s ease-in-out forwards;
+            opacity: 0;
+            margin-top: 30vh;
+        }
+
+        #game-container {
+            display: none;
+        }
+
+        #navbar {
+            display: flex;
+            justify-content: center;
+            top: 5px;
+            width: 100vw;
+            height: auto;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        #coins {
+            padding: 10px;
+            margin: 20px;
+            height: auto;
+            color: black;
+            background-color: yellow;
+            border-radius: 50vw;
+        }
+
+        #feelings p {
+            display: inline-block;
+            padding: 10px;
+            margin: 20px;
+            height: auto;
+            color: black;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+
+        #level {
+            padding: 10px;
+            margin: 20px;
+            height: auto;
+            color: black;
+            background-color: white;
+            border-radius: 50vw;
+        }
+
+        #saturation {
+            background: linear-gradient(to top, lime 0%, lime 100%);
+        }
+        #health {
+            background: linear-gradient(to top, lime 0%, lime 100%);
+        }
+        #happiness {
+            background: linear-gradient(to top, lime 0%, lime 100%);
+        }
+        #energy {
+            background: linear-gradient(to top, lime 0%, lime 100%);
+        }
+    </style>
+</head>
+
+<body id="body">
+    <center>
+        <div id="wibble-startup-screen">
+            <h1 class="wibble-letter" style="animation-delay: 0.2s;">W</h1>
+            <h1 class="wibble-letter" style="animation-delay: 0.4s;">i</h1>
+            <h1 class="wibble-letter" style="animation-delay: 0.6s;">b</h1>
+            <h1 class="wibble-letter" style="animation-delay: 0.8s;">b</h1>
+            <h1 class="wibble-letter" style="animation-delay: 1.0s;">l</h1>
+            <h1 class="wibble-letter" style="animation-delay: 1.2s;">e</h1>
+        </div>
+    </center>
+
+    <div id="game-container">
+        <div id="navbar">
+            <p id="coins"></p>
+            <div id="feelings">
+                <p id="saturation">Saturation</p>
+                <p id="health">Health</p>
+                <p id="happiness">Happiness</p>
+                <p id="energy">Energy</p>
+            </div>
+            <p id="level"></p>
+        </div>
+    </div>
+
+    <script>
+        var coins = 200;
+        var level = 1;
+
+        var saturation = 50;
+        var health = 10;
+        var happiness = 75;
+        var energy = 37;
+
+        setTimeout(function () {
+            var wibbleStartupScreen = document.getElementById('wibble-startup-screen');
+            wibbleStartupScreen.style.display = 'none';
+            var gameContainer = document.getElementById('game-container');
+            gameContainer.style.display = 'block';
+            var body = document.getElementById('body');
+            body.style.backgroundColor = 'rgb(66, 238, 66)';
+
+            var coinsElement = document.getElementById('coins');
+            coinsElement.textContent = '€' + coins;
+            var levelElement = document.getElementById('level');
+            levelElement.textContent = 'Lvl: ' + level;
+        }, 2000);
+
+        document.getElementById('saturation').style.background = 'linear-gradient(to top, lime ' + saturation + '%, white ' + saturation + '%)';
+        document.getElementById('health').style.background = 'linear-gradient(to top, lime ' + health + '%, white ' + health + '%)';
+        document.getElementById('happiness').style.background = 'linear-gradient(to top, lime ' + happiness + '%, white ' + happiness + '%)';
+        document.getElementById('energy').style.background = 'linear-gradient(to top, lime ' + energy + '%, white ' + energy + '%)';
+    </script>
+</body>
+
+</html>
