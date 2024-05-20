@@ -58,10 +58,10 @@
             var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             var dateString = now.toLocaleDateString('nl-NL', options);
             document.getElementById("date").innerText = dateString;
-
-            // Plan de volgende update van de klok
-            requestAnimationFrame(updateClock);
         }
+
+        // Update de klok elke seconde
+        setInterval(updateClock, 50);
 
         // Roep de functie één keer aan om de klok direct bij het laden weer te geven
         updateClock();
