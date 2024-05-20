@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title></title>
-    
+
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
     <style>
-        body {
+        #container {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
             overflow: none;
+            flex-direction: column;
+        }
+
+        #fullscreen-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
         }
     </style>
 </head>
+
 <body>
-    <h1 style="font-size: 50px;" id="clock"></h1>
-    
+    <div id="container">
+        <h1 style="font-size: 50px; margin-bottom: 0px;" id="clock"></h1>
+        <h2 style="margin-top: 0px;" id="date"></h2> <!-- Element toegevoegd voor de datum -->
+    </div>
+    <button id="fullscreen-button">
+        <img src="/assets/fullscreen-button.svg" alt="Fullscreen">
+    </button>
+
     <script>
         function updateClock() {
             var now = new Date();
@@ -38,13 +53,31 @@
 
             // Update de titel van het tabblad met de huidige tijd
             document.title = "Tijd: " + timeString;
+
+            // Voeg de datum toe
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            var dateString = now.toLocaleDateString('nl-NL', options);
+            document.getElementById("date").innerText = dateString;
         }
 
         // Update de klok elke seconde
-        setInterval(updateClock, 1000);
+        setInterval(updateClock, 50);
 
         // Roep de functie één keer aan om de klok direct bij het laden weer te geven
         updateClock();
+
+        // Voeg event listener toe aan de fullscreenknop
+        document.getElementById("fullscreen-button").addEventListener("click", function () {
+            var container = document.getElementById("container");
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) { /* Safari */
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) { /* IE11 */
+                container.msRequestFullscreen();
+            }
+        });
     </script>
 </body>
+
 </html>
