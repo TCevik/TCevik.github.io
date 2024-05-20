@@ -86,7 +86,7 @@
             const userName = user.displayName;
 
             var expirationDate = new Date();
-            expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+            expirationDate.setFullYear(expirationDate.getFullYear() + 5);
             document.cookie = "userPhotoURL=" + photoURL + "; path=/; expires=" + expirationDate.toUTCString();
             document.cookie = "userEmail=" + userEmail + "; path=/; expires=" + expirationDate.toUTCString();
             document.cookie = "userName=" + userName + "; path=/; expires=" + expirationDate.toUTCString();
