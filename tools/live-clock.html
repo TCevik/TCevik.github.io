@@ -70,11 +70,24 @@
         document.getElementById("fullscreen-button").addEventListener("click", function () {
             var container = document.getElementById("container");
             if (container.requestFullscreen) {
-                container.requestFullscreen();
+                container.requestFullscreen().then(hideCursor); // Verberg cursor na het aanvragen van volledig scherm
             } else if (container.webkitRequestFullscreen) { /* Safari */
-                container.webkitRequestFullscreen();
+                container.webkitRequestFullscreen().then(hideCursor);
             } else if (container.msRequestFullscreen) { /* IE11 */
-                container.msRequestFullscreen();
+                container.msRequestFullscreen().then(hideCursor);
+            }
+        });
+
+        // Functie om cursor te verbergen
+        function hideCursor() {
+            document.body.style.cursor = "none";
+        }
+
+        // Event listener voor het verlaten van volledig scherm
+        document.addEventListener("fullscreenchange", function () {
+            if (!document.fullscreenElement) {
+                // Toon cursor wanneer volledig scherm verlaten wordt
+                document.body.style.cursor = "auto";
             }
         });
     </script>
