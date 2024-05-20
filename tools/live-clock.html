@@ -23,6 +23,13 @@
             bottom: 20px;
             right: 20px;
         }
+
+        /* Verborgen element */
+        #hidden-element {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
     </style>
 </head>
 
@@ -34,6 +41,9 @@
     <button id="fullscreen-button">
         <img src="/assets/fullscreen-button.svg" alt="Fullscreen">
     </button>
+
+    <!-- Verborgen element -->
+    <div id="hidden-element"></div>
 
     <script>
         function updateClock() {
@@ -61,7 +71,13 @@
         }
 
         // Update de klok elke seconde
-        setInterval(updateClock, 50);
+        setInterval(updateClock, 1000);
+
+        // Verplaats het verborgen element elke minuut om in slaapstand te voorkomen
+        setInterval(function () {
+            var hiddenElement = document.getElementById('hidden-element');
+            hiddenElement.style.top = parseInt(hiddenElement.style.top) + 1 + 'px';
+        }, 10);
 
         // Roep de functie één keer aan om de klok direct bij het laden weer te geven
         updateClock();
