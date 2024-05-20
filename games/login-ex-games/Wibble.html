@@ -79,12 +79,15 @@
         #saturation {
             background: linear-gradient(to top, lime 0%, lime 100%);
         }
+
         #health {
             background: linear-gradient(to top, lime 0%, lime 100%);
         }
+
         #happiness {
             background: linear-gradient(to top, lime 0%, lime 100%);
         }
+
         #energy {
             background: linear-gradient(to top, lime 0%, lime 100%);
         }
@@ -120,10 +123,10 @@
         var coins = 200;
         var level = 1;
 
-        var saturation = 50;
-        var health = 10;
-        var happiness = 75;
-        var energy = 37;
+        var saturation = 80;
+        var health = 80;
+        var happiness = 80;
+        var energy = 100;
 
         setTimeout(function () {
             var wibbleStartupScreen = document.getElementById('wibble-startup-screen');
@@ -132,17 +135,54 @@
             gameContainer.style.display = 'block';
             var body = document.getElementById('body');
             body.style.backgroundColor = 'rgb(66, 238, 66)';
+        }, 2000);
 
+        setInterval(function () {
             var coinsElement = document.getElementById('coins');
             coinsElement.textContent = '€' + coins;
             var levelElement = document.getElementById('level');
             levelElement.textContent = 'Lvl: ' + level;
-        }, 2000);
 
-        document.getElementById('saturation').style.background = 'linear-gradient(to top, lime ' + saturation + '%, white ' + saturation + '%)';
-        document.getElementById('health').style.background = 'linear-gradient(to top, lime ' + health + '%, white ' + health + '%)';
-        document.getElementById('happiness').style.background = 'linear-gradient(to top, lime ' + happiness + '%, white ' + happiness + '%)';
-        document.getElementById('energy').style.background = 'linear-gradient(to top, lime ' + energy + '%, white ' + energy + '%)';
+            saturation -= 0.008;
+            health -= 0.008;
+            happiness -= 0.01;
+            energy -= 0.005;
+
+            if (saturation < 0) {
+                saturation = 0;
+            }
+            if (health < 0) {
+                health = 0;
+            }
+            if (happiness < 0) {
+                happiness = 0;
+            }
+            if (energy < 0) {
+                energy = 0;
+            }
+            if (saturation > 100) {
+                saturation = 100;
+            }
+            if (health > 100) {
+                health = 100;
+            }
+            if (happiness > 100) {
+                happiness = 100;
+            }
+            if (energy > 100) {
+                energy = 100;
+            }
+
+            document.getElementById('saturation').style.background = 'linear-gradient(to top, lime ' + saturation + '%, white ' + saturation + '%)';
+            document.getElementById('health').style.background = 'linear-gradient(to top, lime ' + health + '%, white ' + health + '%)';
+            document.getElementById('happiness').style.background = 'linear-gradient(to top, lime ' + happiness + '%, white ' + happiness + '%)';
+            document.getElementById('energy').style.background = 'linear-gradient(to top, lime ' + energy + '%, white ' + energy + '%)';
+
+            document.getElementById('saturation').textContent = 'Saturation: ' + Math.round(saturation);
+            document.getElementById('health').textContent = 'Health: ' + Math.round(health);
+            document.getElementById('happiness').textContent = 'Happiness: ' + Math.round(happiness);
+            document.getElementById('energy').textContent = 'Energy: ' + Math.round(energy);
+        }, 1000);
     </script>
 </body>
 
