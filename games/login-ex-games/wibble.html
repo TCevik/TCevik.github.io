@@ -128,6 +128,17 @@
         var happiness = 80;
         var energy = 100;
 
+        function getCookie(cookieName) {
+            const cookies = document.cookie.split(';');
+            for (const cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === cookieName) {
+                    return decodeURIComponent(value);
+                }
+            }
+            return null;
+        }
+
         setTimeout(function () {
             var wibbleStartupScreen = document.getElementById('wibble-startup-screen');
             wibbleStartupScreen.style.display = 'none';
@@ -138,6 +149,15 @@
         }, 2000);
 
         setInterval(function () {
+            if (getCookie('visited') === 'true') {
+                saturation = parseFloat(getCookie('saturation')) || saturation;
+                health = parseFloat(getCookie('health')) || health;
+                happiness = parseFloat(getCookie('happiness')) || happiness;
+                energy = parseFloat(getCookie('energy')) || energy;
+                level = parseInt(getCookie('level')) || level;
+                coins = parseInt(getCookie('coins')) || coins;
+            }
+
             var coinsElement = document.getElementById('coins');
             coinsElement.textContent = '€' + coins;
             var levelElement = document.getElementById('level');
@@ -191,6 +211,7 @@
             document.cookie = `energy=${energy}; expires=${expirationDate.toUTCString()}`;
             document.cookie = `level=${level}; expires=${expirationDate.toUTCString()}`;
             document.cookie = `coins=${coins}; expires=${expirationDate.toUTCString()}`;
+            document.cookie = `visited=true; expires=${expirationDate.toUTCString()}`;
         }, 1000);
     </script>
 </body>
