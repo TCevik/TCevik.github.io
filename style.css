@@ -12,7 +12,7 @@ body {
     scroll-behavior: smooth;
 }
 
-/* light mode and default mode */
+/* light mode and dark mode */
 :root {
     --background-color: #fbfffd;
     --text-color: #000000;
