@@ -1,203 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Game?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Sandbox Game</title>
     <style>
         body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            background: white;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Voorkomt scrollen */
         }
-
-        #map {
-            padding: 1px;
-            width: 100%;
-            max-width: calc(99vh * (16 / 9) - 5%);
-            height: 99vh;
-            border: 1px solid red;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dot {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            position: absolute;
+        canvas {
+            border: 1px solid black;
+            background-color: white;
         }
     </style>
 </head>
-
 <body>
-
-    <div id="map">
-        <p id="coordinates"></p>
-    </div>
-
-    <!-- Firebase scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
-
-    <!-- Your Firebase configuration -->
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyD4FPmA8qPXMowFkdBdTi_Ifp7OM04z-qo",
-            databaseURL: "https://testing-5aca1-default-rtdb.europe-west1.firebasedatabase.app/",
-            authDomain: "testing-5aca1.firebaseapp.com",
-            projectId: "testing-5aca1",
-            storageBucket: "testing-5aca1.appspot.com",
-            messagingSenderId: "90770517575",
-            appId: "1:90770517575:web:8f23d5180a6d69ffa48b62"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-        const map = document.getElementById('map');
-        const body = document.body;
-
-        const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'lime', 'pink', 'purple']; // Array of colors
-
-        const getRandomColor = () => {
-            return colors[Math.floor(Math.random() * colors.length)]; // Get a random color from the array
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            size: 10,
+            speed: 5,
+            jumping: false,
+            jumpPower: 10,
+            gravity: 0.5
         };
 
-        const userId = Math.random().toString(36).substr(2, 9); // Generate a random user ID
+        let keys = {};
 
-        // Function to remove user position when user leaves
-        const removeUserPosition = () => {
-            database.ref(`position/${userId}`).remove();
-        };
+        function drawPlayer() {
+            ctx.fillStyle = 'red';
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
 
-        let x = 300;
-        let y = 0;
+        function drawCoordinates() {
+            ctx.fillStyle = 'black';
+            ctx.font = '20px Arial';
+            ctx.fillText(`X: ${player.x.toFixed(1)} Y: ${player.y.toFixed(1)}`, 10, 20);
+        }
 
-        // Function to update position of the dot
-        // Function to update position of the dot
-        const updatePosition = () => {
-            // Ensure x and y coordinates stay within the bounds of the map
-            x = Math.max(0, Math.min(x, map.clientWidth - 30));
-            y = Math.max(0, Math.min(y, map.clientHeight - 30));
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
 
-            // Round the coordinates to integers
-            const roundedX = Math.round(x);
-            const roundedY = Math.round(y);
-
-            const dot = document.querySelector(`.${userId}`); // Select dot based on user ID
-            if (!dot) { // If dot doesn't exist, create it
-                const newDot = document.createElement('div');
-                newDot.classList.add('dot', userId); // Add user ID as class to dot
-                newDot.style.backgroundColor = getRandomColor(); // Set random color
-                map.appendChild(newDot);
+        function updatePlayerPosition() {
+            if (keys['w'] && !player.jumping) {
+                player.jumping = true;
+                player.y -= player.jumpPower;
+            }
+            if (keys['a']) {
+                player.x -= player.speed;
+            }
+            if (keys['d']) {
+                player.x += player.speed;
             }
 
-            const pos = {
-                x: roundedX,
-                y: roundedY,
-            };
+            // Schermgrenzen
+            let screenLeft = 0;
+            let screenRight = canvas.width;
+            let screenTop = 0;
+            let screenBottom = canvas.height;
 
-            // Update the text of the #coordinates element with the rounded coordinates
-            document.getElementById('coordinates').innerText = `Coordinates: (${roundedX}, ${roundedY})`;
-
-            database.ref(`position/${userId}`).set(pos); // Store position in Firebase with user ID
-        };
-
-        // Set initial position of the dot and update it
-        updatePosition();
-
-        // Variabelen om de sprongstatus bij te houden
-        let isJumping = false;
-
-        // Dictionary to keep track of which keys are currently pressed
-        const keysPressed = {};
-
-        // Listen for keydown events
-        document.addEventListener('keydown', (event) => {
-            const key = event.key.toLowerCase();
-            if (key === 'w' && !isJumping) { // Only jump if the player is grounded and not already jumping
-                jump(); // Jump
+            // Zorg ervoor dat de speler binnen het scherm blijft
+            if (player.x - player.size < screenLeft) {
+                player.x = screenLeft + player.size;
             }
-            keysPressed[key] = true; // Mark the pressed key in the dictionary
-        });
-
-        // Listen for keyup events
-        document.addEventListener('keyup', (event) => {
-            const key = event.key.toLowerCase();
-            delete keysPressed[key]; // Remove the released key from the dictionary
-        });
-
-        // Function to continuously update position based on pressed keys
-        const updateContinuousMovement = () => {
-            const movementSpeed = 5; // Set the movement speed
-
-            if (keysPressed['a']) {
-                x -= movementSpeed; // Move left
+            if (player.x + player.size > screenRight) {
+                player.x = screenRight - player.size;
             }
-            if (keysPressed['d']) {
-                x += movementSpeed; // Move right
+            if (player.y - player.size < screenTop) {
+                player.y = screenTop + player.size;
+            }
+            if (player.y + player.size > screenBottom) {
+                player.y = screenBottom - player.size;
             }
 
-            updatePosition(); // Update position after key press
-            requestAnimationFrame(updateContinuousMovement); // Request next frame
-        };
-
-        // Start the continuous movement update
-        updateContinuousMovement();
-
-        // Jump function
-        const jump = () => {
-            isJumping = true;
-            const jumpHeight = 100; // Set jump height
-            const jumpDuration = 500; // Set jump duration
-            const startY = y; // Store current y position
-            const startTime = Date.now();
-            const jumpInterval = setInterval(() => {
-                const elapsedTime = Date.now() - startTime;
-                if (elapsedTime < jumpDuration) {
-                    const progress = elapsedTime / jumpDuration;
-                    y = startY + jumpHeight * Math.sin(progress * Math.PI); // Adjusted for screen resolution
-                    updatePosition(); // Update position during jump
-                } else {
-                    clearInterval(jumpInterval); // Stop jump interval
-                    y = startY; // Reset y position
-                    isJumping = false;
-                    updatePosition(); // Update position after jump
+            if (player.jumping) {
+                player.y -= player.jumpPower;
+                player.jumpPower -= player.gravity;
+                if (player.y >= canvas.height / 2) {
+                    player.y = canvas.height / 2;
+                    player.jumping = false;
+                    player.jumpPower = 10;
                 }
-            }, 20);
-        };
-
-        // Set up removal of user position when user leaves
-        window.addEventListener('beforeunload', removeUserPosition);
-
-        // Remove user position when user leaves
-        database.ref(`position/${userId}`).onDisconnect().remove();
-
-        database.ref('position').on('child_changed', (snapshot) => {
-            const userId = snapshot.key;
-            const position = snapshot.val();
-            if (!position) return; // If no position, return
-
-            let dot = document.querySelector(`.${userId}`);
-            if (!dot) { // If dot doesn't exist, create it
-                dot = document.createElement('div');
-                dot.classList.add('dot', userId); // Add user ID as class to dot
-                dot.style.backgroundColor = getRandomColor(); // Set random color
-                map.appendChild(dot);
             }
+        }
 
-            dot.style.left = `${position.x}px`;
-            dot.style.bottom = `${position.y}px`;
-        });
+        function update() {
+            clearCanvas();
+            updatePlayerPosition();
+            drawPlayer();
+            drawCoordinates();
+            requestAnimationFrame(update);
+        }
 
-        database.ref('position').on('child_removed', (snapshot) => {
-            const userId = snapshot.key;
-            const dot = document.querySelector(`.${userId}`);
-            if (dot) {
-                dot.remove(); // Remove the dot element from the DOM
-            }
-        });
+        function keyDownHandler(e) {
+            keys[e.key] = true;
+        }
+
+        function keyUpHandler(e) {
+            keys[e.key] = false;
+        }
+
+        window.addEventListener('keydown', keyDownHandler);
+        window.addEventListener('keyup', keyUpHandler);
+        update();
     </script>
 </body>
-
 </html>
