@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Sandbox Game</title>
+    <style>
+        body {
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: black;
+        }
+
+        canvas {
+            display: block;
+            background-color: white;
+        }
+
+        #coordinates {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: black;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <span id="coordinates">x: 0, y: 0</span>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const targetWidth = window.screen.width;
+        const targetHeight = window.screen.height;
+
+        // Stel canvas grootte in
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        // Afbeelding laden voor de tegel
+        const tileImage = new Image();
+        tileImage.src = 'https://tctam.nl/favicon.ico';
+
+        // Game variabelen
+        const player = {
+            x: 0, // startpositie x in het midden van het canvas
+            y: 0, // startpositie y in het midden van het canvas
+            size: 10,
+            speed: 3
+        };
+
+        const keys = {
+            w: false,
+            a: false,
+            s: false,
+            d: false
+        };
+
+        // Event listeners voor toetsenbord input
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'w') keys.w = true;
+            if (e.key === 'a') keys.a = true;
+            if (e.key === 's') keys.s = true;
+            if (e.key === 'd') keys.d = true;
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'w') keys.w = false;
+            if (e.key === 'a') keys.a = false;
+            if (e.key === 's') keys.s = false;
+            if (e.key === 'd') keys.d = false;
+        });
+
+        function update() {
+            if (keys.w) player.y -= player.speed;
+            if (keys.a) player.x -= player.speed;
+            if (keys.s) player.y += player.speed;
+            if (keys.d) player.x += player.speed;
+        }
+
+        var tileSize = 100
+        function draw() {
+            // Wis de hele canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Teken de achtergrond (de kaart) met tegels
+            const offsetX = player.x - canvas.width / 2;
+            const offsetY = player.y - canvas.height / 2;
+
+            for (let x = 0; x < canvas.width + tileSize; x += tileSize) {
+                for (let y = 0; y < canvas.height + tileSize; y += tileSize) {
+                    ctx.drawImage(tileImage, x - (offsetX % tileSize), y - (offsetY % tileSize), tileSize, tileSize);
+                }
+            }
+
+            // Teken de speler als een cirkel
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, player.size, 0, Math.PI * 2);
+            ctx.fillStyle = 'blue';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawCoordinates() {
+            // Teken de coördinaten
+            const coordinates = `x: ${player.x.toFixed(2)}, y: ${player.y.toFixed(2)}`;
+            document.getElementById('coordinates').textContent = coordinates;
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            drawCoordinates(); // Teken de coördinaten in elke frame
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+
+</html>
