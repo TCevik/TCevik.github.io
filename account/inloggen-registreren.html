@@ -51,7 +51,8 @@
             left: 50%;
             width: 30%;
             transform: translate(-50%, -50%);
-            background-color: var(--bg-accent-color1);
+            background-color: transparent;
+            backdrop-filter: blur(20px);
             border: 1px solid var(--text-color);
             border-radius: var(--border-radius1);
             padding-bottom: 20px;
@@ -130,7 +131,7 @@
         <h4 class="title">TC_tam Account</h4>
         <p>Registreren</p>
         <form id="register-form">
-            <input id="register-displayName" type="text" placeholder="Display Name">
+            <input id="register-displayName" type="text" placeholder="Gebruikersnaam">
             <input id="register-email" type="email" placeholder="Email">
             <input id="register-password" type="password" placeholder="Wachtwoord" onfocus="showInput('pass-r')"
                 onblur="hideInput('pass-r')" id="pass-r">
@@ -138,6 +139,11 @@
         </form>
 
         <p>Heb al een account? <a onclick="modeLogin()" style="cursor: pointer;">Inloggen</a></p>
+
+        <br><button class="google-btn" id="google-login-btn" onclick="loginWithGoogle();">
+            <img src="/assets/google-logo.png" alt="Google Logo">
+            Registreer met Google
+        </button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
