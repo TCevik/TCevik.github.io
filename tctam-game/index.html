@@ -58,18 +58,18 @@
 
         // Afbeelding laden voor de tegel
         const tileImage = new Image();
-        tileImage.src = 'https://t3.ftcdn.net/jpg/00/69/83/58/360_F_69835876_aIPyC2FJYjTCaLoJ8htzWXTTsnyVC9fc.jpg';
+        tileImage.src = '/tctam-game/assets/grass.jpg';
 
         // Lijst van speciale tegels met x- en y-coördinaten en bijbehorende URL's
         const specialTiles = [
-            { x: -199, y: 300, url: 'assets/fence.png' },
-            { x: 0, y: 300, url: 'assets/fence.png' },
-            { x: 100, y: 300, url: 'assets/fence.png' }
+            { x: -100, y: 300, url: '/tctam-game/assets/fence.png' },
+            { x: 0, y: 300, url: '/tctam-game/assets/fence.png' },
+            { x: 100, y: 300, url: '/tctam-game/assets/fence.png' }
             // Voeg meer tegels toe zoals hierboven
         ];
 
         const invisibleBarrierTiles = [
-            { startX: 0, startY: 300, endX: 100, endY: 600} // Voorbeeldcoördinaten van een onzichtbare barrière
+            { startX: -100, startY: 350, endX: 200, endY: 400} // Voorbeeldcoördinaten van een onzichtbare barrière
         ];
 
         function isCollidingWithBarrier(x, y) {
