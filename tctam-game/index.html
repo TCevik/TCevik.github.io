@@ -69,7 +69,7 @@
         ];
 
         const invisibleBarrierTiles = [
-            { startX: -100, startY: 350, endX: 200, endY: 400} // Voorbeeldcoördinaten van een onzichtbare barrière
+            { startX: -100, startY: 350, endX: 200, endY: 400 } // Voorbeeldcoördinaten van een onzichtbare barrière
         ];
 
         function isCollidingWithBarrier(x, y) {
@@ -88,30 +88,34 @@
             w: false,
             a: false,
             s: false,
-            d: false
+            d: false,
+            ArrowUp: false,
+            ArrowLeft: false,
+            ArrowDown: false,
+            ArrowRight: false
         };
 
         // Event listeners voor toetsenbord input
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'w') keys.w = true;
-            if (e.key === 'a') keys.a = true;
-            if (e.key === 's') keys.s = true;
-            if (e.key === 'd') keys.d = true;
+            if (e.key === 'w' || e.key === 'ArrowUp') keys.w = true;
+            if (e.key === 'a' || e.key === 'ArrowLeft') keys.a = true;
+            if (e.key === 's' || e.key === 'ArrowDown') keys.s = true;
+            if (e.key === 'd' || e.key === 'ArrowRight') keys.d = true;
         });
 
         window.addEventListener('keyup', (e) => {
-            if (e.key === 'w') keys.w = false;
-            if (e.key === 'a') keys.a = false;
-            if (e.key === 's') keys.s = false;
-            if (e.key === 'd') keys.d = false;
+            if (e.key === 'w' || e.key === 'ArrowUp') keys.w = false;
+            if (e.key === 'a' || e.key === 'ArrowLeft') keys.a = false;
+            if (e.key === 's' || e.key === 'ArrowDown') keys.s = false;
+            if (e.key === 'd' || e.key === 'ArrowRight') keys.d = false;
         });
 
         function update() {
             // Beweging van de speler afhankelijk van toetsenbordinvoer
-            if (keys.w && !isCollidingWithBarrier(player.x, player.y - player.speed)) player.y -= player.speed;
-            if (keys.a && !isCollidingWithBarrier(player.x - player.speed, player.y)) player.x -= player.speed;
-            if (keys.s && !isCollidingWithBarrier(player.x, player.y + player.speed)) player.y += player.speed;
-            if (keys.d && !isCollidingWithBarrier(player.x + player.speed, player.y)) player.x += player.speed;
+            if ((keys.w || keys.ArrowUp) && !isCollidingWithBarrier(player.x, player.y - player.speed)) player.y -= player.speed;
+            if ((keys.a || keys.ArrowLeft) && !isCollidingWithBarrier(player.x - player.speed, player.y)) player.x -= player.speed;
+            if ((keys.s || keys.ArrowDown) && !isCollidingWithBarrier(player.x, player.y + player.speed)) player.y += player.speed;
+            if ((keys.d || keys.ArrowRight) && !isCollidingWithBarrier(player.x + player.speed, player.y)) player.x += player.speed;
         }
 
         var tileSize = 100
