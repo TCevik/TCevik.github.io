@@ -213,7 +213,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	const currentURL = window.location.pathname;
 
 	if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
-		!currentURL.startsWith('/tctam-entertainment/') && !currentURL.startsWith('/tctam-entertainment?') &&
 		!currentURL.startsWith('/account/') && !currentURL.startsWith('/account?')) {
 
 		const loginButton = document.createElement("div");
