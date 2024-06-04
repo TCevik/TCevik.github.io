@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            text-align: left;
             max-width: 300px;
             word-wrap: break-word;
         }
@@ -77,6 +77,11 @@
 
         #tctam-video-iframe {
             border-radius: var(--border-radius2);
+        }
+
+        .video-list p {
+            color: grey;
+            margin: 0px;
         }
     </style>
 </head>
@@ -152,11 +157,16 @@
 
                         const title = document.createElement('a');
                         title.textContent = video.snippet.title;
-                        title.href = `https://www.youtube.com/watch?v=${video.id.videoId}`;
-                        title.target = '_blank'; // Open de video in een nieuw tabblad
+                        title.addEventListener('click', () => {
+                            openvideoPopup(video.id.videoId);
+                        });
+
+                        const channel = document.createElement('p');
+                        channel.textContent = `${video.snippet.channelTitle}`; // Voeg de kanaalnaam toe
 
                         listItem.appendChild(thumbnail);
                         listItem.appendChild(title);
+                        listItem.appendChild(channel); // Voeg het kanaal toe aan de lijst
                         videoList.appendChild(listItem);
                     });
                 })
