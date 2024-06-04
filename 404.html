@@ -15,18 +15,17 @@
             margin: 0; /* Verwijdert standaard marges */
         }
 
-        #left,
-        #right {
-            flex: 1; /* Beide elementen zullen evenveel ruimte innemen */
-            padding: 20px; /* Voegt wat ruimte toe rond de inhoud */
+        #left {
+            padding: 50px;
+            padding-right: 0px !important;
         }
 
         #left {
-            background-color: fuchsia; /* Voorbeeldkleur om het linkerdeel te markeren */
+            flex: 4;
         }
 
         #right {
-            background-color: yellow; /* Voorbeeldkleur om het rechterdeel te markeren */
+            flex: 2;
         }
 
         #countdown {
@@ -36,24 +35,12 @@
         #startbutton {
             border-radius: var(--border-radius4);
         }
+
+        #terugknop {
+            cursor: pointer
+        }
     </style>
     <script>
-        var secondsLeft = 15;
-
-        function countdown() {
-            var countdownElement = document.getElementById("countdown");
-            countdownElement.innerText = secondsLeft;
-
-            if (secondsLeft > 0) {
-                secondsLeft--;
-                setTimeout(countdown, 1000);
-            } else {
-                window.location.href = '/';
-            }
-        }
-
-        window.onload = countdown;
-
         document.getElementById('terugknop').addEventListener('click', function () {
             history.go(-1);
         });
@@ -65,14 +52,13 @@
         <h1>404 - Pagina niet gevonden</h1>
         <p>Deze pagina kon helaas niet worden gevonden. Controleer de URL en probeer het opnieuw of ga naar de startpagina.
         </p>
-        <button id="startbutton" onclick="window.location.href='/'">Startpagina</button>
-        <p>Je wordt over <span id="countdown">15</span> seconden automatisch doorverwezen naar de homepagina.</p>
+        <br><button style="margin-bottom: 40px;" id="startbutton" onclick="window.location.href='/'">Terug naar de homepagina</button>
 
-        <b>Tip: als deze pagina blijft verschijnen, ga dan naar de <a id="terugknop">vorige pagina</a> en klik op refresh of ctrl + r.</b>
+        <br><b>Tip: als deze pagina blijft verschijnen, ga dan naar de <a id="terugknop">vorige pagina</a> en klik op refresh of ctrl + r.</b>
     </div>
 
     <div id="right">
-
+        <h1 style="font-size: 50vh; margin: 0px; margin-top: 50px;">?!</h1>
     </div>
 </body>
 
