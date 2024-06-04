@@ -210,71 +210,72 @@ function sideMenuNav() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const currentURL = window.location.pathname;
+	const currentURL = window.location.pathname;
 
-    if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
-        !currentURL.startsWith('/account/') && !currentURL.startsWith('/account?')) {
+	if (!currentURL.startsWith('/games/') && !currentURL.startsWith('/games?') &&
+		!currentURL.startsWith('/tctam-entertainment/') && !currentURL.startsWith('/tctam-entertainment?') &&
+		!currentURL.startsWith('/account/') && !currentURL.startsWith('/account?')) {
 
-        const loginButton = document.createElement("div");
-        loginButton.style.position = "fixed";
-        loginButton.style.top = "6px";
-        loginButton.style.right = "6px";
-        loginButton.style.zIndex = "9999";
-        document.body.appendChild(loginButton);
+		const loginButton = document.createElement("div");
+		loginButton.style.position = "fixed";
+		loginButton.style.top = "6px";
+		loginButton.style.right = "6px";
+		loginButton.style.zIndex = "9999";
+		document.body.appendChild(loginButton);
 
-        function updateLoginButton() {
-            const loggedIn = localStorage.getItem('loggedIn');
+		function updateLoginButton() {
+			const loggedIn = localStorage.getItem('loggedIn');
 
-            if (loggedIn === 'true') {
-                let userPhotoURL = getCookie('userPhotoURL');
-                if (!userPhotoURL || !isValidURL(userPhotoURL)) {
-                    userPhotoURL = "/assets/no-icon.jpg";
-                }
-                const img = document.createElement("img");
-                img.src = userPhotoURL;
-                img.alt = "User Photo";
-                img.style.userSelect = "none";
-                img.style.width = "50px";
-                img.style.height = "50px";
-                img.style.cursor = "pointer";
-                img.style.borderRadius = "50%";
-                loginButton.appendChild(img);
-                loginButton.addEventListener("click", function () {
-                    const popupWidth = Math.floor(window.outerWidth * 0.75);
-                    const popupHeight = Math.floor(window.outerHeight * 0.8);
-                    const leftPosition = (window.screen.width - popupWidth) / 2;
-                    const topPosition = (window.screen.height - popupHeight) / 2;
-                    const newWindow = window.open("/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-                });
-            } else {
-                const loginLink = document.createElement("button");
-                loginLink.textContent = "Inloggen";
-                loginLink.onclick = function () {
-                    const popupWidth = Math.floor(window.outerWidth * 0.75);
-                    const popupHeight = Math.floor(window.outerHeight * 0.8);
-                    const leftPosition = (window.screen.width - popupWidth) / 2;
-                    const topPosition = (window.screen.height - popupHeight) / 2;
-                    const newWindow = window.open("/account/inloggen-registreren", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
-                };
-                loginButton.appendChild(loginLink);
-            }
-        }
+			if (loggedIn === 'true') {
+				let userPhotoURL = getCookie('userPhotoURL');
+				if (!userPhotoURL || !isValidURL(userPhotoURL)) {
+					userPhotoURL = "/assets/no-icon.jpg";
+				}
+				const img = document.createElement("img");
+				img.src = userPhotoURL;
+				img.alt = "User Photo";
+				img.style.userSelect = "none";
+				img.style.width = "50px";
+				img.style.height = "50px";
+				img.style.cursor = "pointer";
+				img.style.borderRadius = "50%";
+				loginButton.appendChild(img);
+				loginButton.addEventListener("click", function () {
+					const popupWidth = Math.floor(window.outerWidth * 0.75);
+					const popupHeight = Math.floor(window.outerHeight * 0.8);
+					const leftPosition = (window.screen.width - popupWidth) / 2;
+					const topPosition = (window.screen.height - popupHeight) / 2;
+					const newWindow = window.open("/account", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+				});
+			} else {
+				const loginLink = document.createElement("button");
+				loginLink.textContent = "Inloggen";
+				loginLink.onclick = function () {
+					const popupWidth = Math.floor(window.outerWidth * 0.75);
+					const popupHeight = Math.floor(window.outerHeight * 0.8);
+					const leftPosition = (window.screen.width - popupWidth) / 2;
+					const topPosition = (window.screen.height - popupHeight) / 2;
+					const newWindow = window.open("/account/inloggen-registreren", "_blank", `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+				};
+				loginButton.appendChild(loginLink);
+			}
+		}
 
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
+		function getCookie(name) {
+			const value = `; ${document.cookie}`;
+			const parts = value.split(`; ${name}=`);
+			if (parts.length === 2) return parts.pop().split(';').shift();
+		}
 
-        function isValidURL(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
+		function isValidURL(string) {
+			try {
+				new URL(string);
+				return true;
+			} catch (_) {
+				return false;
+			}
+		}
 
-        updateLoginButton();
-    }
+		updateLoginButton();
+	}
 });
