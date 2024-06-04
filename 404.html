@@ -8,16 +8,37 @@
     <script src="/script.js"></script>
 
     <style>
+        @media only screen and (max-width: 800px) {
+            body {
+                display: block;
+                height: 100vh;
+                /* Zorgt ervoor dat de hoogte van het scherm wordt opgevuld */
+                width: 100vw;
+                margin: 0;
+                /* Verwijdert standaard marges */
+            }
+
+            #right {
+                display: none;
+            }
+
+            #left {
+                padding-right: 50px !important;
+            }
+        }
+
         body {
             display: flex;
-            height: 100vh; /* Zorgt ervoor dat de hoogte van het scherm wordt opgevuld */
+            height: 100vh;
+            /* Zorgt ervoor dat de hoogte van het scherm wordt opgevuld */
             width: 100vw;
-            margin: 0; /* Verwijdert standaard marges */
+            margin: 0;
+            /* Verwijdert standaard marges */
         }
 
         #left {
             padding: 50px;
-            padding-right: 0px !important;
+            padding-right: 0px;
         }
 
         #left {
@@ -50,11 +71,14 @@
 <body>
     <div id="left">
         <h1>404 - Pagina niet gevonden</h1>
-        <p>Deze pagina kon helaas niet worden gevonden. Controleer de URL en probeer het opnieuw of ga naar de startpagina.
+        <p>Deze pagina kon helaas niet worden gevonden. Controleer de URL en probeer het opnieuw of ga naar de
+            startpagina.
         </p>
-        <br><button style="margin-bottom: 40px;" id="startbutton" onclick="window.location.href='/'">Terug naar de homepagina</button>
+        <br><button style="margin-bottom: 40px;" id="startbutton" onclick="window.location.href='/'">Terug naar de
+            homepagina</button>
 
-        <br><b>Tip: als deze pagina blijft verschijnen, ga dan naar de <a id="terugknop">vorige pagina</a> en klik op refresh of ctrl + r.</b>
+        <br><b>Tip: als deze pagina blijft verschijnen, ga dan naar de <a id="terugknop">vorige pagina</a> en klik op
+            refresh of ctrl + r.</b>
     </div>
 
     <div id="right">
