@@ -81,6 +81,10 @@
 
 <body>
     <h1>TC_tam Video's</h1>
+
+    <input type="text" id="search-input" placeholder="Zoek video's op YouTube" onkeydown="searchVideos(event)">
+    <button onclick="searchVideos()">Zoeken</button>
+
     <ul class="video-list" id="video-list"></ul>
 
     <div id="videopopup" class="videopopup-overlay">
@@ -114,34 +118,50 @@
             }, 300);
         }
 
-        const apiKey = 'AIzaSyD_hoKA1xK5Af3QyCgxC2-xdkDqgpY5FPA';
-        const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=NL&maxResults=15&key=${apiKey}`;
+        function searchVideos(event) {
+            if (event && event.key !== "Enter") {
+                return; // Als de ingedrukte toets niet Enter is, stop dan meteen met de functie
+            }
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const videoList = document.getElementById('video-list');
-                data.items.forEach(video => {
-                    const listItem = document.createElement('li');
+            const searchQuery = document.getElementById('search-input').value.trim();
+            if (!searchQuery) {
+                alert('Voer een zoekterm in.'); // Laat een melding zien als er geen zoekterm is ingevoerd
+                return;
+            }
 
-                    const thumbnail = document.createElement('img');
-                    thumbnail.src = video.snippet.thumbnails.high.url;
-                    thumbnail.alt = video.snippet.title;
-                    thumbnail.addEventListener('click', () => {
-                        openvideoPopup(video.id);
+            const apiKey = 'AIzaSyD_hoKA1xK5Af3QyCgxC2-xdkDqgpY5FPA';
+            const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=18&key=${apiKey}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const videoList = document.getElementById('video-list');
+                    videoList.innerHTML = ''; // Verwijder de bestaande video's uit de lijst
+
+                    data.items.forEach(video => {
+                        const listItem = document.createElement('li');
+
+                        const thumbnail = document.createElement('img');
+                        thumbnail.src = video.snippet.thumbnails.high.url;
+                        thumbnail.alt = video.snippet.title;
+                        thumbnail.addEventListener('click', () => {
+                            openvideoPopup(video.id.videoId);
+                        });
+
+                        const title = document.createElement('a');
+                        title.textContent = video.snippet.title;
+                        title.href = `https://www.youtube.com/watch?v=${video.id.videoId}`;
+                        title.target = '_blank'; // Open de video in een nieuw tabblad
+
+                        listItem.appendChild(thumbnail);
+                        listItem.appendChild(title);
+                        videoList.appendChild(listItem);
                     });
-
-                    const title = document.createElement('a'); // Nieuw element voor de titel
-                    title.textContent = video.snippet.title; // Toevoegen van de titeltekst
-
-                    listItem.appendChild(thumbnail);
-                    listItem.appendChild(title);
-                    videoList.appendChild(listItem);
+                })
+                .catch(error => {
+                    console.error('Error fetching data from YouTube API', error);
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching data from YouTube API', error);
-            });
+        }
     </script>
 </body>
 
