@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam Video's</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <style>
+        .video-list {
+            list-style-type: none;
+            padding: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .video-list li {
+            margin: 10px;
+            margin-bottom: 30px !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
+        .video-list a {
+            border: none;
+            color: var(--text-color);
+        }
+
+        .video-list img {
+            margin-bottom: 10px;
+            /* Ruimte tussen thumbnail en titel */
+            max-width: 100%;
+            /* Zorg ervoor dat de afbeelding binnen de maximale breedte blijft */
+            cursor: pointer; /* Maak de cursor veranderen naar een pointer wanneer erover wordt gehoverd */
+        }
+
+        .video-list a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>TC_tam Video's</h1>
+    <ul class="video-list" id="video-list"></ul>
+
+    <script>
+        const apiKey = 'AIzaSyD_hoKA1xK5Af3QyCgxC2-xdkDqgpY5FPA';
+        const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=NL&maxResults=5&key=${apiKey}`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const videoList = document.getElementById('video-list');
+                data.items.forEach(video => {
+                    const listItem = document.createElement('li');
+
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = video.snippet.thumbnails.high.url; // Gebruik de hoogste kwaliteit thumbnail
+                    thumbnail.alt = video.snippet.title;
+                    thumbnail.addEventListener('click', () => {
+                        window.location.href = `https://www.youtube.com/watch?v=${video.id}`;
+                    });
+
+                    const link = document.createElement('a');
+                    link.href = `https://www.youtube.com/watch?v=${video.id}`;
+                    link.textContent = video.snippet.title;
+
+                    listItem.appendChild(thumbnail);
+                    listItem.appendChild(link);
+                    videoList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data from YouTube API', error);
+            });
+    </script>
+</body>
+
+</html>
