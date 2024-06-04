@@ -29,6 +29,7 @@
         .video-list a {
             border: none;
             color: var(--text-color);
+            cursor: pointer;
         }
 
         .video-list img {
@@ -85,7 +86,7 @@
     <div id="videopopup" class="videopopup-overlay">
         <div class="videopopup-content">
             <button class="close-btn" onclick="closevideoPopup()">Sluiten</button>
-            <iframe id="tctam-video-iframe" src=""
+            <iframe id="tctam-video-iframe" allowfullscreen src=""
                 style="background-color: var(--bg-accent-color2); width: 100%; height: 100%;" frameborder="0"></iframe>
         </div>
     </div>
@@ -107,12 +108,12 @@
             setTimeout(function () {
                 videopopup.style.display = 'none';
                 var iframe = document.getElementById('tctam-video-iframe');
-                iframe.src = ''; // Stop het afspelen door de bron van de iframe te verwijderen
+                iframe.src = '';
             }, 300);
         }
 
         const apiKey = 'AIzaSyD_hoKA1xK5Af3QyCgxC2-xdkDqgpY5FPA';
-        const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=NL&maxResults=5&key=${apiKey}`;
+        const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=NL&maxResults=15&key=${apiKey}`;
 
         fetch(apiUrl)
             .then(response => response.json())
@@ -128,7 +129,11 @@
                         openvideoPopup(video.id);
                     });
 
+                    const title = document.createElement('a'); // Nieuw element voor de titel
+                    title.textContent = video.snippet.title; // Toevoegen van de titeltekst
+
                     listItem.appendChild(thumbnail);
+                    listItem.appendChild(title);
                     videoList.appendChild(listItem);
                 });
             })
