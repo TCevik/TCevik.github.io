@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC_tam Video's</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
     <style>
         .video-list {
             list-style-type: none;
@@ -34,14 +33,47 @@
 
         .video-list img {
             margin-bottom: 10px;
-            /* Ruimte tussen thumbnail en titel */
             max-width: 100%;
-            /* Zorg ervoor dat de afbeelding binnen de maximale breedte blijft */
-            cursor: pointer; /* Maak de cursor veranderen naar een pointer wanneer erover wordt gehoverd */
+            cursor: pointer;
         }
 
         .video-list a:hover {
             text-decoration: underline;
+        }
+
+        .videopopup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .videopopup-content {
+            width: 90%;
+            height: 90%;
+            padding: 0px;
+            position: relative;
+            border-radius: var(--border-radius2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            z-index: 6;
+        }
+
+        #tctam-video-iframe {
+            border-radius: var(--border-radius2);
         }
     </style>
 </head>
@@ -50,7 +82,35 @@
     <h1>TC_tam Video's</h1>
     <ul class="video-list" id="video-list"></ul>
 
+    <div id="videopopup" class="videopopup-overlay">
+        <div class="videopopup-content">
+            <button class="close-btn" onclick="closevideoPopup()">Sluiten</button>
+            <iframe id="tctam-video-iframe" src=""
+                style="background-color: var(--bg-accent-color2); width: 100%; height: 100%;" frameborder="0"></iframe>
+        </div>
+    </div>
+
     <script>
+        function openvideoPopup(videoId) {
+            var videopopup = document.getElementById('videopopup');
+            var iframe = document.getElementById('tctam-video-iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            videopopup.style.display = 'flex';
+            setTimeout(function () {
+                videopopup.style.opacity = 1;
+            }, 10);
+        }
+
+        function closevideoPopup() {
+            var videopopup = document.getElementById('videopopup');
+            videopopup.style.opacity = 0;
+            setTimeout(function () {
+                videopopup.style.display = 'none';
+                var iframe = document.getElementById('tctam-video-iframe');
+                iframe.src = ''; // Stop het afspelen door de bron van de iframe te verwijderen
+            }, 300);
+        }
+
         const apiKey = 'AIzaSyD_hoKA1xK5Af3QyCgxC2-xdkDqgpY5FPA';
         const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=NL&maxResults=5&key=${apiKey}`;
 
@@ -62,18 +122,13 @@
                     const listItem = document.createElement('li');
 
                     const thumbnail = document.createElement('img');
-                    thumbnail.src = video.snippet.thumbnails.high.url; // Gebruik de hoogste kwaliteit thumbnail
+                    thumbnail.src = video.snippet.thumbnails.high.url;
                     thumbnail.alt = video.snippet.title;
                     thumbnail.addEventListener('click', () => {
-                        window.location.href = `https://www.youtube.com/watch?v=${video.id}`;
+                        openvideoPopup(video.id);
                     });
 
-                    const link = document.createElement('a');
-                    link.href = `https://www.youtube.com/watch?v=${video.id}`;
-                    link.textContent = video.snippet.title;
-
                     listItem.appendChild(thumbnail);
-                    listItem.appendChild(link);
                     videoList.appendChild(listItem);
                 });
             })
