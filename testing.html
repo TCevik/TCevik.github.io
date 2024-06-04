@@ -95,12 +95,14 @@
         function openvideoPopup(videoId) {
             var videopopup = document.getElementById('videopopup');
             var iframe = document.getElementById('tctam-video-iframe');
-            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            var videoUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+            iframe.src = videoUrl;
             videopopup.style.display = 'flex';
             setTimeout(function () {
                 videopopup.style.opacity = 1;
             }, 10);
         }
+
 
         function closevideoPopup() {
             var videopopup = document.getElementById('videopopup');
