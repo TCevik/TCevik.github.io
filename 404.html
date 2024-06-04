@@ -61,11 +61,6 @@
             cursor: pointer
         }
     </style>
-    <script>
-        document.getElementById('terugknop').addEventListener('click', function () {
-            history.go(-1);
-        });
-    </script>
 </head>
 
 <body>
@@ -84,6 +79,12 @@
     <div id="right">
         <h1 style="font-size: 50vh; margin: 0px; margin-top: 50px;">?!</h1>
     </div>
+
+    <script>
+        document.getElementById('terugknop').addEventListener('click', function () {
+            history.go(-1);
+        });
+    </script>
 </body>
 
 </html>
