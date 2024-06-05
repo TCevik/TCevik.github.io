@@ -132,7 +132,7 @@
 
             const searchQuery = document.getElementById('search-input').value.trim();
             if (!searchQuery) {
-                alert('Voer een zoekterm in.'); // Laat een melding zien als er geen zoekterm is ingevoerd
+                notification('Voer een zoekterm in.'); // Laat een melding zien als er geen zoekterm is ingevoerd
                 return;
             }
 
@@ -202,7 +202,7 @@
                     });
                 })
                 .catch(error => {
-                    alert('Error fetching data from YouTube API' + error);
+                    notification('Error fetching data from YouTube API' + error);
                 });
         }
     </script>
