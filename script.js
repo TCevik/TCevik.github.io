@@ -150,7 +150,7 @@ function sideMenuNav() {
 	openButton.id = "openButton";
 	openButton.textContent = ">";
 	openButton.style.position = "fixed";
-	openButton.style.left = "-5px";
+	openButton.style.left = "-7px";
 	openButton.style.borderTopLeftRadius = "0px";
 	openButton.style.borderBottomLeftRadius = "0px";
 	openButton.style.paddingTop = "75px";
@@ -166,7 +166,7 @@ function sideMenuNav() {
 			openButton.style.left = "295px";
 			openButton.textContent = "<";
 		} else {
-			openButton.style.left = "-5px";
+			openButton.style.left = "-7px";
 			openButton.textContent = ">";
 		}
 	}
