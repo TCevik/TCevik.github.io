@@ -24,7 +24,7 @@ function deleteAllPictos() {
 
 function savePictosToFirebase() {
     const email = firebase.auth().currentUser.email;
-    var allowedEmails = ['tamer.cevik@vlietlandcollege.nl', 'leonora1974@gmail.com'];
+    var allowedEmails = ['tam.cevik123@gmail.com', 'leonora1974@gmail.com'];
     var askEmails = ['sercevik11@gmail.com', 'sercandenizcevik11@gmail.com'];
 
     if (allowedEmails.includes(email)) {
@@ -64,7 +64,7 @@ setTimeout(() => {
 
 function askedPictos() {
     const email = firebase.auth().currentUser.email;
-    var allowedEmails = ['tamer.cevik@vletlandcollege.nl'];
+    var allowedEmails = ['tam.cevik123@gmail.com'];
 
     if (allowedEmails.includes(email)) {
         var pictosRef = firestore.collection('pictos').doc('preview');
