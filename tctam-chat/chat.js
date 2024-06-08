@@ -9,7 +9,7 @@ let enterKeyEnabled = false;
 
 function canSendMessage(email) {
     const currentTime = Date.now();
-    if (email === 'tam.cevik123@gmail.com' || email === 'tamer.cevik@vlietlandcollege.nl') {
+    if (email === 'tamer.cevik@vlietlandcollege.nl' || email === 'example') {
         const timeSinceLastMessage = currentTime - lastMessageTimeForSpecialEmail;
         return timeSinceLastMessage >= 0;
     } else {
@@ -20,7 +20,7 @@ function canSendMessage(email) {
 
 function updateLastMessageTime(email) {
     const currentTime = Date.now();
-    if (email === 'tam.cevik123@gmail.com') {
+    if (email === 'tamer.cevik@vlietlandcollege.nl') {
         lastMessageTimeForSpecialEmail = currentTime;
     } else {
         lastMessageTime = currentTime;
@@ -146,7 +146,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
         emailElement.style.textAlign = 'left';
         updateEmailMap(email, 'add');
 
-        if (email === 'tam.cevik123@gmail.com' || email === 'tamer.cevik@vlietlandcollege.nl') {
+        if (email === 'tamer.cevik@vlietlandcollege.nl' || email === 'example') {
             emailElement.style.color = 'var(--h1234-color)';
             emailElement.style.fontSize = '1.1em';
             emailElement.style.fontStyle = "italic";
@@ -217,7 +217,7 @@ database.ref('chat').orderByChild('timestamp').limitToLast(300).on('child_added'
     deleteButton.style.cursor = 'pointer';
     deleteButton.style.userSelect = 'none';
 
-    if (currentUserEmail === "tam.cevik123@gmail.com") {
+    if (currentUserEmail === "tamer.cevik@vlietlandcollege.nl") {
         if (currentUserEmail === email) {
             deleteButton.addEventListener('click', () => {
                 database.ref('chat').child(snapshot.key).remove();
