@@ -109,10 +109,6 @@ var buttons = `
     <button onclick="window.location.href='/tools/ide'">IDE</button>
     <button onclick="window.location.href='/tools/tts'">TTS</button>
 
-    <h3 style="margin-top: 50px;" id="schoolhacks">School Hacks</h3>
-    <button onclick="window.location.href='https://docs.google.com/document/d/1GJoZwF2rXrPBnTExhcwztkuhs5evwI7x04U0WGPr_E4/view'">Antwoorden HAVO 2 Nieuw Nederlands</button>
-    <button onclick="window.location.href='/school-antwoorden/nieuw-nederlands-havo3'">Antwoorden HAVO 3 Nieuw Nederlands</button>
-
 	<h3 style="margin-top: 50px;" id="schoolhacks">Proxy / Emulator</h3>
     <button onclick="window.location.href='/proxy-emulator/rammerhead'">Proxy - Rammerhead</button>
 
