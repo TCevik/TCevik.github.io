@@ -6,8 +6,8 @@ body {
     margin: 0 auto;
     padding: 0;
     position: relative;
-    width: calc(100% - 20px);
-    margin-left: 20px;
+    width: calc(100% - 30px);
+    margin-left: 15px;
     text-align: center;
     transition: 0.5s;
     scroll-behavior: smooth;
