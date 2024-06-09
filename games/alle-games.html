@@ -16,16 +16,13 @@
                     var isLoginExGame = link.classList.contains('login-ex-games');
 
                     if (isLoginExGame && !isLoggedIn) {
-                        event.preventDefault(); // Voorkom de standaard link navigatie
+                        event.preventDefault();
                         notification("Je moet ingelogd zijn om deze game te kunnen spelen!");
                     } else {
-                        // Voorkom standaard link navigatie voor alle links
                         event.preventDefault();
 
-                        // Haal de href van de link op
                         var href = link.getAttribute('href');
 
-                        // Creëer een nieuw iframe element
                         var iframe = document.createElement('iframe');
                         iframe.src = href;
                         iframe.style.position = 'fixed';
@@ -36,7 +33,6 @@
                         iframe.style.transform = 'translate(-50%, -50%)';
                         iframe.style.border = 'none';
 
-                        // Verwijder alle kinderen van de body en voeg het iframe toe
                         var body = document.body;
                         body.style.margin = '0px';
                         while (body.firstChild) {
@@ -44,7 +40,6 @@
                         }
                         body.appendChild(iframe);
 
-                        // Update de iframe grootte bij venster resize
                         window.addEventListener('resize', function () {
                             iframe.style.width = '100vw';
                             iframe.style.height = '100vh';
