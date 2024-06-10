@@ -501,21 +501,29 @@
     </div>
 
     <div style="margin: 0 auto; display: none;" id="showMenu"></span>
-        <p style="font-size: 1.0em;">WAARSCHUWING: je staat op het punt een tabblad zonder naam of icoon te openen, weet
-            wel dat docenten dit nog steeds kunnen zien omdat er een leeg tab staat. Je kan ook zelf de naam en tab van
-            het onzichtbare scherm tabblad instellen, dan geld dit niet. Ze kunnen niet met je scherm meekijken en zien
-            het scherm van je vorige tabblad dat je had geopend. Wees gewaarschuwd! (Dit is dus heel nuttig bij docenten
-            die met je scherm meekijken)</p>
-        <p>Wat je kan doen hiermee: open een tabblad waar je eigenlijk echt op aan het werk moet zijn. Vervolgens ga je
-            naar deze link https://[domein website waar je op moet werken]/favicon.ico en je krijgt het plaatje van
-            die
-            website. Je doet die link in mijn website met de tabblad naam en vervolgens open je het nep tabblad. Dan ga
-            je even 20 seconden op het tabblad waar je moet werken en dan in 1 keer naar het nep tabblad. Dan zien de
-            docenten het scherm en naam van wat je eigenlijk moet doen terwijl je op mijn site zit. :)</p>
+        <p style="font-size: 1.0em;">
+            <ol style="margin-left: 50px; text-align: left;">
+                <li><strong>Stap 1 - Voorbereiden:</strong>
+                    <ul>
+                        <li>Open het tabblad waar je eigenlijk op moet werken.</li>
+                        <li>Kopieer <code>https://[domein website waar je op moet werken]/favicon.ico</code> naar je klembord (ctrl + c).</li>
+                    </ul>
+                </li>
+                <li><strong>Stap 2 - Uitvoeren:</strong>
+                    <ul>
+                        <li>Klik op "Open Tab Met Eigen Naam En Favicon" en vul bij naam, de naam van het tabblad waar je eigenlijk op moet werken.</li>
+                        <li>Voer bij "Voer de favicon-link in" de gekopieerde link in.</li>
+                        <li>Ga 20 seconden op het tabblad waar je eigenlijk op moet werken en switch daarna meteen naar het neppe tabblad.</li>
+                    </ul>
+                </li>
+                <li><strong>Stap 3 - Genieten:</strong>
+                    <ul>
+                        <li>Nu heb je een tabblad waarbij de docent het scherm van je vorige tabblad ziet, en de neppe naam van het huidige tabblad (die je moest invullen bij het maken van het neppe tabblad).</li>
+                    </ul>
+                </li>
+            </ol>
         <button style="font-size: 1.0em;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
-        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTabFilling()">Open Tab Met Eigen Naam
-            En
-            Favicon</button>
+        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTabFilling()">Open Tab Met Eigen Naam En Favicon</button>
     </div>
 
     <script>
