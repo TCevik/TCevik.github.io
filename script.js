@@ -97,20 +97,18 @@ var buttons = `
 	<button id="login-register-button-nav" onclick="window.location.href='/account/inloggen-registreren'">Inloggen / Registreren</button>
 
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
-	<button onclick="window.location.href='/tools/yt-player-background'">YouTube video spelen in de achtergrond</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
     <button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
-    <button onclick="window.location.href='/tools/bing-chat'">Bing Ai (GPT 4)</button>
-    <button onclick="window.location.href='/tools/pranks'">Pranks</button>
     <button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>
-    <button onclick="window.location.href='/tools/myinstants'">MyInstants</button>
-    <button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
     <button onclick="window.location.href='/tools/ide'">IDE</button>
     <button onclick="window.location.href='/tools/tts'">TTS</button>
 
-	<h3 style="margin-top: 50px;" id="schoolhacks">Proxy / Emulator</h3>
-    <button onclick="window.location.href='/proxy-emulator/rammerhead'">Proxy - Rammerhead</button>
+	<h3 style="margin-top: 50px;" id="schoolhacks">Voor School</h3>
+	<button onclick="window.location.href='/school/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+    <button onclick="window.location.href='/school/bing-chat'">Bing Ai (GPT 4)</button>
+	<button onclick="window.location.href='/school/myinstants'">MyInstants</button>
+    <button onclick="window.location.href='/school/rammerhead'">Proxy - Rammerhead</button>
 
 	<h3 style="margin-top: 50px;" id="archief">Archief</h3>
     <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
