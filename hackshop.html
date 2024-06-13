@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam Hackshop</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .product {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 20px;
+            max-width: 250px;
+            max-height: 600px;
+            text-align: left;
+            border: 1px var(--text-color) solid;
+            border-radius: var(--border-radius2);
+            padding: 20px;
+            margin: 30px;
+        }
+
+        .product-preview {
+            align-self: center;
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+        }
+
+        .product-title {
+            margin-top: -5px;
+            margin-bottom: -15px;
+            font-weight: 600;
+        }
+
+        .product-description {
+            filter: brightness(0.8);
+        }
+
+        .product-price {
+            color: var(--h1234-color);
+            margin-top: -10px;
+        }
+
+        .buy-button {
+            margin-left: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>TC_tam Hackshop</h1>
+
+    <div class="products">
+        <div class="product">
+            <img src="https://ae01.alicdn.com/kf/S96aa5073c7394869ba003fc82c1fd443Y.jpg_1200x1200.jpg_.webp" class="product-preview">
+            <p class="product-title">Ir Emitter - USB-C</p>
+            <p class="product-description">Een krachtige infraroodzender om tv's en andere apparaten die een
+                afstandsbediening
+                met infrarood bedienen.</p>
+            <p class="product-price">€11,99<button class="buy-button">Kopen</button></p>
+        </div>
+
+        <div class="product">
+            <img src="https://ae01.alicdn.com/kf/Sf459aa95cbea42c9af59f4b6507a94ccZ.jpg_1200x1200.jpg_.webp" class="product-preview">
+            <p class="product-title">Ir Emitter - Micro-USB</p>
+            <p class="product-description">Een krachtige infraroodzender om tv's en andere apparaten die een
+                afstandsbediening
+                met infrarood bedienen.</p>
+            <p class="product-price">€11,99<button class="buy-button">Kopen</button></p>
+        </div>
+
+        <div class="product">
+            <img src="https://ae01.alicdn.com/kf/S3a70ae0f0e124723b81476d2627740e44.jpg_1200x1200.jpg_.webp" class="product-preview">
+            <p class="product-title">Ir Emitter - iPhone</p>
+            <p class="product-description">Een krachtige infraroodzender om tv's en andere apparaten die een
+                afstandsbediening
+                met infrarood bedienen.</p>
+            <p class="product-price">€11,99<button class="buy-button">Kopen</button></p>
+        </div>
+
+        <div class="product">
+            <img src="https://ae01.alicdn.com/kf/S9c024967602d4aeaaf96a573db1954f3C.jpg_1200x1200.jpg_.webp" class="product-preview">
+            <p class="product-title">Flipper Zero</p>
+            <p class="product-description">Een krachtige hackingtool.</p>
+            <p class="product-price">€499,99<button class="buy-button">Kopen</button></p>
+        </div>
+    </div>
+</body>
+
+</html>
