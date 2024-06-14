@@ -26,7 +26,7 @@
                 document.getElementById('remoteConfigText').innerHTML = remoteConfigValue;
             })
             .catch((error) => {
-                console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
+                notification("Er is een fout opgetreden bij het ophalen van de cemote config:", error);
             });
     </script>
 </body>
