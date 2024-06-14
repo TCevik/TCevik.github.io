@@ -33,12 +33,22 @@
                         iframe.style.transform = 'translate(-50%, -50%)';
                         iframe.style.border = 'none';
 
+                        const reloadButton = document.createElement('button');
+                        reloadButton.innerText = 'Terug';
+                        reloadButton.style.position = 'fixed';
+                        reloadButton.style.top = '10px';
+                        reloadButton.style.left = '10px';
+                        reloadButton.addEventListener('click', function () {
+                            location.reload();
+                        });
+
                         var body = document.body;
                         body.style.margin = '0px';
                         while (body.firstChild) {
                             body.removeChild(body.firstChild);
                         }
                         body.appendChild(iframe);
+                        body.appendChild(reloadButton);
 
                         window.addEventListener('resize', function () {
                             iframe.style.width = '100vw';
