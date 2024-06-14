@@ -8,10 +8,9 @@
   <link rel="stylesheet" href="/style.css">
   <script src="/script.js"></script>
 
-
   <style>
     textarea {
-      width: 95%;
+      width: 80%;
     }
   </style>
 
@@ -33,6 +32,7 @@
     function readText() {
       var text = document.getElementById("text-to-read").value;
       var speech = new SpeechSynthesisUtterance(text);
+      speech.lang = 'nl-NL'; 
       var button = document.getElementById("read-button");
       var buttonSpeak = document.getElementById("speak-button");
       button.disabled = true; // Deactiveer de knop
@@ -51,16 +51,19 @@
 
     // Functie om spraakopname te starten
     function startRecording() {
+      var button = document.getElementById("read-button");
       var buttonSpeak = document.getElementById("speak-button");
       var recognition = new webkitSpeechRecognition(); // Instantie van spraakherkenning
       recognition.lang = "nl-NL"; // Taal instellen op Nederlands
       recognition.onresult = function (event) {
+        button.disabled = false;
         buttonSpeak.disabled = false;
         buttonSpeak.innerText = 'Spreek in';
         var result = event.results[0][0].transcript; // De herkende tekst
         document.getElementById("text-to-read").value = result; // Plaats de herkende tekst in het tekstvak
       }
       recognition.start(); // Start de spraakherkenning
+      button.disabled = true;
       buttonSpeak.disabled = true;
       buttonSpeak.innerText = 'Aan het luisteren...';
       playSound(); // Speel het geluid af
