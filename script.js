@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
 var buttons = `
     <button onclick="window.location.href='/'">Home</button>
     <h3 id="algemeen">Algemeen</h3>
-	<button onclick="window.open('https://www.paypal.com/ncp/payment/848YKCZ8UFF94', '_blank')">Doneren</button>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
     <button onclick="window.location.href='/games/alle-games'">Games</button>
 	<button onclick="window.location.href='/tctam-chat'">TC_tam Chat</button>
