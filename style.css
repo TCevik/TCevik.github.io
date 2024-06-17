@@ -1,8 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
-iframe.skiptranslate { 
-    visibility: hidden !important; 
-    display: none !important
-}
 
 body {
     background-color: var(--background-color);
