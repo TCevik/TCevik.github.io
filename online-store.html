@@ -150,6 +150,19 @@
                 filterProducts(searchTerm);
             });
 
+            function applyHashSearch() {
+                if (window.location.hash) {
+                    const searchTermEncoded = decodeURIComponent(window.location.hash.substring(1)); // Haal # weg en decodeer
+                    const searchTerm = decodeURIComponent(searchTermEncoded); // Decodeer zoekterm
+                    searchInput.value = searchTerm;
+                    filterProducts(searchTerm);
+                }
+            }
+
+            window.addEventListener('hashchange', applyHashSearch);
+
+            applyHashSearch();
+
             // Initieel renderen van alle producten
             renderProducts(products);
         });
@@ -165,8 +178,6 @@
     <div id="products">
         <!-- Hier komen de producten. -->
     </div>
-
-
 
     <footer>
         <p style="margin: 0px;">TC_tam Online Store™</p>
