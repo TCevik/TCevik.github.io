@@ -124,8 +124,8 @@
             // Voeg hier meer producten toe als nodig
         ];
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const url = window.location.href;            
+        document.addEventListener("DOMContentLoaded", function () {
+            const url = window.location.href;
             if (url.includes("#")) {
                 const hash = url.split("#")[1];
                 const decodedHash = decodeURIComponent(hash);
@@ -173,18 +173,29 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.getElementById("search-bar");
+            const initialSearchTerm = searchInput.value.trim().toLowerCase();
 
-            searchInput.addEventListener("input", function () {
-                const searchTerm = searchInput.value.toLowerCase();
+            function filterProducts(searchTerm) {
                 const filteredProducts = products.filter(product => {
-                    return product.name.toLowerCase().includes(searchTerm) ||
+                    return (
+                        product.name.toLowerCase().includes(searchTerm) ||
                         product.description.toLowerCase().includes(searchTerm) ||
-                        product.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm));
+                        product.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
+                    );
                 });
                 renderProducts(filteredProducts);
-            });
+            }
 
-            renderProducts(products);
+            if (initialSearchTerm !== "") {
+                filterProducts(initialSearchTerm);
+            } else {
+                renderProducts(products);
+            }
+
+            searchInput.addEventListener("input", function () {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                filterProducts(searchTerm);
+            });
         });
     </script>
 
