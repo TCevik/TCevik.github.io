@@ -152,9 +152,9 @@
             });
 
             function checkURLAnchor() {
-                const hashValue = decodeURIComponent(window.location.hash.substr(1)); // decodeURIComponent gebruiken om '%20' naar spatie te vertalen
+                const hashValue = decodeURIComponent(window.location.hash.substr(1));
                 if (hashValue) {
-                    const cleanedHashValue = hashValue.replace(/%20/g, ' '); // vervang alle '%20' met spatie
+                    const cleanedHashValue = hashValue.replace(/%20/g, ' ');
                     searchInput.value = cleanedHashValue;
                     filterProducts(cleanedHashValue.toLowerCase());
                 }
