@@ -15,7 +15,8 @@
         #products {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
+            margin-left: 20px;
         }
 
         .product {
@@ -77,6 +78,8 @@
             color: red;
             font-weight: bold;
         }
+    
+        
     </style>
 </head>
 
@@ -166,7 +169,7 @@
 
     <input type="text" id="search-bar" placeholder="Zoek naar producten...">
 
-    <h3 style="margin-bottom: -10px;">Aanbevolen:</h3>
+    <h3 style="margin-bottom: -10px; text-align: left; margin-left: 50px;">Alle producten:</h3>
     <p id="no-results">Oeps, dat hebben we niet kunnen vinden...</p>
     <div id="products">
         <!-- Hier komen de producten. -->
