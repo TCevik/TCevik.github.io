@@ -125,7 +125,7 @@
             function generateProductHTML(product) {
                 return `
                     <div class="product">
-                        <img class="product-preview" src="${product.image}">
+                        <img class="product-preview" src="${product.image}" loading="lazy">
                         <p class="product-title">${product.name}</p>
                         <p class="product-description">${product.description}</p>
                         <p class="product-price">Totaal: ${product.price}
