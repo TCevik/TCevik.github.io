@@ -97,6 +97,7 @@
                     const productsJson = remoteConfig.getString('producten_online_store');
                     products = JSON.parse(productsJson);
                     renderProducts(products); // Render de producten na het ophalen
+                    checkURLAnchor(); // Controleer de URL anker na het renderen van producten
                 })
                 .catch((error) => {
                     notification("Er is een fout opgetreden bij het ophalen van de producten:" + error);
@@ -155,13 +156,8 @@
                 if (hashValue) {
                     searchInput.value = hashValue;
                     filterProducts(hashValue.toLowerCase());
-                } else {
-                    renderProducts(products);
                 }
             }
-
-            checkURLAnchor();
-
         });
     </script>
 
