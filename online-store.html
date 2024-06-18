@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-remote-config.js"></script>
+    <script src="/account/config.js"></script>
+
     <style>
         #products {
             display: flex;
@@ -79,101 +83,70 @@
 
 <body>
     <script>
-        const products = [
-            {
-                name: "Ir Emitter",
-                description: "Een krachtige infraroodzender om tv's en andere apparaten die een afstandsbediening gebruiken met infrarood te bedienen.",
-                image: "/assets/online-store/ir-emitter.webp",
-                price: "€13,19",
-                paylink: "https://www.paypal.com/ncp/payment/U3MLY9RLRZCQC",
-                keywords: ["van ad", "hack", "kloten"]
-
-            },
-            {
-                name: "10 random kleuren nfc tags - serienummer veranderbaar",
-                description: "10 nfc tags in verschillende kleuren die je kan gebruiken om bijvoorbeeld tags te clonen.",
-                image: "/assets/online-store/nfc-tags.webp",
-                price: "€14,19",
-                paylink: "https://www.paypal.com/ncp/payment/6VQHF8Y8QQD4G",
-                keywords: ["sloten", "deuren", "salto"]
-            },
-            {
-                name: "Laser pointer",
-                description: "Een laser pointer die ongeveer 1km ver kan schijnen.",
-                image: "/assets/online-store/laser-pointer.jpg",
-                price: "€15,20",
-                paylink: "https://www.paypal.com/ncp/payment/846AV8A4Y8CAE",
-                keywords: ["van ad", "licht", "pen", "katten", "speelgoed"]
-            },
-            {
-                name: "Rubiks kubus onopgelost",
-                description: "Een rubiks kubus onopgelost en draait een beetje stroef. Originele prijs €25,99.",
-                image: "/assets/online-store/rubiks-kubus.png",
-                price: "€15,20",
-                paylink: "https://www.paypal.com/ncp/payment/NUDJMKV3PWK7Q",
-                keywords: ["vierkant", "kleuren", "2e hands"]
-            },
-            {
-                name: "HD action cam",
-                description: "Een HD action cam die het prima doet. Originele prijs €49,99.",
-                image: "/assets/online-store/action-cam.png",
-                price: "€25,20",
-                paylink: "https://www.paypal.com/ncp/payment/NUDJMKV3PWK7Q",
-                keywords: ["camera", "video", "foto", "2e hands"]
-            }
-            // Voeg hier meer producten toe als nodig
-        ];
-
-        document.addEventListener("DOMContentLoaded", function () {
+        // Functie om de zoekterm uit de URL te halen en te gebruiken
+        function updateFromURL() {
             const url = window.location.href;
             if (url.includes("#")) {
                 const hash = url.split("#")[1];
                 const decodedHash = decodeURIComponent(hash);
-                document.getElementById("search-bar").value = decodedHash;
-                renderProducts(filteredProducts);
+                searchInput.value = decodedHash;
+                filterProducts(decodedHash);
             }
-        });
-
-        function generateProductHTML(product) {
-            return `
-                <div class="product">
-                    <img class="product-preview" src="${product.image}">
-                    <p class="product-title">${product.name}</p>
-                    <p class="product-description">${product.description}</p>
-                    <p class="product-price">Totaal: ${product.price}
-                        <a href="${product.paylink}" target="_blank">
-                            <button class="buy-button">Nu kopen</button>
-                        </a>
-                    </p>
-                </div>
-            `;
         }
 
+        // Voer de updateFromURL functie uit bij het laden van de pagina
+        updateFromURL();
+
         document.addEventListener("DOMContentLoaded", function () {
-            const productContainer = document.getElementById("products");
-            products.forEach(product => {
-                productContainer.innerHTML += generateProductHTML(product);
-            });
-        });
+            let products = [];
 
-        function renderProducts(filteredProducts) {
-            const productContainer = document.getElementById("products");
-            const noResultsMessage = document.getElementById("no-results");
-            productContainer.innerHTML = '';
+            const remoteConfig = firebase.remoteConfig();
+            const remoteConfigSettings = {
+                minimumFetchIntervalMillis: 100,
+            };
+            remoteConfig.settings = remoteConfigSettings;
 
-            if (filteredProducts.length > 0) {
-                noResultsMessage.style.display = 'none';
-                filteredProducts.forEach(product => {
-                    productContainer.innerHTML += generateProductHTML(product);
+            remoteConfig.fetchAndActivate()
+                .then(() => {
+                    const productsJson = remoteConfig.getString('producten_online_store');
+                    products = JSON.parse(productsJson);
+                    renderProducts(products); // Render de producten na het ophalen
+                })
+                .catch((error) => {
+                    notification("Er is een fout opgetreden bij het ophalen van de producten:" + error);
                 });
-            } else {
-                noResultsMessage.style.display = 'block';
-            }
-        }
 
-        document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.getElementById("search-bar");
-            const initialSearchTerm = searchInput.value.trim().toLowerCase();
+
+            function renderProducts(filteredProducts) {
+                const productContainer = document.getElementById("products");
+                const noResultsMessage = document.getElementById("no-results");
+                productContainer.innerHTML = '';
+
+                if (filteredProducts.length > 0) {
+                    noResultsMessage.style.display = 'none';
+                    filteredProducts.forEach(product => {
+                        productContainer.innerHTML += generateProductHTML(product);
+                    });
+                } else {
+                    noResultsMessage.style.display = 'block';
+                }
+            }
+
+            function generateProductHTML(product) {
+                return `
+                    <div class="product">
+                        <img class="product-preview" src="${product.image}">
+                        <p class="product-title">${product.name}</p>
+                        <p class="product-description">${product.description}</p>
+                        <p class="product-price">Totaal: ${product.price}
+                            <a href="${product.paylink}" target="_blank">
+                                <button class="buy-button">Nu kopen</button>
+                            </a>
+                        </p>
+                    </div>
+                `;
+            }
 
             function filterProducts(searchTerm) {
                 const filteredProducts = products.filter(product => {
@@ -186,16 +159,13 @@
                 renderProducts(filteredProducts);
             }
 
-            if (initialSearchTerm !== "") {
-                filterProducts(initialSearchTerm);
-            } else {
-                renderProducts(products);
-            }
-
             searchInput.addEventListener("input", function () {
                 const searchTerm = searchInput.value.trim().toLowerCase();
                 filterProducts(searchTerm);
             });
+
+            // Initieel renderen van alle producten
+            renderProducts(products);
         });
     </script>
 
