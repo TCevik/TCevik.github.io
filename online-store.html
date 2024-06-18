@@ -103,7 +103,7 @@
                 image: "/assets/online-store/laser-pointer.jpg",
                 price: "€15,20",
                 paylink: "https://www.paypal.com/ncp/payment/846AV8A4Y8CAE",
-                keywords: ["licht", "pen", "katten", "speelgoed", "van ad"]
+                keywords: ["van ad", "licht", "pen", "katten", "speelgoed"]
             },
             {
                 name: "Rubiks kubus onopgelost",
@@ -119,7 +119,7 @@
                 image: "/assets/online-store/action-cam.png",
                 price: "€25,20",
                 paylink: "https://www.paypal.com/ncp/payment/NUDJMKV3PWK7Q",
-                keywords: ["camera", "video", "foto"]
+                keywords: ["camera", "video", "foto", "2e hands"]
             }
             // Voeg hier meer producten toe als nodig
         ];
@@ -127,8 +127,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             const url = window.location.href;            
             if (url.includes("#")) {
-                const hash = url.split("#")[1];                
-                document.getElementById("search-bar").value = hash;
+                const hash = url.split("#")[1];
+                const decodedHash = decodeURIComponent(hash);
+                document.getElementById("search-bar").value = decodedHash;
+                renderProducts(filteredProducts);
             }
         });
 
