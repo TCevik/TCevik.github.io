@@ -145,6 +145,15 @@
                 renderProducts(filteredProducts);
             }
 
+            // Wacht tot de DOM geladen is
+            document.addEventListener("DOMContentLoaded", function () {
+                // Haal de zoekterm op van de input
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                // Filter de producten
+                filterProducts(searchTerm);
+            });
+
+            // Voeg de event listener toe voor input veranderingen
             searchInput.addEventListener("input", function () {
                 const searchTerm = searchInput.value.trim().toLowerCase();
                 filterProducts(searchTerm);
