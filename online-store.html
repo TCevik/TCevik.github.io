@@ -83,6 +83,32 @@
 
 <body>
     <script>
+        searchInput.addEventListener("input", function () {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            filterProducts(searchTerm);
+            updateURL(searchTerm); // Update de URL bij elke zoekactie
+        });
+
+        // Functie om de zoekterm uit de URL te halen en te gebruiken
+        function updateFromURL() {
+            const url = window.location.href;
+            if (url.includes("#")) {
+                const hash = url.split("#")[1];
+                const decodedHash = decodeURIComponent(hash);
+                searchInput.value = decodedHash;
+                filterProducts(decodedHash);
+            }
+        }
+
+        // Voer de updateFromURL functie uit bij het laden van de pagina
+        updateFromURL();
+
+        // Functie om de URL bij te werken met de huidige zoekterm
+        function updateURL(searchTerm) {
+            const newUrl = `${window.location.pathname}#${encodeURIComponent(searchTerm)}`;
+            window.history.replaceState({ path: newUrl }, '', newUrl);
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             let products = [];
 
