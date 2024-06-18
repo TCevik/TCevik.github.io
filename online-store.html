@@ -150,17 +150,18 @@
                 filterProducts(searchTerm);
             });
 
-            // Functie om de URL anker te controleren en zoeken uit te voeren
             function checkURLAnchor() {
-                const hashValue = window.location.hash.substr(1); // Haal de ankerwaarde op zonder #
+                const hashValue = window.location.hash.substr(1);
                 if (hashValue) {
-                    searchInput.value = hashValue; // Vul het zoekveld met de ankerwaarde
-                    filterProducts(hashValue.toLowerCase()); // Filter producten op basis van de ankerwaarde
+                    searchInput.value = hashValue;
+                    filterProducts(hashValue.toLowerCase());
+                } else {
+                    renderProducts(products);
                 }
             }
 
-            // Voer de checkURLAnchor functie uit bij het laden van de pagina
             checkURLAnchor();
+
         });
     </script>
 
