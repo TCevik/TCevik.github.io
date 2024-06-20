@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 var buttons = `
     <button onclick="window.location.href='/'">Home</button>
-	<button id="toggleStylesButton">Gebruik klassieke kleuren</button>
+	<button id="toggleStylesButton">Gebruik klassieke stijl</button>
     <h3 id="algemeen">Algemeen</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
     <button onclick="window.location.href='/games/alle-games'">Games</button>
@@ -538,7 +538,7 @@ textarea::placeholder {
 
 			head.appendChild(styleElement);
 			styleAdded = true;
-			toggleStylesButton.textContent = 'Gebruik nieuwe kleuren';
+			toggleStylesButton.textContent = 'Gebruik nieuwe stijl';
 
 			// Opslaan in localStorage
 			localStorage.setItem('styleAdded', 'true');
@@ -548,7 +548,7 @@ textarea::placeholder {
 			}
 
 			styleAdded = false;
-			toggleStylesButton.textContent = 'Gebruik klassieke kleuren';
+			toggleStylesButton.textContent = 'Gebruik klassieke stijl';
 
 			// Opslaan in localStorage
 			localStorage.setItem('styleAdded', 'false');
