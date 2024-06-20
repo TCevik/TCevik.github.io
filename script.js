@@ -273,3 +273,92 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateLoginButton();
 	}
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+	const toggleStylesButton = document.getElementById('toggleStylesButton');
+	const head = document.head || document.getElementsByTagName('head')[0];
+
+	let styleAdded = false;
+	let styleElement;
+
+	// Functie om de stijl toe te voegen of te verwijderen
+	function toggleStyle() {
+		if (!styleAdded) {
+			styleElement = document.createElement('style');
+			styleElement.textContent = `
+:root {
+--background-color: #fbfffd;
+--text-color: #000000;
+--h1234-color: #38761d;
+--custom-link-color: #38761d;
+--font-size: 16px;
+--h1-font-size: 46px;
+--h2-font-size: 36px;
+--h3-font-size: 26px;
+--h4-font-size: 22px;
+--button-padding: 7px;
+--button-bgcolor: #379429;
+--button-shadow: hsl(112, 56%, 31%);
+--bg-accent-color1: #e0fde9;
+--bg-accent-color2: #c7ead2;
+--border-radius1: 10px;
+--border-radius2: 25px;
+--border-radius3: 50px;
+--border-radius4: 50vw;
+overflow-x: hidden;
+transition: 0.5s;
+font-family: Lexend, Arial, sans-serif;
+}
+	`;
+
+			head.appendChild(styleElement);
+			styleAdded = true;
+			toggleStylesButton.textContent = 'Gebruik nieuwe kleuren';
+
+			// Opslaan in localStorage
+			localStorage.setItem('styleAdded', 'true');
+		} else {
+			if (styleElement && styleElement.parentNode === head) {
+				head.removeChild(styleElement);
+			}
+
+			styleAdded = false;
+			toggleStylesButton.textContent = 'Gebruik klassieke kleuren';
+
+			// Opslaan in localStorage
+			localStorage.setItem('styleAdded', 'false');
+		}
+	}
+
+	// Controleren en herstellen van de voorkeursstatus bij het laden van de pagina
+	const storedStyleAdded = localStorage.getItem('styleAdded');
+	if (storedStyleAdded === 'true') {
+		toggleStyle(); // Voeg de stijl toe als deze was opgeslagen als toegevoegd
+	}
+
+	// Event listener toevoegen aan de knop
+	toggleStylesButton.addEventListener('click', toggleStyle);
+});
