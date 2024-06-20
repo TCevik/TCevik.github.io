@@ -27,8 +27,8 @@ body {
     --button-padding: 7px;
     --button-bgcolor: #379429;
     --button-shadow: hsl(112, 56%, 31%);
-    --bg-accent-color1: rgb(230, 230, 230);
-    --bg-accent-color2: rgb(210, 210, 210);
+    --bg-accent-color1: rgb(240, 240, 240);
+    --bg-accent-color2: rgb(225, 225, 225);
     --border-radius1: 10px;
     --border-radius2: 25px;
     --border-radius3: 50px;
