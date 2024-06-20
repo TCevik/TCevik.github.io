@@ -630,9 +630,6 @@ function handleclassicColorSwitchChange() {
 	applyClassicColors(); // Pas kleuren onmiddellijk toe
 }
 
-// Event listener voor de schakelaar
-document.getElementById('classicColorSwitch').addEventListener('change', handleclassicColorSwitchChange);
-
 // Pas de kleuren toe als de pagina geladen is
 document.addEventListener('DOMContentLoaded', () => {
 	updateclassicColorSwitchState();
