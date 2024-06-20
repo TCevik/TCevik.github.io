@@ -632,6 +632,8 @@ function handleclassicColorSwitchChange() {
 
 // Pas de kleuren toe als de pagina geladen is
 document.addEventListener('DOMContentLoaded', () => {
-	updateclassicColorSwitchState();
-	applyClassicColors();
+	setTimeout(() => {
+		updateclassicColorSwitchState();
+		applyClassicColors();
+	}, 1000);
 });
