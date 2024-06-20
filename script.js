@@ -275,29 +275,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
 	const toggleStylesButton = document.getElementById('toggleStylesButton');
 	const head = document.head || document.getElementsByTagName('head')[0];
