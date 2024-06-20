@@ -41,14 +41,14 @@ body {
 /* dark mode */
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-color: #121212;
+        --background-color: rgb(30, 30, 30);
         --text-color: #ffffff;
         --h1234-color: #e0e0e0;
         --custom-link-color: #33ff33;
         --button-bgcolor: #38761d;
         --button-shadow: #2c5c17;
-        --bg-accent-color1: #282828;
-        --bg-accent-color2: #121212;
+        --bg-accent-color1: rgb(45, 45, 45);
+        --bg-accent-color2: rgb(60, 60, 60);
     }
 }
 
