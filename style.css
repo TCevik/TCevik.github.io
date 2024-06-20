@@ -222,3 +222,61 @@ textarea::placeholder {
 ::-moz-progress-bar {
     background-color: #58bf33;
 }
+
+.classicColorSwitch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.classicColorSwitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.classicColorSlider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.classicColorSlider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.classicColorSlider {
+    background-color: var(--h1234-color);
+}
+
+input:focus+.classicColorSlider {
+    box-shadow: 0 0 1px var(--h1234-color);
+}
+
+input:checked+.classicColorSlider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded classicColorSliders */
+.classicColorSlider.round {
+    border-radius: 34px;
+}
+
+.classicColorSlider.round:before {
+    border-radius: 50%;
+}

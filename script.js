@@ -273,3 +273,368 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateLoginButton();
 	}
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Controleer of de cookie "classicColorSwitchState" de waarde "checked" heeft
+function applyClassicColors() {
+	if (getCookieValue('classicColorSwitchState') === 'checked') {
+		// CSS regels als variabelen opslaan
+		const css = `
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    text-align: center;
+    transition: 0.5s;
+    scroll-behavior: smooth;
+}
+
+/* light mode and dark mode */
+:root {
+    --background-color: #fbfffd;
+    --text-color: #000000;
+    --h1234-color: #38761d;
+    --custom-link-color: #38761d;
+    --font-size: 16px;
+    --h1-font-size: 46px;
+    --h2-font-size: 36px;
+    --h3-font-size: 26px;
+    --h4-font-size: 22px;
+    --button-padding: 7px;
+    --button-bgcolor: #379429;
+    --button-shadow: hsl(112, 56%, 31%);
+    --bg-accent-color1: #e0fde9;
+    --bg-accent-color2: #c7ead2;
+    --border-radius1: 10px;
+    --border-radius2: 25px;
+    --border-radius3: 50px;
+    --border-radius4: 50vw;
+    overflow-x: hidden;
+    transition: 0.5s;
+    font-family: Lexend, Arial, sans-serif;
+}
+
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #0d1710;
+        --text-color: #ffffff;
+        --h1234-color: #7fff48;
+        --custom-link-color: #33ff33;
+        --button-bgcolor: #38761d;
+        --button-shadow: #2c5c17;
+        --bg-accent-color1: #16301f;
+        --bg-accent-color2: #133820;
+    }
+}
+
+.diff-color-section1 {
+    width: 80%;
+    background-color: var(--bg-accent-color1);
+    padding: 20px;
+    margin: 0 auto;
+    border-radius: var(--border-radius3);
+    margin-top: 20px;
+    align-items: center;
+}
+
+.diff-color-section2 {
+    width: 80%;
+    background-color: var(--bg-accent-color2);
+    padding: 20px;
+    margin: 0 auto;
+    border-radius: var(--border-radius3);
+    margin-top: 20px;
+    align-items: center;
+}
+
+h1 {
+    color: var(--h1234-color);
+    font-size: var(--h1-font-size);
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: var(--h1234-color);
+    font-size: var(--h2-font-size);
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: var(--h1234-color);
+    font-size: var(--h3-font-size);
+    margin-bottom: 5px;
+}
+
+h4 {
+    color: var(--h1234-color);
+    font-size: var(--h4-font-size);
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+
+p,
+label {
+    font-size: var(--font-size);
+    line-height: 1.5;
+    overflow-wrap: break-word;
+}
+
+a {
+    font-size: var(--font-size);
+    color: var(--custom-link-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--custom-link-color);
+    line-height: 1;
+}
+
+button {
+    position: relative;
+    font-family: Lexend, Arial, sans-serif;
+    border-radius: var(--border-radius1);
+    font-weight: inherit;
+    outline: none;
+    border: solid var(--button-bgcolor);
+    background-color: var(--button-bgcolor);
+    color: #ffffff;
+    padding: var(--button-padding);
+    font-size: var(--font-size);
+    margin: 0.3%;
+    transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s;
+    transform-origin: center;
+    z-index: 1;
+}
+
+button:hover {
+    border: solid #58bf33;
+    cursor: pointer;
+    border-radius: var(--border-radius1);
+    padding: var(--button-padding);
+    filter: brightness(120%);
+    z-index: 2;
+}
+
+button:focus {
+    border: solid #58bf33;
+    border-radius: var(--border-radius1);
+}
+
+button:disabled {
+    filter: brightness(0.75) !important;
+    border: red 3px solid !important;
+    cursor: not-allowed !important;
+}
+
+img {
+    border-radius: var(--border-radius1);
+}
+
+input,
+textarea {
+    border-radius: var(--border-radius1);
+    padding: 10px;
+    outline: none;
+    margin: 20px;
+    border: solid var(--text-color);
+    font-size: var(--text-size);
+    color: var(--text-color);
+    transition: border-color 0.3s;
+    background-color: var(--background-color);
+    font-family: Lexend, Arial, sans-serif;
+    text-align: left;
+    resize: none;
+}
+
+input:hover,
+input:focus,
+textarea:hover,
+textarea:focus {
+    border: solid #58bf33;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-color);
+}
+
+#sidebar button {
+    width: 90%;
+    text-align: center;
+}
+
+/* Change things like scrollbar and select text */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--h1234-color);
+    border-radius: 6px;
+}
+
+::-moz-scrollbar {
+    width: 12px;
+}
+
+::-moz-scrollbar-track {
+    background-color: transparent;
+}
+
+::-moz-scrollbar-thumb {
+    background-color: var(--h1234-color);
+    border-radius: 6px;
+}
+
+::selection {
+    background-color: #58bf33;
+    color: #fff;
+}
+
+::-webkit-progress-bar,
+::-moz-progress-bar {
+    background-color: #58bf33;
+}
+
+.classicColorSwitch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.classicColorSwitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.classicColorSlider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.classicColorSlider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.classicColorSlider {
+    background-color: var(--h1234-color);
+}
+
+input:focus+.classicColorSlider {
+    box-shadow: 0 0 1px var(--h1234-color);
+}
+
+input:checked+.classicColorSlider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded classicColorSliders */
+.classicColorSlider.round {
+    border-radius: 34px;
+}
+
+.classicColorSlider.round:before {
+    border-radius: 50%;
+}
+        `;
+
+		// Controleer of er al een bestaande style tag is en verwijder deze
+		const existingStyleTag = document.getElementById('classicColorsStyle');
+		if (existingStyleTag) {
+			existingStyleTag.remove();
+		}
+
+		// Nieuwe <style> tag aanmaken en de CSS toevoegen
+		const style = document.createElement('style');
+		style.id = 'classicColorsStyle';
+		style.innerHTML = css;
+		document.head.appendChild(style);
+	} else {
+		// Verwijder de classic colors style als de cookie niet "checked" is
+		const existingStyleTag = document.getElementById('classicColorsStyle');
+		if (existingStyleTag) {
+			existingStyleTag.remove();
+		}
+	}
+}
+
+// Functie om de staat van de schakelaar bij te werken
+function updateclassicColorSwitchState() {
+	const classicColorSwitchState = getCookieValue("classicColorSwitchState");
+	const checkbox = document.getElementById('classicColorSwitch');
+	if (classicColorSwitchState === "checked") {
+		checkbox.checked = true;
+	} else {
+		checkbox.checked = false;
+	}
+}
+
+// Functie om de verandering van de schakelaar te verwerken
+function handleclassicColorSwitchChange() {
+	const checkbox = document.getElementById('classicColorSwitch');
+	if (checkbox.checked) {
+		document.cookie = "classicColorSwitchState=checked; path=/";
+		notification('Klassieke kleuren ingeschakeld.');
+	} else {
+		document.cookie = "classicColorSwitchState=unchecked; path=/";
+		notification('Klassieke kleuren uitgeschakeld.');
+	}
+	applyClassicColors(); // Pas kleuren onmiddellijk toe
+}
+
+// Event listener voor de schakelaar
+document.getElementById('classicColorSwitch').addEventListener('change', handleclassicColorSwitchChange);
+
+// Pas de kleuren toe als de pagina geladen is
+document.addEventListener('DOMContentLoaded', () => {
+	updateclassicColorSwitchState();
+	applyClassicColors();
+});
