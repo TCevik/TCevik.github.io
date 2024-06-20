@@ -15,9 +15,9 @@ body {
 
 /* light mode and dark mode */
 :root {
-    --background-color: white;
+    --background-color: #fbfffd;
     --text-color: #000000;
-    --h1234-color: black;
+    --h1234-color: #38761d;
     --custom-link-color: #38761d;
     --font-size: 16px;
     --h1-font-size: 46px;
@@ -27,8 +27,8 @@ body {
     --button-padding: 7px;
     --button-bgcolor: #379429;
     --button-shadow: hsl(112, 56%, 31%);
-    --bg-accent-color1: rgb(240, 240, 240);
-    --bg-accent-color2: rgb(225, 225, 225);
+    --bg-accent-color1: #e0fde9;
+    --bg-accent-color2: #c7ead2;
     --border-radius1: 10px;
     --border-radius2: 25px;
     --border-radius3: 50px;
@@ -41,14 +41,14 @@ body {
 /* dark mode */
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-color: rgb(30, 30, 30);
+        --background-color: #0d1710;
         --text-color: #ffffff;
-        --h1234-color: #e0e0e0;
+        --h1234-color: #7fff48;
         --custom-link-color: #33ff33;
         --button-bgcolor: #38761d;
         --button-shadow: #2c5c17;
-        --bg-accent-color1: rgb(45, 45, 45);
-        --bg-accent-color2: rgb(60, 60, 60);
+        --bg-accent-color1: #16301f;
+        --bg-accent-color2: #133820;
     }
 }
 
