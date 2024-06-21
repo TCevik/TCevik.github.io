@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Editor voor .tdoc bestanden</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            font-family: Lexend, Arial, sans-serif;
+            margin-top: 70px;
+        }
+
+        #top-bar {
+            position: fixed;
+            display: flex;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: #f6fff5;
+            height: 70px;
+            padding: 0px;
+            align-items: center;
+        }
+
+        #top-bar button {
+            margin: 0px;
+            margin-left: 10px;
+        }
+
+        #top-bar img {
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        #editor-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        #editor-container textarea {
+            width: 70%;
+            resize: none;
+            margin-top: 20px;
+            height: calc(100vh - 150px);
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            border: none;
+            background-color: #fefefe;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: none;
+            font-family: Lexend, Arial, sans-serif;
+        }
+
+        #editor-container textarea:focus {
+            border: none;
+            outline: none;
+        }
+
+        /* Change things like scrollbar and select text */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(160, 160, 160);
+            border-radius: 6px;
+        }
+
+        ::-moz-scrollbar {
+            width: 12px;
+        }
+
+        ::-moz-scrollbar-track {
+            background-color: transparent;
+        }
+
+        ::-moz-scrollbar-thumb {
+            background-color: rgb(160, 160, 160);
+            border-radius: 6px;
+        }
+
+        ::selection {
+            background-color: #58bf33;
+            color: #fff;
+        }
+
+        ::-webkit-progress-bar,
+        ::-moz-progress-bar {
+            background-color: rgb(160, 160, 160);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="top-bar">
+        <img src="/favicon.ico" alt="TC_tam Documenten Icon">
+        <button class="save-btn" onclick="saveFile()">Maak nieuw bestand</button>
+        <button class="load-btn" onclick="document.getElementById('file-input').click()">Bestand laden</button>
+        <input type="file" id="file-input" accept=".tdoc" style="display:none;" onchange="loadFile(event)">
+    </div>
+
+    <div id="editor-container">
+        <textarea placeholder="Begin met typen..." id="editor"></textarea><br>
+    </div>
+
+    <script>
+        function saveFile() {
+            const content = document.getElementById('editor').value;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const fileName = 'mijntekst.tdoc';
+
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function loadFile(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const content = e.target.result;
+                document.getElementById('editor').value = content;
+            };
+            reader.readAsText(file);
+        }
+    </script>
+
+</body>
+
+</html>
