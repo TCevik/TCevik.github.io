@@ -31,14 +31,13 @@
         }
 
         #top-bar button {
-            margin: 0px;
             margin-left: 10px;
+            height: 35px;
+            cursor: pointer;
+            background-color: black;
             border-radius: 5px;
-            border: none;
             background-color: transparent;
             font-family: Lexend, Arial, sans-serif;
-            transition: background-color 0.3s;
-            font-size: 15px;
         }
 
         #top-bar button:hover {
@@ -53,10 +52,12 @@
             cursor: pointer;
         }
 
-        #top-bar button img {
-            width: 20px;
-            height: 20px;
+        #top-bar img {
+            width: 35px;
+            height: 35px;
             cursor: pointer;
+            background-color: black;
+            border-radius: 5px;
         }
 
         #top-bar p {
@@ -138,9 +139,9 @@
         <button id="openFileBtn">Open bestand</button>
         <button id="changeFile" onclick="location.reload();" style="display: none;">Ander bestand selecteren</button>
 
-        <button onclick="format('bold')"><b>B</b></button>
-        <button onclick="format('italic')"><i>I</i></button>
-        <button onclick="format('underline')"><u>U</u></button>
+        <button id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
+        <button id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
+        <button id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
         <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
         <img onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
         <img onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
@@ -149,6 +150,33 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
+        // Functie om te controleren of de opmaak actief is op de huidige cursorpositie
+        function checkSelection() {
+            const boldBtn = document.getElementById('boldBtn');
+            const italicBtn = document.getElementById('italicBtn');
+            const underlineBtn = document.getElementById('underlineBtn');
+
+            if (document.queryCommandState('bold')) {
+                boldBtn.style.backgroundColor = '#cecece';
+            } else {
+                boldBtn.style.backgroundColor = 'transparent';
+            }
+
+            if (document.queryCommandState('italic')) {
+                italicBtn.style.backgroundColor = '#cecece';
+            } else {
+                italicBtn.style.backgroundColor = 'transparent';
+            }
+
+            if (document.queryCommandState('underline')) {
+                underlineBtn.style.backgroundColor = '#cecece';
+            } else {
+                underlineBtn.style.backgroundColor = 'transparent';
+            }
+        }
+
+        setInterval(checkSelection, 10);
+
         function format(command) {
             document.execCommand(command, false, null);
         }
