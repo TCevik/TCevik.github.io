@@ -63,7 +63,7 @@
             margin: 0 auto;
         }
 
-        #editor-container textarea {
+        #editor-container div {
             width: 70%;
             resize: none;
             margin-top: 20px;
@@ -78,7 +78,7 @@
             font-family: Lexend, Arial, sans-serif;
         }
 
-        #editor-container textarea:focus {
+        #editor-container div:focus {
             border: none;
             outline: none;
         }
@@ -136,13 +136,24 @@
         <button id="newFileBtn">Maak nieuw bestand</button>
         <button id="openFileBtn">Open bestand</button>
         <button id="changeFile" onclick="location.reload();" style="display: none;">Ander bestand selecteren</button>
+
+        <button onclick="format('bold')"><b>B</b></button>
+        <button onclick="format('italic')"><i>I</i></button>
+        <button onclick="format('underline')"><u>U</u></button>
+        <button onclick="format('justifyLeft')">Left</button>
+        <button onclick="format('justifyCenter')">Center</button>
+        <button onclick="format('justifyRight')">Right</button>
     </div>
 
     <div id="editor-container">
-        <textarea id="editor" style="display: none;" placeholder="Begin met typen..."></textarea>
+        <div contenteditable="true" id="editor" style="display: none;" placeholder="Begin met typen..."></div>
     </div>
 
     <script>
+        function format(command) {
+            document.execCommand(command, false, null);
+        }
+
         function getInput(promptText) {
             return new Promise((resolve, reject) => {
                 const input = document.createElement('input');
@@ -224,10 +235,10 @@
 
                 let contents = await file.text();
 
-                document.getElementById('editor').value = contents;
+                document.getElementById('editor').innerHTML = contents;
 
                 document.getElementById('editor').addEventListener('input', async () => {
-                    contents = document.getElementById('editor').value;
+                    contents = document.getElementById('editor').innerHTML;
                     const writable = await fileHandle.createWritable();
                     await writable.write(contents);
                     await writable.close();
@@ -245,4 +256,5 @@
         }
     </script>
 </body>
+
 </html>
