@@ -38,7 +38,7 @@
             margin-left: 10px;
         }
 
-        #top-bar input {
+        #top-bar p {
             margin-left: 10px;
         }
 
@@ -112,7 +112,7 @@
 <body>
     <div id="top-bar">
         <img src="/favicon.ico" alt="TC_tam Documenten Icon">
-        <input placeholder="Voer bestandsnaam in..." id="title" type="text">
+        <p id="title"></p>
         <button id="newFileBtn">Maak nieuw bestand</button>
         <button id="openFileBtn">Open bestand</button>
     </div>
@@ -124,7 +124,13 @@
     <script>
         document.getElementById('newFileBtn').addEventListener('click', async () => {
             try {
-                const fileName = 'Naamloos_Document';
+                const fileName = prompt('Voer naam document in.');
+                if (fileName !== null && fileName !== '') {
+                    alert(`Je hebt gekozen voor de bestandsnaam: "${fileName}"`);
+                } else {
+                    alert('Geen geldige bestandsnaam ingevoerd.');
+                    return;
+                }
                 const fileContent = '';
 
                 const blob = new Blob([fileContent], { type: 'text/tdoc' });
@@ -166,7 +172,7 @@
                 const file = await fileHandle.getFile();
                 const fileName = file.name;
                 const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
-                document.getElementById('title').value = fileNameWithoutExtension;
+                document.getElementById('title').textContent = fileNameWithoutExtension;
 
                 let contents = await file.text();
 
