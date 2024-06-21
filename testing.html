@@ -60,7 +60,8 @@
             border-radius: 5px;
         }
 
-        #top-bar #colorPicker {
+        #top-bar #colorPicker,
+        #top-bar #markColorPicker {
             width: 70px;
             height: 35px;
             cursor: pointer;
@@ -152,7 +153,13 @@
         <button id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
         <button id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
         <button id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
+        
+        <label style="margin-left: 10px; margin-right: -8px;" for="colorPicker">Tekst:</label>
         <input type="color" id="colorPicker" onchange="applyColor(this.value)">
+
+        <label style="margin-left: 10px; margin-right: -8px;" for="markColorPicker">Markeer:</label>
+        <input type="color" id="markColorPicker" onchange="applyMarkColor(this.value)">
+
 
         <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
         <img onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
@@ -166,6 +173,16 @@
             const editor = document.getElementById('editor');
             document.execCommand('foreColor', false, color);
         }
+
+        function applyMarkColor(color) {
+            const editor = document.getElementById('editor');
+            document.execCommand('hiliteColor', false, color);
+        }
+
+        document.getElementById('editor').addEventListener('input', function () {
+            document.getElementById('colorPicker').value = '#000000';
+            document.getElementById('markColorPicker').value = '#000000';
+        });
 
         function checkSelection() {
             const boldBtn = document.getElementById('boldBtn');
