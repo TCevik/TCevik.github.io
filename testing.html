@@ -133,7 +133,8 @@
 
 <body>
     <div id="top-bar">
-        <img onclick="window.location.href='/'" src="/favicon.ico" alt="TC_tam Documenten Icon">
+        <img style="background-color: transparent !important;" onclick="window.location.href='/'" src="/favicon.ico"
+            alt="TC_tam Documenten Icon">
         <p id="title"></p>
         <button id="newFileBtn">Maak nieuw bestand</button>
         <button id="openFileBtn">Open bestand</button>
@@ -142,6 +143,8 @@
         <button id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
         <button id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
         <button id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
+        <input type="color" id="colorPicker" onchange="applyColor(this.value)">
+
         <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
         <img onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
         <img onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
@@ -150,7 +153,11 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
-        // Functie om te controleren of de opmaak actief is op de huidige cursorpositie
+        function applyColor(color) {
+            const editor = document.getElementById('editor');
+            document.execCommand('foreColor', false, color);
+        }
+
         function checkSelection() {
             const boldBtn = document.getElementById('boldBtn');
             const italicBtn = document.getElementById('italicBtn');
