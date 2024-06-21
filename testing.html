@@ -31,12 +31,24 @@
         #top-bar button {
             margin: 0px;
             margin-left: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: transparent;
+            font-family: Lexend, Arial, sans-serif;
+            transition: background-color 0.3s;
+            font-size: 15px;
+        }
+
+        #top-bar button:hover {
+            background-color: #cecece;
+            font-family: Lexend, Arial, sans-serif;
         }
 
         #top-bar img {
             width: 50px;
             height: 50px;
             margin-left: 10px;
+            cursor: pointer;
         }
 
         #top-bar p {
@@ -112,7 +124,7 @@
 
 <body>
     <div id="top-bar">
-        <img src="/favicon.ico" alt="TC_tam Documenten Icon">
+        <img onclick="window.location.href='/'" src="/favicon.ico" alt="TC_tam Documenten Icon">
         <p id="title"></p>
         <button id="newFileBtn">Maak nieuw bestand</button>
         <button id="openFileBtn">Open bestand</button>
