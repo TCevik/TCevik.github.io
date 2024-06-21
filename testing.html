@@ -119,9 +119,8 @@
     <script>
         document.getElementById('newFileBtn').addEventListener('click', async () => {
             try {
-                const fileName = 'Naamloos Document';
-
-                const fileContent = 'Dit is de inhoud van het nieuwe .tdoc bestand.';
+                const fileName = 'Naamloos_Document';
+                const fileContent = '';
 
                 // Creëer een nieuw Blob-object met de inhoud en het MIME-type
                 const blob = new Blob([fileContent], { type: 'text/plain' });
@@ -143,54 +142,47 @@
 
                 // Verwijder het link element van de DOM
                 document.body.removeChild(a);
-
-                // Vraag om toestemming voor het openen van het bestand
-                const fileHandle = await window.showOpenFilePicker();
-                const file = await fileHandle[0].getFile();
-                let contents = await file.text();
-                document.getElementById('editor').value = contents;
-
-                // Event listener voor wijzigingen in textarea
-                document.getElementById('editor').addEventListener('input', async () => {
-                    contents = document.getElementById('editor').value;
-                    const writable = await fileHandle[0].createWritable();
-                    await writable.write(contents);
-                    await writable.close();
-                    console.log('Bestand bijgewerkt met nieuwe inhoud.');
-                });
-
-                alert('Bestand geopend en klaar om te bewerken!');
             } catch (error) {
-                console.error('Fout bij openen of bewerken van bestand:', error);
-                alert('Er is een fout opgetreden: ' + error.message);
+                alert('Er is een fout opgetreden bij het genereren van het bestand:' + error);
             }
+
+            loadFile();
         });
 
         document.getElementById('openFileBtn').addEventListener('click', async () => {
+            loadFile();
+        });
+
+        async function loadFile() {
             try {
-                // Vraag om toestemming voor het openen van het bestand
-                const fileHandle = await window.showOpenFilePicker();
-                const file = await fileHandle[0].getFile();
+                // Toon het bestandskiezer venster met accept attribuut voor .tdoc bestanden
+                const [fileHandle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'Text Documents',
+                        accept: {
+                            'text/tdoc': ['.tdoc']
+                        }
+                    }]
+                });
+
+                // Rest van je code om het bestand te openen en te bewerken blijft hetzelfde
+                const file = await fileHandle.getFile();
                 let contents = await file.text();
 
-                // Plaats de inhoud van het bestand in de editor textarea
                 document.getElementById('editor').value = contents;
 
-                // Event listener voor wijzigingen in textarea
                 document.getElementById('editor').addEventListener('input', async () => {
                     contents = document.getElementById('editor').value;
-                    const writable = await fileHandle[0].createWritable();
+                    const writable = await fileHandle.createWritable();
                     await writable.write(contents);
                     await writable.close();
                     console.log('Bestand bijgewerkt met nieuwe inhoud.');
                 });
-
-                alert('Bestand geopend en klaar om te bewerken!');
             } catch (error) {
                 console.error('Fout bij openen of bewerken van bestand:', error);
                 alert('Er is een fout opgetreden: ' + error.message);
             }
-        });
+        }
     </script>
 
 </body>
