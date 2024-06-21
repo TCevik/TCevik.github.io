@@ -56,18 +56,11 @@
             margin-left: 10px;
         }
 
-        #editor-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-        }
-
-        #editor-container div {
+        #editor {
             width: 70%;
+            margin-left: 15%;
             resize: none;
-            margin-top: 20px;
+            margin-top: 95px;
             height: calc(100vh - 150px);
             padding: 20px;
             font-size: 16px;
@@ -75,11 +68,10 @@
             border: none;
             background-color: #fefefe;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
             font-family: Lexend, Arial, sans-serif;
         }
 
-        #editor-container div:focus {
+        #editor:focus {
             border: none;
             outline: none;
         }
@@ -146,22 +138,9 @@
         <button onclick="setAlign('right')">Right</button>
     </div>
 
-    <div id="editor-container">
-        <div contenteditable="true" id="editor" style="display: none;" placeholder="Begin met typen..."></div>
-    </div>
+    <div contenteditable="true" id="editor"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const editor = document.getElementById('editor');
-
-            editor.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    document.execCommand('insertLineBreak');
-                }
-            });
-        });
-
         function format(command) {
             document.execCommand(command, false, null);
         }
