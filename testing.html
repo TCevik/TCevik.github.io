@@ -184,11 +184,6 @@
             document.execCommand('hiliteColor', false, color);
         }
 
-        document.getElementById('editor').addEventListener('input', function () {
-            document.getElementById('colorPicker').value = '#000000';
-            document.getElementById('markColorPicker').value = '#000000';
-        });
-
         function checkSelection() {
             const boldBtn = document.getElementById('boldBtn');
             const italicBtn = document.getElementById('italicBtn');
