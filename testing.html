@@ -38,6 +38,10 @@
             margin-left: 10px;
         }
 
+        #top-bar input {
+            margin-left: 10px;
+        }
+
         #editor-container {
             width: 100%;
             display: flex;
@@ -108,6 +112,7 @@
 <body>
     <div id="top-bar">
         <img src="/favicon.ico" alt="TC_tam Documenten Icon">
+        <input placeholder="Voer bestandsnaam in..." id="title" type="text">
         <button id="newFileBtn">Maak nieuw bestand</button>
         <button id="openFileBtn">Open bestand</button>
     </div>
@@ -122,25 +127,19 @@
                 const fileName = 'Naamloos_Document';
                 const fileContent = '';
 
-                // Creëer een nieuw Blob-object met de inhoud en het MIME-type
-                const blob = new Blob([fileContent], { type: 'text/plain' });
+                const blob = new Blob([fileContent], { type: 'text/tdoc' });
 
-                // Maak een object URL voor de Blob
                 const url = URL.createObjectURL(blob);
 
-                // Creëer een link element
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = fileName + '.tdoc';
                 a.textContent = 'Klik hier om het bestand te downloaden';
 
-                // Voeg het link element toe aan de body
                 document.body.appendChild(a);
 
-                // Klik op het link element om het downloaden te starten
                 a.click();
 
-                // Verwijder het link element van de DOM
                 document.body.removeChild(a);
             } catch (error) {
                 alert('Er is een fout opgetreden bij het genereren van het bestand:' + error);
@@ -155,18 +154,20 @@
 
         async function loadFile() {
             try {
-                // Toon het bestandskiezer venster met accept attribuut voor .tdoc bestanden
                 const [fileHandle] = await window.showOpenFilePicker({
                     types: [{
-                        description: 'Text Documents',
+                        description: '.tdoc',
                         accept: {
                             'text/tdoc': ['.tdoc']
                         }
                     }]
                 });
 
-                // Rest van je code om het bestand te openen en te bewerken blijft hetzelfde
                 const file = await fileHandle.getFile();
+                const fileName = file.name;
+                const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
+                document.getElementById('title').value = fileNameWithoutExtension;
+
                 let contents = await file.text();
 
                 document.getElementById('editor').value = contents;
