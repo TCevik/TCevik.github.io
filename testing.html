@@ -25,6 +25,7 @@
             height: 70px;
             padding: 0px;
             align-items: center;
+            border-bottom: 1px solid black;
         }
 
         #top-bar button {
@@ -118,7 +119,7 @@
     </div>
 
     <div id="editor-container">
-        <textarea id="editor" placeholder="Begin met typen..."></textarea>
+        <textarea id="editor" style="display: none;" placeholder="Begin met typen..."></textarea>
     </div>
 
     <script>
@@ -185,6 +186,8 @@
                     await writable.close();
                     console.log('Bestand bijgewerkt met nieuwe inhoud.');
                 });
+
+                document.getElementById('editor').style.display = 'block';
             } catch (error) {
                 console.error('Fout bij openen of bewerken van bestand:', error);
                 alert('Er is een fout opgetreden: ' + error.message);
