@@ -53,6 +53,12 @@
             cursor: pointer;
         }
 
+        #top-bar button img {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
         #top-bar p {
             margin-left: 10px;
         }
@@ -135,9 +141,9 @@
         <button onclick="format('bold')"><b>B</b></button>
         <button onclick="format('italic')"><i>I</i></button>
         <button onclick="format('underline')"><u>U</u></button>
-        <button onclick="setAlign('left')">L</button>
-        <button onclick="setAlign('center')">C</button>
-        <button onclick="setAlign('right')">R</button>
+        <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
+        <img onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
+        <img onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
     </div>
 
     <div contenteditable="true" id="editor"></div>
