@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Editor voor .tdoc bestanden</title>
+    <title>TC_tam Documenten</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -152,7 +152,9 @@
                 alert('Er is een fout opgetreden bij het genereren van het bestand:' + error);
             }
 
-            loadFile();
+            setTimeout(() => {
+                loadFile();
+            }, 1000);
         });
 
         document.getElementById('openFileBtn').addEventListener('click', async () => {
@@ -174,6 +176,7 @@
                 const fileName = file.name;
                 const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
                 document.getElementById('title').textContent = fileNameWithoutExtension;
+                document.title = fileName;
 
                 let contents = await file.text();
 
