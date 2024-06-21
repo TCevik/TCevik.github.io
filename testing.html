@@ -176,7 +176,7 @@
                 const fileName = file.name;
                 const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
                 document.getElementById('title').textContent = fileNameWithoutExtension;
-                document.title = fileName;
+                document.title = fileNameWithoutExtension + " - TC_tam Documenten";
 
                 let contents = await file.text();
 
