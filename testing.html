@@ -109,6 +109,7 @@
     <div id="top-bar">
         <img src="/favicon.ico" alt="TC_tam Documenten Icon">
         <button id="newFileBtn">Maak nieuw bestand</button>
+        <button id="openFileBtn">Open bestand</button>
     </div>
 
     <div id="editor-container">
@@ -147,6 +148,32 @@
                 const fileHandle = await window.showOpenFilePicker();
                 const file = await fileHandle[0].getFile();
                 let contents = await file.text();
+                document.getElementById('editor').value = contents;
+
+                // Event listener voor wijzigingen in textarea
+                document.getElementById('editor').addEventListener('input', async () => {
+                    contents = document.getElementById('editor').value;
+                    const writable = await fileHandle[0].createWritable();
+                    await writable.write(contents);
+                    await writable.close();
+                    console.log('Bestand bijgewerkt met nieuwe inhoud.');
+                });
+
+                alert('Bestand geopend en klaar om te bewerken!');
+            } catch (error) {
+                console.error('Fout bij openen of bewerken van bestand:', error);
+                alert('Er is een fout opgetreden: ' + error.message);
+            }
+        });
+
+        document.getElementById('openFileBtn').addEventListener('click', async () => {
+            try {
+                // Vraag om toestemming voor het openen van het bestand
+                const fileHandle = await window.showOpenFilePicker();
+                const file = await fileHandle[0].getFile();
+                let contents = await file.text();
+
+                // Plaats de inhoud van het bestand in de editor textarea
                 document.getElementById('editor').value = contents;
 
                 // Event listener voor wijzigingen in textarea
