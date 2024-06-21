@@ -135,6 +135,7 @@
         <p id="title"></p>
         <button id="newFileBtn">Maak nieuw bestand</button>
         <button id="openFileBtn">Open bestand</button>
+        <button id="changeFile" onclick="location.reload();" style="display: none;">Ander bestand selecteren</button>
     </div>
 
     <div id="editor-container">
@@ -234,6 +235,9 @@
                 });
 
                 document.getElementById('editor').style.display = 'block';
+                document.getElementById('openFileBtn').style.display = 'none';
+                document.getElementById('newFileBtn').style.display = 'none';
+                document.getElementById('changeFile').style.display = 'block';
             } catch (error) {
                 console.error('Fout bij openen of bewerken van bestand:', error);
                 alert('Er is een fout opgetreden: ' + error.message);
