@@ -46,13 +46,8 @@
         }
 
         #top-bar img {
-            width: 50px;
-            height: 50px;
             margin-left: 10px;
             cursor: pointer;
-        }
-
-        #top-bar img {
             width: 35px;
             height: 35px;
             cursor: pointer;
@@ -158,9 +153,9 @@
 
 <body>
     <div id="top-bar">
-        <img style="background-color: transparent !important;" onclick="window.location.href='/'" src="/favicon.ico"
+        <img style="height: 50px; width: 50px; background-color: transparent !important;" onclick="window.location.href='/'" src="/favicon.ico"
             alt="TC_tam Documenten Icon">
-        <p id="title"></p>
+        <p id="title" style="margin-left: 10px !important;"></p>
         <button title="Maak een nieuw document aan." id="newFileBtn">Nieuw document</button>
         <button title="Open een bestaand document." id="openFileBtn">Open document</button>
         <button title="Ga terug naar home om een nieuw document te maken of een bestaande te openen." id="changeFile"
