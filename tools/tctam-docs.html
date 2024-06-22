@@ -152,27 +152,27 @@
         <img style="background-color: transparent !important;" onclick="window.location.href='/'" src="/favicon.ico"
             alt="TC_tam Documenten Icon">
         <p id="title"></p>
-        <button id="newFileBtn">Maak nieuw bestand</button>
-        <button id="openFileBtn">Open bestand</button>
-        <button id="changeFile" onclick="location.reload();" style="display: none;">Ander bestand selecteren</button>
+        <button title="Maak een nieuw document aan." id="newFileBtn">Nieuw document</button>
+        <button title="Open een bestaand document." id="openFileBtn">Open document</button>
+        <button title="Ga terug naar home om een nieuw document te maken of een bestaande te openen." id="changeFile" onclick="location.reload();" style="display: none;">Ander document</button>
 
-        <button id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
-        <button id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
-        <button id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
+        <button title="Vet (ctrl + b)" id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
+        <button title="Cursief (ctrl + i)" id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
+        <button title="Onderstrepen (ctrl + u)" id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
 
         <label style="margin-left: 10px; margin-right: -8px;" for="colorPicker">Tekst:</label>
-        <input type="color" id="colorPicker" onchange="applyColor(this.value)">
+        <input title="Tekstkleur" type="color" id="colorPicker" onchange="applyColor(this.value)">
 
         <label style="margin-left: 10px; margin-right: -8px;" for="markColorPicker">Markeer:</label>
-        <input type="color" id="markColorPicker" onchange="applyMarkColor(this.value)">
+        <input title="Markeringskleur" type="color" id="markColorPicker" onchange="applyMarkColor(this.value)">
 
-        <button id="resetColorBtn" style="margin-left: 3px; font-size: 20px; width: 35px;"
+        <button title="Standaard tekstkleur en markeringskleur" id="resetColorBtn" style="margin-left: 3px; font-size: 20px; width: 35px;"
             onclick="applyColor('#000000'), applyMarkColor('#ffffff')">R</button>
 
 
-        <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
-        <img onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
-        <img onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
+        <img title="Links uitlijnen" onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
+        <img title="Centreren" onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
+        <img title="Rechts uitlijnen" onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
     </div>
 
     <div contenteditable="true" id="editor"></div>
