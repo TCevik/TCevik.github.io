@@ -84,7 +84,7 @@
             font-size: 16px;
             line-height: 1.6;
             border: none;
-            background-color: #fefefe;
+            background-color: #ffffff;
             overflow-y: auto;
             overflow-x: hidden;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -144,6 +144,15 @@
         ::-moz-progress-bar {
             background-color: rgb(160, 160, 160);
         }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin: 0px !important;
+            background-color: #ffffff;
+        }
     </style>
 </head>
 
@@ -177,11 +186,23 @@
         <img title="Links uitlijnen" onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
         <img title="Centreren" onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
         <img title="Rechts uitlijnen" onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
+
+
+        <button style="font-size: 20px; width: 35px;" title="Normale tekst"
+            onclick="execCmd('formatBlock', '<p>')">P</button>
+        <button style="width: 35px;" title="H1" onclick="execCmd('formatBlock', '<h1>')">H1</button>
+        <button style="width: 35px;" title="H2" onclick="execCmd('formatBlock', '<h2>')">H2</button>
+        <button style="width: 35px;" title="H3" onclick="execCmd('formatBlock', '<h3>')">H3</button>
+        <button style="width: 35px;" title="H4" onclick="execCmd('formatBlock', '<h4>')">H4</button>
     </div>
 
     <div contenteditable="true" id="editor"></div>
 
     <script>
+        function execCmd(command, value = null) {
+            document.execCommand(command, false, value);
+        }
+
         function makeColor() {
             var selection = window.getSelection();
             if (selection.rangeCount > 0) {
