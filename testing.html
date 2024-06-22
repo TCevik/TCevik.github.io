@@ -1,342 +1,37 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TC_tam Documenten</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0 auto;
-            font-family: Lexend, Arial, sans-serif;
-            margin-top: 70px;
-            scroll-behavior: smooth;
-        }
-
-        #top-bar {
-            position: fixed;
-            display: flex;
-            width: 100%;
-            left: 0;
-            top: 0;
-            background-color: #f6fff5;
-            height: 70px;
-            padding: 0px;
-            align-items: center;
-            border-bottom: 1px solid black;
-            overflow-x: auto;
-        }
-
-        #top-bar button {
-            margin-left: 10px;
-            height: 35px;
-            cursor: pointer;
-            background-color: black;
-            border-radius: 5px;
-            background-color: transparent;
-            font-family: Lexend, Arial, sans-serif;
-        }
-
-        #top-bar button:hover {
-            background-color: #cecece;
-            font-family: Lexend, Arial, sans-serif;
-        }
-
-        #top-bar img {
-            width: 50px;
-            height: 50px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-
-        #top-bar img {
-            width: 35px;
-            height: 35px;
-            cursor: pointer;
-            background-color: black;
-            border-radius: 5px;
-        }
-
-        #top-bar #colorPicker,
-        #top-bar #markColorPicker {
-            width: 70px;
-            height: 35px;
-            cursor: pointer;
-            background-color: transparent;
-            border-radius: 5px;
-        }
-
-        #top-bar p,
-        input {
-            margin-left: 10px;
-        }
-
-        #editor {
-            width: 70%;
-            margin-left: 15%;
-            resize: none;
-            margin-top: 95px;
-            height: calc(100vh - 150px);
-            padding: 20px;
-            font-size: 16px;
-            line-height: 1.6;
-            border: none;
-            background-color: #fefefe;
-            overflow-y: auto;
-            overflow-x: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-family: Lexend, Arial, sans-serif;
-        }
-
-        #editor:focus {
-            border: none;
-            outline: none;
-        }
-
-        #name-input {
-            border-radius: 5px;
-            border: 1px solid black;
-            font-family: Lexend, Arial, sans-serif;
-            margin: 5px;
-            position: fixed;
-            display: flex;
-            top: 80px;
-            left: 20px;
-            height: 35px;
-        }
-
-        /* Change things like scrollbar and select text */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background-color: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: rgb(160, 160, 160);
-            border-radius: 6px;
-        }
-
-        ::-moz-scrollbar {
-            width: 12px;
-        }
-
-        ::-moz-scrollbar-track {
-            background-color: transparent;
-        }
-
-        ::-moz-scrollbar-thumb {
-            background-color: rgb(160, 160, 160);
-            border-radius: 6px;
-        }
-
-        ::selection {
-            background-color: #58bf33;
-            color: #fff;
-        }
-
-        ::-webkit-progress-bar,
-        ::-moz-progress-bar {
-            background-color: rgb(160, 160, 160);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kleur van tekst detecteren</title>
+<style>
+    /* Stijlen voor de editor (niet essentieel voor het script zelf) */
+    .editor {
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 16px;
+        min-height: 200px;
+    }
+</style>
 </head>
-
 <body>
-    <div id="top-bar">
-        <img style="background-color: transparent !important;" onclick="window.location.href='/'" src="/favicon.ico"
-            alt="TC_tam Documenten Icon">
-        <p id="title"></p>
-        <button id="newFileBtn">Maak nieuw bestand</button>
-        <button id="openFileBtn">Open bestand</button>
-        <button id="changeFile" onclick="location.reload();" style="display: none;">Ander bestand selecteren</button>
 
-        <button id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
-        <button id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
-        <button id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
+<div class="editor" contenteditable="true" id="editor">
+    Typ hier wat tekst in verschillende kleuren.
+</div>
+<input type="color" id="markColorPicker" onchange="applyMarkColor(this.value)">
 
-        <label style="margin-left: 10px; margin-right: -8px;" for="colorPicker">Tekst:</label>
-        <input type="color" id="colorPicker" onchange="applyColor(this.value)">
+<script>
+document.getElementById('editor').addEventListener('mouseup', function() {
+    var selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        var range = selection.getRangeAt(0);
+        var parentElement = range.commonAncestorContainer.parentElement;
+        const color = window.getComputedStyle(parentElement).color;
+        document.getElementById('markColorPicker').value = (color);        
+    }
+});
+</script>
 
-        <label style="margin-left: 10px; margin-right: -8px;" for="markColorPicker">Markeer:</label>
-        <input type="color" id="markColorPicker" onchange="applyMarkColor(this.value)">
-
-        <button id="resetColorBtn" style="font-size: 20px; width: 35px;"
-            onclick="applyColor('#000000'), applyMarkColor('#ffffff')">R</button>
-
-
-        <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
-        <img onclick="setAlign('center')" src="/assets/tctam-docs/align-center.png">
-        <img onclick="setAlign('right')" src="/assets/tctam-docs/align-right.png">
-    </div>
-
-    <div contenteditable="true" id="editor"></div>
-
-    <script>
-        let focusInput = true;
-
-
-        document.getElementById("editor").focus();
-        document.getElementById("editor").addEventListener('blur', () => {
-            if (focusInput) {
-                document.getElementById("editor").focus();
-            }
-        });
-
-        function applyColor(color) {
-            const editor = document.getElementById('editor');
-            document.execCommand('foreColor', false, color);
-        }
-
-        function applyMarkColor(color) {
-            const editor = document.getElementById('editor');
-            document.execCommand('hiliteColor', false, color);
-        }
-
-        function checkSelection() {
-            const boldBtn = document.getElementById('boldBtn');
-            const italicBtn = document.getElementById('italicBtn');
-            const underlineBtn = document.getElementById('underlineBtn');
-
-            if (document.queryCommandState('bold')) {
-                boldBtn.style.backgroundColor = '#cecece';
-            } else {
-                boldBtn.style.backgroundColor = 'transparent';
-            }
-
-            if (document.queryCommandState('italic')) {
-                italicBtn.style.backgroundColor = '#cecece';
-            } else {
-                italicBtn.style.backgroundColor = 'transparent';
-            }
-
-            if (document.queryCommandState('underline')) {
-                underlineBtn.style.backgroundColor = '#cecece';
-            } else {
-                underlineBtn.style.backgroundColor = 'transparent';
-            }
-        }
-
-        setInterval(checkSelection, 10);
-
-        function format(command) {
-            document.execCommand(command, false, null);
-        }
-
-        function setAlign(alignment) {
-            const editor = document.getElementById('editor');
-            document.execCommand('justify' + alignment.charAt(0).toUpperCase() + alignment.slice(1), false, null);
-        }
-
-        function getInput(promptText) {
-            return new Promise((resolve, reject) => {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.id = 'name-input';
-                input.placeholder = promptText;
-                focusInput = false;
-
-                input.addEventListener('keyup', (event) => {
-                    if (event.key === 'Enter') {
-                        resolve(input.value.trim());
-                        document.body.removeChild(input);
-                        focusInput = true;
-                    }
-                });
-
-                input.addEventListener('blur', () => {
-                    resolve(input.value.trim());
-                    document.body.removeChild(input);
-                    focusInput = true;
-                });
-
-                document.body.appendChild(input);
-                input.focus();
-            });
-        }
-
-        document.getElementById('newFileBtn').addEventListener('click', async () => {
-            try {
-                const fileName = await getInput('Voer naam document in:');
-                if (fileName !== null && fileName !== '') {
-                    console.log(`Je hebt gekozen voor de bestandsnaam: "${fileName}"`);
-                } else {
-                    alert('Geen geldige bestandsnaam ingevoerd.');
-                    return;
-                }
-                const fileContent = '';
-
-                const blob = new Blob([fileContent], { type: 'text/tdoc' });
-
-                const url = URL.createObjectURL(blob);
-
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName + '.tdoc';
-                a.textContent = 'Klik hier om het bestand te downloaden';
-
-                document.body.appendChild(a);
-
-                a.click();
-
-                document.body.removeChild(a);
-            } catch (error) {
-                alert('Er is een fout opgetreden bij het genereren van het bestand:' + error);
-            }
-
-            setTimeout(() => {
-                loadFile();
-            }, 1000);
-        });
-
-        document.getElementById('openFileBtn').addEventListener('click', async () => {
-            loadFile();
-        });
-
-        async function loadFile() {
-            try {
-                const [fileHandle] = await window.showOpenFilePicker({
-                    types: [{
-                        description: '.tdoc',
-                        accept: {
-                            'text/tdoc': ['.tdoc']
-                        }
-                    }]
-                });
-
-                const file = await fileHandle.getFile();
-                const fileName = file.name;
-                const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
-                document.getElementById('title').textContent = fileNameWithoutExtension;
-                document.title = fileNameWithoutExtension + " - TC_tam Documenten";
-
-                let contents = await file.text();
-
-                document.getElementById('editor').innerHTML = contents;
-
-                document.getElementById('editor').addEventListener('input', async () => {
-                    contents = document.getElementById('editor').innerHTML;
-                    const writable = await fileHandle.createWritable();
-                    await writable.write(contents);
-                    await writable.close();
-                    console.log('Bestand bijgewerkt met nieuwe inhoud.');
-                });
-
-                document.getElementById('editor').style.display = 'block';
-                document.getElementById('openFileBtn').style.display = 'none';
-                document.getElementById('newFileBtn').style.display = 'none';
-                document.getElementById('changeFile').style.display = 'block';
-            } catch (error) {
-                console.error('Fout bij openen of bewerken van bestand:', error);
-                alert('Er is een fout opgetreden: ' + error.message);
-            }
-        }
-    </script>
 </body>
-
 </html>
