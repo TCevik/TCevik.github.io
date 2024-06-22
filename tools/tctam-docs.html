@@ -178,8 +178,43 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
-        let focusInput = true;
+        function makeColor() {
+            var selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                var range = selection.getRangeAt(0);
+                var parentElement = range.commonAncestorContainer.parentElement;
+                const color = window.getComputedStyle(parentElement).color;
+                var hexColor = rgbToHex(color);
+                document.getElementById('colorPicker').value = hexColor;
+            }
+        }
 
+        function makeMarkColor() {
+            var selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                var range = selection.getRangeAt(0);
+                var parentElement = range.commonAncestorContainer.parentElement;
+                const backgroundColor = window.getComputedStyle(parentElement).backgroundColor;
+                var hexColor = rgbToHex(backgroundColor);
+                document.getElementById('markColorPicker').value = hexColor;
+            }
+        }
+
+        document.getElementById('editor').addEventListener('mouseup', makeColor)
+        document.getElementById('editor').addEventListener('input', makeColor)
+        document.addEventListener('keyup', makeColor)
+        document.getElementById('editor').addEventListener('mouseup', makeMarkColor)
+        document.getElementById('editor').addEventListener('input', makeMarkColor)
+        document.addEventListener('keyup', makeMarkColor)
+
+        function rgbToHex(rgb) {
+            var rgbArray = rgb.match(/\d+/g);
+            return '#' + ('0' + parseInt(rgbArray[0], 10).toString(16)).slice(-2) +
+                ('0' + parseInt(rgbArray[1], 10).toString(16)).slice(-2) +
+                ('0' + parseInt(rgbArray[2], 10).toString(16)).slice(-2);
+        }
+
+        let focusInput = true;
         document.getElementById("editor").focus();
         document.getElementById("editor").addEventListener('blur', () => {
             if (focusInput) {
