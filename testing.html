@@ -158,14 +158,15 @@
         <button id="boldBtn" style="font-size: 20px; width: 35px;" onclick="format('bold')"><b>B</b></button>
         <button id="italicBtn" style="font-size: 20px; width: 35px;" onclick="format('italic')"><i>I</i></button>
         <button id="underlineBtn" style="font-size: 20px; width: 35px;" onclick="format('underline')"><u>U</u></button>
-        
+
         <label style="margin-left: 10px; margin-right: -8px;" for="colorPicker">Tekst:</label>
         <input type="color" id="colorPicker" onchange="applyColor(this.value)">
 
         <label style="margin-left: 10px; margin-right: -8px;" for="markColorPicker">Markeer:</label>
         <input type="color" id="markColorPicker" onchange="applyMarkColor(this.value)">
 
-        <button id="resetColorBtn" style="font-size: 20px; width: 35px;" onclick="applyColor('#000000'), applyMarkColor('#ffffff')">R</button>
+        <button id="resetColorBtn" style="font-size: 20px; width: 35px;"
+            onclick="applyColor('#000000'), applyMarkColor('#ffffff')">R</button>
 
 
         <img onclick="setAlign('left')" src="/assets/tctam-docs/align-left.png">
@@ -176,6 +177,10 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
+        document.getElementById("editor").focus();
+        document.getElementById("editor").addEventListener('blur', () =>
+        document.getElementById("editor").focus())
+
         function applyColor(color) {
             const editor = document.getElementById('editor');
             document.execCommand('foreColor', false, color);
