@@ -177,9 +177,15 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
+        let focusInput = true;
+
+
         document.getElementById("editor").focus();
-        document.getElementById("editor").addEventListener('blur', () =>
-        document.getElementById("editor").focus())
+        document.getElementById("editor").addEventListener('blur', () => {
+            if (focusInput) {
+                document.getElementById("editor").focus();
+            }
+        });
 
         function applyColor(color) {
             const editor = document.getElementById('editor');
@@ -232,17 +238,20 @@
                 input.type = 'text';
                 input.id = 'name-input';
                 input.placeholder = promptText;
+                focusInput = false;
 
                 input.addEventListener('keyup', (event) => {
                     if (event.key === 'Enter') {
                         resolve(input.value.trim());
                         document.body.removeChild(input);
+                        focusInput = true;
                     }
                 });
 
                 input.addEventListener('blur', () => {
                     resolve(input.value.trim());
                     document.body.removeChild(input);
+                    focusInput = true;
                 });
 
                 document.body.appendChild(input);
