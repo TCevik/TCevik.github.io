@@ -153,8 +153,8 @@
 
 <body>
     <div id="top-bar">
-        <img style="height: 50px; width: 50px; background-color: transparent !important;" onclick="window.location.href='/'" src="/favicon.ico"
-            alt="TC_tam Documenten Icon">
+        <img style="height: 50px; width: 50px; background-color: transparent !important;"
+            onclick="window.location.href='/'" src="/favicon.ico" alt="TC_tam Documenten Icon">
         <p id="title" style="margin-left: 10px !important;"></p>
         <button title="Maak een nieuw document aan." id="newFileBtn">Nieuw document</button>
         <button title="Open een bestaand document." id="openFileBtn">Open document</button>
@@ -194,6 +194,16 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
+        document.getElementById('editor').addEventListener('keyup', function (event) {
+            if (event.key === 'Enter') {
+                document.execCommand('formatBlock', false, '<p>');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.execCommand('formatBlock', false, '<p>');
+        });
+
         function execCmd(command, value = null) {
             document.execCommand(command, false, value);
         }
@@ -372,6 +382,7 @@
                 let contents = await file.text();
 
                 document.getElementById('editor').innerHTML = contents;
+                document.execCommand('formatBlock', false, '<p>');
 
                 document.getElementById('editor').addEventListener('input', async () => {
                     contents = document.getElementById('editor').innerHTML;
