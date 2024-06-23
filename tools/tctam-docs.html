@@ -194,6 +194,20 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
+        document.getElementById('editor').addEventListener('keyup', function() {
+            var editor = document.getElementById('editor');
+            if (editor.innerHTML.trim() === '') {
+                document.execCommand('formatBlock', false, '<p>');
+            }
+        });
+
+        document.getElementById('editor').addEventListener('keydown', function() {
+            var editor = document.getElementById('editor');
+            if (editor.innerHTML.trim() === '') {
+                document.execCommand('formatBlock', false, '<p>');
+            }
+        });
+
         document.getElementById('editor').addEventListener('keyup', function (event) {
             if (event.key === 'Enter') {
                 document.execCommand('formatBlock', false, '<p>');
