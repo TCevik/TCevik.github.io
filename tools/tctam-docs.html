@@ -415,6 +415,11 @@
                 alert('Er is een fout opgetreden: ' + error.message);
             }
         }
+
+        if (!window.showOpenFilePicker) {
+            document.getElementById('newFileBtn').style.display = 'none';
+            document.getElementById('openFileBtn').style.display = 'none';
+        }
     </script>
 </body>
 
