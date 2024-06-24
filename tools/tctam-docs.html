@@ -131,8 +131,7 @@
         }
 
         ::selection {
-            background-color: #58bf33;
-            color: #fff;
+            background-color: #58bf3345;
         }
 
         ::-webkit-progress-bar,
@@ -156,11 +155,15 @@
         }
 
         #editor img::selection {
-            background-color: transparent;
+            background-color: #58bf3345;
         }
 
         .selected {
             outline: 5px solid #58bf33;
+        }
+
+        .selected::selection {
+            background-color: transparent !important;
         }
 
         #resize-img-notif {
