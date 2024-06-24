@@ -209,7 +209,14 @@
     <script>
         document.getElementById('editor').addEventListener('DOMNodeInserted', function (event) {
             if (event.target.tagName === 'IMG') {
-                event.target.removeAttribute('style');
+                const imgElement = event.target;
+                const srcValue = imgElement.getAttribute('src');
+                Array.from(imgElement.attributes).forEach(attr => {
+                    if (attr.name !== 'src') {
+                        imgElement.removeAttribute(attr.name);
+                    }
+                });
+                imgElement.setAttribute('src', srcValue);
             }
         });
 
