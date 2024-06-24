@@ -218,6 +218,8 @@
                     }
                 });
                 imgElement.setAttribute('src', srcValue);
+                var breedtePlaatje = prompt("Hoeveel procent breed moet het plaatje zijn van het tekstveld? Voer een percentage in:");
+                imgElement.style.width = breedtePlaatje + '%';
             }
         });
 
@@ -227,7 +229,7 @@
             document.execCommand('insertHTML', false, text);
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        /* document.addEventListener('DOMContentLoaded', function () {
             let selectedImg = null;
 
             document.getElementById('editor').addEventListener('click', function (event) {
@@ -258,7 +260,7 @@
                     }
                 }
             });
-        });
+        }); */
 
         document.getElementById('editor').addEventListener('keyup', function () {
             var editor = document.getElementById('editor');
