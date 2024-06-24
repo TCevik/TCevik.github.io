@@ -148,6 +148,19 @@
             margin: 0px !important;
             background-color: #ffffff;
         }
+
+        #editor img {
+            cursor: pointer;
+            max-width: 100% !important;
+        }
+
+        #editor img::selection {
+            background-color: transparent;
+        }
+
+        .selected {
+            outline: 5px solid #58bf33;
+        }
     </style>
 </head>
 
@@ -194,14 +207,47 @@
     <div contenteditable="true" id="editor"></div>
 
     <script>
-        document.getElementById('editor').addEventListener('keyup', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            let selectedImg = null;
+
+            document.getElementById('editor').addEventListener('click', function (event) {
+                if (event.target.tagName === 'IMG') {
+                    if (selectedImg) {
+                        selectedImg.classList.remove('selected');
+                    }
+                    selectedImg = event.target;
+                    selectedImg.classList.add('selected');
+                } else {
+                    if (selectedImg) {
+                        selectedImg.classList.remove('selected');
+                        selectedImg = null;
+                    }
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (selectedImg) {
+                    event.preventDefault();
+                    const step = 5;
+                    if (event.key === 'ArrowUp') {
+                        selectedImg.style.width = (selectedImg.offsetWidth + step) + 'px';
+                        selectedImg.style.height = 'auto';
+                    } else if (event.key === 'ArrowDown') {
+                        selectedImg.style.width = (selectedImg.offsetWidth - step) + 'px';
+                        selectedImg.style.height = 'auto';
+                    }
+                }
+            });
+        });
+
+        document.getElementById('editor').addEventListener('keyup', function () {
             var editor = document.getElementById('editor');
             if (editor.innerHTML.trim() === '') {
                 document.execCommand('formatBlock', false, '<p>');
             }
         });
 
-        document.getElementById('editor').addEventListener('keydown', function() {
+        document.getElementById('editor').addEventListener('keydown', function () {
             var editor = document.getElementById('editor');
             if (editor.innerHTML.trim() === '') {
                 document.execCommand('formatBlock', false, '<p>');
@@ -214,7 +260,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.execCommand('formatBlock', false, '<p>');
         });
 
