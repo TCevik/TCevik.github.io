@@ -182,7 +182,8 @@
 </head>
 
 <body>
-    <p id="resize-img-notif">Gebruik de pijltjestoetsen om de grootte van het afbeelding aan te passen. Druk op Enter om te stoppen</p>
+    <p id="resize-img-notif">Gebruik de pijltjestoetsen om de grootte van het afbeelding aan te passen. Druk op Enter om
+        te stoppen</p>
 
     <div id="top-bar">
         <img style="height: 50px; width: 50px; background-color: transparent !important;"
@@ -242,9 +243,43 @@
 
         document.getElementById('editor').addEventListener('paste', function (event) {
             event.preventDefault();
-            const text = (event.clipboardData || window.clipboardData).getData('text/html');
-            document.execCommand('insertHTML', false, text);
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const text = clipboardData.getData('text/html');
+
+            const sanitizedHtml = sanitizeHtml(text);
+
+            document.execCommand('insertHTML', false, sanitizedHtml);
         });
+
+        function sanitizeHtml(html) {
+            // Verwijder alle stijlattributen behalve kleur, behoud kopniveaus en opmaak
+            const sanitized = html.replace(/(<[^>]+) style=".*?"/gi, function (match, p1) {
+                const style = match.match(/style="(.*?)"/i)[1];
+                const sanitizedStyle = sanitizeStyle(style);
+                return p1 + (sanitizedStyle ? ` style="${sanitizedStyle}"` : '');
+            });
+
+            // Behoud kopniveaus
+            const finalHtml = sanitized.replace(/(<\/?h[1-6])\s?[^>]*?>/gi, '$1>');
+
+            // Behoud opmaak zoals bold (strong), italic (em/i) en underline (u)
+            const formattedHtml = finalHtml.replace(/<(\/?(?:strong|b|em|i|u))\b[^>]*>/gi, '<$1>');
+
+            return formattedHtml;
+        }
+
+        function sanitizeStyle(style) {
+            // Houd alleen kleurattributen
+            const styleObj = style.split(';').reduce((acc, current) => {
+                const [key, value] = current.split(':').map(part => part.trim().toLowerCase());
+                if (key === 'color' || key === 'background-color') {
+                    acc.push(`${key}: ${value}`);
+                }
+                return acc;
+            }, []);
+
+            return styleObj.join('; ');
+        }
 
         document.addEventListener('DOMContentLoaded', function () {
             let selectedImg = null;
