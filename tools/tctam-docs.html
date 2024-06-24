@@ -218,8 +218,8 @@
                     }
                 });
                 imgElement.setAttribute('src', srcValue);
-                var breedtePlaatje = prompt("Hoeveel procent breed moet het plaatje zijn van het tekstveld? Voer een percentage in:");
-                imgElement.style.width = breedtePlaatje + '%';
+                imgElement.click();
+                imgElement.style.width = '100px';
             }
         });
 
@@ -229,7 +229,7 @@
             document.execCommand('insertHTML', false, text);
         });
 
-        /* document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
             let selectedImg = null;
 
             document.getElementById('editor').addEventListener('click', function (event) {
@@ -239,12 +239,16 @@
                     }
                     selectedImg = event.target;
                     selectedImg.classList.add('selected');
-                } else {
-                    if (selectedImg) {
-                        selectedImg.classList.remove('selected');
-                        selectedImg = null;
-                    }
                 }
+                document.onkeydown = function (event) {
+                    if (event.key === 'Enter') {
+                        if (selectedImg) {
+                            selectedImg.classList.remove('selected');
+                            selectedImg = null;
+                            selectedImg.style.width = selectedImg.style.width;
+                        }
+                    }
+                };
             });
 
             document.addEventListener('keydown', function (event) {
@@ -260,7 +264,7 @@
                     }
                 }
             });
-        }); */
+        });
 
         document.getElementById('editor').addEventListener('keyup', function () {
             var editor = document.getElementById('editor');
@@ -327,7 +331,11 @@
         }
 
         let focusInput = true;
-        document.getElementById("editor").focus();
+        document.addEventListener("DOMContentLoaded", function () {
+            if (focusInput) {
+                document.getElementById("editor").focus();
+            }
+        });
         document.getElementById("editor").addEventListener('blur', () => {
             if (focusInput) {
                 document.getElementById("editor").focus();
