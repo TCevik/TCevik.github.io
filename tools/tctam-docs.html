@@ -278,6 +278,14 @@
                 return acc;
             }, []);
 
+            // Controleer of er een achtergrondkleur is
+            const hasBackgroundColor = styleObj.some(item => item.startsWith('background-color'));
+
+            // Als er geen achtergrondkleur is of deze is transparant, voeg dan een witte achtergrondkleur toe
+            if (!hasBackgroundColor || styleObj.includes('background-color: transparent')) {
+                styleObj.push('background-color: white');
+            }
+
             return styleObj.join('; ');
         }
 
