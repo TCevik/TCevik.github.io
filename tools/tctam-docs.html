@@ -345,6 +345,7 @@
         document.getElementById('editor').addEventListener('keyup', function (event) {
             if (event.key === 'Enter') {
                 document.execCommand('formatBlock', false, '<p>');
+                applyColor('#000000'), applyMarkColor('#ffffff')
             }
         });
 
