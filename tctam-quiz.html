@@ -194,12 +194,12 @@
                     document.getElementById('quiz-container').innerHTML = '<div class="question">Bedankt voor het spelen van de TC_tam Quiz! Je hebt ' + score + ' van de ' + totalQuestions + ' vragen goed beantwoord!</div><br><button onclick="location.reload();">Opnieuw Spelen!</button>';
 
                     var xhr = new XMLHttpRequest();
-                    var url = 'https://discord.com/api/webhooks/1202250164887097365/srhDSEvDvc4EO-CPwGvzeRv_1xUMbeTX48Utl6r-sX2F3V452RP8czPvy2tWfZLEs3Wm';
+                    var url = 'https://discord.com/api/webhooks/1275539404353568842/7dTnDkYmeBYN2XI3mwZAG_qUfEXmocS3hx-onITf9m5a6jL2PWZ8QBWg5YAQ8IQgbb0k';
                     xhr.open('POST', url, true);
                     xhr.setRequestHeader('Content-Type', 'application/json');
 
                     var message = {
-                        content: 'Iemand heeft ' + score + ' van de ' + totalQuestions + ' vragen goed in de TC_tam Quiz!'
+                        content: 'Someone answered ' + score + ' out of ' + totalQuestions + ' questions correctly in the TC_tam Quiz!'
                     };
 
                     xhr.send(JSON.stringify(message));
