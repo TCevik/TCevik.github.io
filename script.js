@@ -97,7 +97,7 @@ var buttons = `
 	<button onclick="window.location.href='/online-store'">Online Store</button>
 	<button id="login-register-button-nav" onclick="window.location.href='/account/inloggen-registreren'">Login / Register</button>
 
-    <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
+    <h3 style="margin-top: 50px;" id="tools">Tools</h3>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
@@ -106,18 +106,18 @@ var buttons = `
     <button onclick="window.location.href='/tools/ide'">IDE</button>
     <button onclick="window.location.href='/tools/tts'">TTS</button>
 
-	<h3 style="margin-top: 50px;" id="schoolhacks">Voor School</h3>
+	<h3 style="margin-top: 50px;" id="schoolhacks">For School</h3>
 	<button onclick="window.location.href='/school/hz-geluiden'">Play sounds from 20 - 20,000 Hz (incl. school bell)</button>
     <button onclick="window.location.href='/school/bing-chat'">Bing Ai (GPT 4)</button>
 	<button onclick="window.location.href='/school/myinstants'">MyInstants</button>
     <button onclick="window.location.href='/school/rammerhead'">Proxy - Rammerhead</button>
 
-	<h3 style="margin-top: 50px;" id="archief">Archief</h3>
+	<h3 style="margin-top: 50px;" id="archief">Archive</h3>
     <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
 	<button onclick="window.location.href='/archief/school-hack-2'">School hack 2</button>
     <button onclick="window.location.href='/archief/school-hack-3'">School hack 3</button>
 
-	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
+	<h3 style="margin-top: 50px;" id="overwebsite">About the website</h3>
 	<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank')">Report a bug</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
