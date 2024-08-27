@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>TC_tam</title>
-    <meta name="description" content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Je hebt hier verschillende handige tools om te gebruiken op je laptop en telefoon.">
+    <meta name="description"
+        content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Je hebt hier verschillende handige tools om te gebruiken op je laptop en telefoon.">
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -268,6 +269,19 @@
             z-index: 6;
             margin: -20px;
         }
+
+        /* Voor de uitschuifbare lijst met vakken */
+        #subjects {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        /* Als de lijst uitgeklapt is */
+        #subjects.expanded {
+            max-height: 200px;
+            /* Pas deze waarde aan op basis van de verwachte hoogte van de inhoud */
+        }
     </style>
 </head>
 
@@ -287,7 +301,8 @@
     <button id="picto-planner-btn" onclick="window.location.href='/picto-planner'"
         style="margin-top: 10px; opacity: 0; transition: 0.3s;">Ga naar de TC_tam Picto Planner</button>
 
-    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript of de pagina is nog aan het laden.
+    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript of de pagina is nog aan het
+        laden.
     <p>
 
     <p id="welcome-message" onload=""></p>
@@ -389,7 +404,7 @@
                     niet zo veel, maar de winter is toch mijn favoriete seizoen.
                     <br>- Als vakkenpakket heb ik natuur en techniek gekozen, ik heb nu dus de volgende vakken: <a
                         style="cursor: pointer;" id="unfold-button" onclick="toggleSubjects()">Uitvouwen</a>
-                <div style="display: none;" id="subjects">
+                <div id="subjects">
                     <li style="margin-top: -20px;">Nederlands</li>
                     <li>Engels</li>
                     <li>Maatschappijleer</li>
@@ -429,12 +444,12 @@
 
                     function toggleSubjects() {
                         var subjectsDiv = document.getElementById("subjects");
-                        if (subjectsDiv.style.display === "none") {
-                            subjectsDiv.style.display = "block";
-                            document.getElementById("unfold-button").innerText = "Inklappen";
-                        } else {
-                            subjectsDiv.style.display = "none";
+                        if (subjectsDiv.classList.contains("expanded")) {
+                            subjectsDiv.classList.remove("expanded");
                             document.getElementById("unfold-button").innerText = "Uitvouwen";
+                        } else {
+                            subjectsDiv.classList.add("expanded");
+                            document.getElementById("unfold-button").innerText = "Inklappen";
                         }
                     }
                 </script>
