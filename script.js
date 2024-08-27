@@ -112,12 +112,12 @@ var buttons = `
 	<button onclick="window.location.href='/school/myinstants'">MyInstants</button>
     <button onclick="window.location.href='/school/rammerhead'">Proxy - Rammerhead</button>
 
-	<h3 style="margin-top: 50px;" id="archief">Archive</h3>
-    <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
-	<button onclick="window.location.href='/archief/school-hack-2'">School hack 2</button>
-    <button onclick="window.location.href='/archief/school-hack-3'">School hack 3</button>
+	<h3 style="margin-top: 50px;" id="archive">Archive</h3>
+    <button onclick="window.location.href='/archive/school-hack-1'">School hack 1</button>
+	<button onclick="window.location.href='/archive/school-hack-2'">School hack 2</button>
+    <button onclick="window.location.href='/archive/school-hack-3'">School hack 3</button>
 
-	<h3 style="margin-top: 50px;" id="overwebsite">About the website</h3>
+	<h3 style="margin-top: 50px;" id="about">About the website</h3>
 	<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank')">Report a bug</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
