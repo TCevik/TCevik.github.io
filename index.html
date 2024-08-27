@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>TC_tam</title>
-    <meta name="description" content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Je hebt hier verschillende handige tools om te gebruiken op je laptop en telefoon.">
+    <meta name="description"
+    content="Welcome to the TC_tam website! This site is made by Tamer Çevik. You have several useful tools here to use on your laptop and phone.">
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -23,7 +24,7 @@
             var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
 
-            document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+            document.getElementById('countup-site-age').innerHTML = "This site has been around for " + days + " days, " + hours + " hours, " + minutes + " minutes and " + seconds + " seconds!";
         }
 
         setInterval(countup, 100);
@@ -41,11 +42,10 @@
         }
 
         function calculateAge() {
-            const birthdate = new Date(2009, 4, 18); // Jouw geboortedatum hier
+            const birthdate = new Date(2009, 4, 18);
             const today = new Date();
             let age = today.getFullYear() - birthdate.getFullYear();
 
-            // Aanpassen als de verjaardag nog niet heeft plaatsgevonden dit jaar
             if (today < new Date(today.getFullYear(), birthdate.getMonth(), birthdate.getDate())) {
                 age--;
             }
@@ -55,13 +55,13 @@
 
         function updateAgeAndCountdown() {
             const age = calculateAge();
-            document.getElementById('age').innerHTML = `Ik ben Tamer, een ${age} jarige jongen die websites maakt.`;
+            document.getElementById('age').innerHTML = `I'm Tamer, a ${age} year old boy who makes websites.`;
 
             const nextBirthday = getNextBirthday();
             const today = new Date();
 
             if (today.getMonth() === 4 && today.getDate() === 18) {
-                document.getElementById('birthday').innerHTML = "Het is vandaag 18 mei, dus ik ben vandaag jarig!!! 🥳";
+                document.getElementById('birthday').innerHTML = "Today is May 18th, so today is my birthday!!! 🥳";
             } else {
                 const timeLeft = nextBirthday - today;
 
@@ -70,8 +70,7 @@
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-                document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
-            }
+                document.getElementById('birthday').innerHTML = `There are ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds left until my birthday!`;            }
         }
 
         setInterval(updateAgeAndCountdown, 100);
@@ -87,7 +86,7 @@
 
         async function shareURL() {
             share({
-                title: "TC_tam, beste site ooit!",
+                title: "TC_tam, the best site ever!",
                 url: "/"
             });
         }
@@ -96,12 +95,12 @@
             if (navigator.canShare(toShare)) {
                 try {
                     await navigator.share(toShare);
-                    notification("Link gedeeld!")
+                    notification("Link shared!")
                 } catch (e) {
                     console.error("Content was not shared by the user")
                 }
             } else {
-                notification("Dit kan niet worden gedeeld met dit apparaat en/of browser")
+                notification("This cannot be shared with this device and/or browser")
             }
         }
 
@@ -274,29 +273,30 @@
 <body id="body" onload="countup(); countdownToBirthday();">
     <div id="announcements" style="display: none; opacity: 0;" class="diff-color-section2">
         <h4 style="margin: 0px; margin-bottom: -15px; transform: translate(0%, -60%);">Aankondigingen:</h4>
-        <p id="announcementText" style="margin: 0px;">Laden...</p>
+        <p id="announcementText" style="margin: 0px;">Loading...</p>
     </div>
 
     <div id="background-ball"></div>
 
     <div id="title">
         <h1 class="title-text" style="margin-top: 10px;">TC_tam</h1>
-        <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
+        <h2 class="title-text" style="margin-top: -10px;">By Tamer Çevik</h2>
     </div>
 
     <button id="picto-planner-btn" onclick="window.location.href='/picto-planner'"
         style="margin-top: 10px; opacity: 0; transition: 0.3s;">Ga naar de TC_tam Picto Planner</button>
 
-    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript of de pagina is nog aan het laden.
+    <p id="countup-site-age">JavaScript is turned off and this site will not work without JavaScript or the page is
+        still loading.
     <p>
 
     <p id="welcome-message" onload=""></p>
 
-    <button onclick="openTctamQuizPopup()">Klik hier voor de TC_tam Quiz!</button>
+    <button onclick="openTctamQuizPopup()">Click here for the TC_tam Quiz!</button>
 
     <div id="tctamquizpopup" class="tctamquizpopup-overlay">
         <div class="tctamquizpopup-content">
-            <button style="size: 30px;" class="close-btn" onclick="closeTctamQuizPopup()">Sluiten</button>
+            <button style="size: 30px;" class="close-btn" onclick="closeTctamQuizPopup()">Close</button>
             <iframe id="tctam-quiz-iframe" src="/tctam-quiz"
                 style="background-color: var(--bg-accent-color2); width: 100%; height: 100%;" frameborder="0"></iframe>
         </div>
@@ -327,7 +327,7 @@
                 <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
                     src="/assets/social-media/scratch.png" alt="Scratch Link">
             </a>
-            <a target="_blank" style="border-bottom: none;" href="https://discordapp.com/users/918392297253634078">
+            <a target="_blank" style="border-bottom: none;" href="https://discord.gg/KfMHZRUaxy">
                 <img loading="lazy" style="margin: 5px;" width="60px" height="60px"
                     src="/assets/social-media/discord.png" alt="Discord Link">
             </a>
@@ -347,7 +347,7 @@
             style="width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
             <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px"
                 src="/assets/share-icon.png" alt="Deel icon">
-            Deel deze website
+            Share this website
         </button>
 
         <div style="display: flex; width: 100%; justify-content: space-between; margin-top: 20px;">
@@ -356,51 +356,50 @@
             </div>
 
             <div style="margin-top: -30px; flex-grow: 1; text-align: left;">
-                <h3 id="age">Ik ben Tamer, een (leeftijd) jarige jongen die websites maakt.</h3>
+                <h3 id="age">I'm Tamer, a (age) year old boy who makes websites.</h3>
                 <p style="color: var(--h1234-color);" class="aboutme-text" id="birthday"></p>
 
-                <p><b>Hoe heb ik TC_tam bedacht?</b>
-                    <br>- Ik heet Tamer Çevik.
-                    <br>- TC staan voor de 1e letter van mijn voor- en achternaam.
-                    <br>- tam staan voor de 3 eerste letters van mijn voornaam.
-                    <br>Nu weet je hoe ik TC_tam verzonnen heb!
+                <p><b>How did I come up with TC_tam?</b>
+                    <br>- My name is Tamer Çevik.
+                    <br>- TC stands for the first letter of my first and last name.
+                    <br>- tam stands for the first 3 letters of my first name.
+                    <br>Now you know how I came up with TC_tam!
                 </p>
 
                 <b>Hobby's:</b>
-                <p style="margin-top: 0px;">- Ik doe karate als sport.
-                    <br>- Ik geef zwemles aan kinderen bij zwemvereniging <a href="https://evzv.nl"
+                <p style="margin-top: 0px;">- I do karate as a sport.
+                    <br>- I teach swimming to children at swimming club <a href="https://evzv.nl"
                         target="_blank">EVZV</a>.
-                    <br>- En natuurlijk maak ik ook heel graag websites.
+                    <br>- And of course I also love making websites.
                 </p>
 
                 <b>Later:</b>
-                <p style="margin-top: 0px;">- Ik wilde voordat ik sites maakte YouTuber worden, ik maakte een
-                    website voor mijn kanaal met Google Sites (dat is heel simpel). Maar toen ik die site had gemaakt
-                    zag ik hoe
-                    leuk ik het vind om met computers te werken dus ben ik deze site gaan maken.
-                    <br>- Mijn nieuwe plan is om als ik volwassen ben software engineer te worden. Als software engineer
-                    ontwerp, ontwikkel en test je softwareapplicaties.
+                <p style="margin-top: 0px;">- Before I made sites I wanted to be a YouTuber, I made a
+                    website for my channel with Google Sites (it's very simple). But after I made that site
+                    I saw how much I enjoy working with computers so I started making this site.
+                    <br>- My new plan is to become a software engineer when I grow up. As a software engineer, you
+                    design, develop and test software applications.
                 </p>
 
-                <b>Middelbare school:</b>
-                <p style="margin-top: 0px;">- Ik doe havo. Ik vind dat ik op een leuke
-                    school met aardige docenten zit. Ik woon ook in dezelfde stad, dus ik ben in 3 minuten op school.
-                    Dat is fijn als het regent, want dan hoef ik niet 15 minuten te fietsen. Helaas sneeuwt het hier
-                    niet zo veel, maar de winter is toch mijn favoriete seizoen.
-                    <br>- Als vakkenpakket heb ik natuur en techniek gekozen, ik heb nu dus de volgende vakken: <a
-                        style="cursor: pointer;" id="unfold-button" onclick="toggleSubjects()">Uitvouwen</a>
+                <b>High school:</b>
+                <p style="margin-top: 0px;">- I am in pre-university education. I think I am at a nice school with nice
+                    teachers. I also live in the same city, so I can get to school in 3 minutes.
+                    That is nice when it rains, because then I don't have to cycle for 15 minutes. Unfortunately, it
+                    doesn't snow that much here, but winter is still my favorite season.
+                    <br>- I chose science and technology as my subject package, so I now have the following subjects: <a
+                        style="cursor: pointer;" id="unfold-button" onclick="toggleSubjects()">Expand</a>
                 <div style="display: none;" id="subjects">
-                    <li style="margin-top: -20px;">Nederlands</li>
-                    <li>Engels</li>
-                    <li>Maatschappijleer</li>
-                    <li>Lichamelijke opvoeding</li>
+                    <li style="margin-top: -20px;">Dutch</li>
+                    <li>English</li>
+                    <li>Social Studies</li>
+                    <li>Physical Education</li>
                     <li>CKV</li>
-                    <li>Godsdienst en levensbeschouwing</li>
-                    <li>Wiskunde B</li>
-                    <li>Natuurkunde</li>
-                    <li>Scheikunde</li>
-                    <li>Informatica</li>
-                    <li>Biologie</li>
+                    <li>Religion and Philosophy</li>
+                    <li>Mathematics B</li>
+                    <li>Physics</li>
+                    <li>Chemistry</li>
+                    <li>Computer Science</li>
+                    <li>Biology</li>
                 </div>
                 </p>
 
@@ -412,29 +411,29 @@
                         var hour = currentTime.getHours();
                         var greeting;
                         if (hour >= 0 && hour < 6) {
-                            greeting = "Goedenacht";
+                            greeting = "Good night";
                         } else if (hour >= 6 && hour < 12) {
-                            greeting = "Goedemorgen";
+                            greeting = "Good morning";
                         } else if (hour >= 12 && hour < 18) {
-                            greeting = "Goedemiddag";
+                            greeting = "Good afternoon";
                         } else {
-                            greeting = "Goedenavond";
+                            greeting = "Good evening";
                         }
                         return greeting;
                     }
                     if (userEmailC && userNameC) {
                         var greeting = getGreeting();
-                        document.getElementById('welcome-message').innerText = greeting + " " + userNameC + "! Welkom terug op de TC_tam website. Ik wens je een fijn bezoek!";
+                        document.getElementById('welcome-message').innerText = greeting + " " + userNameC + "! Welcome back to the TC_tam website. I hope you enjoy your visit!";
                     }
 
                     function toggleSubjects() {
                         var subjectsDiv = document.getElementById("subjects");
                         if (subjectsDiv.style.display === "none") {
                             subjectsDiv.style.display = "block";
-                            document.getElementById("unfold-button").innerText = "Inklappen";
+                            document.getElementById("unfold-button").innerText = "Collapse";
                         } else {
                             subjectsDiv.style.display = "none";
-                            document.getElementById("unfold-button").innerText = "Uitvouwen";
+                            document.getElementById("unfold-button").innerText = "Expand";
                         }
                     }
                 </script>
@@ -442,51 +441,47 @@
         </div>
     </div>
 
-    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam
-        site</button>
+    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Get your name on the TC_tam Website too!</button>
     <div id="tctam-fans" style="margin: 0 auto; height: 600px; overflow: hidden;">
         <iframe id="tctam-fans-iframe" src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
     </div>
 
     <div class="diff-color-section2" style="margin-bottom: 30px;">
         <h3 style="margin-top: 0px;">Credits:</h3>
-        <li><b>Eigenaar: </b>Tamer Çevik</li>
-        <li><b>Hacks zoeker en helper: </b>Vera van Bergen</li>
+        <li><b>Owner: </b>Tamer Çevik</li>
+        <li><b>Hacks seeker and helper: </b>Vera van Bergen</li>
         <li><b>helper: </b>Lina Beerens</li>
-        <li><b>kleine bijdrage: </b>Tim van Nobelen</li>
-        <li><b>Kleine bijdrage: </b>Thom van Nobelen</li>
-        <li><b>kleine bijdrage: </b>Ilya Sigida</li>
+        <li><b>small contribution: </b>Tim van Nobelen</li>
+        <li><b>Small contribution: </b>Thom van Nobelen</li>
+        <li><b>small contribution: </b>Ilya Sigida</li>
     </div>
 
     <div style="margin: 0 auto; display: none;" id="showMenu"></span>
         <p style="font-size: 1.0em;">
         <ol style="margin-left: 50px; text-align: left;">
-            <li><strong>Stap 1 - Voorbereiden:</strong>
-                <ul>
-                    <li>Open het tabblad waar je eigenlijk op moet werken.</li>
-                    <li>Kopieer <code>https://[domein website waar je op moet werken]/favicon.ico</code> naar je
-                        klembord (ctrl + c).</li>
-                </ul>
-            </li>
-            <li><strong>Stap 2 - Uitvoeren:</strong>
-                <ul>
-                    <li>Klik op "Open Tab Met Eigen Naam En Favicon" en vul bij naam, de naam van het tabblad waar je
-                        eigenlijk op moet werken.</li>
-                    <li>Voer bij "Voer de favicon-link in" de gekopieerde link in.</li>
-                    <li>Ga 20 seconden op het tabblad waar je eigenlijk op moet werken en switch daarna in 1 keer naar
-                        het neppe tabblad.</li>
-                </ul>
-            </li>
-            <li><strong>Stap 3 - Genieten:</strong>
-                <ul>
-                    <li>Nu heb je een tabblad waarbij de docent het scherm van je vorige tabblad ziet, en de neppe naam
-                        van het huidige tabblad (die je moest invullen bij het maken van het neppe tabblad).</li>
-                </ul>
-            </li>
-        </ol>
+        <li><strong>Step 1 - Prepare:</strong>
+        <ul>
+        <li>Open the tab you actually need to work on.</li>
+        <li>Copy <code>https://[domain website you need to work on]/favicon .ico</code> to your
+        clipboard (ctrl + c).</li>
+        </ul>
+        </li>
+        <li><strong>Step 2 - Run:</strong>
+        <ul>
+        <li>Click on "Open Tab With Own Name And Favicon" and fill in the name of the tab you actually need to work on.</li>
+        <li>Enter the copied link in "Enter the favicon link".</li> li>
+        <li>Stay on the tab for 20 seconds where you actually need to work and then switch to the fake tab in one go.</li>
+        </ul>
+        </li>
+        <li><strong>Step 3 - Enjoy:</strong>
+        <ul>
+        <li> Now you have a tab where the teacher sees the screen of your previous tab, and the fake name
+        of the current tab (which you had to fill in when creating the fake tab).</li>
+        </ul>
+        </li> </ol>
         <button style="font-size: 1.0em;" id="openNewTabBtn" onclick="openNewTab()">Open Blank Tab</button>
-        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTabFilling()">Open Tab Met Eigen Naam
-            En Favicon</button>
+        <button style="font-size: 1.0em;" id="openSecretTabBtn" onclick="openSecretTabFilling()">Open Tab With Own Name
+        And Favicon</button>
     </div>
 
     <script>
@@ -553,7 +548,7 @@
                 }
             })
             .catch((error) => {
-                console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
+                console.error("An error occurred while retrieving announcements:", error);
             });
 
         /* change tctam fans iframe */
@@ -571,7 +566,7 @@
                 let openButton = document.getElementById('openButton');
 
                 if (openButton) {
-                    openButton.textContent = "Klik hier voor alle pagina's op de site.";
+                    openButton.textContent = "Click here for all pages on the site.";
                     openButton.style.maxWidth = '150px';
                 }
             }
@@ -647,8 +642,8 @@
 
         /* about:blank tab */
         function openSecretTabFilling() {
-            var tabName = prompt('Voer de naam van het tabblad in:');
-            var faviconLink = prompt('Voer de favicon-link in:');
+            var tabName = prompt('Enter the name of the tab:');
+            var faviconLink = prompt('Enter the favicon link:');
             openSecretTab(tabName, faviconLink);
         }
 
@@ -675,7 +670,7 @@
                 newTab.document.title = tabName;
                 newTab.document.body.style.overflow = 'hidden';
             } else {
-                notification('Tabbladnaam en/of favicon-link mogen niet leeg zijn.');
+                notification('Tab name and/or favicon link cannot be empty.');
             }
         }
 
