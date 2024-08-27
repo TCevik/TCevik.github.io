@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!isLoggedIn) {
         var currentURL = window.location.href;
-        window.location.href = '/account/login-register' + '?' + currentURL;
+        window.location.href = '/account/inloggen-registreren' + '?' + currentURL;
     }
 });
 
