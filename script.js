@@ -95,7 +95,7 @@ var buttons = `
 	<button onclick="window.location.href='/tctam-chat'">Chat</button>
     <button onclick="window.location.href='/blogs/alle-blogs'">My blogs [DUTCH]</button>
 	<button onclick="window.location.href='/online-store'">Online Store</button>
-	<button id="login-register-button-nav" onclick="window.location.href='/account/inloggen-registreren'">Login / Register</button>
+	<button id="login-register-button-nav" onclick="window.location.href='/account/login-register'">Login / Register</button>
 
     <h3 style="margin-top: 50px;" id="tools">Tools</h3>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
