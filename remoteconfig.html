@@ -20,14 +20,18 @@
             minimumFetchIntervalMillis: 100,
         };
         remoteConfig.settings = remoteConfigSettings;
-        remoteConfig.fetchAndActivate()
-            .then(() => {
-                var remoteConfigValue = remoteConfig.getString('test_remote_config');
-                document.getElementById('remoteConfigText').innerHTML = remoteConfigValue;
-            })
-            .catch((error) => {
-                notification("Er is een fout opgetreden bij het ophalen van de cemote config:", error);
-            });
+        function updateRemoteConfig() {
+            remoteConfig.fetchAndActivate()
+                .then(() => {
+                    const remoteConfigValue = remoteConfig.getString('test_remote_config');
+                    document.getElementById('remoteConfigText').innerHTML = remoteConfigValue;
+                })
+                .catch((error) => {
+                    console.error("Er is een fout opgetreden bij het ophalen van de remote config:", error);
+                });
+        }
+        setInterval(updateRemoteConfig, 1000);
+        updateRemoteConfig();
     </script>
 </body>
 
