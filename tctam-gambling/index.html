@@ -8,19 +8,51 @@
     <script src="/script.js"></script>
 
     <style>
-        #info {
-            float: left;
-            width: 500px;
-            margin-left: 50px;
+        body {
+            margin-top: 80px;
+        }
+
+        /* Stijl voor de bovenbalk */
+        #topbar {
+            background-color: var(--bg-accent-color2);
+            align-items: center;
+            text-align: left;
+            padding: 20px;
+            position: fixed;
+            display: flex;
+            top: 0;
+            left: 50%;
+            width: 80%;
+            transform: translateX(-50%);
+            z-index: 10;
+            border-bottom-left-radius: var(--border-radius2);
+            border-bottom-right-radius: var(--border-radius2);
         }
     </style>
 </head>
+
+<div id="topbar">
+    <h3 style="margin: 0;">Balance: </h3>
+    <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€ 0,00</h3>
+</div>
 
 <body>
     <div id="info">
         <h1 id="title">TC_tam Gambling</h1>
         <p id="description">Welcome to TC_tam Gambling</p>
+        <button onclick="alert('Developer: Tamer Çevik - TC_tam\nVersion: 1.0');">Get some more info</button>
     </div>
+
+    <button>hoi</button>
+
+    <script>
+        let money = 0;
+        function updateMoney() {
+            const formattedMoney = money.toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+            document.getElementById('money').innerText = formattedMoney;
+        }
+        setInterval(updateMoney, 500);
+    </script>
 </body>
 
 </html>
