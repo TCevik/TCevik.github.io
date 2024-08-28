@@ -10,8 +10,7 @@
     <script src="/script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-remote-config.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="/account/config.js"></script>
+    <script src="/firebase/config.js"></script>
 
     <script>
         function countup() {
@@ -420,28 +419,6 @@
                 </p>
 
                 <script>
-                    var userEmailC = document.cookie.replace(/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/, "$1");
-                    var userNameC = document.cookie.replace(/(?:(?:^|.*;\s*)userName\s*=\s*([^;]*).*$)|^.*$/, "$1");
-                    function getGreeting() {
-                        var currentTime = new Date();
-                        var hour = currentTime.getHours();
-                        var greeting;
-                        if (hour >= 0 && hour < 6) {
-                            greeting = "Goedenacht";
-                        } else if (hour >= 6 && hour < 12) {
-                            greeting = "Goedemorgen";
-                        } else if (hour >= 12 && hour < 18) {
-                            greeting = "Goedemiddag";
-                        } else {
-                            greeting = "Goedenavond";
-                        }
-                        return greeting;
-                    }
-                    if (userEmailC && userNameC) {
-                        var greeting = getGreeting();
-                        document.getElementById('welcome-message').innerText = greeting + " " + userNameC + "! Welkom terug op de TC_tam website. Ik wens je een fijn bezoek!";
-                    }
-
                     function toggleSubjects() {
                         var subjectsDiv = document.getElementById("subjects");
                         if (subjectsDiv.classList.contains("expanded")) {
@@ -505,21 +482,6 @@
     </div>
 
     <script>
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                var userEmail = user.email;
-                var allowedEmails = ["sercevik11@gmail.com", "tamer.cevik@vlietlandcollege.nl", "sercandenizcevik11@gmail.com"];
-
-                if (allowedEmails.includes(userEmail)) {
-                    document.getElementById("picto-planner-btn").style.opacity = "1";
-                } else {
-                    document.getElementById("picto-planner-btn").style.opacity = "0";
-                }
-            } else {
-
-            }
-        });
-
         const remoteConfig = firebase.remoteConfig();
 
         const remoteConfigSettings = {
