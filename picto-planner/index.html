@@ -6,11 +6,6 @@
     <script src="/script.js"></script>
     <script src="/picto-planner/headscript.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="/firebase/config.js"></script>
-
     <style>
       .container {
         display: flex;
@@ -51,14 +46,8 @@
         position: fixed;
         background-color: red;
         top: 5px;
-        right: 100px;
+        right: 5px;
         border-color: red;
-      }
-
-      #save-pictos-button {
-        position: fixed;
-        top: 5px;
-        right: 300px;
       }
 
       .custom-element {
@@ -219,7 +208,6 @@
       </div>
 
       <button id="delete-all-button" onclick="deleteAllPictos()">Verwijder alle picto's</button>
-      <button id="save-pictos-button" onclick="savePictosToFirebase()">Sla de planning op</button>
       <script src="/picto-planner/bodyscript.js"></script>
       <script src="/account/inlog-check.js"></script>
   </body>

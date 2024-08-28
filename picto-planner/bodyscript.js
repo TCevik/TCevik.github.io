@@ -1,6 +1,3 @@
-const firestore = firebase.firestore();
-const auth = firebase.auth();
-
 function addToChild(picto, imageUrl) {
     var childSection = document.getElementById('child-section');
     var img = document.createElement('img');
@@ -11,124 +8,59 @@ function addToChild(picto, imageUrl) {
         if (childSection.childNodes.length === 0) {
             childSection.style.display = 'none';
         }
+        savePictosToCookies(); // Sla de pictogrammen op in cookies zodra er een wordt verwijderd
     };
     childSection.appendChild(img);
     childSection.style.display = 'block';
+    savePictosToCookies(); // Sla de pictogrammen op in cookies zodra er een wordt toegevoegd
 }
 
 function deleteAllPictos() {
     var childSection = document.getElementById('child-section');
     childSection.innerHTML = '';
     childSection.style.display = 'none';
+    savePictosToCookies(); // Sla de lege staat op in cookies
 }
 
-function savePictosToFirebase() {
-    const email = firebase.auth().currentUser.email;
-    var allowedEmails = ['tamer.cevik@vlietlandcollege.nl', 'leonora1974@gmail.com'];
-    var askEmails = ['sercevik11@gmail.com', 'sercandenizcevik11@gmail.com'];
-
-    if (allowedEmails.includes(email)) {
-        var pictos = document.getElementById('child-section').innerHTML;
-        var pictosRef = firestore.collection('pictos').doc('pictos');
-
-        // Sla de pictogrammen op in de database
-        pictosRef.set({
-            pictos
-        }).then(function () {
-            notification("De picto's zijn succesvol opgeslagen.");
-        }).catch(function (error) {
-            notification("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
-        });
-    } else {
-        if (askEmails.includes(email)) {
-            var pictos = document.getElementById('child-section').innerHTML;
-            var pictosRef = firestore.collection('pictos').doc('preview');
-
-            // Sla de pictogrammen op in de database
-            pictosRef.set({
-                pictos
-            }).then(function () {
-                notification("De picto's zijn succesvol aangevraagd.");
-            }).catch(function (error) {
-                notification("Er is een fout opgetreden bij het aanvragen van de pictogrammen: " + error);
-            });
-        } else {
-            notification("Deze gebruiker heeft geen toestemming om de picto's op te slaan of aan te vragen.");
-        }
-    }
+function savePictosToCookies() {
+    var pictos = document.getElementById('child-section').innerHTML;
+    document.cookie = "pictos=" + encodeURIComponent(pictos) + "; path=/; max-age=31536000"; // Sla op voor 1 jaar
+    notification('Bewerking opgeslagen');
 }
 
-setTimeout(() => {
-    askedPictos();
-}, 1000);
-
-function askedPictos() {
-    const email = firebase.auth().currentUser.email;
-    var allowedEmails = ['tamer.cevik@vletlandcollege.nl'];
-
-    if (allowedEmails.includes(email)) {
-        var pictosRef = firestore.collection('pictos').doc('preview');
-
-        pictosRef.get().then(function (doc) {
-            if (doc.exists) {
-                // Vraag de gebruiker om goedkeuring voor de picto's
-                if (confirm("Wil je de aangevraagde picto's goedkeuren?")) {
-                    // Haal de picto's op uit de preview en sla ze op in de database
-                    var pictos = doc.data().pictos;
-                    var pictosRef = firestore.collection('pictos').doc('pictos');
-
-                    pictosRef.set({
-                        pictos
-                    }).then(function () {
-                        var pictosRef = firestore.collection('pictos').doc('preview');
-                        pictosRef.delete();
-                        notification("De picto's zijn succesvol opgeslagen.");
-                        setTimeout(() => {
-                            location.reload()
-                        }, "1000");
-                    }).catch(function (error) {
-                        notification("Er is een fout opgetreden bij het opslaan van de pictogrammen: " + error);
-                    });
-                } else {
-                    var pictosRef = firestore.collection('pictos').doc('preview');
-                    pictosRef.delete();
-                }
-            } else {
-                return;
-            }
-        }).catch(function (error) {
-            notification("Er is een fout opgetreden: " + error);
-        });
-    }
-}
-
-function loadPictosFromDatabase() {
+function loadPictosFromCookies() {
     var childSection = document.getElementById('child-section');
-    var pictosRef = firestore.collection('pictos').doc('pictos');
+    var pictos = getCookie("pictos");
 
-    pictosRef.get().then(function (doc) {
-        if (doc.exists) {
-            var pictosData = doc.data();
-            var pictos = pictosData.pictos;
-            childSection.innerHTML = pictos;
-            childSection.style.display = 'block';
-            var pictoElements = childSection.getElementsByClassName('picto');
-            for (var i = 0; i < pictoElements.length; i++) {
-                var picto = pictoElements[i];
-                picto.onclick = function () {
-                    childSection.removeChild(this);
-                    if (childSection.childNodes.length === 0) {
-                        childSection.style.display = 'none';
-                    }
-                };
-            }
+    if (pictos) {
+        childSection.innerHTML = decodeURIComponent(pictos);
+        childSection.style.display = 'block';
+        var pictoElements = childSection.getElementsByClassName('picto');
+        for (var i = 0; i < pictoElements.length; i++) {
+            var picto = pictoElements[i];
+            picto.onclick = function () {
+                childSection.removeChild(this);
+                if (childSection.childNodes.length === 0) {
+                    childSection.style.display = 'none';
+                }
+                savePictosToCookies(); // Sla de pictogrammen op in cookies zodra er een wordt verwijderd
+            };
         }
-    }).catch(function (error) {
-        notification("Er is een fout opgetreden bij het laden van pictogrammen: " + error);
-    });
+    }
 }
 
-loadPictosFromDatabase();
+function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+    for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+        if (name == cookiePair[0].trim()) {
+            return cookiePair[1];
+        }
+    }
+    return null;
+}
+
+loadPictosFromCookies();
 
 function speakDateTime() {
     const dateTime = new Date();
