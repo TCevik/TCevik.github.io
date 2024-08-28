@@ -12,49 +12,42 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('a').forEach(function (link) {
                 link.addEventListener('click', function (event) {
-                    var isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-                    var isLoginExGame = link.classList.contains('login-ex-games');
 
-                    if (isLoginExGame && !isLoggedIn) {
-                        event.preventDefault();
-                        notification("Je moet ingelogd zijn om deze game te kunnen spelen!");
-                    } else {
-                        event.preventDefault();
+                    event.preventDefault();
 
-                        var href = link.getAttribute('href');
+                    var href = link.getAttribute('href');
 
-                        var iframe = document.createElement('iframe');
-                        iframe.src = href;
-                        iframe.style.position = 'fixed';
+                    var iframe = document.createElement('iframe');
+                    iframe.src = href;
+                    iframe.style.position = 'fixed';
+                    iframe.style.width = '100vw';
+                    iframe.style.height = '100vh';
+                    iframe.style.top = '50%';
+                    iframe.style.left = '50%';
+                    iframe.style.transform = 'translate(-50%, -50%)';
+                    iframe.style.border = 'none';
+
+                    const reloadButton = document.createElement('button');
+                    reloadButton.innerText = 'Terug';
+                    reloadButton.style.position = 'fixed';
+                    reloadButton.style.top = '10px';
+                    reloadButton.style.left = '10px';
+                    reloadButton.addEventListener('click', function () {
+                        location.reload();
+                    });
+
+                    var body = document.body;
+                    body.style.margin = '0px';
+                    while (body.firstChild) {
+                        body.removeChild(body.firstChild);
+                    }
+                    body.appendChild(iframe);
+                    body.appendChild(reloadButton);
+
+                    window.addEventListener('resize', function () {
                         iframe.style.width = '100vw';
                         iframe.style.height = '100vh';
-                        iframe.style.top = '50%';
-                        iframe.style.left = '50%';
-                        iframe.style.transform = 'translate(-50%, -50%)';
-                        iframe.style.border = 'none';
-
-                        const reloadButton = document.createElement('button');
-                        reloadButton.innerText = 'Terug';
-                        reloadButton.style.position = 'fixed';
-                        reloadButton.style.top = '10px';
-                        reloadButton.style.left = '10px';
-                        reloadButton.addEventListener('click', function () {
-                            location.reload();
-                        });
-
-                        var body = document.body;
-                        body.style.margin = '0px';
-                        while (body.firstChild) {
-                            body.removeChild(body.firstChild);
-                        }
-                        body.appendChild(iframe);
-                        body.appendChild(reloadButton);
-
-                        window.addEventListener('resize', function () {
-                            iframe.style.width = '100vw';
-                            iframe.style.height = '100vh';
-                        });
-                    }
+                    });
                 });
             });
         });
@@ -77,56 +70,49 @@
     <h1>Hier kan je alle games vinden:</h1>
     <p>Have fun!</p>
 
-    <h3>Login & Play games</h3>
+    <h2>Games</h2>
 
-    <a class="login-ex-games" style="border-bottom: none;"
+    <a style="border-bottom: none;"
         href="https://www.onlinegames.io/games/2023/construct/280/head-soccer-2022/index.html">
         <img style="width: 150px; height: 150px;" src="/assets/games/head-soccer.png">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://orb.farm/">
+    <a style="border-bottom: none;" href="https://orb.farm/">
         <img style="width: 150px; height: 150px;" src="/assets/games/orb-farm.webp">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://shellshock.io/">
+    <a style="border-bottom: none;" href="https://shellshock.io/">
         <img style="width: 150px; height: 150px;" src="/assets/games/shell-shockers.png">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;"
+    <a style="border-bottom: none;"
         href="https://www.onlinegames.io/games/2023/construct/285/tiny-crash-fighters/index.html">
         <img style="width: 150px; height: 150px;" src="/assets/games/tiny-crash-fighters.jpg">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;"
-        href="https://onlinesoccermanager.nl/Lineup">
+    <a style="border-bottom: none;" href="https://onlinesoccermanager.nl/Lineup">
         <img style="width: 150px; height: 150px;" src="/assets/games/osm.jpg">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://wings.io/">
+    <a style="border-bottom: none;" href="https://wings.io/">
         <img style="width: 150px; height: 150px;" src="/assets/games/wings-io.jpg">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://krunker.io/">
+    <a style="border-bottom: none;" href="https://krunker.io/">
         <img style="width: 150px; height: 150px;" src="/assets/games/krunker-io.jpg">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://play.fancade.com">
+    <a style="border-bottom: none;" href="https://play.fancade.com">
         <img style="width: 150px; height: 150px;" src="/assets/games/fancade.jpg">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://oskarstalberg.com/Townscaper/">
+    <a style="border-bottom: none;" href="https://oskarstalberg.com/Townscaper/">
         <img style="width: 150px; height: 150px;" src="/assets/games/townscaper.webp">
     </a>
 
-    <a class="login-ex-games" style="border-bottom: none;" href="https://slowroads.io/">
+    <a style="border-bottom: none;" href="https://slowroads.io/">
         <img style="width: 150px; height: 150px;" src="/assets/games/slowroads.webp">
     </a>
-
-    <br>
-    <br>
-    <br>
-
-    <h3>Normale games</h3>
 
     <a style="border-bottom: none;" href="/games/apple-shooter.html">
         <img style="width: 150px; height: 150px;" src="/assets/games/apple-green.jpg">
@@ -184,12 +170,14 @@
             src="https://lolbeans-io.com/wp-content/uploads/2022/06/lolbeans-io-m250x250.png">
     </a>
 
-    <a onclick="window.location.href='/games/minecraft-1.5.2'" style="border-bottom: none;" href="/games/minecraft-1.5.2">
+    <a onclick="window.location.href='/games/minecraft-1.5.2'" style="border-bottom: none;"
+        href="/games/minecraft-1.5.2">
         <img style="width: 150px; height: 150px;"
             src="https://play-lh.googleusercontent.com/VSwHQjcAttxsLE47RuS4PqpC4LT7lCoSjE7Hx5AW_yCxtDvcnsHHvm5CTuL5BPN-uRTP">
     </a>
 
-    <a onclick="window.location.href='/games/minecraft-1.8.8'" style="border-bottom: none;" href="/games/minecraft-1.8.8">
+    <a onclick="window.location.href='/games/minecraft-1.8.8'" style="border-bottom: none;"
+        href="/games/minecraft-1.8.8">
         <img style="width: 150px; height: 150px;"
             src="https://play-lh.googleusercontent.com/VSwHQjcAttxsLE47RuS4PqpC4LT7lCoSjE7Hx5AW_yCxtDvcnsHHvm5CTuL5BPN-uRTP">
     </a>

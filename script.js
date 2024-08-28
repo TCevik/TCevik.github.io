@@ -92,7 +92,6 @@ var buttons = `
     <h3 id="algemeen">Algemeen</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
     <button onclick="window.location.href='/games/alle-games'">Games</button>
-	<button onclick="window.location.href='/tctam-chat'">Chat</button>
     <button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
 	<button onclick="window.location.href='/online-store'">Online Store</button>
 
