@@ -44,7 +44,7 @@
 
         .game {
             width: 300px;
-            height: 250px;
+            height: 270px;
             background-color: var(--bg-accent-color1);
             margin-bottom: 10px;
             border-radius: var(--border-radius3);
@@ -71,16 +71,29 @@
                 <h4>Daily Reward</h4>
                 <p>Here you can collect your daily reward every 24 hours for a random amount of money between €12,000
                     and €15,000.</p>
-                <button onclick="randomAmount(15000, 12000)">Claim</button>
+                <button onclick="claimReward(24 * 60 * 60 * 1000, 15000, 12000, 'daily-cooldown')">Claim</button>
+                <p id="daily-cooldown"></p>
             </div>
 
             <div class="game">
                 <h4>Hourly Reward</h4>
-                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €1.000 and
+                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €1,000 and
                     €800.</p>
-                <button onclick="randomAmount(1000, 800)">Claim</button>
+                <button onclick="claimReward(60 * 60 * 1000, 1000, 800, 'hourly-cooldown')">Claim</button>
+                <p id="hourly-cooldown"></p>
             </div>
 
+            <div class="game">
+                <h4>Work Reward</h4>
+                <p>Here you can collect your work income every 5 minutes for a random amount of money between €150 and €10.</p>
+                <button onclick="claimReward(5 * 60 * 1000, 150, 10, 'work-cooldown')">Claim</button>
+                <p id="work-cooldown"></p>
+            </div>
+
+            <div class="game">
+                <h4>Coinflip</h4>
+                <input type="number" placeholder="AMOUNT TO BET" id="">
+            </div>
         </div>
     </div>
 
@@ -88,25 +101,89 @@
         // Start with initial money value
         let money = 0;
 
+        // Define cooldown durations
+        const DAILY_COOLDOWN = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        const HOURLY_COOLDOWN = 60 * 60 * 1000; // 1 hour in milliseconds
+        const WORK_COOLDOWN = 5 * 60 * 1000;
+
+        // Initialize money and cooldowns from localStorage
+        function initialize() {
+            // Retrieve saved money from localStorage or initialize to 0 if not present
+            const savedMoney = localStorage.getItem('money');
+            money = savedMoney ? parseFloat(savedMoney) : 0;
+            updateMoney();
+
+            // Initialize the cooldown displays
+            updateCooldowns();
+        }
+
         function updateMoney() {
             const roundedMoney = Math.round(money);
             const formattedMoney = roundedMoney.toLocaleString('nl-NL');
             document.getElementById('money').innerText = '€' + formattedMoney;
+
+            // Save money to localStorage
+            localStorage.setItem('money', money);
         }
 
         function randomAmount(highest, lowest) {
-            let randomIncrease = Math.floor(Math.random() * (highest - lowest + 1)) + lowest;
-            increaseMoney(randomIncrease);
+            const amount = Math.floor(Math.random() * (highest - lowest + 1)) + lowest;
+            increaseMoney(amount);
         }
 
         function increaseMoney(amount) {
             money += amount;
-            updateMoney(); // Update the displayed money
-            console.log(`Het nieuwe bedrag is: ${money}`);
+            updateMoney();
+        }
+
+        function claimReward(cooldown, highest, lowest, cooldownElementId) {
+            const now = Date.now();
+            const lastClaim = localStorage.getItem(cooldownElementId);
+            if (lastClaim && now - lastClaim < cooldown) {
+                alert('You can only collect this reward once the cooldown is over.');
+                return;
+            }
+            randomAmount(highest, lowest);
+            localStorage.setItem(cooldownElementId, now);
+            updateCooldowns();
+        }
+
+        function updateCooldowns() {
+            const now = Date.now();
+
+            const cooldowns = [
+                { id: 'daily-cooldown', cooldown: DAILY_COOLDOWN },
+                { id: 'work-cooldown', cooldown: WORK_COOLDOWN },
+                { id: 'hourly-cooldown', cooldown: HOURLY_COOLDOWN }
+            ];
+
+            cooldowns.forEach(({ id, cooldown }) => {
+                const lastClaim = localStorage.getItem(id);
+                if (lastClaim) {
+                    const remainingTime = cooldown - (now - lastClaim);
+                    if (remainingTime > 0) {
+                        document.getElementById(id).innerText = formatTime(remainingTime);
+                    } else {
+                        document.getElementById(id).innerText = 'Beloning beschikbaar';
+                    }
+                } else {
+                    document.getElementById(id).innerText = 'Beloning beschikbaar';
+                }
+            });
+        }
+
+        function formatTime(milliseconds) {
+            const seconds = Math.floor(milliseconds / 1000) % 60;
+            const minutes = Math.floor(milliseconds / (1000 * 60)) % 60;
+            const hours = Math.floor(milliseconds / (1000 * 60 * 60)) % 24;
+            const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
         window.onload = function () {
-            updateMoney(); // Initialize the money display when the page loads
+            initialize();
+            setInterval(updateCooldowns, 1000);
         };
     </script>
 </body>
