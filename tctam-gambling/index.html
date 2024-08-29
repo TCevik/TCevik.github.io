@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>TC_tam Gambling</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
     <style>
         body {
             margin-top: 80px;
@@ -43,7 +44,7 @@
         }
 
         .game {
-            width: 300px;
+            width: 320px;
             height: 270px;
             background-color: var(--bg-accent-color1);
             margin-bottom: 10px;
@@ -63,7 +64,7 @@
     <div id="info">
         <h1 id="title">TC_tam Gambling</h1>
         <p id="description">Welcome to TC_tam Gambling</p>
-        <button onclick="alert('Developer: Tamer Çevik - TC_tam\nVersion: 1.0');">Get some more info</button>
+        <button onclick="notification('Developer: Tamer Çevik - TC_tam<br>Version: 1.0');">Get some more info</button>
     </div>
     <div id="activities-container">
         <div id="activities">
@@ -91,12 +92,14 @@
                 <p id="work-cooldown"></p>
             </div>
 
-            <div class="game">
+            <div style="width: 500px;" class="game">
                 <h4>Coinflip</h4>
-                <input type="number" id="coinflip-bet" placeholder="AMOUNT TO BET"></input>
-                <p>What do you think it's going to be?</p>
+                <b style="margin-top: 0px;">What do you think it's going to be?</b>
+                <input style="margin-bottom: 10px; margin-left: 0px;" type="number" id="coinflip-bet" placeholder="AMOUNT TO BET"></input>
+                <br><p style="margin-top: 0px;">Payouts: Heads - 2.2% | Tails - 2.2% | Sideways - 3.1%</p>
                 <button onclick="coinflip('heads');">Heads</button>
                 <button onclick="coinflip('tails');">Tails</button>
+                <button onclick="coinflip('sideways');">Sideways</button>
             </div>
         </div>
     </div>
@@ -149,7 +152,7 @@
             const now = Date.now();
             const lastClaim = localStorage.getItem(cooldownElementId);
             if (lastClaim && now - lastClaim < cooldown) {
-                alert('You can only collect this reward once the cooldown is over.');
+                notification('You can only collect this reward once the cooldown is over.');
                 return;
             }
             randomAmount(highest, lowest);
@@ -202,26 +205,40 @@
             const betAmount = parseFloat(betInput.value);
 
             if (isNaN(betAmount) || betAmount <= 0) {
-                alert('Please enter a valid amount.');
+                notification('Please enter a valid amount.');
                 return;
             }
 
-            // Check if user has enough money
             if (betAmount > money) {
-                alert("You don't have enough money for this bet!");
+                notification("You don't have enough money for this bet!");
                 return;
             }
 
             // Randomly determine the result of the coinflip
-            const result = Math.random() < 0.5 ? 'heads' : 'tails';
+            const randomNum = Math.random();
+            let result;
+
+            if (randomNum < 0.1) {
+                result = 'sideways';
+            } else if (randomNum < 0.55) {
+                result = 'heads';
+            } else {
+                result = 'tails';
+            }
+
             decreaseMoney(betAmount);
 
             // Determine if the user won or lost
             if (choice === result) {
-                alert(`You won! The coinflip was ${result}.`);
-                increaseMoney(betAmount * 2); // Double the bet amount as a reward
+                if (result === 'sideways') {
+                    notification(`You won! The outcome was ${result}.`);
+                    increaseMoney(betAmount * 3.1);
+                } else {
+                    notification(`You won! The outcome was ${result}.`);
+                    increaseMoney(betAmount * 2.2);
+                }
             } else {
-                alert(`Unfortunately, you lost. The coinflip was ${result}.`);
+                notification(`Unfortunately, you lost. The outcome was ${result}.`);
             }
         }
     </script>
