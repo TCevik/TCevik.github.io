@@ -5,14 +5,11 @@
     <meta charset="UTF-8">
     <title>TC_tam Gambling</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
-
     <style>
         body {
             margin-top: 80px;
         }
 
-        /* Stijl voor de bovenbalk */
         #topbar {
             background-color: var(--bg-accent-color2);
             align-items: center;
@@ -28,28 +25,89 @@
             border-bottom-left-radius: var(--border-radius2);
             border-bottom-right-radius: var(--border-radius2);
         }
+
+        #activities-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #activities {
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: left;
+            align-items: center;
+            width: 80%;
+        }
+
+        .game {
+            width: 300px;
+            height: 250px;
+            background-color: var(--bg-accent-color1);
+            margin-bottom: 10px;
+            border-radius: var(--border-radius3);
+            text-align: left;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
     </style>
 </head>
 
-<div id="topbar">
-    <h3 style="margin: 0;">Balance: </h3>
-    <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€ 0,00</h3>
-</div>
-
 <body>
+    <div id="topbar">
+        <h3 style="margin: 0;">Balance: </h3>
+        <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€0</h3>
+    </div>
     <div id="info">
         <h1 id="title">TC_tam Gambling</h1>
         <p id="description">Welcome to TC_tam Gambling</p>
         <button onclick="alert('Developer: Tamer Çevik - TC_tam\nVersion: 1.0');">Get some more info</button>
     </div>
+    <div id="activities-container">
+        <div id="activities">
+            <div class="game">
+                <h4>Daily Reward</h4>
+                <p>Here you can collect your daily reward every 24 hours for a random amount of money between €12,000
+                    and €15,000.</p>
+                <button onclick="randomAmount(15000, 12000)">Claim</button>
+            </div>
+
+            <div class="game">
+                <h4>Hourly Reward</h4>
+                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €1.000 and
+                    €800.</p>
+                <button>Claim</button>
+            </div>
+
+        </div>
+    </div>
 
     <script>
+        // Start with initial money value
         let money = 0;
+
         function updateMoney() {
-            const formattedMoney = money.toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
-            document.getElementById('money').innerText = formattedMoney;
+            const roundedMoney = Math.round(money);
+            const formattedMoney = roundedMoney.toLocaleString('nl-NL');
+            document.getElementById('money').innerText = '€' + formattedMoney;
         }
-        setInterval(updateMoney, 500);
+
+        function randomAmount(highest, lowest) {
+            let randomIncrease = Math.floor(Math.random() * (highest - lowest + 1)) + lowest;
+            increaseMoney(randomIncrease);
+        }
+
+        function increaseMoney(amount) {
+            money += amount;
+            updateMoney(); // Update the displayed money
+            console.log(`Het nieuwe bedrag is: ${money}`);
+        }
+
+        window.onload = function () {
+            updateMoney(); // Initialize the money display when the page loads
+        };
     </script>
 </body>
 
