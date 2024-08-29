@@ -85,14 +85,18 @@
 
             <div class="game">
                 <h4>Work Reward</h4>
-                <p>Here you can collect your work income every 5 minutes for a random amount of money between €150 and €10.</p>
+                <p>Here you can collect your work income every 5 minutes for a random amount of money between €150 and
+                    €10.</p>
                 <button onclick="claimReward(5 * 60 * 1000, 150, 10, 'work-cooldown')">Claim</button>
                 <p id="work-cooldown"></p>
             </div>
 
             <div class="game">
                 <h4>Coinflip</h4>
-                <input type="number" placeholder="AMOUNT TO BET" id="">
+                <input type="number" id="coinflip-bet" placeholder="AMOUNT TO BET"></input>
+                <p>What do you think it's going to be?</p>
+                <button onclick="coinflip('heads');">Heads</button>
+                <button onclick="coinflip('tails');">Tails</button>
             </div>
         </div>
     </div>
@@ -133,6 +137,11 @@
 
         function increaseMoney(amount) {
             money += amount;
+            updateMoney();
+        }
+
+        function decreaseMoney(amount) {
+            money -= amount;
             updateMoney();
         }
 
@@ -185,6 +194,36 @@
             initialize();
             setInterval(updateCooldowns, 1000);
         };
+
+
+
+        function coinflip(choice) {
+            const betInput = document.getElementById('coinflip-bet');
+            const betAmount = parseFloat(betInput.value);
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+
+            // Check if user has enough money
+            if (betAmount > money) {
+                alert("You don't have enough money for this bet!");
+                return;
+            }
+
+            // Randomly determine the result of the coinflip
+            const result = Math.random() < 0.5 ? 'heads' : 'tails';
+            decreaseMoney(betAmount);
+
+            // Determine if the user won or lost
+            if (choice === result) {
+                alert(`You won! The coinflip was ${result}.`);
+                increaseMoney(betAmount * 2); // Double the bet amount as a reward
+            } else {
+                alert(`Unfortunately, you lost. The coinflip was ${result}.`);
+            }
+        }
     </script>
 </body>
 
