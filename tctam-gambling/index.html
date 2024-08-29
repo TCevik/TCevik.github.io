@@ -36,22 +36,28 @@
         #activities {
             margin-top: 50px;
             display: flex;
+            align-items: stretch;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: left;
-            align-items: center;
             width: 80%;
         }
 
         .game {
             width: 320px;
-            height: 270px;
             background-color: var(--bg-accent-color1);
             margin-bottom: 10px;
             border-radius: var(--border-radius3);
             text-align: left;
             padding-left: 25px;
             padding-right: 25px;
+            padding-bottom: 15px;
+        }
+
+        .button-cooldown-container-nexttoeach {
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
         }
     </style>
 </head>
@@ -72,34 +78,53 @@
                 <h4>Daily Reward</h4>
                 <p>Here you can collect your daily reward every 24 hours for a random amount of money between €12,000
                     and €15,000.</p>
-                <button onclick="claimReward(24 * 60 * 60 * 1000, 15000, 12000, 'daily-cooldown')">Claim</button>
-                <p id="daily-cooldown"></p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(24 * 60 * 60 * 1000, 15000, 12000, 'daily-cooldown')">Claim</button>
+                    <p id="daily-cooldown"></p>
+                </div>
             </div>
 
             <div class="game">
                 <h4>Hourly Reward</h4>
                 <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €1,000 and
                     €800.</p>
-                <button onclick="claimReward(60 * 60 * 1000, 1000, 800, 'hourly-cooldown')">Claim</button>
-                <p id="hourly-cooldown"></p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(60 * 60 * 1000, 1000, 800, 'hourly-cooldown')">Claim</button>
+                    <p id="hourly-cooldown"></p>
+                </div>
             </div>
 
             <div class="game">
                 <h4>Work Reward</h4>
-                <p>Here you can collect your work income every 5 minutes for a random amount of money between €150 and
-                    €10.</p>
-                <button onclick="claimReward(5 * 60 * 1000, 150, 10, 'work-cooldown')">Claim</button>
-                <p id="work-cooldown"></p>
+                <p>Here you can collect your work income every 5 minutes for a random amount of money between €200 and
+                    €25.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(5 * 60 * 1000, 200, 25, 'work-cooldown')">Claim</button>
+                    <p id="work-cooldown"></p>
+                </div>
             </div>
 
-            <div style="width: 500px;" class="game">
+            <div style="width: 450px;" class="game">
                 <h4>Coinflip</h4>
                 <b style="margin-top: 0px;">What do you think it's going to be?</b>
-                <input style="margin-bottom: 10px; margin-left: 0px;" type="number" id="coinflip-bet" placeholder="AMOUNT TO BET"></input>
-                <br><p style="margin-top: 0px;">Payouts: Heads - 2.2% | Tails - 2.2% | Sideways - 3.1%</p>
+                <input style="margin-bottom: 10px; margin-left: 0px;" type="number" id="coinflip-bet"
+                    placeholder="AMOUNT TO BET"></input>
+                <br>
+                <p style="margin-top: 0px;">Payouts: Heads - 2.2% | Tails - 2.2% | Sideways - 3.1%</p>
                 <button onclick="coinflip('heads');">Heads</button>
                 <button onclick="coinflip('tails');">Tails</button>
                 <button onclick="coinflip('sideways');">Sideways</button>
+            </div>
+            <div style="width: 600px;" class="game">
+                <h4>Commit A Crime</h4>
+                <b>Here you can commit a crime for a max payout of €20,000. If you are unlucky you can also lose up to
+                    €10,000 if you get caught. You can do this every 1 hour and 30 minutes.</b>
+                <p>Payouts: Every outcome has an equal chance. However, the ratio of winning to losing is 2:1. This
+                    means that your chance of winning is twice as big as losing.</p>
+                <div class="button-cooldown-container-nexttoeach">
+                    <button onclick="claimReward(1.5 * 60 * 60 * 1000, 20000, -10000, 'crime-cooldown')">Claim</button>
+                    <p id="crime-cooldown"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -109,9 +134,10 @@
         let money = 0;
 
         // Define cooldown durations
-        const DAILY_COOLDOWN = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-        const HOURLY_COOLDOWN = 60 * 60 * 1000; // 1 hour in milliseconds
+        const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
+        const HOURLY_COOLDOWN = 60 * 60 * 1000;
         const WORK_COOLDOWN = 5 * 60 * 1000;
+        const CRIME_COOLDOWN = 1.5 * 60 * 60 * 1000;
 
         // Initialize money and cooldowns from localStorage
         function initialize() {
@@ -166,6 +192,7 @@
             const cooldowns = [
                 { id: 'daily-cooldown', cooldown: DAILY_COOLDOWN },
                 { id: 'work-cooldown', cooldown: WORK_COOLDOWN },
+                { id: 'crime-cooldown', cooldown: CRIME_COOLDOWN },
                 { id: 'hourly-cooldown', cooldown: HOURLY_COOLDOWN }
             ];
 
@@ -176,10 +203,10 @@
                     if (remainingTime > 0) {
                         document.getElementById(id).innerText = formatTime(remainingTime);
                     } else {
-                        document.getElementById(id).innerText = 'Beloning beschikbaar';
+                        document.getElementById(id).innerText = 'Reward available';
                     }
                 } else {
-                    document.getElementById(id).innerText = 'Beloning beschikbaar';
+                    document.getElementById(id).innerText = 'Reward available';
                 }
             });
         }
