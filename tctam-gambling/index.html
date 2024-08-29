@@ -111,9 +111,9 @@
                     placeholder="AMOUNT TO BET"></input>
                 <br>
                 <p style="margin-top: 0px;">Payouts: Heads - 2.2% | Tails - 2.2% | Sideways - 3.1%</p>
-                <button onclick="coinflip('heads');">Heads</button>
-                <button onclick="coinflip('tails');">Tails</button>
-                <button onclick="coinflip('sideways');">Sideways</button>
+                <button class="coinflip-btn" onclick="coinflip('heads');">Heads</button>
+                <button class="coinflip-btn" onclick="coinflip('tails');">Tails</button>
+                <button class="coinflip-btn" onclick="coinflip('sideways');">Sideways</button>
             </div>
             <div style="width: 600px;" class="game">
                 <h4>Commit A Crime</h4>
@@ -130,23 +130,18 @@
     </div>
 
     <script>
-        // Start with initial money value
         let money = 0;
 
-        // Define cooldown durations
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
         const HOURLY_COOLDOWN = 60 * 60 * 1000;
         const WORK_COOLDOWN = 5 * 60 * 1000;
         const CRIME_COOLDOWN = 1.5 * 60 * 60 * 1000;
 
-        // Initialize money and cooldowns from localStorage
         function initialize() {
-            // Retrieve saved money from localStorage or initialize to 0 if not present
             const savedMoney = localStorage.getItem('money');
             money = savedMoney ? parseFloat(savedMoney) : 0;
             updateMoney();
 
-            // Initialize the cooldown displays
             updateCooldowns();
         }
 
@@ -201,7 +196,7 @@
                 if (lastClaim) {
                     const remainingTime = cooldown - (now - lastClaim);
                     if (remainingTime > 0) {
-                        document.getElementById(id).innerText = formatTime(remainingTime);
+                        document.getElementById(id).innerText = "Cooldown: " + formatTime(remainingTime);
                     } else {
                         document.getElementById(id).innerText = 'Reward available';
                     }
@@ -226,7 +221,7 @@
         };
 
 
-
+        /* GAMES */
         function coinflip(choice) {
             const betInput = document.getElementById('coinflip-bet');
             const betAmount = parseFloat(betInput.value);
@@ -241,7 +236,6 @@
                 return;
             }
 
-            // Randomly determine the result of the coinflip
             const randomNum = Math.random();
             let result;
 
@@ -255,7 +249,14 @@
 
             decreaseMoney(betAmount);
 
-            // Determine if the user won or lost
+            const coinFlipBtns = document.querySelectorAll('.coinflip-btn');
+            coinFlipBtns.forEach(btn => {
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.disabled = false;
+                }, 3000);
+            });
+
             if (choice === result) {
                 if (result === 'sideways') {
                     notification(`You won! The outcome was ${result}.`);
