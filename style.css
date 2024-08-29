@@ -179,6 +179,7 @@ textarea:focus {
 input::placeholder,
 textarea::placeholder {
     color: var(--text-color);
+    filter: brightness(50%);
 }
 
 #sidebar button {
