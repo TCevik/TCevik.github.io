@@ -107,7 +107,7 @@
             <div style="width: 450px;" class="game">
                 <h4>Coinflip</h4>
                 <b style="margin-top: 0px;">What do you think it's going to be?</b>
-                <input style="margin-bottom: 10px; margin-left: 0px;" type="number" id="coinflip-bet"
+                <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number" id="coinflip-bet"
                     placeholder="AMOUNT TO BET"></input>
                 <br>
                 <p style="margin-top: 0px;">Payouts: Heads - 2.2x | Tails - 2.2x | Sideways - 3.1x</p>
@@ -115,6 +115,7 @@
                 <button class="coinflip-btn" onclick="coinflip('tails');">Tails</button>
                 <button class="coinflip-btn" onclick="coinflip('sideways');">Sideways</button>
             </div>
+
             <div style="width: 600px;" class="game">
                 <h4>Commit A Crime</h4>
                 <b>Here you can commit a crime for a max payout of €20,000. If you are unlucky you can also lose up to
@@ -125,6 +126,21 @@
                     <button onclick="claimReward(1.5 * 60 * 60 * 1000, 20000, -10000, 'crime-cooldown')">Claim</button>
                     <p id="crime-cooldown"></p>
                 </div>
+            </div>
+
+            <div style="width: 450px;" class="game">
+                <h4>Slot Machine</h4>
+                <b style="margin-top: 0px;">Guess what you want to bet on the slot machine!</b>
+                <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="slotmachine-bet" placeholder="AMOUNT TO BET"></input>
+                <br>
+                <p style="margin-top: 0px;">Payouts: 2 of a kind - 2x | 3 of a kind - 3x</p>
+                <div style="margin-top: -30px; display: flex;">
+                    <p id="fruit1">🍎</p>
+                    <p id="fruit2">🍎</p>
+                    <p id="fruit3">🍎</p>
+                </div>
+                <button class="slotmachine-btn" onclick="playSlotMachine();">Draai!</button>
             </div>
         </div>
     </div>
@@ -271,6 +287,71 @@
                 }
             } else {
                 notification(`Unfortunately, you lost. The outcome was ${result}.`);
+            }
+        }
+
+        function playSlotMachine() {
+            const bet = parseInt(document.getElementById('slotmachine-bet').value);
+            if (isNaN(bet) || bet <= 0) {
+                notification('Please enter a valid amount');
+                return;
+            }
+
+            if (bet > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            decreaseMoney(bet);
+
+            const slotmachinesBtns = document.querySelectorAll('.slotmachine-btn');
+            slotmachinesBtns.forEach(btn => {
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.disabled = false;
+                }, 3000);
+            });
+
+            const fruits = ['🍒', '🍊', '🍉', '🍇', '🍓', '🍑', '🍍', '🍏', '🍎', '🍐'];
+            const randomFruits = [
+                fruits[Math.floor(Math.random() * fruits.length)],
+                fruits[Math.floor(Math.random() * fruits.length)],
+                fruits[Math.floor(Math.random() * fruits.length)]
+            ];
+
+            const fruitElements = [
+                document.getElementById('fruit1'),
+                document.getElementById('fruit2'),
+                document.getElementById('fruit3')
+            ];
+
+            let index = 0;
+
+            const interval = setInterval(() => {
+                if (index < fruitElements.length) {
+                    fruitElements[index].textContent = randomFruits[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    calculatePayout(randomFruits, bet);
+                }
+            }, 500);
+        }
+
+        function calculatePayout(fruits, bet) {
+            let payout = 0;
+            if (fruits[0] === fruits[1] && fruits[1] === fruits[2]) {
+                payout = 4;
+            } else if (fruits[0] === fruits[1] || fruits[1] === fruits[2] || fruits[0] === fruits[2]) {
+                payout = 3;
+            }
+
+            increaseMoney(bet * payout);
+
+            if (payout > 0) {
+                notification('You have won €' + (bet * payout) + '!');
+            } else {
+                notification('You lost!');
             }
         }
     </script>
