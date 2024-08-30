@@ -403,10 +403,9 @@
 
 		<div id="parent-section">
 			<h3>Eigen Picto's</h3>
-			<div class="picto" style="background-image: url(/picto-planner/plus.png);" onclick="addpicto()">Add Picto
-			</div>
+			<div class="picto" style="background-image: url(/picto-planner/plus.png);" onclick="addpicto()">Add Picto</div>
 			<div id="custompictos">
-
+				
 			</div>
 		</div>
 
@@ -415,32 +414,19 @@
 
 		<script>
 			function addpicto() {
-				var input = document.createElement('input');
-				input.type = 'file';
-				input.accept = 'image/*';
+				var url = prompt('Voer de URL in voor de afbeelding:');
 
-				input.onchange = function () {
-					var file = this.files[0];
-					var reader = new FileReader();
+				if (url) {
+					var newDiv = document.createElement('div');
+					newDiv.className = 'picto';
+					newDiv.style.backgroundImage = 'url(' + url + ')';
 
-					reader.onload = function (e) {
-						var newDiv = document.createElement('div');
-						newDiv.className = 'picto';
-						newDiv.style.backgroundImage = 'url(' + e.target.result + ')';
+					newDiv.onclick = function () {
+						addToChild(this, url);
+					};
 
-						newDiv.onclick = function () {
-							addToChild(this, e.target.result);
-						};
-
-						document.getElementById('custompictos').appendChild(newDiv);
-					}
-
-					if (file) {
-						reader.readAsDataURL(file);
-					}
-				};
-
-				input.click();
+					document.getElementById('custompictos').appendChild(newDiv);
+				}
 			}
 		</script>
 </body>
