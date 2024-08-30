@@ -146,6 +146,10 @@
         }
 
         function updateMoney() {
+            if (money < 0) {
+                money = 0;
+            }
+
             const roundedMoney = Math.round(money);
             const formattedMoney = roundedMoney.toLocaleString('nl-NL');
             document.getElementById('money').innerText = '€' + formattedMoney;
