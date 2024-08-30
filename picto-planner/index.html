@@ -422,6 +422,16 @@
 					newDiv.className = 'picto';
 					newDiv.style.backgroundImage = 'url(' + url + ')';
 
+					var removeBtn = document.createElement('button');
+					removeBtn.className = 'remove-btn';
+					removeBtn.innerText = 'X';
+					removeBtn.onclick = function (event) {
+						event.stopPropagation();
+						removePicto(url, newDiv);
+					};
+
+					newDiv.appendChild(removeBtn);
+
 					newDiv.onclick = function () {
 						addToChild(this, url);
 					};
@@ -438,12 +448,30 @@
 				localStorage.setItem('pictos', JSON.stringify(pictos));
 			}
 
+			function removePicto(url, element) {
+				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
+				pictos = pictos.filter(pictoUrl => pictoUrl !== url);
+				localStorage.setItem('pictos', JSON.stringify(pictos));
+
+				element.remove();
+			}
+
 			function loadPictos() {
 				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
 				pictos.forEach(function (url) {
 					var newDiv = document.createElement('div');
 					newDiv.className = 'picto';
 					newDiv.style.backgroundImage = 'url(' + url + ')';
+
+					var removeBtn = document.createElement('button');
+					removeBtn.className = 'remove-btn';
+					removeBtn.innerText = 'X';
+					removeBtn.onclick = function (event) {
+						event.stopPropagation();
+						removePicto(url, newDiv);
+					};
+
+					newDiv.appendChild(removeBtn);
 
 					newDiv.onclick = function () {
 						addToChild(this, url);
