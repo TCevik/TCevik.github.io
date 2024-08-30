@@ -415,69 +415,33 @@
 
 		<script>
 			function addpicto() {
-				// Maak een verborgen file input element aan
-				var fileInput = document.createElement('input');
-				fileInput.type = 'file';
-				fileInput.accept = 'image/*';
-				fileInput.style.display = 'none'; // Verberg de input
+				var input = document.createElement('input');
+				input.type = 'file';
+				input.accept = 'image/*';
 
-				// Voeg een event listener toe aan de file input
-				fileInput.addEventListener('change', function () {
-					const file = this.files[0];
-					const reader = new FileReader();
+				input.onchange = function () {
+					var file = this.files[0];
+					var reader = new FileReader();
 
-					reader.onload = function (event) {
-						// Base64-string van de afbeelding
-						const dataURL = event.target.result;
+					reader.onload = function (e) {
+						var newDiv = document.createElement('div');
+						newDiv.className = 'picto';
+						newDiv.style.backgroundImage = 'url(' + e.target.result + ')';
 
-						// Voeg nieuwe pictogram toe
-						addPicto(dataURL, "CUSTOMPICTO");
+						newDiv.onclick = function () {
+							addToChild(this, e.target.result);
+						};
 
-						// Sla de Base64-string op in een cookie (optioneel)
-						document.cookie = "uploadedPhoto=" + encodeURIComponent(dataURL) + "; path=/; max-age=" + (60 * 60 * 24 * 7); // 1 week geldigheid
-					};
+						document.getElementById('custompictos').appendChild(newDiv);
+					}
 
 					if (file) {
 						reader.readAsDataURL(file);
 					}
-				});
-
-				// Simuleer een klik op de verborgen file input
-				fileInput.click();
-			}
-
-			function addPicto(url, label) {
-				// Maak de nieuwe div aan
-				var newDiv = document.createElement('div');
-				newDiv.className = 'picto';
-				newDiv.style.backgroundImage = 'url(' + url + ')';
-				newDiv.innerHTML = label; // Voeg tekst toe binnen de div
-
-				// Voeg de onclick functie toe
-				newDiv.onclick = function () {
-					addToChild(this, url);
 				};
 
-				// Voeg de nieuwe div toe aan het gewenste element
-				document.getElementById('custompictos').appendChild(newDiv);
+				input.click();
 			}
-
-			// Controleren of er een opgeslagen afbeelding in de cookies staat
-			window.onload = function () {
-				const cookies = document.cookie.split('; ');
-				let imageUrl = null;
-
-				cookies.forEach(cookie => {
-					const [name, value] = cookie.split('=');
-					if (name === 'uploadedPhoto') {
-						imageUrl = decodeURIComponent(value);
-					}
-				});
-
-				if (imageUrl) {
-					addPicto(imageUrl, "CUSTOMPICTO");
-				}
-			};
 		</script>
 </body>
 
