@@ -506,16 +506,19 @@
                 alert('Er is een fout opgetreden bij het genereren van het bestand:' + error);
             }
 
-            setTimeout(() => {
-                loadFile();
-            }, 1000);
+            alert('Mooi! Je hebt een bestand gemaakt. Nu kan je hem openen.');
         });
 
         document.getElementById('openFileBtn').addEventListener('click', async () => {
             loadFile();
         });
 
+        let filePickerActive = false;
+
         async function loadFile() {
+            if (filePickerActive) return;
+            filePickerActive = true;
+
             try {
                 const [fileHandle] = await window.showOpenFilePicker({
                     types: [{
@@ -533,7 +536,6 @@
                 document.title = fileNameWithoutExtension + " - TC_tam Documenten";
 
                 let contents = await file.text();
-
                 document.getElementById('editor').innerHTML = contents;
                 document.execCommand('formatBlock', false, '<p>');
 
@@ -552,6 +554,8 @@
             } catch (error) {
                 console.error('Fout bij openen of bewerken van bestand:', error);
                 alert('Er is een fout opgetreden: ' + error.message);
+            } finally {
+                filePickerActive = false;
             }
         }
 
