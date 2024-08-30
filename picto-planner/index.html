@@ -403,9 +403,10 @@
 
 		<div id="parent-section">
 			<h3>Eigen Picto's</h3>
-			<div class="picto" style="background-image: url(/picto-planner/plus.png);" onclick="addpicto()">Add Picto</div>
+			<div class="picto" style="background-image: url(/picto-planner/plus.png);" onclick="addpicto()">Add Picto
+			</div>
 			<div id="custompictos">
-				
+
 			</div>
 		</div>
 
@@ -426,8 +427,33 @@
 					};
 
 					document.getElementById('custompictos').appendChild(newDiv);
+
+					savePicto(url);
 				}
 			}
+
+			function savePicto(url) {
+				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
+				pictos.push(url);
+				localStorage.setItem('pictos', JSON.stringify(pictos));
+			}
+
+			function loadPictos() {
+				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
+				pictos.forEach(function (url) {
+					var newDiv = document.createElement('div');
+					newDiv.className = 'picto';
+					newDiv.style.backgroundImage = 'url(' + url + ')';
+
+					newDiv.onclick = function () {
+						addToChild(this, url);
+					};
+
+					document.getElementById('custompictos').appendChild(newDiv);
+				});
+			}
+
+			window.onload = loadPictos;
 		</script>
 </body>
 
