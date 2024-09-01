@@ -685,137 +685,136 @@
 
 		<script>
 			function validateMinutes() {
-    var timeInput = document.getElementById("time");
-    var minutes = parseInt(timeInput.value);
+				var timeInput = document.getElementById("time");
+				var minutes = parseInt(timeInput.value);
 
-    if (isNaN(minutes) || minutes < 1 || minutes > 60) {
-        timeInput.setCustomValidity("Minuten moeten tussen 1 en 60 liggen.");
-    } else {
-        timeInput.setCustomValidity("");
-    }
-}
+				if (isNaN(minutes) || minutes < 1 || minutes > 60) {
+					timeInput.setCustomValidity("Minuten moeten tussen 1 en 60 liggen.");
+				} else {
+					timeInput.setCustomValidity("");
+				}
+			}
 
-function askNotif() {
-    if ('Notification' in window) {
-        Notification.requestPermission().then(function (permission) {
-            if (permission === 'granted') {
-                sendNotification('Activeren gelukt, nu zal de timer in de achtergrond doorgaan.');
-            } else {
-                sendNotification('Meldingen zijn uitgeschakeld. Je kunt dit later altijd wijzigen in de browserinstellingen.');
-            }
-        });
-    } else {
-        alert('Je browser ondersteunt geen meldingen.');
-    }
-}
+			function askNotif() {
+				if ('Notification' in window) {
+					Notification.requestPermission().then(function (permission) {
+						if (permission === 'granted') {
+							sendNotification('Activeren gelukt, nu zal de timer in de achtergrond doorgaan.');
+						} else {
+							sendNotification('Meldingen zijn uitgeschakeld. Je kunt dit later altijd wijzigen in de browserinstellingen.');
+						}
+					});
+				} else {
+					alert('Je browser ondersteunt geen meldingen.');
+				}
+			}
 
-function sendNotification(message) {
-    if (Notification.permission === 'granted') {
-        const options = {
-            body: message,
-            tag: 'timer-notification',
-            renotify: true // Verzend een nieuwe melding als de gebruiker de vorige heeft gesloten
-        };
-        new Notification('Timer', options);
-    }
-}
+			function sendNotification(message) {
+				if (Notification.permission === 'granted') {
+					const options = {
+						body: message,
+						tag: 'timer-notification',
+						renotify: true // Verzend een nieuwe melding als de gebruiker de vorige heeft gesloten
+					};
+					new Notification('Timer', options);
+				}
+			}
 
-askNotif();
+			askNotif();
 
-const lerp = (x, y, a) => x * (1 - a) + y * a;
-const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
-const invlerp = (x, y, a) => clamp((a - x) / (y - x));
-const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
+			const lerp = (x, y, a) => x * (1 - a) + y * a;
+			const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
+			const invlerp = (x, y, a) => clamp((a - x) / (y - x));
+			const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
 
-(() => {
-    try {
-        const test = document.createElement('div');
-        test.style.background = 'conic-gradient(red, blue)';
-        document.body.appendChild(test);
-        const styles = window.getComputedStyle(test);
-        if (styles.backgroundImage === 'none') {
-            document.body.classList.add('no-gradient');
-            document.body.removeChild(test);
-        }
-    } catch (e) { }
+			(() => {
+				try {
+					const test = document.createElement('div');
+					test.style.background = 'conic-gradient(red, blue)';
+					document.body.appendChild(test);
+					const styles = window.getComputedStyle(test);
+					if (styles.backgroundImage === 'none') {
+						document.body.classList.add('no-gradient');
+						document.body.removeChild(test);
+					}
+				} catch (e) { }
 
-    const timeInput = document.querySelector('[name="time"]');
-    const timerEl = document.querySelector('.timer');
-    const form = document.querySelector('.input-group');
-    const ding = document.querySelector('.ding');
+				const timeInput = document.querySelector('[name="time"]');
+				const timerEl = document.querySelector('.timer');
+				const form = document.querySelector('.input-group');
+				const ding = document.querySelector('.ding');
 
-    let timeRemaining = 0; // Start met 0 minuten
-    let timer;
-    const MINUTE = 1 * 1000 * 60;
+				let timeRemaining = 0; // Start met 0 minuten
+				let timer;
+				const MINUTE = 1 * 1000 * 60;
 
-    timerEl.addEventListener('click', toggleTimer);
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        toggleTimer();
-    });
+				timerEl.addEventListener('click', toggleTimer);
+				form.addEventListener('submit', (event) => {
+					event.preventDefault();
+					toggleTimer();
+				});
 
-    function toggleTimer() {
-        timer ? stopTimer() : startTimer();
-    }
+				function toggleTimer() {
+					timer ? stopTimer() : startTimer();
+				}
 
-    function startTimer() {
-        document.body.classList.add('timer-running');
-        document.body.classList.remove('timer-paused');
-        document.body.classList.remove('timer-finished');
+				function startTimer() {
+					document.body.classList.add('timer-running');
+					document.body.classList.remove('timer-paused');
+					document.body.classList.remove('timer-finished');
 
-        timeRemaining = Number(timeInput.value);
+					timeRemaining = Number(timeInput.value);
 
-        // Stuur een notificatie wanneer de timer start, inclusief de tijd die nog over is
-        sendNotification(`Timer gestart voor ${timeRemaining} minuten.`);
+					// Stuur een notificatie wanneer de timer start, inclusief de tijd die nog over is
+					sendNotification(`Timer gestart voor ${timeRemaining} minuten.`);
 
-        // Stel de initiële tijd in en start de eerste tick na een minuut
-        setTimeCSS();
-        timer = window.setTimeout(tick, MINUTE);
-    }
+					// Stel de initiële tijd in en start de eerste tick na een minuut
+					setTimeCSS();
+					timer = window.setTimeout(tick, MINUTE);
+				}
 
-    function tick() {
-        timeRemaining--;
-        setTimeCSS();
+				function tick() {
+					timeRemaining--;
+					setTimeCSS();
 
-        if (timeRemaining <= 0) {
-            stopTimer();
-            return;
-        }
+					if (timeRemaining <= 0) {
+						stopTimer();
+						return;
+					}
 
-        // Update de melding met de nieuwe resterende tijd elke minuut
-        sendNotification(`Nog ${timeRemaining} minuten over.`);
+					// Update de melding met de nieuwe resterende tijd elke minuut
+					sendNotification(`Nog ${timeRemaining} minuten over.`);
 
-        // Start de volgende tick na een minuut
-        timer = window.setTimeout(tick, MINUTE);
-    }
+					// Start de volgende tick na een minuut
+					timer = window.setTimeout(tick, MINUTE);
+				}
 
-    function setTimeCSS() {
-        document.documentElement.style.setProperty(
-            '--time',
-            360 - range(0, 60, 0, 360, Number(timeRemaining))
-        );
-    }
+				function setTimeCSS() {
+					document.documentElement.style.setProperty(
+						'--time',
+						360 - range(0, 60, 0, 360, Number(timeRemaining))
+					);
+				}
 
-    function stopTimer() {
-        document.body.classList.add('timer-paused');
-        document.body.classList.add('timer-finished');
-        document.body.classList.remove('timer-running');
+				function stopTimer() {
+					document.body.classList.add('timer-paused');
+					document.body.classList.add('timer-finished');
+					document.body.classList.remove('timer-running');
 
-        if (ding) {
-            ding.play();
-        }
+					if (ding) {
+						ding.play();
+					}
 
-        if (timer) {
-            window.clearTimeout(timer);
-            timer = null;
-        }
+					if (timer) {
+						window.clearTimeout(timer);
+						timer = null;
+					}
 
-        setTimeout(() => {
-            document.body.classList.remove('timer-finished');
-        }, 1000);
-    }
-})();
-
+					setTimeout(() => {
+						document.body.classList.remove('timer-finished');
+					}, 1000);
+				}
+			})();
 		</script>
 </body>
 
