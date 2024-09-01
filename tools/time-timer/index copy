@@ -8,11 +8,11 @@
 
 	<style>
 		body {
-		  	display: flex;
-		  	justify-content: center;
-		  	align-items: center;
-		  	height: 100vh;
-		  	margin: 0 auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0 auto;
 		}
 
 		blockquote,
@@ -92,11 +92,12 @@
 		}
 
 		.timer-container {
-		  	display: flex;
-		  	flex-direction: column;
-		  	justify-content: center;
-		  	align-items: center;
-			height: 100vh; /* 100% van de viewporthoogte */
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			/* 100% van de viewporthoogte */
 		}
 
 		.timer {
@@ -680,6 +681,8 @@
 			<input type="submit" value="Start">
 		</form>
 
+		<audio class="ding" src="/tools/time-timer/time-timer-sound.wav" preload="auto"></audio>
+
 		<script>
 			function validateMinutes() {
 				var timeInput = document.getElementById("time");
@@ -691,25 +694,42 @@
 					timeInput.setCustomValidity("");
 				}
 			}
-		</script>
 
-		<footer role="contentinfo" class="footer">
-			<img style="opacity: 0; border-radius: 25px; margin-top: -40px; margin-bottom: 0px; width: 362px;"
-				class="img" src="lol" alt="Toukle">
-		</footer>
+			function askNotif() {
+				if ('Notification' in window) {
+					Notification.requestPermission().then(function (permission) {
+						if (permission === 'granted') {
+							sendNotification('Activeren gelukt, nu zal de timer in de achtergrond doorgaan.');
+						} else {
+							sendNotification('Meldingen zijn uitgeschakeld. Je kunt dit later altijd wijzigen in de browserinstellingen.');
+						}
+					});
+				} else {
+					alert('Je browser ondersteunt geen meldingen.');
+				}
+			}
 
-		<audio class="ding" src="/tools/time-timer/time-timer-sound.wav" preload="auto"></audio>
+			function sendNotification(message) {
+				if (Notification.permission === 'granted') {
+					const options = {
+						body: message,
+						tag: 'timer-notification',
+						renotify: true // Verzend een nieuwe melding als de gebruiker de vorige heeft gesloten
+					};
+					new Notification('Timer', options);
+				}
+			}
 
-		<script>
+			askNotif();
+
 			const lerp = (x, y, a) => x * (1 - a) + y * a;
 			const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
 			const invlerp = (x, y, a) => clamp((a - x) / (y - x));
 			const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
 
 			(() => {
-
 				try {
-					const test = document.createElement('div')
+					const test = document.createElement('div');
 					test.style.background = 'conic-gradient(red, blue)';
 					document.body.appendChild(test);
 					const styles = window.getComputedStyle(test);
@@ -719,15 +739,12 @@
 					}
 				} catch (e) { }
 
-
 				const timeInput = document.querySelector('[name="time"]');
 				const timerEl = document.querySelector('.timer');
 				const form = document.querySelector('.input-group');
 				const ding = document.querySelector('.ding');
 
-				let timeRemaining = Number(timeInput.value);
-				setTimeCSS();
-
+				let timeRemaining = 0; // Start met 0 minuten
 				let timer;
 				const MINUTE = 1 * 1000 * 60;
 
@@ -735,9 +752,9 @@
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
 					toggleTimer();
-				})
+				});
 
-				function toggleTimer(params) {
+				function toggleTimer() {
 					timer ? stopTimer() : startTimer();
 				}
 
@@ -746,19 +763,36 @@
 					document.body.classList.remove('timer-paused');
 					document.body.classList.remove('timer-finished');
 
-					timeRemaining = Number(timeInput.value) + 1;
-					tick();
+					timeRemaining = Number(timeInput.value);
+
+					// Stuur een notificatie wanneer de timer start, inclusief de tijd die nog over is
+					if (timeRemaining === 1) {
+						sendNotification('Nog 1 minuut over.');
+					} else {
+						sendNotification(`Nog ${timeRemaining} minuten over.`);
+					}
+
+					// Stel de initiële tijd in en start de eerste tick na een minuut
+					setTimeCSS();
+					timer = window.setTimeout(tick, MINUTE);
 				}
 
 				function tick() {
 					timeRemaining--;
 					setTimeCSS();
 
-					if (!timeRemaining) {
+					if (timeRemaining <= 0) {
 						stopTimer();
 						return;
 					}
 
+					// Update de melding met de nieuwe resterende tijd elke minuut
+					if (timeRemaining === 1) {
+						sendNotification('Nog 1 minuut over.');
+					} else {
+						sendNotification(`Nog ${timeRemaining} minuten over.`);
+					}
+					// Start de volgende tick na een minuut
 					timer = window.setTimeout(tick, MINUTE);
 				}
 
@@ -777,6 +811,8 @@
 					if (ding) {
 						ding.play();
 					}
+
+					sendNotification('Timer gaat af!');
 
 					if (timer) {
 						window.clearTimeout(timer);
