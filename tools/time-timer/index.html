@@ -766,7 +766,11 @@
 					timeRemaining = Number(timeInput.value);
 
 					// Stuur een notificatie wanneer de timer start, inclusief de tijd die nog over is
-					sendNotification(`Timer gestart voor ${timeRemaining} minuten.`);
+					if (timeRemaining === 1) {
+						sendNotification('Nog 1 minuut over.');
+					} else {
+						sendNotification(`Nog ${timeRemaining} minuten over.`);
+					}
 
 					// Stel de initiële tijd in en start de eerste tick na een minuut
 					setTimeCSS();
@@ -783,8 +787,11 @@
 					}
 
 					// Update de melding met de nieuwe resterende tijd elke minuut
-					sendNotification(`Nog ${timeRemaining} minuten over.`);
-
+					if (timeRemaining === 1) {
+						sendNotification('Nog 1 minuut over.');
+					} else {
+						sendNotification(`Nog ${timeRemaining} minuten over.`);
+					}
 					// Start de volgende tick na een minuut
 					timer = window.setTimeout(tick, MINUTE);
 				}
@@ -804,6 +811,8 @@
 					if (ding) {
 						ding.play();
 					}
+
+					sendNotification('Timer gaat af!');
 
 					if (timer) {
 						window.clearTimeout(timer);
