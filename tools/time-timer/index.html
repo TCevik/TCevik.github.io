@@ -8,11 +8,11 @@
 
 	<style>
 		body {
-		  	display: flex;
-		  	justify-content: center;
-		  	align-items: center;
-		  	height: 100vh;
-		  	margin: 0 auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0 auto;
 		}
 
 		blockquote,
@@ -92,11 +92,12 @@
 		}
 
 		.timer-container {
-		  	display: flex;
-		  	flex-direction: column;
-		  	justify-content: center;
-		  	align-items: center;
-			height: 100vh; /* 100% van de viewporthoogte */
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			/* 100% van de viewporthoogte */
 		}
 
 		.timer {
@@ -680,114 +681,141 @@
 			<input type="submit" value="Start">
 		</form>
 
-		<script>
-			function validateMinutes() {
-				var timeInput = document.getElementById("time");
-				var minutes = parseInt(timeInput.value);
-
-				if (isNaN(minutes) || minutes < 1 || minutes > 60) {
-					timeInput.setCustomValidity("Minuten moeten tussen 1 en 60 liggen.");
-				} else {
-					timeInput.setCustomValidity("");
-				}
-			}
-		</script>
-
-		<footer role="contentinfo" class="footer">
-			<img style="opacity: 0; border-radius: 25px; margin-top: -40px; margin-bottom: 0px; width: 362px;"
-				class="img" src="lol" alt="Toukle">
-		</footer>
-
 		<audio class="ding" src="/tools/time-timer/time-timer-sound.wav" preload="auto"></audio>
 
 		<script>
-			const lerp = (x, y, a) => x * (1 - a) + y * a;
-			const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
-			const invlerp = (x, y, a) => clamp((a - x) / (y - x));
-			const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
+			function validateMinutes() {
+    var timeInput = document.getElementById("time");
+    var minutes = parseInt(timeInput.value);
 
-			(() => {
+    if (isNaN(minutes) || minutes < 1 || minutes > 60) {
+        timeInput.setCustomValidity("Minuten moeten tussen 1 en 60 liggen.");
+    } else {
+        timeInput.setCustomValidity("");
+    }
+}
 
-				try {
-					const test = document.createElement('div')
-					test.style.background = 'conic-gradient(red, blue)';
-					document.body.appendChild(test);
-					const styles = window.getComputedStyle(test);
-					if (styles.backgroundImage === 'none') {
-						document.body.classList.add('no-gradient');
-						document.body.removeChild(test);
-					}
-				} catch (e) { }
+function askNotif() {
+    if ('Notification' in window) {
+        Notification.requestPermission().then(function (permission) {
+            if (permission === 'granted') {
+                sendNotification('Activeren gelukt, nu zal de timer in de achtergrond doorgaan.');
+            } else {
+                sendNotification('Meldingen zijn uitgeschakeld. Je kunt dit later altijd wijzigen in de browserinstellingen.');
+            }
+        });
+    } else {
+        alert('Je browser ondersteunt geen meldingen.');
+    }
+}
 
+function sendNotification(message) {
+    if (Notification.permission === 'granted') {
+        const options = {
+            body: message,
+            tag: 'timer-notification',
+            renotify: true // Verzend een nieuwe melding als de gebruiker de vorige heeft gesloten
+        };
+        new Notification('Timer', options);
+    }
+}
 
-				const timeInput = document.querySelector('[name="time"]');
-				const timerEl = document.querySelector('.timer');
-				const form = document.querySelector('.input-group');
-				const ding = document.querySelector('.ding');
+askNotif();
 
-				let timeRemaining = Number(timeInput.value);
-				setTimeCSS();
+const lerp = (x, y, a) => x * (1 - a) + y * a;
+const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
+const invlerp = (x, y, a) => clamp((a - x) / (y - x));
+const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
 
-				let timer;
-				const MINUTE = 1 * 1000 * 60;
+(() => {
+    try {
+        const test = document.createElement('div');
+        test.style.background = 'conic-gradient(red, blue)';
+        document.body.appendChild(test);
+        const styles = window.getComputedStyle(test);
+        if (styles.backgroundImage === 'none') {
+            document.body.classList.add('no-gradient');
+            document.body.removeChild(test);
+        }
+    } catch (e) { }
 
-				timerEl.addEventListener('click', toggleTimer);
-				form.addEventListener('submit', (event) => {
-					event.preventDefault();
-					toggleTimer();
-				})
+    const timeInput = document.querySelector('[name="time"]');
+    const timerEl = document.querySelector('.timer');
+    const form = document.querySelector('.input-group');
+    const ding = document.querySelector('.ding');
 
-				function toggleTimer(params) {
-					timer ? stopTimer() : startTimer();
-				}
+    let timeRemaining = 0; // Start met 0 minuten
+    let timer;
+    const MINUTE = 1 * 1000 * 60;
 
-				function startTimer() {
-					document.body.classList.add('timer-running');
-					document.body.classList.remove('timer-paused');
-					document.body.classList.remove('timer-finished');
+    timerEl.addEventListener('click', toggleTimer);
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        toggleTimer();
+    });
 
-					timeRemaining = Number(timeInput.value) + 1;
-					tick();
-				}
+    function toggleTimer() {
+        timer ? stopTimer() : startTimer();
+    }
 
-				function tick() {
-					timeRemaining--;
-					setTimeCSS();
+    function startTimer() {
+        document.body.classList.add('timer-running');
+        document.body.classList.remove('timer-paused');
+        document.body.classList.remove('timer-finished');
 
-					if (!timeRemaining) {
-						stopTimer();
-						return;
-					}
+        timeRemaining = Number(timeInput.value);
 
-					timer = window.setTimeout(tick, MINUTE);
-				}
+        // Stuur een notificatie wanneer de timer start, inclusief de tijd die nog over is
+        sendNotification(`Timer gestart voor ${timeRemaining} minuten.`);
 
-				function setTimeCSS() {
-					document.documentElement.style.setProperty(
-						'--time',
-						360 - range(0, 60, 0, 360, Number(timeRemaining))
-					);
-				}
+        // Stel de initiële tijd in en start de eerste tick na een minuut
+        setTimeCSS();
+        timer = window.setTimeout(tick, MINUTE);
+    }
 
-				function stopTimer() {
-					document.body.classList.add('timer-paused');
-					document.body.classList.add('timer-finished');
-					document.body.classList.remove('timer-running');
+    function tick() {
+        timeRemaining--;
+        setTimeCSS();
 
-					if (ding) {
-						ding.play();
-					}
+        if (timeRemaining <= 0) {
+            stopTimer();
+            return;
+        }
 
-					if (timer) {
-						window.clearTimeout(timer);
-						timer = null;
-					}
+        // Update de melding met de nieuwe resterende tijd elke minuut
+        sendNotification(`Nog ${timeRemaining} minuten over.`);
 
-					setTimeout(() => {
-						document.body.classList.remove('timer-finished');
-					}, 1000);
-				}
-			})();
+        // Start de volgende tick na een minuut
+        timer = window.setTimeout(tick, MINUTE);
+    }
+
+    function setTimeCSS() {
+        document.documentElement.style.setProperty(
+            '--time',
+            360 - range(0, 60, 0, 360, Number(timeRemaining))
+        );
+    }
+
+    function stopTimer() {
+        document.body.classList.add('timer-paused');
+        document.body.classList.add('timer-finished');
+        document.body.classList.remove('timer-running');
+
+        if (ding) {
+            ding.play();
+        }
+
+        if (timer) {
+            window.clearTimeout(timer);
+            timer = null;
+        }
+
+        setTimeout(() => {
+            document.body.classList.remove('timer-finished');
+        }, 1000);
+    }
+})();
+
 		</script>
 </body>
 
