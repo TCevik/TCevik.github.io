@@ -403,9 +403,8 @@
 
 		<div id="parent-section">
 			<h3>Eigen Picto's</h3>
-			<div class="picto" style="background-image: url(/picto-planner/plus.png);" onclick="addpicto()">Add Picto
-			</div>
-			<div id="custompictos">
+			<input type="file" id="imageInput" accept="image/*">
+			<br><div id="custompictos">
 
 			</div>
 		</div>
@@ -414,33 +413,44 @@
 		<script src="/picto-planner/bodyscript.js"></script>
 
 		<script>
-			function addpicto() {
-				var url = prompt('Voer de URL in voor de afbeelding:');
+			document.getElementById('imageInput').addEventListener('change', function () {
+				var fileInput = document.getElementById('imageInput');
+				var file = fileInput.files[0];
 
-				if (url) {
-					var newDiv = document.createElement('div');
-					newDiv.className = 'picto';
-					newDiv.style.backgroundImage = 'url(' + url + ')';
+				if (file) {
+					var reader = new FileReader();
+					reader.onload = function (event) {
+						var imageUrl = event.target.result;
 
-					var removeBtn = document.createElement('button');
-					removeBtn.className = 'remove-btn';
-					removeBtn.innerText = 'X';
-					removeBtn.onclick = function (event) {
-						event.stopPropagation();
-						removePicto(url, newDiv);
+						var newDiv = document.createElement('div');
+						newDiv.className = 'picto';
+						newDiv.style.backgroundImage = 'url(' + imageUrl + ')';
+
+						var removeBtn = document.createElement('button');
+						removeBtn.className = 'remove-btn';
+						removeBtn.innerText = 'X';
+						removeBtn.onclick = function (event) {
+							event.stopPropagation();
+							removePicto(imageUrl, newDiv);
+						};
+
+						newDiv.appendChild(removeBtn);
+
+						newDiv.onclick = function () {
+							addToChild(this, imageUrl);
+						};
+
+						document.getElementById('custompictos').appendChild(newDiv);
+
+						savePicto(imageUrl);
+
+						// Reset de file input
+						fileInput.value = '';
 					};
 
-					newDiv.appendChild(removeBtn);
-
-					newDiv.onclick = function () {
-						addToChild(this, url);
-					};
-
-					document.getElementById('custompictos').appendChild(newDiv);
-
-					savePicto(url);
+					reader.readAsDataURL(file); // Leest het bestand en converteert het naar een Base64-string
 				}
-			}
+			});
 
 			function savePicto(url) {
 				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];

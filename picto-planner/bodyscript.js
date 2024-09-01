@@ -8,47 +8,56 @@ function addToChild(picto, imageUrl) {
         if (childSection.childNodes.length === 0) {
             childSection.style.display = 'none';
         }
-        savePictosToCookies(); // Sla de pictogrammen op in cookies zodra er een wordt verwijderd
+        saveChildPictosToStorage(); // Sla de pictogrammen van child-section op in localStorage zodra er een wordt verwijderd
     };
     childSection.appendChild(img);
     childSection.style.display = 'block';
-    savePictosToCookies(); // Sla de pictogrammen op in cookies zodra er een wordt toegevoegd
+    saveChildPictosToStorage(); // Sla de pictogrammen van child-section op in localStorage zodra er een wordt toegevoegd
 }
 
+// Functie om alle pictogrammen in de child-section te verwijderen
 function deleteAllPictos() {
     var childSection = document.getElementById('child-section');
     childSection.innerHTML = '';
     childSection.style.display = 'none';
-    savePictosToCookies(); // Sla de lege staat op in cookies
+    saveChildPictosToStorage(); // Sla de lege staat op in localStorage
 }
 
-function savePictosToCookies() {
-    var pictos = document.getElementById('child-section').innerHTML;
-    document.cookie = "pictos=" + encodeURIComponent(pictos) + "; path=/; max-age=31536000"; // Sla op voor 1 jaar
+// Functie om de pictogrammen van child-section op te slaan in localStorage
+function saveChildPictosToStorage() {
+    var pictos = [];
+    var pictoElements = document.getElementById('child-section').getElementsByClassName('picto');
+    for (var i = 0; i < pictoElements.length; i++) {
+        pictos.push(pictoElements[i].src);
+    }
+    localStorage.setItem('childPictos', JSON.stringify(pictos));
     notification('Bewerking opgeslagen');
 }
 
-function loadPictosFromCookies() {
+// Functie om de pictogrammen van child-section te laden vanuit localStorage
+function loadChildPictosFromStorage() {
     var childSection = document.getElementById('child-section');
-    var pictos = getCookie("pictos");
+    var pictos = JSON.parse(localStorage.getItem('childPictos'));
 
-    if (pictos) {
-        childSection.innerHTML = decodeURIComponent(pictos);
-        childSection.style.display = 'block';
-        var pictoElements = childSection.getElementsByClassName('picto');
-        for (var i = 0; i < pictoElements.length; i++) {
-            var picto = pictoElements[i];
-            picto.onclick = function () {
+    if (pictos && pictos.length > 0) {
+        pictos.forEach(function(imageUrl) {
+            var img = document.createElement('img');
+            img.src = imageUrl;
+            img.classList.add('picto');
+            img.onclick = function () {
                 childSection.removeChild(this);
                 if (childSection.childNodes.length === 0) {
                     childSection.style.display = 'none';
                 }
-                savePictosToCookies(); // Sla de pictogrammen op in cookies zodra er een wordt verwijderd
+                saveChildPictosToStorage(); // Sla de pictogrammen van child-section op in localStorage zodra er een wordt verwijderd
             };
-        }
+            childSection.appendChild(img);
+        });
+        childSection.style.display = 'block';
     }
 }
 
+// Functie om een cookie op te halen (als je cookies gebruikt voor andere doeleinden)
 function getCookie(name) {
     let cookieArr = document.cookie.split(";");
     for (let i = 0; i < cookieArr.length; i++) {
@@ -60,7 +69,7 @@ function getCookie(name) {
     return null;
 }
 
-loadPictosFromCookies();
+loadChildPictosFromStorage();
 
 function speakDateTime() {
     const dateTime = new Date();
