@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div style="width: 450px;" class="game">
+            <div style="width: 400px;" class="game">
                 <h4>Slot Machine</h4>
                 <b style="margin-top: 0px;">Guess what you want to bet on the slot machine!</b>
                 <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
@@ -142,6 +142,24 @@
                 </div>
                 <button class="slotmachine-btn" onclick="playSlotMachine();">Spin!</button>
             </div>
+
+            <div style="width: 325px;" class="game">
+                <h4>Blackjack</h4>
+                <b style="margin-top: 0px;">Play Blackjack against the dealer!</b>
+                <br><input style="margin-top: 5px; margin-bottom: 0px; margin-left: 0px;" type="number"
+                    id="blackjack-bet" placeholder="AMOUNT TO BET"></input>
+                <br>
+                <p style="margin-bottom: 0px; margin-top: 5px;" id="blackjack-status">Payouts: Win - 2.5x | Lose - 0x | Draw - 1x.</p>
+                <button style="margin-top: 5px;" id="blackjack-deal-btn" onclick="startBlackjack();">Start</button>
+                <button style="margin-top: 5px;" id="blackjack-hit-btn" onclick="hitBlackjack();" disabled>Hit</button>
+                <button style="margin-top: 5px;" id="blackjack-stand-btn" onclick="standBlackjack();"
+                    disabled>Stand</button>
+                <div>
+                    <p style="margin: 0px; margin-top: 10px;" id="blackjack-player-cards">Your Cards: </p>
+                    <p style="margin: 0px;" id="blackjack-dealer-cards">Dealer's Cards: </p>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -353,6 +371,122 @@
             } else {
                 notification('You lost!');
             }
+        }
+
+        let playerCards = [];
+        let dealerCards = [];
+        let blackjackBet = 0;
+
+        function startBlackjack() {
+            const betInput = document.getElementById('blackjack-bet');
+            blackjackBet = parseFloat(betInput.value);
+
+            if (isNaN(blackjackBet) || blackjackBet <= 0) {
+                notification('Please enter a valid bet amount.');
+                return;
+            }
+
+            if (blackjackBet > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            decreaseMoney(blackjackBet);
+
+            playerCards = [drawCard(), drawCard()];
+            dealerCards = [drawCard(), drawCard()];
+
+            document.getElementById('blackjack-player-cards').innerText = `Your Cards: ${playerCards.join(', ')}`;
+            document.getElementById('blackjack-dealer-cards').innerText = `Dealer's Cards: ${dealerCards[0]}, ?`;
+
+            document.getElementById('blackjack-deal-btn').disabled = true;
+            document.getElementById('blackjack-hit-btn').disabled = false;
+            document.getElementById('blackjack-stand-btn').disabled = false;
+
+            checkBlackjackOutcome();
+        }
+
+        function drawCard() {
+            const cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+            return cards[Math.floor(Math.random() * cards.length)];
+        }
+
+        function calculatePoints(cards) {
+            let points = 0;
+            let aces = 0;
+
+            cards.forEach(card => {
+                if (card === 'J' || card === 'Q' || card === 'K') {
+                    points += 10;
+                } else if (card === 'A') {
+                    points += 11;
+                    aces += 1;
+                } else {
+                    points += parseInt(card);
+                }
+            });
+
+            while (points > 21 && aces > 0) {
+                points -= 10;
+                aces -= 1;
+            }
+
+            return points;
+        }
+
+        function hitBlackjack() {
+            playerCards.push(drawCard());
+            document.getElementById('blackjack-player-cards').innerText = `Your Cards: ${playerCards.join(', ')}`;
+            checkBlackjackOutcome();
+        }
+
+        function standBlackjack() {
+            document.getElementById('blackjack-dealer-cards').innerText = `Dealer's Cards: ${dealerCards.join(', ')}`;
+            let dealerPoints = calculatePoints(dealerCards);
+
+            while (dealerPoints < 17) {
+                dealerCards.push(drawCard());
+                dealerPoints = calculatePoints(dealerCards);
+                document.getElementById('blackjack-dealer-cards').innerText = `Dealer's Cards: ${dealerCards.join(', ')}`;
+            }
+
+            determineWinner();
+        }
+
+        function checkBlackjackOutcome() {
+            const playerPoints = calculatePoints(playerCards);
+
+            if (playerPoints > 21) {
+                notification('You lost! Your points are more than 21.');
+                endBlackjack();
+            } else if (playerPoints === 21) {
+                notification("Blackjack! You've won!");
+                increaseMoney(blackjackBet * 2.5);
+                endBlackjack();
+            }
+        }
+
+        function determineWinner() {
+            const playerPoints = calculatePoints(playerCards);
+            const dealerPoints = calculatePoints(dealerCards);
+
+            if (dealerPoints > 21 || playerPoints > dealerPoints) {
+                notification('You have won!');
+                increaseMoney(blackjackBet * 2);
+            } else if (playerPoints < dealerPoints) {
+                notification('You have lost!');
+            } else {
+                notification("It's a draw!");
+                increaseMoney(blackjackBet);
+            }
+
+            endBlackjack();
+        }
+
+        function endBlackjack() {
+            document.getElementById('blackjack-deal-btn').disabled = false;
+            document.getElementById('blackjack-hit-btn').disabled = true;
+            document.getElementById('blackjack-stand-btn').disabled = true;
         }
     </script>
 </body>
