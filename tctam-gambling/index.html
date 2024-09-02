@@ -400,9 +400,9 @@
         function calculatePayout(fruits, bet) {
             let payout = 0;
             if (fruits[0] === fruits[1] && fruits[1] === fruits[2]) {
-                payout = 4;
-            } else if (fruits[0] === fruits[1] || fruits[1] === fruits[2] || fruits[0] === fruits[2]) {
                 payout = 3;
+            } else if (fruits[0] === fruits[1] || fruits[1] === fruits[2] || fruits[0] === fruits[2]) {
+                payout = 2;
             }
 
             increaseMoney(bet * payout);
