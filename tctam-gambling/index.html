@@ -52,6 +52,8 @@
             padding-left: 25px;
             padding-right: 25px;
             padding-bottom: 15px;
+            flex: 1 1 auto;
+            box-sizing: border-box;
         }
 
         .button-cooldown-container-nexttoeach {
@@ -149,7 +151,8 @@
                 <br><input style="margin-top: 5px; margin-bottom: 0px; margin-left: 0px;" type="number"
                     id="blackjack-bet" placeholder="AMOUNT TO BET"></input>
                 <br>
-                <p style="margin-bottom: 0px; margin-top: 5px;" id="blackjack-status">Payouts: Win - 2.5x | Lose - 0x | Draw - 1x.</p>
+                <p style="margin-bottom: 0px; margin-top: 5px;" id="blackjack-status">Payouts: Win - 2.5x | Lose - 0x |
+                    Draw - 1x.</p>
                 <button style="margin-top: 5px;" id="blackjack-deal-btn" onclick="startBlackjack();">Start</button>
                 <button style="margin-top: 5px;" id="blackjack-hit-btn" onclick="hitBlackjack();" disabled>Hit</button>
                 <button style="margin-top: 5px;" id="blackjack-stand-btn" onclick="standBlackjack();"
@@ -256,8 +259,46 @@
         window.onload = function () {
             initialize();
             setInterval(updateCooldowns, 1000);
+            arrangeGames();
         };
 
+        function arrangeGames() {
+            const container = document.getElementById('activities');
+            const games = Array.from(document.querySelectorAll('.game'));
+
+            // Reset de flex basis van elke game
+            games.forEach(game => game.style.flexBasis = 'auto');
+
+            let rowWidth = 0;
+            let rowItems = [];
+
+            games.forEach((game, index) => {
+                const gameWidth = game.offsetWidth;
+                rowWidth += gameWidth + parseFloat(getComputedStyle(container).gap);
+
+                if (rowWidth <= container.clientWidth) {
+                    rowItems.push(game);
+                } else {
+                    distributeWidth(rowItems, container.clientWidth - (rowWidth - gameWidth - parseFloat(getComputedStyle(container).gap)));
+                    rowItems = [game];
+                    rowWidth = gameWidth + parseFloat(getComputedStyle(container).gap);
+                }
+            });
+
+            if (rowItems.length > 0) {
+                distributeWidth(rowItems, container.clientWidth - rowWidth + parseFloat(getComputedStyle(container).gap));
+            }
+        }
+
+        function distributeWidth(items, remainingWidth) {
+            const totalFlexGrow = items.reduce((sum, item) => sum + parseFloat(getComputedStyle(item).flexGrow), 0);
+            const extraWidthPerItem = remainingWidth / items.length;
+
+            items.forEach(item => {
+                const currentFlexBasis = parseFloat(getComputedStyle(item).flexBasis);
+                item.style.flexBasis = `${currentFlexBasis + extraWidthPerItem}px`;
+            });
+        }
 
         /* GAMES */
         function coinflip(choice) {
