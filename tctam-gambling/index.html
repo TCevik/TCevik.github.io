@@ -136,7 +136,7 @@
                 <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="slotmachine-bet" placeholder="AMOUNT TO BET"></input>
                 <br>
-                <p style="margin-top: 0px;">Payouts: 2 of a kind - 2x | 3 of a kind - 3x</p>
+                <p style="margin-top: 0px;">Payouts: 2 of a kind - 2.5x | 3 of a kind - 3.5x</p>
                 <div style="margin-top: -30px; display: flex;">
                     <p id="fruit1">🍎</p>
                     <p id="fruit2">🍎</p>
@@ -400,9 +400,9 @@
         function calculatePayout(fruits, bet) {
             let payout = 0;
             if (fruits[0] === fruits[1] && fruits[1] === fruits[2]) {
-                payout = 3;
+                payout = 3.5;
             } else if (fruits[0] === fruits[1] || fruits[1] === fruits[2] || fruits[0] === fruits[2]) {
-                payout = 2;
+                payout = 2.5;
             }
 
             increaseMoney(bet * payout);
