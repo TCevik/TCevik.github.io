@@ -145,7 +145,7 @@
             <div style="width: 400px;" class="game">
                 <h4>Slot Machine</h4>
                 <b style="margin-top: 0px;">Guess what you want to bet on the slot machine.</b>
-                <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="slotmachine-bet" placeholder="AMOUNT TO BET"></input>
                 <br>
                 <p style="margin-top: 0px;">Payouts: 2 of a kind - 2.5x | 3 of a kind - 3.5x</p>
@@ -174,6 +174,24 @@
                     <p style="margin: 0px;" id="blackjack-dealer-cards">Dealer's Cards: </p>
                 </div>
             </div>
+
+            <div style="width: 600px;" class="game">
+                <h4>Keno</h4>
+                <b>Select 5 numbers from a range of 1 to 150 and see if they match the 20 random numbers drawn.</b>
+                <br><input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number" id="keno-bet"
+                    placeholder="AMOUNT TO BET">
+                <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.3x | 3N - 3x | 4N - 4x | 5N - 5x.</p>
+                <br><input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
+                <input style="margin: 0px;" type="number" id="keno-number2" placeholder="N2" min="1" max="150">
+                <input style="margin: 0px;" type="number" id="keno-number3" placeholder="N3" min="1" max="150">
+                <input style="margin: 0px;" type="number" id="keno-number4" placeholder="N4" min="1" max="150">
+                <input style="margin: 0px; margin-bottom: 5px;" type="number" id="keno-number5" placeholder="N5" min="1"
+                    max="150">
+
+                <button id="keno-start-btn" onclick="playKeno();">Play Keno!</button>
+                <p id="keno-result"></p>
+            </div>
+
         </div>
     </div>
 
@@ -547,6 +565,74 @@
             setTimeout(function () {
                 document.getElementById('blackjack-deal-btn').disabled = false;
             }, 2000);
+        }
+
+        function playKeno() {
+            const betInput = document.getElementById('keno-bet');
+            const betAmount = parseFloat(betInput.value);
+            document.getElementById('keno-start-btn').disabled = true;
+
+            setTimeout(function () {
+                document.getElementById('keno-start-btn').disabled = false;
+            }, 3000);
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                notification('Please enter a valid amount.');
+                return;
+            }
+
+            if (betAmount > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            const selectedNumbers = [
+                parseInt(document.getElementById('keno-number1').value),
+                parseInt(document.getElementById('keno-number2').value),
+                parseInt(document.getElementById('keno-number3').value),
+                parseInt(document.getElementById('keno-number4').value),
+                parseInt(document.getElementById('keno-number5').value)
+            ].filter(num => num >= 1 && num <= 150);
+
+            if (selectedNumbers.length !== 5) {
+                notification('Please select 5 valid numbers.');
+                return;
+            }
+
+            decreaseMoney(betAmount);
+
+            const drawnNumbers = [];
+            while (drawnNumbers.length < 20) {
+                const num = Math.floor(Math.random() * 150) + 1;
+                if (!drawnNumbers.includes(num)) {
+                    drawnNumbers.push(num);
+                }
+            }
+
+            const matchingNumbers = selectedNumbers.filter(num => drawnNumbers.includes(num));
+            const payoutMultiplier = getPayoutMultiplier(matchingNumbers.length);
+
+            let resultMessage = `Drawn numbers: ${drawnNumbers.join(', ')}<br>Matching numbers: ${matchingNumbers.join(', ')}`;
+            if (matchingNumbers.length > 0) {
+                const winnings = betAmount * payoutMultiplier;
+                increaseMoney(winnings);
+                resultMessage += `<br>You won €${winnings}!`;
+            } else {
+                resultMessage += '<br>Unfortunately, you didn\'t match any numbers.';
+            }
+
+            document.getElementById('keno-result').innerHTML = resultMessage;
+        }
+
+        function getPayoutMultiplier(matchCount) {
+            switch (matchCount) {
+                case 1: return 2.0;
+                case 2: return 2.3;
+                case 3: return 3.0;
+                case 4: return 4.0;
+                case 5: return 5.0;
+                default: return 0;
+            }
         }
     </script>
 </body>
