@@ -196,7 +196,13 @@
 
         function randomAmount(highest, lowest) {
             const amount = Math.floor(Math.random() * (highest - lowest + 1)) + lowest;
+
             increaseMoney(amount);
+            if (amount > 0) {
+                notification('You have earned €' + amount + '.');
+            } else {
+                notification('You have lost €' + -amount + '.');
+            }
         }
 
         function increaseMoney(amount) {
