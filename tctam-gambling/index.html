@@ -73,7 +73,8 @@
         <h1 id="title">TC_tam Gambling</h1>
         <p id="description">Welcome to TC_tam Gambling</p>
         <button onclick="notification('Developer: Tamer Çevik - TC_tam<br>Version: 1.0');">Get some more info.</button>
-        <button onclick="notification(`Try using 'ctrl + f' (search on page) or a game hasn't been added.`);">Help, i can't find a game!</button>
+        <button onclick="notification(`Try using 'ctrl + f' (search on page) or a game hasn't been added.`);">Help, i
+            can't find a game!</button>
     </div>
     <div id="activities-container">
         <div id="activities">
@@ -109,7 +110,8 @@
 
             <div class="game">
                 <h4>Search</h4>
-                <p>Here you can search for some money every 12 minutes for a random amount of money between €350 and €1,750.</p>
+                <p>Here you can search for some money every 12 minutes for a random amount of money between €350 and
+                    €1,750.</p>
                 <div class="button-cooldown-container">
                     <button onclick="claimReward(12 * 60 * 1000, 1750, 350, 'search-cooldown')">Search</button>
                     <p id="search-cooldown"></p>
@@ -541,9 +543,11 @@
         }
 
         function endBlackjack() {
-            document.getElementById('blackjack-deal-btn').disabled = false;
             document.getElementById('blackjack-hit-btn').disabled = true;
             document.getElementById('blackjack-stand-btn').disabled = true;
+            setTimeout(function () {
+                document.getElementById('blackjack-deal-btn').disabled = false;
+            }, 2000);
         }
     </script>
 </body>
