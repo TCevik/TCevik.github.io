@@ -97,6 +97,7 @@ var buttons = `
 
 	<h3 style="margin-top: 50px;" id="games">TC_tam Games</h3>
 	<button onclick="window.location.href='/tctam-casino'">TC_tam Casino</button>
+	<button onclick="window.location.href='/games/apple-shooter'">Apple Shooter</button>
 
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
