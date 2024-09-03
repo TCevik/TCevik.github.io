@@ -106,6 +106,15 @@
                 </div>
             </div>
 
+            <div class="game">
+                <h4>Search</h4>
+                <p>Here you can search for some money every 12 minutes for a random amount of money between €350 and €1,750.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(12 * 60 * 1000, 1750, 350, 'search-cooldown')">Search</button>
+                    <p id="search-cooldown"></p>
+                </div>
+            </div>
+
             <div style="width: 450px;" class="game">
                 <h4>Coinflip</h4>
                 <b style="margin-top: 0px;">What do you think it's going to be?</b>
@@ -162,7 +171,6 @@
                     <p style="margin: 0px;" id="blackjack-dealer-cards">Dealer's Cards: </p>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -172,6 +180,7 @@
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
         const HOURLY_COOLDOWN = 60 * 60 * 1000;
         const WORK_COOLDOWN = 10 * 60 * 1000;
+        const SEARCH_COOLDOWN = 12 * 60 * 1000;
         const CRIME_COOLDOWN = 1.5 * 60 * 60 * 1000;
 
         function initialize() {
@@ -234,6 +243,7 @@
                 { id: 'daily-cooldown', cooldown: DAILY_COOLDOWN },
                 { id: 'work-cooldown', cooldown: WORK_COOLDOWN },
                 { id: 'crime-cooldown', cooldown: CRIME_COOLDOWN },
+                { id: 'search-cooldown', cooldown: SEARCH_COOLDOWN },
                 { id: 'hourly-cooldown', cooldown: HOURLY_COOLDOWN }
             ];
 
