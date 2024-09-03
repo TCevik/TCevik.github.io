@@ -61,6 +61,12 @@
             align-items: center;
             gap: 10px;
         }
+
+        @media (min-width: 800px) {
+            #keno-game {
+                flex-direction: row !important;
+            }
+        }
     </style>
 </head>
 
@@ -121,8 +127,8 @@
             <div style="width: 450px;" class="game">
                 <h4>Coinflip</h4>
                 <b style="margin-top: 0px;">What do you think it's going to be?</b>
-                <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number" id="coinflip-bet"
-                    placeholder="AMOUNT TO BET"></input>
+                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="coinflip-bet" placeholder="AMOUNT TO BET"></input>
                 <br>
                 <p style="margin-top: 0px;">Payouts: Heads - 2.2x | Tails - 2.2x | Sideways - 3.1x</p>
                 <button class="coinflip-btn" onclick="coinflip('heads');">Heads</button>
@@ -149,7 +155,7 @@
                     id="slotmachine-bet" placeholder="AMOUNT TO BET"></input>
                 <br>
                 <p style="margin-top: 0px;">Payouts: 2 of a kind - 2.5x | 3 of a kind - 3.5x</p>
-                <div style="margin-top: -30px; display: flex;">
+                <div style="margin-top: -10px; display: flex;">
                     <p id="fruit1">🍎</p>
                     <p id="fruit2">🍎</p>
                     <p id="fruit3">🍎</p>
@@ -175,16 +181,17 @@
                 </div>
             </div>
 
-            <div style="display: flex; width: 600px;" class="game">
+            <div style="display: flex; flex-direction: column; width: 600px;" id="keno-game" class="game">
                 <div style="flex: 1;">
                     <h4>Keno</h4>
                     <b>Select 5 numbers from a range of 1 to 150 and see if they match the 20 random numbers drawn.</b>
-                    <br><input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number"
-                        id="keno-bet" placeholder="AMOUNT TO BET">
+                    <br>
+                    <input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number" id="keno-bet"
+                        placeholder="AMOUNT TO BET">
                     <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.3x | 3N - 3x | 4N - 4x |
-                        5N
-                        - 5x.</p>
-                    <br><input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
+                        5N - 5x.</p>
+                    <br>
+                    <input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
                     <input style="margin: 0px;" type="number" id="keno-number2" placeholder="N2" min="1" max="150">
                     <input style="margin: 0px;" type="number" id="keno-number3" placeholder="N3" min="1" max="150">
                     <input style="margin: 0px;" type="number" id="keno-number4" placeholder="N4" min="1" max="150">
@@ -197,7 +204,6 @@
                     <p id="keno-result"></p>
                 </div>
             </div>
-
         </div>
     </div>
 
