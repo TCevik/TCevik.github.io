@@ -201,7 +201,7 @@
                 </div>
                 <div style="flex: 1;">
                     <h4>Results Keno</h4>
-                    <p id="keno-result"></p>
+                    <p style="margin-top: -5px;" id="keno-result"></p>
                 </div>
             </div>
         </div>
@@ -597,7 +597,7 @@
 
             setTimeout(function () {
                 document.getElementById('keno-start-btn').disabled = false;
-            }, 3000);
+            }, 2500);
 
             const selectedNumbers = [
                 parseInt(document.getElementById('keno-number1').value),
@@ -631,7 +631,7 @@
                     const numberToShow = drawnNumbers[index];
                     document.getElementById('keno-result').innerHTML += (index > 0 ? ', ' : '') + numberToShow;
                     index++;
-                    setTimeout(showNextNumber, 200);
+                    setTimeout(showNextNumber, 100);
                 } else {
                     // Alle nummers zijn getoond, toon de eindstand
                     const matchingNumbers = selectedNumbers.filter(num => drawnNumbers.includes(num));
