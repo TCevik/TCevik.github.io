@@ -175,21 +175,27 @@
                 </div>
             </div>
 
-            <div style="width: 600px;" class="game">
-                <h4>Keno</h4>
-                <b>Select 5 numbers from a range of 1 to 150 and see if they match the 20 random numbers drawn.</b>
-                <br><input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number" id="keno-bet"
-                    placeholder="AMOUNT TO BET">
-                <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.3x | 3N - 3x | 4N - 4x | 5N - 5x.</p>
-                <br><input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
-                <input style="margin: 0px;" type="number" id="keno-number2" placeholder="N2" min="1" max="150">
-                <input style="margin: 0px;" type="number" id="keno-number3" placeholder="N3" min="1" max="150">
-                <input style="margin: 0px;" type="number" id="keno-number4" placeholder="N4" min="1" max="150">
-                <input style="margin: 0px; margin-bottom: 5px;" type="number" id="keno-number5" placeholder="N5" min="1"
-                    max="150">
-
-                <button id="keno-start-btn" onclick="playKeno();">Play Keno!</button>
-                <p id="keno-result"></p>
+            <div style="display: flex; width: 600px;" class="game">
+                <div style="flex: 1;">
+                    <h4>Keno</h4>
+                    <b>Select 5 numbers from a range of 1 to 150 and see if they match the 20 random numbers drawn.</b>
+                    <br><input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number"
+                        id="keno-bet" placeholder="AMOUNT TO BET">
+                    <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.3x | 3N - 3x | 4N - 4x |
+                        5N
+                        - 5x.</p>
+                    <br><input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
+                    <input style="margin: 0px;" type="number" id="keno-number2" placeholder="N2" min="1" max="150">
+                    <input style="margin: 0px;" type="number" id="keno-number3" placeholder="N3" min="1" max="150">
+                    <input style="margin: 0px;" type="number" id="keno-number4" placeholder="N4" min="1" max="150">
+                    <input style="margin: 0px; margin-bottom: 5px;" type="number" id="keno-number5" placeholder="N5"
+                        min="1" max="150">
+                    <button id="keno-start-btn" onclick="playKeno();">Play Keno!</button>
+                </div>
+                <div style="flex: 1;">
+                    <h4>Results Keno</h4>
+                    <p id="keno-result"></p>
+                </div>
             </div>
 
         </div>
@@ -570,11 +576,6 @@
         function playKeno() {
             const betInput = document.getElementById('keno-bet');
             const betAmount = parseFloat(betInput.value);
-            document.getElementById('keno-start-btn').disabled = true;
-
-            setTimeout(function () {
-                document.getElementById('keno-start-btn').disabled = false;
-            }, 3000);
 
             if (isNaN(betAmount) || betAmount <= 0) {
                 notification('Please enter a valid amount.');
@@ -585,6 +586,12 @@
                 notification("You don't have enough money for this bet!");
                 return;
             }
+
+            document.getElementById('keno-start-btn').disabled = true;
+
+            setTimeout(function () {
+                document.getElementById('keno-start-btn').disabled = false;
+            }, 3000);
 
             const selectedNumbers = [
                 parseInt(document.getElementById('keno-number1').value),
@@ -609,19 +616,35 @@
                 }
             }
 
-            const matchingNumbers = selectedNumbers.filter(num => drawnNumbers.includes(num));
-            const payoutMultiplier = getPayoutMultiplier(matchingNumbers.length);
+            document.getElementById('keno-result').innerHTML = '';
 
-            let resultMessage = `Drawn numbers: ${drawnNumbers.join(', ')}<br>Matching numbers: ${matchingNumbers.join(', ')}`;
-            if (matchingNumbers.length > 0) {
-                const winnings = betAmount * payoutMultiplier;
-                increaseMoney(winnings);
-                resultMessage += `<br>You won €${winnings}!`;
-            } else {
-                resultMessage += '<br>Unfortunately, you didn\'t match any numbers.';
+            let index = 0;
+
+            function showNextNumber() {
+                if (index < drawnNumbers.length) {
+                    const numberToShow = drawnNumbers[index];
+                    document.getElementById('keno-result').innerHTML += (index > 0 ? ', ' : '') + numberToShow;
+                    index++;
+                    setTimeout(showNextNumber, 200);
+                } else {
+                    // Alle nummers zijn getoond, toon de eindstand
+                    const matchingNumbers = selectedNumbers.filter(num => drawnNumbers.includes(num));
+                    const payoutMultiplier = getPayoutMultiplier(matchingNumbers.length);
+
+                    let resultMessage = `<br>Matching numbers: ${matchingNumbers.join(', ')}`;
+                    if (matchingNumbers.length > 0) {
+                        const winnings = betAmount * payoutMultiplier;
+                        increaseMoney(winnings);
+                        resultMessage += `<br>You won €${winnings}!`;
+                    } else {
+                        resultMessage += '<br>Unfortunately, you didn\'t match any numbers.';
+                    }
+
+                    document.getElementById('keno-result').innerHTML += resultMessage;
+                }
             }
 
-            document.getElementById('keno-result').innerHTML = resultMessage;
+            showNextNumber();
         }
 
         function getPayoutMultiplier(matchCount) {
@@ -634,6 +657,7 @@
                 default: return 0;
             }
         }
+
     </script>
 </body>
 
