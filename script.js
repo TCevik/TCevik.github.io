@@ -95,6 +95,9 @@ var buttons = `
     <button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
 	<button onclick="window.location.href='/online-store'">Online Store</button>
 
+	<h3 style="margin-top: 50px;" id="games">Official TC_tam Games</h3>
+	<button onclick="window.location.href='/tctam-casino'">TC_tam Casino</button>
+
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
