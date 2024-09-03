@@ -78,30 +78,30 @@
         <div id="activities">
             <div class="game">
                 <h4>Daily Reward</h4>
-                <p>Here you can collect your daily reward every 24 hours for a random amount of money between €12,000
-                    and €15,000.</p>
+                <p>Here you can collect your daily reward every 24 hours for a random amount of money between €4,000
+                    and €50,000.</p>
                 <div class="button-cooldown-container">
-                    <button onclick="claimReward(24 * 60 * 60 * 1000, 15000, 12000, 'daily-cooldown')">Claim</button>
+                    <button onclick="claimReward(24 * 60 * 60 * 1000, 50000, 4000, 'daily-cooldown')">Claim</button>
                     <p id="daily-cooldown"></p>
                 </div>
             </div>
 
             <div class="game">
                 <h4>Hourly Reward</h4>
-                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €1,000 and
-                    €800.</p>
+                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €2,000 and
+                    €4,000.</p>
                 <div class="button-cooldown-container">
-                    <button onclick="claimReward(60 * 60 * 1000, 1000, 800, 'hourly-cooldown')">Claim</button>
+                    <button onclick="claimReward(60 * 60 * 1000, 4000, 2000, 'hourly-cooldown')">Claim</button>
                     <p id="hourly-cooldown"></p>
                 </div>
             </div>
 
             <div class="game">
                 <h4>Work Reward</h4>
-                <p>Here you can collect your work income every 5 minutes for a random amount of money between €200 and
-                    €25.</p>
+                <p>Here you can collect your work income every 10 minutes for a random amount of money between €200 and
+                    €1,700.</p>
                 <div class="button-cooldown-container">
-                    <button onclick="claimReward(5 * 60 * 1000, 200, 25, 'work-cooldown')">Claim</button>
+                    <button onclick="claimReward(10 * 60 * 1000, 1700, 200, 'work-cooldown')">Claim</button>
                     <p id="work-cooldown"></p>
                 </div>
             </div>
@@ -171,14 +171,13 @@
 
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
         const HOURLY_COOLDOWN = 60 * 60 * 1000;
-        const WORK_COOLDOWN = 5 * 60 * 1000;
+        const WORK_COOLDOWN = 10 * 60 * 1000;
         const CRIME_COOLDOWN = 1.5 * 60 * 60 * 1000;
 
         function initialize() {
             const savedMoney = localStorage.getItem('money');
             money = savedMoney ? parseFloat(savedMoney) : 0;
             updateMoney();
-
             updateCooldowns();
         }
 
