@@ -133,18 +133,14 @@ button {
     z-index: 1;
 }
 
-button:hover {
+button:hover,
+button:focus {
     border: solid 3px #58bf33;
     cursor: pointer;
     border-radius: var(--border-radius1);
     padding: var(--button-padding);
     filter: brightness(120%);
     z-index: 2;
-}
-
-button:focus {
-    border: solid 3px #58bf33;
-    border-radius: var(--border-radius1);
 }
 
 button:disabled {
