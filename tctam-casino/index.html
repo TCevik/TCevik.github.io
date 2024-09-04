@@ -228,7 +228,7 @@
                 money = 0;
             }
 
-            const roundedMoney = Math.round(money);
+            const roundedMoney = Math.floor(money);
             const formattedMoney = roundedMoney.toLocaleString('nl-NL');
             document.getElementById('money').innerText = '€' + formattedMoney;
 
