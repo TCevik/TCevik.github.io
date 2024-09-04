@@ -188,7 +188,7 @@
                     <br>
                     <input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number" id="keno-bet"
                         placeholder="AMOUNT TO BET">
-                    <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.3x | 3N - 3x | 4N - 4x |
+                    <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.5x | 3N - 3x | 4N - 4x |
                         5N - 5x.</p>
                     <br>
                     <input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
@@ -656,7 +656,7 @@
         function getPayoutMultiplier(matchCount) {
             switch (matchCount) {
                 case 1: return 2.0;
-                case 2: return 2.3;
+                case 2: return 2.5;
                 case 3: return 3.0;
                 case 4: return 4.0;
                 case 5: return 5.0;
