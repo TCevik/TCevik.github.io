@@ -6,6 +6,9 @@
     <title>TC_tam Casino</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
     <style>
         body {
             margin-top: 80px;
@@ -67,6 +70,18 @@
                 flex-direction: row !important;
             }
         }
+
+        #login-form {
+            display: flex;
+            align-items: center;
+        }
+
+        #login-form input,
+        #logout-form button,
+        #login-form button {
+            margin: 0px;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -74,6 +89,15 @@
     <div id="topbar">
         <h3 style="margin: 0;">Balance: </h3>
         <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€0</h3>
+
+        <div id="login-form">
+            <input id="email" type="email" placeholder="E-mail" required>
+            <input id="password" type="password" placeholder="Wachtwoord" required>
+            <button onclick="login()">Inloggen</button>
+        </div>
+        <div id="logout-form" style="display: none;">
+            <button onclick="logout()">Uitloggen</button>
+        </div>
     </div>
     <div id="info">
         <h1 id="title">TC_tam Casino</h1>
@@ -663,7 +687,46 @@
                 default: return 0;
             }
         }
+    </script>
 
+    <script src="/firebase/config.js"></script>
+    <script>
+        const auth = firebase.auth();
+        function updateUI() {
+            const user = auth.currentUser;
+            if (user) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('logout-form').style.display = 'block';
+            } else {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('logout-form').style.display = 'none';
+            }
+        }
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    notification('Succesvol ingelogd!');
+                    updateUI();
+                })
+                .catch((error) => {
+                    notification('Fout bij inloggen: ' + error.message);
+                });
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                notification('Succesvol uitgelogd!');
+                updateUI();
+            }).catch((error) => {
+                notification('Fout bij uitloggen: ' + error.message);
+            });
+        }
+
+        auth.onAuthStateChanged(updateUI);
     </script>
 </body>
 
