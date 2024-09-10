@@ -378,15 +378,12 @@
 
     <script>
         function clearLocalStorageAndCookies() {
-            // Vraag bevestiging voordat je doorgaat
             const userConfirmed = confirm('Are you sure you want to delete all your progress? This cannot be undone. Remember this will reset the entire site, so if you were logged in or have other data saved it will also be deleted on tctam.nl.');
 
             if (userConfirmed) {
-                // Verwijder alle items uit localStorage
                 localStorage.clear();
                 hasReloaded = true;
 
-                // Verwijder alle cookies
                 const cookies = document.cookie.split(";");
 
                 for (let cookie of cookies) {
@@ -396,7 +393,6 @@
                 alert('Progression has been successfully reset!');
                 location.reload();
             } else {
-                // Als de gebruiker niet bevestigt, doe dan niets
                 alert('Reset canceled.');
             }
         }
@@ -432,7 +428,6 @@
             const formattedMoney = roundedMoney.toLocaleString('nl-NL');
             document.getElementById('money').innerText = '€' + formattedMoney;
 
-            // Save money to localStorage
             localStorage.setItem('money', money);
         }
 
@@ -528,7 +523,7 @@
             }
         }
 
-        setInterval(addDebt, 300000); // 300000 ms = 5 minuten
+        setInterval(addDebt, 300000);
 
         function updateCooldowns() {
             const now = Date.now();
@@ -894,7 +889,6 @@
                     index++;
                     setTimeout(showNextNumber, 100);
                 } else {
-                    // Alle nummers zijn getoond, toon de eindstand
                     const matchingNumbers = selectedNumbers.filter(num => drawnNumbers.includes(num));
                     const payoutMultiplier = getPayoutMultiplier(matchingNumbers.length);
 
@@ -927,27 +921,23 @@
     </script>
 
     <script>
-        // Functie om de waarde van #money te lezen
         function getMoneyElementValue() {
             const moneyElement = document.getElementById('money');
             return moneyElement && moneyElement.textContent.trim() !== "€0" ? moneyElement.textContent : null;
         }
 
-        // Functie om te controleren of 'money' in localStorage bestaat
         function isMoneyInLocalStorage() {
             return localStorage.getItem('money') !== null;
         }
 
-        // Voeg een vlag toe om bij te houden of de reload al is uitgevoerd
         let hasReloaded = false;
 
         function checkAndRefreshPage() {
             const moneyElementValue = getMoneyElementValue();
             const moneyInLocalStorage = isMoneyInLocalStorage();
 
-            // Controleer of de pagina al herladen is om verdere reloads te voorkomen
             if (!hasReloaded && moneyElementValue !== null && !moneyInLocalStorage) {
-                hasReloaded = true; // Zet de vlag zodat reload slechts één keer gebeurt
+                hasReloaded = true;
                 alert("Je hebt de cookies verwijderd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
                 window.location.href = "/";
                 window.close();
