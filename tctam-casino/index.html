@@ -137,13 +137,22 @@
                 </div>
             </div>
 
-            <div style="display: none;" class="game">
-                <h3>The bank :</h3>
-                <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise money
-                    will be taken from your account.</b>
-                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+            <div style="width: 600px;" class="game">
+                <h4>The bank:</h4>
+                <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise,
+                    money will slowly be written off your account. That will happen every 5 minutes. Are you wondering
+                    what will happen? It's simple: 3% will be taken from your account and 2% will be taken from your
+                    debts.</b>
+                <div style="margin-bottom: -30px; display: flex; align-items: center;">
+                    <p>Amount of debt: €</p>
+                    <p id="debt-showcase" style="margin: 0;"></p>
+                </div>
+                <br><input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="borrow-bank" placeholder="AMOUNT TO BORROW"></input>
-                <button class="confirm-borroww-btn" onclick="">Confirm</button>
+                <button class="confirm-borroww-btn" onclick="makeBankLoan();">Confirm</button>
+                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="payoff-bank" placeholder="AMOUNT TO PAY OFF"></input>
+                <button class="confirm-payoff-btn" onclick="payoffDebt();">Confirm</button>
             </div>
 
             <div style="width: 450px;" class="game">
@@ -230,35 +239,8 @@
     </div>
 
     <script>
-        // Functie om de waarde van #money te lezen
-        function getMoneyElementValue() {
-            const moneyElement = document.getElementById('money');
-            return moneyElement && moneyElement.textContent.trim() !== "€0" ? moneyElement.textContent : null;
-        }
-
-        // Functie om te controleren of 'money' in localStorage bestaat
-        function isMoneyInLocalStorage() {
-            return localStorage.getItem('money') !== null;
-        }
-
-        // Voeg een vlag toe om bij te houden of de reload al is uitgevoerd
-        let hasReloaded = false;
-
-        function checkAndRefreshPage() {
-            const moneyElementValue = getMoneyElementValue();
-            const moneyInLocalStorage = isMoneyInLocalStorage();
-
-            // Controleer of de pagina al herladen is om verdere reloads te voorkomen
-            if (!hasReloaded && moneyElementValue !== null && !moneyInLocalStorage) {
-                hasReloaded = true; // Zet de vlag zodat reload slechts één keer gebeurt
-                window.location.reload();
-            }
-        }
-
-        // Roep de functie aan bij het laden van de pagina
-        setInterval(checkAndRefreshPage, 1);
-
         let money = 0;
+        let debt = 0;
 
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
         const HOURLY_COOLDOWN = 60 * 60 * 1000;
@@ -269,7 +251,12 @@
         function initialize() {
             const savedMoney = localStorage.getItem('money');
             money = savedMoney ? parseFloat(savedMoney) : 0;
+
+            const savedDebt = localStorage.getItem('debt');
+            debt = savedDebt ? parseFloat(savedDebt) : 0;
+
             updateMoney();
+            showDebt();
             updateCooldowns();
         }
 
@@ -307,6 +294,56 @@
             updateMoney();
         }
 
+        function makeBankLoan() {
+            const borrowbank = document.getElementById('borrow-bank');
+            const borrowbankvalue = parseFloat(borrowbank.value);
+
+            if (borrowbankvalue > 0 && borrowbankvalue <= 3000000) {
+                if (debt + borrowbankvalue > 3000000) {
+                    notification(`You can't borrow that amount as it will exceed your debt limit of 3 million.`);
+                } else {
+                    increaseMoney(borrowbankvalue);
+                    debt += borrowbankvalue;
+                    saveDebt();
+                    notification(`You borrowed €${borrowbankvalue}. Your total debt is now €${debt}.`);
+                }
+            } else {
+                notification(`You can't borrow that much at once. This is way too much. And do you remember that you have to pay it back?`);
+            }
+        }
+
+        function payoffDebt() {
+            const payoff = document.getElementById('payoff-bank');
+            const payoffvalue = parseFloat(payoff.value);
+
+            if (payoffvalue > 0) {
+                if (payoffvalue <= money) {
+                    if (payoffvalue <= debt) {
+                        decreaseMoney(payoffvalue);
+                        debt -= payoffvalue;
+                        saveDebt();
+                        notification(`You paid €${payoffvalue} off. Your total debt is now €${debt}.`);
+                    } else {
+                        notification(`You don't have that much debt to pay off.`);
+                    }
+                } else {
+                    notification(`You don't have enough money to pay off this much.`);
+                }
+            } else {
+                notification(`The payment amount must be greater than zero.`);
+            }
+        }
+
+        function saveDebt() {
+            localStorage.setItem('debt', debt);
+            showDebt();
+        }
+
+        function showDebt() {
+            var debtElement = document.getElementById('debt-showcase');
+            debtElement.textContent = debt;
+        }
+
         function claimReward(cooldown, highest, lowest, cooldownElementId) {
             const now = Date.now();
             const lastClaim = localStorage.getItem(cooldownElementId);
@@ -318,6 +355,17 @@
             localStorage.setItem(cooldownElementId, now);
             updateCooldowns();
         }
+
+        function addDebt() {
+            if (debt > 0) {
+                decreaseMoney(Math.ceil(debt * 0.03));
+                debt -= Math.ceil(debt * 0.02);
+                saveDebt();
+                notification('Your money has decreased by 3% and your debts by 2%. This will happen every 5 minutes.')
+            }
+        }
+
+        setInterval(addDebt, 300000); // 300000 ms = 5 minuten
 
         function updateCooldowns() {
             const now = Date.now();
@@ -715,28 +763,60 @@
         }
     </script>
 
-<script>
-    (function() {
-        let devtoolsOpen = false;
-        const threshold = 250;
-    
-        const checkDevTools = () => {
-            if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-                devtoolsOpen = true;
-            } else {
-                devtoolsOpen = false;
-            }
-    
-            if (devtoolsOpen) {
-                alert("Developer tools gedetecteerd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
+    <script>
+        (function () {
+            let devtoolsOpen = false;
+            const threshold = 120;
+
+            const checkDevTools = () => {
+                if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+                    devtoolsOpen = true;
+                } else {
+                    devtoolsOpen = false;
+                }
+
+                let hasReloaded = false;
+
+                if (!hasReloaded && devtoolsOpen) {
+                    hasReloaded = true;
+                    alert("Developer tools gedetecteerd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
+                    window.location.href = "/";
+                    window.close();
+                }
+            };
+
+            setInterval(checkDevTools, 1);
+        })();
+
+        // Functie om de waarde van #money te lezen
+        function getMoneyElementValue() {
+            const moneyElement = document.getElementById('money');
+            return moneyElement && moneyElement.textContent.trim() !== "€0" ? moneyElement.textContent : null;
+        }
+
+        // Functie om te controleren of 'money' in localStorage bestaat
+        function isMoneyInLocalStorage() {
+            return localStorage.getItem('money') !== null;
+        }
+
+        // Voeg een vlag toe om bij te houden of de reload al is uitgevoerd
+        let hasReloaded = false;
+
+        function checkAndRefreshPage() {
+            const moneyElementValue = getMoneyElementValue();
+            const moneyInLocalStorage = isMoneyInLocalStorage();
+
+            // Controleer of de pagina al herladen is om verdere reloads te voorkomen
+            if (!hasReloaded && moneyElementValue !== null && !moneyInLocalStorage) {
+                hasReloaded = true; // Zet de vlag zodat reload slechts één keer gebeurt
+                alert("Je hebt de cookies verwijderd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
                 window.location.href = "/";
                 window.close();
             }
-        };
-    
-        setInterval(checkDevTools, 1);
-    })();
-    </script>    
+        }
+
+        setInterval(checkAndRefreshPage, 1);
+    </script>
 </body>
 
 </html>
