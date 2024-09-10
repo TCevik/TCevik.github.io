@@ -729,8 +729,8 @@
     
             if (devtoolsOpen) {
                 alert("Developer tools gedetecteerd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
+                window.location.href = "/";
                 window.close();
-                window.location.href = "about:blank";
             }
         };
     
