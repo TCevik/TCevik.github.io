@@ -230,6 +230,34 @@
     </div>
 
     <script>
+        // Functie om de waarde van #money te lezen
+        function getMoneyElementValue() {
+            const moneyElement = document.getElementById('money');
+            return moneyElement && moneyElement.textContent.trim() !== "€0" ? moneyElement.textContent : null;
+        }
+
+        // Functie om te controleren of 'money' in localStorage bestaat
+        function isMoneyInLocalStorage() {
+            return localStorage.getItem('money') !== null;
+        }
+
+        // Voeg een vlag toe om bij te houden of de reload al is uitgevoerd
+        let hasReloaded = false;
+
+        function checkAndRefreshPage() {
+            const moneyElementValue = getMoneyElementValue();
+            const moneyInLocalStorage = isMoneyInLocalStorage();
+
+            // Controleer of de pagina al herladen is om verdere reloads te voorkomen
+            if (!hasReloaded && moneyElementValue !== null && !moneyInLocalStorage) {
+                hasReloaded = true; // Zet de vlag zodat reload slechts één keer gebeurt
+                window.location.reload();
+            }
+        }
+
+        // Roep de functie aan bij het laden van de pagina
+        setInterval(checkAndRefreshPage, 1);
+
         let money = 0;
 
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
