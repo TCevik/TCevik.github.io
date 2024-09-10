@@ -257,6 +257,7 @@
             updateMoney();
             showDebt();
             updateCooldowns();
+            addDebt();
         }
 
         function updateMoney() {
@@ -360,7 +361,7 @@
                 decreaseMoney(Math.ceil(debt * 0.03));
                 debt -= Math.ceil(debt * 0.02);
                 saveDebt();
-                notification('Your money has decreased by 3% and your debts by 2%. This will happen every 5 minutes.')
+                notification('Your money has decreased by 3% and your debts by 2%. This will happen every 5 minutes and when you load the page.')
             }
         }
 
