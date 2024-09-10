@@ -13,7 +13,8 @@ body {
     width: calc(100% - 40px);
     margin-left: 20px;
     text-align: center;
-    transition: 0.5s;
+    transition: 0.3s;
+    transition: all 0.3s;
     scroll-behavior: smooth;
 }
 
@@ -38,7 +39,8 @@ body {
     --border-radius3: 50px;
     --border-radius4: 50vw;
     overflow-x: hidden;
-    transition: 0.5s;
+    transition: 0.3s;
+    transition: all 0.3s;
     font-family: Lexend, Arial, sans-serif;
 }
 
@@ -134,7 +136,7 @@ button {
     padding: var(--button-padding);
     font-size: var(--font-size);
     margin: 0.3%;
-    transition: filter 0.2s, transform 0.3s, border-radius 0.75s, border-color 0.3s;
+    transition: all 0.3s;
     transform-origin: center;
     z-index: 1;
 }
