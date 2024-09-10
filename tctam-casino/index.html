@@ -197,6 +197,7 @@
                     <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen -
                         €12.000.000</option>
                     <option value="FBI" data-price="13000000">FBI - €13.000.000</option>
+                    <option value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000</option>
                     <option value="National Bank" data-price="140000000">National Bank - €140.000.000</option>
                     <option value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex -
                         €420.000.000</option>
@@ -277,12 +278,47 @@
                                 var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
                                 var income = (propertyPrice * 0.03) * hoursPassed;
                                 increaseMoney(income);
+                                console.log(`Added ${income} money for property ${property}.`);
                                 purchaseTimes[property] = now.toISOString();
                             }
                         });
 
                         localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes));
                     }
+
+                    window.addEventListener('beforeunload', function () {
+                        localStorage.setItem('lastUnloadTime', new Date().toISOString());
+                    });
+
+                    window.addEventListener('focus', function () {
+                        var lastUnloadTime = localStorage.getItem('lastUnloadTime');
+                        if (lastUnloadTime) {
+                            var lastUnloadDate = new Date(lastUnloadTime);
+                            var now = new Date();
+                            var hoursPassed = Math.floor((now - lastUnloadDate) / (1000 * 60 * 60));
+
+                            if (hoursPassed > 0) {
+                                var properties = JSON.parse(localStorage.getItem('properties')) || [];
+                                var purchaseTimes = JSON.parse(localStorage.getItem('purchaseTimes')) || {};
+
+                                properties.forEach(function (property) {
+                                    var purchaseTime = new Date(purchaseTimes[property]);
+                                    var hoursSincePurchase = Math.floor((now - purchaseTime) / (1000 * 60 * 60));
+
+                                    if (hoursSincePurchase > 0) {
+                                        var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
+                                        var income = (propertyPrice * 0.03) * hoursSincePurchase;
+                                        increaseMoney(income);
+                                        console.log(`Added ${income} money for property ${property} after returning.`);
+                                        purchaseTimes[property] = now.toISOString();
+                                    }
+                                });
+
+                                localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes));
+                            }
+                            localStorage.removeItem('lastUnloadTime');
+                        }
+                    });
 
                     setTimeout(function () {
                         updatePropertiesList();
@@ -554,8 +590,8 @@
         function formatTime(milliseconds) {
             const seconds = Math.floor(milliseconds / 1000) % 60;
             const minutes = Math.floor(milliseconds / (1000 * 60)) % 60;
-            const hours = Math.floor(milliseconds / (1000 * 60 * 60)) % 24;
-            const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(milliseconds / (1000)) % 24;
+            const days = Math.floor(milliseconds / (1000 * 24));
 
             return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
