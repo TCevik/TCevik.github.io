@@ -714,6 +714,29 @@
             }
         }
     </script>
+
+<script>
+    (function() {
+        let devtoolsOpen = false;
+        const threshold = 160;
+    
+        const checkDevTools = () => {
+            if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+                devtoolsOpen = true;
+            } else {
+                devtoolsOpen = false;
+            }
+    
+            if (devtoolsOpen) {
+                alert("Developer tools gedetecteerd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
+                window.close();
+                window.location.href = "about:blank";
+            }
+        };
+    
+        setInterval(checkDevTools, 1);
+    })();
+    </script>    
 </body>
 
 </html>
