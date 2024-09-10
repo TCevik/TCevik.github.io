@@ -74,6 +74,34 @@
     <div id="topbar">
         <h3 style="margin: 0;">Balance: </h3>
         <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€0</h3>
+
+        <button onclick="clearLocalStorageAndCookies();">Reset progress</button>
+
+        <script>
+            function clearLocalStorageAndCookies() {
+                // Vraag bevestiging voordat je doorgaat
+                const userConfirmed = confirm('Are you sure you want to delete all your progress? This cannot be undone. Remember this will reset the entire site, so if you were logged in or have other data saved it will also be deleted on tctam.nl.');
+
+                if (userConfirmed) {
+                    // Verwijder alle items uit localStorage
+                    localStorage.clear();
+                    hasReloaded = true;
+
+                    // Verwijder alle cookies
+                    const cookies = document.cookie.split(";");
+
+                    for (let cookie of cookies) {
+                        const cookieName = cookie.split("=")[0].trim();
+                        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                    }
+                    alert('Progression has been successfully reset!');
+                    location.reload();
+                } else {
+                    // Als de gebruiker niet bevestigt, doe dan niets
+                    alert('Reset canceled.');
+                }
+            }
+        </script>
     </div>
     <div id="info">
         <h1 id="title">TC_tam Casino</h1>
