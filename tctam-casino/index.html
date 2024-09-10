@@ -195,6 +195,7 @@
                         €5.000.000</option>
                     <option value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000</option>
                     <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen - €12.000.000</option>
+                    <option value="FBI" data-price="13000000">FBI - €13.000.000</option>
                     <option value="TC_tam Website" data-price="1000000000000">TC_tam Website - €1.000.000.000.000
                     </option>
                 </select>
@@ -921,30 +922,6 @@
     </script>
 
     <script>
-        (function () {
-            let devtoolsOpen = false;
-            const threshold = 120;
-
-            const checkDevTools = () => {
-                if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-                    devtoolsOpen = true;
-                } else {
-                    devtoolsOpen = false;
-                }
-
-                let hasReloaded = false;
-
-                if (!hasReloaded && devtoolsOpen) {
-                    hasReloaded = true;
-                    alert("Developer tools gedetecteerd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
-                    window.location.href = "/";
-                    window.close();
-                }
-            };
-
-            setInterval(checkDevTools, 1);
-        })();
-
         // Functie om de waarde van #money te lezen
         function getMoneyElementValue() {
             const moneyElement = document.getElementById('money');
