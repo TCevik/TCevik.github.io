@@ -167,8 +167,7 @@
                 </div>
                 <br><input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="borrow-bank" placeholder="AMOUNT TO BORROW"></input>
-                <button class="confirm-borroww-btn" onclick="makeBankLoan();" disabled>Confirm - Temporarily disabled
-                    due to a glitch</button>
+                <button class="confirm-borroww-btn" onclick="makeBankLoan();">Confirm</button>
                 <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="payoff-bank" placeholder="AMOUNT TO PAY OFF"></input>
                 <button class="confirm-payoff-btn" onclick="payoffDebt();">Confirm</button>
@@ -179,6 +178,7 @@
                 <b style="margin-bottom: 10px;">You can buy properties. You can earn money with that. And without doing
                     anything! Well, this is how it works: for every property you buy, you get 1% of the amount you
                     bought it for per hour. So it will take 100 hours to earn back your purchase.</b>
+                <p>You can borrow up to €100.000 at a time.</p>
                 <br><label for="dropdown">Choose an option:</label>
                 <select id="dropdown" onchange="updateInput()">
                     <option value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
@@ -490,6 +490,34 @@
         }
 
         function makeBankLoan() {
+            function setCookie(name, value, minutes) {
+                const date = new Date();
+                date.setTime(date.getTime() + (minutes * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + "=";
+                const cookiesArray = document.cookie.split(';');
+                for (let i = 0; i < cookiesArray.length; i++) {
+                    let cookie = cookiesArray[i].trim();
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return cookie.substring(nameEQ.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            const lastLoanTime = getCookie("lastLoanTime");
+            const now = new Date().getTime();
+
+            if (lastLoanTime && (now - lastLoanTime) < 30 * 60 * 1000) {
+                const remainingTime = Math.ceil((30 * 60 * 1000 - (now - lastLoanTime)) / (60 * 1000));
+                notification(`You need to wait ${remainingTime} more minutes before borrowing again.`);
+                return;
+            }
+
             const borrowbank = document.getElementById('borrow-bank');
             const borrowbankvalue = parseFloat(borrowbank.value);
 
@@ -502,9 +530,11 @@
                         debt += borrowbankvalue * 2;
                         saveDebt();
                         notification(`You borrowed €${borrowbankvalue}. Your total debt is now €${debt}.`);
+
+                        setCookie("lastLoanTime", now, 30);
                     }
                 } else {
-                    notification(`You can't borrow that much at once.`)
+                    notification(`You can't borrow that much at once.`);
                 }
             } else {
                 notification(`Please enter an amount above €0.`);
