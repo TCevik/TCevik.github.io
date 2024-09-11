@@ -230,7 +230,7 @@
                     <option value="Nick and Daan's banana" data-price="40000000">Nick and Daan's banana -
                         €40.000.000</option>
                     <option value="Dante's Coffeeshop" data-price="69000000">Dante's Coffeeshop -
-                        €69.000.000</option>
+                        €69.000.000</option>    
                     <option value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000
                     </option>
                     <option value="Bert's Italiano" data-price="80000000">Bert's Italiano - €80.000.000
@@ -304,20 +304,19 @@
                     function calculateAndAddIncome() {
                         var properties = JSON.parse(localStorage.getItem('properties')) || [];
                         var purchaseTimes = JSON.parse(localStorage.getItem('purchaseTimes')) || {};
+
                         var now = new Date();
 
                         properties.forEach(function (property) {
-                            if (purchaseTimes[property]) {
-                                var purchaseTime = new Date(purchaseTimes[property]);
-                                var hoursPassed = Math.floor((now - purchaseTime) / (1000 * 60 * 60));
+                            var purchaseTime = new Date(purchaseTimes[property]);
+                            var hoursPassed = Math.floor((now - purchaseTime) / (1000 * 60 * 60));
 
-                                if (hoursPassed > 0) {
-                                    var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                    var income = (propertyPrice * 0.01) * hoursPassed;
-                                    increaseMoney(income);
-                                    console.log(`Added ${income} money for property ${property}.`);
-                                    purchaseTimes[property] = now.toISOString();
-                                }
+                            if (hoursPassed > 0) {
+                                var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
+                                var income = (propertyPrice * 0.01) * hoursPassed;
+                                increaseMoney(income);
+                                console.log(`Added ${income} money for property ${property}.`);
+                                purchaseTimes[property] = now.toISOString();
                             }
                         });
 
@@ -340,22 +339,20 @@
                                 var purchaseTimes = JSON.parse(localStorage.getItem('purchaseTimes')) || {};
 
                                 properties.forEach(function (property) {
-                                    if (purchaseTimes[property]) {
-                                        var purchaseTime = new Date(purchaseTimes[property]);
-                                        var hoursSincePurchase = Math.floor((now - purchaseTime) / (1000 * 60 * 60));
+                                    var purchaseTime = new Date(purchaseTimes[property]);
+                                    var hoursSincePurchase = Math.floor((now - purchaseTime) / (1000 * 60 * 60));
 
-                                        if (hoursSincePurchase > 0) {
-                                            var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                            var income = (propertyPrice * 0.01) * hoursSincePurchase;
-                                            increaseMoney(income);
-                                            console.log(`Added ${income} money for property ${property} after returning.`);
-                                            purchaseTimes[property] = now.toISOString();
-                                        }
+                                    if (hoursSincePurchase > 0) {
+                                        var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
+                                        var income = (propertyPrice * 0.01) * hoursSincePurchase;
+                                        increaseMoney(income);
+                                        localStorage.removeItem('lastUnloadTime');
+                                        console.log(`Added ${income} money for property ${property} after returning.`);
+                                        purchaseTimes[property] = now.toISOString();
                                     }
                                 });
 
                                 localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes));
-                                localStorage.removeItem('lastUnloadTime');
                             }
                         }
                     });
