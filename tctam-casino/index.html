@@ -159,7 +159,7 @@
                 <h4>The bank</h4>
                 <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise,
                     money will slowly be written off your account. That will happen every 5 minutes. Are you wondering
-                    what will happen? It's simple: 3% will be taken from your account and 2% will be taken from your
+                    what will happen? It's simple: 4% will be taken from your account and 2% will be taken from your
                     debts.</b>
                 <div style="margin-bottom: -30px; display: flex; align-items: center;">
                     <p style="color: red;">Amount of debt: €</p>
@@ -176,31 +176,25 @@
             <div style="width: 500px;" class="game">
                 <h4>Buy properties</h4>
                 <b style="margin-bottom: 10px;">You can buy properties. You can earn money with that. And without doing
-                    anything! Well, this is how it works: for every property you buy, you get 3% of the amount you
-                    bought it for per hour. So if you buy something for €1,000,000, you get €30,000 per hour.</b>
+                    anything! Well, this is how it works: for every property you buy, you get 0.4% of the amount you
+                    bought it for per hour.So it will take 250 hours to earn back your purchase.</b>
                 <br><label for="dropdown">Choose an option:</label>
                 <select id="dropdown" onchange="updateInput()">
                     <option value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
                     <option value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000</option>
                     <option value="School" data-price="75000">School - €75.000</option>
                     <option value="Army" data-price="200000">Army - €200.000</option>
-                    <option value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000
-                    </option>
-                    <option value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000
-                    </option>
+                    <option value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000</option>
+                    <option value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000</option>
                     <option value="VIP Agency" data-price="1800000">VIP Agency - €1.800.000</option>
-                    <option value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000
-                    </option>
-                    <option value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise -
-                        €5.000.000</option>
+                    <option value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000</option>
+                    <option value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise - €5.000.000</option>
                     <option value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000</option>
-                    <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen -
-                        €12.000.000</option>
+                    <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen - €12.000.000</option>
                     <option value="FBI" data-price="13000000">FBI - €13.000.000</option>
                     <option value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000</option>
                     <option value="National Bank" data-price="140000000">National Bank - €140.000.000</option>
-                    <option value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex -
-                        €420.000.000</option>
+                    <option value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex - €420.000.000</option>
                     <option value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000</option>
                     <option value="TC_tam Website" data-price="1000000000000">TC_tam Website - €1.000.000.000.000
                     </option>
@@ -276,7 +270,7 @@
 
                             if (hoursPassed > 0) {
                                 var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                var income = (propertyPrice * 0.03) * hoursPassed;
+                                var income = (propertyPrice * 0.004) * hoursPassed;
                                 increaseMoney(income);
                                 console.log(`Added ${income} money for property ${property}.`);
                                 purchaseTimes[property] = now.toISOString();
@@ -307,7 +301,7 @@
 
                                     if (hoursSincePurchase > 0) {
                                         var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                        var income = (propertyPrice * 0.03) * hoursSincePurchase;
+                                        var income = (propertyPrice * 0.004) * hoursSincePurchase;
                                         increaseMoney(income);
                                         console.log(`Added ${income} money for property ${property} after returning.`);
                                         purchaseTimes[property] = now.toISOString();
@@ -552,7 +546,7 @@
 
         function addDebt() {
             if (debt > 0) {
-                decreaseMoney(Math.ceil(debt * 0.03));
+                decreaseMoney(Math.ceil(debt * 0.04));
                 debt -= Math.ceil(debt * 0.02);
                 saveDebt();
                 notification('Your money has decreased by 3% and your debts by 2%. This will happen every 5 minutes and when you load the page.')
