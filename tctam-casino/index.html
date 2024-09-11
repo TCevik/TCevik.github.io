@@ -303,6 +303,7 @@
                                         var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
                                         var income = (propertyPrice * 0.004) * hoursSincePurchase;
                                         increaseMoney(income);
+                                        localStorage.removeItem('lastUnloadTime');
                                         console.log(`Added ${income} money for property ${property} after returning.`);
                                         purchaseTimes[property] = now.toISOString();
                                     }
@@ -310,7 +311,6 @@
 
                                 localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes));
                             }
-                            localStorage.removeItem('lastUnloadTime');
                         }
                     });
 
