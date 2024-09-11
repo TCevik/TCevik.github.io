@@ -335,7 +335,7 @@
                     });
 
                     // Add income for the time the user was away (since last unload)
-                    window.addEventListener('focus', function () {
+                    function checkIncome() {
                         var lastUnloadTime = localStorage.getItem('lastUnloadTime');
                         if (lastUnloadTime) {
                             var lastUnloadDate = new Date(lastUnloadTime);
@@ -365,7 +365,7 @@
                                 localStorage.removeItem('lastUnloadTime'); // Clear last unload time to avoid duplication
                             }
                         }
-                    });
+                    }
 
                     // Update property list after 500ms (for UI updates)
                     setTimeout(function () {
