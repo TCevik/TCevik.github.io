@@ -176,7 +176,7 @@
             <div style="width: 500px;" class="game">
                 <h4>Buy properties</h4>
                 <b style="margin-bottom: 10px;">You can buy properties. You can earn money with that. And without doing
-                    anything! Well, this is how it works: for every property you buy, you get 0.4% of the amount you
+                    anything! Well, this is how it works: for every property you buy, you get 1% of the amount you
                     bought it for per hour. So it will take 250 hours to earn back your purchase.</b>
                 <br><label for="dropdown">Choose an option:</label>
                 <select id="dropdown" onchange="updateInput()">
@@ -270,7 +270,7 @@
 
                             if (hoursPassed > 0) {
                                 var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                var income = (propertyPrice * 0.004) * hoursPassed;
+                                var income = (propertyPrice * 0.01) * hoursPassed;
                                 increaseMoney(income);
                                 console.log(`Added ${income} money for property ${property}.`);
                                 purchaseTimes[property] = now.toISOString();
@@ -301,7 +301,7 @@
 
                                     if (hoursSincePurchase > 0) {
                                         var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                        var income = (propertyPrice * 0.004) * hoursSincePurchase;
+                                        var income = (propertyPrice * 0.01) * hoursSincePurchase;
                                         increaseMoney(income);
                                         localStorage.removeItem('lastUnloadTime');
                                         console.log(`Added ${income} money for property ${property} after returning.`);
