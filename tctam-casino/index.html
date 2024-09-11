@@ -376,7 +376,7 @@
                 <br><input style="margin-top: 5px; margin-bottom: 0px; margin-left: 0px;" type="number"
                     id="blackjack-bet" placeholder="AMOUNT TO BET"></input>
                 <br>
-                <p style="margin-bottom: 0px; margin-top: 5px;" id="blackjack-status">Payouts: Win - 2.5x | Lose - 0x |
+                <p style="margin-bottom: 0px; margin-top: 5px;" id="blackjack-status">Payouts: Win - 2x | Lose - 0x |
                     Draw - 1x.</p>
                 <button style="margin-top: 10px;" id="blackjack-deal-btn" onclick="startBlackjack();">Start</button>
                 <button style="margin-top: 10px;" id="blackjack-hit-btn" onclick="hitBlackjack();" disabled>Hit</button>
@@ -876,7 +876,7 @@
                 endBlackjack();
             } else if (playerPoints === 21) {
                 notification("Blackjack! You've won!");
-                increaseMoney(blackjackBet * 2.5);
+                increaseMoney(blackjackBet * 2);
                 endBlackjack();
             }
         }
@@ -887,7 +887,7 @@
 
             if (dealerPoints > 21 || playerPoints > dealerPoints) {
                 notification('You have won!');
-                increaseMoney(blackjackBet * 2.5);
+                increaseMoney(blackjackBet * 2);
             } else if (playerPoints < dealerPoints) {
                 notification('You have lost!');
             } else {
