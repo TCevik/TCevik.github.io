@@ -331,7 +331,9 @@
 
                     // Handle page unload and store the time
                     window.addEventListener('beforeunload', function () {
-                        localStorage.setItem('lastUnloadTime', new Date().toISOString());
+                        if (!localStorage.getItem('lastUnloadTime')) {
+                            localStorage.setItem('lastUnloadTime', new Date().toISOString());
+                        }
                     });
 
                     // Add income for the time the user was away (since last unload)
@@ -370,6 +372,7 @@
                     // Update property list after 500ms (for UI updates)
                     setTimeout(function () {
                         updatePropertiesList();
+                        checkIncome();
                     }, 500);
 
                     // Automatically add income every hour
