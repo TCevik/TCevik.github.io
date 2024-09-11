@@ -119,7 +119,29 @@
             <div class="game">
                 <h4>Click for money.</h4>
                 <p>Here you can click on the button for €1 per click.</p>
-                <button onclick="increaseMoney(1);">Click for €1!</button>                
+                <button id="moneyButton" onclick="increaseMoney(1);">Click for €1!</button>
+
+                <script>
+                    const button = document.getElementById('moneyButton');
+
+                    let buttonEnabled = true;
+
+                    document.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            if (buttonEnabled) {
+                                button.disabled = true;
+                                buttonEnabled = false;
+                            }
+                        }
+                    });
+
+                    document.addEventListener('keyup', (event) => {
+                        if (event.key === 'Enter') {
+                            button.disabled = false;
+                            buttonEnabled = true;
+                        }
+                    });
+                </script>
             </div>
 
             <div class="game">
