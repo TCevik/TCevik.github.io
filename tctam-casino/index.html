@@ -210,37 +210,26 @@
                 <p>You can borrow up to €100.000 at a time.</p>
                 <br><label for="dropdown">Choose an option:</label>
                 <select id="dropdown" onchange="updateInput()">
-                    <option value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
-                    <option value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000</option>
-                    <option value="School" data-price="75000">School - €75.000</option>
-                    <option value="Army" data-price="200000">Army - €200.000</option>
-                    <option value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000
-                    </option>
-                    <option value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000
-                    </option>
-                    <option value="VIP Agency" data-price="1800000">VIP Agency - €1.800.000</option>
-                    <option value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000
-                    </option>
-                    <option value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise -
-                        €5.000.000</option>
-                    <option value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000</option>
-                    <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen -
-                        €12.000.000</option>
-                    <option value="FBI" data-price="13000000">FBI - €13.000.000</option>
-                    <option value="Nick and Daan's banana" data-price="40000000">Nick and Daan's banana -
-                        €40.000.000</option>
-                    <option value="Dante's Coffeeshop" data-price="69000000">Dante's Coffeeshop -
-                        €69.000.000</option>
-                    <option value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000
-                    </option>
-                    <option value="Bert's Italiano" data-price="80000000">Bert's Italiano - €80.000.000
-                    </option>
-                    <option value="National Bank" data-price="140000000">National Bank - €140.000.000</option>
-                    <option value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex -
-                        €420.000.000</option>
-                    <option value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000</option>
-                    <option value="TC_tam Website" data-price="1000000000000">TC_tam Website - €1.000.000.000.000
-                    </option>
+                    <option data-rate="1" value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
+                    <option data-rate="1.2" value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000</option>
+                    <option data-rate="1.8" value="School" data-price="75000">School - €75.000</option>
+                    <option data-rate="2" value="Army" data-price="200000">Army - €200.000</option>
+                    <option data-rate="2.5" value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000</option>
+                    <option data-rate="3" value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000</option>
+                    <option data-rate="4.2" value="VIP Agency" data-price="1800000">VIP Agency - €1.800.000</option>
+                    <option data-rate="4.8" value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000</option>
+                    <option data-rate="5.6" value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise - €5.000.000</option>
+                    <option data-rate="6" value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000</option>
+                    <option data-rate="6.5" value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen - €12.000.000</option>
+                    <option data-rate="7" value="FBI" data-price="13000000">FBI - €13.000.000</option>
+                    <option data-rate="8" value="Nick and Daan's banana" data-price="40000000">Nick and Daan's banana - €40.000.000</option>
+                    <option data-rate="9" value="Dante's Coffeeshop" data-price="69000000">Dante's Coffeeshop - €69.000.000</option>
+                    <option data-rate="10" value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000</option>
+                    <option data-rate="11" value="Bert's Italiano" data-price="80000000">Bert's Italiano - €80.000.000</option>
+                    <option data-rate="12" value="National Bank" data-price="140000000">National Bank - €140.000.000</option>
+                    <option data-rate="13" value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex -€420.000.000</option>
+                    <option data-rate="14" value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000 </option>
+                    <option data-rate="15" value="TC_tam Website" data-price="1000000000000">TC_tam Website - €1.000.000.000.000</option>
                 </select>
 
                 <div style="display: flex;">
@@ -257,14 +246,14 @@
                 </div>
 
                 <script>
-                    // Update the input field with the selected property's value
+                    // Function to update the input field with the selected property's value
                     function updateInput() {
                         var dropdown = document.getElementById('dropdown');
                         var inputField = document.getElementById('inputField');
                         inputField.innerText = dropdown.value;
                     }
 
-                    // Buy property logic
+                    // Function to buy a property
                     function buyProperty() {
                         var dropdown = document.getElementById('dropdown');
                         var selectedOption = dropdown.options[dropdown.selectedIndex];
@@ -273,14 +262,11 @@
 
                         if (money >= propertyPrice) {
                             var properties = JSON.parse(localStorage.getItem('properties')) || [];
-                            var purchaseTimes = JSON.parse(localStorage.getItem('purchaseTimes')) || {};
 
-                            // If the property isn't already owned, buy it
+                            // Check if the property isn't already owned, then buy it
                             if (!properties.includes(propertyName)) {
-                                properties.push(propertyName);
-                                purchaseTimes[propertyName] = new Date().toISOString(); // Record purchase time
+                                properties.push(propertyName); // Save property as a string
                                 localStorage.setItem('properties', JSON.stringify(properties));
-                                localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes));
 
                                 decreaseMoney(propertyPrice); // Deduct the property price from user's money
                                 updatePropertiesList();
@@ -293,90 +279,49 @@
                         }
                     }
 
-                    // Update the list of properties the user owns
+                    // Function to update the list of properties the user owns
                     function updatePropertiesList() {
                         var properties = JSON.parse(localStorage.getItem('properties')) || [];
                         var propertiesList = document.getElementById('propertiesList');
                         propertiesList.innerHTML = ''; // Clear the list before updating
 
                         properties.forEach(function (property) {
+                            var rate = getPropertyRate(property); // Dynamically get the rate
                             var li = document.createElement('li');
-                            li.textContent = property;
+                            li.textContent = property + ' (Rate: ' + rate + ' per second)'; // Include the rate in the display
                             propertiesList.appendChild(li);
                         });
                     }
 
-                    // Calculate and add income based on property ownership
-                    function calculateAndAddIncome() {
+                    // Function to get the rate of a property dynamically
+                    function getPropertyRate(propertyName) {
+                        var dropdown = document.getElementById('dropdown');
+                        var options = dropdown.options;
+
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].value === propertyName) {
+                                return parseInt(options[i].getAttribute('data-rate')); // Return the rate dynamically
+                            }
+                        }
+                        return 0; // Default rate if property not found
+                    }
+
+                    // Function to increase money based on the dynamic rate of each property
+                    function increaseMoneyByProperties() {
                         var properties = JSON.parse(localStorage.getItem('properties')) || [];
-                        var purchaseTimes = JSON.parse(localStorage.getItem('purchaseTimes')) || {};
-                        var now = new Date();
-
                         properties.forEach(function (property) {
-                            var purchaseTime = new Date(purchaseTimes[property]);
-                            var hoursPassed = Math.floor((now - purchaseTime) / (1000 * 60 * 60)); // Hours since purchase
-
-                            if (hoursPassed > 0) {
-                                var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                var income = (propertyPrice * 0.01) * hoursPassed; // 1% income per hour
-                                increaseMoney(income);
-
-                                console.log(`Added ${income} money for property ${property}.`);
-                                purchaseTimes[property] = new Date(purchaseTime.getTime() + (hoursPassed * 60 * 60 * 1000)).toISOString(); // Shift purchase time forward without resetting it to 'now'
-                            }
+                            var rate = getPropertyRate(property); // Dynamically get the rate
+                            increaseMoney(rate); // Add money based on the dynamic rate of the property
                         });
-
-                        localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes)); // Update stored purchase times
                     }
 
-                    // Handle page unload and store the time
-                    window.addEventListener('beforeunload', function () {
-                        if (!localStorage.getItem('lastUnloadTime')) {
-                            localStorage.setItem('lastUnloadTime', new Date().toISOString());
-                        }
-                    });
+                    // Start generating money from owned properties every second
+                    setInterval(increaseMoneyByProperties, 1000);
 
-                    // Add income for the time the user was away (since last unload)
-                    function checkIncome() {
-                        var lastUnloadTime = localStorage.getItem('lastUnloadTime');
-                        if (lastUnloadTime) {
-                            var lastUnloadDate = new Date(lastUnloadTime);
-                            var now = new Date();
-                            var hoursPassed = Math.floor((now - lastUnloadDate) / (1000 * 60 * 60));
-
-                            if (hoursPassed > 0) {
-                                var properties = JSON.parse(localStorage.getItem('properties')) || [];
-                                var purchaseTimes = JSON.parse(localStorage.getItem('purchaseTimes')) || {};
-
-                                properties.forEach(function (property) {
-                                    var purchaseTime = new Date(purchaseTimes[property]);
-                                    var hoursSincePurchase = Math.floor((now - purchaseTime) / (1000 * 60 * 60));
-
-                                    if (hoursSincePurchase > 0) {
-                                        var propertyPrice = parseInt(document.querySelector('option[value="' + property + '"]').getAttribute('data-price'));
-                                        var income = (propertyPrice * 0.01) * hoursSincePurchase; // Income during inactivity
-                                        increaseMoney(income);
-                                        console.log(`Added ${income} money for property ${property} after returning.`);
-
-                                        // Shift purchase time forward without resetting it completely
-                                        purchaseTimes[property] = new Date(purchaseTime.getTime() + (hoursSincePurchase * 60 * 60 * 1000)).toISOString();
-                                    }
-                                });
-
-                                localStorage.setItem('purchaseTimes', JSON.stringify(purchaseTimes));
-                                localStorage.removeItem('lastUnloadTime'); // Clear last unload time to avoid duplication
-                            }
-                        }
-                    }
-
-                    // Update property list after 500ms (for UI updates)
+                    // Initial call to update the property list
                     setTimeout(function () {
                         updatePropertiesList();
-                        checkIncome();
                     }, 500);
-
-                    // Automatically add income every hour
-                    setInterval(calculateAndAddIncome, 1000 * 60 * 60);
                 </script>
             </div>
 
