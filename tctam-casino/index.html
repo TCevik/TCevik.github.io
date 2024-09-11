@@ -208,7 +208,7 @@
                 <b style="margin-bottom: 10px;">You can buy properties. You can earn money with that. And without doing
                     anything, if you have the site open!</b>
                 <br><label for="dropdown">Choose an option:</label>
-                <select id="dropdown" onchange="updateInput()">
+                <select id="dropdown">
                     <option data-rate="1" value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
                     <option data-rate="1.2" value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000</option>
                     <option data-rate="1.8" value="School" data-price="75000">School - €75.000</option>
@@ -231,11 +231,6 @@
                     <option data-rate="15" value="TC_tam Website" data-price="1000000000000">TC_tam Website - €1.000.000.000.000</option>
                 </select>
 
-                <div style="display: flex;">
-                    <label style="margin: 0px; margin-top: 15px; margin-right: 5px;" for="inputField">Selected:</label>
-                    <p style="margin: 0px; margin-top: 15px;" id="inputField"></p>
-                </div>
-
                 <button onclick="buyProperty()">Buy</button>
 
                 <div id="properties"
@@ -245,14 +240,6 @@
                 </div>
 
                 <script>
-                    // Function to update the input field with the selected property's value
-                    function updateInput() {
-                        var dropdown = document.getElementById('dropdown');
-                        var inputField = document.getElementById('inputField');
-                        inputField.innerText = dropdown.value;
-                    }
-
-                    // Function to buy a property
                     function buyProperty() {
                         var dropdown = document.getElementById('dropdown');
                         var selectedOption = dropdown.options[dropdown.selectedIndex];
@@ -262,12 +249,11 @@
                         if (money >= propertyPrice) {
                             var properties = JSON.parse(localStorage.getItem('properties')) || [];
 
-                            // Check if the property isn't already owned, then buy it
                             if (!properties.includes(propertyName)) {
-                                properties.push(propertyName); // Save property as a string
+                                properties.push(propertyName);
                                 localStorage.setItem('properties', JSON.stringify(properties));
 
-                                decreaseMoney(propertyPrice); // Deduct the property price from user's money
+                                decreaseMoney(propertyPrice);
                                 updatePropertiesList();
                                 notification('You have successfully bought ' + propertyName + '!');
                             } else {
@@ -278,46 +264,41 @@
                         }
                     }
 
-                    // Function to update the list of properties the user owns
                     function updatePropertiesList() {
                         var properties = JSON.parse(localStorage.getItem('properties')) || [];
                         var propertiesList = document.getElementById('propertiesList');
-                        propertiesList.innerHTML = ''; // Clear the list before updating
+                        propertiesList.innerHTML = '';
 
                         properties.forEach(function (property) {
-                            var rate = getPropertyRate(property); // Dynamically get the rate
+                            var rate = getPropertyRate(property);
                             var li = document.createElement('li');
-                            li.textContent = property + ' (Rate: ' + rate + ' per second)'; // Include the rate in the display
+                            li.textContent = property + ' (Rate: ' + rate + ' per second)';
                             propertiesList.appendChild(li);
                         });
                     }
 
-                    // Function to get the rate of a property dynamically
                     function getPropertyRate(propertyName) {
                         var dropdown = document.getElementById('dropdown');
                         var options = dropdown.options;
 
                         for (var i = 0; i < options.length; i++) {
                             if (options[i].value === propertyName) {
-                                return parseInt(options[i].getAttribute('data-rate')); // Return the rate dynamically
+                                return parseInt(options[i].getAttribute('data-rate'));
                             }
                         }
-                        return 0; // Default rate if property not found
+                        return 0;
                     }
 
-                    // Function to increase money based on the dynamic rate of each property
                     function increaseMoneyByProperties() {
                         var properties = JSON.parse(localStorage.getItem('properties')) || [];
                         properties.forEach(function (property) {
-                            var rate = getPropertyRate(property); // Dynamically get the rate
-                            increaseMoney(rate); // Add money based on the dynamic rate of the property
+                            var rate = getPropertyRate(property);
+                            increaseMoney(rate);
                         });
                     }
 
-                    // Start generating money from owned properties every second
                     setInterval(increaseMoneyByProperties, 1000);
 
-                    // Initial call to update the property list
                     setTimeout(function () {
                         updatePropertiesList();
                     }, 500);
