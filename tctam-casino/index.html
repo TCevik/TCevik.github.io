@@ -159,15 +159,16 @@
                 <h4>The bank</h4>
                 <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise,
                     money will slowly be written off your account. That will happen every 5 minutes. Are you wondering
-                    what will happen? It's simple: 4% of your debt will be taken from your account and 2% will be taken from your
-                    debts.</b>
+                    what will happen? It's simple: 4% of your debt will be taken from your account and 2% will be taken
+                    from your debts. You will get 2x debt more than you borrow.</b>
                 <div style="margin-bottom: -30px; display: flex; align-items: center;">
                     <p style="color: red;">Amount of debt: €</p>
                     <p id="debt-showcase" style="margin: 0; color: red;"></p>
                 </div>
                 <br><input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="borrow-bank" placeholder="AMOUNT TO BORROW"></input>
-                <button class="confirm-borroww-btn" onclick="makeBankLoan();" disabled>Confirm - Temporarily disabled due to a glitch</button>
+                <button class="confirm-borroww-btn" onclick="makeBankLoan();" disabled>Confirm - Temporarily disabled
+                    due to a glitch</button>
                 <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="payoff-bank" placeholder="AMOUNT TO PAY OFF"></input>
                 <button class="confirm-payoff-btn" onclick="payoffDebt();">Confirm</button>
@@ -184,17 +185,24 @@
                     <option value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000</option>
                     <option value="School" data-price="75000">School - €75.000</option>
                     <option value="Army" data-price="200000">Army - €200.000</option>
-                    <option value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000</option>
-                    <option value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000</option>
+                    <option value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000
+                    </option>
+                    <option value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000
+                    </option>
                     <option value="VIP Agency" data-price="1800000">VIP Agency - €1.800.000</option>
-                    <option value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000</option>
-                    <option value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise - €5.000.000</option>
+                    <option value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000
+                    </option>
+                    <option value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise -
+                        €5.000.000</option>
                     <option value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000</option>
-                    <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen - €12.000.000</option>
+                    <option value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen -
+                        €12.000.000</option>
                     <option value="FBI" data-price="13000000">FBI - €13.000.000</option>
-                    <option value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000</option>
+                    <option value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000
+                    </option>
                     <option value="National Bank" data-price="140000000">National Bank - €140.000.000</option>
-                    <option value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex - €420.000.000</option>
+                    <option value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex -
+                        €420.000.000</option>
                     <option value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000</option>
                     <option value="TC_tam Website" data-price="1000000000000">TC_tam Website - €1.000.000.000.000
                     </option>
@@ -486,13 +494,17 @@
             const borrowbankvalue = parseFloat(borrowbank.value);
 
             if (borrowbankvalue > 0) {
-                if (debt + borrowbankvalue > 3000000) {
-                    notification(`You can't borrow that amount as it will exceed your debt limit of 3 million.`);
+                if (borrowbankvalue <= 100000) {
+                    if (debt + borrowbankvalue * 2 > 3000000) {
+                        notification(`You can't borrow that amount as it will exceed your debt limit of 3 million.`);
+                    } else {
+                        increaseMoney(borrowbankvalue);
+                        debt += borrowbankvalue * 2;
+                        saveDebt();
+                        notification(`You borrowed €${borrowbankvalue}. Your total debt is now €${debt}.`);
+                    }
                 } else {
-                    increaseMoney(borrowbankvalue);
-                    debt += borrowbankvalue;
-                    saveDebt();
-                    notification(`You borrowed €${borrowbankvalue}. Your total debt is now €${debt}.`);
+                    notification(`You can't borrow that much at once.`)
                 }
             } else {
                 notification(`Please enter an amount above €0.`);
