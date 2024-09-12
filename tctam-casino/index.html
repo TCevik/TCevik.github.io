@@ -149,7 +149,8 @@
                 <p>Here you can collect your weekly reward every week for a random amount of money between €50.000
                     and €200.000.</p>
                 <div class="button-cooldown-container">
-                    <button onclick="claimReward(7 * 24 * 60 * 60 * 1000, 200000, 50000, 'weekly-cooldown')">Claim</button>
+                    <button
+                        onclick="claimReward(7 * 24 * 60 * 60 * 1000, 200000, 50000, 'weekly-cooldown')">Claim</button>
                     <p id="weekly-cooldown"></p>
                 </div>
             </div>
@@ -200,7 +201,7 @@
                     money will slowly be written off your account. That will happen every 5 minutes. Are you wondering
                     what will happen? It's simple: 4% of your debt will be taken from your account and 2% will be taken
                     from your debts. You will get 2x debt more than you borrow.</b>
-                    <p>You can borrow up to €100.000 at a time.</p>
+                <p>You can borrow up to €1.000.000 at a time.</p>
                 <div style="margin-bottom: -30px; display: flex; align-items: center;">
                     <p style="color: red;">Amount of debt: €</p>
                     <p id="debt-showcase" style="margin: 0; color: red;"></p>
@@ -219,29 +220,46 @@
                     anything, if you have the site open!</b>
                 <br><label for="dropdown">Choose an option:</label>
                 <select id="dropdown">
-                    <option data-rate="1" value="A big pile of waste" data-price="5000">A big pile of waste - €5.000</option>
+                    <option data-rate="1" value="A big pile of waste" data-price="5000">A big pile of waste - €5.000
+                    </option>
                     <option data-rate="1" value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
-                    <option data-rate="1" value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000</option>
+                    <option data-rate="1" value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000
+                    </option>
                     <option data-rate="2" value="School" data-price="75000">School - €75.000</option>
                     <option data-rate="3" value="Hotel" data-price="125000">Hotel - €125.000</option>
                     <option data-rate="6" value="Army" data-price="200000">Army - €200.000</option>
-                    <option data-rate="17" value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service - €500.000</option>
-                    <option data-rate="41" value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate - €1.200.000</option>
+                    <option data-rate="17" value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service -
+                        €500.000</option>
+                    <option data-rate="41" value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate -
+                        €1.200.000</option>
                     <option data-rate="62" value="VIP Agency" data-price="1800000">VIP Agency - €1.800.000</option>
-                    <option data-rate="104" value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory - €3.000.000</option>
-                    <option data-rate="173" value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating Paradise - €5.000.000</option>
-                    <option data-rate="277" value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000</option>
-                    <option data-rate="416" value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom van Nobelen - €12.000.000</option>
+                    <option data-rate="104" value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory
+                        - €3.000.000</option>
+                    <option data-rate="173" value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating
+                        Paradise - €5.000.000</option>
+                    <option data-rate="277" value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000
+                    </option>
+                    <option data-rate="416" value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom
+                        van Nobelen - €12.000.000</option>
                     <option data-rate="451" value="FBI" data-price="13000000">FBI - €13.000.000</option>
-                    <option data-rate="868" value="Timboektoe INC" data-price="25000000">Timboektoe INC - €25.000.000</option>
-                    <option data-rate="1388" value="Nick and Daan's banana" data-price="40000000">Nick and Daan's banana - €40.000.000</option>
-                    <option data-rate="2395" value="Dante's Coffeeshop" data-price="69000000">Dante's Coffeeshop - €69.000.000</option>
-                    <option data-rate="2604" value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and Sven - €75.000.000</option>
-                    <option data-rate="2777" value="Bert's Italiano" data-price="80000000">Bert's Italiano - €80.000.000</option>
-                    <option data-rate="4861" value="National Bank" data-price="140000000">National Bank - €140.000.000</option>
-                    <option data-rate="14583" value="Freddies Appartment Complex" data-price="420000000">Freddies Appartment Complex - €420.000.000</option>
-                    <option data-rate="17361" value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000 </option>
-                    <option data-rate="1000000" value="TC_tam Website" data-price="100000000000000">TC_tam Website - €100.000.000.000.000</option>
+                    <option data-rate="868" value="Timboektoe INC" data-price="25000000">Timboektoe INC - €25.000.000
+                    </option>
+                    <option data-rate="1388" value="Nick and Daan's banana" data-price="40000000">Nick and Daan's banana
+                        - €40.000.000</option>
+                    <option data-rate="2395" value="Dante's Coffeeshop" data-price="69000000">Dante's Coffeeshop -
+                        €69.000.000</option>
+                    <option data-rate="2604" value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and
+                        Sven - €75.000.000</option>
+                    <option data-rate="2777" value="Bert's Italiano" data-price="80000000">Bert's Italiano - €80.000.000
+                    </option>
+                    <option data-rate="4861" value="National Bank" data-price="140000000">National Bank - €140.000.000
+                    </option>
+                    <option data-rate="14583" value="Freddies Appartment Complex" data-price="420000000">Freddies
+                        Appartment Complex - €420.000.000</option>
+                    <option data-rate="17361" value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000
+                    </option>
+                    <option data-rate="1000000" value="TC_tam Website" data-price="100000000000000">TC_tam Website -
+                        €100.000.000.000.000</option>
                 </select>
 
                 <button onclick="buyProperty()">Buy</button>
@@ -501,8 +519,8 @@
             const lastLoanTime = getCookie("lastLoanTime");
             const now = new Date().getTime();
 
-            if (lastLoanTime && (now - lastLoanTime) < 30 * 60 * 1000) {
-                const remainingTime = Math.ceil((30 * 60 * 1000 - (now - lastLoanTime)) / (60 * 1000));
+            if (lastLoanTime && (now - lastLoanTime) < 10 * 60 * 1000) {
+                const remainingTime = Math.ceil((10 * 60 * 1000 - (now - lastLoanTime)) / (60 * 1000));
                 notification(`You need to wait ${remainingTime} more minutes before borrowing again.`);
                 return;
             }
@@ -511,16 +529,16 @@
             const borrowbankvalue = parseFloat(borrowbank.value);
 
             if (borrowbankvalue > 0) {
-                if (borrowbankvalue <= 100000) {
-                    if (debt + borrowbankvalue * 2 > 3000000) {
+                if (borrowbankvalue <= 1000000) {
+                    if (debt + borrowbankvalue * 1.3 > 3000000) {
                         notification(`You can't borrow that amount as it will exceed your debt limit of 3 million.`);
                     } else {
                         increaseMoney(borrowbankvalue);
-                        debt += borrowbankvalue * 2;
+                        debt += borrowbankvalue * 1.3;
                         saveDebt();
                         notification(`You borrowed €${borrowbankvalue}. Your total debt is now €${debt}.`);
 
-                        setCookie("lastLoanTime", now, 30);
+                        setCookie("lastLoanTime", now, 10);
                     }
                 } else {
                     notification(`You can't borrow that much at once.`);
