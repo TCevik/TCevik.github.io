@@ -663,6 +663,8 @@
         }
 
         /* GAMES */
+        let maxbet = undefined;
+
         function coinflip(choice) {
             const betInput = document.getElementById('coinflip-bet');
             const betAmount = parseFloat(betInput.value);
@@ -674,6 +676,11 @@
 
             if (betAmount > money) {
                 notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (betAmount > maxbet) {
+                notification("Please enter an amount of money less than " + maxbet + ".");
                 return;
             }
 
@@ -720,6 +727,11 @@
 
             if (bet > money) {
                 notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (bet > maxbet) {
+                notification("Please enter an amount of money less than " + maxbet + ".");
                 return;
             }
 
@@ -791,6 +803,11 @@
 
             if (blackjackBet > money) {
                 notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (blackjackBet > maxbet) {
+                notification("Please enter an amount of money less than " + maxbet + ".");
                 return;
             }
 
@@ -905,6 +922,11 @@
 
             if (betAmount > money) {
                 notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (betAmount > maxbet) {
+                notification("Please enter an amount of money less than " + maxbet + ".");
                 return;
             }
 
