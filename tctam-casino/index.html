@@ -6,10 +6,6 @@
     <title>TC_tam Casino</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
-    <script src="/firebase/config.js"></script>
 
     <style>
         body {
@@ -111,84 +107,12 @@
     </div>
     <div id="activities-container">
         <div id="activities">
-            <div class="game" style="display: flex; justify-content: center; align-items: center;">
-                <div style="text-align: center;" id="login-form">
-                    <input id="email" type="email" placeholder="E-mail" required
-                        style="display: block; margin: 10px auto;">
-                    <input id="password" type="password" placeholder="Wachtwoord" required
-                        style="display: block; margin: 10px auto;">
-                    <button onclick="login()" style="display: block; margin: 10px auto;">Login</button>
-                    <a onclick="resetPassword()"
-                        style="display: block; margin-top: 10px; border-bottom: none; cursor: pointer;">Forgot password?</a>
-                    <a href="register" style="display: block; margin-top: 10px; border-bottom: none; cursor: pointer;">Register?</a>
-                </div>
-                <div id="logout-form" style="display: none; text-align: center;">
-                    <button onclick="logout()" style="display: block; margin: 10px auto;">Logout</button>
-                </div>
-
-                <script>
-                    const auth = firebase.auth();
-                    function updateUI() {
-                        const user = auth.currentUser;
-                        if (user) {
-                            document.getElementById('login-form').style.display = 'none';
-                            document.getElementById('logout-form').style.display = 'block';
-                        } else {
-                            document.getElementById('login-form').style.display = 'block';
-                            document.getElementById('logout-form').style.display = 'none';
-                        }
-                    }
-
-                    function resetPassword() {
-                        var email = document.getElementById('email').value;
-                        if (email) {
-                            auth.sendPasswordResetEmail(email).then(function () {
-                                notification('A reset password email has been sent to: ' + email);
-                            }).catch(function (error) {
-                                var errorCode = error.code;
-                                var errorMessage = error.message;
-                                alert('An error has occurred: ' + errorMessage);
-                            });
-                        } else {
-                            notification('Please enter a valid email address.');
-                            document.getElementById("email").focus();
-                        }
-                    }
-
-                    function login() {
-                        const email = document.getElementById('email').value;
-                        const password = document.getElementById('password').value;
-
-                        auth.signInWithEmailAndPassword(email, password)
-                            .then((userCredential) => {
-                                notification('Succesvol ingelogd!');
-                                updateUI();
-                            })
-                            .catch((error) => {
-                                notification('Fout bij inloggen: ' + error.message);
-                            });
-                    }
-
-                    function logout() {
-                        auth.signOut().then(() => {
-                            notification('Succesvol uitgelogd!');
-                            updateUI();
-                        }).catch((error) => {
-                            notification('Fout bij uitloggen: ' + error.message);
-                        });
-                    }
-
-                    auth.onAuthStateChanged(updateUI);
-                </script>
-            </div>
-
             <div class="game">
                 <h3>Coming updates:</h3>
                 <p>1. Medals you receive for reaching a specific amount of money.
                     <br>2. New games: poker and roulette.
                     <br>3. Money cheats.
                     <br>4. Casino VIP membership.
-                    <br>5. Account synchronization.
                 </p>
             </div>
 
