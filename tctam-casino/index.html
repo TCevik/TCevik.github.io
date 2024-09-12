@@ -198,9 +198,7 @@
             <div style="width: 350px;" class="game">
                 <h4>The bank</h4>
                 <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise,
-                    money will slowly be written off your account. That will happen every 5 minutes. Are you wondering
-                    what will happen? It's simple: 4% of your debt will be taken from your account and 2% will be taken
-                    from your debts. You will get 1.3x debt more than you borrow.</b>
+                    money will slowly be written off your account. You will get 1.3x debt more than you borrow.</b>
                 <p>You can borrow up to €100.000 at a time.</p>
                 <div style="margin-bottom: -30px; display: flex; align-items: center;">
                     <p style="color: red;">Amount of debt: €</p>
@@ -536,6 +534,8 @@
                 if (borrowbankvalue <= 100000) {
                     if (debt + borrowbankvalue * 1.3 > 3000000) {
                         notification(`You can't borrow that amount as it will exceed your debt limit of 3 million.`);
+                    } else if (debt > money) {
+                        notification(`You can't borrow because your debt is higher than your available money.`);
                     } else {
                         increaseMoney(borrowbankvalue);
                         debt += borrowbankvalue * 1.3;
