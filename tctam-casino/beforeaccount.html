@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam Casino</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <style>
+        body {
+            margin-top: 80px;
+        }
+
+        #topbar {
+            background-color: var(--bg-accent-color2);
+            align-items: center;
+            text-align: left;
+            padding: 20px;
+            position: fixed;
+            display: flex;
+            top: 0;
+            left: 50%;
+            width: 80%;
+            transform: translateX(-50%);
+            z-index: 10;
+            border-bottom-left-radius: var(--border-radius2);
+            border-bottom-right-radius: var(--border-radius2);
+            justify-content: space-between;
+        }
+
+        #activities-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #activities {
+            margin-top: 50px;
+            display: flex;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: left;
+            width: 90%;
+        }
+
+        .game {
+            width: 320px;
+            background-color: var(--bg-accent-color1);
+            margin-bottom: 10px;
+            border-radius: var(--border-radius3);
+            text-align: left;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 15px;
+            flex: 1 1 auto;
+            box-sizing: border-box;
+        }
+
+        .button-cooldown-container-nexttoeach {
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (min-width: 800px) {
+            #keno-game {
+                flex-direction: row !important;
+            }
+        }
+
+        select {
+            position: relative;
+            font-family: Lexend, Arial, sans-serif;
+            border-radius: var(--border-radius1);
+            font-weight: inherit;
+            outline: none;
+            border: solid 3px var(--button-bgcolor);
+            background-color: var(--button-bgcolor);
+            color: #ffffff;
+            padding: var(--button-padding);
+            font-size: var(--font-size);
+            margin: 0.3%;
+            transition: all 0.3s;
+            transform-origin: center;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="topbar">
+        <div style="display: flex;">
+            <h3 style="margin: 0;">Balance: </h3>
+            <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€0</h3>
+        </div>
+
+        <button style="margin: 0;" onclick="clearLocalStorageAndCookies();">Reset progress</button>
+    </div>
+    <div id="info">
+        <h1 id="title">TC_tam Casino</h1>
+        <p id="description">Welcome to TC_tam Casino</p>
+        <button onclick="notification('Developer: Tamer Çevik - TC_tam<br>Version: 1.0');">Get some more info.</button>
+        <button onclick="notification(`Try using 'ctrl + f' (search on page) or a game hasn't been added.`);">Help, i
+            can't find a game!</button>
+    </div>
+    <div id="activities-container">
+        <div id="activities">
+            <div class="game">
+                <h3>Coming updates:</h3>
+                <p>1. Medals you receive for reaching a specific amount of money.
+                    <br>2. New games: poker and roulette.
+                    <br>3. Money cheats.
+                    <br>4. Casino VIP membership.
+                    <br>5. Account synchronization.
+                </p>
+            </div>
+
+            <div class="game">
+                <h4>Click for money.</h4>
+                <p>Here you can click on the button for €1 per click.</p>
+                <button id="moneyButton" onclick="increaseMoney(1);">Click for €1!</button>
+
+                <script>
+                    const button = document.getElementById('moneyButton');
+
+                    let buttonEnabled = true;
+
+                    document.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            if (buttonEnabled) {
+                                button.disabled = true;
+                                buttonEnabled = false;
+                            }
+                        }
+                    });
+
+                    document.addEventListener('keyup', (event) => {
+                        if (event.key === 'Enter') {
+                            button.disabled = false;
+                            buttonEnabled = true;
+                        }
+                    });
+                </script>
+            </div>
+
+            <div class="game">
+                <h4>Weekly Reward</h4>
+                <p>Here you can collect your weekly reward every week for a random amount of money between €50.000
+                    and €200.000.</p>
+                <div class="button-cooldown-container">
+                    <button
+                        onclick="claimReward(7 * 24 * 60 * 60 * 1000, 200000, 50000, 'weekly-cooldown')">Claim</button>
+                    <p id="weekly-cooldown"></p>
+                </div>
+            </div>
+
+            <div class="game">
+                <h4>Daily Reward</h4>
+                <p>Here you can collect your daily reward every 24 hours for a random amount of money between €4.000
+                    and €50.000.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(24 * 60 * 60 * 1000, 50000, 4000, 'daily-cooldown')">Claim</button>
+                    <p id="daily-cooldown"></p>
+                </div>
+            </div>
+
+            <div class="game">
+                <h4>Hourly Reward</h4>
+                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €2.000 and
+                    €4.000.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(60 * 60 * 1000, 4000, 2000, 'hourly-cooldown')">Claim</button>
+                    <p id="hourly-cooldown"></p>
+                </div>
+            </div>
+
+            <div class="game">
+                <h4>Work Reward</h4>
+                <p>Here you can collect your work income every 10 minutes for a random amount of money between €200 and
+                    €1.700.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(10 * 60 * 1000, 1700, 200, 'work-cooldown')">Claim</button>
+                    <p id="work-cooldown"></p>
+                </div>
+            </div>
+
+            <div class="game">
+                <h4>Search</h4>
+                <p>Here you can search for some money every 12 minutes for a random amount of money between €350 and
+                    €1.750.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(12 * 60 * 1000, 1750, 350, 'search-cooldown')">Search</button>
+                    <p id="search-cooldown"></p>
+                </div>
+            </div>
+
+            <div style="width: 350px;" class="game">
+                <h4>The bank</h4>
+                <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise,
+                    money will slowly be written off your account. You will get 1.3x debt more than you borrow.</b>
+                <p style="margin-bottom: 0px; margin-top: -3px;">You can borrow up to €100.000 at a time.</p>
+                <div style="margin-bottom: -30px; display: flex; align-items: center;">
+                    <p style="color: red;">Amount of debt: €</p>
+                    <p id="debt-showcase" style="margin: 0; color: red;"></p>
+                </div>
+                <br><input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="borrow-bank" placeholder="AMOUNT TO BORROW"></input>
+                <button class="confirm-borroww-btn" onclick="makeBankLoan();">Confirm</button>
+                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="payoff-bank" placeholder="AMOUNT TO PAY OFF"></input>
+                <button class="confirm-payoff-btn" onclick="payoffDebt();">Confirm</button>
+            </div>
+
+            <div style="width: 500px;" class="game">
+                <h4>Buy properties</h4>
+                <b style="margin-bottom: 10px;">You can buy properties. You can earn money with that. And without doing
+                    anything, if you have the site open!</b>
+                <br><label for="dropdown">Choose an option:</label>
+                <select id="dropdown">
+                    <option data-rate="1" value="A big pile of waste" data-price="5000">A big pile of waste - €5.000
+                    </option>
+                    <option data-rate="1" value="Das Kino Cinema" data-price="10000">Das Kino Cinema - €10.000</option>
+                    <option data-rate="1" value="Fast Food The Tam" data-price="30000">Fast Food The Tam - €30.000
+                    </option>
+                    <option data-rate="2" value="School" data-price="75000">School - €75.000</option>
+                    <option data-rate="3" value="Hotel" data-price="125000">Hotel - €125.000</option>
+                    <option data-rate="6" value="Army" data-price="200000">Army - €200.000</option>
+                    <option data-rate="17" value="Spooky Cleaning Service" data-price="500000">Spooky cleaning service -
+                        €500.000</option>
+                    <option data-rate="41" value="Jake Benny Real Estate" data-price="1200000">Jake Benny Real Estate -
+                        €1.200.000</option>
+                    <option data-rate="62" value="VIP Agency" data-price="1800000">VIP Agency - €1.800.000</option>
+                    <option data-rate="104" value="Jack's Choclate Factory" data-price="3000000">Jack's Choclate Factory
+                        - €3.000.000</option>
+                    <option data-rate="173" value="Nightshade Skating Paradise" data-price="5000000">Nightshade Skating
+                        Paradise - €5.000.000</option>
+                    <option data-rate="277" value="Warm Fields Farm" data-price="8000000">Warm Fields Farm - €8.000.000
+                    </option>
+                    <option data-rate="416" value="Supermarket Thom van Nobelen" data-price="12000000">Supermarket Thom
+                        van Nobelen - €12.000.000</option>
+                    <option data-rate="451" value="FBI" data-price="13000000">FBI - €13.000.000</option>
+                    <option data-rate="868" value="Timboektoe INC" data-price="25000000">Timboektoe INC - €25.000.000
+                    </option>
+                    <option data-rate="1388" value="Nick and Daan's banana" data-price="40000000">Nick and Daan's banana
+                        - €40.000.000</option>
+                    <option data-rate="2395" value="Dante's Coffeeshop" data-price="69000000">Dante's Coffeeshop -
+                        €69.000.000</option>
+                    <option data-rate="2604" value="Maccie from JW and Sven" data-price="75000000">Maccie from JW and
+                        Sven - €75.000.000</option>
+                    <option data-rate="2777" value="Bert's Italiano" data-price="80000000">Bert's Italiano - €80.000.000
+                    </option>
+                    <option data-rate="4861" value="National Bank" data-price="140000000">National Bank - €140.000.000
+                    </option>
+                    <option data-rate="14583" value="Freddies Appartment Complex" data-price="420000000">Freddies
+                        Appartment Complex - €420.000.000</option>
+                    <option data-rate="17361" value="Sheets' goal" data-price="500000000">Sheets' goal - €500.000.000
+                    </option>
+                    <option data-rate="1000000" value="TC_tam Website" data-price="100000000000000">TC_tam Website -
+                        €100.000.000.000.000</option>
+                </select>
+
+                <button onclick="buyProperty()">Buy</button>
+
+                <div id="properties"
+                    style="border-radius: var(--border-radius1); border: var(--h1234-color) 1px solid; margin-top: 20px; max-height: 150px; overflow-y: auto;">
+                    <h4 style="margin-left: 10px;">Your Properties:</h4>
+                    <ul style="margin-left: 10px;" id="propertiesList"></ul>
+                </div>
+
+                <script>
+                    function buyProperty() {
+                        var dropdown = document.getElementById('dropdown');
+                        var selectedOption = dropdown.options[dropdown.selectedIndex];
+                        var propertyName = selectedOption.value;
+                        var propertyPrice = parseInt(selectedOption.getAttribute('data-price'));
+
+                        if (money >= propertyPrice) {
+                            if (debt > money) {
+                                notification('You are not allowed to purchase properties if you have more debts than money in your account.')
+                            } else {
+                                var properties = JSON.parse(localStorage.getItem('properties')) || [];
+
+                                if (!properties.includes(propertyName)) {
+                                    properties.push(propertyName);
+                                    localStorage.setItem('properties', JSON.stringify(properties));
+
+                                    decreaseMoney(propertyPrice);
+                                    updatePropertiesList();
+                                    notification('You have successfully bought ' + propertyName + '!');
+                                } else {
+                                    notification('You already own ' + propertyName + '.');
+                                }
+                            }
+                        } else {
+                            notification('Not enough money to buy ' + propertyName + '.');
+                        }
+                    }
+
+                    function updatePropertiesList() {
+                        var properties = JSON.parse(localStorage.getItem('properties')) || [];
+                        var propertiesList = document.getElementById('propertiesList');
+                        propertiesList.innerHTML = '';
+
+                        properties.forEach(function (property) {
+                            var rate = getPropertyRate(property);
+                            var li = document.createElement('li');
+                            li.textContent = property + ' (Rate: ' + rate + ' per second)';
+                            propertiesList.appendChild(li);
+                        });
+                    }
+
+                    function getPropertyRate(propertyName) {
+                        var dropdown = document.getElementById('dropdown');
+                        var options = dropdown.options;
+
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].value === propertyName) {
+                                return parseInt(options[i].getAttribute('data-rate'));
+                            }
+                        }
+                        return 0;
+                    }
+
+                    function increaseMoneyByProperties() {
+                        var properties = JSON.parse(localStorage.getItem('properties')) || [];
+                        properties.forEach(function (property) {
+                            var rate = getPropertyRate(property);
+                            increaseMoney(rate);
+                        });
+                    }
+
+                    setInterval(increaseMoneyByProperties, 1000);
+
+                    setTimeout(function () {
+                        updatePropertiesList();
+                    }, 500);
+                </script>
+            </div>
+
+            <h3 style="width: 100%;">Gambling</h3>
+            <div style="width: 450px;" class="game">
+                <h4>Coinflip</h4>
+                <b style="margin-top: 0px;">What do you think it's going to be?</b>
+                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="coinflip-bet" placeholder="AMOUNT TO BET"></input>
+                <br>
+                <p style="margin-top: 0px;">Payouts: Heads - 2.2x | Tails - 2.2x | Sideways - 3.1x</p>
+                <button class="coinflip-btn" onclick="coinflip('heads');">Heads</button>
+                <button class="coinflip-btn" onclick="coinflip('tails');">Tails</button>
+                <button class="coinflip-btn" onclick="coinflip('sideways');">Sideways</button>
+            </div>
+
+            <div style="width: 600px;" class="game">
+                <h4>Commit A Crime</h4>
+                <b>Here you can commit a crime for a max payout of €20,000. If you are unlucky you can also lose up to
+                    €10,000 if you get caught. You can do this every 1 hour and 30 minutes.</b>
+                <p>Payouts: Every outcome has an equal chance. However, the ratio of winning to losing is 2:1. This
+                    means that your chance of winning is twice as big as losing.</p>
+                <div class="button-cooldown-container-nexttoeach">
+                    <button onclick="claimReward(1.5 * 60 * 60 * 1000, 20000, -10000, 'crime-cooldown')">Claim</button>
+                    <p id="crime-cooldown"></p>
+                </div>
+            </div>
+
+            <div style="width: 400px;" class="game">
+                <h4>Slot Machine</h4>
+                <b style="margin-top: 0px;">Guess what you want to bet on the slot machine.</b>
+                <br><input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="slotmachine-bet" placeholder="AMOUNT TO BET"></input>
+                <br>
+                <p style="margin-top: 0px;">Payouts: 2 of a kind - 2.5x | 3 of a kind - 3.5x</p>
+                <div style="margin-top: -30px; display: flex;">
+                    <p id="fruit1">🍎</p>
+                    <p id="fruit2">🍎</p>
+                    <p id="fruit3">🍎</p>
+                </div>
+                <button class="slotmachine-btn" onclick="playSlotMachine();">Spin!</button>
+            </div>
+
+            <div style="width: 325px;" class="game">
+                <h4>Blackjack</h4>
+                <b style="margin-top: 0px;">Play Blackjack against the dealer.</b>
+                <br><input style="margin-top: 5px; margin-bottom: 0px; margin-left: 0px;" type="number"
+                    id="blackjack-bet" placeholder="AMOUNT TO BET"></input>
+                <br>
+                <p style="margin-bottom: 0px; margin-top: 5px;" id="blackjack-status">Payouts: Win - 2.2x | Lose - 0x |
+                    Draw - 1x.</p>
+                <button style="margin-top: 10px;" id="blackjack-deal-btn" onclick="startBlackjack();">Start</button>
+                <button style="margin-top: 10px;" id="blackjack-hit-btn" onclick="hitBlackjack();" disabled>Hit</button>
+                <button style="margin-top: 10px;" id="blackjack-stand-btn" onclick="standBlackjack();"
+                    disabled>Stand</button>
+                <div>
+                    <p style="margin: 0px; margin-top: 10px;" id="blackjack-player-cards">Your Cards: </p>
+                    <p style="margin: 0px;" id="blackjack-dealer-cards">Dealer's Cards: </p>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; width: 100%;" id="keno-game" class="game">
+                <div style="flex: 1;">
+                    <h4>Keno</h4>
+                    <b>Select 5 numbers from a range of 1 to 150 and see if they match the 20 random numbers drawn.</b>
+                    <br>
+                    <input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number" id="keno-bet"
+                        placeholder="AMOUNT TO BET">
+                    <p style="margin-bottom: -15px; margin-top: 5px;">Payouts: 1N - 2x | 2N - 2.5x | 3N - 3x | 4N - 4x |
+                        5N - 5x.</p>
+                    <br>
+                    <input style="margin: 0px;" type="number" id="keno-number1" placeholder="N1" min="1" max="150">
+                    <input style="margin: 0px;" type="number" id="keno-number2" placeholder="N2" min="1" max="150">
+                    <input style="margin: 0px;" type="number" id="keno-number3" placeholder="N3" min="1" max="150">
+                    <input style="margin: 0px;" type="number" id="keno-number4" placeholder="N4" min="1" max="150">
+                    <input style="margin: 0px; margin-bottom: 5px;" type="number" id="keno-number5" placeholder="N5"
+                        min="1" max="150">
+                    <button id="keno-start-btn" onclick="playKeno();">Play Keno!</button>
+                </div>
+                <div style="flex: 1;">
+                    <h4>Results Keno</h4>
+                    <p style="margin-top: -5px;" id="keno-result"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function clearLocalStorageAndCookies() {
+            const userConfirmed = confirm('Are you sure you want to delete all your progress? This cannot be undone. Remember this will reset the entire site, so if you were logged in or have other data saved it will also be deleted on tctam.nl.');
+
+            if (userConfirmed) {
+                localStorage.clear();
+                hasReloaded = true;
+
+                const cookies = document.cookie.split(";");
+
+                for (let cookie of cookies) {
+                    const cookieName = cookie.split("=")[0].trim();
+                    document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                }
+                alert('Progression has been successfully reset!');
+                location.reload();
+            } else {
+                alert('Reset canceled.');
+            }
+        }
+
+        let money = 0;
+        let debt = 0;
+
+        const WEEKLY_COOLDOWN = 7 * 24 * 60 * 60 * 1000;
+        const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
+        const HOURLY_COOLDOWN = 60 * 60 * 1000;
+        const WORK_COOLDOWN = 10 * 60 * 1000;
+        const SEARCH_COOLDOWN = 12 * 60 * 1000;
+        const CRIME_COOLDOWN = 1.5 * 60 * 60 * 1000;
+
+        function initialize() {
+            const savedMoney = localStorage.getItem('money');
+            money = savedMoney ? parseFloat(savedMoney) : 0;
+
+            const savedDebt = localStorage.getItem('debt');
+            debt = savedDebt ? parseFloat(savedDebt) : 0;
+
+            updateMoney();
+            showDebt();
+            updateCooldowns();
+        }
+
+        function updateMoney() {
+            if (money < 0) {
+                money = 0;
+            }
+
+            const roundedMoney = Math.floor(money);
+            const formattedMoney = roundedMoney.toLocaleString('nl-NL');
+            document.getElementById('money').innerText = '€' + formattedMoney;
+
+            localStorage.setItem('money', money);
+        }
+
+        function randomAmount(highest, lowest) {
+            const amount = Math.floor(Math.random() * (highest - lowest + 1)) + lowest;
+
+            increaseMoney(amount);
+            if (amount > 0) {
+                notification('You have earned €' + amount + '.');
+            } else {
+                notification('You have lost €' + -amount + '.');
+            }
+        }
+
+        function increaseMoney(amount) {
+            money += amount;
+            updateMoney();
+        }
+
+        function decreaseMoney(amount) {
+            money -= amount;
+            updateMoney();
+        }
+
+        function makeBankLoan() {
+            function setCookie(name, value, minutes) {
+                const date = new Date();
+                date.setTime(date.getTime() + (minutes * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + "=";
+                const cookiesArray = document.cookie.split(';');
+                for (let i = 0; i < cookiesArray.length; i++) {
+                    let cookie = cookiesArray[i].trim();
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return cookie.substring(nameEQ.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            const lastLoanTime = getCookie("lastLoanTime");
+            const now = new Date().getTime();
+
+            if (lastLoanTime && (now - lastLoanTime) < 10 * 60 * 1000) {
+                const remainingTime = Math.ceil((10 * 60 * 1000 - (now - lastLoanTime)) / (60 * 1000));
+                notification(`You need to wait ${remainingTime} more minutes before borrowing again.`);
+                return;
+            }
+
+            const borrowbank = document.getElementById('borrow-bank');
+            const borrowbankvalue = parseFloat(borrowbank.value);
+
+            if (borrowbankvalue > 0) {
+                if (borrowbankvalue <= 100000) {
+                    if (debt + borrowbankvalue * 1.3 > 3000000) {
+                        notification(`You can't borrow that amount as it will exceed your debt limit of 3 million.`);
+                    } else if (debt > money) {
+                        notification(`You can't borrow because your debt is higher than your available money.`);
+                    } else {
+                        increaseMoney(borrowbankvalue);
+                        debt += borrowbankvalue * 1.3;
+                        saveDebt();
+                        notification(`You borrowed €${borrowbankvalue}. Your total debt is now €${debt}.`);
+
+                        setCookie("lastLoanTime", now, 10);
+                    }
+                } else {
+                    notification(`You can't borrow that much at once.`);
+                }
+            } else {
+                notification(`Please enter an amount above €0.`);
+            }
+        }
+
+        function payoffDebt() {
+            const payoff = document.getElementById('payoff-bank');
+            const payoffvalue = parseFloat(payoff.value);
+
+            if (payoffvalue > 0) {
+                if (payoffvalue <= money) {
+                    if (payoffvalue <= debt) {
+                        decreaseMoney(payoffvalue);
+                        debt -= payoffvalue;
+                        saveDebt();
+                        notification(`You paid €${payoffvalue} off. Your total debt is now €${debt}.`);
+                    } else {
+                        notification(`You don't have that much debt to pay off.`);
+                    }
+                } else {
+                    notification(`You don't have enough money to pay off this much.`);
+                }
+            } else {
+                notification(`The payment amount must be greater than zero.`);
+            }
+        }
+
+        function saveDebt() {
+            localStorage.setItem('debt', debt);
+            showDebt();
+        }
+
+        function showDebt() {
+            var debtElement = document.getElementById('debt-showcase');
+            debtElement.textContent = debt;
+        }
+
+        function claimReward(cooldown, highest, lowest, cooldownElementId) {
+            const now = Date.now();
+            const lastClaim = localStorage.getItem(cooldownElementId);
+            if (lastClaim && now - lastClaim < cooldown) {
+                notification('You can only collect this reward once the cooldown is over.');
+                return;
+            }
+            randomAmount(highest, lowest);
+            localStorage.setItem(cooldownElementId, now);
+            updateCooldowns();
+        }
+
+        function addDebt() {
+            if (debt >= money) {
+                decreaseMoney(Math.ceil(debt * 0.1));
+                debt -= Math.ceil(debt * 0.35);
+                saveDebt();
+                notification('Your money has decreased by 10% and your debts by 35%. This will happen every 5 minutes if you have less money than your debts.')
+            } else {
+                decreaseMoney(Math.ceil(debt * 0.04));
+                debt -= Math.ceil(debt * 0.02);
+                saveDebt();
+                notification('Your money has decreased by 4% and your debts by 2%. This will happen every 5 minutes.')
+            }
+        }
+
+        setInterval(addDebt, 300000);
+
+        function updateCooldowns() {
+            const now = Date.now();
+
+            const cooldowns = [
+                { id: 'weekly-cooldown', cooldown: WEEKLY_COOLDOWN },
+                { id: 'daily-cooldown', cooldown: DAILY_COOLDOWN },
+                { id: 'work-cooldown', cooldown: WORK_COOLDOWN },
+                { id: 'crime-cooldown', cooldown: CRIME_COOLDOWN },
+                { id: 'search-cooldown', cooldown: SEARCH_COOLDOWN },
+                { id: 'hourly-cooldown', cooldown: HOURLY_COOLDOWN }
+            ];
+
+            cooldowns.forEach(({ id, cooldown }) => {
+                const lastClaim = localStorage.getItem(id);
+                if (lastClaim) {
+                    const remainingTime = cooldown - (now - lastClaim);
+                    if (remainingTime > 0) {
+                        document.getElementById(id).innerText = "Cooldown: " + formatTime(remainingTime);
+                    } else {
+                        document.getElementById(id).innerText = 'Reward available';
+                    }
+                } else {
+                    document.getElementById(id).innerText = 'Reward available';
+                }
+            });
+        }
+
+        function formatTime(milliseconds) {
+            const seconds = Math.floor(milliseconds / 1000) % 60;
+            const minutes = Math.floor(milliseconds / (1000 * 60)) % 60;
+            const hours = Math.floor(milliseconds / (1000 * 60 * 60)) % 24;
+            const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        window.onload = function () {
+            initialize();
+            setInterval(updateCooldowns, 1000);
+            arrangeGames();
+        };
+
+        function arrangeGames() {
+            const container = document.getElementById('activities');
+            const games = Array.from(document.querySelectorAll('.game'));
+
+            games.forEach(game => game.style.flexBasis = 'auto');
+
+            let rowWidth = 0;
+            let rowItems = [];
+
+            games.forEach((game, index) => {
+                const gameWidth = game.offsetWidth;
+                rowWidth += gameWidth + parseFloat(getComputedStyle(container).gap);
+
+                if (rowWidth <= container.clientWidth) {
+                    rowItems.push(game);
+                } else {
+                    distributeWidth(rowItems, container.clientWidth - (rowWidth - gameWidth - parseFloat(getComputedStyle(container).gap)));
+                    rowItems = [game];
+                    rowWidth = gameWidth + parseFloat(getComputedStyle(container).gap);
+                }
+            });
+
+            if (rowItems.length > 0) {
+                distributeWidth(rowItems, container.clientWidth - rowWidth + parseFloat(getComputedStyle(container).gap));
+            }
+        }
+
+        function distributeWidth(items, remainingWidth) {
+            const totalFlexGrow = items.reduce((sum, item) => sum + parseFloat(getComputedStyle(item).flexGrow), 0);
+            const extraWidthPerItem = remainingWidth / items.length;
+
+            items.forEach(item => {
+                const currentFlexBasis = parseFloat(getComputedStyle(item).flexBasis);
+                item.style.flexBasis = `${currentFlexBasis + extraWidthPerItem}px`;
+            });
+        }
+
+        /* GAMES */
+        let maxbet = undefined;
+
+        function coinflip(choice) {
+            const betInput = document.getElementById('coinflip-bet');
+            const betAmount = parseFloat(betInput.value);
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                notification('Please enter a valid amount.');
+                return;
+            }
+
+            if (betAmount > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (betAmount > maxbet) {
+                notification("Please enter an amount of money equal to or less than €" + maxbet + ".");
+                return;
+            }
+
+            const randomNum = Math.random();
+            let result;
+
+            if (randomNum < 0.1) {
+                result = 'sideways';
+            } else if (randomNum < 0.55) {
+                result = 'heads';
+            } else {
+                result = 'tails';
+            }
+
+            decreaseMoney(betAmount);
+
+            const coinFlipBtns = document.querySelectorAll('.coinflip-btn');
+            coinFlipBtns.forEach(btn => {
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.disabled = false;
+                }, 3000);
+            });
+
+            if (choice === result) {
+                if (result === 'sideways') {
+                    notification(`You won! The outcome was ${result}.`);
+                    increaseMoney(betAmount * 3.1);
+                } else {
+                    notification(`You won! The outcome was ${result}.`);
+                    increaseMoney(betAmount * 2.2);
+                }
+            } else {
+                notification(`Unfortunately, you lost. The outcome was ${result}.`);
+            }
+        }
+
+        function playSlotMachine() {
+            const bet = parseInt(document.getElementById('slotmachine-bet').value);
+            if (isNaN(bet) || bet <= 0) {
+                notification('Please enter a valid amount');
+                return;
+            }
+
+            if (bet > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (bet > maxbet) {
+                notification("Please enter an amount of money equal to or less than €" + maxbet + ".");
+                return;
+            }
+
+            decreaseMoney(bet);
+
+            const slotmachinesBtns = document.querySelectorAll('.slotmachine-btn');
+            slotmachinesBtns.forEach(btn => {
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.disabled = false;
+                }, 3000);
+            });
+
+            const fruits = ['🍒', '🍊', '🍉', '🍇', '🍓', '🍑', '🍍', '🍏', '🍎', '🍐'];
+            const randomFruits = [
+                fruits[Math.floor(Math.random() * fruits.length)],
+                fruits[Math.floor(Math.random() * fruits.length)],
+                fruits[Math.floor(Math.random() * fruits.length)]
+            ];
+
+            const fruitElements = [
+                document.getElementById('fruit1'),
+                document.getElementById('fruit2'),
+                document.getElementById('fruit3')
+            ];
+
+            let index = 0;
+
+            const interval = setInterval(() => {
+                if (index < fruitElements.length) {
+                    fruitElements[index].textContent = randomFruits[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    calculatePayout(randomFruits, bet);
+                }
+            }, 500);
+        }
+
+        function calculatePayout(fruits, bet) {
+            let payout = 0;
+            if (fruits[0] === fruits[1] && fruits[1] === fruits[2]) {
+                payout = 3.5;
+            } else if (fruits[0] === fruits[1] || fruits[1] === fruits[2] || fruits[0] === fruits[2]) {
+                payout = 2.5;
+            }
+
+            increaseMoney(bet * payout);
+
+            if (payout > 0) {
+                notification('You have won €' + (bet * payout) + '!');
+            } else {
+                notification('You lost!');
+            }
+        }
+
+        let playerCards = [];
+        let dealerCards = [];
+        let blackjackBet = 0;
+
+        function startBlackjack() {
+            const betInput = document.getElementById('blackjack-bet');
+            blackjackBet = parseFloat(betInput.value);
+
+            if (isNaN(blackjackBet) || blackjackBet <= 0) {
+                notification('Please enter a valid bet amount.');
+                return;
+            }
+
+            if (blackjackBet > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (blackjackBet > maxbet) {
+                notification("Please enter an amount of money equal to or less than €" + maxbet + ".");
+                return;
+            }
+
+            decreaseMoney(blackjackBet);
+
+            playerCards = [drawCard(), drawCard()];
+            dealerCards = [drawCard(), drawCard()];
+
+            document.getElementById('blackjack-player-cards').innerText = `Your Cards: ${playerCards.join(', ')}`;
+            document.getElementById('blackjack-dealer-cards').innerText = `Dealer's Cards: ${dealerCards[0]}, ?`;
+
+            document.getElementById('blackjack-deal-btn').disabled = true;
+            document.getElementById('blackjack-hit-btn').disabled = false;
+            document.getElementById('blackjack-stand-btn').disabled = false;
+
+            checkBlackjackOutcome();
+        }
+
+        function drawCard() {
+            const cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+            return cards[Math.floor(Math.random() * cards.length)];
+        }
+
+        function calculatePoints(cards) {
+            let points = 0;
+            let aces = 0;
+
+            cards.forEach(card => {
+                if (card === 'J' || card === 'Q' || card === 'K') {
+                    points += 10;
+                } else if (card === 'A') {
+                    points += 11;
+                    aces += 1;
+                } else {
+                    points += parseInt(card);
+                }
+            });
+
+            while (points > 21 && aces > 0) {
+                points -= 10;
+                aces -= 1;
+            }
+
+            return points;
+        }
+
+        function hitBlackjack() {
+            playerCards.push(drawCard());
+            document.getElementById('blackjack-player-cards').innerText = `Your Cards: ${playerCards.join(', ')}`;
+            checkBlackjackOutcome();
+        }
+
+        function standBlackjack() {
+            document.getElementById('blackjack-dealer-cards').innerText = `Dealer's Cards: ${dealerCards.join(', ')}`;
+            let dealerPoints = calculatePoints(dealerCards);
+
+            while (dealerPoints < 17) {
+                dealerCards.push(drawCard());
+                dealerPoints = calculatePoints(dealerCards);
+                document.getElementById('blackjack-dealer-cards').innerText = `Dealer's Cards: ${dealerCards.join(', ')}`;
+            }
+
+            determineWinner();
+        }
+
+        function checkBlackjackOutcome() {
+            const playerPoints = calculatePoints(playerCards);
+
+            if (playerPoints > 21) {
+                notification('You lost! Your points are more than 21.');
+                endBlackjack();
+            } else if (playerPoints === 21) {
+                notification("Blackjack! You've won!");
+                increaseMoney(blackjackBet * 2.2);
+                endBlackjack();
+            }
+        }
+
+        function determineWinner() {
+            const playerPoints = calculatePoints(playerCards);
+            const dealerPoints = calculatePoints(dealerCards);
+
+            if (dealerPoints > 21 || playerPoints > dealerPoints) {
+                notification('You have won!');
+                increaseMoney(blackjackBet * 2.2);
+            } else if (playerPoints < dealerPoints) {
+                notification('You have lost!');
+            } else {
+                notification("It's a draw!");
+                increaseMoney(blackjackBet);
+            }
+
+            endBlackjack();
+        }
+
+        function endBlackjack() {
+            document.getElementById('blackjack-hit-btn').disabled = true;
+            document.getElementById('blackjack-stand-btn').disabled = true;
+            setTimeout(function () {
+                document.getElementById('blackjack-deal-btn').disabled = false;
+            }, 2000);
+        }
+
+        function playKeno() {
+            const betInput = document.getElementById('keno-bet');
+            const betAmount = parseFloat(betInput.value);
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                notification('Please enter a valid amount.');
+                return;
+            }
+
+            if (betAmount > money) {
+                notification("You don't have enough money for this bet!");
+                return;
+            }
+
+            if (betAmount > maxbet) {
+                notification("Please enter an amount of money equal to or less than €" + maxbet + ".");
+                return;
+            }
+
+            document.getElementById('keno-start-btn').disabled = true;
+
+            setTimeout(function () {
+                document.getElementById('keno-start-btn').disabled = false;
+            }, 2500);
+
+            const selectedNumbers = [
+                parseInt(document.getElementById('keno-number1').value),
+                parseInt(document.getElementById('keno-number2').value),
+                parseInt(document.getElementById('keno-number3').value),
+                parseInt(document.getElementById('keno-number4').value),
+                parseInt(document.getElementById('keno-number5').value)
+            ].filter(num => num >= 1 && num <= 150);
+
+            if (selectedNumbers.length !== 5) {
+                notification('Please select 5 valid numbers.');
+                return;
+            }
+
+            decreaseMoney(betAmount);
+
+            const drawnNumbers = [];
+            while (drawnNumbers.length < 20) {
+                const num = Math.floor(Math.random() * 150) + 1;
+                if (!drawnNumbers.includes(num)) {
+                    drawnNumbers.push(num);
+                }
+            }
+
+            document.getElementById('keno-result').innerHTML = '';
+
+            let index = 0;
+
+            function showNextNumber() {
+                if (index < drawnNumbers.length) {
+                    const numberToShow = drawnNumbers[index];
+                    document.getElementById('keno-result').innerHTML += (index > 0 ? ', ' : '') + numberToShow;
+                    index++;
+                    setTimeout(showNextNumber, 100);
+                } else {
+                    const matchingNumbers = selectedNumbers.filter(num => drawnNumbers.includes(num));
+                    const payoutMultiplier = getPayoutMultiplier(matchingNumbers.length);
+
+                    let resultMessage = `<br>Matching numbers: ${matchingNumbers.join(', ')}`;
+                    if (matchingNumbers.length > 0) {
+                        const winnings = betAmount * payoutMultiplier;
+                        increaseMoney(winnings);
+                        resultMessage += `<br>You won €${winnings}!`;
+                    } else {
+                        resultMessage += '<br>Unfortunately, you didn\'t match any numbers.';
+                    }
+
+                    document.getElementById('keno-result').innerHTML += resultMessage;
+                }
+            }
+
+            showNextNumber();
+        }
+
+        function getPayoutMultiplier(matchCount) {
+            switch (matchCount) {
+                case 1: return 2.0;
+                case 2: return 2.5;
+                case 3: return 3.0;
+                case 4: return 4.0;
+                case 5: return 5.0;
+                default: return 0;
+            }
+        }
+    </script>
+
+    <script>
+        function getMoneyElementValue() {
+            const moneyElement = document.getElementById('money');
+            return moneyElement && moneyElement.textContent.trim() !== "€0" ? moneyElement.textContent : null;
+        }
+
+        function isMoneyInLocalStorage() {
+            return localStorage.getItem('money') !== null;
+        }
+
+        let hasReloaded = false;
+
+        function checkAndRefreshPage() {
+            const moneyElementValue = getMoneyElementValue();
+            const moneyInLocalStorage = isMoneyInLocalStorage();
+
+            if (!hasReloaded && moneyElementValue !== null && !moneyInLocalStorage) {
+                hasReloaded = true;
+                alert("Je hebt de cookies verwijderd! Dit is niet toegestaan dus de pagina word gesloten. Je kan de pagina weer opnieuw openen om verder te spelen.");
+                window.location.href = "/";
+                window.close();
+            }
+        }
+
+        setInterval(checkAndRefreshPage, 1);
+    </script>
+</body>
+
+</html>
