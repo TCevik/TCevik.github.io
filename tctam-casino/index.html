@@ -278,17 +278,21 @@
                         var propertyPrice = parseInt(selectedOption.getAttribute('data-price'));
 
                         if (money >= propertyPrice) {
-                            var properties = JSON.parse(localStorage.getItem('properties')) || [];
-
-                            if (!properties.includes(propertyName)) {
-                                properties.push(propertyName);
-                                localStorage.setItem('properties', JSON.stringify(properties));
-
-                                decreaseMoney(propertyPrice);
-                                updatePropertiesList();
-                                notification('You have successfully bought ' + propertyName + '!');
+                            if (debt > money) {
+                                notification('You are not allowed to purchase properties if you have more debts than money in your account.')
                             } else {
-                                notification('You already own ' + propertyName + '.');
+                                var properties = JSON.parse(localStorage.getItem('properties')) || [];
+
+                                if (!properties.includes(propertyName)) {
+                                    properties.push(propertyName);
+                                    localStorage.setItem('properties', JSON.stringify(properties));
+
+                                    decreaseMoney(propertyPrice);
+                                    updatePropertiesList();
+                                    notification('You have successfully bought ' + propertyName + '!');
+                                } else {
+                                    notification('You already own ' + propertyName + '.');
+                                }
                             }
                         } else {
                             notification('Not enough money to buy ' + propertyName + '.');
