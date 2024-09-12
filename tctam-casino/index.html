@@ -145,9 +145,19 @@
             </div>
 
             <div class="game">
+                <h4>Weekly Reward</h4>
+                <p>Here you can collect your weekly reward every week for a random amount of money between €50.000
+                    and €300.000.</p>
+                <div class="button-cooldown-container">
+                    <button onclick="claimReward(7 * 24 * 60 * 60 * 1000, 300000, 50000, 'weekly-cooldown')">Claim</button>
+                    <p id="weekly-cooldown"></p>
+                </div>
+            </div>
+
+            <div class="game">
                 <h4>Daily Reward</h4>
-                <p>Here you can collect your daily reward every 24 hours for a random amount of money between €4,000
-                    and €50,000.</p>
+                <p>Here you can collect your daily reward every 24 hours for a random amount of money between €4.000
+                    and €50.000.</p>
                 <div class="button-cooldown-container">
                     <button onclick="claimReward(24 * 60 * 60 * 1000, 50000, 4000, 'daily-cooldown')">Claim</button>
                     <p id="daily-cooldown"></p>
@@ -156,8 +166,8 @@
 
             <div class="game">
                 <h4>Hourly Reward</h4>
-                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €2,000 and
-                    €4,000.</p>
+                <p>Here you can collect your hourly reward every 1 hour for a random amount of money between €2.000 and
+                    €4.000.</p>
                 <div class="button-cooldown-container">
                     <button onclick="claimReward(60 * 60 * 1000, 4000, 2000, 'hourly-cooldown')">Claim</button>
                     <p id="hourly-cooldown"></p>
@@ -167,7 +177,7 @@
             <div class="game">
                 <h4>Work Reward</h4>
                 <p>Here you can collect your work income every 10 minutes for a random amount of money between €200 and
-                    €1,700.</p>
+                    €1.700.</p>
                 <div class="button-cooldown-container">
                     <button onclick="claimReward(10 * 60 * 1000, 1700, 200, 'work-cooldown')">Claim</button>
                     <p id="work-cooldown"></p>
@@ -177,7 +187,7 @@
             <div class="game">
                 <h4>Search</h4>
                 <p>Here you can search for some money every 12 minutes for a random amount of money between €350 and
-                    €1,750.</p>
+                    €1.750.</p>
                 <div class="button-cooldown-container">
                     <button onclick="claimReward(12 * 60 * 1000, 1750, 350, 'search-cooldown')">Search</button>
                     <p id="search-cooldown"></p>
@@ -414,6 +424,7 @@
         let money = 0;
         let debt = 0;
 
+        const WEEKLY_COOLDOWN = 7 * 24 * 60 * 60 * 1000;
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
         const HOURLY_COOLDOWN = 60 * 60 * 1000;
         const WORK_COOLDOWN = 10 * 60 * 1000;
@@ -576,6 +587,7 @@
             const now = Date.now();
 
             const cooldowns = [
+                { id: 'weekly-cooldown', cooldown: WEEKLY_COOLDOWN },
                 { id: 'daily-cooldown', cooldown: DAILY_COOLDOWN },
                 { id: 'work-cooldown', cooldown: WORK_COOLDOWN },
                 { id: 'crime-cooldown', cooldown: CRIME_COOLDOWN },
