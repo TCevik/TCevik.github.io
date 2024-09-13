@@ -664,14 +664,14 @@
         function addDebt() {
             if (debt >= money) {
                 decreaseMoney(Math.ceil(debt * 0.1));
-                debt -= Math.ceil(debt * 0.35);
+                debt = Math.round(debt - (debt * 0.35));
                 saveDebt();
-                notification('Your money has decreased by 10% and your debts by 35%. This will happen every 5 minutes if you have less money than your debts.')
+                notification('Your money has decreased by 10% and your debts by 35%. This will happen every 5 minutes if you have less money than your debts.');
             } else {
                 decreaseMoney(Math.ceil(debt * 0.04));
-                debt -= Math.ceil(debt * 0.02);
+                debt = Math.round(debt - (debt * 0.02));
                 saveDebt();
-                notification('Your money has decreased by 4% and your debts by 2%. This will happen every 5 minutes.')
+                notification('Your money has decreased by 4% and your debts by 2%. This will happen every 5 minutes.');
             }
         }
 
