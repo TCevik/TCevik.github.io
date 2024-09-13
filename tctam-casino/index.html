@@ -96,8 +96,28 @@
             <h3 id="money" style="margin: 0px; margin-left: 10px; color: var(--text-color);">€0</h3>
         </div>
 
-        <button style="margin: 0;" onclick="clearLocalStorageAndCookies();">Reset progress</button>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <button id="cheats-btn" style="margin-right: 10px !important; margin: 0;"
+                onclick="if (confirm('Are you sure you want to enable cheats??')) { localStorage.setItem('cheatsEnabled', 'true'); location.reload(); }">Enable
+                cheats</button>
+            <p style="margin-right: 10px !important; display: none; margin: 0;" id="cheats-text">Cheats enabled!
+                Loser!!!</p>
+
+            <button style="margin: 0;" onclick="clearLocalStorageAndCookies();">Reset progress</button>
+        </div>
+
+        <script>
+            if (localStorage.getItem('cheatsEnabled') === 'true') {
+                document.getElementById('topbar').style.backgroundColor = 'red';
+                document.getElementById('cheats-btn').style.display = 'none';
+                document.getElementById('cheats-text').style.display = 'block';
+                setTimeout(function () {
+                    document.getElementById('cheats-interface').style.display = 'block';
+                }, 1000);
+            }
+        </script>
     </div>
+
     <div id="info">
         <h1 id="title">TC_tam Casino</h1>
         <p id="description">Welcome to TC_tam Casino</p>
@@ -114,6 +134,26 @@
                     <br>3. Money cheats.
                     <br>4. Casino VIP membership.
                 </p>
+            </div>
+
+            <div id="cheats-interface" style="display: none;" class="game">
+                <h3>Cheating interface:</h3>
+                <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="cheating-amount" placeholder="AMOUNT TO CHEAT IN"></input>
+                <button onclick="cheatMoney()">CHEAT</button>
+
+                <script>
+                    function cheatMoney() {
+                        let cheatAmount = parseInt(document.getElementById("cheating-amount").value);
+
+                        if (!isNaN(cheatAmount) && cheatAmount > 0) {
+                            increaseMoney(cheatAmount);
+                            notification('Money increased!')
+                        } else {
+                            notification("Please enter a valid amount!");
+                        }
+                    }
+                </script>
             </div>
 
             <div class="game">
