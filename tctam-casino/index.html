@@ -199,7 +199,8 @@
                 <h4>The bank</h4>
                 <b>Here you can borrow money from the bank. Everything you borrow, you have to pay back. Otherwise,
                     money will slowly be written off your account. You will get 1.3x debt more than you borrow.</b>
-                <p style="margin-bottom: 0px; margin-top: -3px;">You can borrow up to €100.000 per 10 minutes with a limit of €3.000.000.</p>
+                <p style="margin-bottom: 0px; margin-top: -3px;">You can borrow up to €100.000 per 10 minutes with a
+                    limit of €3.000.000.</p>
                 <div style="margin-bottom: -30px; display: flex; align-items: center;">
                     <p style="color: red;">Amount of debt: €</p>
                     <p id="debt-showcase" style="margin: 0; color: red;"></p>
@@ -508,7 +509,8 @@
                     <div class="box red">35</div>
                     <div class="box black">36</div>
 
-                    <p style="margin-top: 70px; margin-left: 50px; font-size: 0.7em;">Javascript by Vera - Design by Jan Willem.</p>
+                    <p style="margin-top: 70px; margin-left: 50px; font-size: 0.7em;">Javascript by Vera - Design by Jan
+                        Willem.</p>
                 </div>
             </div>
 
@@ -1166,8 +1168,6 @@
         betNumberBtn.addEventListener('click', () => {
             const betAmount = parseInt(rouletteBet.value);
             const numberBet = parseInt(rouletteNumberBet.value);
-            document.getElementById('bet-number').disabled = true;
-            document.getElementById('bet-color').disabled = true;
 
             if (!validateBet(betAmount)) {
                 notification('You do not have enough money to place this bet or the bet amount is not valid.');
@@ -1180,6 +1180,9 @@
             }
 
             decreaseMoney(betAmount);
+
+            document.getElementById('bet-number').disabled = true;
+            document.getElementById('bet-color').disabled = true;
 
             animateRoulette(() => {
                 const winningNumber = getRandomNumber();
@@ -1203,8 +1206,6 @@
         betColorBtn.addEventListener('click', () => {
             const betAmount = parseInt(rouletteBet.value);
             const colorBet = rouletteColorBet.value;
-            document.getElementById('bet-number').disabled = true;
-            document.getElementById('bet-color').disabled = true;
 
             if (!validateBet(betAmount)) {
                 notification('You do not have enough money to place this bet or the bet amount is not valid.');
@@ -1217,6 +1218,9 @@
             }
 
             decreaseMoney(betAmount);
+
+            document.getElementById('bet-number').disabled = true;
+            document.getElementById('bet-color').disabled = true;
 
             animateRoulette(() => {
                 const winningNumber = getRandomNumber();
