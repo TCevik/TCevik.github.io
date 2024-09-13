@@ -1223,6 +1223,11 @@
                 return;
             }
 
+            if (numberBet < 0 || numberBet > 36 || isNaN(numberBet)) {
+                notification("Please choose a number between 0 and 36.");
+                return;
+            }
+
             decreaseMoney(betAmount);
 
             document.getElementById('bet-number').disabled = true;
