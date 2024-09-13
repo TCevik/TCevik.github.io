@@ -268,75 +268,6 @@
                     <h4 style="margin-left: 10px;">Your Properties:</h4>
                     <ul style="margin-left: 10px;" id="propertiesList"></ul>
                 </div>
-
-                <script>
-                    function buyProperty() {
-                        var dropdown = document.getElementById('dropdown');
-                        var selectedOption = dropdown.options[dropdown.selectedIndex];
-                        var propertyName = selectedOption.value;
-                        var propertyPrice = parseInt(selectedOption.getAttribute('data-price'));
-
-                        if (money >= propertyPrice) {
-                            if (debt > money) {
-                                notification('You are not allowed to purchase properties if you have more debts than money in your account.')
-                            } else {
-                                var properties = JSON.parse(localStorage.getItem('properties')) || [];
-
-                                if (!properties.includes(propertyName)) {
-                                    properties.push(propertyName);
-                                    localStorage.setItem('properties', JSON.stringify(properties));
-
-                                    decreaseMoney(propertyPrice);
-                                    updatePropertiesList();
-                                    notification('You have successfully bought ' + propertyName + '!');
-                                } else {
-                                    notification('You already own ' + propertyName + '.');
-                                }
-                            }
-                        } else {
-                            notification('Not enough money to buy ' + propertyName + '.');
-                        }
-                    }
-
-                    function updatePropertiesList() {
-                        var properties = JSON.parse(localStorage.getItem('properties')) || [];
-                        var propertiesList = document.getElementById('propertiesList');
-                        propertiesList.innerHTML = '';
-
-                        properties.forEach(function (property) {
-                            var rate = getPropertyRate(property);
-                            var li = document.createElement('li');
-                            li.textContent = property + ' (Rate: ' + rate + ' per second)';
-                            propertiesList.appendChild(li);
-                        });
-                    }
-
-                    function getPropertyRate(propertyName) {
-                        var dropdown = document.getElementById('dropdown');
-                        var options = dropdown.options;
-
-                        for (var i = 0; i < options.length; i++) {
-                            if (options[i].value === propertyName) {
-                                return parseInt(options[i].getAttribute('data-rate'));
-                            }
-                        }
-                        return 0;
-                    }
-
-                    function increaseMoneyByProperties() {
-                        var properties = JSON.parse(localStorage.getItem('properties')) || [];
-                        properties.forEach(function (property) {
-                            var rate = getPropertyRate(property);
-                            increaseMoney(rate);
-                        });
-                    }
-
-                    setInterval(increaseMoneyByProperties, 1000);
-
-                    setTimeout(function () {
-                        updatePropertiesList();
-                    }, 500);
-                </script>
             </div>
 
             <h3 style="width: 100%;">Gambling</h3>
@@ -785,6 +716,73 @@
                 item.style.flexBasis = `${currentFlexBasis + extraWidthPerItem}px`;
             });
         }
+
+        function buyProperty() {
+            var dropdown = document.getElementById('dropdown');
+            var selectedOption = dropdown.options[dropdown.selectedIndex];
+            var propertyName = selectedOption.value;
+            var propertyPrice = parseInt(selectedOption.getAttribute('data-price'));
+
+            if (money >= propertyPrice) {
+                if (debt > money) {
+                    notification('You are not allowed to purchase properties if you have more debts than money in your account.')
+                } else {
+                    var properties = JSON.parse(localStorage.getItem('properties')) || [];
+
+                    if (!properties.includes(propertyName)) {
+                        properties.push(propertyName);
+                        localStorage.setItem('properties', JSON.stringify(properties));
+
+                        decreaseMoney(propertyPrice);
+                        updatePropertiesList();
+                        notification('You have successfully bought ' + propertyName + '!');
+                    } else {
+                        notification('You already own ' + propertyName + '.');
+                    }
+                }
+            } else {
+                notification('Not enough money to buy ' + propertyName + '.');
+            }
+        }
+
+        function updatePropertiesList() {
+            var properties = JSON.parse(localStorage.getItem('properties')) || [];
+            var propertiesList = document.getElementById('propertiesList');
+            propertiesList.innerHTML = '';
+
+            properties.forEach(function (property) {
+                var rate = getPropertyRate(property);
+                var li = document.createElement('li');
+                li.textContent = property + ' (Rate: ' + rate + ' per second)';
+                propertiesList.appendChild(li);
+            });
+        }
+
+        function getPropertyRate(propertyName) {
+            var dropdown = document.getElementById('dropdown');
+            var options = dropdown.options;
+
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === propertyName) {
+                    return parseInt(options[i].getAttribute('data-rate'));
+                }
+            }
+            return 0;
+        }
+
+        function increaseMoneyByProperties() {
+            var properties = JSON.parse(localStorage.getItem('properties')) || [];
+            properties.forEach(function (property) {
+                var rate = getPropertyRate(property);
+                increaseMoney(rate);
+            });
+        }
+
+        setInterval(increaseMoneyByProperties, 1000);
+
+        setTimeout(function () {
+            updatePropertiesList();
+        }, 500);
 
         /* GAMES */
         let maxbet = undefined;
