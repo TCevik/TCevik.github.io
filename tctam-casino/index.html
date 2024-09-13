@@ -426,7 +426,7 @@
 
                 <h4>Roulette</h4>
                 <b>Here you can play Roulette!</b>
-                <p>Payouts: bet right number - 36x | bet right color 2.2x.</p>
+                <p>Payouts: bet right number - 36x | bet right color 2.5x.</p>
                 <input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number" id="roulette-bet"
                     placeholder="AMOUNT TO BET">
                 <br><input style="margin-top: 5px; margin-bottom: 5px; margin-left: 0px;" type="number"
@@ -1271,8 +1271,8 @@
                 highlightNumber(winningNumber);
 
                 if (colorBet === winningColor) {
-                    increaseMoney(betAmount * 2.2);
-                    notification(`Congratulations! You won €${betAmount * 2.2}!`);
+                    increaseMoney(betAmount * 2.5);
+                    notification(`Congratulations! You won €${betAmount * 2.5}!`);
                     document.getElementById('bet-number').disabled = false;
                     document.getElementById('bet-color').disabled = false;
                 } else {
