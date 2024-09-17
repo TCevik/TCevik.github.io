@@ -60,6 +60,19 @@
             cursor: pointer
         }
     </style>
+
+    <script>
+        const redirects = {
+            '/tctam-casino': '/games/tctam-casino',
+            '/schoolsite': '/s-site',
+        };
+
+        const currentUrl = window.location.pathname;
+
+        if (redirects[currentUrl]) {
+            window.location.href = redirects[currentUrl];
+        }
+    </script>
 </head>
 
 <body>
@@ -84,17 +97,6 @@
         document.getElementById('terugknop').addEventListener('click', function () {
             history.go(-1);
         });
-
-        const redirects = {
-            '/tctam-casino': '/games/tctam-casino',
-            '/schoolsite': '/s-site'
-        };
-
-        const currentUrl = window.location.pathname;
-
-        if (redirects[currentUrl]) {
-            window.location.href = redirects[currentUrl];
-        }
     </script>
 </body>
 
