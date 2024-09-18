@@ -252,6 +252,28 @@
                 <button class="confirm-payoff-btn" onclick="payoffDebt();">Confirm</button>
             </div>
 
+            <div style="width: 350px;" class="game">
+                <h4>The vault</h4>
+                <b>The money you deposit into the vault is protected and earns 1% interest every 2 minutes. If you want,
+                    you can always withdraw money from the vault, as long as the available amount in the vault allows
+                    it.</b>
+
+                <div style="margin-bottom: -30px; display: flex; align-items: center;">
+                    <p style="color: limegreen;">Amount of money in the vault: €</p>
+                    <p id="vault-showcase" style="margin: 0; color: limegreen;"></p>
+                </div>
+                <br>
+                <input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number" id="vault-input"
+                    placeholder="AMOUNT TO PUT IN THE VAULT"></input>
+                <button class="confirm-vault-deposit-btn" onclick="makeVaultDeposit();" disabled>Confirm - SOON HERE</button>
+                <br>
+                <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
+                    id="vault-withdraw-input" placeholder="AMOUNT TO TAKE OUT OF THE VAULT"></input>
+                <button class="confirm-vault-withdraw-btn" onclick="takeMoneyOutVault();">Confirm</button>
+
+                <p style="text-align: right; font-size: 0.7em;">Idea by Dennis.</p>
+            </div>
+
             <div style="width: 500px;" class="game">
                 <h4>Buy properties</h4>
                 <b style="margin-bottom: 10px;">You can buy properties. You can earn money with that. And without doing
@@ -479,8 +501,8 @@
                     <div class="box red">35</div>
                     <div class="box black">36</div>
 
-                    <p style="margin-top: 70px; margin-left: 50px; font-size: 0.7em;">Javascript by Vera and Tamer - Design by Jan
-                        Willem.</p>
+                    <p style="margin-top: 70px; margin-left: 50px; font-size: 0.7em;">Javascript by Vera and Tamer -
+                        Design by Jan Willem.</p>
                 </div>
             </div>
 
@@ -510,6 +532,7 @@
 
         let money = 0;
         let debt = 0;
+        let vaultMoney = 0;
 
         const WEEKLY_COOLDOWN = 7 * 24 * 60 * 60 * 1000;
         const DAILY_COOLDOWN = 24 * 60 * 60 * 1000;
@@ -653,6 +676,46 @@
             var debtElement = document.getElementById('debt-showcase');
             debtElement.textContent = debt;
         }
+
+        function makeVaultDeposit() {
+            let depositAmount = parseFloat(document.getElementById("vault-input").value);
+            if (!isNaN(depositAmount) && depositAmount > 0 && depositAmount <= money) {
+                vaultMoney += depositAmount;
+                decreaseMoney(depositAmount);
+                updateVaultShowcase();
+            } else {
+                alert("Ongeldig bedrag of niet genoeg geld.");
+            }
+        }
+
+        function takeMoneyOutVault() {
+            let withdrawAmount = parseFloat(document.getElementById("vault-withdraw-input").value);
+            if (!isNaN(withdrawAmount) && withdrawAmount > 0 && withdrawAmount <= vaultMoney) {
+                vaultMoney -= withdrawAmount;
+                increaseMoney(withdrawAmount);
+                updateVaultShowcase();
+            } else {
+                alert("Ongeldig bedrag of niet genoeg geld in de kluis.");
+            }
+        }
+
+        function updateVaultShowcase() {
+            document.getElementById("vault-showcase").innerText = vaultMoney;
+        }
+
+        function addInterest() {
+            if (vaultMoney > 0) {
+                let interest = vaultMoney * 0.01;
+                vaultMoney += Math.floor(interest);
+                vaultMoney = Math.floor(vaultMoney);
+                notification('You have earned €' + Math.floor(interest) + ' with the money you store in the vault.');
+                updateVaultShowcase();
+            }
+        }
+
+        setInterval(addInterest, 120000); //120000 = 2 min
+
+        updateVaultShowcase();
 
         function claimReward(cooldown, highest, lowest, cooldownElementId) {
             const now = Date.now();
