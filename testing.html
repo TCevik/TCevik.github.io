@@ -1,66 +1,68 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inloggen met Firebase</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
-</head>
-
-<body>
-    <div id="login-form">
-        <input id="email" type="email" placeholder="E-mail" required>
-        <input id="password" type="password" placeholder="Wachtwoord" required>
-        <button onclick="login()">Inloggen</button>
-    </div>
-    <div id="logout-form" style="display: none;">
-        <button onclick="logout()">Uitloggen</button>
-    </div>
-
-    <script src="/firebase/config.js"></script>
+    <title>Google Sheets Database</title>
     <script>
-        const auth = firebase.auth();
-        function updateUI() {
-            const user = auth.currentUser;
-            if (user) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('logout-form').style.display = 'block';
-            } else {
-                document.getElementById('login-form').style.display = 'block';
-                document.getElementById('logout-form').style.display = 'none';
-            }
-        }
-
-        function login() {
+        const scriptLink = 'https://script.google.com/macros/s/AKfycbwR0KdgN58IbhumR6QNimAhiC5MLHA3KHb_UUmmK5huAEvDIOxzy1RFqUfoZsGbPzY5qQ/exec';
+        
+        async function submitForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const message = document.getElementById('message').value;
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    notification('Succesvol ingelogd!');
-                    updateUI();
-                })
-                .catch((error) => {
-                    notification('Fout bij inloggen: ' + error.message);
-                });
+            const response = await fetch(scriptLink, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ name, email, message }),
+            });
+
+            const result = await response.text();
+            document.getElementById('result').innerText = result;
+
+            // Na verzenden van het formulier, laad de gegevens opnieuw
+            loadMessages();
         }
 
-        function logout() {
-            auth.signOut().then(() => {
-                notification('Succesvol uitgelogd!');
-                updateUI();
-            }).catch((error) => {
-                notification('Fout bij uitloggen: ' + error.message);
+        async function loadMessages() {
+            const response = await fetch(scriptLink + '?action=getMessages');
+            const messages = await response.json();
+
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = ''; // Maak de lijst leeg voordat je nieuwe berichten toevoegt
+
+            messages.forEach(msg => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${msg.name} (${msg.email}): ${msg.message}`;
+                messageList.appendChild(listItem);
             });
         }
 
-        auth.onAuthStateChanged(updateUI);
+        // Laad de berichten wanneer de pagina geladen wordt
+        window.onload = loadMessages;
     </script>
-</body>
+</head>
+<body>
+    <h1>Stuur een Bericht</h1>
+    <form onsubmit="submitForm(event)">
+        <label for="name">Naam:</label>
+        <input type="text" id="name" required><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br>
+        
+        <label for="message">Bericht:</label>
+        <textarea id="message" required></textarea><br>
+        
+        <button type="submit">Verstuur</button>
+    </form>
+    <p id="result"></p>
 
+    <h2>Berichten:</h2>
+    <ul id="messageList"></ul>
+</body>
 </html>
