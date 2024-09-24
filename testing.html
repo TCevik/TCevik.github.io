@@ -1,68 +1,85 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets Database</title>
     <script>
-        const scriptLink = 'https://script.google.com/macros/s/AKfycbwR0KdgN58IbhumR6QNimAhiC5MLHA3KHb_UUmmK5huAEvDIOxzy1RFqUfoZsGbPzY5qQ/exec';
-        
+        const scriptLink = 'https://script.google.com/macros/s/AKfycbzbAjgnhXGXDbkKowcNTQOX3nsuGW_r0-rSG825fDxVbwFgX1G9PYYnuT4VQve53DtQcQ/exec';
+
         async function submitForm(event) {
             event.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
+            const formData = new FormData(event.target);
             const response = await fetch(scriptLink, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({ name, email, message }),
+                body: formData,
             });
 
             const result = await response.text();
             document.getElementById('result').innerText = result;
 
-            // Na verzenden van het formulier, laad de gegevens opnieuw
             loadMessages();
         }
 
         async function loadMessages() {
-            const response = await fetch(scriptLink + '?action=getMessages');
+            const sheetName = document.getElementById('sheetName').value || 'Sheet1'; // Standaardblad
+            const column = document.getElementById('column').value - 1; // Gewenste kolom
+            const row = document.getElementById('row').value; // Start rij
+
+            const response = await fetch(`${scriptLink}?action=getMessages&sheet=${sheetName}&column=${column}&row=${row}`);
             const messages = await response.json();
 
             const messageList = document.getElementById('messageList');
             messageList.innerHTML = ''; // Maak de lijst leeg voordat je nieuwe berichten toevoegt
 
+            if (messages.error) {
+                const errorItem = document.createElement('li');
+                errorItem.textContent = messages.error;
+                messageList.appendChild(errorItem);
+                return;
+            }
+
             messages.forEach(msg => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${msg.name} (${msg.email}): ${msg.message}`;
+                listItem.textContent = msg; // Laat alleen de waarde van de specifieke kolom zien
                 messageList.appendChild(listItem);
             });
         }
 
-        // Laad de berichten wanneer de pagina geladen wordt
         window.onload = loadMessages;
     </script>
 </head>
+
 <body>
     <h1>Stuur een Bericht</h1>
     <form onsubmit="submitForm(event)">
         <label for="name">Naam:</label>
-        <input type="text" id="name" required><br>
-        
+        <input type="text" name="name" required><br>
+
         <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
-        
+        <input type="email" name="email" required><br>
+
         <label for="message">Bericht:</label>
-        <textarea id="message" required></textarea><br>
-        
+        <textarea name="message" required></textarea><br>
+
         <button type="submit">Verstuur</button>
     </form>
-    <p id="result"></p>
 
     <h2>Berichten:</h2>
+    <label for="sheetName">Bladnaam:</label>
+    <input type="text" id="sheetName" value="Sheet1"><br>
+
+    <label for="column">Kolom:</label>
+    <input type="number" id="column" value="1"><br>
+
+    <label for="row">Rij:</label>
+    <input type="number" id="row" value="1"><br>
+
+    <button onclick="loadMessages()">Laad Berichten</button>
+
+    <p id="result"></p>
     <ul id="messageList"></ul>
 </body>
+
 </html>
