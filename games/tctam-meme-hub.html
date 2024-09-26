@@ -25,15 +25,20 @@
             padding: 20px;
             margin: 15px;
             box-shadow: 0px 0px 10px var(--h1234-color);
+            max-width: 600px;
+            overflow: hidden;
         }
 
         .meme img {
             max-height: 200px;
-            max-width: 600px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
         }
 
         .meme h3 {
             margin-top: -5px;
+            word-wrap: break-word;
         }
 
         .pagination {
@@ -60,15 +65,38 @@
     <div id="memes"></div>
 
     <div class="pagination">
-        <button id="prevPage" onclick="changePage(-1)" style="display: none;">Vorige pagina</button>
-        <div class="page-info" id="pageInfo">Pagina 1</div>
-        <button id="nextPage" onclick="changePage(1)" style="display: none;">Volgende pagina</button>
+        <button id="prevPage" onclick="changePage(-1)" style="display: none;">Previous page</button>
+        <div class="page-info" id="pageInfo">Page 1</div>
+        <button id="nextPage" onclick="changePage(1)" style="display: none;">Next page</button>
     </div>
 
     <script>
         var allMemes = [
-            { title: "Meme 1", imgUrl: "url_naar_afbeelding_1.jpg" },
+            { title: "The episode breaker", imgUrl: "https://cdn.nos.nl/image/2018/05/21/474278/2048x1152.jpg" },
+            { title: "Work dilemma", imgUrl: "https://cdn.prod.website-files.com/64ef86fd99a286b447305635/6662830f6d9e1ec1429bb0da_6250a54e5aafad58b099d32a_Teams-Meme.webp" },
+            { title: "The great diet", imgUrl: "https://img.delicious.com.au/WqbvXLhs/del/2016/06/more-the-merrier-31380-2.jpg" },
+            { title: "The maps problem", imgUrl: "https://media.npr.org/assets/img/2015/03/03/overly_custom-dd57085dc9a9e7e18a9ddf242ee8b4aa0c84c764.jpg?s=800&c=85&f=jpeg" },
+            { title: "Baby", imgUrl: "https://images.theconversation.com/files/38926/original/5cwx89t4-1389586191.jpg?ixlib=rb-4.1.0&q=45&auto=format&w=926&fit=clip" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
+            { title: "", imgUrl: "" },
         ];
+
+        // { title: "", imgUrl: "" },
 
         const memesPerPage = 20;
         let currentPage = 1;
@@ -107,7 +135,7 @@
             document.getElementById('nextPage').style.display = currentPage < Math.ceil(allMemes.length / memesPerPage) ? 'inline-block' : 'none';
 
             // Update de pagina-informatie
-            document.getElementById('pageInfo').textContent = `Pagina ${currentPage} van ${Math.ceil(allMemes.length / memesPerPage)}`;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.ceil(allMemes.length / memesPerPage)}`;
         }
 
         function changePage(direction) {
