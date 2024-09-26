@@ -1,68 +1,363 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheets Database</title>
-    <script>
-        const scriptLink = 'https://script.google.com/macros/s/AKfycbylO_-eShK6AfSKmNNcv-lbEkUsemhAzfN4Ec2RCk1gKcx0cAfrJz2r-OnyMldaTEs2ew/exec';
-        
-        async function submitForm(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            const response = await fetch(scriptLink, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({ name, email, message }),
-            });
-
-            const result = await response.text();
-            document.getElementById('result').innerText = result;
-
-            // Na verzenden van het formulier, laad de gegevens opnieuw
-            loadMessages();
-        }
-
-        async function loadMessages() {
-            const response = await fetch(scriptLink + '?action=getMessages');
-            const messages = await response.json();
-
-            const messageList = document.getElementById('messageList');
-            messageList.innerHTML = ''; // Maak de lijst leeg voordat je nieuwe berichten toevoegt
-
-            messages.forEach(msg => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${msg.name} (${msg.email}): ${msg.message}`;
-                messageList.appendChild(listItem);
-            });
-        }
-
-        // Laad de berichten wanneer de pagina geladen wordt
-        window.onload = loadMessages;
-    </script>
+    <title>Document</title>
 </head>
 <body>
-    <h1>Stuur een Bericht</h1>
-    <form onsubmit="submitForm(event)">
-        <label for="name">Naam:</label>
-        <input type="text" id="name" required><br>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
-        
-        <label for="message">Bericht:</label>
-        <textarea id="message" required></textarea><br>
-        
-        <button type="submit">Verstuur</button>
-    </form>
-    <p id="result"></p>
-
-    <h2>Berichten:</h2>
-    <ul id="messageList"></ul>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-8924607946192862"
+data-ad-slot="5862330293"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+     crossorigin="anonymous"></script>
+<!-- Ad1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8924607946192862"
+     data-ad-slot="5862330293"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </body>
 </html>
