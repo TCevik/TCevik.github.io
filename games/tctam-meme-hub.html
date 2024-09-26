@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam Meme Hub</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <style>
+        #memes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-left: 20px;
+        }
+
+        .meme {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 20px;
+            text-align: left;
+            border-radius: var(--border-radius2);
+            background-color: var(--bg-color);
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0px 0px 10px var(--h1234-color);
+        }
+
+        .meme img {
+            max-height: 200px;
+            max-width: 600px;
+        }
+
+        .meme h3 {
+            margin-top: -5px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .pagination button {
+            margin: 0 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .page-info {
+            align-self: center;
+            margin: 0 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="memes"></div>
+
+    <div class="pagination">
+        <button id="prevPage" onclick="changePage(-1)" style="display: none;">Vorige pagina</button>
+        <div class="page-info" id="pageInfo">Pagina 1</div>
+        <button id="nextPage" onclick="changePage(1)" style="display: none;">Volgende pagina</button>
+    </div>
+
+    <script>
+        var allMemes = [
+            { title: "Meme 1", imgUrl: "url_naar_afbeelding_1.jpg" },
+        ];
+
+        const memesPerPage = 20;
+        let currentPage = 1;
+
+        function displayMemes() {
+            const memesContainer = document.getElementById('memes');
+            memesContainer.innerHTML = ''; // Leeg de container
+
+            // Bereken de start- en eindindex voor de huidige pagina
+            const startIndex = (currentPage - 1) * memesPerPage;
+            const endIndex = startIndex + memesPerPage;
+
+            // Haal de memes voor de huidige pagina op
+            const memesToDisplay = allMemes.slice(startIndex, endIndex);
+
+            // Voeg memes toe aan de container
+            memesToDisplay.forEach(function (meme) {
+                const memeDiv = document.createElement('div');
+                memeDiv.className = 'meme';
+
+                const title = document.createElement('h3');
+                title.textContent = meme.title;
+
+                const img = document.createElement('img');
+                img.src = meme.imgUrl; // Stel de afbeelding in
+                img.alt = meme.title;
+                img.loading = "lazy"; // Gebruik lazy loading
+
+                memeDiv.appendChild(title);
+                memeDiv.appendChild(img);
+                memesContainer.appendChild(memeDiv);
+            });
+
+            // Verberg of toon knoppen op basis van de huidige pagina
+            document.getElementById('prevPage').style.display = currentPage > 1 ? 'inline-block' : 'none';
+            document.getElementById('nextPage').style.display = currentPage < Math.ceil(allMemes.length / memesPerPage) ? 'inline-block' : 'none';
+
+            // Update de pagina-informatie
+            document.getElementById('pageInfo').textContent = `Pagina ${currentPage} van ${Math.ceil(allMemes.length / memesPerPage)}`;
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+
+            // Beperk de pagina's tussen 1 en het aantal pagina's
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > Math.ceil(allMemes.length / memesPerPage)) currentPage = Math.ceil(allMemes.length / memesPerPage);
+
+            displayMemes();
+        }
+
+        // Roep de functie aan om memes weer te geven
+        displayMemes();
+    </script>
+</body>
+
+</html>
