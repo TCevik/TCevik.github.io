@@ -265,8 +265,7 @@
                 <br>
                 <input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number" id="vault-input"
                     placeholder="AMOUNT TO PUT IN THE VAULT"></input>
-                <button class="confirm-vault-deposit-btn" onclick="makeVaultDeposit();" disabled>Confirm - SOON
-                    HERE</button>
+                <button class="confirm-vault-deposit-btn" onclick="makeVaultDeposit();">Confirm</button>
                 <br>
                 <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="vault-withdraw-input" placeholder="AMOUNT TO TAKE OUT OF THE VAULT"></input>
@@ -573,6 +572,8 @@
             const savedDebt = localStorage.getItem('debt');
             debt = savedDebt ? parseFloat(savedDebt) : 0;
 
+            vaultMoney = parseFloat(localStorage.getItem('vaultMoney')) || 0;
+
             updateMoney();
             showDebt();
             updateCooldowns();
@@ -708,6 +709,7 @@
                 vaultMoney += depositAmount;
                 decreaseMoney(depositAmount);
                 updateVaultShowcase();
+                saveVaultMoney(); // Sla het vault-bedrag op
             } else {
                 alert("Ongeldig bedrag of niet genoeg geld.");
             }
@@ -719,6 +721,7 @@
                 vaultMoney -= withdrawAmount;
                 increaseMoney(withdrawAmount);
                 updateVaultShowcase();
+                saveVaultMoney(); // Sla het vault-bedrag op
             } else {
                 alert("Ongeldig bedrag of niet genoeg geld in de kluis.");
             }
@@ -735,12 +738,22 @@
                 vaultMoney = Math.floor(vaultMoney);
                 notification('You have earned €' + Math.floor(interest) + ' with the money you store in the vault.');
                 updateVaultShowcase();
+                saveVaultMoney();
             }
         }
 
-        setInterval(addInterest, 120000); //120000 = 2 min
+        function saveVaultMoney() {
+            localStorage.setItem('vaultMoney', vaultMoney);
+        }
 
-        updateVaultShowcase();
+        function loadVaultMoney() {
+            vaultMoney = parseFloat(localStorage.getItem('vaultMoney')) || 0;
+            updateVaultShowcase();
+        }
+
+        loadVaultMoney();
+
+        setInterval(addInterest, 120000); // 120000 = 2 min
 
         function claimReward(cooldown, highest, lowest, cooldownElementId) {
             const now = Date.now();
