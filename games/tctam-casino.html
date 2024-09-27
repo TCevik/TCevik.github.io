@@ -265,7 +265,7 @@
                 <br>
                 <input style="margin-top: -5px; margin-bottom: 10px; margin-left: 0px;" type="number" id="vault-input"
                     placeholder="AMOUNT TO PUT IN THE VAULT"></input>
-                <button class="confirm-vault-deposit-btn" onclick="makeVaultDeposit();" disabled>Confirm - Disabled due to game breaking glitch</button>
+                <button class="confirm-vault-deposit-btn" onclick="makeVaultDeposit();">Confirm</button>
                 <br>
                 <input style="margin-top: 5px; margin-bottom: 10px; margin-left: 0px;" type="number"
                     id="vault-withdraw-input" placeholder="AMOUNT TO TAKE OUT OF THE VAULT"></input>
@@ -572,6 +572,8 @@
             const savedDebt = localStorage.getItem('debt');
             debt = savedDebt ? parseFloat(savedDebt) : 0;
 
+            vaultMoney = parseFloat(localStorage.getItem('vaultMoney')) || 0;
+
             updateMoney();
             showDebt();
             updateCooldowns();
@@ -707,8 +709,9 @@
                 vaultMoney += depositAmount;
                 decreaseMoney(depositAmount);
                 updateVaultShowcase();
+                saveVaultMoney(); // Sla het vault-bedrag op
             } else {
-                alert("Ongeldig bedrag of niet genoeg geld.");
+                notification("Invalid amount or not enough money.");
             }
         }
 
@@ -718,8 +721,9 @@
                 vaultMoney -= withdrawAmount;
                 increaseMoney(withdrawAmount);
                 updateVaultShowcase();
+                saveVaultMoney(); // Sla het vault-bedrag op
             } else {
-                alert("Ongeldig bedrag of niet genoeg geld in de kluis.");
+                notification("Invalid amount or not enough money in the safe.");
             }
         }
 
@@ -734,12 +738,22 @@
                 vaultMoney = Math.floor(vaultMoney);
                 notification('You have earned €' + Math.floor(interest) + ' with the money you store in the vault.');
                 updateVaultShowcase();
+                saveVaultMoney();
             }
         }
 
-        setInterval(addInterest, 120000); //120000 = 2 min
+        function saveVaultMoney() {
+            localStorage.setItem('vaultMoney', vaultMoney);
+        }
 
-        updateVaultShowcase();
+        function loadVaultMoney() {
+            vaultMoney = parseFloat(localStorage.getItem('vaultMoney')) || 0;
+            updateVaultShowcase();
+        }
+
+        loadVaultMoney();
+
+        setInterval(addInterest, 120000); // 120000 = 2 min
 
         function claimReward(cooldown, highest, lowest, cooldownElementId) {
             const now = Date.now();
@@ -807,11 +821,11 @@
             return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
-        window.onload = function () {
+        document.addEventListener("DOMContentLoaded", function () {
             initialize();
             setInterval(updateCooldowns, 1000);
             arrangeGames();
-        };
+        });
 
         function arrangeGames() {
             const container = document.getElementById('activities');
