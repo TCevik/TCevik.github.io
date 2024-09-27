@@ -1,3 +1,10 @@
+/* google adsense */
+var adScript = document.createElement('script');
+adScript.async = true;
+adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862";
+adScript.setAttribute('crossorigin', 'anonymous');
+document.head.appendChild(adScript);
+
 function notification(message) {
 	var notificationElement = document.createElement("div");
 
@@ -86,13 +93,6 @@ if ('serviceWorker' in navigator) {
 document.addEventListener("DOMContentLoaded", function () {
 	sideMenuNav();
 });
-
-/* google adsense */
-var adScript = document.createElement('script');
-adScript.async = true;
-adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862";
-adScript.setAttribute('crossorigin', 'anonymous');
-document.head.appendChild(adScript);
 
 var buttons = `
     <button onclick="window.location.href='/'">Home</button>
