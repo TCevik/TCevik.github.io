@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HTML basics</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .page {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .blog {
+            text-align: left;
+            margin-left: 20px;
+            width: 70%;
+        }
+
+        .recommended {
+            text-align: center;
+            width: 25%;
+            padding: 10px;
+            border: 1px solid var(--h1234-color);
+            border-radius: var(--border-radius1);
+            height: auto;
+            margin-top: 40px;
+        }
+
+        img {
+            width: 60%;
+        }
+
+        @media (max-width: 800px) {
+            .page {
+                display: block;
+                justify-content: space-between;
+            }
+
+            .blog {
+                text-align: center;
+                width: 90%;
+            }
+
+            .recommended {
+                text-align: center;
+                width: 90%;
+                padding: 10px;
+                border: 1px solid var(--h1234-color);
+                border-radius: var(--border-radius1);
+                height: auto;
+                margin: auto;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="blog">
+            <h1>Leren coderen:</h1>
+            <p>Met de uileg gemaakt door Tamer zelf!</p>
+
+            <p>Een simpele website werkt met HTML, CSS en JavaScript. Hier ga je leren over een paar van de basis
+                elementen van HTML, CSS en JavaScript.</p>
+
+            <h3>HTML:</h3>
+            <p>We zullen beginnen met HTML. Hiermee definieer je de structuur van je website.</p>
+            <ul>
+                <li><strong>&lt;h1&gt;</strong>, <strong>&lt;h2&gt;</strong>, <strong>&lt;h3&gt;</strong>, of
+                    <strong>&lt;h4&gt;</strong> - Titels kan je op een website zetten. Hoe groter het getal achter de h,
+                    hoe kleiner de titel.
+                </li>
+                <li><strong>&lt;p&gt;</strong> - Normale tekst kan je op een website zetten.</li>
+                <li><strong>&lt;a&gt;</strong> - Een link kan je op een website zetten.</li>
+                <li><strong>&lt;button&gt;</strong> - Een knop kan je op een website zetten.</li>
+                <li><strong>&lt;ul&gt;</strong> - Een lijst kan je op een website zetten.</li>
+                <li><strong>&lt;li&gt;</strong> - Een lijst item kan je op een website zetten.</li>
+                <li><strong>&lt;img&gt;</strong> - Een afbeelding kan je op een website zetten.</li>
+                <li><strong>&lt;video&gt;</strong> - Een video kan je op een website zetten.</li>
+            </ul>
+
+            <p>Met deze elementen kan je een basispagina maken, maar er mist nog een hoop voor een functionele pagina.
+                Daarvoor kan je attributen gebruiken. Die werken op de volgende manier:
+                <br>Bijvoorbeeld bij de img tag moet je ook een foto definieren. Dat doe je zo: &lt;img
+                src='URL_VAN_FOTO'&gt;. Dit zijn een paar attributen die je kan gebruiken en voor welk van de
+                basiselementen die je kan gebruiken. <br>Je hebt <strong>ALTIJD</strong> een openende tag en een
+                sluitende (&lt;p&gt;&lt;/p&gt;) tag bij elk soort element. Let daarbij goed op de /.
+            </p>
+
+            <ul>
+                <li><strong>&lt;a&gt;</strong> (link):
+                    <ul>
+                        <li style="margin-bottom: 10px;"><strong>href</strong>: De URL waar de link naartoe verwijst.
+                            <br>Bijvoorbeeld: &lt;a href="https://voorbeeld.com"&gt;Klik hier&lt;/a&gt;
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>target</strong>: Bepaalt of de link in een nieuw
+                            tabblad wordt geopend. <br>Bijvoorbeeld: &lt;a href="https://voorbeeld.com"
+                            target="_blank"&gt;Klik hier&lt;/a&gt;</li>
+                    </ul>
+                </li>
+                <li><strong>&lt;img&gt;</strong> (afbeelding):
+                    <ul>
+                        <li style="margin-bottom: 10px;"><strong>src</strong>: De URL van de afbeelding.
+                            <br>Bijvoorbeeld: &lt;img src="url_van_foto.jpg"&gt;
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>alt</strong>: Alternatieve tekst voor de afbeelding als
+                            deze niet geladen kan worden. <br>Bijvoorbeeld: &lt;img src="url_van_foto.jpg"
+                            alt="Beschrijving van de afbeelding"&gt;</li>
+                        <li style="margin-bottom: 10px;"><strong>width</strong>: De breedte van de afbeelding.
+                            <br>Bijvoorbeeld: &lt;img src="url_van_foto.jpg" width="300"&gt;
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>height</strong>: De hoogte van de afbeelding.
+                            <br>Bijvoorbeeld: &lt;img src="url_van_foto.jpg" height="200"&gt;
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>&lt;video&gt;</strong> (video):
+                    <ul>
+                        <li style="margin-bottom: 10px;"><strong>src</strong>: De URL van de video. <br>Bijvoorbeeld:
+                            &lt;video src="video.mp4"&gt;&lt;/video&gt;</li>
+                        <li style="margin-bottom: 10px;"><strong>controls</strong>: Geeft de videospeler
+                            bedieningsknoppen. <br>Bijvoorbeeld: &lt;video src="video.mp4" controls&gt;&lt;/video&gt;
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>autoplay</strong>: Laat de video automatisch afspelen.
+                            <br>Bijvoorbeeld: &lt;video src="video.mp4" autoplay&gt;&lt;/video&gt;
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>loop</strong>: Laat de video herhalen.
+                            <br>Bijvoorbeeld: &lt;video src="video.mp4" loop&gt;&lt;/video&gt;
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>&lt;button&gt;</strong> (knop):
+                    <ul>
+                        <li style="margin-bottom: 10px;"><strong>type</strong>: Bepaalt het type van de knop
+                            (bijvoorbeeld "submit" voor een verzendknop in een formulier). <br>Bijvoorbeeld: &lt;button
+                            type="submit"&gt;Verzend&lt;/button&gt;</li>
+                        <li style="margin-bottom: 10px;"><strong>onclick</strong>: Voert een JavaScript-functie uit bij
+                            klikken. <br>Bijvoorbeeld: &lt;button onclick="mijnFunctie()"&gt;Klik hier&lt;/button&gt;
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p>Nu, voordat we verder gaan naar de volgende talen om een website te creëeren gaan we eerst leren hoe je
+                een link naar een ander bestand kan maken. Dat doen we zodat we een extern CSS (layout) en JavaScript
+                (interactiviteit) bestand kunnen linken om onze website beter te maken.</p>
+            <p>Dat werkt bij een JavaScript en CSS bestand allebei anders.
+                <br>Bij een .js (JavaScript) bestand gaat dat zo: &lt;script
+                src="url_van_js_bestand.js"&gt;&lt;/script&gt;
+                <br>Bij een .css bestand gaat dat zo: &lt;link rel="stylesheet"
+                href="url_van_css_bestand.css"&gt;&lt;/link&gt
+            </p>
+
+            <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+                crossorigin="anonymous"></script>
+            <!-- Ad2 -->
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862"
+                data-ad-slot="3104305012" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <h3>CSS:</h3>
+            <p>CSS wordt gebruikt om de pagina aan te passen qua layout en kleuren. Dit is essentieel voor een website.
+            </p>
+            <p>Je hebt een paar belangrijke aspecten van de taal CSS nodig om een goede website te maken:</p>
+            <ul>
+                <li><strong>&lt;margin&gt;</strong> - Dit is de ruimte om een element heen.</li>
+                <li><strong>&lt;padding&gt;</strong> - Dit is de ruimte binnenin een element, tussen de inhoud en de
+                    rand.</li>
+                <li><strong>&lt;border&gt;</strong> - Dit is de rand die een element omringt en kan verschillende
+                    stijlen, diktes en kleuren hebben.</li>
+                <li><strong>&lt;background-color&gt;</strong> - Hiermee kun je de achtergrondkleur van een element
+                    instellen.</li>
+                <li><strong>&lt;font-size&gt;</strong> - Dit bepaalt de grootte van de tekst in een element.</li>
+                <li><strong>&lt;color&gt;</strong> - Hiermee stel je de kleur van de tekst in.</li>
+                <li><strong>&lt;display&gt;</strong> - Dit bepaalt hoe een element wordt weergegeven (bijvoorbeeld
+                    inline, block, flex, grid).</li>
+                <li><strong>&lt;width&gt; en &lt;height&gt;</strong> - Hiermee kun je de breedte en hoogte van een
+                    element instellen.</li>
+                <li><strong>&lt;flexbox&gt;</strong> - Een krachtige layouttechniek die je helpt om flexibele en
+                    responsieve layouts te creëren.</li>
+                <li><strong>&lt;grid&gt;</strong> - Een andere layouttechniek die je in staat stelt om complexere
+                    layouts te maken met rijen en kolommen.</li>
+                <li><strong>&lt;media queries&gt;</strong> - Hiermee kun je verschillende stijlen toepassen afhankelijk
+                    van het schermformaat of apparaatspecificaties, wat essentieel is voor responsive design.</li>
+                <li><strong>&lt;position&gt;</strong> - Hiermee kun je de positie van een element op de pagina bepalen
+                    (bijvoorbeeld static, relative, absolute, fixed).</li>
+                <li><strong>&lt;overflow&gt;</strong> - Dit bepaalt hoe inhoud die buiten de container valt, wordt
+                    behandeld (bijvoorbeeld hidden, scroll, auto).</li>
+                <li><strong>&lt;opacity&gt;</strong> - Hiermee kun je de transparantie van een element instellen.</li>
+                <li><strong>&lt;text-align&gt;</strong> - Hiermee kun je de uitlijning van tekst in een element
+                    instellen (bijvoorbeeld left, right, center, justify).</li>
+                <li><strong>&lt;line-height&gt;</strong> - Dit bepaalt de hoogte van de regel voor tekst, wat invloed
+                    heeft op de leesbaarheid.</li>
+                <li><strong>&lt;font-family&gt;</strong> - Hiermee kun je het lettertype van de tekst instellen.</li>
+                <li><strong>&lt;cursor&gt;</strong> - Hiermee kun je het type cursor instellen dat verschijnt wanneer de
+                    muis over een element beweegt (bijvoorbeeld pointer, text, wait).</li>
+                <li><strong>&lt;transition&gt;</strong> - Hiermee kun je animaties en overgangen tussen verschillende
+                    stijlen instellen.</li>
+                <li><strong>&lt;animation&gt;</strong> - Hiermee kun je complexere animaties aan elementen toevoegen.
+                </li>
+                <li><strong>&lt;box-shadow&gt;</strong> - Dit voegt schaduwen toe aan elementen, wat diepte kan
+                    toevoegen aan je design.</li>
+                <li><strong>&lt;text-shadow&gt;</strong> - Hiermee kun je schaduwen aan tekst toevoegen voor een visueel
+                    effect.</li>
+            </ul>
+
+            <p>Css kan je defineren met &lt;style&gt;, dat ziet er zo uit:</p>
+            <pre>
+                &lt;style&gt;
+                <span class="tab"></span>button {
+                <span class="tab"></span><span class="tab"></span>margin: 10px;
+                <span class="tab"></span><span class="tab"></span>padding: 5px;
+                <span class="tab"></span><span class="tab"></span>font-family: Arial;
+                <span class="tab"></span><span class="tab"></span>color: lime;
+                <span class="tab"></span><span class="tab"></span>opacity: 0.5;
+                <span class="tab"></span>}
+                &lt;/style&gt;
+            </pre>
+
+            <p>Dit zal alle &lt;button&gt; elementen beïnvloeden.</p>
+
+            <style>
+                .tab {
+                    display: inline-block;
+                    width: 30px;
+                }
+            </style>
+
+            <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
+                crossorigin="anonymous"></script>
+            <!-- Ad1 -->
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862"
+                data-ad-slot="5862330293" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <h3>JavaScript:</h3>
+            <p>JavaScript is een programmeertaal die je kunt gebruiken om je website interactief te maken. Het stelt je
+                in staat om dingen te doen zoals reageren op klikken, formulieren verzenden, of dynamisch inhoud
+                wijzigen zonder de pagina opnieuw te laden. Dit is essentieel voor een moderne webervaring.</p>
+            <p>Hier zijn een paar belangrijke concepten van JavaScript die je moet weten:</p>
+            <ul>
+                <li><strong>Variabelen</strong> - Dit zijn containers waarmee je gegevens kunt opslaan. Je declareert
+                    een variabele met <code>let</code>, <code>const</code> of <code>var</code>. Bijvoorbeeld:
+                    <pre><code>let naam = "Tamer";</code></pre>
+                </li>
+                <li><strong>Functies</strong> - Dit zijn blokken code die je kunt hergebruiken. Je kunt een functie
+                    definiëren met <code>function</code>:
+                    <pre><code>function zegHallo() { alert("Hallo, " + naam + "!"); }</code></pre>
+                </li>
+                <li><strong>Events</strong> - Dit zijn acties die plaatsvinden in de browser, zoals klikken op een knop
+                    of het bewegen van de muis. Je kunt deze gebeurtenissen gebruiken om functies uit te voeren.
+                    Bijvoorbeeld:
+                    <pre><code>&lt;button onclick="zegHallo()"&gt;Klik hier&lt;/button&gt;</code></pre>
+                </li>
+                <li><strong>Conditionele statements</strong> - Hiermee kun je beslissingen nemen in je code. Een
+                    voorbeeld is de <code>if</code> statement:
+                    <pre><code>if (naam === "Tamer") { console.log("Welkom terug, Tamer!"); }</code></pre>
+                </li>
+                <li><strong>Lussen</strong> - Dit zijn manieren om herhaalde taken uit te voeren. Een voorbeeld is de
+                    <code>for</code> lus:
+                    <pre><code>for (let i = 0; i &lt; 5; i++) { console.log("Dit is regel " + i); }</code></pre>
+                </li>
+                <li><strong>Arrays</strong> - Dit zijn lijsten van waarden. Je kunt arrays gebruiken om meerdere waarden
+                    op te slaan in één variabele. Bijvoorbeeld:
+                    <pre><code>let kleuren = ["rood", "groen", "blauw"];</code></pre>
+                </li>
+                <li><strong>Objecten</strong> - Dit zijn complexere datastructuren die waarden in paren van
+                    sleutel-waarde opslaan. Bijvoorbeeld:
+                    <pre><code>let persoon = { naam: "Tamer", leeftijd: 15 };</code></pre>
+                </li>
+            </ul>
+            <p>Je kunt JavaScript aan je HTML-bestand toevoegen met de <code>&lt;script&gt;</code> tag. Dit kan direct
+                in je HTML, of via een extern bestand:</p>
+            <pre><code>&lt;script src="url_van_js_bestand.js"&gt;&lt;/script&gt;</code></pre>
+            <p>Hier is een eenvoudig voorbeeld dat alles samenbrengt:</p>
+            <pre><code>&lt;button onclick="zegHallo()"&gt;Klik hier&lt;/button&gt;
+<script> function zegHallo() { alert("Hallo, " + naam + "!"); } let naam = "Tamer"; </script></code></pre>
+
+            <p>Met deze basis van JavaScript kun je beginnen met het toevoegen van interactie aan je website en
+                je site interactiever maken!</p>
+        </div>
+
+        <div class="recommended">
+            <h3 style="margin-top: 10px">Nog meer blogs</h3>
+            <div id="recommended-buttons"></div>
+        </div>
+    </div>
+
+    <script>
+        function addRecommendedButtons(buttons) {
+            var recommendedblog = document.getElementById('recommended-buttons');
+            buttons.forEach(function (buttonData) {
+                var buttonText = buttonData.text;
+                var buttonLink = buttonData.link;
+
+                var button = document.createElement('button');
+                button.textContent = buttonText;
+                button.classList.add('recommended-button');
+                button.style.width = "100%";
+                button.style.marginTop = "5px";
+                button.onclick = function () {
+                    window.location.href = '/blogs/' + buttonLink;
+                };
+                recommendedblog.appendChild(button);
+            });
+        }
+
+        fetch('https://raw.githubusercontent.com/TCevik/TCevik.github.io/main/blogs/alle-blogs.html')
+            .then(response => response.text())
+            .then(data => {
+                var parser = new DOMParser();
+                var htmlDocument = parser.parseFromString(data, 'text/html');
+                var recommendedButtons = htmlDocument.querySelectorAll('.recommended-button:not([disabled])');
+
+                var uniqueRandomButtons = [];
+                var buttonIndices = [];
+                while (uniqueRandomButtons.length < 10) {
+                    var randomIndex = Math.floor(Math.random() * recommendedButtons.length);
+                    if (!buttonIndices.includes(randomIndex)) {
+                        buttonIndices.push(randomIndex);
+                        var button = recommendedButtons[randomIndex];
+                        var buttonText = button.textContent;
+                        var buttonLink = button.getAttribute('onclick').replace("window.location.href='", "").replace("'", "");
+                        uniqueRandomButtons.push({ text: buttonText, link: buttonLink });
+                    }
+                }
+
+                addRecommendedButtons(uniqueRandomButtons);
+            })
+            .catch(error => console.error('Er is een fout opgetreden bij het ophalen van de gegevens:', error));
+    </script>
+</body>
+
+</html>
