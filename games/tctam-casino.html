@@ -835,7 +835,7 @@
             const hours = Math.floor(milliseconds / (1000 * 60 * 60)) % 24;
             const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
 
-            return `${ddys}d ${hours}h ${minutes}m ${seconds}s`;
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
         document.addEventListener("DOMContentLoaded", function () {
