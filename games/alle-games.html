@@ -9,48 +9,48 @@
     <script src="/script.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        function doneAdding() {
             document.querySelectorAll('a').forEach(function (link) {
                 link.addEventListener('click', function (event) {
+                    if (link.id !== 'addGameBtn') {
+                        event.preventDefault();
+                        var href = link.getAttribute('href');
 
-                    event.preventDefault();
-
-                    var href = link.getAttribute('href');
-
-                    var iframe = document.createElement('iframe');
-                    iframe.src = href;
-                    iframe.style.position = 'fixed';
-                    iframe.style.width = '100vw';
-                    iframe.style.height = '100vh';
-                    iframe.style.top = '50%';
-                    iframe.style.left = '50%';
-                    iframe.style.transform = 'translate(-50%, -50%)';
-                    iframe.style.border = 'none';
-
-                    const reloadButton = document.createElement('button');
-                    reloadButton.innerText = 'Terug';
-                    reloadButton.style.position = 'fixed';
-                    reloadButton.style.top = '10px';
-                    reloadButton.style.left = '10px';
-                    reloadButton.addEventListener('click', function () {
-                        location.reload();
-                    });
-
-                    var body = document.body;
-                    body.style.margin = '0px';
-                    while (body.firstChild) {
-                        body.removeChild(body.firstChild);
-                    }
-                    body.appendChild(iframe);
-                    body.appendChild(reloadButton);
-
-                    window.addEventListener('resize', function () {
+                        var iframe = document.createElement('iframe');
+                        iframe.src = href;
+                        iframe.style.position = 'fixed';
                         iframe.style.width = '100vw';
                         iframe.style.height = '100vh';
-                    });
+                        iframe.style.top = '50%';
+                        iframe.style.left = '50%';
+                        iframe.style.transform = 'translate(-50%, -50%)';
+                        iframe.style.border = 'none';
+
+                        const reloadButton = document.createElement('button');
+                        reloadButton.innerText = 'Terug';
+                        reloadButton.style.position = 'fixed';
+                        reloadButton.style.top = '10px';
+                        reloadButton.style.left = '10px';
+                        reloadButton.addEventListener('click', function () {
+                            location.reload();
+                        });
+
+                        var body = document.body;
+                        body.style.margin = '0px';
+                        while (body.firstChild) {
+                            body.removeChild(body.firstChild);
+                        }
+                        body.appendChild(iframe);
+                        body.appendChild(reloadButton);
+
+                        window.addEventListener('resize', function () {
+                            iframe.style.width = '100vw';
+                            iframe.style.height = '100vh';
+                        });
+                    }
                 });
             });
-        });
+        }
     </script>
 
     <style>
@@ -72,183 +72,190 @@
 
     <h2>Games</h2>
 
-    <a style="border-bottom: none;"
-        href="https://www.onlinegames.io/games/2023/construct/280/head-soccer-2022/index.html">
-        <img style="width: 150px; height: 150px;" src="/assets/games/head-soccer.png">
-    </a>
+    <div id="games">
+        <a style="border-bottom: none;"
+            href="https://www.onlinegames.io/games/2023/construct/280/head-soccer-2022/index.html">
+            <img style="width: 150px; height: 150px;" src="/assets/games/head-soccer.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://orb.farm/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/orb-farm.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://orb.farm/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/orb-farm.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="https://shellshock.io/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/shell-shockers.png">
-    </a>
+        <a style="border-bottom: none;" href="https://shellshock.io/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/shell-shockers.png">
+        </a>
 
-    <a style="border-bottom: none;"
-        href="https://www.onlinegames.io/games/2023/construct/285/tiny-crash-fighters/index.html">
-        <img style="width: 150px; height: 150px;" src="/assets/games/tiny-crash-fighters.jpg">
-    </a>
+        <a style="border-bottom: none;"
+            href="https://www.onlinegames.io/games/2023/construct/285/tiny-crash-fighters/index.html">
+            <img style="width: 150px; height: 150px;" src="/assets/games/tiny-crash-fighters.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://onlinesoccermanager.nl/Lineup">
-        <img style="width: 150px; height: 150px;" src="/assets/games/osm.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://onlinesoccermanager.nl/Lineup">
+            <img style="width: 150px; height: 150px;" src="/assets/games/osm.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://wings.io/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/wings-io.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://wings.io/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/wings-io.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://krunker.io/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/krunker-io.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://krunker.io/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/krunker-io.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://play.fancade.com">
-        <img style="width: 150px; height: 150px;" src="/assets/games/fancade.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://play.fancade.com">
+            <img style="width: 150px; height: 150px;" src="/assets/games/fancade.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://oskarstalberg.com/Townscaper/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/townscaper.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://oskarstalberg.com/Townscaper/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/townscaper.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="https://slowroads.io/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/slowroads.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://slowroads.io/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/slowroads.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="/games/apple-shooter.html">
-        <img style="width: 150px; height: 150px;" src="/assets/games/apple-green.jpg">
-    </a>
+        <a style="border-bottom: none;" href="/games/apple-shooter.html">
+            <img style="width: 150px; height: 150px;" src="/assets/games/apple-green.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://1v1.lol">
-        <img style="width: 150px; height: 150px;" src="/assets/games/1v1lol.png">
-    </a>
+        <a style="border-bottom: none;" href="https://1v1.lol">
+            <img style="width: 150px; height: 150px;" src="/assets/games/1v1lol.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://cdn.htmlgames.com/AirportSniper/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/airportsniper.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://cdn.htmlgames.com/AirportSniper/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/airportsniper.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="https://cdn.htmlgames.com/SoldierAttack3/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/soldierattack3.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://cdn.htmlgames.com/SoldierAttack3/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/soldierattack3.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="https://impossible-quiz.online/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/the-impossible-quiz.png">
-    </a>
+        <a style="border-bottom: none;" href="https://impossible-quiz.online/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/the-impossible-quiz.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://2048-online.io/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/2048_logo.png">
-    </a>
+        <a style="border-bottom: none;" href="https://2048-online.io/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/2048_logo.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://elgoog.im/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/eloog.png">
-    </a>
+        <a style="border-bottom: none;" href="https://elgoog.im/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/eloog.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://sandboxels.r74n.com/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/sandboxels.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://sandboxels.r74n.com/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/sandboxels.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://wheelyunblocked.github.io/2/">
-        <img style="width: 150px; height: 150px;" src="https://static.spele.nl/6/93086/51250/1024x1024/wheely-2.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://wheelyunblocked.github.io/2/">
+            <img style="width: 150px; height: 150px;"
+                src="https://static.spele.nl/6/93086/51250/1024x1024/wheely-2.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="https://wheelyunblocked.github.io/3/">
-        <img style="width: 150px; height: 150px;"
-            src="https://is3-ssl.mzstatic.com/image/thumb/Purple20/v4/5c/a5/d4/5ca5d478-8c65-275f-61f7-55da84a93765/source/512x512bb.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://wheelyunblocked.github.io/3/">
+            <img style="width: 150px; height: 150px;"
+                src="https://is3-ssl.mzstatic.com/image/thumb/Purple20/v4/5c/a5/d4/5ca5d478-8c65-275f-61f7-55da84a93765/source/512x512bb.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://ubg98.github.io/Vex6">
-        <img style="width: 150px; height: 150px;"
-            src="https://images.crazygames.com/games/vex-6/cover-1634740824058.jpeg?auto=format,compress&q=75&cs=strip">
-    </a>
+        <a style="border-bottom: none;" href="https://ubg98.github.io/Vex6">
+            <img style="width: 150px; height: 150px;"
+                src="https://images.crazygames.com/games/vex-6/cover-1634740824058.jpeg?auto=format,compress&q=75&cs=strip">
+        </a>
 
-    <a style="border-bottom: none;" href="https://cdn.gamaddy.com/fall-beans/">
-        <img style="width: 150px; height: 150px;"
-            src="https://images.crazygames.com/fall-beans/20201007171422/fall-beans-cover?auto=format,compress&q=75&cs=strip">
-    </a>
+        <a style="border-bottom: none;" href="https://cdn.gamaddy.com/fall-beans/">
+            <img style="width: 150px; height: 150px;"
+                src="https://images.crazygames.com/fall-beans/20201007171422/fall-beans-cover?auto=format,compress&q=75&cs=strip">
+        </a>
 
-    <a style="border-bottom: none;" href="https://lolbeans.io/">
-        <img style="width: 150px; height: 150px;"
-            src="https://lolbeans-io.com/wp-content/uploads/2022/06/lolbeans-io-m250x250.png">
-    </a>
+        <a style="border-bottom: none;" href="https://lolbeans.io/">
+            <img style="width: 150px; height: 150px;"
+                src="https://lolbeans-io.com/wp-content/uploads/2022/06/lolbeans-io-m250x250.png">
+        </a>
 
-    <a onclick="window.location.href='/games/minecraft-1.5.2'" style="border-bottom: none;"
-        href="/games/minecraft-1.5.2">
-        <img style="width: 150px; height: 150px;"
-            src="https://play-lh.googleusercontent.com/VSwHQjcAttxsLE47RuS4PqpC4LT7lCoSjE7Hx5AW_yCxtDvcnsHHvm5CTuL5BPN-uRTP">
-    </a>
+        <a onclick="window.location.href='/games/minecraft-1.5.2'" style="border-bottom: none;"
+            href="/games/minecraft-1.5.2">
+            <img style="width: 150px; height: 150px;"
+                src="https://play-lh.googleusercontent.com/VSwHQjcAttxsLE47RuS4PqpC4LT7lCoSjE7Hx5AW_yCxtDvcnsHHvm5CTuL5BPN-uRTP">
+        </a>
 
-    <a onclick="window.location.href='/games/minecraft-1.8.8'" style="border-bottom: none;"
-        href="/games/minecraft-1.8.8">
-        <img style="width: 150px; height: 150px;"
-            src="https://play-lh.googleusercontent.com/VSwHQjcAttxsLE47RuS4PqpC4LT7lCoSjE7Hx5AW_yCxtDvcnsHHvm5CTuL5BPN-uRTP">
-    </a>
+        <a onclick="window.location.href='/games/minecraft-1.8.8'" style="border-bottom: none;"
+            href="/games/minecraft-1.8.8">
+            <img style="width: 150px; height: 150px;"
+                src="https://play-lh.googleusercontent.com/VSwHQjcAttxsLE47RuS4PqpC4LT7lCoSjE7Hx5AW_yCxtDvcnsHHvm5CTuL5BPN-uRTP">
+        </a>
 
-    <a style="border-bottom: none;" href="https://coreball.co">
-        <img style="width: 150px; height: 150px;" src="https://coreball.co/data/image/favicon.png">
-    </a>
+        <a style="border-bottom: none;" href="https://coreball.co">
+            <img style="width: 150px; height: 150px;" src="https://coreball.co/data/image/favicon.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://ubg77.github.io/game131022/drive-mad/">
-        <img style="width: 150px; height: 150px;"
-            src="https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,f=auto/f8a2160e52333ee0d44ec19e8ca65139.png">
-    </a>
+        <a style="border-bottom: none;" href="https://ubg77.github.io/game131022/drive-mad/">
+            <img style="width: 150px; height: 150px;"
+                src="https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,f=auto/f8a2160e52333ee0d44ec19e8ca65139.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://copter.io/">
-        <img style="width: 150px; height: 150px;" src="https://slitherio.online/upload/imgs/copter-io.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://copter.io/">
+            <img style="width: 150px; height: 150px;" src="https://slitherio.online/upload/imgs/copter-io.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://js13kgames.com/games/spacebar-clicker/index.html">
-        <img style="width: 150px; height: 150px;"
-            src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Leertaste.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://js13kgames.com/games/spacebar-clicker/index.html">
+            <img style="width: 150px; height: 150px;"
+                src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Leertaste.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://hole-io.com/">
-        <img style="width: 150px; height: 150px;" src="https://iogames.games/data/image/game/hole-io.png">
-    </a>
+        <a style="border-bottom: none;" href="https://hole-io.com/">
+            <img style="width: 150px; height: 150px;" src="https://iogames.games/data/image/game/hole-io.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://www.addictinggames.com/embed/html5-games/19569">
-        <img style="width: 150px; height: 150px;" src="https://cut-therope.com//data/image/game/cut-the-rope.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://www.addictinggames.com/embed/html5-games/19569">
+            <img style="width: 150px; height: 150px;" src="https://cut-therope.com//data/image/game/cut-the-rope.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://elasticman.co/hot-games">
-        <img style="width: 150px; height: 150px;" src="https://www.fungamebox.net/img/download/256.jpg">
-    </a>
+        <a style="border-bottom: none;" href="https://elasticman.co/hot-games">
+            <img style="width: 150px; height: 150px;" src="https://www.fungamebox.net/img/download/256.jpg">
+        </a>
 
-    <a style="border-bottom: none;" href="https://cdn.htmlgames.com/OneLine/">
-        <img style="width: 150px; height: 150px;"
-            src="https://www.htmlgames.com/uploaded/game/thumb200/oneline200.webp">
-    </a>
+        <a style="border-bottom: none;" href="https://cdn.htmlgames.com/OneLine/">
+            <img style="width: 150px; height: 150px;"
+                src="https://www.htmlgames.com/uploaded/game/thumb200/oneline200.webp">
+        </a>
 
-    <a style="border-bottom: none;" href="https://www.geokitten.com/">
-        <img style="width: 150px; height: 150px;"
-            src="https://www.katdootje.nl/wp-content/uploads/Beste-Kittenvoer-2023.png">
-    </a>
+        <a style="border-bottom: none;" href="https://www.geokitten.com/">
+            <img style="width: 150px; height: 150px;"
+                src="https://www.katdootje.nl/wp-content/uploads/Beste-Kittenvoer-2023.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://longdogechallenge.com/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/longdogchallenge.png">
-    </a>
+        <a style="border-bottom: none;" href="https://longdogechallenge.com/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/longdogchallenge.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://humanbenchmark.com/dashboard">
-        <img style="width: 150px; height: 150px;" src="/assets/games/human-benchmark.png">
-    </a>
+        <a style="border-bottom: none;" href="https://humanbenchmark.com/dashboard">
+            <img style="width: 150px; height: 150px;" src="/assets/games/human-benchmark.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://epic.horse/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/theepichorse.png">
-    </a>
+        <a style="border-bottom: none;" href="https://epic.horse/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/theepichorse.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://classroom6x.lol/">
-        <img style="width: 150px; height: 150px;" src="https://games6x.com/wp-content/uploads/2023/05/logo.png">
-    </a>
+        <a style="border-bottom: none;" href="https://classroom6x.lol/">
+            <img style="width: 150px; height: 150px;" src="https://games6x.com/wp-content/uploads/2023/05/logo.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://catmario.eu/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/catmario.png">
-    </a>
+        <a style="border-bottom: none;" href="https://catmario.eu/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/catmario.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://www.twoplayergames.org/embed/fish-eat-getting-big">
-        <img style="width: 150px; height: 150px;" src="/assets/games/fish-eat-big.png">
-    </a>
+        <a style="border-bottom: none;" href="https://www.twoplayergames.org/embed/fish-eat-getting-big">
+            <img style="width: 150px; height: 150px;" src="/assets/games/fish-eat-big.png">
+        </a>
 
-    <a style="border-bottom: none;" href="https://www.twoplayergames.org/">
-        <img style="width: 150px; height: 150px;" src="/assets/games/twoplayergamesorg.png">
-    </a>
+        <a style="border-bottom: none;" href="https://www.twoplayergames.org/">
+            <img style="width: 150px; height: 150px;" src="/assets/games/twoplayergamesorg.png">
+        </a>
+
+        <a id="addGameBtn" style="border-bottom: none;" href="#" onclick="return false;">
+            <img style="width: 150px; height: 150px;" src="/assets/plus.png">
+        </a>
+    </div>
 
     <!-- Advertisement start -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
@@ -282,6 +289,102 @@
     <iframe id="request-game"
         src="https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform"
         style="border-radius: var(--border-radius2); width: 80%; height: 800px;" frameborder="0"></iframe>
+
+    <script>
+        // Functie om de opgeslagen games uit localStorage te laden
+        function loadGames() {
+            let storedGames = localStorage.getItem("games");
+            if (storedGames) {
+                let gamesArray = JSON.parse(storedGames);
+                gamesArray.forEach(game => {
+                    addGameToDOM(game.link, game.image);
+                });
+            }
+            doneAdding();
+        }
+
+        // Functie om een game aan het DOM toe te voegen
+        function addGameToDOM(gameLink, imageLink) {
+            let gameHTML = `
+        <div class="game-item" style="position: relative; display: inline-block; margin: 10px;">
+            <a style="border-bottom: none;" href="${gameLink}">
+                <img style="width: 150px; height: 150px;" src="${imageLink}">
+            </a>
+            <span class="remove-game" style="position: absolute; top: 0; right: 0; cursor: pointer; color: red; font-weight: bold; z-index: 1000;">x</span>
+        </div>
+    `;
+            const gameContainer = document.getElementById("games");
+            gameContainer.insertAdjacentHTML('beforeend', gameHTML);
+            doneAdding();
+
+            // Event listener voor de verwijderknop
+            const removeButton = gameContainer.lastElementChild.querySelector(".remove-game"); // Selecteer de net toegevoegde "x"
+            removeButton.addEventListener("click", function () {
+                removeGameFromStorage(gameLink); // Verwijder de game uit localStorage
+                removeGameFromDOM(removeButton.parentElement); // Verwijder de game uit de DOM
+            });
+        }
+
+        // Functie om een game op te slaan in localStorage
+        function saveGame(gameLink, imageLink) {
+            let storedGames = localStorage.getItem("games");
+            let gamesArray = storedGames ? JSON.parse(storedGames) : [];
+
+            gamesArray.push({ link: gameLink, image: imageLink });
+            localStorage.setItem("games", JSON.stringify(gamesArray));
+        }
+
+        // Functie om een game uit de DOM te verwijderen
+        function removeGameFromDOM(gameElement) {
+            gameElement.remove();
+        }
+
+        // Functie om een game uit localStorage te verwijderen
+        function removeGameFromStorage(gameLink) {
+            let storedGames = localStorage.getItem("games");
+            if (storedGames) {
+                let gamesArray = JSON.parse(storedGames);
+                gamesArray = gamesArray.filter(game => game.link !== gameLink);
+                localStorage.setItem("games", JSON.stringify(gamesArray));
+            }
+        }
+
+        // Functie om te controleren of een pagina geiframeed kan worden
+        async function canBeIFramed(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                const xFrameOptions = response.headers.get('X-Frame-Options');
+                return !xFrameOptions; // Als er geen X-Frame-Options is, kan de pagina geiframeed worden
+            } catch (error) {
+                console.error('Error fetching URL:', error);
+                return false; // Bij een fout kan de pagina waarschijnlijk niet geiframeed worden
+            }
+        }
+
+        // Event listener voor de knop om een nieuwe game toe te voegen
+        document.getElementById("addGameBtn").addEventListener("click", async function () {
+            let gameLink = prompt("Voer de game link in:");
+            let imageLink = prompt("Voer de URL van de afbeelding in:");
+
+            if (gameLink && imageLink) {
+                const isIFramable = await canBeIFramed(gameLink);
+                if (isIFramable) {
+                    addGameToDOM(gameLink, imageLink);
+                    saveGame(gameLink, imageLink);
+                } else {
+                    notification("De pagina kan niet worden geiframeed. De game is niet toegevoegd.");
+                }
+            } else {
+                notification("Je moet zowel een link als een afbeelding invoeren!");
+            }
+        });
+
+        // Laad de opgeslagen games bij het openen van de pagina
+        window.onload = function () {
+            loadGames();
+        };
+    </script>
+
 </body>
 
 </html>
