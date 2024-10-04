@@ -281,6 +281,41 @@
             max-height: 200px;
             /* Pas deze waarde aan op basis van de verwachte hoogte van de inhoud */
         }
+
+        #creations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-content: center;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        .creation {
+            width: calc(50% - 60px);
+            height: auto;
+            background-color: var(--bg-accent-color2);
+            box-shadow: 0px 0px 10px var(--h1234-color);
+            border-radius: var(--border-radius2);
+            margin: 20px 0;
+            margin-bottom: -20px;
+            padding: 20px;
+        }
+
+        .creation h3 {
+            margin-top: 5px;
+        }
+
+        #creations:after {
+            content: '';
+            flex-basis: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .creation {
+                width: calc(100% - 60px);
+            }
+        }
     </style>
 </head>
 
@@ -425,6 +460,46 @@
                         }
                     }
                 </script>
+            </div>
+        </div>
+    </div>
+
+    <div class="diff-color-section1">
+        <h3>Mijn grootste en beste creaties:</h3>
+        <p>Ik ben Tamer, zoals je hierboven kunt zien. Ik heb al mijn projecten volledig zelf gemaakt. Het coderen heb
+            ik
+            mezelf aangeleerd, en ik ben trots op wat ik in mijn eentje heb bereikt.</p>
+        <div id="creations">
+            <div class="creation">
+                <h3>TC_tam Picto Planner</h3>
+                <p>Ik heb deze Picto Planner ontwikkeld voor mijn autistische broertje. Thuis hebben we namelijk een
+                    fysieke versie aan de muur hangen, maar telkens wanneer er een nieuwe pictogram toegevoegd moest
+                    worden, moesten we een volledig nieuwe picto maken. Dit kostte veel tijd en moest vaak opnieuw
+                    worden gedaan. Daarom besloot ik om een online versie te creëren, waarin gebruikers nu zelf
+                    pictogrammen kunnen toevoegen wanneer dat nodig is.</p>
+            </div>
+            <div class="creation">
+                <h3>TC_tam Casino</h3>
+                <p>Ik heb dit casino ontworpen als mijn 1e grote game waar je met volledig virtueel geld kunt gokken en
+                    rijk kunt worden, zonder in-app aankopen, zodat het eerlijk blijft. Je kunt wekelijkse, dagelijkse,
+                    uurlijks, werk- en zoekbeloningen verdienen, die je op specifieke momenten kunt claimen voor extra
+                    geld in het spel. Ook kun je eigendommen kopen die je elke seconde geld opleveren, terwijl je volop
+                    kunt gokken voor meer winst!</p>
+            </div>
+            <div class="creation">
+                <h3>TC_tam Documenten</h3>
+                <p>Ik heb deze documenteditor gemaakt om aantekeningen voor school te maken. Hoewel er al veel andere
+                    editors zijn, heb ik deze speciaal ontwikkeld voor mijn eigen gebruik, wat me een gevoel van
+                    voldoening geeft. Je kunt documenten opslaan en weer laden met de bestandsextensie .tdoc, zodat je
+                    apparaat ze herkent. Het werkt echt goed voor mij!</p>
+            </div>
+            <div class="creation">
+                <h3>TC_tam Chat</h3>
+                <p>Dit was mijn eerste project waarbij ik met gebruikers communiceerde en verbinding maakte met een
+                    database. Ik heb veel tijd besteed aan de gebruikersauthenticatie en het verzenden van berichten. De
+                    CSS was ook een uitdaging, omdat ik nog nieuw was met websites maken. Toen alles werkte, was ik erg
+                    blij. Helaas heb ik de originele chat om beveiligingsredenen moeten verwijderen, maar ik plan in de
+                    toekomst een nieuwe en verbeterde chat toe te voegen.</p>
             </div>
         </div>
     </div>
