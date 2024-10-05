@@ -61,6 +61,35 @@
         body {
             margin: 0px;
         }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loaderContainer {
+            text-align: center;
+        }
+
+        #loadMeter {
+            width: 300px;
+            height: 30px;
+            margin-bottom: 20px;
+        }
+
+        #status {
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -71,6 +100,12 @@
     <p>Have fun!</p>
 
     <h2>Games</h2>
+    <div id="loadingOverlay">
+        <div id="loaderContainer">
+            <meter id="loadMeter" min="0" max="100" low="25" high="75" optimum="80" value="0"></meter>
+            <p id="status">Pagina laden...</p>
+        </div>
+    </div>    
 
     <div id="games">
         <a style="border-bottom: none;"
@@ -269,6 +304,35 @@
         style="border-radius: var(--border-radius2); width: 80%; height: 800px;" frameborder="0"></iframe>
 
     <script>
+        const meter = document.getElementById('loadMeter');
+        const statusText = document.getElementById('status');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Deze functie update de voortgang van het laden van de pagina
+        function updateProgress(percentage) {
+            meter.value = percentage;
+            statusText.innerText = `Pagina geladen: ${percentage}%`;
+        }
+
+        // Vooruitgang bij DOM Ready (wanneer de DOM gedeeltelijk is geladen)
+        document.onreadystatechange = function () {
+            if (document.readyState === 'loading') {
+                updateProgress(25);  // De DOM wordt geladen
+            } else if (document.readyState === 'interactive') {
+                updateProgress(50);  // DOM is volledig geladen, maar resources nog niet
+            }
+        };
+
+        // Vooruitgang bij volledige paginalaad (inclusief alle bronnen)
+        window.onload = function () {
+            updateProgress(100);  // Alle bronnen zijn geladen
+            statusText.innerText = "Pagina is volledig geladen!";
+            // Wacht een klein beetje voor een soepel effect en verwijder de overlay
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 500);
+        };
+
         // Functie om de opgeslagen games uit localStorage te laden
         function loadGames() {
             let storedGames = localStorage.getItem("games");
