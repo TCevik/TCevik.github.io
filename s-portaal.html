@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sercan Portaal</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        #clock-color {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #clock {
+            font-size: 5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Sercan Portaal</h2>
+    <p>Welkom in het sercan portaal. Hier heb je allemaal faciliteiten voor Sercan.</p>
+
+    <button onclick="window.location.href='/picto-planner'"><img width="250px" height="250px"
+            src="/picto-planner/activiteiten-binnenhuis/pictomap.png" alt="Picto Planner"></button>
+    <button onclick="window.location.href='/tools/time-timer'"><img width="250px" height="250px"
+            src="/assets/time-timer.jpg" alt="Time Timer"></button>
+
+    <div class="diff-color-section1">
+        <h4>Kleurenwekker:</h4>
+        <div id="clock-color" style="width: 100%; height: 300px; border-radius: var(--border-radius2);">
+            <p id="clock"></p>
+        </div>
+    </div>
+
+    <script>
+        function changeBackgroundColor() {
+            const div = document.getElementById("clock-color");
+            const currentTime = new Date();
+            const hours = currentTime.getHours();
+
+            if (hours >= 7 && (hours < 19 || (hours === 19 && currentTime.getMinutes() <= 29))) {
+                div.style.backgroundColor = "rgb(200, 200, 0)";
+            } else {
+                div.style.backgroundColor = "rgb(0, 0, 200)";
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+            document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', options);
+        }
+
+        setInterval(changeBackgroundColor, 1);
+        setInterval(updateClock, 1);
+        changeBackgroundColor();
+        updateClock();
+    </script>
+</body>
+
+</html>
