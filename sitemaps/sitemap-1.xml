@@ -5,7 +5,7 @@
 		<priority>1.0</priority>
 	</url>
 	<url>
-		<loc>https://tctam.nl/games/alle-games</loc>
+		<loc>https://tctam.nl/games</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.8</priority>
 	</url>
