@@ -26,11 +26,34 @@
                         iframe.style.transform = 'translate(-50%, -50%)';
                         iframe.style.border = 'none';
 
+                        const controlsContainer = document.createElement('div');
+                        controlsContainer.style.position = 'fixed';
+                        controlsContainer.style.top = '10px';
+                        controlsContainer.style.left = '10px';
+                        controlsContainer.style.display = 'flex';
+                        controlsContainer.style.alignItems = 'center';
+                        controlsContainer.style.zIndex = '9999';
+
+                        const fullscreenImgDiv = document.createElement('div');
+                        fullscreenImgDiv.style.width = '50px';
+                        fullscreenImgDiv.style.height = '50px';
+                        fullscreenImgDiv.style.backgroundImage = "url('/assets/fullscreen-button.png')";
+                        fullscreenImgDiv.style.backgroundSize = 'cover';
+                        fullscreenImgDiv.style.backgroundPosition = 'center';
+                        fullscreenImgDiv.style.cursor = 'pointer';
+                        fullscreenImgDiv.style.marginRight = '10px';
+
+                        fullscreenImgDiv.addEventListener('click', function () {
+                            if (document.fullscreenEnabled) {
+                                iframe.requestFullscreen();
+                            } else {
+                                notification("Fullscreen is niet ondersteund op deze browser.");
+                            }
+                        });
+
                         const reloadButton = document.createElement('button');
                         reloadButton.innerText = 'Terug';
-                        reloadButton.style.position = 'fixed';
-                        reloadButton.style.top = '10px';
-                        reloadButton.style.left = '10px';
+                        reloadButton.style.padding = '10px';
                         reloadButton.addEventListener('click', function () {
                             location.reload();
                         });
@@ -40,8 +63,10 @@
                         while (body.firstChild) {
                             body.removeChild(body.firstChild);
                         }
+                        controlsContainer.appendChild(fullscreenImgDiv);
+                        controlsContainer.appendChild(reloadButton);
+                        body.appendChild(controlsContainer);
                         body.appendChild(iframe);
-                        body.appendChild(reloadButton);
 
                         window.addEventListener('resize', function () {
                             iframe.style.width = '100vw';
@@ -99,7 +124,6 @@
     <h1>TC_tam Games:</h1>
     <p>Have fun!</p>
 
-    <h2>Games</h2>
     <div id="loadingOverlay">
         <div id="loaderContainer">
             <meter id="loadMeter" min="0" max="100" low="25" high="75" optimum="80" value="0"></meter>
@@ -108,8 +132,7 @@
     </div>
 
     <div id="games">
-        <a style="border-bottom: none;"
-            href="/games/tctam-casino">
+        <a style="border-bottom: none;" href="/games/tctam-casino">
             <img style="width: 150px; height: 150px;" src="/assets/games/tctam-casino.png">
         </a>
 
