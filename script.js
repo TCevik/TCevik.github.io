@@ -91,7 +91,13 @@ if ('serviceWorker' in navigator) {
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
-	sideMenuNav();
+	function checkPageAndRunSideMenuNav() {
+		const currentPath = window.location.pathname;
+		if (currentPath !== '/games/tctam-casino') {
+			sideMenuNav();
+		}
+	}
+	checkPageAndRunSideMenuNav();
 });
 
 var buttons = `
