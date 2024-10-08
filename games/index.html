@@ -332,7 +332,7 @@
         // Deze functie update de voortgang van het laden van de pagina
         function updateProgress(percentage) {
             meter.value = percentage;
-            statusText.innerText = `Pagina geladen: ${percentage}%`;
+            statusText.innerText = `Page loaded: ${percentage}%`;
         }
 
         // Vooruitgang bij DOM Ready (wanneer de DOM gedeeltelijk is geladen)
@@ -347,7 +347,7 @@
         // Vooruitgang bij volledige paginalaad (inclusief alle bronnen)
         window.onload = function () {
             updateProgress(100);  // Alle bronnen zijn geladen
-            statusText.innerText = "Pagina is volledig geladen!";
+            statusText.innerText = "Page is done loading!";
             // Wacht een klein beetje voor een soepel effect en verwijder de overlay
             setTimeout(() => {
                 loadingOverlay.style.display = 'none';
@@ -426,8 +426,8 @@
 
         // Event listener voor de knop om een nieuwe game toe te voegen
         document.getElementById("addGameBtn").addEventListener("click", async function () {
-            let gameLink = prompt("Voer de game link in:");
-            let imageLink = prompt("Voer de URL van de afbeelding in:");
+            let gameLink = prompt("Enter the game link:");
+            let imageLink = prompt("Enter the URL of the image:");
 
             if (gameLink && imageLink) {
                 const isIFramable = await canBeIFramed(gameLink);
@@ -435,10 +435,10 @@
                     addGameToDOM(gameLink, imageLink);
                     saveGame(gameLink, imageLink);
                 } else {
-                    notification("De pagina kan niet worden geiframeed. De game is niet toegevoegd.");
+                    notification("The page cannot be iframed. The game has not been added.");
                 }
             } else {
-                notification("Je moet zowel een link als een afbeelding invoeren!");
+                notification("You must enter both a link and an image!");
             }
         });
 
