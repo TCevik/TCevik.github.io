@@ -18,6 +18,10 @@
             font-size: 5em;
             font-weight: bold;
         }
+
+        .colon {
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 </head>
 
@@ -38,6 +42,8 @@
     </div>
 
     <script>
+        let showColon = true;
+
         function changeBackgroundColor() {
             const div = document.getElementById("clock-color");
             const currentTime = new Date();
@@ -52,12 +58,18 @@
 
         function updateClock() {
             const now = new Date();
-            const options = { hour: '2-digit', minute: '2-digit', hour12: false };
-            document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', options);
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            // Maak de kloktekst met een knipperende dubbele punt
+            const colon = `<span class="colon" style="opacity:${showColon ? 1 : 0};">:</span>`;
+            document.getElementById('clock').innerHTML = `${hours}${colon}${minutes}`;
+
+            showColon = !showColon;
         }
 
-        setInterval(changeBackgroundColor, 1);
-        setInterval(updateClock, 1);
+        setInterval(changeBackgroundColor, 1000);
+        setInterval(updateClock, 500);
         changeBackgroundColor();
         updateClock();
     </script>
