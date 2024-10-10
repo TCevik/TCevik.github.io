@@ -147,7 +147,7 @@ function sideMenuNav() {
 	sideBar.style.position = "fixed";
 	sideBar.style.top = "0";
 	sideBar.style.left = "0px";
-	sideBar.style.zIndex = "9999";
+	sideBar.style.zIndex = "99999";
 	sideBar.style.overflowX = "hidden";
 	sideBar.style.transition = "0.5s";
 
