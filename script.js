@@ -109,6 +109,7 @@ var buttons = `
 	<button onclick="window.location.href='/online-store'">Online Store</button>
 
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
+	<button onclick="window.location.href='/picto-planner'">Picto Planner</button>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
