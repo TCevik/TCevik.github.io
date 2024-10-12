@@ -36,6 +36,24 @@
 			background-size: 100px 100px;
 			color: transparent;
 			user-select: none;
+			position: relative;
+		}
+
+		.remove-btn {
+			position: absolute;
+			top: 2px;
+			right: 2px;
+			background-color: red;
+			border: 2px black solid;
+			color: white;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			font-size: 12px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 
 		#child-section {
@@ -367,7 +385,8 @@
 		<div id="parent-section">
 			<h3>Eigen Picto's</h3>
 			<input type="file" id="imageInput" accept="image/*">
-			<br><div id="custompictos">
+			<br>
+			<div id="custompictos">
 
 			</div>
 		</div>
