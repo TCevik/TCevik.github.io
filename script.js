@@ -1,3 +1,6 @@
+alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Dankjewel voor je begrip!')
+window.location.href = 'about:blank'
+
 /* google adsense */
 var adScript = document.createElement('script');
 adScript.async = true;
