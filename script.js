@@ -1,6 +1,6 @@
 let cookies = document.cookie;
 if (!cookies.includes('visittctamquiz') || cookies.includes('visittctamquiz=false')) {
-    alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Ik ben het aan het oplossen. Dankjewel voor je begrip!');
+    alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Ik ben het zo snel mogelijk aan het oplossen. Dankjewel voor je begrip!');
     window.location.href = 'about:blank';
 }
 
