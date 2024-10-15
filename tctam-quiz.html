@@ -206,8 +206,21 @@
                 }
             }, 1500);
         }
-    </script>
 
+        function setVisitCookie() {
+            var cookieName = "visittctamquiz";
+            var cookieValue = "true";
+            var expirationDays = 30;
+
+            var date = new Date();
+            date.setTime(date.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + date.toUTCString();
+
+            document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+        }
+
+        setVisitCookie();
+    </script>
 </body>
 
 </html>
