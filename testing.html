@@ -74,6 +74,13 @@
             user-select: none;
         }
 
+        #pictos {
+            display: none;
+        }
+
+        #done-editing-button {
+            display: none;
+        }
 
         @media (orientation: portrait) {
             .setup-menu {
@@ -133,7 +140,10 @@
             <img title="Google" class="picto" src="https://google.com/favicon.ico">
         </div>
 
-        <button style="position: fixed; top: 5px; right: 5px;" onclick="editPlanner()">Planner aanpassen</button>
+        <button id="edit-button" style="position: fixed; top: 5px; right: 5px;" onclick="editPlanner()">Planner
+            aanpassen</button>
+        <button id="done-editing-button" style="position: fixed; top: 5px; right: 5px;"
+            onclick="doneEditingPlanner()">Klaar</button>
     </div>
 
     <script>
@@ -213,6 +223,28 @@
             loadPictosFromLocalStorage();
         }
 
+        function editPlanner() {
+            if (localStorage.getItem('pin')) {
+                const pinEntered = prompt('Voer je pincode in om de planner te wijzigen.');
+                if (pinEntered === localStorage.getItem('pin')) {
+                    document.getElementById('pictos').style.display = "block";
+                    document.getElementById('done-editing-button').style.display = "block";
+                    document.getElementById('edit-button').style.display = "none";
+                } else {
+                    notification('Je pincode is niet correct.');
+                }
+            } else {
+                document.getElementById('pictos').style.display = "block";
+                document.getElementById('done-editing-button').style.display = "block";
+                document.getElementById('edit-button').style.display = "none";
+            }
+        }
+
+        function doneEditingPlanner() {
+            const pictos = document.getElementById('pictos').style.display = "none";
+            const doneEditingButton = document.getElementById('done-editing-button').style.display = "none";
+            const editButton = document.getElementById('edit-button').style.display = "block";
+        }
 
         /* SETUP PLANNER SCRIPT */
         checkLocalStorage();
