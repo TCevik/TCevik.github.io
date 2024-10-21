@@ -305,6 +305,14 @@
             const editButton = document.getElementById('edit-button').style.display = "block";
         }
 
+        setInterval(() => {
+            if (!localStorage.getItem('pin')) {
+                editPlanner();
+                document.getElementById('done-editing-button').style.display = "none";
+                document.getElementById('edit-button').style.display = "none";
+            }
+        }, 10);
+
         /* SETTINGS SCRIPT */
         function openSettings() {
             const settingsMenu = document.getElementById('settings-menu');
