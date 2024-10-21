@@ -486,6 +486,7 @@
                 localStorage.removeItem('pictos');
                 notification("Alle picto's zijn verwijderd.");
                 loadPictosFromLocalStorage();
+                return
             }
 
             if (enteredPin === pin) {
