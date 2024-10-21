@@ -28,6 +28,7 @@
 
         .setup-menu.fade-in {
             opacity: 1;
+            transition: opacity 0.5s ease;
         }
 
         .setup-menu button {
@@ -38,6 +39,13 @@
         #setupButtons {
             display: flex;
         }
+
+        .no-arrows::-webkit-inner-spin-button,
+        .no-arrows::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
 
         @media (orientation: portrait) {
             .setup-menu {
@@ -73,22 +81,27 @@
             <p style="margin: 5px;">Een pincode zorgt ervoor dat je kind de planning niet zomaar kan veranderen.</p>
             <div id="setupButtons">
                 <button onclick="createPin()">Ja, stel een code in!</button>
-                <button>Nee, ga verder zonder code!</button>
+                <button onclick="setupCompleted()">Nee, ga verder zonder code!</button>
             </div>
         </div>
 
         <div id="pinSetup" style="display:none;">
             <h4>Voer een pincode in:</h4>
-            <input type="number" id="pinCode" placeholder="Pincode"/>
-            <h4>Bevestig de pincode:</h4>
-            <button id="setPinButton">Pincode instellen</button>
+            <input autocomplete="off" type="text" id="pincode" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button id="setPinButton" onclick="setPin()">Pincode instellen</button>
         </div>
     </div>
 
     <script>
+        function loadPlanner() {
+            
+        }
+
+        /* SETUP PLANNER SCRIPT */
         checkLocalStorage();
         function checkLocalStorage() {
-            if (!localStorage.getItem('plannerSetupComplete')) {
+            if (!localStorage.getItem('')) {
                 showSetupMenu();
             } else {
                 loadPlanner();
@@ -104,12 +117,36 @@
             }, 10);
         }
 
+        function hideSetupMenu() {
+            const setupMenu = document.getElementById('setup-menu');
+            setupMenu.classList.remove('fade-in');
+
+            setTimeout(() => {
+                setupMenu.style.display = 'none';
+            }, 500);
+        }
+
         function createPin() {
             const pinOrNot = document.getElementById('pinOrNot')
             const pinSetup = document.getElementById('pinSetup')
 
             pinOrNot.style.display = "none";
             pinSetup.style.display = "block";
+        }
+
+        function setPin() {
+            const pin = document.getElementById('pincode').value;
+            if (pin.length <= 6) {
+                localStorage.setItem('pin', pin);
+                notification("Pincode is opgeslagen - " + pin);
+                setupCompleted();
+            }
+        }
+
+        function setupCompleted() {
+            localStorage.setItem('plannerSetupComplete', true);
+            hideSetupMenu();
+            loadPlanner();
         }
     </script>
 </body>
