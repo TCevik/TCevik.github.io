@@ -103,6 +103,16 @@
 
         #pictos {
             display: none;
+            align-content: left;
+            text-align: left;
+            justify-content: left;
+            margin-left: 20px;
+        }
+
+        .settings-menu input {
+            margin-left: 0px;
+            margin-top: 5px;
+            margin-right: 5px;
         }
 
         #done-editing-button {
@@ -199,10 +209,12 @@
 
         <div>
             <h4>Verwijder alle picto's</h4>
-            <input autocomplete="off" type="text" id="deletePictosVerify" placeholder="Pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button id="deletePictosButton" onclick="deletePictos()"
-                style="background-color: red; color: white;">Verwijder picto's</button>
+            <div style="display: flex;">
+                <input autocomplete="off" type="text" id="deletePictosVerify" placeholder="Pincode" maxlength="6"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+                <button id="deletePictosButton" onclick="deletePictos()"
+                    style="height: 50px; background-color: red; color: white;">Verwijder picto's</button>
+            </div>
         </div>
     </div>
 
