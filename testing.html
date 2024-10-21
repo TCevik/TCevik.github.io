@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam Picto Planner</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .setup-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            border-radius: var(--border-radius2);
+            transition: opacity 0.5s ease;
+        }
+
+        .setup-menu.fade-in {
+            opacity: 1;
+        }
+
+        .setup-menu button {
+            flex: 1;
+            height: 100%;
+        }
+
+        #setupButtons {
+            display: flex;
+        }
+
+        @media (orientation: portrait) {
+            .setup-menu {
+                width: 85%;
+                height: 93%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .setup-menu button {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            #setupButtons {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="setup-menu" class="setup-menu">
+        <h2>Laten we de planner instellen.</h2>
+        <div id="pinOrNot">
+            <h4>Wil je een pincode instellen?</h4>
+            <p style="margin: 5px;">Een pincode zorgt ervoor dat je kind de planning niet zomaar kan veranderen.</p>
+            <div id="setupButtons">
+                <button onclick="createPin()">Ja, stel een code in!</button>
+                <button>Nee, ga verder zonder code!</button>
+            </div>
+        </div>
+
+        <div id="pinSetup" style="display:none;">
+            <h4>Voer een pincode in:</h4>
+            <input type="number" id="pinCode" placeholder="Pincode"/>
+            <h4>Bevestig de pincode:</h4>
+            <button id="setPinButton">Pincode instellen</button>
+        </div>
+    </div>
+
+    <script>
+        checkLocalStorage();
+        function checkLocalStorage() {
+            if (!localStorage.getItem('plannerSetupComplete')) {
+                showSetupMenu();
+            } else {
+                loadPlanner();
+            }
+        }
+
+        function showSetupMenu() {
+            const setupMenu = document.getElementById('setup-menu');
+            setupMenu.style.display = 'block';
+
+            setTimeout(() => {
+                setupMenu.classList.add('fade-in');
+            }, 10);
+        }
+
+        function createPin() {
+            const pinOrNot = document.getElementById('pinOrNot')
+            const pinSetup = document.getElementById('pinSetup')
+
+            pinOrNot.style.display = "none";
+            pinSetup.style.display = "block";
+        }
+    </script>
+</body>
+
+</html>
