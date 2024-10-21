@@ -460,13 +460,24 @@
         }
 
         function deletePictos() {
-            if (localStorage.getItem('pictos')) {
+            const pin = localStorage.getItem('pin');
+            const enteredPin = document.getElementById('deletePictosVerify').value;
+
+            if (!pin) {
+                localStorage.removeItem('pictos');
+                notification("Alle picto's zijn verwijderd.");
+                loadPictosFromLocalStorage();
+            }
+
+            if (enteredPin === pin) {
                 localStorage.removeItem('pictos');
                 notification("Alle picto's zijn verwijderd.");
                 loadPictosFromLocalStorage();
             } else {
-                notification("Er zijn geen picto's om te verwijderen.");
+                notification("De ingevoerde pincode is onjuist.");
             }
+
+            document.getElementById('deletePictosVerify').value = '';
         }
 
         updatePinVisibility();
