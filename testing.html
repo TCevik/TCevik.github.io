@@ -388,6 +388,7 @@
                 localStorage.setItem('pin', newPin);
                 notification("Pincode is ingesteld - " + newPin);
                 updatePinVisibility();
+                document.getElementById('pincodeCreate').value = '';
             } else {
                 notification('De pincode moet maximaal 6 cijfers bevatten.');
             }
@@ -403,6 +404,8 @@
                 if (pinChange.length <= 6) {
                     localStorage.setItem('pin', pinChange);
                     notification("Pincode is veranderd - " + pinChange);
+                    document.getElementById('pincodeChange').value = '';
+                    document.getElementById('pincodeChangeVerify').value = '';
                 } else {
                     notification('De nieuwe pincode moet maximaal 6 cijfers bevatten.');
                 }
@@ -420,6 +423,7 @@
                 localStorage.removeItem('pin');
                 notification("Pincode is uitgeschakeld.");
                 updatePinVisibility();
+                document.getElementById('deleteVerify').value = '';
             } else {
                 notification('Dat is niet je pincode. Probeer het opnieuw.');
             }
@@ -443,6 +447,7 @@
                     notification("Pincode is ingesteld - " + newPin);
                     updatePinVisibility();
                     generateNewQuestion();
+                    document.getElementById('forgotPinInput').value = '';
                 } else {
                     notification('De pincode moet maximaal 6 cijfers bevatten.');
                 }
@@ -473,11 +478,11 @@
                 localStorage.removeItem('pictos');
                 notification("Alle picto's zijn verwijderd.");
                 loadPictosFromLocalStorage();
+                document.getElementById('deletePictosVerify').value = '';
             } else {
                 notification("De ingevoerde pincode is onjuist.");
             }
 
-            document.getElementById('deletePictosVerify').value = '';
         }
 
         updatePinVisibility();
