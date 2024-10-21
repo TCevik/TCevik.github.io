@@ -288,17 +288,19 @@
         }
 
         function removePictoFromPlanner(index) {
-            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+            if (document.getElementById('done-editing-button').style.display === "block") {
+                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
 
-            const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
+                const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
 
-            updatedPictosArray.forEach((picto, newIndex) => {
-                picto.index = newIndex;
-            });
+                updatedPictosArray.forEach((picto, newIndex) => {
+                    picto.index = newIndex;
+                });
 
-            localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
+                localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
 
-            loadPictosFromLocalStorage();
+                loadPictosFromLocalStorage();
+            }
         }
 
         function editPlanner() {
