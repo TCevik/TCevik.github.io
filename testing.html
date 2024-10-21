@@ -319,8 +319,8 @@
         }
 
         function removePictoFromPlanner(index) {
-            const button = document.getElementById('done-editing-button');
-            if (button.style.display === "block") {
+            const button = document.getElementById('edit-button');
+            if (button.style.display === "none") {
                 const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
                 const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
 
@@ -332,7 +332,7 @@
                 loadPictosFromLocalStorage();
             }
         }
-        
+
         function initUploadPicto() {
             const uploadInput = document.getElementById('upload-picto-input');
             uploadInput.addEventListener('change', handlePictoUpload);
