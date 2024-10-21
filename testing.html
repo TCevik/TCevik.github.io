@@ -55,6 +55,7 @@
             text-align: left;
             align-content: left;
             justify-content: left;
+            overflow-y: auto;
         }
 
         .setup-menu.fade-in {
@@ -184,6 +185,15 @@
             <input autocomplete="off" type="text" id="deleteVerify" placeholder="Pincode" maxlength="6"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
             <button id="deletePinButton" onclick="deletePin()">Pincode uitschakelen</button>
+        </div>
+
+        <div id="forgotPin" style="display: none;">
+            <h4>Pincode vergeten:</h4>
+            <input autocomplete="off" type="text" id="deleteVerifyAdult" placeholder="SOM" maxlength="3"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <input autocomplete="off" type="text" id="forgotPinInput" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button onclick="forgotPin()" id="forgotPin">Pincode vergeten</button>
         </div>
     </div>
 
@@ -344,15 +354,18 @@
             const currentPin = localStorage.getItem('pin');
             const pinChange = document.getElementById('pinChange');
             const deletePin = document.getElementById('deletePin');
+            const forgotPin = document.getElementById('forgotPin');
             const makePinButtonContainer = document.getElementById('makePinButtonContainer');
 
             if (currentPin) {
                 pinChange.style.display = 'block';
                 deletePin.style.display = 'block';
+                forgotPin.style.display = 'block';
                 makePinButtonContainer.style.display = 'none';
             } else {
                 pinChange.style.display = 'none';
                 deletePin.style.display = 'none';
+                forgotPin.style.display = 'none';
                 makePinButtonContainer.style.display = 'block';
             }
         }
@@ -398,6 +411,40 @@
             } else {
                 notification('Dat is niet je pincode. Probeer het opnieuw.');
             }
+        }
+
+
+        let num1 = Math.floor(Math.random() * 7) + 4;
+        let num2 = Math.floor(Math.random() * 7) + 4;
+        let correctAnswer = num1 * num2;
+
+        document.getElementById('deleteVerifyAdult').placeholder = `${num1} x ${num2} = ?`;
+
+        function forgotPin() {
+            const userAnswer = document.getElementById('deleteVerifyAdult').value;
+            document.getElementById('deleteVerifyAdult').value = '';
+
+            if (parseInt(userAnswer) === correctAnswer) {
+                const newPin = document.getElementById('forgotPinInput').value;
+                if (newPin && newPin.length <= 6) {
+                    localStorage.setItem('pin', newPin);
+                    notification("Pincode is ingesteld - " + newPin);
+                    updatePinVisibility();
+                    generateNewQuestion();
+                } else {
+                    notification('De pincode moet maximaal 6 cijfers bevatten.');
+                }
+            } else {
+                notification('Je hebt een fout antwoord. Probeer het opnieuw.');
+                generateNewQuestion();
+            }
+        }
+
+        function generateNewQuestion() {
+            num1 = Math.floor(Math.random() * 7) + 4;
+            num2 = Math.floor(Math.random() * 7) + 4;
+            correctAnswer = num1 * num2;
+            document.getElementById('deleteVerifyAdult').placeholder = `${num1} x ${num2} = ?`;
         }
 
         updatePinVisibility();
