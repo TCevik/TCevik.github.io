@@ -220,7 +220,7 @@
 
         <div id="pictos">
             <button id="upload-picto-button">Upload een picto</button>
-            <input type="file" id="upload-picto-input" accept="image/*" multiple style="display: none;" />
+            <input type="file" id="upload-picto-input" accept="image/*" style="display: none;" />
             <br><img title="TC_tam" class="picto" src="/favicon.ico">
             <img title="Google" class="picto" src="https://google.com/favicon.ico">
         </div>
@@ -280,13 +280,9 @@
         }
 
         function loadUploadedPictos() {
-            const pictosElement = document.getElementById('pictos');
+            const pictosArray = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
 
-            const uploadedPictosElements = pictosElement.querySelectorAll('.uploaded-picto');
-            uploadedPictosElements.forEach(picto => picto.remove());
-
-            const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
-            uploadedPictos.forEach(picto => {
+            pictosArray.forEach(picto => {
                 addPictoToPictos(picto);
             });
         }
@@ -352,21 +348,19 @@
             }
         }
 
-        function removeUploadedPicto(uploadedPicto, picto) {
-            const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
+        function removePictoFromPlanner(index) {
+            const button = document.getElementById('edit-button');
+            if (button.style.display === "none") {
+                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+                const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
 
-            const updatedUploadedPictos = uploadedPictos.filter(p => p.src !== picto.src);
-            localStorage.setItem('uploadedPictos', JSON.stringify(updatedUploadedPictos));
+                updatedPictosArray.forEach((picto, newIndex) => {
+                    picto.index = newIndex;
+                });
 
-            uploadedPicto.remove();
-
-            updatedUploadedPictos.forEach((p, index) => {
-                p.index = index;
-            });
-
-            localStorage.setItem('uploadedPictos', JSON.stringify(updatedUploadedPictos));
-
-            loadUploadedPictos();
+                localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
+                loadPictosFromLocalStorage();
+            }
         }
 
         function initUploadPicto() {
@@ -375,28 +369,24 @@
         }
 
         function handlePictoUpload(event) {
-            const files = event.target.files;
+            const file = event.target.files[0];
+            const title = prompt('Geef een titel voor het pictogram:');
 
-            Array.from(files).forEach(file => {
-                const title = file.name.split('.').slice(0, -1).join('.');
+            if (file && title) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
+                    const index = uploadedPictos.length;
+                    const newPicto = { index, title, src: e.target.result };
 
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
-                        const index = uploadedPictos.length;
-                        const newPicto = { index, title, src: e.target.result };
+                    uploadedPictos.push(newPicto);
+                    localStorage.setItem('uploadedPictos', JSON.stringify(uploadedPictos));
 
-                        uploadedPictos.push(newPicto);
-                        localStorage.setItem('uploadedPictos', JSON.stringify(uploadedPictos));
-
-                        addPictoToPictos(newPicto);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+                    addPictoToPictos(newPicto);
+                };
+                reader.readAsDataURL(file);
+            }
         }
-
 
         function addPictoToPictos({ title, src }) {
             const pictosElement = document.getElementById('pictos');
