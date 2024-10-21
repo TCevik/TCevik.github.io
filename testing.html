@@ -224,6 +224,7 @@
         <div id="planner-content"></div>
 
         <div id="pictos">
+            <input type="file" id="upload-picto-input" accept="image/*" />
             <img title="TC_tam" class="picto" src="/favicon.ico">
             <img title="Google" class="picto" src="https://google.com/favicon.ico">
         </div>
@@ -246,6 +247,8 @@
             }, 10);
             initAddingPictos();
             loadPictosFromLocalStorage();
+            loadUploadedPictos();
+            initUploadPicto();
         }
 
         function initAddingPictos() {
@@ -256,22 +259,19 @@
                     const title = picto.getAttribute('title');
                     const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
                     const index = pictosArray.length;
-                    pictosArray.push({ index, title });
+                    pictosArray.push({ index, title, src: picto.src });
                     localStorage.setItem('pictos', JSON.stringify(pictosArray));
 
-                    addPictoToPlanner({ index, title });
+                    addPictoToPlanner({ index, title, src: picto.src });
                 });
             });
-
-            loadPictosFromLocalStorage();
         }
 
         function loadPictosFromLocalStorage() {
             const plannerContentElement = document.getElementById('planner-content');
-            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-
             plannerContentElement.innerHTML = '';
 
+            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
             pictosArray.sort((a, b) => a.index - b.index);
 
             pictosArray.forEach(picto => {
@@ -279,40 +279,82 @@
             });
         }
 
-        function addPictoToPlanner({ index, title }) {
-            const pictos = document.querySelectorAll('#pictos .picto');
-            const plannerContentElement = document.getElementById('planner-content');
+        function loadUploadedPictos() {
+            const pictosArray = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
 
-            pictos.forEach(picto => {
-                if (picto.getAttribute('title') === title) {
-                    const newPicto = document.createElement('img');
-                    newPicto.src = picto.src;
-                    newPicto.title = title;
-                    newPicto.className = 'picto';
-
-                    newPicto.addEventListener('click', () => {
-                        removePictoFromPlanner(index);
-                    });
-
-                    plannerContentElement.appendChild(newPicto);
-                }
+            pictosArray.forEach(picto => {
+                addPictoToPictos(picto);
             });
         }
 
+        function addPictoToPlanner({ index, title, src }) {
+            const plannerContentElement = document.getElementById('planner-content');
+
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.title = title;
+            newPicto.className = 'picto';
+
+            newPicto.addEventListener('click', () => {
+                removePictoFromPlanner(index);
+            });
+
+            plannerContentElement.appendChild(newPicto);
+        }
+
         function removePictoFromPlanner(index) {
-            if (document.getElementById('done-editing-button').style.display === "block") {
-                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+            const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
 
-                const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
+            updatedPictosArray.forEach((picto, newIndex) => {
+                picto.index = newIndex;
+            });
 
-                updatedPictosArray.forEach((picto, newIndex) => {
-                    picto.index = newIndex;
-                });
+            localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
+            loadPictosFromLocalStorage();
+        }
 
-                localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
+        function initUploadPicto() {
+            const uploadInput = document.getElementById('upload-picto-input');
+            uploadInput.addEventListener('change', handlePictoUpload);
+        }
 
-                loadPictosFromLocalStorage();
+        function handlePictoUpload(event) {
+            const file = event.target.files[0];
+            const title = prompt('Geef een titel voor het pictogram:');
+
+            if (file && title) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
+                    const index = uploadedPictos.length;
+                    const newPicto = { index, title, src: e.target.result };
+
+                    uploadedPictos.push(newPicto);
+                    localStorage.setItem('uploadedPictos', JSON.stringify(uploadedPictos));
+
+                    addPictoToPictos(newPicto);
+                };
+                reader.readAsDataURL(file);
             }
+        }
+
+        function addPictoToPictos({ title, src }) {
+            const pictosElement = document.getElementById('pictos');
+            const uploadedPicto = document.createElement('img');
+            uploadedPicto.src = src;
+            uploadedPicto.title = title;
+            uploadedPicto.className = 'picto';
+
+            uploadedPicto.addEventListener('click', () => {
+                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+                const index = pictosArray.length;
+                pictosArray.push({ index, title, src });
+                localStorage.setItem('pictos', JSON.stringify(pictosArray));
+                addPictoToPlanner({ index, title, src });
+            });
+
+            pictosElement.appendChild(uploadedPicto);
         }
 
         function editPlanner() {
@@ -333,9 +375,9 @@
         }
 
         function doneEditingPlanner() {
-            const pictos = document.getElementById('pictos').style.display = "none";
-            const doneEditingButton = document.getElementById('done-editing-button').style.display = "none";
-            const editButton = document.getElementById('edit-button').style.display = "block";
+            document.getElementById('pictos').style.display = "none";
+            document.getElementById('done-editing-button').style.display = "none";
+            document.getElementById('edit-button').style.display = "block";
         }
 
         setInterval(() => {
