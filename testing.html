@@ -37,7 +37,32 @@
             transition: opacity 0.5s ease;
         }
 
+        .settings-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            opacity: 0;
+            border-radius: var(--border-radius2);
+            transition: opacity 0.5s ease;
+            text-align: left;
+            align-content: left;
+            justify-content: left;
+        }
+
         .setup-menu.fade-in {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .settings-menu.fade-in {
             opacity: 1;
             transition: opacity 0.5s ease;
         }
@@ -98,6 +123,15 @@
                 width: 100%;
             }
 
+            .settings-menu {
+                width: 85%;
+                height: 93%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
             #setupButtons {
                 display: flex;
                 flex-direction: column;
@@ -128,18 +162,43 @@
         </div>
     </div>
 
+    <div id="settings-menu" class="settings-menu">
+        <button onclick="closeSettings()">Sluiten</button>
+        <div id="makePinButtonContainer">
+            <input autocomplete="off" type="text" id="pincodeCreate" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button id="makePinButton" onclick="makePin()">Maak pincode</button>
+        </div>
+
+        <div id="pinChange" style="display: none;">
+            <h4>Voer een nieuwe pincode in:</h4>
+            <input autocomplete="off" type="text" id="pincodeChangeVerify" placeholder="Oude pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <input autocomplete="off" type="text" id="pincodeChange" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button id="changePinButton" onclick="changePin()">Pincode veranderen</button>
+        </div>
+
+        <div id="deletePin" style="display: none;">
+            <h4>Voer je pincode in om deze uit te schakelen:</h4>
+            <input autocomplete="off" type="text" id="deleteVerify" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button id="deletePinButton" onclick="deletePin()">Pincode uitschakelen</button>
+        </div>
+    </div>
+
     <div id="planner-container" style="display: none;">
         <h1 id="title" style="margin-bottom: -10px;">TC_tam Picto Planner</h1>
 
-        <div id="planner-content">
-
-        </div>
+        <div id="planner-content"></div>
 
         <div id="pictos">
             <img title="TC_tam" class="picto" src="/favicon.ico">
             <img title="Google" class="picto" src="https://google.com/favicon.ico">
         </div>
 
+        <button id="settings-button" style="position: fixed; top: 5px; left: 5px;"
+            onclick="openSettings()">Instellingen</button>
         <button id="edit-button" style="position: fixed; top: 5px; right: 5px;" onclick="editPlanner()">Planner
             aanpassen</button>
         <button id="done-editing-button" style="position: fixed; top: 5px; right: 5px;"
@@ -246,6 +305,95 @@
             const editButton = document.getElementById('edit-button').style.display = "block";
         }
 
+        /* SETTINGS SCRIPT */
+        function openSettings() {
+            const settingsMenu = document.getElementById('settings-menu');
+            settingsMenu.style.display = 'block';
+
+            document.getElementById('done-editing-button').click();
+            document.getElementById('edit-button').style.display = "none";
+            document.getElementById('settings-button').style.display = "none";
+
+            setTimeout(() => {
+                settingsMenu.classList.add('fade-in');
+            }, 10);
+        }
+
+        function closeSettings() {
+            const settingsMenu = document.getElementById('settings-menu');
+            settingsMenu.classList.remove('fade-in');
+
+            document.getElementById('done-editing-button').click();
+            document.getElementById('edit-button').style.display = "block";
+            document.getElementById('settings-button').style.display = "block";
+
+            setTimeout(() => {
+                settingsMenu.style.display = 'none';
+            }, 500);
+        }
+
+        function updatePinVisibility() {
+            const currentPin = localStorage.getItem('pin');
+            const pinChange = document.getElementById('pinChange');
+            const deletePin = document.getElementById('deletePin');
+            const makePinButtonContainer = document.getElementById('makePinButtonContainer');
+
+            if (currentPin) {
+                pinChange.style.display = 'block';
+                deletePin.style.display = 'block';
+                makePinButtonContainer.style.display = 'none';
+            } else {
+                pinChange.style.display = 'none';
+                deletePin.style.display = 'none';
+                makePinButtonContainer.style.display = 'block';
+            }
+        }
+
+        function makePin() {
+            const newPin = document.getElementById('pincodeCreate').value
+            if (newPin && newPin.length <= 6) {
+                localStorage.setItem('pin', newPin);
+                notification("Pincode is ingesteld - " + newPin);
+                updatePinVisibility();
+            } else {
+                notification('De pincode moet maximaal 6 cijfers bevatten.');
+            }
+        }
+
+        function changePin() {
+            const pinChange = document.getElementById('pincodeChange').value;
+            const pinEnteredToVerify = document.getElementById('pincodeChangeVerify').value;
+
+            const currentPin = localStorage.getItem('pin');
+
+            if (pinEnteredToVerify === currentPin) {
+                if (pinChange.length <= 6) {
+                    localStorage.setItem('pin', pinChange);
+                    notification("Pincode is veranderd - " + pinChange);
+                } else {
+                    notification('De nieuwe pincode moet maximaal 6 cijfers bevatten.');
+                }
+            } else {
+                notification('Dat is niet je pincode. Probeer het opnieuw.');
+            }
+        }
+
+        function deletePin() {
+            const pinEnteredToVerify = document.getElementById('deleteVerify').value;
+
+            const currentPin = localStorage.getItem('pin');
+
+            if (pinEnteredToVerify === currentPin) {
+                localStorage.removeItem('pin');
+                notification("Pincode is uitgeschakeld.");
+                updatePinVisibility();
+            } else {
+                notification('Dat is niet je pincode. Probeer het opnieuw.');
+            }
+        }
+
+        updatePinVisibility();
+
         /* SETUP PLANNER SCRIPT */
         checkLocalStorage();
         function checkLocalStorage() {
@@ -287,7 +435,8 @@
             if (pin.length <= 6) {
                 localStorage.setItem('pin', pin);
                 notification("Pincode is opgeslagen - " + pin);
-                setupCompleted();
+            } else {
+                notification('De nieuwe pincode moet maximaal 6 cijfers bevatten.');
             }
         }
 
