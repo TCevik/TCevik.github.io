@@ -319,17 +319,20 @@
         }
 
         function removePictoFromPlanner(index) {
-            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-            const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
+            const button = document.getElementById('done-editing-button');
+            if (button.style.display === "block") {
+                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+                const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
 
-            updatedPictosArray.forEach((picto, newIndex) => {
-                picto.index = newIndex;
-            });
+                updatedPictosArray.forEach((picto, newIndex) => {
+                    picto.index = newIndex;
+                });
 
-            localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
-            loadPictosFromLocalStorage();
+                localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
+                loadPictosFromLocalStorage();
+            }
         }
-
+        
         function initUploadPicto() {
             const uploadInput = document.getElementById('upload-picto-input');
             uploadInput.addEventListener('change', handlePictoUpload);
