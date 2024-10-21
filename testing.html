@@ -310,12 +310,58 @@
             newPicto.src = src;
             newPicto.title = title;
             newPicto.className = 'picto';
+            newPicto.draggable = true;
+
+            newPicto.addEventListener('dragstart', (event) => {
+                event.dataTransfer.setData('text/plain', index);
+            });
+
+            newPicto.addEventListener('dragover', (event) => {
+                event.preventDefault();
+            });
+
+            newPicto.addEventListener('drop', (event) => {
+                event.preventDefault();
+                const draggedIndex = event.dataTransfer.getData('text/plain');
+                swapPictos(draggedIndex, index);
+            });
 
             newPicto.addEventListener('click', () => {
                 removePictoFromPlanner(index);
             });
 
             plannerContentElement.appendChild(newPicto);
+        }
+
+        function swapPictos(draggedIndex, targetIndex) {
+            if (document.getElementById('edit-button').style.display === "none") {
+                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+                const draggedPicto = pictosArray.find(picto => picto.index === parseInt(draggedIndex));
+                const targetPicto = pictosArray.find(picto => picto.index === targetIndex);
+
+                if (draggedPicto && targetPicto) {
+                    const draggedIndexValue = draggedPicto.index;
+                    const targetIndexValue = targetPicto.index;
+
+                    // Swap the pictos
+                    pictosArray.forEach(picto => {
+                        if (picto.index === draggedIndexValue) {
+                            picto.index = targetIndexValue;
+                        } else if (picto.index === targetIndexValue) {
+                            picto.index = draggedIndexValue;
+                        }
+                    });
+
+                    // Update indices for all pictos to maintain order
+                    pictosArray.sort((a, b) => a.index - b.index);
+                    pictosArray.forEach((picto, newIndex) => {
+                        picto.index = newIndex;
+                    });
+
+                    localStorage.setItem('pictos', JSON.stringify(pictosArray));
+                    loadPictosFromLocalStorage();
+                }
+            }
         }
 
         function removePictoFromPlanner(index) {
