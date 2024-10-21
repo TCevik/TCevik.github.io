@@ -9,6 +9,17 @@
     <script src="/script.js"></script>
 
     <style>
+        #planner-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #planner-container.fade-in {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
         .setup-menu {
             display: none;
             position: fixed;
@@ -20,7 +31,7 @@
             background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 5;
             opacity: 0;
             border-radius: var(--border-radius2);
             transition: opacity 0.5s ease;
@@ -44,6 +55,23 @@
         .no-arrows::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+
+        #planner-content {
+            background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+            border-radius: var(--border-radius2);
+            padding: 15px;
+            margin: 25px;
+        }
+
+        .picto {
+            width: 125px;
+            height: 125px;
+            border: 1px var(--text-color) solid;
+            padding: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+            user-select: none;
         }
 
 
@@ -93,15 +121,85 @@
         </div>
     </div>
 
+    <div id="planner-container" style="display: none;">
+        <h1 id="title" style="margin-bottom: -10px;">TC_tam Picto Planner</h1>
+
+        <div id="planner-content">
+
+        </div>
+
+        <div id="pictos">
+            <img title="TC_tam" class="picto" src="/favicon.ico">
+            <img title="Google" class="picto" src="https://google.com/favicon.ico">
+        </div>
+
+        <button style="position: fixed; top: 5px; right: 5px;" onclick="editPlanner()">Planner aanpassen</button>
+    </div>
+
     <script>
         function loadPlanner() {
-            
+            const plannerContainer = document.getElementById('planner-container');
+            const plannerContentElement = document.getElementById('planner-content');
+            plannerContainer.style.display = 'block';
+            setTimeout(() => {
+                plannerContainer.classList.add('fade-in');
+            }, 10);
+            initAddingPictos();
+            loadPictosFromLocalStorage();
+        }
+
+        function initAddingPictos() {
+            const pictos = document.querySelectorAll('#pictos .picto');
+
+            pictos.forEach(picto => {
+                picto.addEventListener('click', () => {
+                    const title = picto.getAttribute('title');
+                    const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+                    pictosArray.push(title); // Voeg alleen de titel toe
+                    localStorage.setItem('pictos', JSON.stringify(pictosArray));
+
+                    // Alleen het nieuwe pictogram toevoegen, niet de reeds geladen
+                    addPictoToPlanner(title);
+                });
+            });
+
+            // Laad pictogrammen uit localStorage naar planner-content
+            loadPictosFromLocalStorage();
+        }
+
+        function loadPictosFromLocalStorage() {
+            const plannerContentElement = document.getElementById('planner-content');
+            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
+
+            // Maak planner-content leeg voordat we pictogrammen toevoegen
+            plannerContentElement.innerHTML = '';
+
+            pictosArray.forEach(title => {
+                addPictoToPlanner(title);
+            });
+        }
+
+        function addPictoToPlanner(title) {
+            const pictos = document.querySelectorAll('#pictos .picto');
+            const plannerContentElement = document.getElementById('planner-content');
+
+            pictos.forEach(picto => {
+                if (picto.getAttribute('title') === title) {
+                    const newPicto = document.createElement('img');
+                    newPicto.src = picto.src; // Kopieer de bron van het geklikte pictogram
+                    newPicto.title = title; // Zet het title attribuut
+                    newPicto.className = 'picto'; // Voeg de class 'picto' toe
+
+                    // Voeg het nieuwe pictogram toe aan de planner content
+                    plannerContentElement.appendChild(newPicto);
+                }
+            });
         }
 
         /* SETUP PLANNER SCRIPT */
         checkLocalStorage();
         function checkLocalStorage() {
-            if (!localStorage.getItem('')) {
+            if (!localStorage.getItem('plannerSetupComplete')) {
                 showSetupMenu();
             } else {
                 loadPlanner();
