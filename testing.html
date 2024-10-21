@@ -219,8 +219,9 @@
         <div id="planner-content"></div>
 
         <div id="pictos">
-            <input type="file" id="upload-picto-input" accept="image/*" />
-            <img title="TC_tam" class="picto" src="/favicon.ico">
+            <button id="upload-picto-button">Upload een picto</button>
+            <input type="file" id="upload-picto-input" accept="image/*" style="display: none;" />
+            <br><img title="TC_tam" class="picto" src="/favicon.ico">
             <img title="Google" class="picto" src="https://google.com/favicon.ico">
         </div>
 
@@ -233,6 +234,13 @@
     </div>
 
     <script>
+        const uploadButton = document.getElementById('upload-picto-button');
+        const fileInput = document.getElementById('upload-picto-input');
+
+        uploadButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
         function loadPlanner() {
             const plannerContainer = document.getElementById('planner-container');
             const plannerContentElement = document.getElementById('planner-content');
@@ -464,6 +472,7 @@
 
         function closeSettings() {
             const settingsMenu = document.getElementById('settings-menu');
+            settingsMenu.style.display = 'none';
 
             document.getElementById('done-editing-button').click();
             document.getElementById('edit-button').style.display = "block";
