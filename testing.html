@@ -196,6 +196,14 @@
                 oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
             <button onclick="forgotPin()" id="forgotPin">Pincode vergeten</button>
         </div>
+
+        <div>
+            <h4>Verwijder alle picto's</h4>
+            <input autocomplete="off" type="text" id="deletePictosVerify" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button id="deletePictosButton" onclick="deletePictos()"
+                style="background-color: red; color: white;">Verwijder picto's</button>
+        </div>
     </div>
 
     <div id="planner-container" style="display: none;">
@@ -356,17 +364,20 @@
             const pinChange = document.getElementById('pinChange');
             const deletePin = document.getElementById('deletePin');
             const forgotPin = document.getElementById('forgotPin');
+            const deletePictos = document.getElementById('deletePictosVerify');
             const makePinButtonContainer = document.getElementById('makePinButtonContainer');
 
             if (currentPin) {
                 pinChange.style.display = 'block';
                 deletePin.style.display = 'block';
                 forgotPin.style.display = 'block';
+                deletePictos.style.display = 'block';
                 makePinButtonContainer.style.display = 'none';
             } else {
                 pinChange.style.display = 'none';
                 deletePin.style.display = 'none';
                 forgotPin.style.display = 'none';
+                deletePictos.style.display = 'none';
                 makePinButtonContainer.style.display = 'block';
             }
         }
@@ -446,6 +457,16 @@
             num2 = Math.floor(Math.random() * 7) + 4;
             correctAnswer = num1 * num2;
             document.getElementById('deleteVerifyAdult').placeholder = `${num1} x ${num2} = ?`;
+        }
+
+        function deletePictos() {
+            if (localStorage.getItem('pictos')) {
+                localStorage.removeItem('pictos');
+                notification("Alle picto's zijn verwijderd.");
+                loadPictosFromLocalStorage();
+            } else {
+                notification("Er zijn geen picto's om te verwijderen.");
+            }
         }
 
         updatePinVisibility();
