@@ -155,15 +155,14 @@
                 picto.addEventListener('click', () => {
                     const title = picto.getAttribute('title');
                     const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-                    pictosArray.push(title); // Voeg alleen de titel toe
+                    const index = pictosArray.length;
+                    pictosArray.push({ index, title });
                     localStorage.setItem('pictos', JSON.stringify(pictosArray));
 
-                    // Alleen het nieuwe pictogram toevoegen, niet de reeds geladen
-                    addPictoToPlanner(title);
+                    addPictoToPlanner({ index, title });
                 });
             });
 
-            // Laad pictogrammen uit localStorage naar planner-content
             loadPictosFromLocalStorage();
         }
 
@@ -171,26 +170,26 @@
             const plannerContentElement = document.getElementById('planner-content');
             const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
 
-            // Maak planner-content leeg voordat we pictogrammen toevoegen
             plannerContentElement.innerHTML = '';
 
-            pictosArray.forEach(title => {
-                addPictoToPlanner(title);
+            pictosArray.sort((a, b) => a.index - b.index);
+
+            pictosArray.forEach(picto => {
+                addPictoToPlanner(picto);
             });
         }
 
-        function addPictoToPlanner(title) {
+        function addPictoToPlanner({ index, title }) {
             const pictos = document.querySelectorAll('#pictos .picto');
             const plannerContentElement = document.getElementById('planner-content');
 
             pictos.forEach(picto => {
                 if (picto.getAttribute('title') === title) {
                     const newPicto = document.createElement('img');
-                    newPicto.src = picto.src; // Kopieer de bron van het geklikte pictogram
-                    newPicto.title = title; // Zet het title attribuut
-                    newPicto.className = 'picto'; // Voeg de class 'picto' toe
+                    newPicto.src = picto.src;
+                    newPicto.title = title;
+                    newPicto.className = 'picto';
 
-                    // Voeg het nieuwe pictogram toe aan de planner content
                     plannerContentElement.appendChild(newPicto);
                 }
             });
