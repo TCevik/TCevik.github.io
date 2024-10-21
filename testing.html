@@ -151,6 +151,22 @@
                 align-items: center;
             }
         }
+
+        .uploaded-picto {
+            position: relative;
+            display: inline-block;
+        }
+
+        .remove-picto {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transform: translate(-50%, -50%);
+            color: red;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 1;
+        }
     </style>
 </head>
 
@@ -341,10 +357,26 @@
 
         function addPictoToPictos({ title, src }) {
             const pictosElement = document.getElementById('pictos');
-            const uploadedPicto = document.createElement('img');
-            uploadedPicto.src = src;
-            uploadedPicto.title = title;
-            uploadedPicto.className = 'picto';
+            const uploadedPicto = document.createElement('div');
+            uploadedPicto.className = 'uploaded-picto';
+
+            const pictoImage = document.createElement('img');
+            pictoImage.src = src;
+            pictoImage.title = title;
+            pictoImage.className = 'picto';
+
+            const removeButton = document.createElement('span');
+            removeButton.innerText = 'x';
+            removeButton.className = 'remove-picto';
+
+            removeButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                removeUploadedPicto(uploadedPicto, { title, src });
+            });
+
+            uploadedPicto.appendChild(pictoImage);
+            uploadedPicto.appendChild(removeButton);
+            pictosElement.appendChild(uploadedPicto);
 
             uploadedPicto.addEventListener('click', () => {
                 const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
@@ -353,8 +385,15 @@
                 localStorage.setItem('pictos', JSON.stringify(pictosArray));
                 addPictoToPlanner({ index, title, src });
             });
+        }
 
-            pictosElement.appendChild(uploadedPicto);
+        function removeUploadedPicto(uploadedPicto, picto) {
+            const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
+            const updatedUploadedPictos = uploadedPictos.filter(p => p.src !== picto.src);
+            localStorage.setItem('uploadedPictos', JSON.stringify(updatedUploadedPictos));
+
+            uploadedPicto.remove();
+            loadUploadedPictos();
         }
 
         function editPlanner() {
