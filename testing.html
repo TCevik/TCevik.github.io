@@ -11,13 +11,6 @@
     <style>
         #planner-container {
             display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        #planner-container.fade-in {
-            opacity: 1;
-            transition: opacity 0.5s ease;
         }
 
         .setup-menu {
@@ -32,9 +25,7 @@
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 5;
-            opacity: 0;
             border-radius: var(--border-radius2);
-            transition: opacity 0.5s ease;
             overflow-y: auto;
         }
 
@@ -50,23 +41,11 @@
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 5;
-            opacity: 0;
             border-radius: var(--border-radius2);
-            transition: opacity 0.5s ease;
             text-align: left;
             align-content: left;
             justify-content: left;
             overflow-y: auto;
-        }
-
-        .setup-menu.fade-in {
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .settings-menu.fade-in {
-            opacity: 1;
-            transition: opacity 0.5s ease;
         }
 
         .setup-menu button {
@@ -123,7 +102,7 @@
             .setup-menu {
                 width: 85%;
                 height: 93%;
-                display: flex;
+                display: none;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -138,7 +117,7 @@
             .settings-menu {
                 width: 85%;
                 height: 93%;
-                display: flex;
+                display: none;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -258,9 +237,6 @@
             const plannerContainer = document.getElementById('planner-container');
             const plannerContentElement = document.getElementById('planner-content');
             plannerContainer.style.display = 'block';
-            setTimeout(() => {
-                plannerContainer.classList.add('fade-in');
-            }, 10);
             initAddingPictos();
             loadPictosFromLocalStorage();
             loadUploadedPictos();
@@ -484,23 +460,14 @@
             document.getElementById('done-editing-button').click();
             document.getElementById('edit-button').style.display = "none";
             document.getElementById('settings-button').style.display = "none";
-
-            setTimeout(() => {
-                settingsMenu.classList.add('fade-in');
-            }, 10);
         }
 
         function closeSettings() {
             const settingsMenu = document.getElementById('settings-menu');
-            settingsMenu.classList.remove('fade-in');
 
             document.getElementById('done-editing-button').click();
             document.getElementById('edit-button').style.display = "block";
             document.getElementById('settings-button').style.display = "block";
-
-            setTimeout(() => {
-                settingsMenu.style.display = 'none';
-            }, 500);
         }
 
         function updatePinVisibility() {
@@ -645,15 +612,10 @@
         function showSetupMenu() {
             const setupMenu = document.getElementById('setup-menu');
             setupMenu.style.display = 'block';
-
-            setTimeout(() => {
-                setupMenu.classList.add('fade-in');
-            }, 10);
         }
 
         function hideSetupMenu() {
             const setupMenu = document.getElementById('setup-menu');
-            setupMenu.classList.remove('fade-in');
 
             setTimeout(() => {
                 setupMenu.style.display = 'none';
@@ -673,6 +635,7 @@
             if (pin.length <= 6) {
                 localStorage.setItem('pin', pin);
                 notification("Pincode is opgeslagen - " + pin);
+                setupCompleted();
             } else {
                 notification('De nieuwe pincode moet maximaal 6 cijfers bevatten.');
             }
