@@ -198,19 +198,35 @@
     <script>
         /* PICTO PLANNER LOGIC */
         function loadPlanner() {
-            document.getElementById('planner-container').style.display = 'block'
+            document.getElementById('planner-container').style.display = 'block';
+            const pin = localStorage.getItem('pictoPlannerPin');
+            if (!pin) {
+                editPlanner();
+            }
         }
 
         function editPlanner() {
             document.getElementById('edit-button').style.display = 'none';
-            document.getElementById('done-editing-button').style.display = 'block';
             document.getElementById('edit-pictos').style.display = 'block';
+
+            const pin = localStorage.getItem('pictoPlannerPin');
+            if (pin) {
+                document.getElementById('done-editing-button').style.display = 'block';
+            }
         }
 
         function doneEditingPlanner() {
-            document.getElementById('edit-button').style.display = 'block';
+            const pin = localStorage.getItem('pictoPlannerPin');
+            if (pin) {
+                document.getElementById('edit-button').style.display = 'block';
+            }
+
             document.getElementById('done-editing-button').style.display = 'none';
             document.getElementById('edit-pictos').style.display = 'none';
+
+            if (!pin) {
+                document.getElementById('edit-button').click();
+            }
         }
 
         /* SETTINGS MENU SCRIPT */
@@ -227,9 +243,13 @@
             const settingsMenu = document.getElementById('settings-menu');
             settingsMenu.style.display = 'none';
 
-            document.getElementById('done-editing-button').click();
-            document.getElementById('edit-button').style.display = "block";
             document.getElementById('settings-button').style.display = "block";
+            document.getElementById('done-editing-button').click();
+            
+            const pin = localStorage.getItem('pictoPlannerPin');
+            if (pin) {
+                document.getElementById('edit-button').style.display = 'block';
+            }
         }
 
         /* SETUP PLANNER SCRIPT */
@@ -269,7 +289,7 @@
                         }
 
                         if (phase === 'settings') {
-                            return
+                            return;
                         }
                     } else {
                         notification('De pincode mag maximaal 6 cijfers bevatten.');
