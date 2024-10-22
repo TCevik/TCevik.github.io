@@ -208,7 +208,7 @@
 
             request.onupgradeneeded = (event) => {
                 db = event.target.result;
-                const objectStore = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+                const objectStore = db.createObjectStore(storeName, { keyPath: 'id' });
             };
 
             request.onsuccess = (event) => {
@@ -225,9 +225,7 @@
             const transaction = db.transaction([storeName], 'readwrite');
             const objectStore = transaction.objectStore(storeName);
 
-            const pictoId = Date.now();
-
-            const picto = { id: pictoId, src: pictoSrc, title: pictoTitle };
+            const picto = { id: Date.now(), src: pictoSrc, title: pictoTitle };
             objectStore.add(picto);
 
             transaction.oncomplete = () => {
@@ -247,7 +245,7 @@
             request.onsuccess = (event) => {
                 const pictos = event.target.result;
                 pictos.forEach(picto => {
-                    addPictoToPlanner(picto.src, picto.title);
+                    addPictoToPlanner(picto.src, picto.title, picto.id);
                 });
             };
 
@@ -256,11 +254,12 @@
             };
         };
 
-        const addPictoToPlanner = (src, title) => {
+        const addPictoToPlanner = (src, title, id) => {
             const newPicto = document.createElement('img');
             newPicto.src = src;
             newPicto.className = 'picto';
             newPicto.title = title;
+            newPicto.setAttribute('data-id', id);
             plannerContent.appendChild(newPicto);
         };
 
@@ -269,7 +268,7 @@
                 const pictoSrc = picto.src;
                 const pictoTitle = picto.title;
 
-                addPictoToPlanner(pictoSrc, pictoTitle);
+                addPictoToPlanner(pictoSrc, pictoTitle, Date.now());
                 savePicto(pictoSrc, pictoTitle);
             });
         });
