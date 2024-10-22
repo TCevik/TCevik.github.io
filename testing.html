@@ -196,7 +196,7 @@
     </div>
 
     <script>
-        /* PICTO PLANNER LOGIC */
+        /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
             document.getElementById('planner-container').style.display = 'block';
             const pin = localStorage.getItem('pictoPlannerPin');
@@ -205,7 +205,11 @@
             }
         }
 
+        let editingPlannner = false
+
         function editPlanner() {
+            var editingPlannner = true
+
             document.getElementById('edit-button').style.display = 'none';
             document.getElementById('edit-pictos').style.display = 'block';
 
@@ -216,6 +220,8 @@
         }
 
         function doneEditingPlanner() {
+            var editingPlannner = false
+
             const pin = localStorage.getItem('pictoPlannerPin');
             if (pin) {
                 document.getElementById('edit-button').style.display = 'block';
