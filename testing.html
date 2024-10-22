@@ -334,17 +334,18 @@
             const files = event.target.files;
             if (files.length > 0) {
                 const fileArray = Array.from(files);
-                processFileQueue(fileArray);
+                processFileQueue(fileArray, files.length);
             }
         });
 
-        function processFileQueue(fileArray) {
+        function processFileQueue(fileArray, totalFiles) {
             if (fileArray.length === 0) {
                 return;
             }
 
             const file = fileArray.shift();
             const reader = new FileReader();
+            const uploadedFiles = totalFiles - fileArray.length;
 
             reader.onload = (e) => {
                 const img = new Image();
@@ -362,14 +363,30 @@
 
                     savePicto(pictoSrc, pictoTitle, uploadedStoreName);
 
-                    setTimeout(() => {
-                        processFileQueue(fileArray);
-                    }, 1);
+                    const progressPercentage = Math.round((uploadedFiles / totalFiles) * 100);
+                    notification(`Upload progress: ${progressPercentage}%`);
+
+                    adjustTimeout(() => {
+                        processFileQueue(fileArray, totalFiles);
+                    });
                 };
                 img.src = e.target.result;
             };
 
             reader.readAsDataURL(file);
+        }
+
+        function adjustTimeout(callback) {
+            const memory = performance.memory;
+            const usedJSHeapSize = memory.usedJSHeapSize / memory.jsHeapSizeLimit;
+
+            let delay = 1;
+
+            if (usedJSHeapSize > 0.75) {
+                delay = 1000;
+            }
+
+            setTimeout(callback, delay);
         }
 
         pictos.forEach(picto => {
