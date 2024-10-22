@@ -261,7 +261,6 @@
             newPicto.title = title;
             newPicto.setAttribute('data-id', id);
 
-            // Event listener voor het verwijderen van de picto
             newPicto.addEventListener('click', () => {
                 removePictoFromPlanner(id, newPicto);
             });
@@ -273,12 +272,10 @@
             const transaction = db.transaction([storeName], 'readwrite');
             const objectStore = transaction.objectStore(storeName);
 
-            // Verwijder de picto uit de database
             const request = objectStore.delete(id);
 
             request.onsuccess = () => {
                 console.log('Picto verwijderd uit database:', id);
-                // Verwijder de picto uit de DOM
                 plannerContent.removeChild(pictoElement);
             };
 
