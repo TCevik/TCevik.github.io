@@ -214,6 +214,14 @@
 
     <div id="settings-menu" class="settings-menu">
         <button onclick="toggleSettings()">Sluiten</button>
+
+        <h4>Verander pincode:</h4>
+        <input autocomplete="off" type="text" id="pincodeO" placeholder="Oude pincode" maxlength="6"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+        <input autocomplete="off" type="text" id="pincodeC" placeholder="Nieuwe pincode" maxlength="6"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+        <button onclick="pincode('change', 'none', document.getElementById('pincodeC').value)">Pincode
+            veranderen</button>
     </div>
 
     <div id="planner-container">
@@ -459,7 +467,7 @@
                 };
             }
         };
-        
+
         const savePicto = (pictoSrc, pictoTitle, store) => {
             const transaction = db.transaction([store], 'readwrite');
             const objectStore = transaction.objectStore(store);
@@ -792,6 +800,25 @@
 
                         if (phase === 'settings') {
                             return;
+                        }
+                    } else {
+                        notification('De pincode mag maximaal 6 cijfers bevatten.');
+                    }
+                } else {
+                    notification('De pincode moet minimaal 3 cijfers bevatten.');
+                }
+            }
+
+            if (action === 'change') {
+                if (pincode.length >= 3) {
+                    if (pincode.length <= 6) {
+                        const oldPincode = localStorage.getItem('pictoPlannerPin');
+                        const enteredOldPincode = document.getElementById('pincodeO').value;
+                        if (enteredOldPincode === oldPincode) {
+                            localStorage.setItem('pictoPlannerPin', pincode);
+                            notification("Je pincode is opgeslagen - " + pincode);
+                        } else {
+                            notification('Dat is niet je oude pincode.');
                         }
                     } else {
                         notification('De pincode mag maximaal 6 cijfers bevatten.');
