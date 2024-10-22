@@ -181,7 +181,7 @@
 
         <div id="edit-pictos" style="display: none;">
             <button id="upload-picto-button">Upload een picto</button>
-            <input type="file" id="upload-picto-input" accept="image/*" style="display: none;" />
+            <input type="file" id="upload-picto-input" accept="image/*" multiple style="display: none;" />
             <br><img title="TC_tam" class="picto" src="/favicon.ico">
             <img title="Google" class="picto" src="https://google.com/favicon.ico">
         </div>
@@ -235,8 +235,10 @@
 
             request.onsuccess = () => {
                 console.log('Picto opgeslagen:', picto);
-                if (store === storeName) {
-                    addPictoToPlanner(pictoSrc, pictoTitle, picto.id); // Voeg toe aan de planner als opgeslagen in pictos
+                if (store === uploadedStoreName) {
+                    addUploadedPictoToEditSection(pictoSrc, pictoTitle, picto.id);
+                } else if (store === storeName) {
+                    addPictoToPlanner(pictoSrc, pictoTitle, picto.id);
                 }
             };
 
@@ -296,12 +298,13 @@
         const addUploadedPictoToEditSection = (src, title, id) => {
             const newPicto = document.createElement('img');
             newPicto.src = src;
+            newPicto.className = 'uploaded-picto';
             newPicto.className = 'picto';
             newPicto.title = title;
             newPicto.setAttribute('data-id', id);
 
             newPicto.addEventListener('click', () => {
-                savePicto(src, title, storeName); // Opslaan in de pictos store
+                savePicto(src, title, storeName);
             });
 
             document.getElementById('edit-pictos').appendChild(newPicto);
@@ -328,25 +331,53 @@
         });
 
         document.getElementById('upload-picto-input').addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const pictoSrc = e.target.result;
-                    const pictoTitle = file.name;
-
-                    savePicto(pictoSrc, pictoTitle, uploadedStoreName); // Opslaan in de uploaded store
-                };
-                reader.readAsDataURL(file);
+            const files = event.target.files;
+            if (files.length > 0) {
+                const fileArray = Array.from(files);
+                processFileQueue(fileArray);
             }
         });
+
+        function processFileQueue(fileArray) {
+            if (fileArray.length === 0) {
+                return;
+            }
+
+            const file = fileArray.shift();
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    canvas.width = 300;
+                    canvas.height = 300;
+
+                    ctx.drawImage(img, 0, 0, 300, 300);
+
+                    const pictoSrc = canvas.toDataURL('image/jpeg');
+                    const pictoTitle = file.name;
+
+                    savePicto(pictoSrc, pictoTitle, uploadedStoreName);
+
+                    setTimeout(() => {
+                        processFileQueue(fileArray);
+                    }, 1);
+                };
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
 
         pictos.forEach(picto => {
             picto.addEventListener('click', () => {
                 const pictoSrc = picto.src;
                 const pictoTitle = picto.title;
 
-                savePicto(pictoSrc, pictoTitle, storeName); // Opslaan in de pictos store
+                savePicto(pictoSrc, pictoTitle, storeName);
             });
         });
 
