@@ -196,161 +196,161 @@
     </div>
 
     <script>
-const plannerContent = document.getElementById('planner-content');
-const pictos = document.querySelectorAll('#edit-pictos .picto');
+        const plannerContent = document.getElementById('planner-content');
+        const pictos = document.querySelectorAll('#edit-pictos .picto');
 
-const dbName = 'PictoPlannerDB';
-const storeName = 'pictos';
-const uploadedStoreName = 'uploadedPictos';
-let db;
+        const dbName = 'PictoPlannerDB';
+        const storeName = 'pictos';
+        const uploadedStoreName = 'uploadedPictos';
+        let db;
 
-const openDatabase = () => {
-    const request = indexedDB.open(dbName, 1);
+        const openDatabase = () => {
+            const request = indexedDB.open(dbName, 1);
 
-    request.onupgradeneeded = (event) => {
-        db = event.target.result;
-        db.createObjectStore(storeName, { keyPath: 'id' });
-        db.createObjectStore(uploadedStoreName, { keyPath: 'id' });
-        console.log("Database geüpgraded en stores aangemaakt");
-    };
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                db.createObjectStore(storeName, { keyPath: 'id' });
+                db.createObjectStore(uploadedStoreName, { keyPath: 'id' });
+                console.log("Database geüpgraded en stores aangemaakt");
+            };
 
-    request.onsuccess = (event) => {
-        db = event.target.result;
-        console.log("Database geopend:", dbName);
-        loadPictos();
-        loadUploadedPictos();
-    };
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                console.log("Database geopend:", dbName);
+                loadPictos();
+                loadUploadedPictos();
+            };
 
-    request.onerror = (event) => {
-        console.error('Database fout:', event.target.error);
-    };
-};
-
-const savePicto = (pictoSrc, pictoTitle, store) => {
-    const transaction = db.transaction([store], 'readwrite');
-    const objectStore = transaction.objectStore(store);
-
-    const picto = { id: Date.now(), src: pictoSrc, title: pictoTitle };
-    const request = objectStore.add(picto);
-
-    request.onsuccess = () => {
-        console.log('Picto opgeslagen:', picto);
-        if (store === storeName) {
-            addPictoToPlanner(pictoSrc, pictoTitle, picto.id); // Voeg toe aan de planner als opgeslagen in pictos
-        }
-    };
-
-    request.onerror = (event) => {
-        console.error('Fout bij opslaan:', event.target.error);
-    };
-};
-
-const loadPictos = () => {
-    const transaction = db.transaction([storeName], 'readonly');
-    const objectStore = transaction.objectStore(storeName);
-    const request = objectStore.getAll();
-
-    request.onsuccess = (event) => {
-        const pictos = event.target.result;
-        pictos.forEach(picto => {
-            addPictoToPlanner(picto.src, picto.title, picto.id);
-        });
-    };
-
-    request.onerror = (event) => {
-        console.error('Fout bij ophalen:', event.target.error);
-    };
-};
-
-const loadUploadedPictos = () => {
-    const transaction = db.transaction([uploadedStoreName], 'readonly');
-    const objectStore = transaction.objectStore(uploadedStoreName);
-    const request = objectStore.getAll();
-
-    request.onsuccess = (event) => {
-        const pictos = event.target.result;
-        pictos.forEach(picto => {
-            addUploadedPictoToEditSection(picto.src, picto.title, picto.id);
-        });
-    };
-
-    request.onerror = (event) => {
-        console.error('Fout bij ophalen geüploade pictos:', event.target.error);
-    };
-};
-
-const addPictoToPlanner = (src, title, id) => {
-    const newPicto = document.createElement('img');
-    newPicto.src = src;
-    newPicto.className = 'picto';
-    newPicto.title = title;
-    newPicto.setAttribute('data-id', id);
-
-    newPicto.addEventListener('click', () => {
-        removePictoFromPlanner(id, newPicto);
-    });
-
-    plannerContent.appendChild(newPicto);
-};
-
-const addUploadedPictoToEditSection = (src, title, id) => {
-    const newPicto = document.createElement('img');
-    newPicto.src = src;
-    newPicto.className = 'picto';
-    newPicto.title = title;
-    newPicto.setAttribute('data-id', id);
-
-    newPicto.addEventListener('click', () => {
-        savePicto(src, title, storeName); // Opslaan in de pictos store
-    });
-
-    document.getElementById('edit-pictos').appendChild(newPicto);
-};
-
-const removePictoFromPlanner = (id, pictoElement) => {
-    const transaction = db.transaction([storeName], 'readwrite');
-    const objectStore = transaction.objectStore(storeName);
-
-    const request = objectStore.delete(id);
-
-    request.onsuccess = () => {
-        console.log('Picto verwijderd uit database:', id);
-        plannerContent.removeChild(pictoElement);
-    };
-
-    request.onerror = (event) => {
-        console.error('Fout bij verwijderen:', event.target.error);
-    };
-};
-
-document.getElementById('upload-picto-button').addEventListener('click', () => {
-    document.getElementById('upload-picto-input').click();
-});
-
-document.getElementById('upload-picto-input').addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const pictoSrc = e.target.result;
-            const pictoTitle = file.name;
-
-            savePicto(pictoSrc, pictoTitle, uploadedStoreName); // Opslaan in de uploaded store
+            request.onerror = (event) => {
+                console.error('Database fout:', event.target.error);
+            };
         };
-        reader.readAsDataURL(file);
-    }
-});
 
-pictos.forEach(picto => {
-    picto.addEventListener('click', () => {
-        const pictoSrc = picto.src;
-        const pictoTitle = picto.title;
+        const savePicto = (pictoSrc, pictoTitle, store) => {
+            const transaction = db.transaction([store], 'readwrite');
+            const objectStore = transaction.objectStore(store);
 
-        savePicto(pictoSrc, pictoTitle, storeName); // Opslaan in de pictos store
-    });
-});
+            const picto = { id: Date.now(), src: pictoSrc, title: pictoTitle };
+            const request = objectStore.add(picto);
 
-openDatabase();
+            request.onsuccess = () => {
+                console.log('Picto opgeslagen:', picto);
+                if (store === storeName) {
+                    addPictoToPlanner(pictoSrc, pictoTitle, picto.id); // Voeg toe aan de planner als opgeslagen in pictos
+                }
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij opslaan:', event.target.error);
+            };
+        };
+
+        const loadPictos = () => {
+            const transaction = db.transaction([storeName], 'readonly');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.getAll();
+
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    addPictoToPlanner(picto.src, picto.title, picto.id);
+                });
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij ophalen:', event.target.error);
+            };
+        };
+
+        const loadUploadedPictos = () => {
+            const transaction = db.transaction([uploadedStoreName], 'readonly');
+            const objectStore = transaction.objectStore(uploadedStoreName);
+            const request = objectStore.getAll();
+
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    addUploadedPictoToEditSection(picto.src, picto.title, picto.id);
+                });
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij ophalen geüploade pictos:', event.target.error);
+            };
+        };
+
+        const addPictoToPlanner = (src, title, id) => {
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.className = 'picto';
+            newPicto.title = title;
+            newPicto.setAttribute('data-id', id);
+
+            newPicto.addEventListener('click', () => {
+                removePictoFromPlanner(id, newPicto);
+            });
+
+            plannerContent.appendChild(newPicto);
+        };
+
+        const addUploadedPictoToEditSection = (src, title, id) => {
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.className = 'picto';
+            newPicto.title = title;
+            newPicto.setAttribute('data-id', id);
+
+            newPicto.addEventListener('click', () => {
+                savePicto(src, title, storeName); // Opslaan in de pictos store
+            });
+
+            document.getElementById('edit-pictos').appendChild(newPicto);
+        };
+
+        const removePictoFromPlanner = (id, pictoElement) => {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const objectStore = transaction.objectStore(storeName);
+
+            const request = objectStore.delete(id);
+
+            request.onsuccess = () => {
+                console.log('Picto verwijderd uit database:', id);
+                plannerContent.removeChild(pictoElement);
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij verwijderen:', event.target.error);
+            };
+        };
+
+        document.getElementById('upload-picto-button').addEventListener('click', () => {
+            document.getElementById('upload-picto-input').click();
+        });
+
+        document.getElementById('upload-picto-input').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const pictoSrc = e.target.result;
+                    const pictoTitle = file.name;
+
+                    savePicto(pictoSrc, pictoTitle, uploadedStoreName); // Opslaan in de uploaded store
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        pictos.forEach(picto => {
+            picto.addEventListener('click', () => {
+                const pictoSrc = picto.src;
+                const pictoTitle = picto.title;
+
+                savePicto(pictoSrc, pictoTitle, storeName); // Opslaan in de pictos store
+            });
+        });
+
+        openDatabase();
 
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
