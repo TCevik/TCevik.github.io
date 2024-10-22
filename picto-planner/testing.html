@@ -289,7 +289,10 @@
             newPicto.setAttribute('data-id', id);
 
             newPicto.addEventListener('click', () => {
-                removePictoFromPlanner(id, newPicto);
+                const editButton = document.getElementById('edit-button');
+                if (editButton.style.display === 'none') {
+                    removePictoFromPlanner(id, newPicto);
+                }
             });
 
             plannerContent.appendChild(newPicto);
@@ -409,23 +412,29 @@
             }
         }
 
-        let editingPlannner = false
-
         function editPlanner() {
-            var editingPlannner = true
+            const storedPin = localStorage.getItem('pictoPlannerPin');
+            if (storedPin) {
+                const pin = prompt("Voer je pincode in:");
+                if (pin === storedPin) {
+                    document.getElementById('edit-button').style.display = 'none';
+                    document.getElementById('edit-pictos').style.display = 'block';
+                    document.getElementById('done-editing-button').style.display = 'block';
+                } else {
+                    notification("Ongeldige pincode. Probeer het opnieuw.");
+                }
+            } else {
+                document.getElementById('edit-button').style.display = 'none';
+                document.getElementById('edit-pictos').style.display = 'block';
 
-            document.getElementById('edit-button').style.display = 'none';
-            document.getElementById('edit-pictos').style.display = 'block';
-
-            const pin = localStorage.getItem('pictoPlannerPin');
-            if (pin) {
-                document.getElementById('done-editing-button').style.display = 'block';
+                const storedPin = localStorage.getItem('pictoPlannerPin');
+                if (storedPin) {
+                    document.getElementById('done-editing-button').style.display = 'block';
+                }
             }
         }
 
         function doneEditingPlanner() {
-            var editingPlannner = false
-
             const pin = localStorage.getItem('pictoPlannerPin');
             if (pin) {
                 document.getElementById('edit-button').style.display = 'block';
