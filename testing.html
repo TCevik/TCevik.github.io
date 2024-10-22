@@ -156,7 +156,7 @@
             <h4>Wil je een pincode instellen?</h4>
             <p style="margin: 5px;">Een pincode zorgt ervoor dat je kind de planning niet zomaar kan veranderen.</p>
             <div id="setupButtons">
-                <button onclick="createPin()">Ja, stel een code in!</button>
+                <button onclick="setupCreatePin()">Ja, stel een code in!</button>
                 <button onclick="setupCompleted()">Nee, ga verder zonder code!</button>
             </div>
         </div>
@@ -165,52 +165,13 @@
             <h4>Voer een pincode in:</h4>
             <input autocomplete="off" type="text" id="pincode" placeholder="Pincode" maxlength="6"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button id="setPinButton" onclick="setPin()">Pincode instellen</button>
+            <button onclick="pincode('set', 'setup', document.getElementById('pincode').value)">Pincode
+                instellen</button>
         </div>
     </div>
 
     <div id="settings-menu" class="settings-menu">
         <button onclick="closeSettings()">Sluiten</button>
-        <div id="makePinButtonContainer">
-            <input autocomplete="off" type="text" id="pincodeCreate" placeholder="Pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button id="makePinButton" onclick="makePin()">Maak pincode</button>
-        </div>
-
-        <div id="pinChange" style="display: none;">
-            <h4>Voer een nieuwe pincode in:</h4>
-            <input autocomplete="off" type="text" id="pincodeChangeVerify" placeholder="Oude pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <input autocomplete="off" type="text" id="pincodeChange" placeholder="Pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button id="changePinButton" onclick="changePin()">Pincode veranderen</button>
-        </div>
-
-        <div id="deletePin" style="display: none;">
-            <h4>Voer je pincode in om deze uit te schakelen:</h4>
-            <input autocomplete="off" type="text" id="deleteVerify" placeholder="Pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button id="deletePinButton" onclick="deletePin()">Pincode uitschakelen</button>
-        </div>
-
-        <div id="forgotPin" style="display: none;">
-            <h4>Pincode vergeten:</h4>
-            <input autocomplete="off" type="text" id="deleteVerifyAdult" placeholder="SOM" maxlength="3"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <input autocomplete="off" type="text" id="forgotPinInput" placeholder="Pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button onclick="forgotPin()" id="forgotPin">Pincode vergeten</button>
-        </div>
-
-        <div>
-            <h4>Verwijder alle picto's</h4>
-            <div style="display: flex;">
-                <input autocomplete="off" type="text" id="deletePictosVerify" placeholder="Pincode" maxlength="6"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-                <button id="deletePictosButton" onclick="deletePictos()"
-                    style="height: 50px; background-color: red; color: white;">Verwijder picto's</button>
-            </div>
-        </div>
     </div>
 
     <div id="planner-container" style="display: none;">
@@ -218,7 +179,7 @@
 
         <div id="planner-content"></div>
 
-        <div id="pictos">
+        <div id="edit-pictos" style="display: none;">
             <button id="upload-picto-button">Upload een picto</button>
             <input type="file" id="upload-picto-input" accept="image/*" style="display: none;" />
             <br><img title="TC_tam" class="picto" src="/favicon.ico">
@@ -227,6 +188,7 @@
 
         <button id="settings-button" style="position: fixed; top: 5px; left: 5px;"
             onclick="openSettings()">Instellingen</button>
+
         <button id="edit-button" style="position: fixed; top: 5px; right: 5px;" onclick="editPlanner()">Planner
             aanpassen</button>
         <button id="done-editing-button" style="position: fixed; top: 5px; right: 5px;"
@@ -234,233 +196,24 @@
     </div>
 
     <script>
-        const uploadButton = document.getElementById('upload-picto-button');
-        const fileInput = document.getElementById('upload-picto-input');
-
-        uploadButton.addEventListener('click', () => {
-            fileInput.click();
-        });
-
+        /* PICTO PLANNER LOGIC */
         function loadPlanner() {
-            const plannerContainer = document.getElementById('planner-container');
-            const plannerContentElement = document.getElementById('planner-content');
-            plannerContainer.style.display = 'block';
-            initAddingPictos();
-            loadPictosFromLocalStorage();
-            loadUploadedPictos();
-            initUploadPicto();
-        }
-
-        function initAddingPictos() {
-            const pictos = document.querySelectorAll('#pictos .picto');
-
-            pictos.forEach(picto => {
-                picto.addEventListener('click', () => {
-                    const title = picto.getAttribute('title');
-                    const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-                    const index = pictosArray.length;
-                    pictosArray.push({ index, title, src: picto.src });
-                    localStorage.setItem('pictos', JSON.stringify(pictosArray));
-
-                    addPictoToPlanner({ index, title, src: picto.src });
-                });
-            });
-        }
-
-        function loadPictosFromLocalStorage() {
-            const plannerContentElement = document.getElementById('planner-content');
-            plannerContentElement.innerHTML = '';
-
-            const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-            pictosArray.sort((a, b) => a.index - b.index);
-
-            pictosArray.forEach(picto => {
-                addPictoToPlanner(picto);
-            });
-        }
-
-        function loadUploadedPictos() {
-            const pictosArray = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
-
-            pictosArray.forEach(picto => {
-                addPictoToPictos(picto);
-            });
-        }
-
-        function addPictoToPlanner({ index, title, src }) {
-            const plannerContentElement = document.getElementById('planner-content');
-
-            const newPicto = document.createElement('img');
-            newPicto.src = src;
-            newPicto.title = title;
-            newPicto.className = 'picto';
-            newPicto.draggable = true;
-
-            newPicto.addEventListener('dragstart', (event) => {
-                event.dataTransfer.setData('text/plain', index);
-            });
-
-            newPicto.addEventListener('dragover', (event) => {
-                event.preventDefault();
-            });
-
-            newPicto.addEventListener('drop', (event) => {
-                event.preventDefault();
-                const draggedIndex = event.dataTransfer.getData('text/plain');
-                swapPictos(draggedIndex, index);
-            });
-
-            newPicto.addEventListener('click', () => {
-                removePictoFromPlanner(index);
-            });
-
-            plannerContentElement.appendChild(newPicto);
-        }
-
-        function swapPictos(draggedIndex, targetIndex) {
-            if (document.getElementById('edit-button').style.display === "none") {
-                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-                const draggedPicto = pictosArray.find(picto => picto.index === parseInt(draggedIndex));
-                const targetPicto = pictosArray.find(picto => picto.index === targetIndex);
-
-                if (draggedPicto && targetPicto) {
-                    const draggedIndexValue = draggedPicto.index;
-                    const targetIndexValue = targetPicto.index;
-
-                    // Swap the pictos
-                    pictosArray.forEach(picto => {
-                        if (picto.index === draggedIndexValue) {
-                            picto.index = targetIndexValue;
-                        } else if (picto.index === targetIndexValue) {
-                            picto.index = draggedIndexValue;
-                        }
-                    });
-
-                    // Update indices for all pictos to maintain order
-                    pictosArray.sort((a, b) => a.index - b.index);
-                    pictosArray.forEach((picto, newIndex) => {
-                        picto.index = newIndex;
-                    });
-
-                    localStorage.setItem('pictos', JSON.stringify(pictosArray));
-                    loadPictosFromLocalStorage();
-                }
-            }
-        }
-
-        function removePictoFromPlanner(index) {
-            const button = document.getElementById('edit-button');
-            if (button.style.display === "none") {
-                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-                const updatedPictosArray = pictosArray.filter(picto => picto.index !== index);
-
-                updatedPictosArray.forEach((picto, newIndex) => {
-                    picto.index = newIndex;
-                });
-
-                localStorage.setItem('pictos', JSON.stringify(updatedPictosArray));
-                loadPictosFromLocalStorage();
-            }
-        }
-
-        function initUploadPicto() {
-            const uploadInput = document.getElementById('upload-picto-input');
-            uploadInput.addEventListener('change', handlePictoUpload);
-        }
-
-        function handlePictoUpload(event) {
-            const file = event.target.files[0];
-            const title = prompt('Geef een titel voor het pictogram:');
-
-            if (file && title) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
-                    const index = uploadedPictos.length;
-                    const newPicto = { index, title, src: e.target.result };
-
-                    uploadedPictos.push(newPicto);
-                    localStorage.setItem('uploadedPictos', JSON.stringify(uploadedPictos));
-
-                    addPictoToPictos(newPicto);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function addPictoToPictos({ title, src }) {
-            const pictosElement = document.getElementById('pictos');
-            const uploadedPicto = document.createElement('div');
-            uploadedPicto.className = 'uploaded-picto';
-
-            const pictoImage = document.createElement('img');
-            pictoImage.src = src;
-            pictoImage.title = title;
-            pictoImage.className = 'picto';
-
-            const removeButton = document.createElement('span');
-            removeButton.innerText = 'x';
-            removeButton.className = 'remove-picto';
-
-            removeButton.addEventListener('click', (event) => {
-                event.stopPropagation();
-                removeUploadedPicto(uploadedPicto, { title, src });
-            });
-
-            uploadedPicto.appendChild(pictoImage);
-            uploadedPicto.appendChild(removeButton);
-            pictosElement.appendChild(uploadedPicto);
-
-            uploadedPicto.addEventListener('click', () => {
-                const pictosArray = JSON.parse(localStorage.getItem('pictos')) || [];
-                const index = pictosArray.length;
-                pictosArray.push({ index, title, src });
-                localStorage.setItem('pictos', JSON.stringify(pictosArray));
-                addPictoToPlanner({ index, title, src });
-            });
-        }
-
-        function removeUploadedPicto(uploadedPicto, picto) {
-            const uploadedPictos = JSON.parse(localStorage.getItem('uploadedPictos')) || [];
-            const updatedUploadedPictos = uploadedPictos.filter(p => p.src !== picto.src);
-            localStorage.setItem('uploadedPictos', JSON.stringify(updatedUploadedPictos));
-
-            uploadedPicto.remove();
-            loadUploadedPictos();
+            document.getElementById('planner-container').style.display = 'block'
         }
 
         function editPlanner() {
-            if (localStorage.getItem('pin')) {
-                const pinEntered = prompt('Voer je pincode in om de planner te wijzigen.');
-                if (pinEntered === localStorage.getItem('pin')) {
-                    document.getElementById('pictos').style.display = "block";
-                    document.getElementById('done-editing-button').style.display = "block";
-                    document.getElementById('edit-button').style.display = "none";
-                } else {
-                    notification('Je pincode is niet correct.');
-                }
-            } else {
-                document.getElementById('pictos').style.display = "block";
-                document.getElementById('done-editing-button').style.display = "block";
-                document.getElementById('edit-button').style.display = "none";
-            }
+            document.getElementById('edit-button').style.display = 'none';
+            document.getElementById('done-editing-button').style.display = 'block';
+            document.getElementById('edit-pictos').style.display = 'block';
         }
 
         function doneEditingPlanner() {
-            document.getElementById('pictos').style.display = "none";
-            document.getElementById('done-editing-button').style.display = "none";
-            document.getElementById('edit-button').style.display = "block";
+            document.getElementById('edit-button').style.display = 'block';
+            document.getElementById('done-editing-button').style.display = 'none';
+            document.getElementById('edit-pictos').style.display = 'none';
         }
 
-        setInterval(() => {
-            if (!localStorage.getItem('pin')) {
-                editPlanner();
-                document.getElementById('done-editing-button').style.display = "none";
-                document.getElementById('edit-button').style.display = "none";
-            }
-        }, 10);
-
-        /* SETTINGS SCRIPT */
+        /* SETTINGS MENU SCRIPT */
         function openSettings() {
             const settingsMenu = document.getElementById('settings-menu');
             settingsMenu.style.display = 'block';
@@ -479,135 +232,6 @@
             document.getElementById('settings-button').style.display = "block";
         }
 
-        function updatePinVisibility() {
-            const currentPin = localStorage.getItem('pin');
-            const pinChange = document.getElementById('pinChange');
-            const deletePin = document.getElementById('deletePin');
-            const forgotPin = document.getElementById('forgotPin');
-            const deletePictos = document.getElementById('deletePictosVerify');
-            const makePinButtonContainer = document.getElementById('makePinButtonContainer');
-
-            if (currentPin) {
-                pinChange.style.display = 'block';
-                deletePin.style.display = 'block';
-                forgotPin.style.display = 'block';
-                deletePictos.style.display = 'block';
-                makePinButtonContainer.style.display = 'none';
-            } else {
-                pinChange.style.display = 'none';
-                deletePin.style.display = 'none';
-                forgotPin.style.display = 'none';
-                deletePictos.style.display = 'none';
-                makePinButtonContainer.style.display = 'block';
-            }
-        }
-
-        function makePin() {
-            const newPin = document.getElementById('pincodeCreate').value
-            if (newPin && newPin.length <= 6) {
-                localStorage.setItem('pin', newPin);
-                notification("Pincode is ingesteld - " + newPin);
-                updatePinVisibility();
-                document.getElementById('pincodeCreate').value = '';
-            } else {
-                notification('De pincode moet maximaal 6 cijfers bevatten.');
-            }
-        }
-
-        function changePin() {
-            const pinChange = document.getElementById('pincodeChange').value;
-            const pinEnteredToVerify = document.getElementById('pincodeChangeVerify').value;
-
-            const currentPin = localStorage.getItem('pin');
-
-            if (pinEnteredToVerify === currentPin) {
-                if (pinChange.length <= 6) {
-                    localStorage.setItem('pin', pinChange);
-                    notification("Pincode is veranderd - " + pinChange);
-                    document.getElementById('pincodeChange').value = '';
-                    document.getElementById('pincodeChangeVerify').value = '';
-                } else {
-                    notification('De nieuwe pincode moet maximaal 6 cijfers bevatten.');
-                }
-            } else {
-                notification('Dat is niet je pincode. Probeer het opnieuw.');
-            }
-        }
-
-        function deletePin() {
-            const pinEnteredToVerify = document.getElementById('deleteVerify').value;
-
-            const currentPin = localStorage.getItem('pin');
-
-            if (pinEnteredToVerify === currentPin) {
-                localStorage.removeItem('pin');
-                notification("Pincode is uitgeschakeld.");
-                updatePinVisibility();
-                document.getElementById('deleteVerify').value = '';
-            } else {
-                notification('Dat is niet je pincode. Probeer het opnieuw.');
-            }
-        }
-
-
-        let num1 = Math.floor(Math.random() * 7) + 4;
-        let num2 = Math.floor(Math.random() * 7) + 4;
-        let correctAnswer = num1 * num2;
-
-        document.getElementById('deleteVerifyAdult').placeholder = `${num1} x ${num2} = ?`;
-
-        function forgotPin() {
-            const userAnswer = document.getElementById('deleteVerifyAdult').value;
-            document.getElementById('deleteVerifyAdult').value = '';
-
-            if (parseInt(userAnswer) === correctAnswer) {
-                const newPin = document.getElementById('forgotPinInput').value;
-                if (newPin && newPin.length <= 6) {
-                    localStorage.setItem('pin', newPin);
-                    notification("Pincode is ingesteld - " + newPin);
-                    updatePinVisibility();
-                    generateNewQuestion();
-                    document.getElementById('forgotPinInput').value = '';
-                } else {
-                    notification('De pincode moet maximaal 6 cijfers bevatten.');
-                }
-            } else {
-                notification('Je hebt een fout antwoord. Probeer het opnieuw.');
-                generateNewQuestion();
-            }
-        }
-
-        function generateNewQuestion() {
-            num1 = Math.floor(Math.random() * 7) + 4;
-            num2 = Math.floor(Math.random() * 7) + 4;
-            correctAnswer = num1 * num2;
-            document.getElementById('deleteVerifyAdult').placeholder = `${num1} x ${num2} = ?`;
-        }
-
-        function deletePictos() {
-            const pin = localStorage.getItem('pin');
-            const enteredPin = document.getElementById('deletePictosVerify').value;
-
-            if (!pin) {
-                localStorage.removeItem('pictos');
-                notification("Alle picto's zijn verwijderd.");
-                loadPictosFromLocalStorage();
-                return
-            }
-
-            if (enteredPin === pin) {
-                localStorage.removeItem('pictos');
-                notification("Alle picto's zijn verwijderd.");
-                loadPictosFromLocalStorage();
-                document.getElementById('deletePictosVerify').value = '';
-            } else {
-                notification("De ingevoerde pincode is onjuist.");
-            }
-
-        }
-
-        updatePinVisibility();
-
         /* SETUP PLANNER SCRIPT */
         checkLocalStorage();
         function checkLocalStorage() {
@@ -625,28 +249,34 @@
 
         function hideSetupMenu() {
             const setupMenu = document.getElementById('setup-menu');
-
-            setTimeout(() => {
-                setupMenu.style.display = 'none';
-            }, 500);
+            setupMenu.style.display = 'none';
         }
 
-        function createPin() {
-            const pinOrNot = document.getElementById('pinOrNot')
-            const pinSetup = document.getElementById('pinSetup')
-
-            pinOrNot.style.display = "none";
-            pinSetup.style.display = "block";
+        function setupCreatePin() {
+            document.getElementById('pinOrNot').style.display = 'none';
+            document.getElementById('pinSetup').style.display = 'block';
         }
 
-        function setPin() {
-            const pin = document.getElementById('pincode').value;
-            if (pin.length <= 6) {
-                localStorage.setItem('pin', pin);
-                notification("Pincode is opgeslagen - " + pin);
-                setupCompleted();
-            } else {
-                notification('De nieuwe pincode moet maximaal 6 cijfers bevatten.');
+        function pincode(action, phase, pincode) {
+            if (action === 'set') {
+                if (pincode.length >= 3) {
+                    if (pincode.length <= 6) {
+                        localStorage.setItem('pictoPlannerPin', pincode);
+                        notification("Je pincode is opgeslagen - " + pincode);
+
+                        if (phase === 'setup') {
+                            setupCompleted();
+                        }
+
+                        if (phase === 'settings') {
+                            return
+                        }
+                    } else {
+                        notification('De pincode mag maximaal 6 cijfers bevatten.');
+                    }
+                } else {
+                    notification('De pincode moet minimaal 3 cijfers bevatten.');
+                }
             }
         }
 
