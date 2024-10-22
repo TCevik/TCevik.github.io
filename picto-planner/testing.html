@@ -288,13 +288,13 @@
         };
 
         const addUploadedPictoToEditSection = (src, title, id) => {
-            const pictoContainer = document.createElement('div'); // Maak een container voor de picto en de verwijderknop
-            pictoContainer.style.position = 'relative'; // Zorg ervoor dat de container positionering ondersteunt
-            pictoContainer.style.display = 'inline-block'; // Zorg ervoor dat de container alleen zo breed is als de picto
+            const pictoContainer = document.createElement('div');
+            pictoContainer.style.position = 'relative';
+            pictoContainer.style.display = 'inline-block';
 
             const newPicto = document.createElement('img');
             newPicto.src = src;
-            newPicto.className = 'uploaded-picto picto'; // Zorg ervoor dat beide klassen aanwezig zijn
+            newPicto.className = 'uploaded-picto picto';
             newPicto.title = title;
             newPicto.setAttribute('data-id', id);
 
