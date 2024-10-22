@@ -196,6 +196,84 @@
     </div>
 
     <script>
+        const plannerContent = document.getElementById('planner-content');
+        const pictos = document.querySelectorAll('#edit-pictos .picto');
+
+        const dbName = 'PictoPlannerDB';
+        const storeName = 'pictos';
+        let db;
+
+        const openDatabase = () => {
+            const request = indexedDB.open(dbName, 1);
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                const objectStore = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+            };
+
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                loadPictos();
+            };
+
+            request.onerror = (event) => {
+                console.error('Database error:', event.target.error);
+            };
+        };
+
+        const savePicto = (pictoSrc, pictoTitle) => {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const objectStore = transaction.objectStore(storeName);
+
+            const picto = { src: pictoSrc, title: pictoTitle };
+            objectStore.add(picto);
+
+            transaction.oncomplete = () => {
+                console.log('Picto opgeslagen:', picto);
+            };
+
+            transaction.onerror = (event) => {
+                console.error('Fout bij opslaan:', event.target.error);
+            };
+        };
+
+        const loadPictos = () => {
+            const transaction = db.transaction([storeName], 'readonly');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.getAll();
+
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    addPictoToPlanner(picto.src, picto.title);
+                });
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij ophalen:', event.target.error);
+            };
+        };
+
+        const addPictoToPlanner = (src, title) => {
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.className = 'picto';
+            newPicto.title = title;
+            plannerContent.appendChild(newPicto);
+        };
+
+        pictos.forEach(picto => {
+            picto.addEventListener('click', () => {
+                const pictoSrc = picto.src;
+                const pictoTitle = picto.title;
+
+                addPictoToPlanner(pictoSrc, pictoTitle);
+                savePicto(pictoSrc, pictoTitle);
+            });
+        });
+
+        openDatabase();
+
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
             document.getElementById('planner-container').style.display = 'block';
