@@ -161,6 +161,10 @@
 
     <div id="settings-menu" class="settings-menu">
         <button onclick="toggleSettings()">Sluiten</button>
+        <br><button onclick="removePlanning()" style="border: none; background-color: red;">Verwijder alle picto's uit
+            de planning</button>
+        <br><button onclick="removeUploaded()" style="border: none; background-color: red;">Verwijder alle geüploade
+            picto's</button>
     </div>
 
     <div id="planner-container" style="display: none;">
@@ -212,6 +216,51 @@
 
             request.onerror = (event) => {
                 console.error('Database fout:', event.target.error);
+            };
+        };
+
+        const removePlanning = () => {
+            const transaction = db.transaction(storeName, 'readwrite');
+            const objectStore = transaction.objectStore(storeName);
+
+            const request = objectStore.getAll();
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    objectStore.delete(picto.id);
+                    const pictoElement = plannerContent.querySelector(`img[data-id='${picto.id}']`);
+                    if (pictoElement) {
+                        plannerContent.removeChild(pictoElement);
+                    }
+                });
+                notification('Alle picto\'s uit de planning zijn verwijderd.');
+            };
+
+            request.onerror = (event) => {
+                notification('Fout bij ophalen pictos voor verwijderen:' + event.target.error);
+            };
+        };
+
+        const removeUploaded = () => {
+            const transaction = db.transaction(uploadedStoreName, 'readwrite');
+            const objectStore = transaction.objectStore(uploadedStoreName);
+
+            const request = objectStore.getAll();
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    objectStore.delete(picto.id);
+                    const pictoElement = document.querySelector(`#edit-pictos img[data-id='${picto.id}']`);
+                    if (pictoElement) {
+                        const pictoContainer = pictoElement.parentElement;
+                        document.getElementById('edit-pictos').removeChild(pictoContainer);
+                    }
+                });
+                notification('Alle geüploade picto\'s zijn verwijderd.');
+            };
+
+            request.onerror = (event) => {
+                notification('Fout bij ophalen geüploade pictos voor verwijderen:' + event.target.error);
             };
         };
 
