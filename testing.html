@@ -196,108 +196,108 @@
     </div>
 
     <script>
-const plannerContent = document.getElementById('planner-content');
-const pictos = document.querySelectorAll('#edit-pictos .picto');
+        const plannerContent = document.getElementById('planner-content');
+        const pictos = document.querySelectorAll('#edit-pictos .picto');
 
-const dbName = 'PictoPlannerDB';
-const storeName = 'pictos';
-let db;
+        const dbName = 'PictoPlannerDB';
+        const storeName = 'pictos';
+        let db;
 
-const openDatabase = () => {
-    const request = indexedDB.open(dbName, 1);
+        const openDatabase = () => {
+            const request = indexedDB.open(dbName, 1);
 
-    request.onupgradeneeded = (event) => {
-        db = event.target.result;
-        const objectStore = db.createObjectStore(storeName, { keyPath: 'id' });
-    };
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                const objectStore = db.createObjectStore(storeName, { keyPath: 'id' });
+            };
 
-    request.onsuccess = (event) => {
-        db = event.target.result;
-        loadPictos();
-    };
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                loadPictos();
+            };
 
-    request.onerror = (event) => {
-        console.error('Database error:', event.target.error);
-    };
-};
+            request.onerror = (event) => {
+                console.error('Database error:', event.target.error);
+            };
+        };
 
-const savePicto = (pictoSrc, pictoTitle) => {
-    const transaction = db.transaction([storeName], 'readwrite');
-    const objectStore = transaction.objectStore(storeName);
+        const savePicto = (pictoSrc, pictoTitle) => {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const objectStore = transaction.objectStore(storeName);
 
-    const picto = { id: Date.now(), src: pictoSrc, title: pictoTitle };
-    objectStore.add(picto);
+            const picto = { id: Date.now(), src: pictoSrc, title: pictoTitle };
+            objectStore.add(picto);
 
-    transaction.oncomplete = () => {
-        console.log('Picto opgeslagen:', picto);
-    };
+            transaction.oncomplete = () => {
+                console.log('Picto opgeslagen:', picto);
+            };
 
-    transaction.onerror = (event) => {
-        console.error('Fout bij opslaan:', event.target.error);
-    };
-};
+            transaction.onerror = (event) => {
+                console.error('Fout bij opslaan:', event.target.error);
+            };
+        };
 
-const loadPictos = () => {
-    const transaction = db.transaction([storeName], 'readonly');
-    const objectStore = transaction.objectStore(storeName);
-    const request = objectStore.getAll();
+        const loadPictos = () => {
+            const transaction = db.transaction([storeName], 'readonly');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.getAll();
 
-    request.onsuccess = (event) => {
-        const pictos = event.target.result;
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    addPictoToPlanner(picto.src, picto.title, picto.id);
+                });
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij ophalen:', event.target.error);
+            };
+        };
+
+        const addPictoToPlanner = (src, title, id) => {
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.className = 'picto';
+            newPicto.title = title;
+            newPicto.setAttribute('data-id', id);
+
+            // Event listener voor het verwijderen van de picto
+            newPicto.addEventListener('click', () => {
+                removePictoFromPlanner(id, newPicto);
+            });
+
+            plannerContent.appendChild(newPicto);
+        };
+
+        const removePictoFromPlanner = (id, pictoElement) => {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const objectStore = transaction.objectStore(storeName);
+
+            // Verwijder de picto uit de database
+            const request = objectStore.delete(id);
+
+            request.onsuccess = () => {
+                console.log('Picto verwijderd uit database:', id);
+                // Verwijder de picto uit de DOM
+                plannerContent.removeChild(pictoElement);
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij verwijderen:', event.target.error);
+            };
+        };
+
         pictos.forEach(picto => {
-            addPictoToPlanner(picto.src, picto.title, picto.id);
+            picto.addEventListener('click', () => {
+                const pictoSrc = picto.src;
+                const pictoTitle = picto.title;
+
+                addPictoToPlanner(pictoSrc, pictoTitle, Date.now());
+                savePicto(pictoSrc, pictoTitle);
+            });
         });
-    };
 
-    request.onerror = (event) => {
-        console.error('Fout bij ophalen:', event.target.error);
-    };
-};
-
-const addPictoToPlanner = (src, title, id) => {
-    const newPicto = document.createElement('img');
-    newPicto.src = src;
-    newPicto.className = 'picto';
-    newPicto.title = title;
-    newPicto.setAttribute('data-id', id);
-
-    // Event listener voor het verwijderen van de picto
-    newPicto.addEventListener('click', () => {
-        removePictoFromPlanner(id, newPicto);
-    });
-
-    plannerContent.appendChild(newPicto);
-};
-
-const removePictoFromPlanner = (id, pictoElement) => {
-    const transaction = db.transaction([storeName], 'readwrite');
-    const objectStore = transaction.objectStore(storeName);
-    
-    // Verwijder de picto uit de database
-    const request = objectStore.delete(id);
-
-    request.onsuccess = () => {
-        console.log('Picto verwijderd uit database:', id);
-        // Verwijder de picto uit de DOM
-        plannerContent.removeChild(pictoElement);
-    };
-
-    request.onerror = (event) => {
-        console.error('Fout bij verwijderen:', event.target.error);
-    };
-};
-
-pictos.forEach(picto => {
-    picto.addEventListener('click', () => {
-        const pictoSrc = picto.src;
-        const pictoTitle = picto.title;
-
-        addPictoToPlanner(pictoSrc, pictoTitle, Date.now());
-        savePicto(pictoSrc, pictoTitle);
-    });
-});
-
-openDatabase();
+        openDatabase();
 
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
