@@ -80,14 +80,6 @@
             user-select: none;
         }
 
-        #edit-pictos {
-            display: none;
-            align-content: left;
-            text-align: left;
-            justify-content: left;
-            margin-left: 20px;
-        }
-
         .settings-menu input {
             margin-left: 0px;
             margin-top: 5px;
@@ -131,9 +123,63 @@
             }
         }
 
-        .uploaded-picto {
-            position: relative;
-            display: inline-block;
+        @media (max-width: 1299px) {
+            #edit-pictos {
+                display: none;
+                align-content: left;
+                text-align: left;
+                justify-content: left;
+            }
+
+            #planner-container.visible {
+                display: block;
+            }
+        }
+
+        @media (min-width: 1300px) {
+            #edit-pictos {
+                display: none;
+                align-content: left;
+                text-align: left;
+                justify-content: left;
+                position: fixed;
+                right: 20px;
+                top: 20px;
+                bottom: 20px;
+                border-left: 0px var(--h1234-color) solid;
+                border-radius: var(--border-radius3);
+                padding: 25px;
+                background-color: var(--bg-accent-color2);
+                min-width: 620px;
+                max-width: 620px;
+                width: auto;
+                overflow-y: scroll;
+            }
+
+            #planner-container.visible {
+                display: flex;
+            }
+
+            #edit-pictos .picto {
+                width: 100px;
+                height: 100px;
+            }
+
+            #left-side {
+                width: 100%;
+            }
+
+            #left-side.editing {
+                width: calc(100% - 670px);
+            }
+        }
+
+        #edit-pictos::-webkit-scrollbar {
+            display: none;
+        }
+
+        .perm-picto {
+            margin: 3px;
         }
     </style>
 </head>
@@ -161,22 +207,31 @@
 
     <div id="settings-menu" class="settings-menu">
         <button onclick="toggleSettings()">Sluiten</button>
-        <br><button onclick="removePlanning()" style="border: none; background-color: red;">Verwijder alle picto's uit
-            de planning</button>
-        <br><button onclick="removeUploaded()" style="border: none; background-color: red;">Verwijder alle geüploade
-            picto's</button>
     </div>
 
-    <div id="planner-container" style="display: none;">
-        <h1 id="title" style="margin-bottom: -10px;">TC_tam Picto Planner</h1>
+    <div id="planner-container">
+        <div id="left-side">
+            <h1 id="title" style="margin-bottom: -10px; margin-top: 60px;">TC_tam Picto Planner</h1>
 
-        <div id="planner-content"></div>
+            <div id="planner-content"></div>
+        </div>
 
-        <div id="edit-pictos" style="display: none;">
-            <button id="upload-picto-button">Upload een picto</button>
+        <div id="edit-pictos">
+            <div style="display: flex;">
+                <button onclick="removePlanning()" style="flex: 1; border: none; background-color: red;">Verwijder de
+                    planning</button>
+                <button onclick="removeUploaded()" style="flex: 1; border: none; background-color: red;">Verwijder
+                    geüploade picto's</button>
+            </div>
+            <br>
+
+            <img class="picto perm-picto" title="TC_tam" src="/favicon.ico">
+            <img class="picto perm-picto" title="Google" src="https://google.com/favicon.ico">
+
+            <h3>Geüploade picto's</h3>
+            <button style="margin-bottom: 5px;" id="upload-picto-button">Upload een picto</button>
             <input type="file" id="upload-picto-input" accept="image/*" multiple style="display: none;" />
-            <br><img title="TC_tam" class="picto" src="/favicon.ico">
-            <img title="Google" class="picto" src="https://google.com/favicon.ico">
+            <div id="uploaded-pictos"></div>
         </div>
 
         <button id="settings-button" style="position: fixed; top: 5px; left: 5px;"
@@ -250,10 +305,10 @@
                 const pictos = event.target.result;
                 pictos.forEach(picto => {
                     objectStore.delete(picto.id);
-                    const pictoElement = document.querySelector(`#edit-pictos img[data-id='${picto.id}']`);
+                    const pictoElement = document.querySelector(`#uploaded-pictos img[data-id='${picto.id}']`);
                     if (pictoElement) {
                         const pictoContainer = pictoElement.parentElement;
-                        document.getElementById('edit-pictos').removeChild(pictoContainer);
+                        document.getElementById('uploaded-pictos').removeChild(pictoContainer);
                     }
                 });
                 notification('Alle geüploade picto\'s zijn verwijderd.');
@@ -376,7 +431,7 @@
 
             pictoContainer.appendChild(newPicto);
             pictoContainer.appendChild(removeButton);
-            document.getElementById('edit-pictos').appendChild(pictoContainer);
+            document.getElementById('uploaded-pictos').appendChild(pictoContainer);
         };
 
         const removeUploadedPicto = (id, pictoElement) => {
@@ -387,7 +442,7 @@
 
             request.onsuccess = () => {
                 console.log('Uploaded Picto verwijderd uit database:', id);
-                document.getElementById('edit-pictos').removeChild(pictoElement);
+                document.getElementById('uploaded-pictos').removeChild(pictoElement);
             };
 
             request.onerror = (event) => {
@@ -487,7 +542,7 @@
 
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
-            document.getElementById('planner-container').style.display = 'block';
+            document.getElementById('planner-container').classList.add('visible');
             const pin = localStorage.getItem('pictoPlannerPin');
             if (!pin) {
                 editPlanner();
@@ -508,25 +563,31 @@
             } else {
                 document.getElementById('edit-button').style.display = 'none';
                 document.getElementById('edit-pictos').style.display = 'block';
+                document.getElementById('done-editing-button').style.display = 'block';
+            }
 
-                const storedPin = localStorage.getItem('pictoPlannerPin');
-                if (storedPin) {
-                    document.getElementById('done-editing-button').style.display = 'block';
-                }
+            const editButton = document.getElementById('edit-button');
+            const leftSide = document.getElementById('left-side');
+
+            if (editButton.style.display === 'none') {
+                leftSide.classList.add('editing');
+            } else {
+                leftSide.classList.remove('editing');
             }
         }
 
         function doneEditingPlanner() {
-            const pin = localStorage.getItem('pictoPlannerPin');
-            if (pin) {
-                document.getElementById('edit-button').style.display = 'block';
-            }
-
-            document.getElementById('done-editing-button').style.display = 'none';
+            document.getElementById('edit-button').style.display = 'block';
             document.getElementById('edit-pictos').style.display = 'none';
+            document.getElementById('done-editing-button').style.display = 'none';
 
-            if (!pin) {
-                document.getElementById('edit-button').click();
+            const editButton = document.getElementById('edit-button');
+            const leftSide = document.getElementById('left-side');
+
+            if (editButton.style.display === 'none') {
+                leftSide.classList.add('editing');
+            } else {
+                leftSide.classList.remove('editing');
             }
         }
 
