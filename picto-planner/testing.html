@@ -393,8 +393,10 @@
         const pictos = document.querySelectorAll('#edit-pictos .picto');
 
         const dbName = 'PictoPlannerDB';
-        const storeName = 'pictos';
-        const uploadedStoreName = 'uploadedPictos';
+        const pictosDB = 'pictos';
+        const uploadedPictosDB = 'uploadedPictos';
+        const settingsDB = 'settings';
+        const testDB = 'test';
         let db;
 
         const openDatabase = () => {
@@ -402,9 +404,9 @@
 
             request.onupgradeneeded = (event) => {
                 db = event.target.result;
-                db.createObjectStore(storeName, { keyPath: 'id' });
-                db.createObjectStore(uploadedStoreName, { keyPath: 'id' });
-                console.log("Database geüpgraded en stores aangemaakt");
+                db.createObjectStore(pictosDB, { keyPath: 'id' });
+                db.createObjectStore(uploadedPictosDB, { keyPath: 'id' });
+                db.createObjectStore(settingsDB, { keyPath: 'id' });
             };
 
             request.onsuccess = (event) => {
@@ -421,8 +423,8 @@
 
         const removePlanning = () => {
             if (confirm('Weet je zeker dat je alle picto\'s uit de planning wilt verwijderen?')) {
-                const transaction = db.transaction(storeName, 'readwrite');
-                const objectStore = transaction.objectStore(storeName);
+                const transaction = db.transaction(pictosDB, 'readwrite');
+                const objectStore = transaction.objectStore(pictosDB);
 
                 const request = objectStore.getAll();
                 request.onsuccess = (event) => {
@@ -445,8 +447,8 @@
 
         const removeUploaded = () => {
             if (confirm('Weet je zeker dat je alle geüploade picto\'s wilt verwijderen?')) {
-                const transaction = db.transaction(uploadedStoreName, 'readwrite');
-                const objectStore = transaction.objectStore(uploadedStoreName);
+                const transaction = db.transaction(uploadedPictosDB, 'readwrite');
+                const objectStore = transaction.objectStore(uploadedPictosDB);
 
                 const request = objectStore.getAll();
                 request.onsuccess = (event) => {
@@ -477,9 +479,9 @@
 
             request.onsuccess = () => {
                 console.log('Picto opgeslagen:', picto);
-                if (store === uploadedStoreName) {
+                if (store === uploadedPictosDB) {
                     addUploadedPictoToEditSection(pictoSrc, pictoTitle, picto.id);
-                } else if (store === storeName) {
+                } else if (store === pictosDB) {
                     addPictoToPlanner(pictoSrc, pictoTitle, picto.id);
                 }
             };
@@ -490,8 +492,8 @@
         };
 
         const loadPictos = () => {
-            const transaction = db.transaction([storeName], 'readonly');
-            const objectStore = transaction.objectStore(storeName);
+            const transaction = db.transaction([pictosDB], 'readonly');
+            const objectStore = transaction.objectStore(pictosDB);
             const request = objectStore.getAll();
 
             request.onsuccess = (event) => {
@@ -507,8 +509,8 @@
         };
 
         const loadUploadedPictos = () => {
-            const transaction = db.transaction([uploadedStoreName], 'readonly');
-            const objectStore = transaction.objectStore(uploadedStoreName);
+            const transaction = db.transaction([uploadedPictosDB], 'readonly');
+            const objectStore = transaction.objectStore(uploadedPictosDB);
             const request = objectStore.getAll();
 
             request.onsuccess = (event) => {
@@ -575,7 +577,7 @@
             });
 
             newPicto.addEventListener('click', () => {
-                savePicto(src, title, storeName);
+                savePicto(src, title, pictosDB);
             });
 
             pictoContainer.appendChild(newPicto);
@@ -584,8 +586,8 @@
         };
 
         const removeUploadedPicto = (id, pictoElement) => {
-            const transaction = db.transaction([uploadedStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(uploadedStoreName);
+            const transaction = db.transaction([uploadedPictosDB], 'readwrite');
+            const objectStore = transaction.objectStore(uploadedPictosDB);
 
             const request = objectStore.delete(id);
 
@@ -600,8 +602,8 @@
         };
 
         const removePictoFromPlanner = (id, pictoElement) => {
-            const transaction = db.transaction([storeName], 'readwrite');
-            const objectStore = transaction.objectStore(storeName);
+            const transaction = db.transaction([pictosDB], 'readwrite');
+            const objectStore = transaction.objectStore(pictosDB);
 
             const request = objectStore.delete(id);
 
@@ -650,7 +652,7 @@
                     const pictoSrc = canvas.toDataURL('image/jpeg');
                     const pictoTitle = file.name;
 
-                    savePicto(pictoSrc, pictoTitle, uploadedStoreName);
+                    savePicto(pictoSrc, pictoTitle, uploadedPictosDB);
 
                     const progressPercentage = Math.round((uploadedFiles / totalFiles) * 100);
                     notification(`Upload progress: ${progressPercentage}%`);
@@ -683,7 +685,7 @@
                 const pictoSrc = picto.src;
                 const pictoTitle = picto.title;
 
-                savePicto(pictoSrc, pictoTitle, storeName);
+                savePicto(pictoSrc, pictoTitle, pictosDB);
             });
         });
 
