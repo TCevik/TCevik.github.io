@@ -1,480 +1,916 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<title>TC_tam Picto Planner</title>
-	<link rel="stylesheet" href="/style.css">
-	<script src="/script.js"></script>
-	<script src="/picto-planner/headscript.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam Picto Planner</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
 
-	<style>
-		.container {
-			display: flex;
-			align-items: center;
-			height: 100vh;
-			flex-direction: column;
-		}
+    <style>
+        #planner-container {
+            display: none;
+        }
 
-		#parent-section {
-			display: flex;
-			justify-content: center;
-			flex-wrap: wrap;
-			margin-bottom: 20px;
-		}
+        .setup-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            border-radius: var(--border-radius2);
+            overflow-y: auto;
+        }
 
-		.picto {
-			width: 100px;
-			height: 100px;
-			border: 1px solid var(--text-color);
-			border-radius: 5px;
-			margin: 5px;
-			display: inline-flex;
-			justify-content: center;
-			align-items: center;
-			cursor: pointer;
-			background-position: center;
-			background-size: 100px 100px;
-			color: transparent;
-			user-select: none;
-			position: relative;
-		}
+        .settings-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            border-radius: var(--border-radius2);
+            text-align: left;
+            align-content: left;
+            justify-content: left;
+            overflow-y: auto;
+        }
 
-		.remove-btn {
-			position: absolute;
-			top: 2px;
-			right: 2px;
-			background-color: red;
-			border: 2px black solid;
-			color: white;
-			border-radius: 50%;
-			width: 30px;
-			height: 30px;
-			cursor: pointer;
-			font-size: 12px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
+        .setup-menu button {
+            flex: 1;
+            height: 100%;
+        }
 
-		#child-section {
-			display: flex;
-			flex-wrap: wrap;
-		}
+        #setupButtons {
+            display: flex;
+        }
 
-		#delete-all-button {
-			position: fixed;
-			background-color: red;
-			top: 5px;
-			right: 5px;
-			border-color: red;
-		}
+        .no-arrows::-webkit-inner-spin-button,
+        .no-arrows::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-		.custom-element {
-			font-size: 75px;
-			font-weight: 900;
-			position: absolute;
-			left: 10px;
-			top: 60px;
-			user-select: none;
-			color: red;
-			cursor: move;
-			transform: 0.2;
-		}
+        #planner-content {
+            border-radius: var(--border-radius2);
+            padding: 15px;
+            margin: 25px;
+        }
 
-		.custom-element:click {
-			cursor: none;
-			scale: 1.1em;
-		}
-	</style>
+        .picto {
+            width: 125px;
+            height: 125px;
+            border: 1px var(--text-color) solid;
+            padding: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+            user-select: none;
+        }
+
+        .settings-menu input {
+            margin-left: 0px;
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+
+        #done-editing-button {
+            display: none;
+        }
+
+        @media (orientation: portrait) {
+            .setup-menu {
+                width: 85%;
+                height: 93%;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .setup-menu button {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .settings-menu {
+                width: 85%;
+                height: 93%;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #setupButtons {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 1299px) {
+            #edit-pictos {
+                background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+                display: none;
+                box-shadow: 0px 0px 10px var(--h1234-color);
+                border-radius: var(--border-radius3);
+                padding-top: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            #planner-container.visible {
+                display: block;
+            }
+        }
+
+        @media (min-width: 1300px) {
+            #edit-pictos {
+                background: linear-gradient(135deg, var(--bg-accent-color2), var(--bg-accent-color1));
+                display: none;
+                align-content: left;
+                text-align: left;
+                justify-content: left;
+                position: fixed;
+                right: 20px;
+                top: 20px;
+                bottom: 20px;
+                border-left: 0px var(--h1234-color) solid;
+                border-radius: var(--border-radius3);
+                padding: 25px;
+                background-color: var(--bg-accent-color2);
+                min-width: 620px;
+                max-width: 620px;
+                width: auto;
+                overflow-y: scroll;
+                box-shadow: 0px 0px 10px var(--h1234-color);
+            }
+
+            #planner-container.visible {
+                display: flex;
+            }
+
+            #edit-pictos .picto {
+                width: 100px;
+                height: 100px;
+            }
+
+            #left-side {
+                width: 100%;
+            }
+
+            #left-side.editing {
+                width: calc(100% - 670px);
+            }
+        }
+
+        #edit-pictos::-webkit-scrollbar {
+            display: none;
+        }
+
+        #edit-pictos .picto {
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        #edit-pictos .picto:active {
+            transform: scale(1.1);
+        }
+
+        .perm-picto {
+            margin: 3px;
+        }
+    </style>
 </head>
 
 <body>
-	<div class="container">
-		<h2 style="margin-top: 50px; margin-bottom: -20px;">TC_tam Picto Planning</h2>
-		<h3 id="date-time">De datum van vandaag.</h3>
-		<button style="margin-bottom: 60px;" onclick="speakDateTime()">Voorlezen</button>
-		<button style="margin-bottom: 60px;" onclick="window.location.href='/tools/time-timer'">Time Timer</button>
+    <div id="setup-menu" class="setup-menu">
+        <h2>Laten we de planner instellen.</h2>
+        <div id="pinOrNot">
+            <h4>Wil je een pincode instellen?</h4>
+            <p style="margin: 5px;">Een pincode zorgt ervoor dat je kind de planning niet zomaar kan veranderen.</p>
+            <div id="setupButtons">
+                <button onclick="setupCreatePin()">Ja, stel een code in!</button>
+                <button onclick="setupCompleted()">Nee, ga verder zonder code!</button>
+            </div>
+        </div>
 
-		<div id="child-section"></div>
-		<h2 style="margin-top: 100px;">BeheerTools</h2>
-		<h4 style="margin-top: -10px; margin-bottom: 0px;">Pictogrammen geleverd door <a href="https://www.sclera.be"
-				target="_blank">Sclera</a>.</h4>
+        <div id="pinSetup" style="display:none;">
+            <h4>Voer een pincode in:</h4>
+            <input autocomplete="off" type="text" id="pincode" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button onclick="pincode('set', 'setup', document.getElementById('pincode').value)">Pincode
+                instellen</button>
+        </div>
+    </div>
 
-		<div id="parent-section">
-			<h3>Dagen Van De Week:</h3>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kleur/maandag%20groen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kleur/maandag%20groen.png')">Maandag
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/dinsdag%20geel.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/dinsdag%20geel.png')">Dinsdag</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kleur/woensdag%20rood.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kleur/woensdag%20rood.png')">Woensdag
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kleur/donderdag%20blauw.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kleur/donderdag%20blauw.png')">
-				Donderdag</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kleur/vrijdag%20oranje.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kleur/vrijdag%20oranje.png')">Vrijdag
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kleur/zaterdag%20grijs2.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kleur/zaterdag%20grijs2.png')">
-				Zaterdag</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kleur/zondag%20ongekleurd.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kleur/zondag%20ongekleurd.png')">
-				Zondag</div>
-		</div>
+    <div id="settings-menu" class="settings-menu">
+        <button onclick="toggleSettings()">Sluiten</button>
 
-		<div id="parent-section">
-			<h3>Speciale Activiteiten:</h3>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/verjaardag.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/verjaardag.png')">Koningsdag</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/pasen%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/pasen%202.png')">Pasen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/samen%20vieren.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/samen%20vieren.png')">Verjaardag</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/vuurwerk.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/vuurwerk.png')">Oud & Nieuw</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/geschenk.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/geschenk.png')">Cadeau</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/sinterklaas.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/sinterklaas.png')">Sinterklaas</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/schoen%20zetten.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/schoen%20zetten.png')">Schoentje
-				zetten</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/kerstmis.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kerstmis.png')">Kerstmis</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/bungalow.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/bungalow.png')">Vakantiehuisje Boeken
-			</div>
-			<div class="picto" style="background-image: url(/picto-planner/speciale-activiteiten/halloween.png);"
-				onclick="addToChild(this, '/picto-planner/speciale-activiteiten/halloween.png')">Halloween</div>
-		</div>
+        <h4>Pincode:</h4>
+        <input autocomplete="off" type="text" id="pincodeS" placeholder="Pincode (laat leeg om uit te schakelen)"
+            maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows"
+            style="width: 300px; max-width: 100%;">
+        <button onclick="pincode('set', 'settings', document.getElementById('pincodeS').value)">Pincode
+            instellen</button>
 
-		<div id="parent-section">
-			<h3>Verzorging:</h3>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/nagel%20knippen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/nagel%20knippen.png')">Nagels Knippen
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/kapper%20bezoek.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kapper%20bezoek.png')">Haren Knippen
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/tanden%20poetsen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/tanden%20poetsen.png')">Tanden Poetsen
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/gel%20in%20haar%20doen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/gel%20in%20haar%20doen.png')">Gel In
-				Haar Doen
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/handen%20wassen%20klassieke%20kraan%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/handen%20wassen%20klassieke%20kraan%202.png')">
-				Handen Wassen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/spuit.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/spuit.png')">Vaccinatie / Bloedprikken
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/voeten%20wassen%20klassieke%20kraan.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/voeten%20wassen%20klassieke%20kraan.png')">
-				Voeten Wassen</div>
-		</div>
+        <br><button onclick="clearDatabase()" style="border: none; background-color: red;">Reset de hele picto
+            planner</button>
+    </div>
 
-		<div id="parent-section">
-			<h3>Activiteiten Buitenhuis:</h3>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/park.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/park.png')">Naar Het Park</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/winkelen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/winkelen.png')">Naar De Winkel</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/ziekenhuis.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/ziekenhuis.png')">Naar Het Ziekenhuis
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/apotheek.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/apotheek.png')">Naar De Apotheek</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/markt%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/markt%202.png')">Naar De Markt</div>
-			<div class="picto" style="background-image: url(https://sclera.be/resources/pictos/museum.png);"
-				onclick="addToChild(this, 'https://sclera.be/resources/pictos/museum.png')">Naar Het Museum</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/bakker%202%20t.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/bakker%202%20t.png')">Naar De Bakker
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/vliegveld.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/vliegveld.png')">Naar Het Vliegveld
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/refter%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/refter%202.png')">Naar Het Restaurant
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/fitness%20center.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/fitness%20center.png')">Naar De
-				Sportschool
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/boerderij.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/boerderij.png')">Naar De Boerderij
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/speeltuin.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/speeltuin.png')">Naar De Speeltuin
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/wasstraat%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/wasstraat%202.png')">Naar De Autowas
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/brievenbus%203.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/brievenbus%203.png')">Naar De
-				Brievenbus /
-				Post Versturen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/huis.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/huis.png')">Naar Huis</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/strand.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/strand.png')">Naar Het Strand</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/kermis.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kermis.png')">Naar De Kermis</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/zwemmen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/zwemmen.png')">Zwemmen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/picnic.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/picnic.png')">PickNick</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/school%20opendeurdag.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/school%20opendeurdag.png')">School
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/wandelen%20samen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/wandelen%20samen.png')">Wandelen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/kledingwinkel.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/kledingwinkel.png')">Naar De
-				Kledingwinkel
-			</div>
-			<div class="picto" style="background-image: url(https://sclera.be/resources/pictos/cinema.png);"
-				onclick="addToChild(this, 'https://sclera.be/resources/pictos/cinema.png')">Naar De Bioscoop</div>
-			<div class="picto" style="background-image: url(/picto-planner/activiteiten-buitenhuis/buitenspelen.jpg);"
-				onclick="addToChild(this, '/picto-planner/activiteiten-buitenhuis/buitenspelen.jpg')">Buitenspelen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/waar.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/waar.png')">Naar Een Plek Waar Geen
-				Picto Van
-				Is</div>
-		</div>
+    <div id="planner-container">
+        <div id="left-side">
+            <h1 id="title" style="margin-bottom: -10px; margin-top: 60px;">TC_tam Picto Planner</h1>
+            <h4 style="font-size: 1em;">Pictogrammen geleverd door sclera.be</h4>
 
-		<div id="parent-section">
-			<h3>Activiteiten Binnenhuis:</h3>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/computer%20alleen%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/computer%20alleen%202.png')">Alleen
-				PlayStation</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/computer%20samen%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/computer%20samen%202.png')">Samen
-				PlayStation
-			</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/zelfstandig%20werken.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/zelfstandig%20werken.png')">Alleen
-				Spelen
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/spelen%20samen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/spelen%20samen.png')">Samen Spelen
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/fruit.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/fruit.png')">Fruit</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/ontbijt.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/ontbijt.png')">Ontbijt</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/middagmaal.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/middagmaal.png')">Middageten</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/avondmaal.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/avondmaal.png')">Avondeten</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/wakker%20worden.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/wakker%20worden.png')">Opstaan</div>
-			<div class="picto"
-				style="background-image: url(https://i.pinimg.com/originals/4a/0e/49/4a0e49ec39f82df9a267792ff3883012.jpg);"
-				onclick="addToChild(this, 'https://i.pinimg.com/originals/4a/0e/49/4a0e49ec39f82df9a267792ff3883012.jpg')">
-				Naar
-				Bed</div>
-			<div class="picto"
-				style="background-image: url(https://globalsymbols.com/uploads/production/image/imagefile/36891/81_36892_e972b26a-2c5a-4a78-a92a-60a9af368f29.png);"
-				onclick="addToChild(this, 'https://globalsymbols.com/uploads/production/image/imagefile/36891/81_36892_e972b26a-2c5a-4a78-a92a-60a9af368f29.png')">
-				Op De Tablet</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/pictogrammen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/pictogrammen.png')">Picto's doen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/koken%203.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/koken%203.png')">Koken</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/bureauwerk%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/bureauwerk%202.png')">Bureauwerk</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/tv%20kijken%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/tv%20kijken%202.png')">TV Kijken</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/tekenen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/tekenen.png')">Tekenen</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/drank%20en%20koekje%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/drank%20en%20koekje%202.png')">
-				3-Uurtje</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/bad%20douche.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/bad%20douche.png')">In Bad</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/zwijgen.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/zwijgen.png')">Stiltetijd</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/huiswerk%20maken%20stil%20zijn.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/huiswerk%20maken%20stil%20zijn.png')">
-				Huiswerk
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/time%20timer.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/time%20timer.png')">Time Timer</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/verhuizen%20in%20dozen%20steken.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/verhuizen%20in%20dozen%20steken.png')">
-				Opruimen</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/schoonmaken.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/schoonmaken.png')">Schoonmaken</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/barbeque.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/barbeque.png')">Barbeque</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/boek.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/boek.png')">Boek Lezen</div>
-			<div class="picto"
-				style="background-image: url(/picto-planner/activiteiten-binnenhuis/rugzak-inpakken.png);"
-				onclick="addToChild(this, '/picto-planner/activiteiten-binnenhuis/rugzak-inpakken.png')">Boek Lezen
-			</div>
-			<div class="picto" style="background-image: url(/picto-planner/activiteiten-binnenhuis/klok.png);"
-				onclick="addToChild(this, '/picto-planner/activiteiten-binnenhuis/klok.png')">Boek Lezen</div>
-			<div class="picto" style="background-image: url(/picto-planner/activiteiten-binnenhuis/gym.png);"
-				onclick="addToChild(this, '/picto-planner/activiteiten-binnenhuis/gym.png')">Boek Lezen</div>
-		</div>
+            <div id="planner-content"></div>
+        </div>
 
-		<div id="parent-section">
-			<h3>Vervoer:</h3>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/taxi.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/taxi.png')">Met De Taxi</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/auto%203.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/auto%203.png')">Met De Auto</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/tandem.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/tandem.png')">Met De Tandem</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/treinstation.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/treinstation.png')">Treinstation</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/trein%20modern.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/trein%20modern.png')">Met De Trein
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/metro.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/metro.png')">Met De Metro</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/tram%20tec.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/tram%20tec.png')">Met De Tram</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/vliegtuig%202.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/vliegtuig%202.png')">Met Het Vliegtuig
-			</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/moto.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/moto.png')">Met De Motor</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/boot%204.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/boot%204.png')">Met De Boot</div>
-			<div class="picto"
-				style="background-image: url(https://www.sclera.be/resources/pictos/openbaar%20vervoer.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/openbaar%20vervoer.png')">Met Ander
-				Openbaar
-				Vervoer</div>
-			<div class="picto" style="background-image: url(https://www.sclera.be/resources/pictos/ov%20chipkaart.png);"
-				onclick="addToChild(this, 'https://www.sclera.be/resources/pictos/ov%20chipkaart.png')">Iets Met De
-				OV-Chipkaart
-			</div>
-		</div>
+        <div id="edit-pictos">
+            <div style="display: flex;">
+                <button onclick="removePlanning()" style="flex: 1; border: none; background-color: red;">Verwijder de
+                    planning</button>
+                <button onclick="removeUploaded()" style="flex: 1; border: none; background-color: red;">Verwijder
+                    geüploade picto's</button>
+            </div>
+            <br>
 
-		<div id="parent-section">
-			<h3>Eigen Picto's</h3>
-			<input type="file" id="imageInput" accept="image/*">
-			<br>
-			<div id="custompictos">
+            <h3>Dagen van de week:</h3>
+            <img class="picto perm-picto" src="/picto-planner/dagen/maandag.png" title="Maandag">
+            <img class="picto perm-picto" src="/picto-planner/dagen/dinsdag.png" title="Dinsdag">
+            <img class="picto perm-picto" src="/picto-planner/dagen/woensdag.png" title="Woensdag">
+            <img class="picto perm-picto" src="/picto-planner/dagen/donderdag.png" title="Donderdag">
+            <img class="picto perm-picto" src="/picto-planner/dagen/vrijdag.png" title="Vrijdag">
+            <img class="picto perm-picto" src="/picto-planner/dagen/zaterdag.png" title="Zaterdag">
+            <img class="picto perm-picto" src="/picto-planner/dagen/zondag.png" title="Zondag">
 
-			</div>
-		</div>
+            <h3>Speciale activiteiten:</h3>
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/verjaardag.png" title="Koningsdag">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/pasen.png" title="Pasen">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/samen-vieren.png"
+                title="Verjaardag">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/vuurwerk.png" title="Oud en nieuw">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/geschenk.png" title="Cadeautje">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/sinterklaas.png"
+                title="Sinterklaas">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/schoen-zetten.png"
+                title="Schoen zetten">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/kerstmis.png" title="Kerst">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/bungalow.png"
+                title="Vakantiehuisje">
+            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/halloween.png" title="Halloween">
 
-		<button id="delete-all-button" onclick="deleteAllPictos()">Verwijder alle picto's</button>
-		<script src="/picto-planner/bodyscript.js"></script>
+            <h3>Verzorging:</h3>
+            <img class="picto perm-picto" src="/picto-planner/verzorging/nagel-knippen.png" title="Nagels knippen">
+            <img class="picto perm-picto" src="/picto-planner/verzorging/kapper.png" title="Haren knippen">
+            <img class="picto perm-picto" src="/picto-planner/verzorging/tanden-poetsen.png" title="Tanden poetsen">
+            <img class="picto perm-picto" src="/picto-planner/verzorging/gel-haar.png" title="Haren doen">
+            <img class="picto perm-picto" src="/picto-planner/verzorging/handen-wassen.png" title="Handen wassen">
+            <img class="picto perm-picto" src="/picto-planner/verzorging/spuit.png" title="Prik">
+            <img class="picto perm-picto" src="/picto-planner/verzorging/voeten-wassen.png" title="Voeten wassen">
 
-		<script>
-			document.getElementById('imageInput').addEventListener('change', function () {
-				var fileInput = document.getElementById('imageInput');
-				var file = fileInput.files[0];
+            <h3>Buitenactiviteiten:</h3>
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/park.png" title="Naar het park">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/winkelen.png"
+                title="Naar de winkel">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/ziekenhuis.png"
+                title="Naar het ziekenhuis">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/apotheek.png"
+                title="Naar de apotheek">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/markt.png" title="Naar de markt">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/museum.png"
+                title="Naar het museum">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/bakker.png"
+                title="Naar de bakker">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/vliegveld.png"
+                title="Naar het vliegveld">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/restaurant.png"
+                title="Maar het restaurant">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/fitness-center.png"
+                title="Naar de sportschool">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/boerderij.png"
+                title="Naar de boederij">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/speeltuin.png"
+                title="Naar de speeltuin">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/wasstraat.png"
+                title="Naar de wasstraat">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/brievenbus.png"
+                title="Post versturen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/huis.png" title="Naar huis">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/strand.png"
+                title="Naar het strand">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/kermis.png"
+                title="Naar de kermis">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/zwemmen.png"
+                title="Naar het zwembad">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/picnic.png" title="Picknicken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/school.png" title="Naar school">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/wandelen.png" title="Wandelen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/kledingwinkel.png"
+                title="Naar de kledingwinkel">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/cinema.png"
+                title="Naar de bioscoop">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/buitenspelen.jpg"
+                title="Buitenspelen">
 
-				if (file) {
-					var reader = new FileReader();
-					reader.onload = function (event) {
-						var imageUrl = event.target.result;
+            <h3>Binnenactiviteiten:</h3>
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/computer-alleen.png"
+                title="Alleen gamen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/computer-samen.png"
+                title="Samen gamen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/spelen-alleen.png"
+                title="Alleen spelen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/spelen-samen.png"
+                title="Samen spelen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/fruit.png" title="Fruit eten">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/ontbijt.png" title="Ontbijt">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/middagmaal.png" title="Lunch">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/avondmaal.png" title="Avondeten">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/opstaan.png" title="Opstaan">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/slapen.jpg" title="Slapen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tablet.png"
+                title="Spelen op de tablet ">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/pictogrammen.png"
+                title="Picto's klaarmaken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/koken.png" title="Koken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/bureauwerk.png" title="Studeren">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tv.png" title="TV kijken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tekenen.png" title="Tekenen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tussendoortje.png"
+                title="Tussendoortje">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/bad.png" title="Douchen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/zwijgen.png" title="Stil zijn">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/huiswerk-stil.png"
+                title="Stil werken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/timetimer.png" title="Time timer">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/opruimen.png" title="Opruimen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/schoonmaken.png"
+                title="Schoonmaken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/barbeque.png" title="Barbecueën">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/boek.png" title="Boekje lezen">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/rugzak-inpakken.png"
+                title="Tas inpakken">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/klok.png" title="Klok">
+            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/gym.png" title="Gymmen">
 
-						var newDiv = document.createElement('div');
-						newDiv.className = 'picto';
-						newDiv.style.backgroundImage = 'url(' + imageUrl + ')';
+            <h3>Vervoer:</h3>
+            <img class="picto perm-picto" src="/picto-planner/vervoer/taxi.png" title="Taxi">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/auto.png" title="Auto">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/tandem.png" title="Tandem">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/treinstation.png" title="Station">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/trein.png" title="Trein">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/metro.png" title="Metro">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/tram.png" title="Tram">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/vliegtuig.png" title="Vliegtuig">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/motor.png" title="Motor">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/boot.png" title="Boot">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/ov.png" title="Openbaar vervoer">
+            <img class="picto perm-picto" src="/picto-planner/vervoer/ov-chipkaart.png" title="OV-chipkaart">
 
-						var removeBtn = document.createElement('button');
-						removeBtn.className = 'remove-btn';
-						removeBtn.innerText = 'X';
-						removeBtn.onclick = function (event) {
-							event.stopPropagation();
-							removePicto(imageUrl, newDiv);
-						};
+            <h3>Geüploade picto's</h3>
+            <button style="margin-bottom: -10px;" id="upload-picto-button">Upload een picto</button>
+            <input type="file" id="upload-picto-input" accept="image/*" multiple style="display: none;" />
+            <p>Waarschuwing: te veel geüploade picto's kunnen de prestaties van je apparaat beïnvloeden.</p>
+            <div id="uploaded-pictos"></div>
+        </div>
 
-						newDiv.appendChild(removeBtn);
+        <button id="settings-button" style="position: fixed; top: 5px; left: 5px;"
+            onclick="toggleSettings()">Instellingen</button>
 
-						newDiv.onclick = function () {
-							addToChild(this, imageUrl);
-						};
+        <button id="edit-button" style="position: fixed; top: 5px; right: 5px;" onclick="editPlanner()">Planner
+            aanpassen</button>
+        <button id="done-editing-button" style="position: fixed; top: 5px; right: 5px;"
+            onclick="doneEditingPlanner()">Klaar</button>
+    </div>
 
-						document.getElementById('custompictos').appendChild(newDiv);
+    <script>
+        const plannerContent = document.getElementById('planner-content');
+        const pictos = document.querySelectorAll('#edit-pictos .picto');
 
-						savePicto(imageUrl);
+        const dbName = 'PictoPlannerDB';
+        const pictosDB = 'pictos';
+        const uploadedPictosDB = 'uploadedPictos';
+        const settingsDB = 'settings';
+        let db;
 
-						// Reset de file input
-						fileInput.value = '';
-					};
+        const openDatabase = () => {
+            const request = indexedDB.open(dbName, 1);
 
-					reader.readAsDataURL(file); // Leest het bestand en converteert het naar een Base64-string
-				}
-			});
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
 
-			function savePicto(url) {
-				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
-				pictos.push(url);
-				localStorage.setItem('pictos', JSON.stringify(pictos));
-			}
+                if (!db.objectStoreNames.contains(pictosDB)) {
+                    db.createObjectStore(pictosDB, { keyPath: 'id' });
+                }
 
-			function removePicto(url, element) {
-				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
-				pictos = pictos.filter(pictoUrl => pictoUrl !== url);
-				localStorage.setItem('pictos', JSON.stringify(pictos));
+                if (!db.objectStoreNames.contains(uploadedPictosDB)) {
+                    db.createObjectStore(uploadedPictosDB, { keyPath: 'id' });
+                }
 
-				element.remove();
-			}
+                if (!db.objectStoreNames.contains(settingsDB)) {
+                    db.createObjectStore(settingsDB, { keyPath: 'id' });
+                }
 
-			function loadPictos() {
-				let pictos = JSON.parse(localStorage.getItem('pictos')) || [];
-				pictos.forEach(function (url) {
-					var newDiv = document.createElement('div');
-					newDiv.className = 'picto';
-					newDiv.style.backgroundImage = 'url(' + url + ')';
+                console.log("Database geüpgraded en stores gecontroleerd/aangemaakt");
+            };
 
-					var removeBtn = document.createElement('button');
-					removeBtn.className = 'remove-btn';
-					removeBtn.innerText = 'X';
-					removeBtn.onclick = function (event) {
-						event.stopPropagation();
-						removePicto(url, newDiv);
-					};
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                console.log("Database geopend:", dbName);
+                loadPictos();
+                loadUploadedPictos();
+                checkSettings();
+            };
 
-					newDiv.appendChild(removeBtn);
+            request.onerror = (event) => {
+                console.error('Database fout:', event.target.error);
+            };
+        };
 
-					newDiv.onclick = function () {
-						addToChild(this, url);
-					};
+        const clearDatabase = () => {
+            if (confirm("Weet je zeker dat je de volledige picto planner wilt resetten? Dit kan niet ongedaan gemaakt worden.")) {
+                const transaction = db.transaction([pictosDB, uploadedPictosDB, settingsDB], 'readwrite');
 
-					document.getElementById('custompictos').appendChild(newDiv);
-				});
-			}
+                transaction.objectStore(pictosDB).clear();
+                transaction.objectStore(uploadedPictosDB).clear();
+                transaction.objectStore(settingsDB).clear();
 
-			window.onload = loadPictos;
-		</script>
+                transaction.oncomplete = () => {
+                    console.log("De picto planner is gereset.");
+                    location.reload();
+                };
+
+                transaction.onerror = (event) => {
+                    notification('Fout bij het legen van de database:', event.target.error);
+                };
+            }
+        };
+
+        const removePlanning = () => {
+            if (confirm('Weet je zeker dat je alle picto\'s uit de planning wilt verwijderen?')) {
+                const transaction = db.transaction(pictosDB, 'readwrite');
+                const objectStore = transaction.objectStore(pictosDB);
+
+                const request = objectStore.getAll();
+                request.onsuccess = (event) => {
+                    const pictos = event.target.result;
+                    pictos.forEach(picto => {
+                        objectStore.delete(picto.id);
+                        const pictoElement = plannerContent.querySelector(`img[data-id='${picto.id}']`);
+                        if (pictoElement) {
+                            plannerContent.removeChild(pictoElement);
+                        }
+                    });
+                    notification('Alle picto\'s uit de planning zijn verwijderd.');
+                };
+
+                request.onerror = (event) => {
+                    notification('Fout bij ophalen pictos voor verwijderen:' + event.target.error);
+                };
+            }
+        };
+
+        const removeUploaded = () => {
+            if (confirm('Weet je zeker dat je alle geüploade picto\'s wilt verwijderen?')) {
+                const transaction = db.transaction(uploadedPictosDB, 'readwrite');
+                const objectStore = transaction.objectStore(uploadedPictosDB);
+
+                const request = objectStore.getAll();
+                request.onsuccess = (event) => {
+                    const pictos = event.target.result;
+                    pictos.forEach(picto => {
+                        objectStore.delete(picto.id);
+                        const pictoElement = document.querySelector(`#uploaded-pictos img[data-id='${picto.id}']`);
+                        if (pictoElement) {
+                            const pictoContainer = pictoElement.parentElement;
+                            document.getElementById('uploaded-pictos').removeChild(pictoContainer);
+                        }
+                    });
+                    notification('Alle geüploade picto\'s zijn verwijderd.');
+                };
+
+                request.onerror = (event) => {
+                    notification('Fout bij ophalen geüploade pictos voor verwijderen:' + event.target.error);
+                };
+            }
+        };
+
+        const savePicto = (pictoSrc, pictoTitle, store) => {
+            const transaction = db.transaction([store], 'readwrite');
+            const objectStore = transaction.objectStore(store);
+
+            const picto = { id: Date.now(), src: pictoSrc, title: pictoTitle };
+            const request = objectStore.add(picto);
+
+            request.onsuccess = () => {
+                console.log('Picto opgeslagen:', picto);
+                if (store === uploadedPictosDB) {
+                    addUploadedPictoToEditSection(pictoSrc, pictoTitle, picto.id);
+                } else if (store === pictosDB) {
+                    addPictoToPlanner(pictoSrc, pictoTitle, picto.id);
+                }
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij opslaan:', event.target.error);
+            };
+        };
+
+        const loadPictos = () => {
+            const transaction = db.transaction([pictosDB], 'readonly');
+            const objectStore = transaction.objectStore(pictosDB);
+            const request = objectStore.getAll();
+
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    addPictoToPlanner(picto.src, picto.title, picto.id);
+                });
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij ophalen:', event.target.error);
+            };
+        };
+
+        const loadUploadedPictos = () => {
+            const transaction = db.transaction([uploadedPictosDB], 'readonly');
+            const objectStore = transaction.objectStore(uploadedPictosDB);
+            const request = objectStore.getAll();
+
+            request.onsuccess = (event) => {
+                const pictos = event.target.result;
+                pictos.forEach(picto => {
+                    addUploadedPictoToEditSection(picto.src, picto.title, picto.id);
+                });
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij ophalen geüploade pictos:', event.target.error);
+            };
+        };
+
+        const addPictoToPlanner = (src, title, id) => {
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.className = 'picto';
+            newPicto.title = title;
+            newPicto.setAttribute('data-id', id);
+
+            newPicto.addEventListener('click', () => {
+                const editButton = document.getElementById('edit-button');
+                if (editButton.style.display === 'none') {
+                    removePictoFromPlanner(id, newPicto);
+                }
+            });
+
+            plannerContent.appendChild(newPicto);
+        };
+
+        const addUploadedPictoToEditSection = (src, title, id) => {
+            const pictoContainer = document.createElement('div');
+            pictoContainer.style.position = 'relative';
+            pictoContainer.style.display = 'inline-block';
+
+            const newPicto = document.createElement('img');
+            newPicto.src = src;
+            newPicto.className = 'uploaded-picto picto';
+            newPicto.title = title;
+            newPicto.setAttribute('data-id', id);
+
+            const removeButton = document.createElement('img');
+            removeButton.src = '/assets/close-button.png';
+            removeButton.className = 'remove-picto-button';
+            removeButton.style.position = 'absolute';
+            removeButton.style.top = '3px';
+            removeButton.style.right = '7px';
+            removeButton.style.color = 'black';
+            removeButton.style.backgroundColor = 'red';
+            removeButton.style.border = '1px var(--text-color) solid';
+            removeButton.style.cursor = 'pointer';
+            removeButton.style.borderRadius = '50%';
+            removeButton.style.width = '30px';
+            removeButton.style.height = '30px';
+            removeButton.style.display = 'flex';
+            removeButton.style.alignItems = 'center';
+            removeButton.style.justifyContent = 'center';
+            removeButton.style.zIndex = '1';
+
+            removeButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                removeUploadedPicto(id, pictoContainer);
+            });
+
+            newPicto.addEventListener('click', () => {
+                savePicto(src, title, pictosDB);
+            });
+
+            pictoContainer.appendChild(newPicto);
+            pictoContainer.appendChild(removeButton);
+            document.getElementById('uploaded-pictos').appendChild(pictoContainer);
+        };
+
+        const removeUploadedPicto = (id, pictoElement) => {
+            const transaction = db.transaction([uploadedPictosDB], 'readwrite');
+            const objectStore = transaction.objectStore(uploadedPictosDB);
+
+            const request = objectStore.delete(id);
+
+            request.onsuccess = () => {
+                console.log('Uploaded Picto verwijderd uit database:', id);
+                document.getElementById('uploaded-pictos').removeChild(pictoElement);
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij verwijderen van de uploaded picto:', event.target.error);
+            };
+        };
+
+        const removePictoFromPlanner = (id, pictoElement) => {
+            const transaction = db.transaction([pictosDB], 'readwrite');
+            const objectStore = transaction.objectStore(pictosDB);
+
+            const request = objectStore.delete(id);
+
+            request.onsuccess = () => {
+                console.log('Picto verwijderd uit database:', id);
+                plannerContent.removeChild(pictoElement);
+            };
+
+            request.onerror = (event) => {
+                console.error('Fout bij verwijderen:', event.target.error);
+            };
+        };
+
+        document.getElementById('upload-picto-button').addEventListener('click', () => {
+            document.getElementById('upload-picto-input').click();
+        });
+
+        document.getElementById('upload-picto-input').addEventListener('change', (event) => {
+            const files = event.target.files;
+            if (files.length > 0) {
+                const fileArray = Array.from(files);
+                processFileQueue(fileArray, files.length);
+            }
+        });
+
+        function processFileQueue(fileArray, totalFiles) {
+            if (fileArray.length === 0) {
+                return;
+            }
+
+            const file = fileArray.shift();
+            const reader = new FileReader();
+            const uploadedFiles = totalFiles - fileArray.length;
+
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    canvas.width = 300;
+                    canvas.height = 300;
+
+                    ctx.drawImage(img, 0, 0, 300, 300);
+
+                    const pictoSrc = canvas.toDataURL('image/jpeg');
+                    const pictoTitle = file.name;
+
+                    savePicto(pictoSrc, pictoTitle, uploadedPictosDB);
+
+                    const progressPercentage = Math.round((uploadedFiles / totalFiles) * 100);
+                    notification(`Upload progress: ${progressPercentage}%`);
+
+                    adjustTimeout(() => {
+                        processFileQueue(fileArray, totalFiles);
+                    });
+                };
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function adjustTimeout(callback) {
+            const memory = performance.memory;
+            const usedJSHeapSize = memory.usedJSHeapSize / memory.jsHeapSizeLimit;
+
+            let delay = 1;
+
+            if (usedJSHeapSize > 0.75) {
+                delay = 1000;
+            }
+
+            setTimeout(callback, delay);
+        }
+
+        pictos.forEach(picto => {
+            picto.addEventListener('click', () => {
+                const pictoSrc = picto.src;
+                const pictoTitle = picto.title;
+
+                savePicto(pictoSrc, pictoTitle, pictosDB);
+            });
+        });
+
+        openDatabase();
+
+        /* PICTO PLANNER SETUP SCRIPT */
+        function loadPlanner() {
+            document.getElementById('planner-container').classList.add('visible');
+            getSetting('pictoPlannerPin').then(pin => {
+                if (!pin) {
+                    editPlanner();
+                }
+            });
+        }
+
+        function editPlanner() {
+            getSetting('pictoPlannerPin').then(storedPin => {
+                if (storedPin) {
+                    const pin = prompt("Voer je pincode in:");
+                    if (pin === storedPin) {
+                        document.getElementById('edit-button').style.display = 'none';
+                        document.getElementById('edit-pictos').style.display = 'block';
+                        document.getElementById('done-editing-button').style.display = 'block';
+                    } else {
+                        notification("Ongeldige pincode. Probeer het opnieuw.");
+                    }
+                } else {
+                    document.getElementById('edit-button').style.display = 'none';
+                    document.getElementById('edit-pictos').style.display = 'block';
+                    document.getElementById('done-editing-button').style.display = 'block';
+                }
+
+                const editButton = document.getElementById('edit-button');
+                const leftSide = document.getElementById('left-side');
+
+                if (editButton.style.display === 'none') {
+                    leftSide.classList.add('editing');
+                } else {
+                    leftSide.classList.remove('editing');
+                }
+            });
+        }
+
+        function doneEditingPlanner() {
+            document.getElementById('edit-button').style.display = 'block';
+            document.getElementById('edit-pictos').style.display = 'none';
+            document.getElementById('done-editing-button').style.display = 'none';
+
+            const editButton = document.getElementById('edit-button');
+            const leftSide = document.getElementById('left-side');
+
+            if (editButton.style.display === 'none') {
+                leftSide.classList.add('editing');
+            } else {
+                leftSide.classList.remove('editing');
+            }
+        }
+
+        function toggleSettings() {
+            const settingsMenu = document.getElementById('settings-menu');
+            const isMenuOpen = settingsMenu.style.display === 'block';
+
+            if (isMenuOpen) {
+                settingsMenu.style.display = 'none';
+                document.getElementById('settings-button').style.display = "block";
+                document.getElementById('done-editing-button').click();
+
+                getSetting('pictoPlannerPin').then(pin => {
+                    if (pin) {
+                        document.getElementById('edit-button').style.display = 'block';
+                    }
+                });
+            } else {
+                getSetting('pictoPlannerPin').then(storedPin => {
+                    if (storedPin) {
+                        const pin = prompt("Voer je pincode in:");
+                        if (pin === storedPin) {
+                            settingsMenu.style.display = 'block';
+                            document.getElementById('done-editing-button').click();
+                            document.getElementById('settings-button').style.display = "none";
+                            document.getElementById('edit-button').style.display = "none";
+                        } else {
+                            notification('Dat is niet je pincode.');
+                        }
+                    } else {
+                        settingsMenu.style.display = 'block';
+                        document.getElementById('done-editing-button').click();
+                        document.getElementById('settings-button').style.display = "none";
+                        document.getElementById('edit-button').style.display = "none";
+                    }
+                });
+            }
+        }
+
+        checkSettings();
+        function checkSettings() {
+            getSetting('plannerSetupComplete').then(setupComplete => {
+                if (!setupComplete) {
+                    showSetupMenu();
+                } else {
+                    loadPlanner();
+                }
+            });
+        }
+
+        function showSetupMenu() {
+            const setupMenu = document.getElementById('setup-menu');
+            setupMenu.style.display = 'block';
+        }
+
+        function hideSetupMenu() {
+            const setupMenu = document.getElementById('setup-menu');
+            setupMenu.style.display = 'none';
+        }
+
+        function setupCreatePin() {
+            document.getElementById('pinOrNot').style.display = 'none';
+            document.getElementById('pinSetup').style.display = 'block';
+        }
+
+        function pincode(action, phase, pincode) {
+            if (action === 'set') {
+                if (phase === 'settings') {
+                    if (pincode.length === 0) {
+                        setSetting('pictoPlannerPin', '').then(() => {
+                            notification("Je pincode is uitgeschakeld.");
+                        });
+                    } else {
+                        if (pincode.length >= 3 && pincode.length <= 6) {
+                            setSetting('pictoPlannerPin', pincode).then(() => {
+                                notification("Je pincode is opgeslagen - " + pincode);
+                            });
+                        } else {
+                            notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
+                        }
+                    }
+                    return;
+                }
+
+                if (pincode.length >= 3 && pincode.length <= 6) {
+                    setSetting('pictoPlannerPin', pincode).then(() => {
+                        notification("Je pincode is opgeslagen - " + pincode);
+
+                        if (phase === 'setup') {
+                            setupCompleted();
+                        }
+                    });
+                } else {
+                    notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
+                }
+            }
+        }
+
+        function setupCompleted() {
+            setSetting('plannerSetupComplete', true).then(() => {
+                hideSetupMenu();
+                loadPlanner();
+            });
+        }
+
+        function setSetting(key, value) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(settingsDB, 'readwrite');
+                const store = transaction.objectStore(settingsDB);
+                const data = { id: key, value: value };
+
+                const request = store.put(data);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function getSetting(key) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(settingsDB, 'readonly');
+                const store = transaction.objectStore(settingsDB);
+
+                const request = store.get(key);
+                request.onsuccess = (event) => {
+                    const result = event.target.result;
+                    resolve(result ? result.value : null);
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
+    </script>
 </body>
 
 </html>
