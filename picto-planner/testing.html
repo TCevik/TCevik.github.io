@@ -228,6 +228,8 @@
         <button onclick="pincode('set', 'settings', document.getElementById('pincodeS').value)">Pincode
             instellen</button>
 
+        <br><button onclick="clearDatabase()" style="border: none; background-color: red;">Reset de hele picto
+            planner</button>
     </div>
 
     <div id="planner-container">
@@ -436,6 +438,25 @@
             request.onerror = (event) => {
                 console.error('Database fout:', event.target.error);
             };
+        };
+
+        const clearDatabase = () => {
+            if (confirm("Weet je zeker dat je de volledige picto planner wilt resetten? Dit kan niet ongedaan gemaakt worden.")) {
+                const transaction = db.transaction([pictosDB, uploadedPictosDB, settingsDB], 'readwrite');
+
+                transaction.objectStore(pictosDB).clear();
+                transaction.objectStore(uploadedPictosDB).clear();
+                transaction.objectStore(settingsDB).clear();
+
+                transaction.oncomplete = () => {
+                    console.log("De picto planner is gereset.");
+                    location.reload();
+                };
+
+                transaction.onerror = (event) => {
+                    notification('Fout bij het legen van de database:', event.target.error);
+                };
+            }
         };
 
         const removePlanning = () => {
