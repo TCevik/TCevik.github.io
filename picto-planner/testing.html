@@ -228,6 +228,14 @@
             oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
         <button onclick="pincode('change', 'none', document.getElementById('pincodeC').value)">Pincode
             veranderen</button>
+
+        <div id="turn-off-pin-ui">
+            <h4>Pincode uitschakelen:</h4>
+            <input autocomplete="off" type="text" id="pincodeV" placeholder="Pincode" maxlength="6"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
+            <button onclick="pincode('disable', 'none', document.getElementById('pincodeV').value)">Pincode
+                veranderen</button>
+        </div>
     </div>
 
     <div id="planner-container">
@@ -842,6 +850,18 @@
                 } else {
                     notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
                 }
+            }
+
+            if (action === 'disable') {
+                getSetting('pictoPlannerPin').then(oldPincode => {
+                    if (pincode === oldPincode) {
+                        setSetting('pictoPlannerPin', '').then(() => {
+                            notification("Je pincode is uitgeschakeld.");
+                        });
+                    } else {
+                        notification('Dat is niet je pincode.');
+                    }
+                });
             }
         }
 
