@@ -221,21 +221,13 @@
     <div id="settings-menu" class="settings-menu">
         <button onclick="toggleSettings()">Sluiten</button>
 
-        <h4>Verander pincode:</h4>
-        <input autocomplete="off" type="text" id="pincodeO" placeholder="Oude pincode" maxlength="6"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-        <input autocomplete="off" type="text" id="pincodeC" placeholder="Nieuwe pincode" maxlength="6"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-        <button onclick="pincode('change', 'none', document.getElementById('pincodeC').value)">Pincode
-            veranderen</button>
+        <h4>Pincode:</h4>
+        <input autocomplete="off" type="text" id="pincodeS" placeholder="Pincode (laat leeg om uit te schakelen)"
+            maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows"
+            style="width: 300px; max-width: 100%;">
+        <button onclick="pincode('set', 'settings', document.getElementById('pincodeS').value)">Pincode
+            instellen</button>
 
-        <div id="turn-off-pin-ui">
-            <h4>Pincode uitschakelen:</h4>
-            <input autocomplete="off" type="text" id="pincodeV" placeholder="Pincode" maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="no-arrows">
-            <button onclick="pincode('disable', 'none', document.getElementById('pincodeV').value)">Pincode
-                uitschakelen</button>
-        </div>
     </div>
 
     <div id="planner-container">
@@ -833,6 +825,23 @@
 
         function pincode(action, phase, pincode) {
             if (action === 'set') {
+                if (phase === 'settings') {
+                    if (pincode.length === 0) {
+                        setSetting('pictoPlannerPin', '').then(() => {
+                            notification("Je pincode is uitgeschakeld.");
+                        });
+                    } else {
+                        if (pincode.length >= 3 && pincode.length <= 6) {
+                            setSetting('pictoPlannerPin', pincode).then(() => {
+                                notification("Je pincode is opgeslagen - " + pincode);
+                            });
+                        } else {
+                            notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
+                        }
+                    }
+                    return;
+                }
+
                 if (pincode.length >= 3 && pincode.length <= 6) {
                     setSetting('pictoPlannerPin', pincode).then(() => {
                         notification("Je pincode is opgeslagen - " + pincode);
@@ -840,42 +849,10 @@
                         if (phase === 'setup') {
                             setupCompleted();
                         }
-                        if (phase === 'settings') {
-                            return;
-                        }
                     });
                 } else {
                     notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
                 }
-            }
-
-            if (action === 'change') {
-                if (pincode.length >= 3 && pincode.length <= 6) {
-                    getSetting('pictoPlannerPin').then(oldPincode => {
-                        const enteredOldPincode = document.getElementById('pincodeO').value;
-                        if (enteredOldPincode === oldPincode) {
-                            setSetting('pictoPlannerPin', pincode).then(() => {
-                                notification("Je pincode is opgeslagen - " + pincode);
-                            });
-                        } else {
-                            notification('Dat is niet je oude pincode.');
-                        }
-                    });
-                } else {
-                    notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
-                }
-            }
-
-            if (action === 'disable') {
-                getSetting('pictoPlannerPin').then(oldPincode => {
-                    if (pincode === oldPincode) {
-                        setSetting('pictoPlannerPin', '').then(() => {
-                            notification("Je pincode is uitgeschakeld.");
-                        });
-                    } else {
-                        notification('Dat is niet je pincode.');
-                    }
-                });
             }
         }
 
