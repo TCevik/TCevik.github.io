@@ -78,7 +78,7 @@
             margin-right: 5px;
             user-select: none;
         }
-        
+
         .settings-menu input {
             margin-left: 0px;
             margin-top: 5px;
@@ -430,6 +430,7 @@
                 console.log("Database geopend:", dbName);
                 loadPictos();
                 loadUploadedPictos();
+                checkSettings();
             };
 
             request.onerror = (event) => {
@@ -710,37 +711,39 @@
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
             document.getElementById('planner-container').classList.add('visible');
-            const pin = localStorage.getItem('pictoPlannerPin');
-            if (!pin) {
-                editPlanner();
-            }
+            getSetting('pictoPlannerPin').then(pin => {
+                if (!pin) {
+                    editPlanner();
+                }
+            });
         }
 
         function editPlanner() {
-            const storedPin = localStorage.getItem('pictoPlannerPin');
-            if (storedPin) {
-                const pin = prompt("Voer je pincode in:");
-                if (pin === storedPin) {
+            getSetting('pictoPlannerPin').then(storedPin => {
+                if (storedPin) {
+                    const pin = prompt("Voer je pincode in:");
+                    if (pin === storedPin) {
+                        document.getElementById('edit-button').style.display = 'none';
+                        document.getElementById('edit-pictos').style.display = 'block';
+                        document.getElementById('done-editing-button').style.display = 'block';
+                    } else {
+                        notification("Ongeldige pincode. Probeer het opnieuw.");
+                    }
+                } else {
                     document.getElementById('edit-button').style.display = 'none';
                     document.getElementById('edit-pictos').style.display = 'block';
                     document.getElementById('done-editing-button').style.display = 'block';
-                } else {
-                    notification("Ongeldige pincode. Probeer het opnieuw.");
                 }
-            } else {
-                document.getElementById('edit-button').style.display = 'none';
-                document.getElementById('edit-pictos').style.display = 'block';
-                document.getElementById('done-editing-button').style.display = 'block';
-            }
 
-            const editButton = document.getElementById('edit-button');
-            const leftSide = document.getElementById('left-side');
+                const editButton = document.getElementById('edit-button');
+                const leftSide = document.getElementById('left-side');
 
-            if (editButton.style.display === 'none') {
-                leftSide.classList.add('editing');
-            } else {
-                leftSide.classList.remove('editing');
-            }
+                if (editButton.style.display === 'none') {
+                    leftSide.classList.add('editing');
+                } else {
+                    leftSide.classList.remove('editing');
+                }
+            });
         }
 
         function doneEditingPlanner() {
@@ -758,7 +761,6 @@
             }
         }
 
-        /* SETTINGS MENU SCRIPT */
         function toggleSettings() {
             const settingsMenu = document.getElementById('settings-menu');
             const isMenuOpen = settingsMenu.style.display === 'block';
@@ -768,10 +770,11 @@
                 document.getElementById('settings-button').style.display = "block";
                 document.getElementById('done-editing-button').click();
 
-                const pin = localStorage.getItem('pictoPlannerPin');
-                if (pin) {
-                    document.getElementById('edit-button').style.display = 'block';
-                }
+                getSetting('pictoPlannerPin').then(pin => {
+                    if (pin) {
+                        document.getElementById('edit-button').style.display = 'block';
+                    }
+                });
             } else {
                 settingsMenu.style.display = 'block';
                 document.getElementById('done-editing-button').click();
@@ -780,14 +783,15 @@
             }
         }
 
-        /* SETUP PLANNER SCRIPT */
-        checkLocalStorage();
-        function checkLocalStorage() {
-            if (!localStorage.getItem('plannerSetupComplete')) {
-                showSetupMenu();
-            } else {
-                loadPlanner();
-            }
+        checkSettings();
+        function checkSettings() {
+            getSetting('plannerSetupComplete').then(setupComplete => {
+                if (!setupComplete) {
+                    showSetupMenu();
+                } else {
+                    loadPlanner();
+                }
+            });
         }
 
         function showSetupMenu() {
@@ -807,50 +811,71 @@
 
         function pincode(action, phase, pincode) {
             if (action === 'set') {
-                if (pincode.length >= 3) {
-                    if (pincode.length <= 6) {
-                        localStorage.setItem('pictoPlannerPin', pincode);
+                if (pincode.length >= 3 && pincode.length <= 6) {
+                    setSetting('pictoPlannerPin', pincode).then(() => {
                         notification("Je pincode is opgeslagen - " + pincode);
 
                         if (phase === 'setup') {
                             setupCompleted();
                         }
-
                         if (phase === 'settings') {
                             return;
                         }
-                    } else {
-                        notification('De pincode mag maximaal 6 cijfers bevatten.');
-                    }
+                    });
                 } else {
-                    notification('De pincode moet minimaal 3 cijfers bevatten.');
+                    notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
                 }
             }
 
             if (action === 'change') {
-                if (pincode.length >= 3) {
-                    if (pincode.length <= 6) {
-                        const oldPincode = localStorage.getItem('pictoPlannerPin');
+                if (pincode.length >= 3 && pincode.length <= 6) {
+                    getSetting('pictoPlannerPin').then(oldPincode => {
                         const enteredOldPincode = document.getElementById('pincodeO').value;
                         if (enteredOldPincode === oldPincode) {
-                            localStorage.setItem('pictoPlannerPin', pincode);
-                            notification("Je pincode is opgeslagen - " + pincode);
+                            setSetting('pictoPlannerPin', pincode).then(() => {
+                                notification("Je pincode is opgeslagen - " + pincode);
+                            });
                         } else {
                             notification('Dat is niet je oude pincode.');
                         }
-                    } else {
-                        notification('De pincode mag maximaal 6 cijfers bevatten.');
-                    }
+                    });
                 } else {
-                    notification('De pincode moet minimaal 3 cijfers bevatten.');
+                    notification('De pincode moet tussen de 3 en 6 cijfers bevatten.');
                 }
             }
         }
 
         function setupCompleted() {
-            localStorage.setItem('plannerSetupComplete', true);
-            hideSetupMenu();
-            loadPlanner();
+            setSetting('plannerSetupComplete', true).then(() => {
+                hideSetupMenu();
+                loadPlanner();
+            });
+        }
+
+        function setSetting(key, value) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(settingsDB, 'readwrite');
+                const store = transaction.objectStore(settingsDB);
+                const data = { id: key, value: value };
+
+                const request = store.put(data);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function getSetting(key) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(settingsDB, 'readonly');
+                const store = transaction.objectStore(settingsDB);
+
+                const request = store.get(key);
+                request.onsuccess = (event) => {
+                    const result = event.target.result;
+                    resolve(result ? result.value : null);
+                };
+                request.onerror = () => reject(request.error);
+            });
         }
     </script>
 </body>
