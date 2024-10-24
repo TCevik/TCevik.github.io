@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picto Planner</title>
 
-    <meta name="description" content="TC_tam Picto Planner: Een gebruiksvriendelijke tool voor autisten met simpele pictogrammen. Plan en beheer speciale activiteiten, verzorging, buiten- en binnenactiviteiten en vervoer. Upload en verwijder pictogrammen eenvoudig.">
-    <meta name="keywords" content="Picto Planner, autisten, pictogrammen, planning, activiteiten, gehandicapten, uploaden, picto, pictos, TC_tam">
+    <meta name="description"
+        content="TC_tam Picto Planner: Een gebruiksvriendelijke tool voor autisten met simpele pictogrammen. Plan en beheer speciale activiteiten, verzorging, buiten- en binnenactiviteiten en vervoer. Upload en verwijder pictogrammen eenvoudig.">
+    <meta name="keywords"
+        content="Picto Planner, autisten, pictogrammen, planning, activiteiten, gehandicapten, uploaden, picto, pictos, TC_tam">
     <meta name="author" content="Tamer Çevik">
-    
+
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
@@ -254,143 +256,217 @@
             </div>
             <br>
 
-            <h3>Dagen van de week:</h3>
-            <img class="picto perm-picto" src="/picto-planner/dagen/maandag.png" title="Maandag">
-            <img class="picto perm-picto" src="/picto-planner/dagen/dinsdag.png" title="Dinsdag">
-            <img class="picto perm-picto" src="/picto-planner/dagen/woensdag.png" title="Woensdag">
-            <img class="picto perm-picto" src="/picto-planner/dagen/donderdag.png" title="Donderdag">
-            <img class="picto perm-picto" src="/picto-planner/dagen/vrijdag.png" title="Vrijdag">
-            <img class="picto perm-picto" src="/picto-planner/dagen/zaterdag.png" title="Zaterdag">
-            <img class="picto perm-picto" src="/picto-planner/dagen/zondag.png" title="Zondag">
+            <input style="margin-left: 0px; margin-top: 0px !important; margin-bottom: 5px !important;" type="text"
+                id="search-bar" placeholder="Zoek pictogrammen...">
 
-            <h3>Speciale activiteiten:</h3>
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/verjaardag.png" title="Koningsdag">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/pasen.png" title="Pasen">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/samen-vieren.png"
-                title="Verjaardag">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/vuurwerk.png" title="Oud en nieuw">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/geschenk.png" title="Cadeautje">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/sinterklaas.png"
-                title="Sinterklaas">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/schoen-zetten.png"
-                title="Schoen zetten">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/kerstmis.png" title="Kerst">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/bungalow.png"
-                title="Vakantiehuisje">
-            <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/halloween.png" title="Halloween">
+            <script>
+                // Zoekbalk functie
+                function zoekPictos() {
+                    // Haal de waarde van de zoekbalk op
+                    const zoekInput = document.getElementById('search-bar').value.toLowerCase();
+                    const pictos = document.querySelectorAll('.all-pictos .picto');
 
-            <h3>Verzorging:</h3>
-            <img class="picto perm-picto" src="/picto-planner/verzorging/nagel-knippen.png" title="Nagels knippen">
-            <img class="picto perm-picto" src="/picto-planner/verzorging/kapper.png" title="Haren knippen">
-            <img class="picto perm-picto" src="/picto-planner/verzorging/tanden-poetsen.png" title="Tanden poetsen">
-            <img class="picto perm-picto" src="/picto-planner/verzorging/gel-haar.png" title="Haren doen">
-            <img class="picto perm-picto" src="/picto-planner/verzorging/handen-wassen.png" title="Handen wassen">
-            <img class="picto perm-picto" src="/picto-planner/verzorging/spuit.png" title="Prik">
-            <img class="picto perm-picto" src="/picto-planner/verzorging/voeten-wassen.png" title="Voeten wassen">
+                    // Doorloop alle pictogrammen
+                    pictos.forEach(picto => {
+                        const title = picto.getAttribute('title').toLowerCase();
+                        const parentDiv = picto.parentElement; // Verkrijg de ouder div om de knop te verbergen
 
-            <h3>Buitenactiviteiten:</h3>
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/park.png" title="Naar het park">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/winkelen.png"
-                title="Naar de winkel">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/ziekenhuis.png"
-                title="Naar het ziekenhuis">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/apotheek.png"
-                title="Naar de apotheek">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/markt.png" title="Naar de markt">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/museum.png"
-                title="Naar het museum">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/bakker.png"
-                title="Naar de bakker">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/vliegveld.png"
-                title="Naar het vliegveld">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/restaurant.png"
-                title="Maar het restaurant">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/fitness-center.png"
-                title="Naar de sportschool">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/boerderij.png"
-                title="Naar de boederij">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/speeltuin.png"
-                title="Naar de speeltuin">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/wasstraat.png"
-                title="Naar de wasstraat">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/brievenbus.png"
-                title="Post versturen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/huis.png" title="Naar huis">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/strand.png"
-                title="Naar het strand">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/kermis.png"
-                title="Naar de kermis">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/zwemmen.png"
-                title="Naar het zwembad">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/picnic.png" title="Picknicken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/school.png" title="Naar school">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/wandelen.png" title="Wandelen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/kledingwinkel.png"
-                title="Naar de kledingwinkel">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/cinema.png"
-                title="Naar de bioscoop">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/buitenspelen.jpg"
-                title="Buitenspelen">
+                        // Controleer of de title overeenkomt met de zoekterm
+                        if (title.includes(zoekInput)) {
+                            picto.style.display = 'inline-block'; // Toon overeenkomende pictogrammen
+                            parentDiv.querySelector('.remove-picto-button').style.display = 'flex'; // Toon de verwijderknop
+                        } else {
+                            picto.style.display = 'none'; // Verberg niet-overeenkomende pictogrammen
+                            parentDiv.querySelector('.remove-picto-button').style.display = 'none'; // Verberg de verwijderknop
+                        }
+                    });
 
-            <h3>Binnenactiviteiten:</h3>
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/computer-alleen.png"
-                title="Alleen gamen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/computer-samen.png"
-                title="Samen gamen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/spelen-alleen.png"
-                title="Alleen spelen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/spelen-samen.png"
-                title="Samen spelen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/fruit.png" title="Fruit eten">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/ontbijt.png" title="Ontbijt">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/middagmaal.png" title="Lunch">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/avondmaal.png" title="Avondeten">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/opstaan.png" title="Opstaan">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/slapen.jpg" title="Slapen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tablet.png"
-                title="Spelen op de tablet ">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/pictogrammen.png"
-                title="Picto's klaarmaken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/koken.png" title="Koken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/bureauwerk.png" title="Studeren">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tv.png" title="TV kijken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tekenen.png" title="Tekenen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tussendoortje.png"
-                title="Tussendoortje">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/bad.png" title="Douchen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/zwijgen.png" title="Stil zijn">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/huiswerk-stil.png"
-                title="Stil werken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/timetimer.png" title="Time timer">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/opruimen.png" title="Opruimen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/schoonmaken.png"
-                title="Schoonmaken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/barbeque.png" title="Barbecueën">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/boek.png" title="Boekje lezen">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/rugzak-inpakken.png"
-                title="Tas inpakken">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/klok.png" title="Klok">
-            <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/gym.png" title="Gymmen">
+                    // Als de zoekbalk leeg is, toon dan alle pictogrammen weer en alle andere elementen
+                    if (zoekInput === '') {
+                        pictos.forEach(picto => {
+                            picto.style.display = 'inline-block'; // Of 'block', afhankelijk van je layout
+                            picto.parentElement.querySelector('.remove-picto-button').style.display = 'flex'; // Toon de verwijderknop
+                        });
 
-            <h3>Vervoer:</h3>
-            <img class="picto perm-picto" src="/picto-planner/vervoer/taxi.png" title="Taxi">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/auto.png" title="Auto">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/tandem.png" title="Tandem">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/treinstation.png" title="Station">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/trein.png" title="Trein">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/metro.png" title="Metro">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/tram.png" title="Tram">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/vliegtuig.png" title="Vliegtuig">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/motor.png" title="Motor">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/boot.png" title="Boot">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/ov.png" title="Openbaar vervoer">
-            <img class="picto perm-picto" src="/picto-planner/vervoer/ov-chipkaart.png" title="OV-chipkaart">
+                        // Toon ook alle andere elementen
+                        const allElements = document.querySelectorAll('.all-pictos > *'); // Selecteer alle directe kinderen van .all-pictos
+                        allElements.forEach(element => {
+                            if (!element.classList.contains('picto')) {
+                                element.style.display = 'block'; // Of 'inline-block', afhankelijk van je layout
+                            }
+                        });
+                    } else {
+                        // Verberg alle elementen die geen pictogram zijn en die niet overeenkomen met de zoekterm
+                        const allElements = document.querySelectorAll('.all-pictos > *'); // Selecteer alle directe kinderen van .all-pictos
+                        allElements.forEach(element => {
+                            if (!element.classList.contains('picto') && !element.id.includes('uploaded-pictos')) {
+                                element.style.display = 'none';
+                            }
 
-            <h3>Geüploade picto's</h3>
-            <button style="margin-bottom: -10px;" id="upload-picto-button">Upload een picto</button>
+                        });
+                    }
+                }
+
+                // Voeg een event listener toe aan de zoekbalk
+                document.getElementById('search-bar').addEventListener('input', zoekPictos);
+            </script>
+
+            <div class="all-pictos">
+                <h3>Dagen van de week:</h3>
+                <img class="picto perm-picto" src="/picto-planner/dagen/maandag.png" title="Maandag">
+                <img class="picto perm-picto" src="/picto-planner/dagen/dinsdag.png" title="Dinsdag">
+                <img class="picto perm-picto" src="/picto-planner/dagen/woensdag.png" title="Woensdag">
+                <img class="picto perm-picto" src="/picto-planner/dagen/donderdag.png" title="Donderdag">
+                <img class="picto perm-picto" src="/picto-planner/dagen/vrijdag.png" title="Vrijdag">
+                <img class="picto perm-picto" src="/picto-planner/dagen/zaterdag.png" title="Zaterdag">
+                <img class="picto perm-picto" src="/picto-planner/dagen/zondag.png" title="Zondag">
+
+                <h3>Speciale activiteiten:</h3>
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/verjaardag.png"
+                    title="Koningsdag">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/pasen.png" title="Pasen">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/samen-vieren.png"
+                    title="Verjaardag">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/vuurwerk.png"
+                    title="Oud en nieuw">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/geschenk.png" title="Cadeautje">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/sinterklaas.png"
+                    title="Sinterklaas">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/schoen-zetten.png"
+                    title="Schoen zetten">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/kerstmis.png" title="Kerst">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/bungalow.png"
+                    title="Vakantiehuisje">
+                <img class="picto perm-picto" src="/picto-planner/speciale-activiteiten/halloween.png"
+                    title="Halloween">
+
+                <h3>Verzorging:</h3>
+                <img class="picto perm-picto" src="/picto-planner/verzorging/nagel-knippen.png" title="Nagels knippen">
+                <img class="picto perm-picto" src="/picto-planner/verzorging/kapper.png" title="Haren knippen">
+                <img class="picto perm-picto" src="/picto-planner/verzorging/tanden-poetsen.png" title="Tanden poetsen">
+                <img class="picto perm-picto" src="/picto-planner/verzorging/gel-haar.png" title="Haren doen">
+                <img class="picto perm-picto" src="/picto-planner/verzorging/handen-wassen.png" title="Handen wassen">
+                <img class="picto perm-picto" src="/picto-planner/verzorging/spuit.png" title="Prik">
+                <img class="picto perm-picto" src="/picto-planner/verzorging/voeten-wassen.png" title="Voeten wassen">
+
+                <h3>Buitenactiviteiten:</h3>
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/park.png"
+                    title="Naar het park">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/winkelen.png"
+                    title="Naar de winkel">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/ziekenhuis.png"
+                    title="Naar het ziekenhuis">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/apotheek.png"
+                    title="Naar de apotheek">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/markt.png"
+                    title="Naar de markt">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/museum.png"
+                    title="Naar het museum">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/bakker.png"
+                    title="Naar de bakker">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/vliegveld.png"
+                    title="Naar het vliegveld">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/restaurant.png"
+                    title="Naar het restaurant">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/fitness-center.png"
+                    title="Naar de sportschool">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/boerderij.png"
+                    title="Naar de boederij">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/speeltuin.png"
+                    title="Naar de speeltuin">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/wasstraat.png"
+                    title="Naar de wasstraat">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/brievenbus.png"
+                    title="Post versturen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/huis.png" title="Naar huis">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/strand.png"
+                    title="Naar het strand">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/kermis.png"
+                    title="Naar de kermis">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/zwemmen.png"
+                    title="Naar het zwembad">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/picnic.png"
+                    title="Picknicken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/school.png"
+                    title="Naar school">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/wandelen.png"
+                    title="Wandelen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/kledingwinkel.png"
+                    title="Naar de kledingwinkel">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/cinema.png"
+                    title="Naar de bioscoop">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-buitenhuis/buitenspelen.jpg"
+                    title="Buitenspelen">
+
+                <h3>Binnenactiviteiten:</h3>
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/computer-alleen.png"
+                    title="Alleen gamen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/computer-samen.png"
+                    title="Samen gamen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/spelen-alleen.png"
+                    title="Alleen spelen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/spelen-samen.png"
+                    title="Samen spelen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/fruit.png" title="Fruit eten">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/ontbijt.png" title="Ontbijt">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/middagmaal.png" title="Lunch">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/avondmaal.png"
+                    title="Avondeten">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/opstaan.png" title="Opstaan">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/slapen.jpg" title="Slapen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tablet.png"
+                    title="Spelen op de tablet ">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/pictogrammen.png"
+                    title="Picto's klaarmaken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/koken.png" title="Koken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/bureauwerk.png"
+                    title="Studeren">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tv.png" title="TV kijken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tekenen.png" title="Tekenen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/tussendoortje.png"
+                    title="Tussendoortje">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/bad.png" title="Douchen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/zwijgen.png"
+                    title="Stil zijn">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/huiswerk-stil.png"
+                    title="Stil werken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/timetimer.png"
+                    title="Time timer">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/opruimen.png"
+                    title="Opruimen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/schoonmaken.png"
+                    title="Schoonmaken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/barbeque.png"
+                    title="Barbecueën">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/boek.png"
+                    title="Boekje lezen">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/rugzak-inpakken.png"
+                    title="Tas inpakken">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/klok.png" title="Klok">
+                <img class="picto perm-picto" src="/picto-planner/activiteiten-binnenhuis/gym.png" title="Gymmen">
+
+                <h3>Vervoer:</h3>
+                <img class="picto perm-picto" src="/picto-planner/vervoer/taxi.png" title="Taxi">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/auto.png" title="Auto">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/tandem.png" title="Tandem">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/treinstation.png" title="Station">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/trein.png" title="Trein">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/metro.png" title="Metro">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/tram.png" title="Tram">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/vliegtuig.png" title="Vliegtuig">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/motor.png" title="Motor">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/boot.png" title="Boot">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/ov.png" title="Openbaar vervoer">
+                <img class="picto perm-picto" src="/picto-planner/vervoer/ov-chipkaart.png" title="OV-chipkaart">
+
+                <h3>Geüploade picto's</h3>
+                <button style="margin-bottom: -10px;" id="upload-picto-button">Upload een picto</button>
+                <p>Waarschuwing: te veel geüploade picto's kunnen de prestaties van je apparaat beïnvloeden.</p>
+
+                <div id="uploaded-pictos"></div>
+            </div>
+
             <input type="file" id="upload-picto-input" accept="image/*" multiple style="display: none;" />
-            <p>Waarschuwing: te veel geüploade picto's kunnen de prestaties van je apparaat beïnvloeden.</p>
-            <div id="uploaded-pictos"></div>
         </div>
 
         <button id="settings-button" style="position: fixed; top: 5px; left: 5px;"
