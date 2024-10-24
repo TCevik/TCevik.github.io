@@ -260,44 +260,37 @@
                 id="search-bar" placeholder="Zoek pictogrammen...">
 
             <script>
-                // Zoekbalk functie
                 function zoekPictos() {
-                    // Haal de waarde van de zoekbalk op
                     const zoekInput = document.getElementById('search-bar').value.toLowerCase();
                     const pictos = document.querySelectorAll('.all-pictos .picto');
 
-                    // Doorloop alle pictogrammen
                     pictos.forEach(picto => {
                         const title = picto.getAttribute('title').toLowerCase();
-                        const parentDiv = picto.parentElement; // Verkrijg de ouder div om de knop te verbergen
+                        const parentDiv = picto.parentElement;
 
-                        // Controleer of de title overeenkomt met de zoekterm
                         if (title.includes(zoekInput)) {
-                            picto.style.display = 'inline-block'; // Toon overeenkomende pictogrammen
-                            parentDiv.querySelector('.remove-picto-button').style.display = 'flex'; // Toon de verwijderknop
+                            picto.style.display = 'inline-block';
+                            parentDiv.querySelector('.remove-picto-button').style.display = 'flex';
                         } else {
-                            picto.style.display = 'none'; // Verberg niet-overeenkomende pictogrammen
-                            parentDiv.querySelector('.remove-picto-button').style.display = 'none'; // Verberg de verwijderknop
+                            picto.style.display = 'none';
+                            parentDiv.querySelector('.remove-picto-button').style.display = 'none';
                         }
                     });
 
-                    // Als de zoekbalk leeg is, toon dan alle pictogrammen weer en alle andere elementen
                     if (zoekInput === '') {
                         pictos.forEach(picto => {
-                            picto.style.display = 'inline-block'; // Of 'block', afhankelijk van je layout
-                            picto.parentElement.querySelector('.remove-picto-button').style.display = 'flex'; // Toon de verwijderknop
+                            picto.style.display = 'inline-block';
+                            picto.parentElement.querySelector('.remove-picto-button').style.display = 'flex';
                         });
 
-                        // Toon ook alle andere elementen
-                        const allElements = document.querySelectorAll('.all-pictos > *'); // Selecteer alle directe kinderen van .all-pictos
+                        const allElements = document.querySelectorAll('.all-pictos > *');
                         allElements.forEach(element => {
                             if (!element.classList.contains('picto')) {
-                                element.style.display = 'block'; // Of 'inline-block', afhankelijk van je layout
+                                element.style.display = 'block';
                             }
                         });
                     } else {
-                        // Verberg alle elementen die geen pictogram zijn en die niet overeenkomen met de zoekterm
-                        const allElements = document.querySelectorAll('.all-pictos > *'); // Selecteer alle directe kinderen van .all-pictos
+                        const allElements = document.querySelectorAll('.all-pictos > *');
                         allElements.forEach(element => {
                             if (!element.classList.contains('picto') && !element.id.includes('uploaded-pictos')) {
                                 element.style.display = 'none';
@@ -307,7 +300,6 @@
                     }
                 }
 
-                // Voeg een event listener toe aan de zoekbalk
                 document.getElementById('search-bar').addEventListener('input', zoekPictos);
             </script>
 
