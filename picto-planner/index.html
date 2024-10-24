@@ -257,7 +257,7 @@
             <br>
 
             <input style="margin-left: 0px; margin-top: 0px !important; margin-bottom: 5px !important;" type="text"
-                id="search-bar" placeholder="Zoek pictogrammen...">
+                id="search-bar" autocomplete="off" placeholder="Zoek pictogrammen...">
 
             <script>
                 function zoekPictos() {
@@ -270,17 +270,33 @@
 
                         if (title.includes(zoekInput)) {
                             picto.style.display = 'inline-block';
-                            parentDiv.querySelector('.remove-picto-button').style.display = 'flex';
+                            if (parentDiv) {
+                                const removeButton = parentDiv.querySelector('.remove-picto-button');
+                                if (removeButton) {
+                                    removeButton.style.display = 'flex';
+                                }
+                            }
                         } else {
                             picto.style.display = 'none';
-                            parentDiv.querySelector('.remove-picto-button').style.display = 'none';
+                            if (parentDiv) {
+                                const removeButton = parentDiv.querySelector('.remove-picto-button');
+                                if (removeButton) {
+                                    removeButton.style.display = 'none';
+                                }
+                            }
                         }
                     });
 
                     if (zoekInput === '') {
                         pictos.forEach(picto => {
                             picto.style.display = 'inline-block';
-                            picto.parentElement.querySelector('.remove-picto-button').style.display = 'flex';
+                            const parentDiv = picto.parentElement;
+                            if (parentDiv) {
+                                const removeButton = parentDiv.querySelector('.remove-picto-button');
+                                if (removeButton) {
+                                    removeButton.style.display = 'flex';
+                                }
+                            }
                         });
 
                         const allElements = document.querySelectorAll('.all-pictos > *');
@@ -295,7 +311,6 @@
                             if (!element.classList.contains('picto') && !element.id.includes('uploaded-pictos')) {
                                 element.style.display = 'none';
                             }
-
                         });
                     }
                 }
