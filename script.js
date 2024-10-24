@@ -1,11 +1,3 @@
-/* let cookies = document.cookie;
-let now = new Date();
-let deadline = new Date('2024-10-25T16:00:00');
-if (now < deadline && (!cookies.includes('visittctamquiz') || cookies.includes('visittctamquiz=false'))) {
-    alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Hij is weer beschikbaar op 25 oktober om 16:00. Dankjewel voor je begrip!');
-    window.location.href = 'about:blank';
-} */
-
 /* google adsense */
 var adScript = document.createElement('script');
 adScript.async = true;
@@ -29,8 +21,8 @@ function notification(message) {
 	notificationElement.style.opacity = "0";
 	notificationElement.style.marginBottom = "10px";
 	notificationElement.style.maxWidth = "90%";
-	notificationElement.style.left = "50%"; // Nieuwe regel om het element te centreren
-	notificationElement.style.transform = "translateX(-50%)"; // Nieuwe regel om het element te centreren
+	notificationElement.style.left = "50%";
+	notificationElement.style.transform = "translateX(-50%)";
 
 	notificationElement.innerHTML = message;
 
