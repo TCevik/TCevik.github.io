@@ -6,7 +6,9 @@ if (now < deadline && (!cookies.includes('visittctamquiz') || cookies.includes('
 	window.location.href = 'about:blank';
 }
 
-if (window.location.pathname.startsWith('/games')) {
+const gamePaths = ['/games', '/school/hz-geluiden'];
+
+if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 	fetch('https://api.ipify.org?format=json')
 		.then(response => response.json())
 		.then(data => {
@@ -22,6 +24,7 @@ if (window.location.pathname.startsWith('/games')) {
 				blockedElement.style.width = '100vw';
 				blockedElement.style.height = '100vh';
 				blockedElement.style.backdropFilter = 'blur(10px)';
+				blockedElement.style.zIndex = '100';
 
 				const blockedContainer = document.createElement('div');
 				blockedContainer.id = 'blockedContainer';
