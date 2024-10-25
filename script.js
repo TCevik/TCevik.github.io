@@ -12,7 +12,7 @@ if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 	fetch('https://api.ipify.org?format=json')
 		.then(response => response.json())
 		.then(data => {
-			if (data.ip === '95.99.132.62') {
+			if (data.ip === '84.35.97.220') {
 				const blockedElement = document.createElement('div');
 				blockedElement.id = 'blockedDuringSchool';
 				blockedElement.style.position = 'fixed';
@@ -37,11 +37,11 @@ if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 
 				const message = document.createElement('h3');
 				message.textContent = 'Helaas is deze pagina niet beschikbaar als je op school bent.';
-				message.style.margin = '0';
-				message.style.color = 'white';
+				message.style.margin = '0px';
+				message.style.marginBottom = '10px'
 
 				const button = document.createElement('button');
-				button.textContent = 'Ben je niet op school? Meld de fout.';
+				button.textContent = 'Ben je niet op school, of ben je het er niet mee eens? Meld de fout.';
 				button.addEventListener('click', () => {
 					window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank');
 				});
