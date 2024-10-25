@@ -169,7 +169,6 @@ var buttons = `
 
 	<h3 style="margin-top: 50px;" id="schoolhacks">Voor School</h3>
 	<button onclick="window.location.href='/school/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
-    <button onclick="window.location.href='/school/bing-chat'">Bing Ai (GPT 4)</button>
 	<button onclick="window.location.href='/school/myinstants'">MyInstants</button>
     <button onclick="window.location.href='/school/rammerhead'">Proxy - Rammerhead</button>
 
