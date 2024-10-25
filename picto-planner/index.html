@@ -253,6 +253,7 @@
                     planning</button>
                 <button onclick="removeUploaded()" style="flex: 1; border: none; background-color: red;">Verwijder
                     geüploade picto's</button>
+                <button onclick="savePictosAsPreset()" style="flex: 1;">Sla picto's op als een preset</button>
             </div>
             <br>
 
@@ -820,6 +821,47 @@
         }
 
         document.getElementById('search-bar').addEventListener('input', zoekPictos);
+
+        function savePictosAsPreset() {
+            const transaction = db.transaction([pictosDB], 'readonly');
+            const objectStore = transaction.objectStore(pictosDB);
+
+            const request = objectStore.getAll();
+            request.onsuccess = (event) => {
+                const pictosArray = event.target.result;
+
+                if (pictosArray.length > 0) {
+                    const presetsTransaction = db.transaction([pictoPresetsDB], 'readwrite');
+                    const presetsStore = presetsTransaction.objectStore(pictoPresetsDB);
+
+                    const pictoPreset = {
+                        id: Date.now(),
+                        pictos: pictosArray.map(picto => ({
+                            src: picto.src,
+                            title: picto.title,
+                        }))
+                    };
+
+                    const addRequest = presetsStore.add(pictoPreset);
+                    addRequest.onsuccess = () => {
+                        notification('Alle picto\'s zijn opgeslagen als één enkele preset.');
+                        console.log('Picto\'s geëxporteerd naar pictoPresetsDB:', pictoPreset);
+                    };
+
+                    addRequest.onerror = (event) => {
+                        notification('Fout bij exporteren naar pictoPresetsDB: ' + event.target.error);
+                        console.error('Fout bij exporteren naar pictoPresetsDB:', event.target.error);
+                    };
+                } else {
+                    notification('Geen picto\'s gevonden in pictosDB om te exporteren.');
+                }
+            };
+
+            request.onerror = (event) => {
+                notification('Fout bij ophalen van picto\'s uit pictosDB: ' + event.target.error);
+                console.error('Fout bij ophalen van picto\'s uit pictosDB:', event.target.error);
+            };
+        }
 
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
