@@ -6,7 +6,7 @@ if (now < deadline && (!cookies.includes('visittctamquiz') || cookies.includes('
 	window.location.href = 'about:blank';
 }
 
-const gamePaths = ['/games', '/school/hz-geluiden'];
+const gamePaths = ['/games', '/school/hz-geluiden', '/school/rammerhead', '/school/myinstants'];
 
 if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 	fetch('https://api.ipify.org?format=json')
