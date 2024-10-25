@@ -1,11 +1,3 @@
-let cookies = document.cookie;
-let now = new Date();
-let deadline = new Date('2024-10-25T16:00:00');
-if (now < deadline && (!cookies.includes('visittctamquiz') || cookies.includes('visittctamquiz=false'))) {
-	alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Hij is weer beschikbaar op 25 oktober om 16:00. Dankjewel voor je begrip!');
-	window.location.href = 'about:blank';
-}
-
 /* BLOCK PAGES FOR SCHOOL*/
 const gamePaths = ['/games', '/school/hz-geluiden', '/school/rammerhead', '/school/myinstants'];
 if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
