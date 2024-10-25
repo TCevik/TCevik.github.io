@@ -260,6 +260,8 @@
             <input style="margin-left: 0px; margin-top: 0px !important; margin-bottom: 5px !important;" type="text"
                 id="search-bar" autocomplete="off" placeholder="Zoek pictogrammen...">
 
+            <div id="preset-selecter"></div>
+
             <div class="all-pictos">
                 <h3>Dagen van de week:</h3>
                 <img class="picto perm-picto" src="/picto-planner/dagen/maandag.png" title="Maandag">
@@ -469,6 +471,7 @@
                 loadPictos();
                 loadUploadedPictos();
                 checkSettings();
+                loadFirstPictosInPresetSelecter();
             };
 
             request.onerror = (event) => {
@@ -853,6 +856,8 @@
                     addRequest.onsuccess = () => {
                         notification('Alle picto\'s zijn opgeslagen als één preset met de titel: ' + title);
                         console.log('Picto\'s geëxporteerd naar pictoPresetsDB:', pictoPreset);
+
+                        loadFirstPictosInPresetSelecter();
                     };
 
                     addRequest.onerror = (event) => {
@@ -867,6 +872,78 @@
             request.onerror = (event) => {
                 notification('Fout bij ophalen van picto\'s uit pictosDB: ' + event.target.error);
                 console.error('Fout bij ophalen van picto\'s uit pictosDB:', event.target.error);
+            };
+        }
+
+        // Functie om de eerste picto van elke preset te laden
+        function loadFirstPictosInPresetSelecter() {
+            const transaction = db.transaction([pictoPresetsDB], 'readonly');
+            const objectStore = transaction.objectStore(pictoPresetsDB);
+
+            const request = objectStore.getAll();
+            request.onsuccess = (event) => {
+                const presetsArray = event.target.result;
+                const presetSelecter = document.getElementById("preset-selecter");
+
+                presetSelecter.innerHTML = "";
+
+                presetsArray.forEach((preset, index) => {
+                    if (preset.pictos.length > 0) {
+                        const firstPicto = preset.pictos[0];
+                        const pictoElement = document.createElement("img");
+                        pictoElement.src = firstPicto.src;
+                        pictoElement.alt = firstPicto.title;
+                        pictoElement.classList = 'picto';
+                        pictoElement.dataset.presetIndex = index; // Index voor identificatie van de preset
+                        presetSelecter.appendChild(pictoElement);
+
+                        // Voeg event listener toe voor elke preset
+                        pictoElement.addEventListener('click', () => {
+                            loadPresetToDatabase(preset);
+                        });
+                    }
+                });
+            };
+
+            request.onerror = (event) => {
+                notification('Fout bij ophalen van de presets: ' + event.target.error);
+                console.error('Fout bij ophalen van presets uit pictoPresetsDB:', event.target.error);
+            };
+        }
+
+        function loadPresetToDatabase(preset) {
+            const userConfirmed = confirm('Weet je het zeker dat je de preset wil laden? Je huidige planner zal worden verwijderd.');
+
+            if (!userConfirmed) {
+                return; 
+            }
+
+            const transaction = db.transaction(['pictos'], 'readwrite');
+            const objectStore = transaction.objectStore('pictos');
+            document.getElementById('planner-content').innerHTML = '';
+
+            const clearRequest = objectStore.clear();
+            clearRequest.onsuccess = () => {
+                preset.pictos.forEach((picto, index) => {
+                    const newPicto = { ...picto, id: Date.now() + index };
+                    const addRequest = objectStore.add(newPicto);
+
+                    addRequest.onsuccess = () => {
+                        console.log('Picto toegevoegd:', newPicto);
+                    };
+
+                    addRequest.onerror = (event) => {
+                        console.error('Fout bij toevoegen van picto:', event.target.error);
+                    };
+                });
+
+                notification('Preset succesvol geladen met nieuwe pictos.');
+                loadPictos();
+            };
+
+            clearRequest.onerror = (event) => {
+                notification('Fout bij wissen van pictos: ' + event.target.error);
+                console.error('Fout bij wissen van pictos uit database:', event.target.error);
             };
         }
 
