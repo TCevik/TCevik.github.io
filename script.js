@@ -32,14 +32,22 @@ if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 				blockedContainer.style.padding = '20px';
 				blockedContainer.style.borderRadius = 'var(--border-radius2)';
 				blockedContainer.style.textAlign = 'center';
-				blockedContainer.style.maxWidth = '400px';
+				blockedContainer.style.width = '600px';
+				blockedContainer.style.maxWidth = '100%';
 
 				const message = document.createElement('h3');
 				message.textContent = 'Helaas is deze pagina niet beschikbaar als je op school bent.';
 				message.style.margin = '0';
 				message.style.color = 'white';
 
+				const button = document.createElement('button');
+				button.textContent = 'Ben je niet op school? Meld de fout.';
+				button.addEventListener('click', () => {
+					window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank');
+				});
+												
 				blockedContainer.appendChild(message);
+				blockedContainer.appendChild(button);
 				blockedElement.appendChild(blockedContainer);
 				document.body.appendChild(blockedElement);
 			}
