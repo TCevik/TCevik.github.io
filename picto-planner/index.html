@@ -957,6 +957,11 @@
         }
 
         function removePresetFromDatabase(index) {
+            const confirmDelete = confirm("Weet je zeker dat je de preset wil verwijderen? Deze actie kan niet ongedaan worden gemaakt.");
+            if (!confirmDelete) {
+                return;
+            }
+
             const transaction = db.transaction([pictoPresetsDB], 'readwrite');
             const objectStore = transaction.objectStore(pictoPresetsDB);
 
