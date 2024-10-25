@@ -259,65 +259,6 @@
             <input style="margin-left: 0px; margin-top: 0px !important; margin-bottom: 5px !important;" type="text"
                 id="search-bar" autocomplete="off" placeholder="Zoek pictogrammen...">
 
-            <script>
-                function zoekPictos() {
-                    const zoekInput = document.getElementById('search-bar').value.toLowerCase();
-                    const pictos = document.querySelectorAll('.all-pictos .picto');
-
-                    pictos.forEach(picto => {
-                        const title = picto.getAttribute('title').toLowerCase();
-                        const parentDiv = picto.parentElement;
-
-                        if (title.includes(zoekInput)) {
-                            picto.style.display = 'inline-block';
-                            if (parentDiv) {
-                                const removeButton = parentDiv.querySelector('.remove-picto-button');
-                                if (removeButton) {
-                                    removeButton.style.display = 'flex';
-                                }
-                            }
-                        } else {
-                            picto.style.display = 'none';
-                            if (parentDiv) {
-                                const removeButton = parentDiv.querySelector('.remove-picto-button');
-                                if (removeButton) {
-                                    removeButton.style.display = 'none';
-                                }
-                            }
-                        }
-                    });
-
-                    if (zoekInput === '') {
-                        pictos.forEach(picto => {
-                            picto.style.display = 'inline-block';
-                            const parentDiv = picto.parentElement;
-                            if (parentDiv) {
-                                const removeButton = parentDiv.querySelector('.remove-picto-button');
-                                if (removeButton) {
-                                    removeButton.style.display = 'flex';
-                                }
-                            }
-                        });
-
-                        const allElements = document.querySelectorAll('.all-pictos > *');
-                        allElements.forEach(element => {
-                            if (!element.classList.contains('picto')) {
-                                element.style.display = 'block';
-                            }
-                        });
-                    } else {
-                        const allElements = document.querySelectorAll('.all-pictos > *');
-                        allElements.forEach(element => {
-                            if (!element.classList.contains('picto') && !element.id.includes('uploaded-pictos')) {
-                                element.style.display = 'none';
-                            }
-                        });
-                    }
-                }
-
-                document.getElementById('search-bar').addEventListener('input', zoekPictos);
-            </script>
-
             <div class="all-pictos">
                 <h3>Dagen van de week:</h3>
                 <img class="picto perm-picto" src="/picto-planner/dagen/maandag.png" title="Maandag">
@@ -817,6 +758,63 @@
         });
 
         openDatabase();
+
+        function zoekPictos() {
+            const zoekInput = document.getElementById('search-bar').value.toLowerCase();
+            const pictos = document.querySelectorAll('.all-pictos .picto');
+
+            pictos.forEach(picto => {
+                const title = picto.getAttribute('title').toLowerCase();
+                const parentDiv = picto.parentElement;
+
+                if (title.includes(zoekInput)) {
+                    picto.style.display = 'inline-block';
+                    if (parentDiv) {
+                        const removeButton = parentDiv.querySelector('.remove-picto-button');
+                        if (removeButton) {
+                            removeButton.style.display = 'flex';
+                        }
+                    }
+                } else {
+                    picto.style.display = 'none';
+                    if (parentDiv) {
+                        const removeButton = parentDiv.querySelector('.remove-picto-button');
+                        if (removeButton) {
+                            removeButton.style.display = 'none';
+                        }
+                    }
+                }
+            });
+
+            if (zoekInput === '') {
+                pictos.forEach(picto => {
+                    picto.style.display = 'inline-block';
+                    const parentDiv = picto.parentElement;
+                    if (parentDiv) {
+                        const removeButton = parentDiv.querySelector('.remove-picto-button');
+                        if (removeButton) {
+                            removeButton.style.display = 'flex';
+                        }
+                    }
+                });
+
+                const allElements = document.querySelectorAll('.all-pictos > *');
+                allElements.forEach(element => {
+                    if (!element.classList.contains('picto')) {
+                        element.style.display = 'block';
+                    }
+                });
+            } else {
+                const allElements = document.querySelectorAll('.all-pictos > *');
+                allElements.forEach(element => {
+                    if (!element.classList.contains('picto') && !element.id.includes('uploaded-pictos')) {
+                        element.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        document.getElementById('search-bar').addEventListener('input', zoekPictos);
 
         /* PICTO PLANNER SETUP SCRIPT */
         function loadPlanner() {
