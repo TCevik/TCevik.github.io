@@ -733,7 +733,7 @@
                     savePicto(pictoSrc, pictoTitle, uploadedPictosDB);
 
                     const progressPercentage = Math.round((uploadedFiles / totalFiles) * 100);
-                    notification(`Upload progress: ${progressPercentage}%`);
+                    notification(`Voortgang uploaden: ${progressPercentage}%`);
 
                     adjustTimeout(() => {
                         processFileQueue(fileArray, totalFiles);
