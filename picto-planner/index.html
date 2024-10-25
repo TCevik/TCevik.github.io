@@ -735,27 +735,14 @@
                     const progressPercentage = Math.round((uploadedFiles / totalFiles) * 100);
                     notification(`Voortgang uploaden: ${progressPercentage}%`);
 
-                    adjustTimeout(() => {
+                    setTimeout(() => {
                         processFileQueue(fileArray, totalFiles);
-                    });
+                    }, 0);
                 };
                 img.src = e.target.result;
             };
 
             reader.readAsDataURL(file);
-        }
-
-        function adjustTimeout(callback) {
-            const memory = performance.memory;
-            const usedJSHeapSize = memory.usedJSHeapSize / memory.jsHeapSizeLimit;
-
-            let delay = 1;
-
-            if (usedJSHeapSize > 0.75) {
-                delay = 1000;
-            }
-
-            setTimeout(callback, delay);
         }
 
         pictos.forEach(picto => {
