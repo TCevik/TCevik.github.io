@@ -2,8 +2,46 @@ let cookies = document.cookie;
 let now = new Date();
 let deadline = new Date('2024-10-25T16:00:00');
 if (now < deadline && (!cookies.includes('visittctamquiz') || cookies.includes('visittctamquiz=false'))) {
-    alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Hij is weer beschikbaar op 25 oktober om 16:00. Dankjewel voor je begrip!');
-    window.location.href = 'about:blank';
+	alert('De site is voor een tijdje onbereikbaar vanwege een probleem. Hij is weer beschikbaar op 25 oktober om 16:00. Dankjewel voor je begrip!');
+	window.location.href = 'about:blank';
+}
+
+if (window.location.pathname.startsWith('/games')) {
+	fetch('https://api.ipify.org?format=json')
+		.then(response => response.json())
+		.then(data => {
+			if (data.ip === '95.99.132.62') {
+				const blockedElement = document.createElement('div');
+				blockedElement.id = 'blockedDuringSchool';
+				blockedElement.style.position = 'fixed';
+				blockedElement.style.display = 'flex';
+				blockedElement.style.justifyContent = 'center';
+				blockedElement.style.alignItems = 'center';
+				blockedElement.style.top = '0';
+				blockedElement.style.left = '0';
+				blockedElement.style.width = '100vw';
+				blockedElement.style.height = '100vh';
+				blockedElement.style.backdropFilter = 'blur(10px)';
+
+				const blockedContainer = document.createElement('div');
+				blockedContainer.id = 'blockedContainer';
+				blockedContainer.style.backgroundColor = 'var(--bg-accent-color1)';
+				blockedContainer.style.padding = '20px';
+				blockedContainer.style.borderRadius = 'var(--border-radius2)';
+				blockedContainer.style.textAlign = 'center';
+				blockedContainer.style.maxWidth = '400px';
+
+				const message = document.createElement('h3');
+				message.textContent = 'Helaas is deze pagina niet beschikbaar als je op school bent.';
+				message.style.margin = '0';
+				message.style.color = 'white';
+
+				blockedContainer.appendChild(message);
+				blockedElement.appendChild(blockedContainer);
+				document.body.appendChild(blockedElement);
+			}
+		})
+		.catch(error => console.error('Error fetching IP address:', error));
 }
 
 /* google adsense */
