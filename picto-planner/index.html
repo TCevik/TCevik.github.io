@@ -855,7 +855,7 @@
 
                     const addRequest = presetsStore.add(pictoPreset);
                     addRequest.onsuccess = () => {
-                        notification('Alle picto\'s zijn opgeslagen als één preset met de titel: ' + title);
+                        notification('Alle picto\'s zijn opgeslagen als een preset.');
                         console.log('Picto\'s geëxporteerd naar pictoPresetsDB:', pictoPreset);
 
                         loadFirstPictosInPresetSelecter();
