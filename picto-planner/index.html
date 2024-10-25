@@ -433,11 +433,12 @@
         const dbName = 'PictoPlannerDB';
         const pictosDB = 'pictos';
         const uploadedPictosDB = 'uploadedPictos';
+        const pictoPresetsDB = 'pictoPresets';
         const settingsDB = 'settings';
         let db;
 
         const openDatabase = () => {
-            const request = indexedDB.open(dbName, 1);
+            const request = indexedDB.open(dbName, 2);
 
             request.onupgradeneeded = (event) => {
                 db = event.target.result;
@@ -448,6 +449,10 @@
 
                 if (!db.objectStoreNames.contains(uploadedPictosDB)) {
                     db.createObjectStore(uploadedPictosDB, { keyPath: 'id' });
+                }
+
+                if (!db.objectStoreNames.contains(pictoPresetsDB)) {
+                    db.createObjectStore(pictoPresetsDB, { keyPath: 'id' });
                 }
 
                 if (!db.objectStoreNames.contains(settingsDB)) {
