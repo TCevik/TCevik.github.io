@@ -253,14 +253,15 @@
                     planning</button>
                 <button onclick="removeUploaded()" style="flex: 1; border: none; background-color: red;">Verwijder
                     geüploade picto's</button>
-                <button onclick="savePictosAsPreset()" style="flex: 1;">Sla picto's op als een preset</button>
+                <button onclick="savePictosAsPreset()" style="flex: 1;">Sla planning op</button>
             </div>
             <br>
 
+            <h3 style="margin-top: -5px;">Opgeslagen planningen:</h3>
+            <div style="margin-bottom: 10px;" id="preset-selecter"></div>
+
             <input style="margin-left: 0px; margin-top: 0px !important; margin-bottom: 5px !important;" type="text"
                 id="search-bar" autocomplete="off" placeholder="Zoek pictogrammen...">
-
-            <div id="preset-selecter"></div>
 
             <div class="all-pictos">
                 <h3>Dagen van de week:</h3>
@@ -838,6 +839,9 @@
                     if (!title) {
                         notification("Een titel is verplicht om de preset op te slaan.");
                         return;
+                    } else if (title.length >= 30) {
+                        notification("De titel moet minder dan 30 tekens zijn.");
+                        return;
                     }
 
                     const presetsTransaction = db.transaction([pictoPresetsDB], 'readwrite');
@@ -875,7 +879,6 @@
             };
         }
 
-        // Functie om de eerste picto van elke preset te laden
         function loadFirstPictosInPresetSelecter() {
             const transaction = db.transaction([pictoPresetsDB], 'readonly');
             const objectStore = transaction.objectStore(pictoPresetsDB);
@@ -883,31 +886,99 @@
             const request = objectStore.getAll();
             request.onsuccess = (event) => {
                 const presetsArray = event.target.result;
-                const presetSelecter = document.getElementById("preset-selecter");
+                const presetSelecter = document.getElementById('preset-selecter');
 
                 presetSelecter.innerHTML = "";
 
                 presetsArray.forEach((preset, index) => {
                     if (preset.pictos.length > 0) {
+                        const pictoContainer = document.createElement('div');
+                        pictoContainer.style.position = 'relative';
+                        pictoContainer.style.display = 'inline-block';
+
                         const firstPicto = preset.pictos[0];
                         const pictoElement = document.createElement("img");
                         pictoElement.src = firstPicto.src;
                         pictoElement.alt = firstPicto.title;
                         pictoElement.classList = 'picto';
-                        pictoElement.dataset.presetIndex = index; // Index voor identificatie van de preset
+                        pictoElement.dataset.presetIndex = index;
+
+                        const titleElement = document.createElement('div');
+                        titleElement.textContent = preset.title;
+                        titleElement.style.color = 'white';
+                        titleElement.style.fontWeight = 'bold';
+                        titleElement.style.overflow = 'hidden';
+                        titleElement.style.maxWidth = '100px';
+                        titleElement.style.marginLeft = '10px';
+                        titleElement.style.whiteSpace = 'nowrap';
+                        titleElement.style.textOverflow = 'ellipsis';
+                        titleElement.style.webkitLineClamp = '1';
+                        titleElement.style.fontSize = '0.9em'
+
                         presetSelecter.appendChild(pictoElement);
 
-                        // Voeg event listener toe voor elke preset
+                        const removeButton = document.createElement('img');
+                        removeButton.src = '/assets/close-button.png';
+                        removeButton.className = 'remove-picto-button';
+                        removeButton.style.position = 'absolute';
+                        removeButton.style.top = '3px';
+                        removeButton.style.right = '7px';
+                        removeButton.style.color = 'black';
+                        removeButton.style.backgroundColor = 'red';
+                        removeButton.style.border = '1px var(--text-color) solid';
+                        removeButton.style.cursor = 'pointer';
+                        removeButton.style.borderRadius = '50%';
+                        removeButton.style.width = '30px';
+                        removeButton.style.height = '30px';
+                        removeButton.style.display = 'flex';
+                        removeButton.style.alignItems = 'center';
+                        removeButton.style.justifyContent = 'center';
+                        removeButton.style.zIndex = '1';
+
                         pictoElement.addEventListener('click', () => {
                             loadPresetToDatabase(preset);
                         });
+
+                        titleElement.addEventListener('click', () => {
+                            loadPresetToDatabase(preset);
+                        });
+
+                        removeButton.addEventListener('click', () => {
+                            removePresetFromDatabase(index);
+                        });
+
+                        pictoContainer.appendChild(pictoElement);
+                        pictoContainer.appendChild(removeButton);
+                        pictoContainer.appendChild(titleElement);
+                        presetSelecter.appendChild(pictoContainer);
                     }
                 });
             };
+        }
 
-            request.onerror = (event) => {
-                notification('Fout bij ophalen van de presets: ' + event.target.error);
-                console.error('Fout bij ophalen van presets uit pictoPresetsDB:', event.target.error);
+        function removePresetFromDatabase(index) {
+            const transaction = db.transaction([pictoPresetsDB], 'readwrite');
+            const objectStore = transaction.objectStore(pictoPresetsDB);
+
+            const request = objectStore.getAll();
+            request.onsuccess = (event) => {
+                const presetsArray = event.target.result;
+
+                if (presetsArray[index]) {
+                    const presetToDelete = presetsArray[index];
+
+                    const deleteRequest = objectStore.delete(presetToDelete.id);
+                    deleteRequest.onsuccess = () => {
+                        console.log(`Preset met index ${index} is verwijderd.`);
+                        loadFirstPictosInPresetSelecter();
+                    };
+
+                    deleteRequest.onerror = () => {
+                        console.error('Er is een fout opgetreden bij het verwijderen van de preset.');
+                    };
+                } else {
+                    console.error('Geen preset gevonden op deze index.');
+                }
             };
         }
 
@@ -915,7 +986,7 @@
             const userConfirmed = confirm('Weet je het zeker dat je de preset wil laden? Je huidige planner zal worden verwijderd.');
 
             if (!userConfirmed) {
-                return; 
+                return;
             }
 
             const transaction = db.transaction(['pictos'], 'readwrite');
