@@ -831,11 +831,18 @@
                 const pictosArray = event.target.result;
 
                 if (pictosArray.length > 0) {
+                    const title = prompt("Geef een titel voor deze picto-preset:");
+                    if (!title) {
+                        notification("Een titel is verplicht om de preset op te slaan.");
+                        return;
+                    }
+
                     const presetsTransaction = db.transaction([pictoPresetsDB], 'readwrite');
                     const presetsStore = presetsTransaction.objectStore(pictoPresetsDB);
 
                     const pictoPreset = {
                         id: Date.now(),
+                        title: title,
                         pictos: pictosArray.map(picto => ({
                             src: picto.src,
                             title: picto.title,
@@ -844,7 +851,7 @@
 
                     const addRequest = presetsStore.add(pictoPreset);
                     addRequest.onsuccess = () => {
-                        notification('Alle picto\'s zijn opgeslagen als één enkele preset.');
+                        notification('Alle picto\'s zijn opgeslagen als één preset met de titel: ' + title);
                         console.log('Picto\'s geëxporteerd naar pictoPresetsDB:', pictoPreset);
                     };
 
@@ -853,7 +860,7 @@
                         console.error('Fout bij exporteren naar pictoPresetsDB:', event.target.error);
                     };
                 } else {
-                    notification('Geen picto\'s gevonden in pictosDB om te exporteren.');
+                    notification('Geen picto\'s gevonden in pictosDB om op te slaan.');
                 }
             };
 
