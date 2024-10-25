@@ -822,9 +822,13 @@
                 const pictosArray = event.target.result;
 
                 if (pictosArray.length > 0) {
-                    const title = prompt("Geef een titel voor deze picto-preset (laat leeg om alleen de 1e picto weer te geven):");
+                    const title = prompt("Geef een titel voor deze picto-preset.");
                     if (title.length >= 30) {
                         notification("De titel moet minder dan 30 tekens zijn.");
+                        return;
+                    }
+                    if (!/[a-zA-Z0-9]/.test(title)) {
+                        notification("De titel moet minstens één letter of cijfer bevatten.");
                         return;
                     }
 
