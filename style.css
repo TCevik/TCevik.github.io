@@ -20,7 +20,7 @@ body {
 
 /* light mode and dark mode */
 :root {
-    --background-color: #fbfffd;
+    --background-color: #ffffff;
     --text-color: #000000;
     --h1234-color: #38761d;
     --custom-link-color: #38761d;
@@ -32,8 +32,8 @@ body {
     --button-padding: 7px;
     --button-bgcolor: #379429;
     --button-shadow: hsl(112, 56%, 31%);
-    --bg-accent-color1: #e0fde9;
-    --bg-accent-color2: #c7ead2;
+    --bg-accent-color1: #f9f9f9;
+    --bg-accent-color2: #f2f2f2;
     --border-radius1: 10px;
     --border-radius2: 25px;
     --border-radius3: 50px;
@@ -47,14 +47,14 @@ body {
 /* dark mode */
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-color: #0d1710;
+        --background-color: #141414;
         --text-color: #ffffff;
         --h1234-color: #7fff48;
         --custom-link-color: #33ff33;
         --button-bgcolor: #38761d;
         --button-shadow: #2c5c17;
-        --bg-accent-color1: #16301f;
-        --bg-accent-color2: #133820;
+        --bg-accent-color1: #181818;
+        --bg-accent-color2: #222222;
     }
 }
 

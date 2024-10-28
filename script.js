@@ -187,7 +187,7 @@ var buttons = `
 function sideMenuNav() {
 	var sideBar = document.createElement("div");
 	sideBar.id = "sidebar";
-	sideBar.style.backgroundColor = "var(--background-color)";
+	sideBar.style.backgroundColor = "var(--bg-accent-color1)";
 	sideBar.style.color = "#fff";
 	sideBar.style.borderRight = "1px solid var(--h1234-color)";
 	sideBar.style.width = "0";
