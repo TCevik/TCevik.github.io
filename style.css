@@ -20,27 +20,25 @@ body {
 
 /* light mode and dark mode */
 :root {
-    --background-color: #ffffff;
+    --background-color: #f5f5f5;
     --text-color: #000000;
-    --h1234-color: #38761d;
-    --custom-link-color: #38761d;
+    --h1234-color: #004d00;
+    --custom-link-color: #008000;
     --font-size: 16px;
     --h1-font-size: 46px;
     --h2-font-size: 36px;
     --h3-font-size: 26px;
     --h4-font-size: 22px;
-    --button-padding: 7px;
-    --button-bgcolor: #379429;
-    --button-shadow: hsl(112, 56%, 31%);
-    --bg-accent-color1: #f9f9f9;
-    --bg-accent-color2: #f2f2f2;
+    --button-padding: 7px 14px;
+    --button-bgcolor: #008000;
+    --bg-accent-color1: #e0f5e0;
+    --bg-accent-color2: #c1e2c1;
     --border-radius1: 10px;
     --border-radius2: 25px;
     --border-radius3: 50px;
     --border-radius4: 50vw;
     overflow-x: hidden;
-    transition: 0.3s;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     font-family: Lexend, Arial, sans-serif;
 }
 
@@ -50,11 +48,10 @@ body {
         --background-color: #141414;
         --text-color: #ffffff;
         --h1234-color: #7fff48;
-        --custom-link-color: #33ff33;
+        --custom-link-color: #00cc00;
         --button-bgcolor: #38761d;
-        --button-shadow: #2c5c17;
-        --bg-accent-color1: #181818;
-        --bg-accent-color2: #222222;
+        --bg-accent-color1: #323232;
+        --bg-accent-color2: #252525;
     }
 }
 
