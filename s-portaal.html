@@ -18,12 +18,12 @@
             font-size: 5em;
             font-weight: bold;
             display: flex;
-            align-items: center; /* Zorgt ervoor dat de elementen gecentreerd zijn */
+            align-items: center;
         }
 
         .colon {
             transition: opacity 0.1s ease-in-out;
-            margin: 0 5px; /* Voegt een beetje ruimte toe aan beide kanten van de dubbele punt */
+            margin: 0 5px;
         }
     </style>
 </head>
@@ -70,11 +70,9 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
 
-            // Werk alleen de tekst van de uren en minuten bij
             document.getElementById('hours').textContent = hours;
             document.getElementById('minutes').textContent = minutes;
 
-            // Pas de zichtbaarheid van de dubbele punt aan
             const colon = document.getElementById('colon');
             colon.style.opacity = showColon ? 1 : 0;
 
