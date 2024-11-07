@@ -47,13 +47,6 @@ if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 		.catch(error => console.error('Error fetching IP address:', error));
 }
 
-/* google adsense */
-var adScript = document.createElement('script');
-adScript.async = true;
-adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862";
-adScript.setAttribute('crossorigin', 'anonymous');
-document.head.appendChild(adScript);
-
 function notification(message) {
 	var notificationElement = document.createElement("div");
 
