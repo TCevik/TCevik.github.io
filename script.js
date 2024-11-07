@@ -157,16 +157,6 @@ var buttons = `
     <button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
 	<button onclick="window.location.href='/online-store'">Online Store</button>
 
-	<!-- Advertisement start -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
-        crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862" data-ad-slot="5862330293"
-        data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    <!-- Advertisement end -->
-
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
 	<button onclick="window.location.href='/picto-planner'">Picto Planner</button>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
