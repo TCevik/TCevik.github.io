@@ -45,73 +45,24 @@
         input {
             margin-left: 5px;
         }
-
-        .container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .ads-section {
-            flex: 1;
-        }
-
-        .bell-section {
-            flex: 2;
-        }
-
-        .adsbygoogle {
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 
 <body>
+    <h1>HZ Invullen</h1>
+    <p>De frequentie 440 Hz en tijd 2500ms wordt op veel scholen gebruikt als schoolbel, dus vul dat in voor de
+        schoolbel. (als je de pagina herlaad dan staan de goede nummers alvast ingevuld) 🔔</p>
+    <p>De frequentie 12000 Hz zorgt ervoor dat je oren van je hoofd rotten. 😂📢</p>
+    <p>De frequentie 4000 Hz voor 30 sec op max volume zorgt ervoor dat je piepstrophobia krijgt. 🚫</p>
 
-    <div class="container">
-        <div class="bell-section">
-            <h1>HZ Invullen</h1>
-            <p>De frequentie 440 Hz en tijd 2500ms wordt op veel scholen gebruikt als schoolbel, dus vul dat in voor de
-                schoolbel. (als je de pagina herlaad dan staan de goede nummers alvast ingevuld) 🔔</p>
-            <p>De frequentie 12000 Hz zorgt ervoor dat je oren van je hoofd rotten. 😂📢</p>
-            <p>De frequentie 4000 Hz voor 30 sec op max volume zorgt ervoor dat je piepstrophobia krijgt. 🚫</p>
-
-            <label for="frequency-input">Frequentie (Hz):</label>
-            <input id="frequency-input" min="20" max="20000" value="440">
-            <br>
-            <p>1000ms = 1sec | 1500ms = 1,5sec</p>
-            <label for="duration-input">Speelduur (ms):</label>
-            <input id="duration-input" min="0" value="2500">
-            <br>
-            <button style="z-index: 1 !important;" onclick="playSound()">Speel geluid af</button>
-        </div>
-
-        <div class="ads-section">
-            <!-- Advertisement start -->
-            <script async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
-                crossorigin="anonymous"></script>
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862"
-                data-ad-slot="5862330293" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-            <!-- Advertisement end -->
-
-            <p></p>
-
-            <!-- Advertisement start -->
-            <script async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
-                crossorigin="anonymous"></script>
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862"
-                data-ad-slot="5862330293" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-            <!-- Advertisement end -->
-        </div>
-    </div>
-
+    <label for="frequency-input">Frequentie (Hz):</label>
+    <input id="frequency-input" min="20" max="20000" value="440">
+    <br>
+    <p>1000ms = 1sec | 1500ms = 1,5sec</p>
+    <label for="duration-input">Speelduur (ms):</label>
+    <input id="duration-input" min="0" value="2500">
+    <br>
+    <button style="z-index: 1 !important;" onclick="playSound()">Speel geluid af</button>
 </body>
 
 </html>
