@@ -23,7 +23,7 @@ body {
     --background-color: #f5f5f5;
     --text-color: #000000;
     --h1234-color: #004d00;
-    --custom-link-color: #008000;
+    --custom-link-color: #38761d;
     --font-size: 16px;
     --h1-font-size: 46px;
     --h2-font-size: 36px;
@@ -48,7 +48,7 @@ body {
         --background-color: #141414;
         --text-color: #ffffff;
         --h1234-color: #7fff48;
-        --custom-link-color: #00cc00;
+        --custom-link-color: #33ff33;
         --button-bgcolor: #38761d;
         --bg-accent-color1: #16301f;
         --bg-accent-color2: #133820;
