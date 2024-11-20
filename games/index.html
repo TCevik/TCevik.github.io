@@ -412,31 +412,14 @@
             }
         }
 
-        // Functie om te controleren of een pagina geiframeed kan worden
-        async function canBeIFramed(url) {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                const xFrameOptions = response.headers.get('X-Frame-Options');
-                return !xFrameOptions; // Als er geen X-Frame-Options is, kan de pagina geiframeed worden
-            } catch (error) {
-                console.error('Error fetching URL:', error);
-                return false; // Bij een fout kan de pagina waarschijnlijk niet geiframeed worden
-            }
-        }
-
         // Event listener voor de knop om een nieuwe game toe te voegen
         document.getElementById("addGameBtn").addEventListener("click", async function () {
             let gameLink = prompt("Enter the game link:");
             let imageLink = prompt("Enter the URL of the image:");
 
             if (gameLink && imageLink) {
-                const isIFramable = await canBeIFramed(gameLink);
-                if (isIFramable) {
-                    addGameToDOM(gameLink, imageLink);
-                    saveGame(gameLink, imageLink);
-                } else {
-                    notification("The page cannot be iframed. The game has not been added.");
-                }
+                addGameToDOM(gameLink, imageLink);
+                saveGame(gameLink, imageLink);
             } else {
                 notification("You must enter both a link and an image!");
             }
