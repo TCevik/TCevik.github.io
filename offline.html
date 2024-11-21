@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Je bent offline</title>
-    
+    <title>You are offline</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
         body {
             background-color: white;
             font-family: Lexend, Arial, sans-serif;
@@ -19,7 +21,8 @@
             text-align: left;
         }
 
-        h1, p {
+        h1,
+        p {
             color: black;
         }
 
@@ -46,7 +49,7 @@
                 }
             }
         }
-    
+
         setInterval(checkWifiAndReload, 500);
 
         function goBack() {
@@ -54,19 +57,25 @@
         }
     </script>
 </head>
+
 <body>
-    <h1>Oeps, je hebt geen internetverbinding!</h1>
-    <p style="margin-top: -20px;">Deze pagina kon niet worden geladen, controleer je verbinding.</p>
+    <h1>Oops, you don't have an internet connection!</h1>
+    <p style="margin-top: -20px;">This page could not be loaded, please check your connection.</p>
 
     <br>
 
-    <p>Er was eens een jongen genaamd Tamer in Codeerburg. Hij droomde ervan de beste webontwikkelaar te worden. Op een stormachtige dag brak de paniek uit: de bliksem sloeg in de centrale router en het hele dorp zat zonder internet. Tamer zag dit als een kans. Hij creëerde een offlinepagina met HTML, CSS en JavaScript vol spelletjes en raadsels. Trots verspreidde hij de pagina door het dorp door USB sticks te verkopen.</p>
-    <p>De dorpsbewoners waren enthousiast en genoten van Tamer's creatie. De offlinepagina werd een hit, zelfs buiten Codeerburg. Tamer werd een held en bewees dat waardevolle creaties mogelijk zijn zonder internet. Hij werd de belangrijkste persoon in Codeerburg en leefde nog lang en gelukkig.</p>
-    <br>
+    <p>Once upon a time there was a boy named Tamer in Codeerburg. He dreamed of becoming the best web developer. One
+        stormy day, panic broke out: lightning struck the central router and the entire village was without internet.
+        Tamer saw this as an opportunity. He created an offline page with HTML, CSS and JavaScript full of games and
+        riddles. He proudly spread the page throughout the village by selling USB sticks.</p>
+    <p>The villagers were enthusiastic and enjoyed Tamer's creation. The offline page became a hit, even outside
+        Codeerburg. Tamer became a hero and proved that valuable creations are possible without internet. He became the
+        most important person in Codeerburg and lived happily ever after.</p> <br>
     <p style="margin-top: -10px;">En dit, allemaal zonder internet!</p>
 
-    <br><button style="margin: 0px !important; margin-top: 20px !important;" onclick="goBack()">Terug</button>
+    <br><button style="margin: 0px !important; margin-top: 20px !important;" onclick="goBack()">Back</button>
 
     <p style="color: grey;">TC_tam<span style="vertical-align: top; font-size: 0.8em;">©</span> - Tamer Çevik</p>
 </body>
+
 </html>

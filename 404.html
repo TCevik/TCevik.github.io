@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>404 - Pagina niet gevonden</title>
+    <title>404 - Page not found</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
@@ -56,7 +56,7 @@
             border-radius: var(--border-radius4);
         }
 
-        #terugknop {
+        #backbutton {
             cursor: pointer
         }
     </style>
@@ -78,16 +78,15 @@
 
 <body>
     <div id="left">
-        <h1>404 - Pagina niet gevonden</h1>
-        <p>Deze pagina kon helaas niet worden gevonden. Controleer de URL en probeer het opnieuw of ga naar de
-            startpagina.
+        <h1>404 - Page not found</h1>
+        <p>Sorry, this page could not be found. Please check the URL and try again or go to the home page.
         </p>
-        <br><button style="margin-bottom: 40px;" id="startbutton" onclick="window.location.href='/'">Terug naar de
-            homepagina</button>
+        <br><button style="margin-bottom: 40px;" id="startbutton" onclick="window.location.href='/'">Back to the
+            homepage</button>
 
-        <br><b>Tip: als deze pagina blijft verschijnen, dan kan het helpen om naar de <a id="terugknop">vorige
-                pagina</a> te gaan en op
-            refresh of ctrl + r te klikken.</b>
+        <br><b>Tip: If this page keeps appearing, it may help to go to the <a id="backbutton">previous
+                page</a> and click
+            refresh or ctrl + r.</b>
     </div>
 
     <div id="right">
@@ -95,7 +94,7 @@
     </div>
 
     <script>
-        document.getElementById('terugknop').addEventListener('click', function () {
+        document.getElementById('backbutton').addEventListener('click', function () {
             history.go(-1);
         });
     </script>
