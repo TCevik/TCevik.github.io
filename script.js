@@ -153,17 +153,14 @@ var buttons = `
     <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
 	<button onclick="window.location.href='/picto-planner'">Picto Planner</button>
 	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
+	<button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
     <button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
     <button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>
     <button onclick="window.location.href='/tools/ide'">IDE</button>
     <button onclick="window.location.href='/tools/tts'">TTS</button>
-
-	<h3 style="margin-top: 50px;" id="schoolhacks">Voor School</h3>
-	<button onclick="window.location.href='/school/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
-	<button onclick="window.location.href='/school/myinstants'">MyInstants</button>
-    <button onclick="window.location.href='/school/rammerhead'">Proxy - Rammerhead</button>
+	<button onclick="window.location.href='/tools/useful-pages'">Handige Pagina's / Browser</button>
 
 	<h3 style="margin-top: 50px;" id="archief">Archief</h3>
     <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>

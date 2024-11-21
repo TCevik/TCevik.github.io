@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TC_tam Pages</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <script>
+        function doneAdding() {
+            document.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    if (link.id !== 'addPageBtn') {
+                        event.preventDefault();
+                        var href = link.getAttribute('href');
+
+                        var iframe = document.createElement('iframe');
+                        iframe.src = href;
+                        iframe.style.position = 'fixed';
+                        iframe.style.width = '100vw';
+                        iframe.style.height = '100vh';
+                        iframe.style.backgroundColor = 'white';
+                        iframe.style.top = '50%';
+                        iframe.style.left = '50%';
+                        iframe.style.transform = 'translate(-50%, -50%)';
+                        iframe.style.border = 'none';
+
+                        const controlsContainer = document.createElement('div');
+                        controlsContainer.style.position = 'fixed';
+                        controlsContainer.style.top = '10px';
+                        controlsContainer.style.left = '10px';
+                        controlsContainer.style.display = 'flex';
+                        controlsContainer.style.alignItems = 'center';
+                        controlsContainer.style.zIndex = '9999';
+
+                        const fullscreenImgDiv = document.createElement('button');
+                        fullscreenImgDiv.style.width = '50px';
+                        fullscreenImgDiv.style.height = '50px';
+                        fullscreenImgDiv.style.backgroundImage = "url('/assets/fullscreen-button.png')";
+                        fullscreenImgDiv.style.backgroundSize = 'cover';
+                        fullscreenImgDiv.style.backgroundPosition = 'center';
+                        fullscreenImgDiv.style.cursor = 'pointer';
+                        fullscreenImgDiv.style.marginRight = '10px';
+
+                        fullscreenImgDiv.addEventListener('click', function () {
+                            if (document.fullscreenEnabled) {
+                                iframe.requestFullscreen();
+                            } else {
+                                notification("Fullscreen is niet ondersteund op deze browser.");
+                            }
+                        });
+
+                        const reloadButton = document.createElement('button');
+                        reloadButton.innerText = 'Back';
+                        reloadButton.style.padding = '10px';
+                        reloadButton.addEventListener('click', function () {
+                            location.reload();
+                        });
+
+                        var body = document.body;
+                        body.style.margin = '0px';
+                        while (body.firstChild) {
+                            body.removeChild(body.firstChild);
+                        }
+                        controlsContainer.appendChild(fullscreenImgDiv);
+                        controlsContainer.appendChild(reloadButton);
+                        body.appendChild(controlsContainer);
+                        body.appendChild(iframe);
+
+                        window.addEventListener('resize', function () {
+                            iframe.style.width = '100vw';
+                            iframe.style.height = '100vh';
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+
+    <style>
+        img {
+            margin: 5px;
+        }
+
+        body {
+            margin: 0px;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loaderContainer {
+            text-align: center;
+        }
+
+        #loadMeter {
+            width: 300px;
+            height: 30px;
+            margin-bottom: 20px;
+        }
+
+        #status {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body style="margin: 0 auto; width: 90%;">
+
+    <h1>Useful Pages:</h1>
+
+    <div id="loadingOverlay">
+        <div id="loaderContainer">
+            <meter id="loadMeter" min="0" max="100" low="25" high="75" optimum="80" value="0"></meter>
+            <p id="status">Loading page...</p>
+        </div>
+    </div>
+
+    <div id="pages">
+        <a style="border-bottom: none;" href="https://browser.rammerhead.org/">
+            <img style="width: 150px; height: 150px;" src="/assets/useful-pages/rammerhead.jpg">
+        </a>
+
+        <a style="border-bottom: none;" href="https://myinstants.com/">
+            <img style="width: 150px; height: 150px;" src="/assets/useful-pages/redbutton.png">
+        </a>
+
+        <h3>Create your own page by adding a link and a cover image.</h3>
+        <p>Make sure the URLs always start with https://.</p>
+        <a id="addPageBtn" style="border-bottom: none;" href="#" onclick="return false;">
+            <img style="width: 150px; height: 150px;" src="/assets/plus.png">
+        </a>
+    </div>
+
+
+    <script>
+        const meter = document.getElementById('loadMeter');
+        const statusText = document.getElementById('status');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Deze functie update de voortgang van het laden van de pagina
+        function updateProgress(percentage) {
+            meter.value = percentage;
+            statusText.innerText = `Page loaded: ${percentage}%`;
+        }
+
+        // Vooruitgang bij DOM Ready (wanneer de DOM gedeeltelijk is geladen)
+        document.onreadystatechange = function () {
+            if (document.readyState === 'loading') {
+                updateProgress(25);  // De DOM wordt geladen
+            } else if (document.readyState === 'interactive') {
+                updateProgress(50);  // DOM is volledig geladen, maar resources nog niet
+            }
+        };
+
+        // Vooruitgang bij volledige paginalaad (inclusief alle bronnen)
+        window.onload = function () {
+            updateProgress(100);  // Alle bronnen zijn geladen
+            statusText.innerText = "Page is done loading!";
+            // Wacht een klein beetje voor een soepel effect en verwijder de overlay
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 500);
+        };
+
+        // Functie om de opgeslagen pages uit localStorage te laden
+        function loadPages() {
+            let storedPages = localStorage.getItem("pages");
+            if (storedPages) {
+                let pagesArray = JSON.parse(storedPages);
+                pagesArray.forEach(page => {
+                    addPageToDOM(page.link, page.image);
+                });
+            }
+            doneAdding();
+        }
+
+        // Functie om een page aan het DOM toe te voegen
+        function addPageToDOM(gameLink, imageLink) {
+            let gameHTML = `
+        <div class="page-item" style="position: relative; display: inline-block; margin: 10px;">
+            <a style="border-bottom: none;" href="${gameLink}">
+                <img style="width: 150px; height: 150px;" src="${imageLink}">
+            </a>
+            <span class="remove-page" style="position: absolute; top: 0; right: 0; cursor: pointer; color: red; font-weight: bold; z-index: 1000;">x</span>
+        </div>
+    `;
+            const gameContainer = document.getElementById("pages");
+            gameContainer.insertAdjacentHTML('beforeend', gameHTML);
+            doneAdding();
+
+            // Event listener voor de verwijderknop
+            const removeButton = gameContainer.lastElementChild.querySelector(".remove-page"); // Selecteer de net toegevoegde "x"
+            removeButton.addEventListener("click", function () {
+                removePageFromStorage(gameLink); // Verwijder de page uit localStorage
+                removePageFromDOM(removeButton.parentElement); // Verwijder de page uit de DOM
+            });
+        }
+
+        // Functie om een page op te slaan in localStorage
+        function savePage(gameLink, imageLink) {
+            let storedPages = localStorage.getItem("pages");
+            let pagesArray = storedPages ? JSON.parse(storedPages) : [];
+
+            pagesArray.push({ link: gameLink, image: imageLink });
+            localStorage.setItem("pages", JSON.stringify(pagesArray));
+        }
+
+        // Functie om een page uit de DOM te verwijderen
+        function removePageFromDOM(gameElement) {
+            gameElement.remove();
+        }
+
+        // Functie om een page uit localStorage te verwijderen
+        function removePageFromStorage(gameLink) {
+            let storedPages = localStorage.getItem("pages");
+            if (storedPages) {
+                let pagesArray = JSON.parse(storedPages);
+                pagesArray = pagesArray.filter(page => page.link !== gameLink);
+                localStorage.setItem("pages", JSON.stringify(pagesArray));
+            }
+        }
+
+        // Event listener voor de knop om een nieuwe page toe te voegen
+        document.getElementById("addPageBtn").addEventListener("click", async function () {
+            let gameLink = prompt("Enter the page link:");
+            let imageLink = prompt("Enter the URL of the image:");
+
+            if (gameLink && imageLink) {
+                addPageToDOM(gameLink, imageLink);
+                savePage(gameLink, imageLink);
+            } else {
+                notification("You must enter both a link and an image!");
+            }
+        });
+
+        // Laad de opgeslagen pages bij het openen van de pagina
+        document.addEventListener('DOMContentLoaded', function () {
+            loadPages();
+        });
+    </script>
+
+</body>
+
+</html>
