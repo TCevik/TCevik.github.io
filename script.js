@@ -79,7 +79,7 @@ function notification(message) {
 	var notificationHeight = notificationElement.getBoundingClientRect().height;
 
 	if (notificationHeight > 0.96 * screenHeight) {
-		notificationElement.textContent = "Deze notificatie is te lang om weer te geven.";
+		notificationElement.textContent = "This notification is too long to display.";
 		notificationElement.style.overflowY = 'none';
 		notificationElement.style.maxHeight = 0.96 * screenHeight + 'px';
 	}
@@ -109,10 +109,10 @@ headElement.insertBefore(manifestLink, headElement.firstChild);
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('/service-worker.js')
 		.then(function (registration) {
-			console.log('Service Worker geregistreerd met scope:', registration.scope);
+			console.log('Service Worker registered with scope:', registration.scope);
 		})
 		.catch(function (error) {
-			console.error('Fout bij het registreren van de Service Worker:', error);
+			console.error('Error registering Service Worker:', error);
 		});
 }
 
@@ -144,34 +144,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 var buttons = `
     <button onclick="window.location.href='/'">Home</button>
-    <h3 id="algemeen">Algemeen</h3>
-    <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">Mijn YouTube kanaal</button>
+    <h3 id="algemeen">General</h3>
+    <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">My YouTube channel</button>
     <button onclick="window.location.href='/games'">Games</button>
-    <button onclick="window.location.href='/blogs/alle-blogs'">Mijn blogs</button>
+    <button onclick="window.location.href='/blogs/alle-blogs'">My blogs</button>
 	<button onclick="window.location.href='/online-store'">Online Store</button>
 
-    <h3 style="margin-top: 50px;" id="tools">Handige Tools</h3>
+    <h3 style="margin-top: 50px;" id="tools">Handy Tools</h3>
 	<button onclick="window.location.href='/picto-planner'">Picto Planner</button>
-	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documenten</button>
-	<button onclick="window.location.href='/tools/hz-geluiden'">Speel geluiden van 20 - 20.000 hz (inc schoolbel)</button>
+	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documents</button>
+	<button onclick="window.location.href='/tools/hz-geluiden'">Play sounds from 20 - 20,000 Hz</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
-    <button onclick="window.location.href='/tools/live-clock'">Live Klok</button>
-    <button onclick="window.location.href='/tools/file-maker'">Maak bestanden naar keuze</button>
+    <button onclick="window.location.href='/tools/live-clock'">Live Clock</button>
+    <button onclick="window.location.href='/tools/file-maker'">Create files of your choice</button>
     <button onclick="window.location.href='/tools/ide'">IDE</button>
     <button onclick="window.location.href='/tools/tts'">TTS</button>
-	<button onclick="window.location.href='/tools/useful-pages'">Handige Pagina's / Browser</button>
+	<button onclick="window.location.href='/tools/useful-pages'">Useful Pages / Browser</button>
 
-	<h3 style="margin-top: 50px;" id="archief">Archief</h3>
+	<h3 style="margin-top: 50px;" id="archief">Archive (DUTCH)</h3>
     <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
 	<button onclick="window.location.href='/archief/school-hack-2'">School hack 2</button>
     <button onclick="window.location.href='/archief/school-hack-3'">School hack 3</button>
 
-	<h3 style="margin-top: 50px;" id="overwebsite">Over de website</h3>
-	<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank')">Rapporteer een fout</button>
+	<h3 style="margin-top: 50px;" id="overwebsite">About</h3>
+	<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank')">Report an error</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">Bekijk de broncode van de site</button>
+	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">View the source code of the site</button>
 `;
 
 function sideMenuNav() {
