@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>TC_tam</title>
     <meta name="description"
-        content="Welkom op de TC_tam website! Deze site is gemaakt door Tamer Çevik. Je hebt hier verschillende handige tools om te gebruiken op je laptop en telefoon.">
+        content="Welcome to the TC_tam website! This site is made by Tamer Çevik. You have here several useful tools to use on your laptop and phone.">
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -23,7 +23,7 @@
             var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
 
-            document.getElementById('countup-site-age').innerHTML = "Deze site bestaat al " + days + " dagen, " + hours + " uur, " + minutes + " minuten en " + seconds + " seconden!";
+            document.getElementById('countup-site-age').innerHTML = "The site exists for " + days + " days, " + hours + " hours, " + minutes + " minutes and " + seconds + " seconds!";
         }
 
         setInterval(countup, 100);
@@ -55,13 +55,13 @@
 
         function updateAgeAndCountdown() {
             const age = calculateAge();
-            document.getElementById('age').innerHTML = `Ik ben Tamer, een ${age} jarige jongen die websites maakt.`;
+            document.getElementById('age').innerHTML = `I'm Tamer, a ${age} year old boy who makes websites.`;
 
             const nextBirthday = getNextBirthday();
             const today = new Date();
 
             if (today.getMonth() === 4 && today.getDate() === 18) {
-                document.getElementById('birthday').innerHTML = "Het is vandaag 18 mei, dus ik ben vandaag jarig!!! 🥳";
+                document.getElementById('birthday').innerHTML = "Today is May 18th, so today is my birthday!!! 🥳";
             } else {
                 const timeLeft = nextBirthday - today;
 
@@ -70,7 +70,7 @@
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-                document.getElementById('birthday').innerHTML = `Nog ${days} dagen, ${hours} uur, ${minutes} minuten, en ${seconds} seconden tot mijn verjaardag!`;
+                document.getElementById('birthday').innerHTML = `Only ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds left until my birthday!`;
             }
         }
 
@@ -87,7 +87,7 @@
 
         async function shareURL() {
             share({
-                title: "TC_tam, beste site ooit!",
+                title: "TC_tam, the best site ever!",
                 url: "/"
             });
         }
@@ -96,12 +96,12 @@
             if (navigator.canShare(toShare)) {
                 try {
                     await navigator.share(toShare);
-                    notification("Link gedeeld!")
+                    notification("Site shared!")
                 } catch (e) {
                     console.error("Content was not shared by the user")
                 }
             } else {
-                notification("Dit kan niet worden gedeeld met dit apparaat en/of browser")
+                notification("This cannot be shared with this device and/or browser")
             }
         }
 
@@ -321,26 +321,26 @@
 
 <body id="body" onload="countup(); countdownToBirthday();">
     <div id="announcements" style="display: none; opacity: 0;" class="diff-color-section2">
-        <h4 style="margin: 0px; margin-bottom: -15px; transform: translate(0%, -60%);">Aankondigingen:</h4>
-        <p id="announcementText" style="margin: 0px;">Laden...</p>
+        <h4 style="margin: 0px; margin-bottom: -15px; transform: translate(0%, -60%);">Announcements:</h4>
+        <p id="announcementText" style="margin: 0px;">Loading...</p>
     </div>
 
     <div id="background-ball"></div>
 
     <div id="title">
         <h1 class="title-text" style="margin-top: 10px;">TC_tam</h1>
-        <h2 class="title-text" style="margin-top: -10px;">Door Tamer Çevik</h2>
+        <h2 class="title-text" style="margin-top: -10px;">By Tamer Çevik</h2>
     </div>
 
-    <p id="countup-site-age">JavaScript staat uit en deze site werkt niet zonder JavaScript of de pagina is nog aan het
-        laden.
+    <p id="countup-site-age">JavaScript is turned off and this site will not work without JavaScript or the page is
+        still loading.
     <p>
 
-        <button onclick="openTctamQuizPopup()">Doe de TC_tam Quiz!</button>
+        <button onclick="openTctamQuizPopup()">Take the TC_tam Quiz!</button>
 
     <div id="tctamquizpopup" class="tctamquizpopup-overlay">
         <div class="tctamquizpopup-content">
-            <button style="size: 30px;" class="close-btn" onclick="closeTctamQuizPopup()">Sluiten</button>
+            <button style="size: 30px;" class="close-btn" onclick="closeTctamQuizPopup()">Close</button>
             <iframe id="tctam-quiz-iframe" src="/tctam-quiz"
                 style="background-color: var(--bg-accent-color2); width: 100%; height: 100%;" frameborder="0"></iframe>
         </div>
@@ -391,7 +391,7 @@
             style="width: 100%; border-top-right-radius: var(--border-radius3); border-top-left-radius: var(--border-radius3);">
             <img style="border-radius: 0px; margin-right: 5px; margin-bottom: -5px;" width="20px"
                 src="/assets/share-icon.png" alt="Deel icon">
-            Deel deze website
+            Share this website
         </button>
 
         <div style="display: flex; width: 100%; justify-content: space-between; margin-top: 20px;">
@@ -400,51 +400,50 @@
             </div>
 
             <div style="margin-top: -30px; flex-grow: 1; text-align: left;">
-                <h3 id="age">Ik ben Tamer, een (leeftijd) jarige jongen die websites maakt.</h3>
+                <h3 id="age">I'm Tamer, a (age) 18 year old boy who makes websites.</h3>
                 <p style="color: var(--h1234-color);" class="aboutme-text" id="birthday"></p>
 
-                <p><b>Hoe heb ik TC_tam bedacht?</b>
-                    <br>- Ik heet Tamer Çevik.
-                    <br>- TC staan voor de 1e letter van mijn voor- en achternaam.
-                    <br>- tam staan voor de 3 eerste letters van mijn voornaam.
-                    <br>Nu weet je hoe ik TC_tam verzonnen heb!
+                <p><b>How did I come up with TC_tam?</b>
+                    <br>- My name is Tamer Çevik.
+                    <br>- TC stands for the 1st letter of my first and last name.
+                    <br>- tame stands for the first 3 letters of my first name.
+                    <br>Now you know how I came up with TC_tam!
                 </p>
 
-                <b>Hobby's:</b>
-                <p style="margin-top: 0px;">- Ik doe karate als sport.
-                    <br>- Ik geef zwemles aan kinderen bij zwemvereniging <a
+                <b>Hobbies:</b>
+                <p style="margin-top: 0px;">- I do karate as a sport.
+                    <br>- I teach swimming lessons to children at a swimming club <a
                         href="https://zwemvereniging-evzv.github.io/" target="_blank">EVZV</a>.
-                    <br>- En natuurlijk maak ik ook heel graag websites.
+                    <br>- And of course I also love making websites.
                 </p>
 
                 <b>Later:</b>
-                <p style="margin-top: 0px;">- Ik wilde voordat ik sites maakte YouTuber worden, ik maakte een
-                    website voor mijn kanaal met Google Sites (dat is heel simpel). Maar toen ik die site had gemaakt
-                    zag ik hoe
-                    leuk ik het vind om met computers te werken dus ben ik deze site gaan maken.
-                    <br>- Mijn nieuwe plan is om als ik volwassen ben software engineer te worden. Als software engineer
-                    ontwerp, ontwikkel en test je softwareapplicaties.
+                <p style="margin-top: 0px;">- Before I made sites I wanted to be a YouTuber, I made a website for my
+                    channel with Google Sites (it's very simple). But after I made that site I saw how much I enjoy
+                    working with computers so I started making this site.
+                    <br>- My new plan is to become a software
+                    engineer when I grow up. As a software engineer you design, develop and test software applications.
                 </p>
 
-                <b>Middelbare school:</b>
-                <p style="margin-top: 0px;">- Ik doe havo. Ik vind dat ik op een leuke
-                    school met aardige docenten zit. Ik woon ook in dezelfde stad, dus ik ben in 3 minuten op school.
-                    Dat is fijn als het regent, want dan hoef ik niet 15 minuten te fietsen. Helaas sneeuwt het hier
-                    niet zo veel, maar de winter is toch mijn favoriete seizoen.
-                    <br>- Als vakkenpakket heb ik natuur en techniek gekozen, ik heb nu dus de volgende vakken: <a
-                        style="cursor: pointer;" id="unfold-button" onclick="toggleSubjects()">Uitvouwen</a>
+                <b>Secondary school:</b>
+                <p style="margin-top: 0px;">- I am doing HAVO. I think I am at a nice school with nice teachers. I also
+                    live in the same city, so I can get to school in 3 minutes.
+                    That is nice when it rains, because then I don't have to cycle 15 minutes. Unfortunately, it doesn't
+                    snow that much here, but winter is still my favorite season.
+                    <br>- As a subject package I have chosen science and technology, so I now have the following
+                    subjects: <a style="cursor: pointer;" id="unfold-button" onclick="toggleSubjects()">Expand</a>
                 <div id="subjects">
                     <li style="margin-top: -20px;">Nederlands</li>
-                    <li>Engels</li>
-                    <li>Maatschappijleer</li>
-                    <li>Lichamelijke opvoeding</li>
+                    <li>English</li>
+                    <li>Social studies</li>
+                    <li>Physical education</li>
                     <li>CKV</li>
-                    <li>Godsdienst en levensbeschouwing</li>
-                    <li>Wiskunde B</li>
-                    <li>Natuurkunde</li>
-                    <li>Scheikunde</li>
-                    <li>Informatica</li>
-                    <li>Biologie</li>
+                    <li>Religion and philosophy of life</li>
+                    <li>Mathematics B</li>
+                    <li>Physics</li>
+                    <li>Chemistry</li>
+                    <li>Computer science</li>
+                    <li>Biology</li>
                 </div>
                 </p>
 
@@ -453,10 +452,10 @@
                         var subjectsDiv = document.getElementById("subjects");
                         if (subjectsDiv.classList.contains("expanded")) {
                             subjectsDiv.classList.remove("expanded");
-                            document.getElementById("unfold-button").innerText = "Uitvouwen";
+                            document.getElementById("unfold-button").innerText = "Expand";
                         } else {
                             subjectsDiv.classList.add("expanded");
-                            document.getElementById("unfold-button").innerText = "Inklappen";
+                            document.getElementById("unfold-button").innerText = "Collapse";
                         }
                     }
                 </script>
@@ -464,62 +463,63 @@
         </div>
     </div>
 
-    <p style="margin: 50px;">Hier heb je een stukje om pauze te nemen van het lezen, phew! :)</p>
+    <p style="margin: 50px;">Here's a piece to take a break from reading, phew! :)</p>
 
     <div class="diff-color-section1">
-        <h3>Mijn grootste en beste creaties:</h3>
-        <p>Ik ben Tamer, zoals je hierboven kunt zien. Ik heb al mijn projecten volledig zelf gemaakt. Het coderen heb
-            ik
-            mezelf aangeleerd, en ik ben trots op wat ik in mijn eentje heb bereikt.</p>
+        <h3>My biggest and best creations:</h3>
+        <p>I am Tamer, as you can see above. I have made all my projects completely by myself. I
+
+            taught myself how to code, and I am proud of what I have achieved on my own.</p>
         <div id="creations">
             <div class="creation">
                 <h3>TC_tam Picto Planner</h3>
-                <p>Ik heb deze Picto Planner ontwikkeld voor mijn autistische broertje. Thuis hebben we namelijk een
-                    fysieke versie aan de muur hangen, maar telkens wanneer er een nieuwe pictogram toegevoegd moest
-                    worden, moesten we een volledig nieuwe picto maken. Dit kostte veel tijd en moest vaak opnieuw
-                    worden gedaan. Daarom besloot ik om een online versie te creëren, waarin gebruikers nu zelf
-                    pictogrammen kunnen toevoegen wanneer dat nodig is.</p>
+                <p>I developed this Picto Planner for my autistic brother. At home we have a physical version on the
+                    wall, but every time a new picto had to be
+
+                    added, we had to make a completely new picto. This took a lot of time and had to be
+
+                    redone many times. That's why I decided to create an online version, where users can now
+                    add icons themselves when needed.</p>
             </div>
             <div class="creation">
                 <h3>TC_tam Casino</h3>
-                <p>Ik heb dit casino ontworpen als mijn 1e grote game waar je met volledig virtueel geld kunt gokken en
-                    rijk kunt worden, zonder in-app aankopen, zodat het eerlijk blijft. Je kunt wekelijkse, dagelijkse,
-                    uurlijks, werk- en zoekbeloningen verdienen, die je op specifieke momenten kunt claimen voor extra
-                    geld in het spel. Ook kun je eigendommen kopen die je elke seconde geld opleveren, terwijl je volop
-                    kunt gokken voor meer winst!</p>
+                <p>I designed this casino as my first big game where you can gamble with completely virtual money and
+                    get rich, without in-app purchases, so it stays fair. You can earn weekly, daily,
+                    hourly, work and search rewards, which you can claim at specific times for extra
+                    in-game money. You can also buy properties that earn you money every second, while
+                    gambling to get more winnings!</p>
             </div>
             <div class="creation">
-                <h3>TC_tam Documenten</h3>
-                <p>Ik heb deze documenteditor gemaakt om aantekeningen voor school te maken. Hoewel er al veel andere
-                    editors zijn, heb ik deze speciaal ontwikkeld voor mijn eigen gebruik, wat me een gevoel van
-                    voldoening geeft. Je kunt documenten opslaan en weer laden met de bestandsextensie .tdoc, zodat je
-                    apparaat ze herkent. Het werkt echt goed voor mij!</p>
+                <h3>TC_tam Documents</h3>
+                <p>I created this document editor to take notes for school. Although there are many
+                    other editors, I developed this one specifically for my own use, which gives me a sense of
+                    satisfaction. You can save and reload documents with the .tdoc file extension so that your
+                    device will recognize them. It works really well for me!</p>
             </div>
             <div class="creation">
                 <h3>TC_tam Chat</h3>
-                <p>Dit was mijn eerste project waarbij ik met gebruikers communiceerde en verbinding maakte met een
-                    database. Ik heb veel tijd besteed aan de gebruikersauthenticatie en het verzenden van berichten. De
-                    CSS was ook een uitdaging, omdat ik nog nieuw was met websites maken. Toen alles werkte, was ik erg
-                    blij. Helaas heb ik de originele chat om beveiligingsredenen moeten verwijderen, maar ik plan in de
-                    toekomst een nieuwe en verbeterde chat toe te voegen.</p>
+                <p>This was my first project where I communicated with users and connected to a
+                    database. I spent a lot of time on user authentication and sending messages. The
+                    CSS was also a challenge, since I was new to building websites. When everything
+                    worked, I was very happy. Unfortunately, I had to remove the original chat for
+                    security reasons, but I plan to add a new and improved chat in the
+                    future.</p>
             </div>
         </div>
     </div>
-
-    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Kom ook op de TC_tam
-        site</button>
+    <button style="margin-top: 50px; margin-bottom: -100px;" onclick="vervangFansIframe()">Get your name featured on the
+        TC_tam site</button>
     <div id="tctam-fans" style="margin: 0 auto; height: 600px; overflow: hidden;">
         <iframe id="tctam-fans-iframe" src="/tctam-fans" style="width: 100%; height: 100%;" frameborder="0"></iframe>
     </div>
 
     <div class="diff-color-section2" style="margin-bottom: 30px;">
         <h3 style="margin-top: 0px;">Credits:</h3>
-        <li><b>Eigenaar: </b>Tamer Çevik</li>
-        <li><b>Hacks zoeker en helper: </b>Vera van Bergen</li>
+        <li><b>Owner: </b>Tamer Çevik</li>
+        <li><b>Hacks seeker and helper: </b>Vera van Bergen</li>
         <li><b>Game tester: </b>Thom van Nobelen</li>
-        <li><b>helper: </b>Lina Beerens</li>
-        <li><b>kleine bijdrage: </b>Tim van Nobelen</li>
-        <li><b>kleine bijdrage: </b>Ilya Sigida</li>
+        <li><b>small contribution: </b>Tim van Nobelen</li>
+        <li><b>small contribution: </b>Ilya Sigida</li>
     </div>
 
     <div style="margin: 0 auto; display: none;" id="showMenu"></span>
@@ -602,7 +602,7 @@
                 }
             })
             .catch((error) => {
-                console.error("Er is een fout opgetreden bij het ophalen van aankondigingen:", error);
+                console.error("An error occurred while retrieving announcements:", error);
             });
 
         /* change tctam fans iframe */
