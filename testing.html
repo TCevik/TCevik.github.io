@@ -38,6 +38,8 @@
 
         let dotX = offset;
         let dotY = offset;
+        let velocityX = 0;
+        let velocityY = 0;
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
 
         // Functie om het raster te tekenen
@@ -80,24 +82,39 @@
 
         // Functie om de stip te verplaatsen
         function move(direction) {
-            const step = gridSize;
+            const correctionStep = 1; // Hoe snel velocity wordt aangepast
 
+            // Update de snelheid op basis van de richting
             switch (direction) {
                 case 'up':
-                    if (dotY - step >= 0) dotY -= step;
+                    if (velocityY > 0) velocityY -= correctionStep; // Corrigeer naar boven
+                    else velocityY--; // Normale beweging omhoog
                     break;
                 case 'down':
-                    if (dotY + step <= canvas.height) dotY += step;
+                    if (velocityY < 0) velocityY += correctionStep; // Corrigeer naar beneden
+                    else velocityY++; // Normale beweging omlaag
                     break;
                 case 'left':
-                    if (dotX - step >= 0) dotX -= step;
+                    if (velocityX > 0) velocityX -= correctionStep; // Corrigeer naar links
+                    else velocityX--; // Normale beweging naar links
                     break;
                 case 'right':
-                    if (dotX + step <= canvas.width) dotX += step;
+                    if (velocityX < 0) velocityX += correctionStep; // Corrigeer naar rechts
+                    else velocityX++; // Normale beweging naar rechts
                     break;
             }
 
-            // De nieuwe positie toevoegen aan het pad
+            // Pas de positie aan op basis van de snelheid en stapgrootte
+            dotX += velocityX * gridSize;
+            dotY += velocityY * gridSize;
+
+            // Beperk de stip tot het canvas
+            if (dotX < 0) dotX = 0;
+            if (dotX > canvas.width) dotX = canvas.width;
+            if (dotY < 0) dotY = 0;
+            if (dotY > canvas.height) dotY = canvas.height;
+
+            // Voeg de nieuwe positie toe aan het pad
             path.push({ x: dotX, y: dotY });
 
             drawGrid();
