@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
-    <title>Corrupt Bestandsgrootte Generator</title>
+    <title>File Maker</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
 </head>
+
 <body>
-    <h1>Corrupt Bestandsgrootte Generator</h1>
-    <p>Onthoud, je kan een melding krijgen als het een bestandstype is dat niet bestaat. Een voorbeeld is .lol, dat is een extensie die niet vaak wordt gedownload.</p>
+    <h1>File Maker</h1>
+    <p>Remember, you may get a message if it is a file type that does not exist. An example is .lol, which is an
+        extension that is not often downloaded.</p>
 
-    <label for="fileSize">Voer de gewenste grootte in megabytes in:</label>
-    <input type="number" id="fileSize" placeholder="Voer grootte in MB in">
+    <label for="fileSize">Enter the desired size in megabytes:</label>
+    <input type="number" id="fileSize" placeholder="Enter size in MB">
     <br>
-    <label for="fileExtension">Voer de gewenste bestandsextensie in (zonder . erbij):</label>
-    <input type="text" id="fileExtension" placeholder="Voer bestandsextensie in">
+    <label for="fileExtension">Enter the desired file extension (without .):</label>
+    <input type="text" id="fileExtension" placeholder="Enter file extension">
     <br>
-    <label for="numFiles">Voer het aantal gewenste bestanden in (standaard is 1):</label>
-    <input type="number" id="numFiles" placeholder="Aantal bestanden" value="1">
+    <label for="numFiles">Enter the number of files you want (default is 1):</label>
+    <input type="number" id="numFiles" placeholder="Number of files" value="1">
     <br>
-    <button onclick="downloadCorruptFiles()">Download Corrupt Bestanden</button>
-
+    <button onclick="downloadCorruptFiles()">Download Corrupt Files</button>
+    
     <script>
         function downloadCorruptFiles() {
             const numFilesInput = document.getElementById("numFiles").value || 1;
@@ -60,4 +63,5 @@
         }
     </script>
 </body>
+
 </html>

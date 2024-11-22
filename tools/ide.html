@@ -28,7 +28,7 @@
         window.addEventListener('beforeunload', function (e) {
             e.preventDefault();
             e.returnValue = '';
-            return 'Wil je zeker de site verlaten?';
+            return 'Are you sure?';
         });
 
         function updateEmbed() {
@@ -66,27 +66,26 @@
 <body onload="updateEmbed()">
     
     <h1>IDE</h1>
-    <p>Vul code in en bewonder je prestatie</p>
+    <p>Enter code and admire your achievement</p>
 
-    <textarea id="html-code" rows="25" style="width: 90%;" placeholder="Typ je HTML-code hier..." oninput="updateEmbed(), highlightCode()">
+    <textarea id="html-code" rows="25" style="width: 90%;" placeholder="Type your HTML code here..." oninput="updateEmbed(), highlightCode()">
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>[NAAM VAN TABBLAD]</title>
+    <title>[Name of tab]</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     
 </head>
 <body>
     
-    <h1>[Titel]</h1>
-    <p>[Woord woord woord. Woord woord woord. Woord woord woord.]
-        <br>[Woord woord woord. Woord woord woord. Woord woord woord.]</p>
-</body>
+    <h1>[Title]</h1>
+    <p>[Word word word. Word word word. Word word word.]
+        <br>[Word word word. Word word word. Word word word.]</p></body>
 </html>
     </textarea>
-    <button id="fullscreenButton" onclick="toggleFullscreen()">Volledig scherm</button>
+    <button id="fullscreenButton" onclick="toggleFullscreen()">Full screen</button>
 
     <iframe id="embedFrame" srcdoc="" frameborder="0"></iframe>
 </body>

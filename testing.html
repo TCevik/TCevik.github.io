@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meertalige Website</title>
+
+    <style>
+        select#languageSelector {
+            font-family: Lexend, Arial, sans-serif;
+            border-radius: var(--border-radius1);
+            font-weight: inherit;
+            outline: none;
+            border: solid 3px var(--button-bgcolor);
+            background-color: var(--button-bgcolor);
+            color: #ffffff;
+            padding: var(--button-padding);
+            font-size: var(--font-size);
+            margin: 0.3%;
+            transition: all 0.3s;
+            transform-origin: center;
+            z-index: 1;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        select#languageSelector {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+            padding-right: 2em;
+        }
+
+        select#languageSelector:hover,
+        select#languageSelector:focus {
+            border: solid 3px #58bf33;
+            cursor: pointer;
+            border-radius: var(--border-radius1);
+            filter: brightness(120%);
+            z-index: 2;
+        }
+
+        select#languageSelector:disabled {
+            filter: brightness(0.75) !important;
+            border: red 3px solid !important;
+            cursor: not-allowed !important;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="languageSelector">
+        <option value="en">English</option>
+        <option value="nl">Nederlands</option>
+    </select>
+
+    <h1 data-translate="welcome"></h1>
+    <p data-translate="about"></p>
+    <footer>
+        <p data-translate="contact"></p>
+    </footer>
+
+    <script>
+        // Simulatie van JSON-bestanden binnen JavaScript
+        const translations = {
+            en: {
+                welcome: "Welcome to my website",
+                about: "About us",
+                contact: "Contact",
+            },
+            nl: {
+                welcome: "Welkom op mijn website",
+                about: "Over ons",
+                contact: "Contact",
+            },
+        };
+
+        // Teksten updaten
+        function updateLanguage(lang) {
+            const selectedTranslations = translations[lang];
+            document.querySelectorAll("[data-translate]").forEach((el) => {
+                const key = el.getAttribute("data-translate");
+                if (selectedTranslations[key]) {
+                    el.textContent = selectedTranslations[key];
+                }
+            });
+        }
+
+        // Event listener voor select
+        const selector = document.getElementById("languageSelector");
+        const savedLang = localStorage.getItem("language") || "en";
+
+        selector.value = savedLang;
+        updateLanguage(savedLang);
+
+        selector.addEventListener("change", (e) => {
+            const lang = e.target.value;
+            localStorage.setItem("language", lang);
+            updateLanguage(lang);
+        });
+    </script>
+</body>
+
+</html>
