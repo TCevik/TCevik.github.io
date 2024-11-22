@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +8,23 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
             align-items: center;
             margin-top: 20px;
+            margin: 0px;
+            overflow-y: hidden;
         }
+
         canvas {
             border: 1px solid black;
         }
-        .controls {
-            margin-top: 20px;
-        }
     </style>
 </head>
-<body>
 
-    <canvas id="grafiek" width="400" height="400"></canvas>
+<body>
+    <div>
+        <canvas id="grafiek"></canvas>
+    </div>
+
     <div class="controls">
         <button onclick="move('up')">Omhoog</button>
         <button onclick="move('down')">Omlaag</button>
@@ -30,16 +33,25 @@
     </div>
 
     <script>
+        function setCanvasSize() {
+            const canvas = document.getElementById('grafiek');
+            canvas.height = window.innerHeight;
+            canvas.width = canvas.height;
+        }
+        setCanvasSize();
+
         const canvas = document.getElementById("grafiek");
         const ctx = canvas.getContext("2d");
 
-        const gridSize = 20; // De grootte van elk vakje in het raster
+        const gridSize = 10; // De grootte van elk vakje in het raster
         const offset = canvas.width / 2; // Offset voor het midden
 
         let dotX = offset;
         let dotY = offset;
         let velocityX = 0;
         let velocityY = 0;
+        let offsetX = 0; // Verschuiving van het canvas in de X-richting
+        let offsetY = 0; // Verschuiving van het canvas in de Y-richting
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
 
         // Functie om het raster te tekenen
@@ -67,15 +79,15 @@
             ctx.strokeStyle = "blue";
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(path[0].x, path[0].y);
+            ctx.moveTo(path[0].x - offsetX, path[0].y - offsetY); // Verplaats de lijn op basis van de canvasverschuiving
             for (let i = 1; i < path.length; i++) {
-                ctx.lineTo(path[i].x, path[i].y);
+                ctx.lineTo(path[i].x - offsetX, path[i].y - offsetY); // Verplaats de lijn op basis van de canvasverschuiving
             }
             ctx.stroke();
 
             // Stip tekenen
             ctx.beginPath();
-            ctx.arc(dotX, dotY, 5, 0, Math.PI * 2);
+            ctx.arc(dotX - offsetX, dotY - offsetY, 5, 0, Math.PI * 2); // Verplaats de stip op basis van de canvasverschuiving
             ctx.fillStyle = "red";
             ctx.fill();
         }
@@ -108,11 +120,11 @@
             dotX += velocityX * gridSize;
             dotY += velocityY * gridSize;
 
-            // Beperk de stip tot het canvas
-            if (dotX < 0) dotX = 0;
-            if (dotX > canvas.width) dotX = canvas.width;
-            if (dotY < 0) dotY = 0;
-            if (dotY > canvas.height) dotY = canvas.height;
+            // Beperk de stip tot het canvas en verschuif het canvas als de stip te dicht bij de rand komt
+            if (dotX < offsetX + gridSize) offsetX = dotX - gridSize * 3; // Verschuif canvas naar links
+            if (dotX > offsetX + canvas.width - gridSize) offsetX = dotX - canvas.width + gridSize * 3; // Verschuif canvas naar rechts
+            if (dotY < offsetY + gridSize) offsetY = dotY - gridSize * 3; // Verschuif canvas naar boven
+            if (dotY > offsetY + canvas.height - gridSize) offsetY = dotY - canvas.height + gridSize * 3; // Verschuif canvas naar beneden
 
             // Voeg de nieuwe positie toe aan het pad
             path.push({ x: dotX, y: dotY });
@@ -125,4 +137,5 @@
     </script>
 
 </body>
+
 </html>
