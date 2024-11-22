@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafiek en Stip Beweging</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="grafiek" width="400" height="400"></canvas>
+    <div class="controls">
+        <button onclick="move('up')">Omhoog</button>
+        <button onclick="move('down')">Omlaag</button>
+        <button onclick="move('left')">Links</button>
+        <button onclick="move('right')">Rechts</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("grafiek");
+        const ctx = canvas.getContext("2d");
+
+        const gridSize = 20;
+        const offset = canvas.width / 2;
+
+        let dotX = offset;
+        let dotY = offset;
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "#ccc";
+            ctx.lineWidth = 1;
+
+            for (let x = 0; x <= canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+
+            for (let y = 0; y <= canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            ctx.arc(dotX, dotY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "red";
+            ctx.fill();
+        }
+
+        function move(direction) {
+            const step = gridSize;
+
+            switch (direction) {
+                case 'up':
+                    if (dotY - step >= 0) dotY -= step;
+                    break;
+                case 'down':
+                    if (dotY + step <= canvas.height) dotY += step;
+                    break;
+                case 'left':
+                    if (dotX - step >= 0) dotX -= step;
+                    break;
+                case 'right':
+                    if (dotX + step <= canvas.width) dotX += step;
+                    break;
+            }
+
+            drawGrid();
+        }
+
+        drawGrid();
+    </script>
+
+</body>
+</html>
