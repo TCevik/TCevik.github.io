@@ -157,7 +157,6 @@ var buttons = `
 
     <h3 style="margin-top: 50px;" id="tools">Handy Tools</h3>
 	<button onclick="window.location.href='/picto-planner'">Picto Planner (DUTCH)</button>
-	<button onclick="window.location.href='/tools/tctam-docs'">TC_tam Documents</button>
 	<button onclick="window.location.href='/tools/hz-geluiden'">Play sounds from 20 - 20,000 Hz</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
