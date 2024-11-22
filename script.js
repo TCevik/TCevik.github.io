@@ -255,6 +255,11 @@ function sideMenuNav() {
 
 document.addEventListener("DOMContentLoaded", () => {
 	function updateLanguage(lang) {
+		if (!translations || !translations[lang]) {
+			console.warn(`Translations for language "${lang}" not found.`);
+			return;
+		}
+
 		const selectedTranslations = translations[lang];
 		document.querySelectorAll("[data-translate]").forEach((el) => {
 			const key = el.getAttribute("data-translate");
