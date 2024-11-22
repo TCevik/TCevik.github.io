@@ -133,15 +133,18 @@ if ('serviceWorker' in navigator) {
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
-	function checkPageAndRunSideMenuNav() {
-		const currentPath = window.location.pathname;
-		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts'];
+    function checkPageAndRunSideMenuNav() {
+        let currentPath = window.location.pathname;
+        currentPath = currentPath.replace('.html', '');
+        
+        const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts'];
+        alert(currentPath);
 
-		if (!pagesWithoutSideMenu.includes(currentPath)) {
-			sideMenuNav();
-		}
-	}
-	checkPageAndRunSideMenuNav();
+        if (!pagesWithoutSideMenu.includes(currentPath)) {
+            sideMenuNav();
+        }
+    }
+    checkPageAndRunSideMenuNav();
 });
 
 
