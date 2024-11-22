@@ -33,17 +33,20 @@
         const canvas = document.getElementById("grafiek");
         const ctx = canvas.getContext("2d");
 
-        const gridSize = 20;
-        const offset = canvas.width / 2;
+        const gridSize = 20; // De grootte van elk vakje in het raster
+        const offset = canvas.width / 2; // Offset voor het midden
 
         let dotX = offset;
         let dotY = offset;
+        let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
 
+        // Functie om het raster te tekenen
         function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Rasterlijnen tekenen
             ctx.strokeStyle = "#ccc";
             ctx.lineWidth = 1;
-
             for (let x = 0; x <= canvas.width; x += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(x, 0);
@@ -58,12 +61,24 @@
                 ctx.stroke();
             }
 
+            // Blauwe lijn tekenen achter de stip
+            ctx.strokeStyle = "blue";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(path[0].x, path[0].y);
+            for (let i = 1; i < path.length; i++) {
+                ctx.lineTo(path[i].x, path[i].y);
+            }
+            ctx.stroke();
+
+            // Stip tekenen
             ctx.beginPath();
             ctx.arc(dotX, dotY, 5, 0, Math.PI * 2);
             ctx.fillStyle = "red";
             ctx.fill();
         }
 
+        // Functie om de stip te verplaatsen
         function move(direction) {
             const step = gridSize;
 
@@ -82,9 +97,13 @@
                     break;
             }
 
+            // De nieuwe positie toevoegen aan het pad
+            path.push({ x: dotX, y: dotY });
+
             drawGrid();
         }
 
+        // Initieel de grafiek tekenen
         drawGrid();
     </script>
 
