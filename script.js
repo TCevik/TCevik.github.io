@@ -135,12 +135,15 @@ if ('serviceWorker' in navigator) {
 document.addEventListener("DOMContentLoaded", function () {
 	function checkPageAndRunSideMenuNav() {
 		const currentPath = window.location.pathname;
-		if (currentPath !== '/games/tctam-casino') {
+		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts'];
+
+		if (!pagesWithoutSideMenu.includes(currentPath)) {
 			sideMenuNav();
 		}
 	}
 	checkPageAndRunSideMenuNav();
 });
+
 
 var buttons = `
     <button onclick="window.location.href='/'">Home</button>
@@ -156,10 +159,7 @@ var buttons = `
 	<button onclick="window.location.href='/tools/hz-geluiden'">Play sounds from 20 - 20,000 Hz</button>
     <button onclick="window.location.href='/tools/time-timer'">Time Timer</button>
 	<button onclick="window.location.href='/tools/bookmarklets'">Bookmarklets</button>
-    <button onclick="window.location.href='/tools/live-clock'">Live Clock</button>
-    <button onclick="window.location.href='/tools/file-maker'">Create files of your choice</button>
     <button onclick="window.location.href='/tools/ide'">IDE</button>
-    <button onclick="window.location.href='/tools/tts'">TTS</button>
 	<button onclick="window.location.href='/tools/useful-pages'">Useful Pages / Simple Tools</button>
 
 	<h3 style="margin-top: 50px;" id="archief">Archive (DUTCH)</h3>
