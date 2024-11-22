@@ -80,8 +80,6 @@
             color: red;
             font-weight: bold;
         }
-    
-        
     </style>
 </head>
 
@@ -130,9 +128,9 @@
                         <img class="product-preview" src="${product.image}" loading="lazy">
                         <p class="product-title">${product.name}</p>
                         <p class="product-description">${product.description}</p>
-                        <p class="product-price">Totaal: ${product.price}
+                        <p class="product-price">Price: ${product.price}
                             <a href="${product.paylink}" target="_blank">
-                                <button class="buy-button">Nu kopen</button>
+                                <button class="buy-button">Buy now</button>
                             </a>
                         </p>
                     </div>
@@ -167,22 +165,22 @@
     </script>
 
     <h1>TC_tam Online Store</h1>
-    <p>Afrekenen kan niet in de TC_tam app! Doe dat op het web.</p>
+    <p>You can't checkout in the TC_tam app! Do that on the web.</p>
 
-    <input type="text" id="search-bar" placeholder="Zoek naar producten...">
+    <input type="text" id="search-bar" placeholder="Search for products...">
 
-    <h3 style="margin-bottom: -10px; text-align: left; margin-left: 50px;">Alle producten:</h3>
-    <p id="no-results">Oeps, dat hebben we niet kunnen vinden...</p>
+    <h3 style="margin-bottom: -10px; text-align: left; margin-left: 50px;">All products:</h3>
+    <p id="no-results">Oops, we couldn't find that...</p>
     <div id="products">
-        <!-- Hier komen de producten. -->
+        <!-- Here come the products. -->
     </div>
 
     <footer>
         <p style="margin: 0px;">TC_tam Online Store™</p>
-        <p style="margin: 0px; filter: brightness(0.8);">(Nog) geen retourzendingen!</p>
-        <p style="margin: 0px; filter: brightness(0.8);">Ik ben verantwoordelijk voor de verzending van alle producten.
-            Nadat u heeft betaald, zal ik het pakket verzenden en ontvangt u daarna een bevestiging per e-mail met de
-            huidige status van de pakketbezorging.</p>
+        <p style="margin: 0px; filter: brightness(0.8);">No returns (yet)!</p>
+        <p style="margin: 0px; filter: brightness(0.8);">I am responsible for shipping all products.
+            After you have paid, I will ship the package and you will receive an email confirmation with the
+            current status of the package delivery.</p>
     </footer>
 </body>
 

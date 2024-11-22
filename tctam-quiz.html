@@ -44,10 +44,10 @@
 <body>
     <h1 id="title" style="margin-bottom: -10px;">TC_tam Quiz</h1>
     <div id="hide-after-start">
-        <P style="margin-bottom: 0px;">Hallo mensen, welkom bij de TC_tam Quiz. Misschien wil je deze quiz wel doen,
-            maar heb je geen idee wie ik ben. Nou dan heb ik goed nieuws voor je, want sommige antwoorden voor de quiz
-            staan wel ergens op mijn site. Je kan natuurlijk ook gewoon gokken, maar je kan dus ook de site doorzoeken
-            voor de goede antwoorden. De overige vragen gaan over kennis die je moet hebben door mij te kennen.</P>
+        <P style="margin-bottom: 0px;">Hello people, welcome to the TC_tam Quiz. Maybe you want to do this quiz,
+            but you have no idea who I am. Well then I have good news for you, because some answers for the quiz
+            are somewhere on my site. Of course you can just guess, but you can also search the site
+            for the right answers. The other questions are about knowledge that you must have by knowing me.</P>
         <button style="margin-bottom: 50px;" onclick="loadQuestion();">Start!</button>
     </div>
 
@@ -58,80 +58,90 @@
     <script>
         var questions = [
             {
-                question: "Wat is Tamer zijn achternaam?",
+                question: "What is Tamer's last name?",
                 options: ["van Dikke Hond", "Çevik", "Keviç", "Çelik"],
                 correctAnswer: "Çevik"
             },
             {
-                question: "Wanneer Tamer jarig?",
-                options: ["1 April", "18 Mei", "13 Juni", "12 Oktober", "18 Augustus"],
-                correctAnswer: "18 Mei"
+                question: "When is Tamer's birthday?",
+                options: ["April 1", "May 18", "June 13", "October 12", "August 18"],
+                correctAnswer: "May 18"
             },
             {
-                question: "Welk seizoen is Tamer zijn favoriet?",
-                options: ["Winter", "Lente", "Zomer", "Herfst"],
+                question: "What is Tamer's favorite season?",
+                options: ["Winter", "Spring", "Summer", "Autumn"],
                 correctAnswer: "Winter"
             },
             {
-                question: "Hoeveel snapscore heeft Tamer?",
-                options: ["0 - 50k", "50k- 200k", "200k - 400k", "400k+"],
+                question: "What is Tamer's Snapchat score?",
+                options: ["0 - 50k", "50k - 200k", "200k - 400k", "400k+"],
                 correctAnswer: "400k+"
             },
             {
-                question: "Waarom is Tamer begonnen met sites maken?",
-                options: ["Hij verveelde zich.", "Hij maakte een schoolhacks website om school te pesten.", "Hij wilde bijzonder zijn.", "Hij wil later wat gaan doen met ICT.", "Hij maakte een site voor zijn YouTube kanaal."],
-                correctAnswer: "Hij maakte een site voor zijn YouTube kanaal."
+                question: "Why did Tamer start creating websites?",
+                options: [
+                    "He was bored.",
+                    "He made a school hacks website to annoy school.",
+                    "He wanted to be special.",
+                    "He wants to do something with IT in the future.",
+                    "He made a site for his YouTube channel."
+                ],
+                correctAnswer: "He made a site for his YouTube channel."
             },
             {
-                question: "Wat is Tamer zijn lievelingskleur?",
-                options: ["Blauw", "Roze", "Geel", "Rood", "Zwart", "Wit", "Groen", "Paars", "Oranje"],
-                correctAnswer: "Groen"
+                question: "What is Tamer's favorite color?",
+                options: ["Blue", "Pink", "Yellow", "Red", "Black", "White", "Green", "Purple", "Orange"],
+                correctAnswer: "Green"
             },
             {
-                question: "Wat is Tamer zijn IQ?",
+                question: "What is Tamer's IQ?",
                 options: ["0-50", "50-90", "90-100", "100-110", "110-120", "120-130", "130-140"],
                 correctAnswer: "120-130"
             },
             {
-                question: "Hoeveel broertjes, zusjes, broers en/of zussen heeft Tamer?",
+                question: "How many siblings does Tamer have?",
                 options: ["1", "2", "3", "4", "5"],
                 correctAnswer: "1"
             },
             {
-                question: "Hoe heet Tamer zijn broertje?",
+                question: "What is Tamer's brother's name?",
                 options: ["Secan", "Serkan", "Sercan", "Serco", "Serko"],
                 correctAnswer: "Sercan"
             },
             {
-                question: "Wat is Tamer zijn lievelingsvak?",
-                options: ["Wiskunde", "Informatica", "Geschiedenis", "Engels", "Gym"],
-                correctAnswer: "Informatica"
+                question: "What is Tamer's favorite subject?",
+                options: ["Math", "Computer Science", "History", "English", "Gym"],
+                correctAnswer: "Computer Science"
             },
             {
-                question: "Op welk niveau zit Tamer?",
+                question: "What education level is Tamer in?",
                 options: ["VMBO", "HAVO", "VWO"],
                 correctAnswer: "HAVO"
             },
             {
-                question: "Wat vind Tamer van school?",
-                options: ["Prima, de lessen zijn vervelend, maar op school zitten is niet erg.", "Heel leuk en hij heeft er (bijna) elke dag zin in.", "Echt helemaal niet leuk en wil daar elke dag zo snel mogelijk weer weg."],
-                correctAnswer: "Prima, de lessen zijn vervelend, maar op school zitten is niet erg."
+                question: "What does Tamer think of school?",
+                options: [
+                    "It's okay, the classes are boring, but being at school isn't bad.",
+                    "Very fun, and he (almost) always looks forward to it.",
+                    "Not fun at all and he wants to leave as quickly as possible every day."
+                ],
+                correctAnswer: "It's okay, the classes are boring, but being at school isn't bad."
             },
             {
-                question: "Waar wil Tamer later gaan werken?",
+                question: "Where does Tamer want to work in the future?",
                 options: ["Microsoft", "Epic Games", "Squla", "Cloudwise", "Google", "Meta"],
                 correctAnswer: "Google"
             },
             {
-                question: "Waar is Tamer geweest voor een rondleiding in Havo 2?",
+                question: "Where did Tamer go for a tour in second year of HAVO?",
                 options: ["Microsoft", "Epic Games", "Squla", "Cloudwise", "Google", "Meta"],
                 correctAnswer: "Cloudwise"
             },
             {
-                question: "Wat vind Tamer het leukst?",
-                options: ["Eten", "Coderen", "Slapen", "School", "Wandelen", "Kijken naar de DVD screensaver"],
-                correctAnswer: "Coderen"
-            },
+                question: "What does Tamer enjoy the most?",
+                options: ["Eating", "Coding", "Sleeping", "School", "Walking", "Watching the DVD screensaver"],
+                correctAnswer: "Coding"
+            }
         ];
 
         var currentQuestionIndex = 0;
@@ -145,7 +155,7 @@
             var quizContainer = document.getElementById('quiz-container');
 
             // Toegevoegde regel om het vraagnummer te tonen
-            var questionNumberHTML = '<div>Vraag ' + (currentQuestionIndex + 1) + ' van ' + questions.length + '</div>';
+            var questionNumberHTML = '<div>Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length + '</div>';
 
             // Creëer de vraag en opties
             var questionHTML =
@@ -191,7 +201,7 @@
                     loadQuestion();
                 } else {
                     var totalQuestions = questions.length;
-                    document.getElementById('quiz-container').innerHTML = '<div class="question">Bedankt voor het spelen van de TC_tam Quiz! Je hebt ' + score + ' van de ' + totalQuestions + ' vragen goed beantwoord!</div><br><button onclick="location.reload();">Opnieuw Spelen!</button>';
+                    document.getElementById('quiz-container').innerHTML = '<div class="question">Thanks for playing the TC_tam Quiz! You answered ' + score + ' of the ' + totalQuestions + ' questions correctly!</div><br><button onclick="location.reload();">Play Again!</button>';
 
                     var xhr = new XMLHttpRequest();
                     var url = 'https://discord.com/api/webhooks/1275539404353568842/7dTnDkYmeBYN2XI3mwZAG_qUfEXmocS3hx-onITf9m5a6jL2PWZ8QBWg5YAQ8IQgbb0k';
