@@ -22,7 +22,7 @@
 
 <body>
     <div>
-        <canvas id="grafiek"></canvas>
+        <canvas id="grafiek" height="600" width="600"></canvas>
     </div>
 
     <div class="controls">
@@ -30,20 +30,14 @@
         <button onclick="move('down')">Omlaag</button>
         <button onclick="move('left')">Links</button>
         <button onclick="move('right')">Rechts</button>
+        <button onclick="passMove()">Pass</button> <!-- Pass knop toegevoegd -->
     </div>
 
     <script>
-        function setCanvasSize() {
-            const canvas = document.getElementById('grafiek');
-            canvas.height = window.innerHeight;
-            canvas.width = canvas.height;
-        }
-        setCanvasSize();
-
         const canvas = document.getElementById("grafiek");
         const ctx = canvas.getContext("2d");
 
-        const gridSize = 10; // De grootte van elk vakje in het raster
+        const gridSize = 15; // De grootte van elk vakje in het raster
         const offset = canvas.width / 2; // Offset voor het midden
 
         let dotX = offset;
@@ -121,10 +115,28 @@
             dotY += velocityY * gridSize;
 
             // Beperk de stip tot het canvas en verschuif het canvas als de stip te dicht bij de rand komt
-            if (dotX < offsetX + gridSize) offsetX = dotX - gridSize * 3; // Verschuif canvas naar links
-            if (dotX > offsetX + canvas.width - gridSize) offsetX = dotX - canvas.width + gridSize * 3; // Verschuif canvas naar rechts
-            if (dotY < offsetY + gridSize) offsetY = dotY - gridSize * 3; // Verschuif canvas naar boven
-            if (dotY > offsetY + canvas.height - gridSize) offsetY = dotY - canvas.height + gridSize * 3; // Verschuif canvas naar beneden
+            if (dotX < offsetX + gridSize * 3) offsetX = dotX - gridSize * 3; // Verschuif canvas naar links
+            if (dotX > offsetX + canvas.width - gridSize * 3) offsetX = dotX - canvas.width + gridSize * 3; // Verschuif canvas naar rechts
+            if (dotY < offsetY + gridSize * 3) offsetY = dotY - gridSize * 3; // Verschuif canvas naar boven
+            if (dotY > offsetY + canvas.height - gridSize * 3) offsetY = dotY - canvas.height + gridSize * 3; // Verschuif canvas naar beneden
+
+            // Voeg de nieuwe positie toe aan het pad
+            path.push({ x: dotX, y: dotY });
+
+            drawGrid();
+        }
+
+        // Functie voor de pass knop (verplaats de stip met de huidige snelheid)
+        function passMove() {
+            // Pas de positie aan zonder de snelheid te wijzigen
+            dotX += velocityX * gridSize;
+            dotY += velocityY * gridSize;
+
+            // Beperk de stip tot het canvas en verschuif het canvas als de stip te dicht bij de rand komt
+            if (dotX < offsetX + gridSize * 3) offsetX = dotX - gridSize * 3; // Verschuif canvas naar links
+            if (dotX > offsetX + canvas.width - gridSize * 3) offsetX = dotX - canvas.width + gridSize * 3; // Verschuif canvas naar rechts
+            if (dotY < offsetY + gridSize * 3) offsetY = dotY - gridSize * 3; // Verschuif canvas naar boven
+            if (dotY > offsetY + canvas.height - gridSize * 3) offsetY = dotY - canvas.height + gridSize * 3; // Verschuif canvas naar beneden
 
             // Voeg de nieuwe positie toe aan het pad
             path.push({ x: dotX, y: dotY });
