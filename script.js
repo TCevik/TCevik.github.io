@@ -160,7 +160,7 @@ var buttons = `
     <button onclick="window.location.href='/tools/file-maker'">Create files of your choice</button>
     <button onclick="window.location.href='/tools/ide'">IDE</button>
     <button onclick="window.location.href='/tools/tts'">TTS</button>
-	<button onclick="window.location.href='/tools/useful-pages'">Useful Pages / Browser</button>
+	<button onclick="window.location.href='/tools/useful-pages'">Useful Pages / Simple Tools</button>
 
 	<h3 style="margin-top: 50px;" id="archief">Archive (DUTCH)</h3>
     <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
