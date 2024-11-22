@@ -143,10 +143,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var buttons = `
-	<select style="width: 90%; margin-top: 10px;" id="languageSelector">
-		<option value="en">English</option>
-		<option value="nl">Nederlands</option>
-	</select>
     <button onclick="window.location.href='/'">Home</button>
     <h3 id="algemeen">General</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">My YouTube channel</button>
@@ -252,32 +248,3 @@ function sideMenuNav() {
 	document.body.appendChild(openButton);
 	document.body.appendChild(sideBar);
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-	function updateLanguage(lang) {
-		if (!translations || !translations[lang]) {
-			console.warn(`Translations for language "${lang}" not found.`);
-			return;
-		}
-
-		const selectedTranslations = translations[lang];
-		document.querySelectorAll("[data-translate]").forEach((el) => {
-			const key = el.getAttribute("data-translate");
-			if (selectedTranslations[key]) {
-				el.textContent = selectedTranslations[key];
-			}
-		});
-	}
-
-	const selector = document.getElementById("languageSelector");
-	const savedLang = localStorage.getItem("language") || "en";
-
-	selector.value = savedLang;
-	updateLanguage(savedLang);
-
-	selector.addEventListener("change", (e) => {
-		const lang = e.target.value;
-		localStorage.setItem("language", lang);
-		updateLanguage(lang);
-	});
-});
