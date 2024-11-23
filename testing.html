@@ -34,8 +34,6 @@
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             width: max-content;
-            margin: 20px auto;
-            /* Center in the container */
         }
 
         .controls button {
@@ -80,13 +78,25 @@
         <canvas id="grafiek" height="600" width="600"></canvas>
     </div>
 
-    <div>
+    <div style="text-align: left; margin-left: 20px;">
         <p id="coordinates"></p>
         <p id="speed"></p>
 
-        <input type="text" id="directionInput" placeholder="NOZWP" />
-        <button onclick="handleDirection()">Beweeg</button>
+        <input style="margin-left: 0px;" autocomplete="off" type="text" id="directionInput" placeholder="Voer route in (bijv. NOZWP) " />
+        <button onclick="handleDirection()">Uitvoeren</button>
 
+        <br>
+
+        <button onclick="setGridSize(3)">Super Klein</button>
+        <button onclick="setGridSize(10)">Erg Klein</button>
+        <button onclick="setGridSize(15)">klein</button>
+        <button onclick="setGridSize(30)">Normaal</button>
+        <button onclick="setGridSize(50)">Groot</button>
+        <button onclick="setGridSize(75)">Erg Groot</button>
+
+        <br>
+        <br>
+        <br>
         <br>
 
         <div class="controls">
@@ -97,15 +107,6 @@
             <button onclick="move('down')" class="down">Zuid</button>
             <button onclick="undoMove()" class="undo">Undo</button>
         </div>
-
-        <br>
-
-        <button onclick="setGridSize(3)">Super Klein</button>
-        <button onclick="setGridSize(10)">Erg Klein</button>
-        <button onclick="setGridSize(15)">klein</button>
-        <button onclick="setGridSize(30)">Normaal</button>
-        <button onclick="setGridSize(50)">Groot</button>
-        <button onclick="setGridSize(75)">Erg Groot</button>
     </div>
 
     <script>
@@ -114,7 +115,7 @@
 
         // Haal de gridSize uit de URL, of gebruik 15 als standaardwaarde
         const urlParams = new URLSearchParams(window.location.search);
-        const gridSize = parseInt(urlParams.get('gridSize')) || 15;
+        const gridSize = parseInt(urlParams.get('gridSize')) || 30;
 
         const offset = canvas.width / 2; // Offset voor het midden
 
