@@ -67,6 +67,11 @@
             grid-column: 2;
             grid-row: 3;
         }
+
+        .undo {
+            grid-column: 3;
+            grid-row: 3;
+        }
     </style>
 </head>
 
@@ -82,8 +87,11 @@
             <button onclick="passMove()" class="pass">Pass</button>
             <button onclick="move('right')" class="right">Oost</button>
             <button onclick="move('down')" class="down">Zuid</button>
+            <button onclick="undoMove()" class="undo">Undo</button>
         </div>
 
+        <br>
+        
         <button onclick="setGridSize(10)">Erg Klein</button>
         <button onclick="setGridSize(15)">klein</button>
         <button onclick="setGridSize(30)">Normaal</button>
@@ -92,11 +100,6 @@
     </div>
 
     <script>
-        function setGridSize(size) {
-            const currentUrl = window.location.pathname;
-            window.location.href = currentUrl + '?gridSize=' + size;  // Laad de pagina opnieuw met de nieuwe gridSize
-        }
-
         const canvas = document.getElementById("grafiek");
         const ctx = canvas.getContext("2d");
 
@@ -113,6 +116,7 @@
         let offsetX = 0; // Verschuiving van het canvas in de X-richting
         let offsetY = 0; // Verschuiving van het canvas in de Y-richting
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
+        let history = []; // Array om vorige posities en snelheden op te slaan
 
         // Functie om het raster te tekenen
         function drawGrid() {
@@ -154,6 +158,8 @@
 
         // Functie om de stip te verplaatsen
         function move(direction) {
+            saveState(); // Sla de huidige staat op voordat je beweegt
+
             const correctionStep = 1; // Hoe snel velocity wordt aangepast
 
             // Update de snelheid op basis van de richting
@@ -180,34 +186,66 @@
             dotX += velocityX * gridSize;
             dotY += velocityY * gridSize;
 
-            // Beperk de stip tot het canvas en verschuif het canvas als de stip te dicht bij de rand komt
-            if (dotX < offsetX + gridSize * 3) offsetX = dotX - gridSize * 3; // Verschuif canvas naar links
-            if (dotX > offsetX + canvas.width - gridSize * 3) offsetX = dotX - canvas.width + gridSize * 3; // Verschuif canvas naar rechts
-            if (dotY < offsetY + gridSize * 3) offsetY = dotY - gridSize * 3; // Verschuif canvas naar boven
-            if (dotY > offsetY + canvas.height - gridSize * 3) offsetY = dotY - canvas.height + gridSize * 3; // Verschuif canvas naar beneden
-
-            // Voeg de nieuwe positie toe aan het pad
-            path.push({ x: dotX, y: dotY });
+            adjustCanvas(); // Controleer op verschuiving
+            path.push({ x: dotX, y: dotY }); // Voeg positie toe aan pad
 
             drawGrid();
         }
 
         // Functie voor de pass knop (verplaats de stip met de huidige snelheid)
         function passMove() {
+            saveState(); // Sla de huidige staat op voordat je beweegt
+
             // Pas de positie aan zonder de snelheid te wijzigen
             dotX += velocityX * gridSize;
             dotY += velocityY * gridSize;
 
-            // Beperk de stip tot het canvas en verschuif het canvas als de stip te dicht bij de rand komt
+            adjustCanvas(); // Controleer op verschuiving
+            path.push({ x: dotX, y: dotY }); // Voeg positie toe aan pad
+
+            drawGrid();
+        }
+
+        // Functie om canvas te verschuiven
+        function adjustCanvas() {
             if (dotX < offsetX + gridSize * 3) offsetX = dotX - gridSize * 3; // Verschuif canvas naar links
             if (dotX > offsetX + canvas.width - gridSize * 3) offsetX = dotX - canvas.width + gridSize * 3; // Verschuif canvas naar rechts
             if (dotY < offsetY + gridSize * 3) offsetY = dotY - gridSize * 3; // Verschuif canvas naar boven
             if (dotY > offsetY + canvas.height - gridSize * 3) offsetY = dotY - canvas.height + gridSize * 3; // Verschuif canvas naar beneden
+        }
 
-            // Voeg de nieuwe positie toe aan het pad
-            path.push({ x: dotX, y: dotY });
+        // Sla de huidige staat van de stip en snelheid op
+        function saveState() {
+            history.push({
+                x: dotX,
+                y: dotY,
+                velocityX: velocityX,
+                velocityY: velocityY,
+                offsetX: offsetX,
+                offsetY: offsetY
+            });
+        }
 
-            drawGrid();
+        // Undo functie
+        function undoMove() {
+            if (history.length > 0) {
+                const previousState = history.pop(); // Haal de laatste staat op
+                dotX = previousState.x;
+                dotY = previousState.y;
+                velocityX = previousState.velocityX;
+                velocityY = previousState.velocityY;
+                offsetX = previousState.offsetX;
+                offsetY = previousState.offsetY;
+
+                path.pop(); // Verwijder de laatste positie uit het pad
+                drawGrid();
+            }
+        }
+
+        // Functie om het grid aan te passen
+        function setGridSize(size) {
+            const currentUrl = window.location.pathname;
+            window.location.href = currentUrl + '?gridSize=' + size; // Laad de pagina opnieuw met de nieuwe gridSize
         }
 
         // Initieel de grafiek tekenen
