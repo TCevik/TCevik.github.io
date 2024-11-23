@@ -84,6 +84,9 @@
         <p id="coordinates"></p>
         <p id="speed"></p>
 
+        <input type="text" id="directionInput" placeholder="NOZWP" />
+        <button onclick="handleDirection()">Beweeg</button>
+
         <br>
 
         <div class="controls">
@@ -97,11 +100,12 @@
 
         <br>
 
-        <button style="width: 110px;" onclick="setGridSize(10)">Erg Klein</button>
-        <button style="width: 110px;" onclick="setGridSize(15)">klein</button>
-        <button style="width: 110px;" onclick="setGridSize(30)">Normaal</button>
-        <button style="width: 110px;" onclick="setGridSize(50)">Groot</button>
-        <button style="width: 110px;" onclick="setGridSize(75)">Erg Groot</button>
+        <button onclick="setGridSize(3)">Super Klein</button>
+        <button onclick="setGridSize(10)">Erg Klein</button>
+        <button onclick="setGridSize(15)">klein</button>
+        <button onclick="setGridSize(30)">Normaal</button>
+        <button onclick="setGridSize(50)">Groot</button>
+        <button onclick="setGridSize(75)">Erg Groot</button>
     </div>
 
     <script>
@@ -123,6 +127,32 @@
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
         let history = []; // Array om vorige posities en snelheden op te slaan
 
+        function handleDirection() {
+            const input = document.getElementById('directionInput').value.toUpperCase();
+            for (let i = 0; i < input.length; i++) {
+                switch (input[i]) {
+                    case 'N':
+                        move('up');
+                        break;
+                    case 'W':
+                        move('left');
+                        break;
+                    case 'Z':
+                        move('down');
+                        break;
+                    case 'P':
+                        passMove();
+                        break;
+                    case 'O':
+                        move('right');
+                        break;
+                    default:
+                        notification('Ongeldige invoer: ' + input[i]);
+                        return;
+                }
+            }
+        }
+
         // Functie om de coördinaten bij te werken
         function updateScreenStats() {
             const coordinatesElement = document.getElementById("coordinates");
@@ -134,8 +164,10 @@
                 coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 4) + ', ' + -(dotY / gridSize - 4);
             } else if (gridSize === 15) {
                 coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 20) + ', ' + -(dotY / gridSize - 20);
-            } else if (gridSize === 30) {
-                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 0) + ', ' + -(dotY / gridSize - 0);
+            } else if (gridSize === 10) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 30) + ', ' + -(dotY / gridSize - 30);
+            } else if (gridSize === 3) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 100) + ', ' + -(dotY / gridSize - 100);
             } else {
                 setGridSize(30)
             }
