@@ -75,19 +75,35 @@
         <canvas id="grafiek" height="600" width="600"></canvas>
     </div>
 
-    <div class="controls">
-        <button onclick="move('up')" class="up">Noord</button>
-        <button onclick="move('left')" class="left">West</button>
-        <button onclick="passMove()" class="pass">Pass</button>
-        <button onclick="move('right')" class="right">Oost</button>
-        <button onclick="move('down')" class="down">Zuid</button>
+    <div>
+        <div class="controls">
+            <button onclick="move('up')" class="up">Noord</button>
+            <button onclick="move('left')" class="left">West</button>
+            <button onclick="passMove()" class="pass">Pass</button>
+            <button onclick="move('right')" class="right">Oost</button>
+            <button onclick="move('down')" class="down">Zuid</button>
+        </div>
+
+        <button onclick="setGridSize(10)">Erg Klein</button>
+        <button onclick="setGridSize(15)">klein</button>
+        <button onclick="setGridSize(30)">Normaal</button>
+        <button onclick="setGridSize(50)">Groot</button>
+        <button onclick="setGridSize(75)">Erg Groot</button>
     </div>
 
     <script>
+        function setGridSize(size) {
+            const currentUrl = window.location.pathname;
+            window.location.href = currentUrl + '?gridSize=' + size;  // Laad de pagina opnieuw met de nieuwe gridSize
+        }
+
         const canvas = document.getElementById("grafiek");
         const ctx = canvas.getContext("2d");
 
-        const gridSize = 15; // De grootte van elk vakje in het raster
+        // Haal de gridSize uit de URL, of gebruik 15 als standaardwaarde
+        const urlParams = new URLSearchParams(window.location.search);
+        const gridSize = parseInt(urlParams.get('gridSize')) || 15;
+
         const offset = canvas.width / 2; // Offset voor het midden
 
         let dotX = offset;
