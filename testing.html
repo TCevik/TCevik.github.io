@@ -5,17 +5,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grafiek en Stip Beweging</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
     <style>
         body {
             display: flex;
+            justify-content: center;
+            /* Centreer op de x-as */
             align-items: center;
-            margin-top: 20px;
-            margin: 0px;
+            /* Centreer op de y-as */
+            margin: 0;
+            /* Geen standaardmarge */
+            height: 100vh;
+            /* Vul de volledige hoogte van het scherm */
             overflow-y: hidden;
+            /* Verberg scrollen op de y-as */
         }
 
         canvas {
             border: 1px solid black;
+            margin-left: 50px;
+            background-color: white;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            width: max-content;
+            margin: 20px auto;
+            /* Center in the container */
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .up {
+            grid-column: 2;
+        }
+
+        .left {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .pass {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .right {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        .down {
+            grid-column: 2;
+            grid-row: 3;
         }
     </style>
 </head>
@@ -26,11 +76,11 @@
     </div>
 
     <div class="controls">
-        <button onclick="move('up')">Omhoog</button>
-        <button onclick="move('down')">Omlaag</button>
-        <button onclick="move('left')">Links</button>
-        <button onclick="move('right')">Rechts</button>
-        <button onclick="passMove()">Pass</button> <!-- Pass knop toegevoegd -->
+        <button onclick="move('up')" class="up">Noord</button>
+        <button onclick="move('left')" class="left">West</button>
+        <button onclick="passMove()" class="pass">Pass</button>
+        <button onclick="move('right')" class="right">Oost</button>
+        <button onclick="move('down')" class="down">Zuid</button>
     </div>
 
     <script>
