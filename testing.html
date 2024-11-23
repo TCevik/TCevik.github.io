@@ -81,6 +81,11 @@
     </div>
 
     <div>
+        <p id="coordinates"></p>
+        <p id="speed"></p>
+
+        <br>
+
         <div class="controls">
             <button onclick="move('up')" class="up">Noord</button>
             <button onclick="move('left')" class="left">West</button>
@@ -91,12 +96,12 @@
         </div>
 
         <br>
-        
-        <button onclick="setGridSize(10)">Erg Klein</button>
-        <button onclick="setGridSize(15)">klein</button>
-        <button onclick="setGridSize(30)">Normaal</button>
-        <button onclick="setGridSize(50)">Groot</button>
-        <button onclick="setGridSize(75)">Erg Groot</button>
+
+        <button style="width: 110px;" onclick="setGridSize(10)">Erg Klein</button>
+        <button style="width: 110px;" onclick="setGridSize(15)">klein</button>
+        <button style="width: 110px;" onclick="setGridSize(30)">Normaal</button>
+        <button style="width: 110px;" onclick="setGridSize(50)">Groot</button>
+        <button style="width: 110px;" onclick="setGridSize(75)">Erg Groot</button>
     </div>
 
     <script>
@@ -117,6 +122,27 @@
         let offsetY = 0; // Verschuiving van het canvas in de Y-richting
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
         let history = []; // Array om vorige posities en snelheden op te slaan
+
+        // Functie om de coördinaten bij te werken
+        function updateScreenStats() {
+            const coordinatesElement = document.getElementById("coordinates");
+            if (gridSize === 30) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 10) + ', ' + -(dotY / gridSize - 10);
+            } else if (gridSize === 50) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 6) + ', ' + -(dotY / gridSize - 6);
+            } else if (gridSize === 75) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 4) + ', ' + -(dotY / gridSize - 4);
+            } else if (gridSize === 15) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 20) + ', ' + -(dotY / gridSize - 20);
+            } else if (gridSize === 30) {
+                coordinatesElement.textContent = 'Coördinaten: ' + (dotX / gridSize - 0) + ', ' + -(dotY / gridSize - 0);
+            } else {
+                setGridSize(30)
+            }
+
+            const speed = document.getElementById("speed");
+            speed.textContent = 'Snelheid: ' + (velocityX) + ', ' + -(velocityY);
+        }
 
         // Functie om het raster te tekenen
         function drawGrid() {
@@ -154,6 +180,8 @@
             ctx.arc(dotX - offsetX, dotY - offsetY, 5, 0, Math.PI * 2); // Verplaats de stip op basis van de canvasverschuiving
             ctx.fillStyle = "red";
             ctx.fill();
+
+            updateScreenStats();
         }
 
         // Functie om de stip te verplaatsen
