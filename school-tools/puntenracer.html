@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grafiek en Stip Beweging</title>
+    <title>TC_tam Puntenracer</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
@@ -337,6 +337,15 @@
 
         // Initieel de grafiek tekenen
         drawGrid();
+
+        function checkScreenWidth() {
+            if (window.innerWidth < 1200) {
+                alert("Gebruik een scherm breder dan 1200px om de applicatie te gebruiken.")
+                window.location.href = "/";
+            }
+        }
+        window.onload = checkScreenWidth;
+        // window.onresize = checkScreenWidth;
     </script>
 
 </body>
