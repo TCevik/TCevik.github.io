@@ -70,6 +70,14 @@
             grid-column: 3;
             grid-row: 3;
         }
+
+        #buttonsHistory {
+            word-wrap: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 50ch;
+        }
     </style>
 </head>
 
@@ -81,8 +89,11 @@
     <div style="text-align: left; margin-left: 20px;">
         <p id="coordinates"></p>
         <p id="speed"></p>
+        <p style="margin-bottom: 5px;" id="buttonsHistory"></p>
+        <p style="margin-top: 0px;">Dubbelklik om volledige geschiedenis te selecteren.</p>
 
-        <input style="margin-left: 0px;" autocomplete="off" type="text" id="directionInput" placeholder="Voer route in (bijv. NOZWP) " />
+        <input style="margin-left: 0px;" autocomplete="off" type="text" id="directionInput"
+            placeholder="Voer route in (bijv. NOZWP) " />
         <button onclick="handleDirection()">Uitvoeren</button>
 
         <br>
@@ -127,6 +138,7 @@
         let offsetY = 0; // Verschuiving van het canvas in de Y-richting
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
         let history = []; // Array om vorige posities en snelheden op te slaan
+        let buttonsHistory = ""; // Houdt de knopgeschiedenis bij
 
         function handleDirection() {
             const input = document.getElementById('directionInput').value.toUpperCase();
@@ -175,6 +187,9 @@
 
             const speed = document.getElementById("speed");
             speed.textContent = 'Snelheid: ' + (velocityX) + ', ' + -(velocityY);
+
+            const buttonsHistoryElement = document.getElementById("buttonsHistory");
+            buttonsHistoryElement.textContent = "Knoppen ingedrukt: " + buttonsHistory;
         }
 
         // Functie om het raster te tekenen
@@ -228,18 +243,22 @@
                 case 'up':
                     if (velocityY > 0) velocityY -= correctionStep; // Corrigeer naar boven
                     else velocityY--; // Normale beweging omhoog
+                    buttonsHistory += "N"; // Voeg 'N' toe aan geschiedenis
                     break;
                 case 'down':
                     if (velocityY < 0) velocityY += correctionStep; // Corrigeer naar beneden
                     else velocityY++; // Normale beweging omlaag
+                    buttonsHistory += "Z"; // Voeg 'Z' toe aan geschiedenis
                     break;
                 case 'left':
                     if (velocityX > 0) velocityX -= correctionStep; // Corrigeer naar links
                     else velocityX--; // Normale beweging naar links
+                    buttonsHistory += "W"; // Voeg 'W' toe aan geschiedenis
                     break;
                 case 'right':
                     if (velocityX < 0) velocityX += correctionStep; // Corrigeer naar rechts
                     else velocityX++; // Normale beweging naar rechts
+                    buttonsHistory += "O"; // Voeg 'O' toe aan geschiedenis
                     break;
             }
 
@@ -256,6 +275,8 @@
         // Functie voor de pass knop (verplaats de stip met de huidige snelheid)
         function passMove() {
             saveState(); // Sla de huidige staat op voordat je beweegt
+
+            buttonsHistory += "P"; // Voeg 'P' toe aan geschiedenis
 
             // Pas de positie aan zonder de snelheid te wijzigen
             dotX += velocityX * gridSize;
