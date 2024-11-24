@@ -320,9 +320,14 @@
                 offsetY = previousState.offsetY;
 
                 path.pop(); // Verwijder de laatste positie uit het pad
+
+                // Verwijder de laatste letter uit de knopgeschiedenis
+                buttonsHistory = buttonsHistory.slice(0, -1);
+
                 drawGrid();
             }
         }
+
 
         // Functie om het grid aan te passen
         function setGridSize(size) {
