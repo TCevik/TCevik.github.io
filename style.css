@@ -212,7 +212,7 @@ input:hover,
 input:focus,
 textarea:hover,
 textarea:focus {
-    border: solid #58bf33;
+    border: 3px solid #58bf33;
 }
 
 input::placeholder,
