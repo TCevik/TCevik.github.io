@@ -192,9 +192,24 @@
             buttonsHistoryElement.textContent = "Knoppen ingedrukt: " + buttonsHistory;
         }
 
-        // Functie om het raster te tekenen
         function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Zwarte lijnen tekenen voor de assen
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 2;
+
+            // Y-as (x = 0)
+            ctx.beginPath();
+            ctx.moveTo(offset - offsetX, 0);
+            ctx.lineTo(offset - offsetX, canvas.height);
+            ctx.stroke();
+
+            // X-as (y = 0)
+            ctx.beginPath();
+            ctx.moveTo(0, offset - offsetY);
+            ctx.lineTo(canvas.width, offset - offsetY);
+            ctx.stroke();
 
             // Rasterlijnen tekenen
             ctx.strokeStyle = "#ccc";
