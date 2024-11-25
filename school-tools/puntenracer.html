@@ -78,10 +78,18 @@
             text-overflow: ellipsis;
             width: 50ch;
         }
+
+        #reloadBtn {
+            position: fixed;
+            top: 5px;
+            right: 5px;
+        }
     </style>
 </head>
 
 <body>
+    <button id="reloadBtn">Reset Alles</button>
+
     <div>
         <canvas id="grafiek" height="600" width="600"></canvas>
     </div>
@@ -425,6 +433,10 @@
         }
         window.onload = checkScreenWidth;
         // window.onresize = checkScreenWidth;
+
+        document.getElementById('reloadBtn').addEventListener('click', function () {
+            location.reload();
+        });
     </script>
 
 </body>
