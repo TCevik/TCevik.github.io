@@ -102,7 +102,7 @@
 
         <input style="margin-left: 0px;" autocomplete="off" type="text" id="directionInput"
             placeholder="Voer route in (bijv. NOZWP) " />
-        <button onclick="handleDirection()">Uitvoeren</button>
+        <button id="executeMovesButton" onclick="handleDirection()">Uitvoeren</button>
 
         <br><input style="margin-left: 0px;" id="multiPointInput" type="text" placeholder="Bijv: 10,10 20,20 30,30">
         <button onclick="drawLineFromMultiPointInput()">Teken lijn</button>
@@ -419,8 +419,31 @@
         // Functie om het grid aan te passen
         function setGridSize(size) {
             const currentUrl = window.location.pathname;
-            window.location.href = currentUrl + '?gridSize=' + size; // Laad de pagina opnieuw met de nieuwe gridSize
+            window.location.href = currentUrl + '?gridSize=' + size + '&moves=' + buttonsHistory; // Laad de pagina opnieuw met de nieuwe gridSize
         }
+
+        // Functie die controleert of er 'moves' in de URL staan
+        function checkAndExecuteMoves() {
+            const urlParams = new URLSearchParams(window.location.search); // Haalt de zoekparameters uit de URL
+            const moves = urlParams.get('moves'); // Verkrijg de waarde van 'moves' uit de URL
+
+            if (moves) {
+                const directionInput = document.getElementById('directionInput'); // Vind het directionInput element
+                if (directionInput) {
+                    directionInput.value = moves; // Zet de moves in het directionInput
+                }
+
+                const executeButton = document.getElementById('executeMovesButton'); // Vind de executeButton
+                if (executeButton) {
+                    executeButton.click(); // Klik de executeButton
+                }
+
+                directionInput.value = ''; // maak de directionInput leeg
+            }
+        }
+
+        // Roep de functie aan wanneer de pagina is geladen
+        window.onload = checkAndExecuteMoves();
 
         // Initieel de grafiek tekenen
         drawGrid();
