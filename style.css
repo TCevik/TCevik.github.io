@@ -198,7 +198,7 @@ textarea {
     padding: 10px;
     outline: none;
     margin: 20px;
-    border: solid var(--text-color);
+    border: 3px solid var(--text-color);
     font-size: var(--text-size);
     color: var(--text-color);
     transition: border-color 0.3s;
