@@ -435,7 +435,8 @@
         // window.onresize = checkScreenWidth;
 
         document.getElementById('reloadBtn').addEventListener('click', function () {
-            location.reload();
+            const currentUrl = window.location.pathname;
+            window.location.href = currentUrl; // Laad de pagina opnieuw met de nieuwe gridSize
         });
     </script>
 
