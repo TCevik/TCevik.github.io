@@ -419,31 +419,8 @@
         // Functie om het grid aan te passen
         function setGridSize(size) {
             const currentUrl = window.location.pathname;
-            window.location.href = currentUrl + '?gridSize=' + size + '&moves=' + buttonsHistory + '&lines=' + JSON.stringify(lines) + '&redDots=' + JSON.stringify(redDots); // Laad de pagina opnieuw met de nieuwe gridSize
+            window.location.href = currentUrl + '?gridSize=' + size; // Laad de pagina opnieuw met de nieuwe gridSize
         }
-
-        // Functie die controleert of er 'moves' in de URL staan
-        function checkAndExecuteMoves() {
-            const urlParams = new URLSearchParams(window.location.search); // Haalt de zoekparameters uit de URL
-            const moves = urlParams.get('moves'); // Verkrijg de waarde van 'moves' uit de URL
-
-            if (moves) {
-                const directionInput = document.getElementById('directionInput'); // Vind het directionInput element
-                if (directionInput) {
-                    directionInput.value = moves; // Zet de moves in het directionInput
-                }
-
-                const executeButton = document.getElementById('executeMovesButton'); // Vind de executeButton
-                if (executeButton) {
-                    executeButton.click(); // Klik de executeButton
-                }
-
-                directionInput.value = ''; // Maak de directionInput leeg
-            }
-        }
-
-        // Roep de functie aan wanneer de pagina is geladen
-        window.onload = checkAndExecuteMoves();
 
         // Initieel de grafiek tekenen
         drawGrid();
