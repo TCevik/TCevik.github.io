@@ -142,6 +142,7 @@
         let history = []; // Array om vorige posities en snelheden op te slaan
         let buttonsHistory = ""; // Houdt de knopgeschiedenis bij
         let lines = []; // Array om alle lijnen op te slaan
+        let redDots = [];
 
         function handleDirection() {
             const input = document.getElementById('directionInput').value.toUpperCase();
@@ -188,10 +189,16 @@
                 return;
             }
 
-            // Sla de lijn (met meerdere punten) op in de array
-            lines.push(points);
+            // Als er maar één punt is, voeg een rode stip toe
+            if (points.length === 1) {
+                const { x, y } = points[0];
+                redDots.push({ x, y }); // Sla de rode stip op
+            } else {
+                // Anders voeg de lijn toe
+                lines.push(points);
+            }
 
-            // Teken de grafiek opnieuw zodat de nieuwe lijn wordt weergegeven
+            // Teken de grafiek opnieuw zodat de wijzigingen worden weergegeven
             drawGrid();
         }
 
@@ -283,6 +290,16 @@
                 }
 
                 ctx.stroke();
+            }
+
+            // Rode stippen tekenen
+            ctx.fillStyle = "red";
+            for (const dot of redDots) {
+                const x = (dot.x + offset / gridSize) * gridSize - offsetX;
+                const y = (dot.y + offset / gridSize) * gridSize - offsetY;
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fill();
             }
 
             // Stip tekenen
