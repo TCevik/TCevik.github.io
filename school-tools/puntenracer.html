@@ -105,7 +105,7 @@
         <button id="executeMovesButton" onclick="handleDirection()">Uitvoeren</button>
 
         <br><input style="margin-left: 0px;" id="multiPointInput" type="text" placeholder="Bijv: 10,10 20,20 30,30">
-        <button onclick="drawLineFromMultiPointInput()">Teken lijn</button>
+        <button id="drawRedLineButton" onclick="drawLineFromMultiPointInput()">Teken lijn</button>
 
         <br>
         <br>
@@ -150,7 +150,7 @@
         let history = []; // Array om vorige posities en snelheden op te slaan
         let buttonsHistory = ""; // Houdt de knopgeschiedenis bij
         let lines = []; // Array om alle lijnen op te slaan
-        let redDots = [];
+        let redDots = []; // Array om alle stippen op te slaan
 
         function handleDirection() {
             const input = document.getElementById('directionInput').value.toUpperCase();
@@ -419,7 +419,7 @@
         // Functie om het grid aan te passen
         function setGridSize(size) {
             const currentUrl = window.location.pathname;
-            window.location.href = currentUrl + '?gridSize=' + size + '&moves=' + buttonsHistory; // Laad de pagina opnieuw met de nieuwe gridSize
+            window.location.href = currentUrl + '?gridSize=' + size + '&moves=' + buttonsHistory + '&lines=' + JSON.stringify(lines) + '&redDots=' + JSON.stringify(redDots); // Laad de pagina opnieuw met de nieuwe gridSize
         }
 
         // Functie die controleert of er 'moves' in de URL staan
@@ -438,7 +438,7 @@
                     executeButton.click(); // Klik de executeButton
                 }
 
-                directionInput.value = ''; // maak de directionInput leeg
+                directionInput.value = ''; // Maak de directionInput leeg
             }
         }
 
