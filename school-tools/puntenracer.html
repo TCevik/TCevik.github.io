@@ -96,17 +96,20 @@
             placeholder="Voer route in (bijv. NOZWP) " />
         <button onclick="handleDirection()">Uitvoeren</button>
 
+        <br><input style="margin: 0px; width: 200px;" id="startCoords" type="text" placeholder="Start coördinaten (x1,y1)"/>
+        <input style="margin: 0px; width: 200px;" id="endCoords" type="text" placeholder="Eind coördinaten (x2,y2)"/>
+        <button onclick="drawLineFromInput()">Teken lijn</button>
+
+        <br>
         <br>
 
         <button onclick="setGridSize(3)">Super Klein</button>
         <button onclick="setGridSize(10)">Erg Klein</button>
-        <button onclick="setGridSize(15)">klein</button>
+        <button onclick="setGridSize(15)">Klein</button>
         <button onclick="setGridSize(30)">Normaal</button>
         <button onclick="setGridSize(50)">Groot</button>
         <button onclick="setGridSize(75)">Erg Groot</button>
 
-        <br>
-        <br>
         <br>
         <br>
 
@@ -139,6 +142,7 @@
         let path = [{ x: dotX, y: dotY }]; // Array voor het bijhouden van de route
         let history = []; // Array om vorige posities en snelheden op te slaan
         let buttonsHistory = ""; // Houdt de knopgeschiedenis bij
+        let lines = []; // Array om alle lijnen op te slaan
 
         function handleDirection() {
             const input = document.getElementById('directionInput').value.toUpperCase();
@@ -164,6 +168,27 @@
                         return;
                 }
             }
+        }
+
+        function drawLineFromInput() {
+            const startCoords = document.getElementById("startCoords").value;
+            const endCoords = document.getElementById("endCoords").value;
+
+            // Parse de coördinaten (verwacht formaat: x,y)
+            const [x1, y1] = startCoords.split(',').map(Number);
+            const [x2, y2] = endCoords.split(',').map(Number);
+
+            // Controleer of de invoer geldig is
+            if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
+                alert("Ongeldige coördinaten. Gebruik het formaat: x,y");
+                return;
+            }
+
+            // Sla de lijn op in de array
+            lines.push({ start: { x: x1, y: y1 }, end: { x: x2, y: y2 } });
+
+            // Teken de grafiek opnieuw zodat de nieuwe lijn wordt weergegeven
+            drawGrid();
         }
 
         // Functie om de coördinaten bij te werken
@@ -232,15 +257,30 @@
             ctx.strokeStyle = "blue";
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(path[0].x - offsetX, path[0].y - offsetY); // Verplaats de lijn op basis van de canvasverschuiving
+            ctx.moveTo(path[0].x - offsetX, path[0].y - offsetY);
             for (let i = 1; i < path.length; i++) {
-                ctx.lineTo(path[i].x - offsetX, path[i].y - offsetY); // Verplaats de lijn op basis van de canvasverschuiving
+                ctx.lineTo(path[i].x - offsetX, path[i].y - offsetY);
             }
             ctx.stroke();
 
+            // Rode lijnen tekenen
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            for (const line of lines) {
+                const startX = (line.start.x + offset / gridSize) * gridSize - offsetX;
+                const startY = (line.start.y + offset / gridSize) * gridSize - offsetY;
+                const endX = (line.end.x + offset / gridSize) * gridSize - offsetX;
+                const endY = (line.end.y + offset / gridSize) * gridSize - offsetY;
+
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+
             // Stip tekenen
             ctx.beginPath();
-            ctx.arc(dotX - offsetX, dotY - offsetY, 5, 0, Math.PI * 2); // Verplaats de stip op basis van de canvasverschuiving
+            ctx.arc(dotX - offsetX, dotY - offsetY, 5, 0, Math.PI * 2);
             ctx.fillStyle = "red";
             ctx.fill();
 
