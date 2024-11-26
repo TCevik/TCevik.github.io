@@ -225,9 +225,6 @@ function sideMenuNav() {
 			openButton.style.transition = "left 0.5s ease";
 			setTimeout(() => {
 				sideBar.style.opacity = "0"; // Verlaag opacity na 0.5s
-				setTimeout(() => {
-					sideBar.style.zIndex = "-99999";
-				}, 500);
 			}, 500);
 		} else {
 			sideBar.style.width = "300px";
@@ -249,9 +246,6 @@ function sideMenuNav() {
 				openButton.style.transition = "left 0.5s ease";
 				setTimeout(() => {
 					sideBar.style.opacity = "0"; // Verlaag opacity na 0.5s
-					setTimeout(() => {
-						sideBar.style.zIndex = "-99999";
-					}, 500);
 				}, 500);
 				adjustOpenButtonPosition();
 			}
