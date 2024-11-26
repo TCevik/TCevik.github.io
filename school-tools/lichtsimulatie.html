@@ -27,13 +27,15 @@
 
 <body>
     <canvas id="dotsCanvas" width="600" height="600"></canvas>
-    <div style="margin-left: 10px;">
+    <div style="margin-left: 20px;">
         <p>Klik op 2 stippen om daar tussen lijnen te maken.</p>
+        <button id="undoButton">Undo</button>
     </div>
     <script>
         // Selecteer het canvas en verkrijg de 2D-context
         const canvas = document.getElementById("dotsCanvas");
         const ctx = canvas.getContext("2d");
+        const undoButton = document.getElementById("undoButton");
 
         // Configuratie van het raster
         const gridSize = 30; // Aantal stippen in het raster (een vierkant)
@@ -104,7 +106,7 @@
             const clickedDot = dots.find(dot => {
                 const dx = dot.x - mouseX;
                 const dy = dot.y - mouseY;
-                return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2;
+                return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2.5;
             });
 
             if (clickedDot) {
@@ -128,6 +130,24 @@
 
                     // Teken het raster opnieuw
                     drawGrid();
+                }
+            }
+        });
+
+        // Eventlistener voor de Undo-knop
+        undoButton.addEventListener("click", () => {
+            if (lines.length > 0) {
+                lines.pop(); // Verwijder de laatste lijn
+                drawGrid(); // Herteken het raster
+            }
+        });
+
+        // Eventlistener voor Ctrl+Z
+        document.addEventListener("keydown", (event) => {
+            if (event.ctrlKey && event.key === 'z') {
+                if (lines.length > 0) {
+                    lines.pop(); // Verwijder de laatste lijn
+                    drawGrid(); // Herteken het raster
                 }
             }
         });
