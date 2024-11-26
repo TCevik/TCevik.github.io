@@ -40,28 +40,59 @@
         const dotRadius = 5; // Straal van elke stip
         const margin = 10; // Ruimte langs de randen
 
-        // Arrays voor stippenlocaties en geselecteerde stippen
+        // Arrays voor stippenlocaties, geselecteerde stippen en lijnen
         const dots = [];
         const selectedDots = [];
+        const lines = []; // Opslag voor getekende lijnen
 
         // Bereken de spacing op basis van het aantal stippen en de beschikbare ruimte
         const spacing = (canvas.width - 2 * margin) / (gridSize - 1);
 
-        // Teken het raster van stippen
+        // Functie om het raster en de lijnen te tekenen
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Wis het canvas
+
+            // Teken alle stippen
+            for (const dot of dots) {
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#bfbfbf";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            // Teken alle lijnen
+            for (const line of lines) {
+                ctx.beginPath();
+                ctx.moveTo(line.start.x, line.start.y);
+                ctx.lineTo(line.end.x, line.end.y);
+                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            // Markeer geselecteerde stippen
+            for (const dot of selectedDots) {
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#000"; // Zwarte stippen voor selectie
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        // Initializeer de stippen in het raster
         for (let i = 0; i < gridSize; i++) {
             for (let j = 0; j < gridSize; j++) {
                 const x = margin + i * spacing;
                 const y = margin + j * spacing;
                 dots.push({ x, y });
-
-                // Teken een cirkel
-                ctx.beginPath();
-                ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
-                ctx.fillStyle = "#a6a6a6";
-                ctx.fill();
-                ctx.closePath();
             }
         }
+
+        // Teken het initiële raster
+        drawGrid();
 
         // Eventlistener voor klikken op het canvas
         canvas.addEventListener("click", (event) => {
@@ -84,27 +115,19 @@
                     // Voeg de stip toe aan geselecteerde lijst
                     selectedDots.push(clickedDot);
 
-                    // Markeer de geselecteerde stip
-                    ctx.beginPath();
-                    ctx.arc(clickedDot.x, clickedDot.y, dotRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = "#000";
-                    ctx.fill();
-                    ctx.closePath();
-
                     // Als er twee stippen geselecteerd zijn, teken een lijn
                     if (selectedDots.length === 2) {
                         const [dot1, dot2] = selectedDots;
-                        ctx.beginPath();
-                        ctx.moveTo(dot1.x, dot1.y);
-                        ctx.lineTo(dot2.x, dot2.y);
-                        ctx.strokeStyle = "#000";
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
-                        ctx.closePath();
+
+                        // Voeg de lijn toe aan de lijst van lijnen
+                        lines.push({ start: dot1, end: dot2 });
 
                         // Reset de selectie
                         selectedDots.length = 0;
                     }
+
+                    // Teken het raster opnieuw
+                    drawGrid();
                 }
             }
         });
