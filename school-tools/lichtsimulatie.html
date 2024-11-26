@@ -30,8 +30,21 @@
     <div style="margin-left: 20px;">
         <p>Klik op 2 stippen om daar tussen lijnen te maken.</p>
         <button id="undoButton">Undo</button>
+
+        <select id="typeLine">
+            <option value="spiegel">Spiegel</option>
+            <option value="laser">Laser</option>
+        </select>
     </div>
     <script>
+        // Haal de <select> en de waarde op
+        const selectElement = document.getElementById("typeLine");
+        let typeLine = selectElement.value;  // Zet de waarde van de geselecteerde optie
+        selectElement.addEventListener("change", (event) => {
+            typeLine = event.target.value;  // Update de waarde van typeLine
+            notification('Je maakt nu een ' + typeLine + '.');  // Laat de nieuwe waarde zien in de console
+        });
+
         // Selecteer het canvas en verkrijg de 2D-context
         const canvas = document.getElementById("dotsCanvas");
         const ctx = canvas.getContext("2d");
