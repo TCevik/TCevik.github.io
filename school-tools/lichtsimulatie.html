@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam Lichtsimulatie</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="dotsCanvas" width="600" height="600"></canvas>
+    <div style="margin-left: 10px;">
+        <p>Klik op 2 stippen om daar tussen lijnen te maken.</p>
+    </div>
+    <script>
+        // Selecteer het canvas en verkrijg de 2D-context
+        const canvas = document.getElementById("dotsCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Configuratie van het raster
+        const gridSize = 30; // Aantal stippen in het raster (een vierkant)
+        const dotRadius = 5; // Straal van elke stip
+        const margin = 10; // Ruimte langs de randen
+
+        // Arrays voor stippenlocaties en geselecteerde stippen
+        const dots = [];
+        const selectedDots = [];
+
+        // Bereken de spacing op basis van het aantal stippen en de beschikbare ruimte
+        const spacing = (canvas.width - 2 * margin) / (gridSize - 1);
+
+        // Teken het raster van stippen
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                const x = margin + i * spacing;
+                const y = margin + j * spacing;
+                dots.push({ x, y });
+
+                // Teken een cirkel
+                ctx.beginPath();
+                ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#a6a6a6";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        // Eventlistener voor klikken op het canvas
+        canvas.addEventListener("click", (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            // Vind de dichtstbijzijnde stip
+            const clickedDot = dots.find(dot => {
+                const dx = dot.x - mouseX;
+                const dy = dot.y - mouseY;
+                return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2;
+            });
+
+            if (clickedDot) {
+                // Controleer of de stip al geselecteerd is
+                const alreadySelected = selectedDots.some(dot => dot.x === clickedDot.x && dot.y === clickedDot.y);
+
+                if (!alreadySelected) {
+                    // Voeg de stip toe aan geselecteerde lijst
+                    selectedDots.push(clickedDot);
+
+                    // Markeer de geselecteerde stip
+                    ctx.beginPath();
+                    ctx.arc(clickedDot.x, clickedDot.y, dotRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = "#000";
+                    ctx.fill();
+                    ctx.closePath();
+
+                    // Als er twee stippen geselecteerd zijn, teken een lijn
+                    if (selectedDots.length === 2) {
+                        const [dot1, dot2] = selectedDots;
+                        ctx.beginPath();
+                        ctx.moveTo(dot1.x, dot1.y);
+                        ctx.lineTo(dot2.x, dot2.y);
+                        ctx.strokeStyle = "#000";
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                        ctx.closePath();
+
+                        // Reset de selectie
+                        selectedDots.length = 0;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
