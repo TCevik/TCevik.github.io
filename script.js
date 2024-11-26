@@ -1,5 +1,5 @@
 /* BLOCK PAGES FOR SCHOOL*/
-const gamePaths = ['/tools/hz-geluiden', '/tools/rammerhead', '/tools/myinstants'];
+const gamePaths = ['/tools/hz-geluiden', '/tools/bookmarklets'];
 if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 	fetch('https://api.ipify.org?format=json')
 		.then(response => response.json())
