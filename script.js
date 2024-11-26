@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 var buttons = `
-    <button onclick="window.location.href='/'">Home</button>
+    <button style="margin-top: 10px;" onclick="window.location.href='/'">Home</button>
     <h3 id="algemeen">General</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">My YouTube channel</button>
     <button onclick="window.location.href='/games'">Games</button>
@@ -172,7 +172,7 @@ var buttons = `
 	<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank')">Report an error</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
 	<button onclick="window.open('/privacy-policy', '_blank')">Privacy Policy</button>
-	<button onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">View the source code of the site</button>
+	<button style="margin-bottom: 10px;" onclick="window.open('https://github.com/TCevik/TCevik.github.io', '_blank')">View the source code of the site</button>
 `;
 
 function sideMenuNav() {
@@ -180,15 +180,17 @@ function sideMenuNav() {
 	sideBar.id = "sidebar";
 	sideBar.style.backgroundColor = "var(--bg-accent-color2)";
 	sideBar.style.color = "#fff";
-	sideBar.style.borderRight = "1px solid var(--h1234-color)";
+	sideBar.style.border = "1px solid var(--h1234-color)";
 	sideBar.style.width = "0";
-	sideBar.style.height = "100%";
+	sideBar.style.opacity = "0"; // Start met opacity 0
 	sideBar.style.position = "fixed";
-	sideBar.style.top = "0";
-	sideBar.style.left = "0px";
+	sideBar.style.top = "10px";
+	sideBar.style.left = "20px";
+	sideBar.style.bottom = "10px";
+	sideBar.style.borderRadius = "var(--border-radius2)";
 	sideBar.style.zIndex = "99999";
 	sideBar.style.overflowX = "hidden";
-	sideBar.style.transition = "0.5s";
+	sideBar.style.transition = "width 0.5s, opacity 0.5s";
 
 	sideBar.innerHTML = buttons;
 
@@ -209,7 +211,7 @@ function sideMenuNav() {
 
 	function adjustOpenButtonPosition() {
 		if (sideBar.style.width === "300px") {
-			openButton.style.left = "297px";
+			openButton.style.left = "317px";
 			openButton.textContent = "<";
 		} else {
 			openButton.style.left = "-5px";
@@ -221,9 +223,17 @@ function sideMenuNav() {
 		if (sideBar.style.width === "300px") {
 			sideBar.style.width = "0";
 			openButton.style.transition = "left 0.5s ease";
+			setTimeout(() => {
+				sideBar.style.opacity = "0"; // Verlaag opacity na 0.5s
+				setTimeout(() => {
+					sideBar.style.zIndex = "-99999";
+				}, 500);
+			}, 500);
 		} else {
 			sideBar.style.width = "300px";
+			sideBar.style.zIndex = "99999";
 			openButton.style.transition = "left 0.5s ease";
+			sideBar.style.opacity = "1"; // Toon sidebar onmiddellijk
 		}
 		adjustOpenButtonPosition();
 	});
@@ -237,6 +247,12 @@ function sideMenuNav() {
 			if (sideBar.style.width === "300px") {
 				sideBar.style.width = "0";
 				openButton.style.transition = "left 0.5s ease";
+				setTimeout(() => {
+					sideBar.style.opacity = "0"; // Verlaag opacity na 0.5s
+					setTimeout(() => {
+						sideBar.style.zIndex = "-99999";
+					}, 500);
+				}, 500);
 				adjustOpenButtonPosition();
 			}
 		}
