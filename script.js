@@ -178,9 +178,9 @@ var buttons = `
 function sideMenuNav() {
 	var sideBar = document.createElement("div");
 	sideBar.id = "sidebar";
-	sideBar.style.backgroundColor = "var(--bg-accent-color2)";
+	sideBar.style.backgroundColor = "var(--background-color)";
 	sideBar.style.color = "#fff";
-	sideBar.style.border = "1px solid var(--h1234-color)";
+	sideBar.style.boxShadow = "0px 0px 10px var(--h1234-color)";
 	sideBar.style.width = "0";
 	sideBar.style.opacity = "0"; // Start met opacity 0
 	sideBar.style.position = "fixed";
@@ -190,7 +190,7 @@ function sideMenuNav() {
 	sideBar.style.borderRadius = "var(--border-radius2)";
 	sideBar.style.zIndex = "99999";
 	sideBar.style.overflowX = "hidden";
-	sideBar.style.transition = "width 0.5s, opacity 0.5s";
+	sideBar.style.transition = "width 0.5s, opacity 0.3s";
 
 	sideBar.innerHTML = buttons;
 
@@ -211,7 +211,7 @@ function sideMenuNav() {
 
 	function adjustOpenButtonPosition() {
 		if (sideBar.style.width === "300px") {
-			openButton.style.left = "317px";
+			openButton.style.left = "315px";
 			openButton.textContent = "<";
 		} else {
 			openButton.style.left = "-5px";
