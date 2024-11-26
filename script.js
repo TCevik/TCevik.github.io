@@ -209,7 +209,7 @@ function sideMenuNav() {
 
 	function adjustOpenButtonPosition() {
 		if (sideBar.style.width === "300px") {
-			openButton.style.left = "295px";
+			openButton.style.left = "297px";
 			openButton.textContent = "<";
 		} else {
 			openButton.style.left = "-5px";
