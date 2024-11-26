@@ -111,38 +111,40 @@
 
         // Eventlistener voor klikken op het canvas
         canvas.addEventListener("click", (event) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
+            if (typeLine === "spiegel") {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = event.clientX - rect.left;
+                const mouseY = event.clientY - rect.top;
 
-            // Vind de dichtstbijzijnde stip
-            const clickedDot = dots.find(dot => {
-                const dx = dot.x - mouseX;
-                const dy = dot.y - mouseY;
-                return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2.5;
-            });
+                // Vind de dichtstbijzijnde stip
+                const clickedDot = dots.find(dot => {
+                    const dx = dot.x - mouseX;
+                    const dy = dot.y - mouseY;
+                    return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2.5;
+                });
 
-            if (clickedDot) {
-                // Controleer of de stip al geselecteerd is
-                const alreadySelected = selectedDots.some(dot => dot.x === clickedDot.x && dot.y === clickedDot.y);
+                if (clickedDot) {
+                    // Controleer of de stip al geselecteerd is
+                    const alreadySelected = selectedDots.some(dot => dot.x === clickedDot.x && dot.y === clickedDot.y);
 
-                if (!alreadySelected) {
-                    // Voeg de stip toe aan geselecteerde lijst
-                    selectedDots.push(clickedDot);
+                    if (!alreadySelected) {
+                        // Voeg de stip toe aan geselecteerde lijst
+                        selectedDots.push(clickedDot);
 
-                    // Als er twee stippen geselecteerd zijn, teken een lijn
-                    if (selectedDots.length === 2) {
-                        const [dot1, dot2] = selectedDots;
+                        // Als er twee stippen geselecteerd zijn, teken een lijn
+                        if (selectedDots.length === 2) {
+                            const [dot1, dot2] = selectedDots;
 
-                        // Voeg de lijn toe aan de lijst van lijnen
-                        lines.push({ start: dot1, end: dot2 });
+                            // Voeg de lijn toe aan de lijst van lijnen
+                            lines.push({ start: dot1, end: dot2 });
 
-                        // Reset de selectie
-                        selectedDots.length = 0;
+                            // Reset de selectie
+                            selectedDots.length = 0;
+                        }
+
+                        // Teken het raster opnieuw
+                        drawGrid();
                     }
-
-                    // Teken het raster opnieuw
-                    drawGrid();
                 }
             }
         });
