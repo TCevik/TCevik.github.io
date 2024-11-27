@@ -155,25 +155,20 @@
                             dx /= length;
                             dy /= length;
 
-                            let laserHit = false;
-                            const maxReflections = Infinity; // Maximum aantal reflecties
                             let reflections = 0;
+                            const maxReflections = Infinity; // Voorkom oneindige lussen
+                            laserLines.length = 0;
 
-                            // We houden bij welke lijnen we al geraakt hebben
-                            const hitLines = new Set();
+                            let lastHitLine = null; // Houd bij welke lijn de laser als laatst heeft geraakt
 
-                            // Als er al een laser in de array staat, verwijder de oudste
-                            while (laserLines.length >= 1) {
-                                laserLines.shift(); // Verwijder de oudste laser
-                            }
+                            while (reflections < maxReflections) {
+                                let closestIntersection = null;
+                                let closestLine = null;
+                                let minDistance = Infinity;
 
-                            while (!laserHit && reflections < maxReflections) {
-                                let hitLine = null;
-                                let hitPoint = null;
-
-                                // Controleer of de laser een lijn raakt (alleen spiegels, zwart #000)
+                                // Zoek het dichtstbijzijnde snijpunt
                                 for (const line of lines) {
-                                    if (line.color === "#000" && !hitLines.has(line)) {
+                                    if (line.color === "#000" && line !== lastHitLine) { // Alleen spiegels en geen herhaling
                                         const intersection = findIntersection(
                                             { x: currentX, y: currentY },
                                             { x: currentX + dx * 1000, y: currentY + dy * 1000 },
@@ -182,53 +177,58 @@
                                         );
 
                                         if (intersection) {
-                                            hitLine = line;
-                                            hitPoint = intersection;
-                                            break;
+                                            const dist = Math.sqrt(
+                                                (intersection.x - currentX) ** 2 +
+                                                (intersection.y - currentY) ** 2
+                                            );
+
+                                            if (dist < minDistance) {
+                                                minDistance = dist;
+                                                closestIntersection = intersection;
+                                                closestLine = line;
+                                            }
                                         }
                                     }
                                 }
 
-                                if (hitPoint) {
-                                    // Teken de laserstraal tot het botsingspunt
+                                if (closestIntersection) {
+                                    // Teken de laserstraal tot het dichtstbijzijnde snijpunt
                                     laserLines.push({
                                         start: { x: currentX, y: currentY },
-                                        end: hitPoint,
+                                        end: closestIntersection,
                                         color: "red"
                                     });
 
-                                    // Voeg de getroffen lijn toe aan de hitLines set
-                                    hitLines.clear();
-                                    hitLines.add(hitLine);
-
-                                    // Bereken de normale van de lijn
+                                    // Bereken de normale vector van de spiegel
                                     const normal = {
-                                        x: hitLine.end.y - hitLine.start.y,
-                                        y: hitLine.start.x - hitLine.end.x
+                                        x: closestLine.end.y - closestLine.start.y,
+                                        y: closestLine.start.x - closestLine.end.x
                                     };
 
                                     // Bereken de reflectierichting
                                     const reflection = calculateReflection(
                                         { x: currentX, y: currentY },
-                                        hitPoint,
+                                        closestIntersection,
                                         normal
                                     );
+
+                                    // Sla de laatst geraakte lijn op
+                                    lastHitLine = closestLine;
 
                                     dx = reflection.x;
                                     dy = reflection.y;
 
-                                    currentX = hitPoint.x;
-                                    currentY = hitPoint.y;
-
+                                    currentX = closestIntersection.x;
+                                    currentY = closestIntersection.y;
                                     reflections++;
                                 } else {
                                     // Geen botsing meer, laser eindigt aan de rand
-                                    laserHit = true;
                                     laserLines.push({
                                         start: { x: currentX, y: currentY },
                                         end: { x: currentX + dx * 1000, y: currentY + dy * 1000 },
                                         color: "red"
                                     });
+                                    break;
                                 }
                             }
                         }
@@ -246,11 +246,13 @@
             const s2_x = p4.x - p3.x;
             const s2_y = p4.y - p3.y;
 
-            const s = (-s1_y * (p1.x - p3.x) + s1_x * (p1.y - p3.y)) / (-s2_x * s1_y + s1_x * s2_y);
-            const t = (s2_x * (p1.y - p3.y) - s2_y * (p1.x - p3.x)) / (-s2_x * s1_y + s1_x * s2_y);
+            const denom = (-s2_x * s1_y + s1_x * s2_y);
+            if (denom === 0) return null; // Lijnen zijn parallel
+
+            const s = (-s1_y * (p1.x - p3.x) + s1_x * (p1.y - p3.y)) / denom;
+            const t = (s2_x * (p1.y - p3.y) - s2_y * (p1.x - p3.x)) / denom;
 
             if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
-                // Snijpunt gevonden
                 return {
                     x: p1.x + (t * s1_x),
                     y: p1.y + (t * s1_y)
