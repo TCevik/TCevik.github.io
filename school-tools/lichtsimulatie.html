@@ -317,6 +317,15 @@
 
         // Teken het initiële raster
         drawGrid();
+
+        function checkScreenWidth() {
+            if (window.innerWidth < 1100) {
+                alert("Gebruik een scherm breder dan 1100px om de applicatie te gebruiken.")
+                window.location.href = "/";
+            }
+        }
+        window.onload = checkScreenWidth;
+        // window.onresize = checkScreenWidth;
     </script>
 </body>
 
