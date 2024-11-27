@@ -83,7 +83,7 @@
                     ctx.moveTo(line.start.x, line.start.y);
                     ctx.lineTo(line.end.x, line.end.y);
                     ctx.strokeStyle = "#000";
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 3;
                     ctx.stroke();
                     ctx.closePath();
                 }
@@ -96,7 +96,7 @@
                     ctx.moveTo(line.start.x, line.start.y);
                     ctx.lineTo(line.end.x, line.end.y);
                     ctx.strokeStyle = line.color || "red"; // Zorg ervoor dat de lasers de juiste kleur hebben
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 1.5;
                     ctx.stroke();
                     ctx.closePath();
                 }
