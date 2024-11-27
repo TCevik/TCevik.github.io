@@ -146,9 +146,44 @@ document.addEventListener("DOMContentLoaded", function () {
     checkPageAndRunSideMenuNav();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+	let themeSetting = localStorage.getItem('themeSetting');
+	const themeSwitch = document.getElementById('theme-switch');
+
+	const enableDarkMode = () => {
+		document.body.classList.add('darkmode');
+		localStorage.setItem('themeSetting', 'darkMode');
+	};
+
+	const enableLightMode = () => {
+		document.body.classList.remove('darkmode');
+		localStorage.setItem('themeSetting', 'lightMode');
+	};
+
+	if (themeSetting === "darkMode") {
+		enableDarkMode();
+	} else if (themeSetting === null) {
+		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		if (prefersDarkScheme) {
+			enableDarkMode();
+		} else {
+			enableLightMode();
+		}
+	}
+
+	themeSwitch.addEventListener("click", () => {
+		themeSetting = localStorage.getItem('themeSetting');
+		if (themeSetting !== "darkMode") {
+			enableDarkMode();
+		} else {
+			enableLightMode();
+		}
+	});
+});
 
 var buttons = `
-    <button style="margin-top: 10px;" onclick="window.location.href='/'">Home</button>
+	<button style="margin-top: 10px;" id="theme-switch">Switch Theme</button>
+    <button onclick="window.location.href='/'">Home</button>
     <h3 id="algemeen">General</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">My YouTube channel</button>
     <button onclick="window.location.href='/games'">Games</button>
