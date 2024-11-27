@@ -166,7 +166,6 @@
             background-color: #7fff48;
             border-radius: 50vw;
             opacity: var(--bg-ball-opacity);
-            transition: opacity 0.5s;
         }
 
         /* light mode */
@@ -174,12 +173,10 @@
             --bg-ball-opacity: 0;
         }
 
-        /* dark mode */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-ball-opacity: 1;
-            }
+        body.darkmode {
+            --bg-ball-opacity: 1;
         }
+
 
         #title span {
             opacity: 0;
@@ -608,24 +605,6 @@
         function vervangFansIframe() {
             document.getElementById("tctam-fans-iframe").src = "https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform";
         }
-
-        /* show navigation button */
-        window.addEventListener('load', function () {
-            let loadCount = localStorage.getItem('loadCount') || 0;
-
-            loadCount++;
-
-            if (loadCount < 2) {
-                let openButton = document.getElementById('openButton');
-
-                if (openButton) {
-                    openButton.textContent = "Klik hier voor alle pagina's op de site.";
-                    openButton.style.maxWidth = '150px';
-                }
-            }
-
-            localStorage.setItem('loadCount', loadCount);
-        });
 
         // JavaScript om de pop-up te openen
         function openTctamQuizPopup() {

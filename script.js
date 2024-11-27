@@ -133,17 +133,17 @@ if ('serviceWorker' in navigator) {
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
-    function checkPageAndRunSideMenuNav() {
-        let currentPath = window.location.pathname;
-        currentPath = currentPath.replace('.html', '');
-        
-        const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts'];
+	function checkPageAndRunSideMenuNav() {
+		let currentPath = window.location.pathname;
+		currentPath = currentPath.replace('.html', '');
 
-        if (!pagesWithoutSideMenu.includes(currentPath)) {
-            sideMenuNav();
-        }
-    }
-    checkPageAndRunSideMenuNav();
+		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts'];
+
+		if (!pagesWithoutSideMenu.includes(currentPath)) {
+			sideMenuNav();
+		}
+	}
+	checkPageAndRunSideMenuNav();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -294,3 +294,21 @@ function sideMenuNav() {
 	document.body.appendChild(openButton);
 	document.body.appendChild(sideBar);
 }
+
+/* show navigation button */
+window.addEventListener('load', function () {
+	let loadCount = localStorage.getItem('loadCount') || 0;
+
+
+	if (loadCount === 0) {
+		let openButton = document.getElementById('openButton');
+
+		if (openButton) {
+			openButton.textContent = "Click here for site navigation.";
+			openButton.style.maxWidth = '150px';
+			loadCount++;
+		}
+	}
+
+	localStorage.setItem('loadCount', loadCount);
+});
