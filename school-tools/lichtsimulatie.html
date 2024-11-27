@@ -143,6 +143,7 @@
 
                         if (typeLine === "spiegel") {
                             lines.push({ start: dot1, end: dot2, color: "#000" });
+                            laserLines.length = 0;
                         } else if (typeLine === "laser") {
                             let currentX = dot1.x;
                             let currentY = dot1.y;
@@ -160,6 +161,11 @@
 
                             // We houden bij welke lijnen we al geraakt hebben
                             const hitLines = new Set();
+
+                            // Als er al een laser in de array staat, verwijder de oudste
+                            while (laserLines.length >= 1) {
+                                laserLines.shift(); // Verwijder de oudste laser
+                            }
 
                             while (!laserHit && reflections < maxReflections) {
                                 let hitLine = null;
