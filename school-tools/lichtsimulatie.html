@@ -119,9 +119,6 @@
             }
         }
 
-        // Teken het initiële raster
-        drawGrid();
-
         canvas.addEventListener("click", (event) => {
             const rect = canvas.getBoundingClientRect();
             const mouseX = event.clientX - rect.left;
@@ -308,6 +305,9 @@
                 }
             }
         });
+
+        // Teken het initiële raster
+        drawGrid();
     </script>
 </body>
 
