@@ -127,44 +127,88 @@
                         const [dot1, dot2] = selectedDots;
 
                         if (typeLine === "spiegel") {
-                            lines.push({ start: dot1, end: dot2 });
+                            lines.push({ start: dot1, end: dot2, color: "#000" });
                         } else if (typeLine === "laser") {
-                            // Bereken richting
-                            const dx = dot2.x - dot1.x;
-                            const dy = dot2.y - dot1.y;
-                            const length = Math.sqrt(dx * dx + dy * dy);
-                            const unitX = dx / length;
-                            const unitY = dy / length;
-
-                            // Start en check voor obstakels
                             let currentX = dot1.x;
                             let currentY = dot1.y;
-                            let laserHit = false;
 
-                            // Stap door de laserstraal totdat het canvas eindigt of een obstakel geraakt wordt
-                            while (!laserHit &&
-                                currentX >= 0 && currentX <= canvas.width &&
-                                currentY >= 0 && currentY <= canvas.height) {
-                                // Controleer of een spiegel geraakt wordt
+                            // Beginrichtingsvector van de laser
+                            let dx = dot2.x - dot1.x;
+                            let dy = dot2.y - dot1.y;
+                            const length = Math.sqrt(dx ** 2 + dy ** 2);
+                            dx /= length;
+                            dy /= length;
+
+                            let laserHit = false;
+                            const maxReflections = 10; // Maximum aantal reflecties
+                            let reflections = 0;
+
+                            // We houden bij welke lijnen we al geraakt hebben
+                            const hitLines = new Set();
+
+                            while (!laserHit && reflections < maxReflections) {
+                                let hitLine = null;
+                                let hitPoint = null;
+
+                                // Controleer of de laser een lijn raakt (alleen spiegels, zwart #000)
                                 for (const line of lines) {
-                                    if (line.color !== "red" && isPointOnLine({ x: currentX, y: currentY }, line)) {
-                                        laserHit = true;
-                                        break;
+                                    if (line.color === "#000" && !hitLines.has(line)) {
+                                        const intersection = findIntersection(
+                                            { x: currentX, y: currentY },
+                                            { x: currentX + dx * 1000, y: currentY + dy * 1000 },
+                                            line.start,
+                                            line.end
+                                        );
+
+                                        if (intersection) {
+                                            hitLine = line;
+                                            hitPoint = intersection;
+                                            break;
+                                        }
                                     }
                                 }
 
-                                if (!laserHit) {
-                                    currentX += unitX;
-                                    currentY += unitY;
+                                if (hitPoint) {
+                                    // Teken de laserstraal tot het botsingspunt
+                                    lines.push({
+                                        start: { x: currentX, y: currentY },
+                                        end: hitPoint,
+                                        color: "red"
+                                    });
+
+                                    // Voeg de getroffen lijn toe aan de hitLines set
+                                    hitLines.add(hitLine);
+
+                                    // Bereken de normale van de lijn
+                                    const normal = {
+                                        x: hitLine.end.y - hitLine.start.y,
+                                        y: hitLine.start.x - hitLine.end.x
+                                    };
+
+                                    // Bereken de reflectierichting
+                                    const reflection = calculateReflection(
+                                        { x: currentX, y: currentY },
+                                        hitPoint,
+                                        normal
+                                    );
+
+                                    dx = reflection.x;
+                                    dy = reflection.y;
+
+                                    currentX = hitPoint.x;
+                                    currentY = hitPoint.y;
+
+                                    reflections++;
+                                } else {
+                                    // Geen botsing meer, laser eindigt aan de rand
+                                    laserHit = true;
+                                    lines.push({
+                                        start: { x: currentX, y: currentY },
+                                        end: { x: currentX + dx * 1000, y: currentY + dy * 1000 },
+                                        color: "red"
+                                    });
                                 }
                             }
-
-                            // Voeg de laserlijn toe, tot aan het obstakel of de rand
-                            lines.push({
-                                start: dot1,
-                                end: laserHit ? { x: currentX, y: currentY } : { x: currentX, y: currentY },
-                                color: "red"
-                            });
                         }
 
                         selectedDots.length = 0;
@@ -174,6 +218,47 @@
                 }
             }
         });
+
+        function findIntersection(p1, p2, p3, p4) {
+            const s1_x = p2.x - p1.x;
+            const s1_y = p2.y - p1.y;
+            const s2_x = p4.x - p3.x;
+            const s2_y = p4.y - p3.y;
+
+            const s = (-s1_y * (p1.x - p3.x) + s1_x * (p1.y - p3.y)) / (-s2_x * s1_y + s1_x * s2_y);
+            const t = (s2_x * (p1.y - p3.y) - s2_y * (p1.x - p3.x)) / (-s2_x * s1_y + s1_x * s2_y);
+
+            if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
+                // Snijpunt gevonden
+                return {
+                    x: p1.x + (t * s1_x),
+                    y: p1.y + (t * s1_y)
+                };
+            }
+
+            return null; // Geen snijpunt
+        }
+
+        function calculateReflection(start, end, normal) {
+            // Bereken de eenheidsvectoren van de straal
+            const incidentX = end.x - start.x;
+            const incidentY = end.y - start.y;
+            const incidentLength = Math.sqrt(incidentX ** 2 + incidentY ** 2);
+            const incident = { x: incidentX / incidentLength, y: incidentY / incidentLength };
+
+            // Normaliseer de normale vector
+            const normalLength = Math.sqrt(normal.x ** 2 + normal.y ** 2);
+            const unitNormal = { x: normal.x / normalLength, y: normal.y / normalLength };
+
+            // Bereken de reflectierichting: R = I - 2 * (I · N) * N
+            const dotProduct = incident.x * unitNormal.x + incident.y * unitNormal.y;
+            const reflection = {
+                x: incident.x - 2 * dotProduct * unitNormal.x,
+                y: incident.y - 2 * dotProduct * unitNormal.y
+            };
+
+            return reflection;
+        }
 
         function isPointOnLine(point, line) {
             const tolerance = 1; // Hoe precies we willen zijn
