@@ -66,6 +66,7 @@
         function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Teken de stippen en geselecteerde stippen
             for (const dot of dots) {
                 ctx.beginPath();
                 ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
@@ -74,14 +75,30 @@
                 ctx.closePath();
             }
 
+            // Teken eerst alle spiegel-lijnen (zwart)
             for (const line of lines) {
-                ctx.beginPath();
-                ctx.moveTo(line.start.x, line.start.y);
-                ctx.lineTo(line.end.x, line.end.y);
-                ctx.strokeStyle = line.color || "#000";
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.closePath();
+                if (line.color === "#000") { // Alleen de spiegel-lijnen
+                    ctx.beginPath();
+                    ctx.moveTo(line.start.x, line.start.y);
+                    ctx.lineTo(line.end.x, line.end.y);
+                    ctx.strokeStyle = "#000";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.closePath();
+                }
+            }
+
+            // Teken daarna de andere lijnen (bijvoorbeeld lasers)
+            for (const line of lines) {
+                if (line.color !== "#000") { // Andere lijnen, zoals lasers
+                    ctx.beginPath();
+                    ctx.moveTo(line.start.x, line.start.y);
+                    ctx.lineTo(line.end.x, line.end.y);
+                    ctx.strokeStyle = line.color || "red"; // Zorg ervoor dat de lasers de juiste kleur hebben
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.closePath();
+                }
             }
 
             for (const dot of selectedDots) {
@@ -213,9 +230,8 @@
                         }
 
                         selectedDots.length = 0;
+                        drawGrid(); // Herteken het raster na het toevoegen van de lijn
                     }
-
-                    drawGrid();
                 }
             }
         });
