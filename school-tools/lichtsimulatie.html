@@ -140,7 +140,7 @@
                             dy /= length;
 
                             let laserHit = false;
-                            const maxReflections = 10; // Maximum aantal reflecties
+                            const maxReflections = Infinity; // Maximum aantal reflecties
                             let reflections = 0;
 
                             // We houden bij welke lijnen we al geraakt hebben
@@ -177,6 +177,7 @@
                                     });
 
                                     // Voeg de getroffen lijn toe aan de hitLines set
+                                    hitLines.clear();
                                     hitLines.add(hitLine);
 
                                     // Bereken de normale van de lijn
