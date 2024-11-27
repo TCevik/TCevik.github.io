@@ -59,6 +59,7 @@
         const dots = [];
         const selectedDots = [];
         const lines = []; // Opslag voor getekende lijnen
+        const laserLines = []; // Opslag voor getekende lasers
 
         // Bereken de spacing op basis van het aantal stippen en de beschikbare ruimte
         const spacing = (canvas.width - 2 * margin) / (gridSize - 1);
@@ -89,7 +90,7 @@
             }
 
             // Teken daarna de andere lijnen (bijvoorbeeld lasers)
-            for (const line of lines) {
+            for (const line of laserLines) {
                 if (line.color !== "#000") { // Andere lijnen, zoals lasers
                     ctx.beginPath();
                     ctx.moveTo(line.start.x, line.start.y);
@@ -184,7 +185,7 @@
 
                                 if (hitPoint) {
                                     // Teken de laserstraal tot het botsingspunt
-                                    lines.push({
+                                    laserLines.push({
                                         start: { x: currentX, y: currentY },
                                         end: hitPoint,
                                         color: "red"
@@ -217,7 +218,7 @@
                                 } else {
                                     // Geen botsing meer, laser eindigt aan de rand
                                     laserHit = true;
-                                    lines.push({
+                                    laserLines.push({
                                         start: { x: currentX, y: currentY },
                                         end: { x: currentX + dx * 1000, y: currentY + dy * 1000 },
                                         color: "red"
