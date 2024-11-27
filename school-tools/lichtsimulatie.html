@@ -156,7 +156,7 @@
                             dy /= length;
 
                             let reflections = 0;
-                            const maxReflections = Infinity; // Voorkom oneindige lussen
+                            const maxReflections = 1000000; // Voorkom oneindige lussen
                             laserLines.length = 0;
 
                             let lastHitLine = null; // Houd bij welke lijn de laser als laatst heeft geraakt
