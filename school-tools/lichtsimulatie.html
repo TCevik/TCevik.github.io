@@ -63,11 +63,9 @@
         // Bereken de spacing op basis van het aantal stippen en de beschikbare ruimte
         const spacing = (canvas.width - 2 * margin) / (gridSize - 1);
 
-        // Functie om het raster en de lijnen te tekenen
         function drawGrid() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Wis het canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Teken alle stippen
             for (const dot of dots) {
                 ctx.beginPath();
                 ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
@@ -76,22 +74,20 @@
                 ctx.closePath();
             }
 
-            // Teken alle lijnen
             for (const line of lines) {
                 ctx.beginPath();
                 ctx.moveTo(line.start.x, line.start.y);
                 ctx.lineTo(line.end.x, line.end.y);
-                ctx.strokeStyle = "#000";
+                ctx.strokeStyle = line.color || "#000";
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 ctx.closePath();
             }
 
-            // Markeer geselecteerde stippen
             for (const dot of selectedDots) {
                 ctx.beginPath();
                 ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
-                ctx.fillStyle = "#000"; // Zwarte stippen voor selectie
+                ctx.fillStyle = "#000";
                 ctx.fill();
                 ctx.closePath();
             }
@@ -109,45 +105,89 @@
         // Teken het initiële raster
         drawGrid();
 
-        // Eventlistener voor klikken op het canvas
         canvas.addEventListener("click", (event) => {
-            if (typeLine === "spiegel") {
-                const rect = canvas.getBoundingClientRect();
-                const mouseX = event.clientX - rect.left;
-                const mouseY = event.clientY - rect.top;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
 
-                // Vind de dichtstbijzijnde stip
-                const clickedDot = dots.find(dot => {
-                    const dx = dot.x - mouseX;
-                    const dy = dot.y - mouseY;
-                    return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2.5;
-                });
+            // Vind de dichtstbijzijnde stip
+            const clickedDot = dots.find(dot => {
+                const dx = dot.x - mouseX;
+                const dy = dot.y - mouseY;
+                return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2.5;
+            });
 
-                if (clickedDot) {
-                    // Controleer of de stip al geselecteerd is
-                    const alreadySelected = selectedDots.some(dot => dot.x === clickedDot.x && dot.y === clickedDot.y);
+            if (clickedDot) {
+                const alreadySelected = selectedDots.some(dot => dot.x === clickedDot.x && dot.y === clickedDot.y);
 
-                    if (!alreadySelected) {
-                        // Voeg de stip toe aan geselecteerde lijst
-                        selectedDots.push(clickedDot);
+                if (!alreadySelected) {
+                    selectedDots.push(clickedDot);
 
-                        // Als er twee stippen geselecteerd zijn, teken een lijn
-                        if (selectedDots.length === 2) {
-                            const [dot1, dot2] = selectedDots;
+                    if (selectedDots.length === 2) {
+                        const [dot1, dot2] = selectedDots;
 
-                            // Voeg de lijn toe aan de lijst van lijnen
+                        if (typeLine === "spiegel") {
                             lines.push({ start: dot1, end: dot2 });
+                        } else if (typeLine === "laser") {
+                            // Bereken richting
+                            const dx = dot2.x - dot1.x;
+                            const dy = dot2.y - dot1.y;
+                            const length = Math.sqrt(dx * dx + dy * dy);
+                            const unitX = dx / length;
+                            const unitY = dy / length;
 
-                            // Reset de selectie
-                            selectedDots.length = 0;
+                            // Start en check voor obstakels
+                            let currentX = dot1.x;
+                            let currentY = dot1.y;
+                            let laserHit = false;
+
+                            // Stap door de laserstraal totdat het canvas eindigt of een obstakel geraakt wordt
+                            while (!laserHit &&
+                                currentX >= 0 && currentX <= canvas.width &&
+                                currentY >= 0 && currentY <= canvas.height) {
+                                // Controleer of een spiegel geraakt wordt
+                                for (const line of lines) {
+                                    if (line.color !== "red" && isPointOnLine({ x: currentX, y: currentY }, line)) {
+                                        laserHit = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!laserHit) {
+                                    currentX += unitX;
+                                    currentY += unitY;
+                                }
+                            }
+
+                            // Voeg de laserlijn toe, tot aan het obstakel of de rand
+                            lines.push({
+                                start: dot1,
+                                end: laserHit ? { x: currentX, y: currentY } : { x: currentX, y: currentY },
+                                color: "red"
+                            });
                         }
 
-                        // Teken het raster opnieuw
-                        drawGrid();
+                        selectedDots.length = 0;
                     }
+
+                    drawGrid();
                 }
             }
         });
+
+        function isPointOnLine(point, line) {
+            const tolerance = 1; // Hoe precies we willen zijn
+            const { x, y } = point;
+            const { start, end } = line;
+
+            const crossProduct = Math.abs((y - start.y) * (end.x - start.x) - (x - start.x) * (end.y - start.y));
+            const distance = Math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2);
+
+            // Controleer of het punt op de lijn ligt (binnen de tolerantie)
+            return crossProduct / distance < tolerance &&
+                x >= Math.min(start.x, end.x) && x <= Math.max(start.x, end.x) &&
+                y >= Math.min(start.y, end.y) && y <= Math.max(start.y, end.y);
+        }
 
         // Eventlistener voor de Undo-knop
         undoButton.addEventListener("click", () => {
