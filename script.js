@@ -1,4 +1,4 @@
-/* BLOCK PAGES FOR SCHOOL*/
+/* block pages for school */
 const gamePaths = ['/tools/hz-geluiden', '/tools/bookmarklets'];
 if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 	fetch('https://api.ipify.org?format=json')
@@ -47,6 +47,7 @@ if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 		.catch(error => console.error('Error fetching IP address:', error));
 }
 
+/* custom notification */
 function notification(message) {
 	var notificationElement = document.createElement("div");
 
@@ -132,20 +133,7 @@ if ('serviceWorker' in navigator) {
 	gtag('config', 'G-7KL389S9VR');
 })();
 
-document.addEventListener("DOMContentLoaded", function () {
-	function checkPageAndRunSideMenuNav() {
-		let currentPath = window.location.pathname;
-		currentPath = currentPath.replace('.html', '');
-
-		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts'];
-
-		if (!pagesWithoutSideMenu.includes(currentPath)) {
-			sideMenuNav();
-		}
-	}
-	checkPageAndRunSideMenuNav();
-});
-
+/* theme selector */
 document.addEventListener("DOMContentLoaded", () => {
 	let themeSetting = localStorage.getItem('themeSetting');
 	const themeSwitch = document.getElementById('theme-switch');
@@ -179,6 +167,21 @@ document.addEventListener("DOMContentLoaded", () => {
 			enableLightMode();
 		}
 	});
+});
+
+/* sidemenu */
+document.addEventListener("DOMContentLoaded", function () {
+	function checkPageAndRunSideMenuNav() {
+		let currentPath = window.location.pathname;
+		currentPath = currentPath.replace('.html', '');
+
+		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts', '/tctam-fans'];
+
+		if (!pagesWithoutSideMenu.includes(currentPath)) {
+			sideMenuNav();
+		}
+	}
+	checkPageAndRunSideMenuNav();
 });
 
 var buttons = `
@@ -295,7 +298,7 @@ function sideMenuNav() {
 	document.body.appendChild(sideBar);
 }
 
-/* show navigation button */
+/* show navigation info */
 window.addEventListener('load', function () {
 	let loadCount = localStorage.getItem('loadCount') || 0;
 
