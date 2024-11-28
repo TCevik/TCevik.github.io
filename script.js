@@ -297,6 +297,11 @@ function setCorrectTheme() {
 		localStorage.setItem("themeSetting", savedTheme);
 	}
 
+	if (!themeSwitch) {
+		document.body.classList.add(savedTheme);
+		return;
+	}
+
 	const themeOptions = Array.from(themeSwitch.options).map(option => option.value);
 	if (!themeOptions.includes(savedTheme)) {
 		savedTheme = themeOptions[0];
