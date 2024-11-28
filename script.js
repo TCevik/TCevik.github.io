@@ -308,11 +308,4 @@ function setCorrectTheme() {
 }
 document.addEventListener("DOMContentLoaded", () => {
 	setCorrectTheme();
-
-	setInterval(() => {
-		let savedTheme = localStorage.getItem("themeSetting");
-		if (!document.body.classList.contains(savedTheme)) {
-			setCorrectTheme();
-		}
-	}, 1000);
 });
