@@ -253,6 +253,11 @@
                         }
 
                         selectedDots.length = 0;
+
+                        // Check na de lus of de rand is bereikt
+                        if (reflections >= maxReflections) {
+                            notification("De laser heeft de rand niet bereikt na 250.000 reflecties.");
+                        }
                     }
                     drawGrid(); // Herteken het raster na het toevoegen van de lijn
                 }
