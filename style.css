@@ -58,6 +58,19 @@ body {
     --disabled-border-color: #ff0000;
 }
 
+.neutralmode {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --h1234-color: #333333;
+    --custom-link-color: #007bff;
+    --button-bgcolor: #e0e0e0;
+    --bg-accent-color1: #f0f0f0;
+    --bg-accent-color2: #dcdcdc;
+    --button-text-color: #000000;
+    --hover-border-color: #007bff;
+    --disabled-border-color: #cccccc;
+}
+
 .highcontrast {
     --background-color: #000000;
     --text-color: #ffff00;
