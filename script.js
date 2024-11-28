@@ -149,7 +149,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var buttons = `
-	<button style="margin-top: 10px;" id="theme-switch">Switch Theme</button>
+	<select style="width: 90%; margin-top: 10px;" id="theme-switch">
+	    <option value="lightmode">Light Mode</option>
+	    <option value="darkmode">Dark Mode</option>
+	</select>
+
     <button onclick="window.location.href='/'">Home</button>
     <h3 id="algemeen">General</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">My YouTube channel</button>
@@ -282,36 +286,23 @@ window.addEventListener('load', function () {
 
 /* theme selector */
 document.addEventListener("DOMContentLoaded", () => {
-	let themeSetting = localStorage.getItem('themeSetting');
-	const themeSwitch = document.getElementById('theme-switch');
+	const themeSwitch = document.getElementById("theme-switch");
+	let savedTheme = localStorage.getItem("themeSetting");
 
-	const enableDarkMode = () => {
-		document.body.classList.add('darkmode');
-		localStorage.setItem('themeSetting', 'darkMode');
-	};
-
-	const enableLightMode = () => {
-		document.body.classList.remove('darkmode');
-		localStorage.setItem('themeSetting', 'lightMode');
-	};
-
-	if (themeSetting === "darkMode") {
-		enableDarkMode();
-	} else if (themeSetting === null) {
-		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
-		if (prefersDarkScheme) {
-			enableDarkMode();
-		} else {
-			enableLightMode();
-		}
+	if (!savedTheme) {
+		const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		savedTheme = prefersDark ? "darkmode" : "lightmode";
+		localStorage.setItem("themeSetting", savedTheme);
 	}
 
-	themeSwitch.addEventListener("click", () => {
-		themeSetting = localStorage.getItem('themeSetting');
-		if (themeSetting !== "darkMode") {
-			enableDarkMode();
-		} else {
-			enableLightMode();
-		}
+	document.body.classList.add(savedTheme);
+	themeSwitch.value = savedTheme;
+
+	themeSwitch.addEventListener("change", (event) => {
+		const selectedTheme = event.target.value;
+
+		document.body.classList.remove(...document.body.classList);
+		document.body.classList.add(selectedTheme);
+		localStorage.setItem("themeSetting", selectedTheme);
 	});
 });
