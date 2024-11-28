@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		let currentPath = window.location.pathname;
 		currentPath = currentPath.replace('.html', '');
 
-		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts', '/tctam-fans'];
+		const pagesWithoutSideMenu = ['/games/tctam-casino', '/tools/live-clock', '/tools/file-maker', '/tools/tts', '/tctam-fans', '/tctam-quiz'];
 
 		if (!pagesWithoutSideMenu.includes(currentPath)) {
 			sideMenuNav();
