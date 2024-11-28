@@ -133,42 +133,6 @@ if ('serviceWorker' in navigator) {
 	gtag('config', 'G-7KL389S9VR');
 })();
 
-/* theme selector */
-document.addEventListener("DOMContentLoaded", () => {
-	let themeSetting = localStorage.getItem('themeSetting');
-	const themeSwitch = document.getElementById('theme-switch');
-
-	const enableDarkMode = () => {
-		document.body.classList.add('darkmode');
-		localStorage.setItem('themeSetting', 'darkMode');
-	};
-
-	const enableLightMode = () => {
-		document.body.classList.remove('darkmode');
-		localStorage.setItem('themeSetting', 'lightMode');
-	};
-
-	if (themeSetting === "darkMode") {
-		enableDarkMode();
-	} else if (themeSetting === null) {
-		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
-		if (prefersDarkScheme) {
-			enableDarkMode();
-		} else {
-			enableLightMode();
-		}
-	}
-
-	themeSwitch.addEventListener("click", () => {
-		themeSetting = localStorage.getItem('themeSetting');
-		if (themeSetting !== "darkMode") {
-			enableDarkMode();
-		} else {
-			enableLightMode();
-		}
-	});
-});
-
 /* sidemenu */
 document.addEventListener("DOMContentLoaded", function () {
 	function checkPageAndRunSideMenuNav() {
@@ -314,4 +278,40 @@ window.addEventListener('load', function () {
 	}
 
 	localStorage.setItem('loadCount', loadCount);
+});
+
+/* theme selector */
+document.addEventListener("DOMContentLoaded", () => {
+	let themeSetting = localStorage.getItem('themeSetting');
+	const themeSwitch = document.getElementById('theme-switch');
+
+	const enableDarkMode = () => {
+		document.body.classList.add('darkmode');
+		localStorage.setItem('themeSetting', 'darkMode');
+	};
+
+	const enableLightMode = () => {
+		document.body.classList.remove('darkmode');
+		localStorage.setItem('themeSetting', 'lightMode');
+	};
+
+	if (themeSetting === "darkMode") {
+		enableDarkMode();
+	} else if (themeSetting === null) {
+		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		if (prefersDarkScheme) {
+			enableDarkMode();
+		} else {
+			enableLightMode();
+		}
+	}
+
+	themeSwitch.addEventListener("click", () => {
+		themeSetting = localStorage.getItem('themeSetting');
+		if (themeSetting !== "darkMode") {
+			enableDarkMode();
+		} else {
+			enableLightMode();
+		}
+	});
 });
