@@ -45,7 +45,6 @@ body {
     --disabled-border-color: #ff0000;
 }
 
-/* dark mode */
 .darkmode {
     --background-color: #141414;
     --text-color: #ffffff;
@@ -57,6 +56,19 @@ body {
     --button-text-color: #ffffff;
     --hover-border-color: #58bf33;
     --disabled-border-color: #ff0000;
+}
+
+.highcontrast {
+    --background-color: #000000;
+    --text-color: #ffff00;
+    --h1234-color: #ffff00;
+    --custom-link-color: #ff00ff;
+    --button-bgcolor: #ff0000;
+    --bg-accent-color1: #0e0e0e;
+    --bg-accent-color2: #0e0e0e;
+    --button-text-color: #000000;
+    --hover-border-color: #ffff00;
+    --disabled-border-color: #808080;
 }
 
 .diff-color-section1 {
