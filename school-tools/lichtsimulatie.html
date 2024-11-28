@@ -224,6 +224,7 @@
                                     currentX = closestIntersection.x;
                                     currentY = closestIntersection.y;
                                     reflections++;
+                                    reflectionCountElement.textContent = `Aantal reflecties: ${reflections}`;
                                 } else {
                                     // Geen botsing meer, laser eindigt aan de rand
                                     laserLines.push({
