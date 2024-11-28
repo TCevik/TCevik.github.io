@@ -29,6 +29,7 @@
     <canvas id="dotsCanvas" width="600" height="600"></canvas>
     <div style="margin-left: 20px;">
         <p>Klik op 2 stippen om daar tussen lijnen te maken.</p>
+        <p id="reflectionCount"></p>
         <button id="undoButton">Undo</button>
 
         <select id="typeLine">
@@ -119,6 +120,8 @@
                 dots.push({ x, y });
             }
         }
+
+        const reflectionCountElement = document.getElementById("reflectionCount");
 
         canvas.addEventListener("click", (event) => {
             const rect = canvas.getBoundingClientRect();
@@ -221,6 +224,7 @@
                                     currentX = closestIntersection.x;
                                     currentY = closestIntersection.y;
                                     reflections++;
+                                    reflectionCountElement.textContent = `Aantal reflecties: ${reflections}`;
                                 } else {
                                     // Geen botsing meer, laser eindigt aan de rand
                                     laserLines.push({
