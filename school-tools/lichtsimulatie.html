@@ -123,6 +123,8 @@
 
         const reflectionCountElement = document.getElementById("reflectionCount");
 
+        let currentPoint = null;
+
         canvas.addEventListener("click", (event) => {
             const rect = canvas.getBoundingClientRect();
             const mouseX = event.clientX - rect.left;
@@ -135,7 +137,24 @@
                 return Math.sqrt(dx * dx + dy * dy) <= dotRadius * 2.5;
             });
 
-            if (clickedDot) {
+            // Als er geen geldig punt is aangeklikt, stop
+            if (!clickedDot) return;
+
+            if (typeLine === "spiegel") {
+                // Automatisch doorlopende lijnen voor spiegels
+                if (!currentPoint) {
+                    // Eerste punt selecteren
+                    currentPoint = clickedDot;
+                } else {
+                    // Tweede punt selecteren en lijn toevoegen
+                    if (currentPoint !== clickedDot) {
+                        lines.push({ start: currentPoint, end: clickedDot, color: "#000" });
+                        currentPoint = clickedDot; // Update het beginpunt naar het eindpunt van deze lijn
+                    }
+                    drawGrid(); // Herteken het raster na het toevoegen van de lijn
+                }
+            } else if (typeLine === "laser") {
+                // Handmatige selectie voor laser
                 const alreadySelected = selectedDots.some(dot => dot.x === clickedDot.x && dot.y === clickedDot.y);
 
                 if (!alreadySelected) {
@@ -144,98 +163,92 @@
                     if (selectedDots.length === 2) {
                         const [dot1, dot2] = selectedDots;
 
-                        if (typeLine === "spiegel") {
-                            lines.push({ start: dot1, end: dot2, color: "#000" });
-                            laserLines.length = 0;
-                        } else if (typeLine === "laser") {
-                            let currentX = dot1.x;
-                            let currentY = dot1.y;
+                        let currentX = dot1.x;
+                        let currentY = dot1.y;
 
-                            // Beginrichtingsvector van de laser
-                            let dx = dot2.x - dot1.x;
-                            let dy = dot2.y - dot1.y;
-                            const length = Math.sqrt(dx ** 2 + dy ** 2);
-                            dx /= length;
-                            dy /= length;
+                        // Beginrichtingsvector van de laser
+                        let dx = dot2.x - dot1.x;
+                        let dy = dot2.y - dot1.y;
+                        const length = Math.sqrt(dx ** 2 + dy ** 2);
+                        dx /= length;
+                        dy /= length;
 
-                            let reflections = 0;
-                            const maxReflections = 1000000; // Voorkom oneindige lussen
-                            laserLines.length = 0;
+                        let reflections = 0;
+                        const maxReflections = 250000; // Voorkom oneindige lussen
+                        laserLines.length = 0;
 
-                            let lastHitLine = null; // Houd bij welke lijn de laser als laatst heeft geraakt
+                        let lastHitLine = null; // Houd bij welke lijn de laser als laatst heeft geraakt
 
-                            while (reflections < maxReflections) {
-                                let closestIntersection = null;
-                                let closestLine = null;
-                                let minDistance = Infinity;
+                        while (reflections < maxReflections) {
+                            let closestIntersection = null;
+                            let closestLine = null;
+                            let minDistance = Infinity;
 
-                                // Zoek het dichtstbijzijnde snijpunt
-                                for (const line of lines) {
-                                    if (line.color === "#000" && line !== lastHitLine) { // Alleen spiegels en geen herhaling
-                                        const intersection = findIntersection(
-                                            { x: currentX, y: currentY },
-                                            { x: currentX + dx * 1000, y: currentY + dy * 1000 },
-                                            line.start,
-                                            line.end
+                            // Zoek het dichtstbijzijnde snijpunt
+                            for (const line of lines) {
+                                if (line.color === "#000" && line !== lastHitLine) { // Alleen spiegels en geen herhaling
+                                    const intersection = findIntersection(
+                                        { x: currentX, y: currentY },
+                                        { x: currentX + dx * 1000, y: currentY + dy * 1000 },
+                                        line.start,
+                                        line.end
+                                    );
+
+                                    if (intersection) {
+                                        const dist = Math.sqrt(
+                                            (intersection.x - currentX) ** 2 +
+                                            (intersection.y - currentY) ** 2
                                         );
 
-                                        if (intersection) {
-                                            const dist = Math.sqrt(
-                                                (intersection.x - currentX) ** 2 +
-                                                (intersection.y - currentY) ** 2
-                                            );
-
-                                            if (dist < minDistance) {
-                                                minDistance = dist;
-                                                closestIntersection = intersection;
-                                                closestLine = line;
-                                            }
+                                        if (dist < minDistance) {
+                                            minDistance = dist;
+                                            closestIntersection = intersection;
+                                            closestLine = line;
                                         }
                                     }
                                 }
+                            }
 
-                                if (closestIntersection) {
-                                    // Teken de laserstraal tot het dichtstbijzijnde snijpunt
-                                    laserLines.push({
-                                        start: { x: currentX, y: currentY },
-                                        end: closestIntersection,
-                                        color: "red"
-                                    });
+                            if (closestIntersection) {
+                                // Teken de laserstraal tot het dichtstbijzijnde snijpunt
+                                laserLines.push({
+                                    start: { x: currentX, y: currentY },
+                                    end: closestIntersection,
+                                    color: "red"
+                                });
 
-                                    // Bereken de normale vector van de spiegel
-                                    const normal = {
-                                        x: closestLine.end.y - closestLine.start.y,
-                                        y: closestLine.start.x - closestLine.end.x
-                                    };
+                                // Bereken de normale vector van de spiegel
+                                const normal = {
+                                    x: closestLine.end.y - closestLine.start.y,
+                                    y: closestLine.start.x - closestLine.end.x
+                                };
 
-                                    // Bereken de reflectierichting
-                                    const reflection = calculateReflection(
-                                        { x: currentX, y: currentY },
-                                        closestIntersection,
-                                        normal
-                                    );
+                                // Bereken de reflectierichting
+                                const reflection = calculateReflection(
+                                    { x: currentX, y: currentY },
+                                    closestIntersection,
+                                    normal
+                                );
 
-                                    // Sla de laatst geraakte lijn op
-                                    lastHitLine = closestLine;
+                                // Sla de laatst geraakte lijn op
+                                lastHitLine = closestLine;
 
-                                    dx = reflection.x;
-                                    dy = reflection.y;
+                                dx = reflection.x;
+                                dy = reflection.y;
 
-                                    currentX = closestIntersection.x;
-                                    currentY = closestIntersection.y;
-                                    reflections++;
-                                    reflectionCountElement.textContent = `Aantal reflecties: ${reflections}`;
-                                } else {
-                                    // Geen botsing meer, laser eindigt aan de rand
-                                    laserLines.push({
-                                        start: { x: currentX, y: currentY },
-                                        end: { x: currentX + dx * 1000, y: currentY + dy * 1000 },
-                                        color: "red"
-                                    });
-                                    reflectionCountElement.textContent = `Aantal reflecties: ${reflections}`;
-
-                                    break;
-                                }
+                                currentX = closestIntersection.x;
+                                currentY = closestIntersection.y;
+                                reflections++;
+                                reflectionCountElement.textContent = `Aantal reflecties: ${reflections}`;
+                            } else {
+                                // Geen botsing meer, laser eindigt aan de rand
+                                laserLines.push({
+                                    start: { x: currentX, y: currentY },
+                                    end: { x: currentX + dx * 1000, y: currentY + dy * 1000 },
+                                    color: "red"
+                                });
+                                reflectionCountElement.textContent = `Aantal reflecties: ${reflections}`;
+                                break;
                             }
                         }
 
@@ -307,6 +320,15 @@
         undoButton.addEventListener("click", () => {
             if (lines.length > 0) {
                 lines.pop(); // Verwijder de laatste lijn
+
+                // Werk currentPoint bij naar het eindpunt van de vorige lijn (of reset naar null)
+                if (lines.length > 0) {
+                    const lastLine = lines[lines.length - 1];
+                    currentPoint = lastLine.end;
+                } else {
+                    currentPoint = null;
+                }
+
                 drawGrid(); // Herteken het raster
             }
         });
@@ -316,6 +338,15 @@
             if (event.ctrlKey && event.key === 'z') {
                 if (lines.length > 0) {
                     lines.pop(); // Verwijder de laatste lijn
+
+                    // Werk currentPoint bij naar het eindpunt van de vorige lijn (of reset naar null)
+                    if (lines.length > 0) {
+                        const lastLine = lines[lines.length - 1];
+                        currentPoint = lastLine.end;
+                    } else {
+                        currentPoint = null;
+                    }
+
                     drawGrid(); // Herteken het raster
                 }
             }
