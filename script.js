@@ -285,7 +285,7 @@ window.addEventListener('load', function () {
 });
 
 /* theme selector */
-document.addEventListener("DOMContentLoaded", () => {
+function setCorrectTheme() {
 	const themeSwitch = document.getElementById("theme-switch");
 	let savedTheme = localStorage.getItem("themeSetting");
 
@@ -305,4 +305,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.body.classList.add(selectedTheme);
 		localStorage.setItem("themeSetting", selectedTheme);
 	});
+}
+document.addEventListener("DOMContentLoaded", () => {
+	setCorrectTheme();
+
+	setInterval(() => {
+		let savedTheme = localStorage.getItem("themeSetting");
+		if (!document.body.classList.contains(savedTheme)) {
+			setCorrectTheme();
+		}
+	}, 1000);
 });
