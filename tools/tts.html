@@ -36,7 +36,7 @@
       var button = document.getElementById("read-button");
       var buttonSpeak = document.getElementById("speak-button");
       button.disabled = true; // Deactiveer de knop
-      button.innerText = 'Laden...';
+      button.innerText = 'Loading...';
       buttonSpeak.disabled = true; // Activeer de knop wanneer het afspelen is voltooid
       speech.onstart = function () {
         isPlaying = true; // Zet de afspeelstatus op waar tijdens het afspelen
@@ -58,14 +58,14 @@
       recognition.onresult = function (event) {
         button.disabled = false;
         buttonSpeak.disabled = false;
-        buttonSpeak.innerText = 'Spreek in';
+        buttonSpeak.innerText = 'Speak in';
         var result = event.results[0][0].transcript; // De herkende tekst
         document.getElementById("text-to-read").value = result; // Plaats de herkende tekst in het tekstvak
       }
       recognition.start(); // Start de spraakherkenning
       button.disabled = true;
       buttonSpeak.disabled = true;
-      buttonSpeak.innerText = 'Aan het luisteren...';
+      buttonSpeak.innerText = 'Listening...';
       playSound(); // Speel het geluid af
     }
     
@@ -78,12 +78,12 @@
       var button = document.getElementById("read-button");
       var buttonSpeak = document.getElementById("speak-button");
       if (isPlaying) {
-        button.innerText = 'Aan het spelen...'; // Als aan het afspelen, update de tekst van de knop
-        buttonSpeak.disabled = true; // Activeer de knop wanneer het afspelen is voltooid
+        button.innerText = 'Playing...';
+        buttonSpeak.disabled = true;
       } else {
-        button.disabled = false; // Activeer de knop wanneer het afspelen is voltooid
-        buttonSpeak.disabled = false; // Activeer de knop wanneer het afspelen is voltooid
-        button.innerText = 'Lees voor'; // Update de tekst van de knop
+        button.disabled = false;
+        buttonSpeak.disabled = false;
+        button.innerText = 'Read aloud';
       }
     }
   </script>
