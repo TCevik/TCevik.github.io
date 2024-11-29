@@ -154,6 +154,7 @@ var buttons = `
 	    <option value="darkmode">Dark Mode</option>
 		<option value="neutralmode">Neutral Mode</option>
 		<option value="underwatermode">Underwater Mode</option>
+		<option value="pinkmode">Pink Mode</option>
 		<option value="highcontrast">High Contrast</option>
 	</select>
 

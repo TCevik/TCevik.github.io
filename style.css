@@ -102,6 +102,20 @@ body {
     --disabled-border-color: #ff0000;
 }
 
+.pinkmode {
+    --background-color: #ffe6f2;
+    --text-color: #330033;
+    --h1234-color: #b72b71;
+    --custom-link-color: #ff1a75;
+    --button-bgcolor: #ff4da6;
+    --bg-accent-color1: #ffe0eb;
+    --bg-accent-color2: #ffcce0;
+    --button-text-color: #ffffff;
+    --button-border-color: #cc007a;
+    --hover-border-color: #ff80bf;
+    --disabled-border-color: #ff99cc;
+}
+
 .diff-color-section1 {
     width: 80%;
     background-color: var(--bg-accent-color1);
