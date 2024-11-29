@@ -41,6 +41,7 @@ body {
     --bg-accent-color1: #e0f5e0;
     --bg-accent-color2: #c1e2c1;
     --button-text-color: #ffffff;
+    --button-border-color: #008000;
     --hover-border-color: #58bf33;
     --disabled-border-color: #ff0000;
 }
@@ -54,6 +55,7 @@ body {
     --bg-accent-color1: #16301f;
     --bg-accent-color2: #133820;
     --button-text-color: #ffffff;
+    --button-border-color: #38761d;
     --hover-border-color: #58bf33;
     --disabled-border-color: #ff0000;
 }
@@ -67,6 +69,7 @@ body {
     --bg-accent-color1: #f0f0f0;
     --bg-accent-color2: #dcdcdc;
     --button-text-color: #000000;
+    --button-border-color: #707070;
     --hover-border-color: #007bff;
     --disabled-border-color: #cccccc;
 }
@@ -80,6 +83,7 @@ body {
     --bg-accent-color1: #0e0e0e;
     --bg-accent-color2: #0e0e0e;
     --button-text-color: #000000;
+    --button-border-color: #ff0000;
     --hover-border-color: #ffff00;
     --disabled-border-color: #808080;
 }
@@ -156,7 +160,7 @@ button {
     border-radius: var(--border-radius1);
     font-weight: inherit;
     outline: none;
-    border: solid 3px var(--button-bgcolor);
+    border: solid 3px var(--button-border-color);
     background-color: var(--button-bgcolor);
     color: var(--button-text-color);
     padding: var(--button-padding);
