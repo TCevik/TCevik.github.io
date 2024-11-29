@@ -212,6 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (!pagesWithoutSideMenu.includes(currentPath)) {
 			sideMenuNav();
 			showPopup();
+			showNavigationInfo();
 		}
 	}
 	checkPageAndRunSideMenuNav();
@@ -340,7 +341,7 @@ function sideMenuNav() {
 }
 
 /* show navigation info */
-window.addEventListener('load', function () {
+function showNavigationInfo() {
 	let loadCount = localStorage.getItem('loadCount') || 0;
 
 
@@ -355,7 +356,7 @@ window.addEventListener('load', function () {
 	}
 
 	localStorage.setItem('loadCount', loadCount);
-});
+};
 
 /* theme selector */
 function setCorrectTheme() {
