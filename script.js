@@ -135,7 +135,7 @@ if ('serviceWorker' in navigator) {
 
 /* site review form */
 document.addEventListener("DOMContentLoaded", () => {
-	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < 3 || localStorage.getItem("dismissedPopupCount") === null)) {
+	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < 2 || localStorage.getItem("dismissedPopupCount") === null)) {
 		const popup = document.createElement("div");
 		popup.style.position = "fixed";
 		popup.style.bottom = "20px";
