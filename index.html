@@ -109,15 +109,11 @@
             var announcements = document.getElementById("announcements");
 
             window.addEventListener("scroll", function () {
-                // Bereken de nieuwe verticale verschuiving op basis van het scrollen
                 var translateY = Math.max(-30, -2 * window.scrollY) + "%";
-
-                // Zorg ervoor dat het element boven het scherm verdwijnt
                 if (translateY === "-30%") {
                     translateY = "-150%";
                 }
 
-                // Pas de transform eigenschap van het element aan
                 announcements.style.transform = "translate(-50%, " + translateY + ")";
             });
         });
