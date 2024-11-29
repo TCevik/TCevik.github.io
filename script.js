@@ -134,7 +134,7 @@ if ('serviceWorker' in navigator) {
 })();
 
 /* site review form */
-document.addEventListener("DOMContentLoaded", () => {
+function showPopup() {
 	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < 2 || localStorage.getItem("dismissedPopupCount") === null)) {
 		const popup = document.createElement("div");
 		popup.style.position = "fixed";
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			popup.style.display = "block";
 		}, 10000);
 	}
-});
+};
 
 /* sidemenu */
 document.addEventListener("DOMContentLoaded", function () {
@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		if (!pagesWithoutSideMenu.includes(currentPath)) {
 			sideMenuNav();
+			showPopup();
 		}
 	}
 	checkPageAndRunSideMenuNav();
