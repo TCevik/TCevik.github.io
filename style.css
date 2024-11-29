@@ -193,7 +193,7 @@ select {
     border-radius: var(--border-radius1);
     font-weight: inherit;
     outline: none;
-    border: solid 3px var(--button-bgcolor);
+    border: solid 3px var(--button-border-color);
     background-color: var(--button-bgcolor);
     color: var(--button-text-color);
     padding: var(--button-padding);
