@@ -133,6 +133,74 @@ if ('serviceWorker' in navigator) {
 	gtag('config', 'G-7KL389S9VR');
 })();
 
+/* site review form */
+document.addEventListener("DOMContentLoaded", () => {
+	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < 3 || localStorage.getItem("dismissedPopupCount") === null)) {
+		const popup = document.createElement("div");
+		popup.style.position = "fixed";
+		popup.style.bottom = "20px";
+		popup.style.right = "20px";
+		popup.style.backgroundColor = "var(--bg-accent-color2)";
+		popup.style.border = "1px solid var(--button-border-color)";
+		popup.style.borderRadius = "8px";
+		popup.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+		popup.style.padding = "16px";
+		popup.style.width = "350px";
+		popup.style.maxWidth = "80%";
+		popup.style.zIndex = "1000";
+		popup.style.display = "none";
+
+		const popupHeader = document.createElement("h3");
+		popupHeader.style.margin = "0";
+		popupHeader.style.fontSize = "22px";
+		popupHeader.textContent = "I'd love your feedback!";
+		popup.appendChild(popupHeader);
+
+		const popupMessage = document.createElement("p");
+		popupMessage.style.margin = "8px 0";
+		popupMessage.textContent = "Would you like to fill out a short survey about your experience on the site?";
+		popup.appendChild(popupMessage);
+
+		const closeButton = document.createElement("button");
+		closeButton.style.backgroundColor = "transparent";
+		closeButton.style.position = "absolute";
+		closeButton.style.top = "8px";
+		closeButton.style.right = "8px";
+		closeButton.style.border = "none";
+		closeButton.style.fontSize = "16px";
+		closeButton.style.cursor = "pointer";
+		closeButton.textContent = "x";
+		closeButton.onclick = () => {
+			popup.style.display = "none";
+			let dismissedCount = parseInt(localStorage.getItem("dismissedPopupCount") || "0");
+			localStorage.setItem("dismissedPopupCount", dismissedCount + 1);
+		};
+		popup.appendChild(closeButton);
+
+		const surveyButton = document.createElement("button");
+		surveyButton.style.marginTop = "12px";
+		surveyButton.style.padding = "8px 12px";
+		surveyButton.style.border = "1px solid var(--button-border-color)";
+		surveyButton.style.borderRadius = "4px";
+		surveyButton.style.backgroundColor = "var(--button-bgcolor)";
+		surveyButton.style.color = "var(--button-text-color)";
+		surveyButton.style.cursor = "pointer";
+		surveyButton.textContent = "Take the Survey";
+		surveyButton.onclick = () => {
+			window.open("https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform", "_blank"); // Vervang door jouw echte formulierlink
+			popup.style.display = "none";
+			localStorage.setItem("reviewedSite", "true");
+		};
+		popup.appendChild(surveyButton);
+
+		document.body.appendChild(popup);
+
+		setTimeout(() => {
+			popup.style.display = "block";
+		}, 10000);
+	}
+});
+
 /* sidemenu */
 document.addEventListener("DOMContentLoaded", function () {
 	function checkPageAndRunSideMenuNav() {
