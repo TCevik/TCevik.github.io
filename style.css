@@ -88,6 +88,20 @@ body {
     --disabled-border-color: #808080;
 }
 
+.underwatermode {
+    --background-color: #141414;
+    --text-color: #ffffff;
+    --h1234-color: #48f9ff;
+    --custom-link-color: #00aeff;
+    --button-bgcolor: #221d8f;
+    --bg-accent-color1: #1f2857;
+    --bg-accent-color2: #153445;
+    --button-text-color: #ffffff;
+    --button-border-color: #221d8f;
+    --hover-border-color: #337ebf;
+    --disabled-border-color: #ff0000;
+}
+
 .diff-color-section1 {
     width: 80%;
     background-color: var(--bg-accent-color1);
