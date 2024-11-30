@@ -44,6 +44,7 @@ body {
     --button-border-color: #008000;
     --hover-border-color: #58bf33;
     --disabled-border-color: #ff0000;
+    --select-bgcolor: #58bf33;
 }
 
 .darkmode {
@@ -58,6 +59,7 @@ body {
     --button-border-color: #38761d;
     --hover-border-color: #58bf33;
     --disabled-border-color: #ff0000;
+    --select-bgcolor: #58bf33;
 }
 
 .neutralmode {
@@ -72,6 +74,7 @@ body {
     --button-border-color: #707070;
     --hover-border-color: #007bff;
     --disabled-border-color: #cccccc;
+    --select-bgcolor: #333333;
 }
 
 .highcontrast {
@@ -86,6 +89,7 @@ body {
     --button-border-color: #ff0000;
     --hover-border-color: #ffff00;
     --disabled-border-color: #808080;
+    --select-bgcolor: #ff0000;
 }
 
 .underwatermode {
@@ -100,6 +104,7 @@ body {
     --button-border-color: #221d8f;
     --hover-border-color: #337ebf;
     --disabled-border-color: #ff0000;
+    --select-bgcolor: #00aeff;
 }
 
 .pinkmode {
@@ -114,6 +119,7 @@ body {
     --button-border-color: #cc007a;
     --hover-border-color: #ff80bf;
     --disabled-border-color: #ff99cc;
+    --select-bgcolor: #b72b71;
 }
 
 .diff-color-section1 {
@@ -315,7 +321,7 @@ textarea::placeholder {
 }
 
 ::selection {
-    background-color: #58bf33;
+    background-color: var(--select-bgcolor);
     color: #fff;
 }
 
