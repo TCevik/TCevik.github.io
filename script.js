@@ -391,6 +391,20 @@ function setCorrectTheme() {
 		localStorage.setItem("themeSetting", selectedTheme);
 	});
 }
+function checkThemeEvery500ms() {
+	let lastTheme = localStorage.getItem("themeSetting");
+
+	setInterval(() => {
+		const currentTheme = localStorage.getItem("themeSetting");
+		if (currentTheme !== lastTheme) {
+			lastTheme = currentTheme;
+			document.body.classList.remove(...document.body.classList);
+			document.body.classList.add(currentTheme);
+		}
+	}, 500);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 	setCorrectTheme();
+	checkThemeEvery500ms();
 });
