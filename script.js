@@ -135,7 +135,15 @@ if ('serviceWorker' in navigator) {
 
 /* site review form */
 function showPopup() {
-	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < 2 || localStorage.getItem("dismissedPopupCount") === null)) {
+	const amountToDismiss = 2;
+
+	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < amountToDismiss || localStorage.getItem("dismissedPopupCount") === null)) {
+		const dynamicContent = `
+		<h3 style="margin: 0px; font-size: 22px;">I'd love your feedback!</h3>
+		<p>Would you like to fill out a short survey about your experience on the site?</p>
+		<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform', '_blank')">Take the survey</button>
+		`;
+
 		const popup = document.createElement("div");
 		popup.style.position = "fixed";
 		popup.style.bottom = "20px";
@@ -149,17 +157,6 @@ function showPopup() {
 		popup.style.maxWidth = "80%";
 		popup.style.zIndex = "1000";
 		popup.style.display = "none";
-
-		const popupHeader = document.createElement("h3");
-		popupHeader.style.margin = "0";
-		popupHeader.style.fontSize = "22px";
-		popupHeader.textContent = "I'd love your feedback!";
-		popup.appendChild(popupHeader);
-
-		const popupMessage = document.createElement("p");
-		popupMessage.style.margin = "8px 0";
-		popupMessage.textContent = "Would you like to fill out a short survey about your experience on the site?";
-		popup.appendChild(popupMessage);
 
 		const closeButton = document.createElement("button");
 		closeButton.style.backgroundColor = "transparent";
@@ -177,29 +174,17 @@ function showPopup() {
 		};
 		popup.appendChild(closeButton);
 
-		const surveyButton = document.createElement("button");
-		surveyButton.style.marginTop = "12px";
-		surveyButton.style.padding = "8px 12px";
-		surveyButton.style.border = "1px solid var(--button-border-color)";
-		surveyButton.style.borderRadius = "4px";
-		surveyButton.style.backgroundColor = "var(--button-bgcolor)";
-		surveyButton.style.color = "var(--button-text-color)";
-		surveyButton.style.cursor = "pointer";
-		surveyButton.textContent = "Take the Survey";
-		surveyButton.onclick = () => {
-			window.open("https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform", "_blank"); // Vervang door jouw echte formulierlink
-			popup.style.display = "none";
-			localStorage.setItem("reviewedSite", "true");
-		};
-		popup.appendChild(surveyButton);
+		const contentContainer = document.createElement("div");
+		contentContainer.innerHTML = dynamicContent;
+		popup.appendChild(contentContainer);
 
 		document.body.appendChild(popup);
 
 		setTimeout(() => {
 			popup.style.display = "block";
-		}, 10000);
+		}, 10);
 	}
-};
+}
 
 /* sidemenu */
 document.addEventListener("DOMContentLoaded", function () {
