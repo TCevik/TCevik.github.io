@@ -143,11 +143,7 @@ function showPopup() {
 			<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform', '_blank'); localStorage.setItem('dismissedPopupCount', (parseInt(localStorage.getItem('dismissedPopupCount')) || 0) + 99999999); document.getElementById('closeButton').click();">Take the survey</button>
 		`;
 
-	if (
-		localStorage.getItem("reviewedSite") ||
-		(parseInt(localStorage.getItem("dismissedPopupCount") || "0") >= amountToDismiss &&
-			localStorage.getItem("popupContent") === dynamicContent)
-	) {
+	if ((parseInt(localStorage.getItem("dismissedPopupCount") || "0") > amountToDismiss && localStorage.getItem("popupContent") === dynamicContent)) {
 		return;
 	}
 
