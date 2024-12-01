@@ -138,10 +138,10 @@ function showPopup() {
 	const amountToDismiss = 2;
 
 	const dynamicContent = `
-		<h3 style="margin: 0px; font-size: 22px;">I'd love your feedback!</h3>
-		<p>Would you like to fill out a short survey about your experience on the site?</p>
-		<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform', '_blank')">Take the survey</button>
-	`;
+			<h3 style="margin: 0px; font-size: 22px;">I'd love your feedback!</h3>
+			<p>Would you like to fill out a short survey about your experience on the site?</p>
+			<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform', '_blank'); localStorage.setItem('dismissedPopupCount', (parseInt(localStorage.getItem('dismissedPopupCount')) || 0) + 99999999); document.getElementById('closeButton').click();">Take the survey</button>
+		`;
 
 	if (
 		localStorage.getItem("reviewedSite") ||
@@ -173,6 +173,7 @@ function showPopup() {
 	popup.style.display = "none";
 
 	const closeButton = document.createElement("button");
+	closeButton.id = "closeButton"
 	closeButton.style.backgroundColor = "transparent";
 	closeButton.style.position = "absolute";
 	closeButton.style.top = "0px";
