@@ -137,53 +137,66 @@ if ('serviceWorker' in navigator) {
 function showPopup() {
 	const amountToDismiss = 2;
 
-	if (!localStorage.getItem("reviewedSite") && (localStorage.getItem("dismissedPopupCount") < amountToDismiss || localStorage.getItem("dismissedPopupCount") === null)) {
-		const dynamicContent = `
+	const dynamicContent = `
 		<h3 style="margin: 0px; font-size: 22px;">I'd love your feedback!</h3>
 		<p>Would you like to fill out a short survey about your experience on the site?</p>
 		<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSct8KXsX9ixUXxJE34o1ZpjuCH-oO6VNdnxco0Kx_1wf5k4iw/viewform', '_blank')">Take the survey</button>
-		`;
+	`;
 
-		const popup = document.createElement("div");
-		popup.style.position = "fixed";
-		popup.style.bottom = "20px";
-		popup.style.right = "20px";
-		popup.style.backgroundColor = "var(--bg-accent-color2)";
-		popup.style.border = "1px solid var(--button-border-color)";
-		popup.style.borderRadius = "8px";
-		popup.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
-		popup.style.padding = "16px";
-		popup.style.width = "350px";
-		popup.style.maxWidth = "80%";
-		popup.style.zIndex = "1000";
-		popup.style.display = "none";
-
-		const closeButton = document.createElement("button");
-		closeButton.style.backgroundColor = "transparent";
-		closeButton.style.position = "absolute";
-		closeButton.style.top = "8px";
-		closeButton.style.right = "8px";
-		closeButton.style.border = "none";
-		closeButton.style.fontSize = "16px";
-		closeButton.style.cursor = "pointer";
-		closeButton.textContent = "x";
-		closeButton.onclick = () => {
-			popup.style.display = "none";
-			let dismissedCount = parseInt(localStorage.getItem("dismissedPopupCount") || "0");
-			localStorage.setItem("dismissedPopupCount", dismissedCount + 1);
-		};
-		popup.appendChild(closeButton);
-
-		const contentContainer = document.createElement("div");
-		contentContainer.innerHTML = dynamicContent;
-		popup.appendChild(contentContainer);
-
-		document.body.appendChild(popup);
-
-		setTimeout(() => {
-			popup.style.display = "block";
-		}, 10);
+	if (
+		localStorage.getItem("reviewedSite") ||
+		(parseInt(localStorage.getItem("dismissedPopupCount") || "0") >= amountToDismiss &&
+			localStorage.getItem("popupContent") === dynamicContent)
+	) {
+		return;
 	}
+
+	if (localStorage.getItem("popupContent") !== dynamicContent) {
+		localStorage.removeItem("dismissedPopupCount");
+		localStorage.removeItem("popupContent");
+	}
+
+	localStorage.setItem("popupContent", dynamicContent);
+
+	const popup = document.createElement("div");
+	popup.style.position = "fixed";
+	popup.style.bottom = "20px";
+	popup.style.right = "20px";
+	popup.style.backgroundColor = "var(--bg-accent-color2)";
+	popup.style.border = "1px solid var(--button-border-color)";
+	popup.style.borderRadius = "8px";
+	popup.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+	popup.style.padding = "16px";
+	popup.style.width = "350px";
+	popup.style.maxWidth = "80%";
+	popup.style.zIndex = "1000";
+	popup.style.display = "none";
+
+	const closeButton = document.createElement("button");
+	closeButton.style.backgroundColor = "transparent";
+	closeButton.style.position = "absolute";
+	closeButton.style.top = "0px";
+	closeButton.style.right = "0px";
+	closeButton.style.border = "none";
+	closeButton.style.fontSize = "16px";
+	closeButton.style.cursor = "pointer";
+	closeButton.textContent = "x";
+	closeButton.onclick = () => {
+		popup.style.display = "none";
+		let dismissedCount = parseInt(localStorage.getItem("dismissedPopupCount") || "0");
+		localStorage.setItem("dismissedPopupCount", dismissedCount + 1);
+	};
+	popup.appendChild(closeButton);
+
+	const contentContainer = document.createElement("div");
+	contentContainer.innerHTML = dynamicContent;
+	popup.appendChild(contentContainer);
+
+	document.body.appendChild(popup);
+
+	setTimeout(() => {
+		popup.style.display = "block";
+	}, 10);
 }
 
 /* sidemenu */
