@@ -193,7 +193,7 @@ function showPopup() {
 
 	setTimeout(() => {
 		popup.style.display = "block";
-	}, 10);
+	}, 10000);
 }
 
 /* sidemenu */
