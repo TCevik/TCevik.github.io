@@ -72,6 +72,30 @@
             cursor: pointer;
         }
 
+        #flip-camera {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-left: -100px;
+            width: 60px;
+            height: 60px;
+            background-color: #333;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        #flip-camera img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            margin-top: 5%;
+        }
+
         #latest-photo img {
             width: 100%;
             height: 100%;
@@ -126,7 +150,11 @@
     </div>
 
     <div id="latest-photo">
-        <img src="" alt="Latest Photo">
+        <img src="">
+    </div>
+
+    <div id="flip-camera">
+        <img src="/assets/flipCamBtn.png">
     </div>
 
     <div id="gallery">
@@ -141,17 +169,57 @@
         const captureButton = document.getElementById('capture');
 
         const latestPhotoContainer = document.getElementById('latest-photo');
+        const flipCameraContainer = document.getElementById('flip-camera');
         const galleryContainer = document.getElementById('gallery');
         const galleryImages = document.getElementById('gallery-images');
         const closeGalleryButton = document.getElementById('close-gallery');
 
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
+        let currentStream;
+        let currentDeviceId = null;
+
+        function getMediaStream(deviceId) {
+            const constraints = {
+                video: {
+                    facingMode: deviceId === 'front' ? 'user' : 'environment',
+                },
+            };
+
+            return navigator.mediaDevices.getUserMedia(constraints);
+        }
+
+        function setVideoStream(deviceId = 'front') {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop()); // Stop existing stream
+            }
+
+            getMediaStream(deviceId)
+                .then(stream => {
+                    currentStream = stream;
+                    video.srcObject = stream;
+                    currentDeviceId = deviceId;
+                })
+                .catch(err => {
+                    notification('Error accessing the camera: ' + err);
+                });
+        }
+
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                // Check if front and back cameras are available
+                const cameras = devices.filter(device => device.kind === 'videoinput');
+                if (cameras.length > 1) {
+                    setVideoStream('front'); // Default to front camera
+                } else {
+                    console.log("Only one camera available.");
+                }
             })
-            .catch(err => {
-                notification('Error accessing the camera: ' + err);
-            });
+            .catch(err => console.error('Error enumerating devices:', err));
+
+        flipCameraContainer.addEventListener('click', function () {
+            // Switch between front and back camera
+            const newDeviceId = currentDeviceId === 'front' ? 'back' : 'front';
+            setVideoStream(newDeviceId);
+        });
 
         function initDB() {
             const request = indexedDB.open("TC_tamCameraDB", 1);
