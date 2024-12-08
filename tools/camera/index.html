@@ -135,7 +135,7 @@
         let currentStream;
         let currentDeviceId = null;
         let frontCamera = null;
-        let backCamera = null;
+        let mainBackCamera = null;
 
         function getMediaStream(deviceId) {
             const constraints = {
@@ -163,18 +163,25 @@
                 });
         }
 
-        // Enumerate devices and get front and back cameras
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
                 const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                // Zoek voorkamera
-                frontCamera = videoDevices.find(cam => cam.label.toLowerCase().includes('front')) || null;
-                // Zoek standaard achterkamera
-                backCamera = videoDevices.find(cam => cam.label.toLowerCase().includes('back') || cam.label.toLowerCase().includes('rear')) || null;
 
-                if (frontCamera || backCamera) {
-                    // Start met voorkamera als standaard
-                    const initialCamera = frontCamera || backCamera;
+                frontCamera = videoDevices.find(cam => cam.label.toLowerCase().includes('front')) || null;
+
+                mainBackCamera = videoDevices.find(cam =>
+                    cam.label.toLowerCase().includes('back') &&
+                    !cam.label.toLowerCase().includes('wide') &&
+                    !cam.label.toLowerCase().includes('ultrawide') &&
+                    !cam.label.toLowerCase().includes('tele')
+                ) || null;
+
+                if (!mainBackCamera) {
+                    mainBackCamera = videoDevices.find(cam => cam.label.toLowerCase().includes('back')) || null;
+                }
+
+                if (frontCamera || mainBackCamera) {
+                    const initialCamera = frontCamera || mainBackCamera;
                     currentDeviceId = initialCamera.deviceId;
                     setVideoStream(currentDeviceId);
                 } else {
@@ -183,10 +190,9 @@
             })
             .catch(err => console.error('Error enumerating devices:', err));
 
-        // Toggle tussen voorkamera en achterkamera
         flipCameraContainer.addEventListener('click', function () {
-            if (frontCamera && backCamera) {
-                const newDeviceId = currentDeviceId === frontCamera.deviceId ? backCamera.deviceId : frontCamera.deviceId;
+            if (frontCamera && mainBackCamera) {
+                const newDeviceId = currentDeviceId === frontCamera.deviceId ? mainBackCamera.deviceId : frontCamera.deviceId;
                 currentDeviceId = newDeviceId;
                 setVideoStream(newDeviceId);
             } else {
