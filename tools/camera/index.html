@@ -134,18 +134,19 @@
 
         let currentStream;
         let currentDeviceId = null;
+        let availableCameras = [];
 
         function getMediaStream(deviceId) {
             const constraints = {
                 video: {
-                    facingMode: deviceId === 'front' ? 'user' : 'environment',
+                    deviceId: deviceId ? { exact: deviceId } : undefined,
                 },
             };
 
             return navigator.mediaDevices.getUserMedia(constraints);
         }
 
-        function setVideoStream(deviceId = 'front') {
+        function setVideoStream(deviceId = null) {
             if (currentStream) {
                 currentStream.getTracks().forEach(track => track.stop());
             }
@@ -161,20 +162,33 @@
                 });
         }
 
+        // Enumerate devices and get all cameras
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
-                const cameras = devices.filter(device => device.kind === 'videoinput');
-                if (cameras.length > 1) {
-                    setVideoStream('front');
+                availableCameras = devices.filter(device => device.kind === 'videoinput');
+                if (availableCameras.length > 0) {
+                    // Default to front camera or the first available camera
+                    const frontCamera = availableCameras.find(cam => cam.label.toLowerCase().includes('front')) || availableCameras[0];
+                    currentDeviceId = frontCamera.deviceId;
+                    setVideoStream(currentDeviceId);
                 } else {
-                    console.log("Only one camera available.");
+                    console.error("No cameras found.");
                 }
             })
             .catch(err => console.error('Error enumerating devices:', err));
 
+        // Switch between cameras
         flipCameraContainer.addEventListener('click', function () {
-            const newDeviceId = currentDeviceId === 'front' ? 'back' : 'front';
-            setVideoStream(newDeviceId);
+            if (availableCameras.length > 1) {
+                // Toggle between front and back cameras
+                const newCamera = availableCameras.find(cam => cam.deviceId !== currentDeviceId);
+                if (newCamera) {
+                    currentDeviceId = newCamera.deviceId;
+                    setVideoStream(currentDeviceId);
+                }
+            } else {
+                console.log("Only one camera available.");
+            }
         });
 
         function initDB() {
