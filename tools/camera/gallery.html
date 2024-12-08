@@ -54,6 +54,27 @@
             top: 20px;
             position: fixed;
         }
+
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        .fullscreen img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 0;
+        }
     </style>
 </head>
 
@@ -114,7 +135,7 @@
                 isLoading = false;
             };
         }
-        
+
         function observeNewPhotos() {
             const photos = document.querySelectorAll('.photo img:not(.loaded)');
             const observer = new IntersectionObserver((entries, observer) => {
@@ -154,6 +175,33 @@
         }
 
         window.onload = initializeGallery;
+
+        function enableFullscreen(imgSrc) {
+            // Creëer een overlay-element voor fullscreen
+            const fullscreenOverlay = document.createElement('div');
+            fullscreenOverlay.classList.add('fullscreen');
+
+            // Voeg een afbeelding toe aan de overlay
+            const fullscreenImage = document.createElement('img');
+            fullscreenImage.src = imgSrc;
+            fullscreenOverlay.appendChild(fullscreenImage);
+
+            // Voeg de overlay toe aan de body
+            document.body.appendChild(fullscreenOverlay);
+
+            // Verwijder de overlay bij klikken
+            fullscreenOverlay.addEventListener('click', () => {
+                fullscreenOverlay.remove();
+            });
+        }
+
+        // Voeg klikfunctionaliteit toe aan elke foto
+        document.addEventListener('click', function (e) {
+            if (e.target.tagName === 'IMG' && e.target.closest('.photo')) {
+                const imgSrc = e.target.src;
+                enableFullscreen(imgSrc);
+            }
+        });
     </script>
 </body>
 
