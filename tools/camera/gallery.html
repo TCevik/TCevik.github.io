@@ -101,7 +101,11 @@
             const galleryContainer = document.getElementById('gallery');
             const transaction = db.transaction("photos", "readonly");
             const store = transaction.objectStore("photos");
-            const request = cursorPosition ? store.openCursor(cursorPosition) : store.openCursor();
+
+            // Gebruik 'prev' voor omgekeerde volgorde
+            const request = cursorPosition
+                ? store.openCursor(cursorPosition, 'prev')
+                : store.openCursor(null, 'prev');
 
             let loadedCount = 0;
 
