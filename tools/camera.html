@@ -55,53 +55,6 @@
             padding: 0px;
         }
 
-        #photo-container {
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5;
-        }
-
-        #saveBtn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 50px;
-            height: 50px;
-            background: url('/assets/saveBtn.png') no-repeat center center;
-            background-size: contain;
-            cursor: pointer;
-        }
-
-        .fade-out {
-            animation: fadeOut 250ms forwards;
-        }
-
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 250ms forwards;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
         #latest-photo {
             position: fixed;
             bottom: 20px;
@@ -131,7 +84,6 @@
         <video id="video" autoplay></video>
         <button id="capture" onclick="capturePhoto()"></button>
         <canvas id="canvas" style="display: none;"></canvas>
-        <div id="photo-container"></div>
     </div>
 
     <script>
@@ -223,14 +175,6 @@
         };
 
         function capturePhoto() {
-            const existingPhotoContainer = document.getElementById('photo-container');
-            if (existingPhotoContainer) {
-                existingPhotoContainer.classList.add('fade-out');
-                setTimeout(function () {
-                    existingPhotoContainer.remove();
-                }, 250);
-            }
-
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -247,18 +191,8 @@
 
             photoContainer.classList.add('fade-in');
 
-            const saveBtn = document.createElement('div');
-            saveBtn.id = 'saveBtn';
-            saveBtn.onclick = function () {
-                savePhotoToDB(photoData);
-                photoContainer.classList.remove('fade-in');
-                photoContainer.classList.add('fade-out');
-                setTimeout(function () {
-                    photoContainer.remove();
-                }, 250);
-                loadLatestPhoto();
-            };
-            photoContainer.appendChild(saveBtn);
+            savePhotoToDB(photoData);
+            loadLatestPhoto();
         }
     </script>
 </body>
