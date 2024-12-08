@@ -123,6 +123,44 @@
                 notification('Error accessing the camera: ' + err);
             });
 
+        function initDB() {
+            const request = indexedDB.open("TC_tamCameraDB", 1);
+
+            request.onupgradeneeded = function (e) {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains("photos")) {
+                    db.createObjectStore("photos", { autoIncrement: true });
+                }
+            };
+
+            request.onerror = function (e) {
+                console.error("Error opening IndexedDB: ", e);
+            };
+        }
+
+        function savePhotoToDB(base64Data) {
+            const request = indexedDB.open("TC_tamCameraDB", 1);
+
+            request.onsuccess = function (e) {
+                const db = e.target.result;
+                const transaction = db.transaction("photos", "readwrite");
+                const store = transaction.objectStore("photos");
+                store.add({ photo: base64Data });
+
+                transaction.oncomplete = function () {
+                    console.log("Photo saved to IndexedDB.");
+                };
+
+                transaction.onerror = function (e) {
+                    console.error("Error saving photo to IndexedDB: ", e);
+                };
+            };
+
+            request.onerror = function (e) {
+                console.error("Error opening IndexedDB: ", e);
+            };
+        }
+
         function capturePhoto() {
             const existingPhotoContainer = document.getElementById('photo-container');
             if (existingPhotoContainer) {
@@ -151,6 +189,7 @@
             const saveBtn = document.createElement('div');
             saveBtn.id = 'saveBtn';
             saveBtn.onclick = function () {
+                savePhotoToDB(photoData);
                 photoContainer.classList.remove('fade-in');
                 photoContainer.classList.add('fade-out');
                 setTimeout(function () {
@@ -159,6 +198,10 @@
             };
             photoContainer.appendChild(saveBtn);
         }
+
+        window.onload = function () {
+            initDB();
+        };
     </script>
 </body>
 
