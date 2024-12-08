@@ -59,6 +59,17 @@
             transform: translateX(-50%);
             z-index: 5;
         }
+
+        #saveBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: url('/assets/saveBtn.png') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -97,6 +108,13 @@
             img.src = photoData;
             photoContainer.innerHTML = '';
             photoContainer.appendChild(img);
+
+            const saveBtn = document.createElement('div');
+            saveBtn.id = 'saveBtn';
+            saveBtn.onclick = function() {
+                notification('Foto opgeslagen!');
+            };
+            photoContainer.appendChild(saveBtn);
         }
     </script>
 </body>
