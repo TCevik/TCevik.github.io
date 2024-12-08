@@ -71,9 +71,10 @@
         const BATCH_SIZE = 100;
         let cursorPosition = null;
         let isLoading = false;
+        let noMorePhotos = false;
 
         function loadGalleryBatch(db) {
-            if (isLoading) return;
+            if (isLoading || noMorePhotos) return; // Stop als er al geladen wordt of er geen foto's meer zijn.
             isLoading = true;
 
             const galleryContainer = document.getElementById('gallery');
@@ -101,7 +102,9 @@
                     cursor.continue();
                 } else {
                     isLoading = false;
-                    if (!cursor) cursorPosition = null;
+                    if (!cursor) {
+                        noMorePhotos = true; // Geen verdere foto's meer te laden.
+                    }
                     observeNewPhotos();
                 }
             };
@@ -111,7 +114,7 @@
                 isLoading = false;
             };
         }
-
+        
         function observeNewPhotos() {
             const photos = document.querySelectorAll('.photo img:not(.loaded)');
             const observer = new IntersectionObserver((entries, observer) => {
