@@ -77,6 +77,44 @@
             height: 100%;
             object-fit: cover;
         }
+
+        #gallery {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+        }
+
+        #gallery.grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 200px);
+            grid-gap: 0px;
+            justify-content: center;
+        }
+
+        #gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        #close-gallery {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border: none;
+            border-radius: 50vw;
+            font-size: 18px;
+            color: black;
+            cursor: pointer;
+            padding: 10px;
+        }
     </style>
 </head>
 
@@ -87,15 +125,25 @@
         <canvas id="canvas" style="display: none;"></canvas>
     </div>
 
+    <div id="latest-photo">
+        <img src="" alt="Latest Photo">
+    </div>
+
+    <div id="gallery">
+        <button id="close-gallery">X</button>
+        <div id="gallery-images" class="grid"></div>
+    </div>
+
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const captureButton = document.getElementById('capture');
 
-        const latestPhotoContainer = document.createElement('div');
-        latestPhotoContainer.id = 'latest-photo';
-        document.body.appendChild(latestPhotoContainer);
+        const latestPhotoContainer = document.getElementById('latest-photo');
+        const galleryContainer = document.getElementById('gallery');
+        const galleryImages = document.getElementById('gallery-images');
+        const closeGalleryButton = document.getElementById('close-gallery');
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
@@ -143,6 +191,32 @@
             };
         }
 
+        function loadPhotos() {
+            const request = indexedDB.open("TC_tamCameraDB", 1);
+
+            request.onsuccess = function (e) {
+                const db = e.target.result;
+                const transaction = db.transaction("photos", "readonly");
+                const store = transaction.objectStore("photos");
+                const getRequest = store.openCursor();
+
+                getRequest.onsuccess = function (e) {
+                    const cursor = e.target.result;
+                    if (cursor) {
+                        const photoData = cursor.value.photo;
+                        const img = document.createElement('img');
+                        img.src = photoData;
+                        galleryImages.appendChild(img);
+                        cursor.continue();
+                    }
+                };
+            };
+
+            request.onerror = function (e) {
+                console.error("Error loading photos from IndexedDB: ", e);
+            };
+        }
+
         function loadLatestPhoto() {
             const request = indexedDB.open("TC_tamCameraDB", 1);
 
@@ -172,6 +246,7 @@
         window.onload = function () {
             initDB();
             loadLatestPhoto();
+            loadPhotos();
         };
 
         function capturePhoto() {
@@ -194,6 +269,14 @@
             savePhotoToDB(photoData);
             loadLatestPhoto();
         }
+
+        latestPhotoContainer.addEventListener('click', function() {
+            galleryContainer.style.display = 'block';
+        });
+
+        closeGalleryButton.addEventListener('click', function() {
+            galleryContainer.style.display = 'none';
+        });
     </script>
 </body>
 
