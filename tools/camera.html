@@ -77,29 +77,6 @@
             height: 100%;
             object-fit: cover;
         }
-
-        .gallery-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            visibility: hidden;
-            z-index: 20;
-        }
-
-        .gallery-overlay img {
-            max-width: 80%;
-            max-height: 80%;
-        }
-
-        .gallery-overlay.active {
-            visibility: visible;
-        }
     </style>
 </head>
 
@@ -108,10 +85,6 @@
         <video id="video" autoplay></video>
         <button id="capture" onclick="capturePhoto()"></button>
         <canvas id="canvas" style="display: none;"></canvas>
-    </div>
-
-    <div id="gallery-overlay" class="gallery-overlay" onclick="closeGallery()">
-        <img id="gallery-image" src="" alt="Gallery Image">
     </div>
 
     <script>
@@ -123,9 +96,6 @@
         const latestPhotoContainer = document.createElement('div');
         latestPhotoContainer.id = 'latest-photo';
         document.body.appendChild(latestPhotoContainer);
-
-        const galleryOverlay = document.getElementById('gallery-overlay');
-        const galleryImage = document.getElementById('gallery-image');
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
@@ -190,10 +160,6 @@
                         img.src = latestPhoto;
                         latestPhotoContainer.innerHTML = '';
                         latestPhotoContainer.appendChild(img);
-                        
-                        latestPhotoContainer.onclick = function () {
-                            openGallery(latestPhoto);
-                        };
                     }
                 };
             };
@@ -227,15 +193,6 @@
 
             savePhotoToDB(photoData);
             loadLatestPhoto();
-        }
-
-        function openGallery(imageSrc) {
-            galleryImage.src = imageSrc;
-            galleryOverlay.classList.add('active');
-        }
-
-        function closeGallery() {
-            galleryOverlay.classList.remove('active');
         }
     </script>
 </body>
