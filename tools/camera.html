@@ -249,16 +249,6 @@
 
             const photoData = canvas.toDataURL('image/png');
 
-            const photoContainer = document.createElement('div');
-            photoContainer.id = 'photo-container';
-            document.body.appendChild(photoContainer);
-
-            const img = document.createElement('img');
-            img.src = photoData;
-            photoContainer.appendChild(img);
-
-            photoContainer.classList.add('fade-in');
-
             savePhotoToDB(photoData);
             loadLatestPhoto();
         }
