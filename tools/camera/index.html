@@ -134,7 +134,8 @@
 
         let currentStream;
         let currentDeviceId = null;
-        let availableCameras = [];
+        let frontCamera = null;
+        let backCamera = null;
 
         function getMediaStream(deviceId) {
             const constraints = {
@@ -162,32 +163,34 @@
                 });
         }
 
-        // Enumerate devices and get all cameras
+        // Enumerate devices and get front and back cameras
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
-                availableCameras = devices.filter(device => device.kind === 'videoinput');
-                if (availableCameras.length > 0) {
-                    // Default to front camera or the first available camera
-                    const frontCamera = availableCameras.find(cam => cam.label.toLowerCase().includes('front')) || availableCameras[0];
-                    currentDeviceId = frontCamera.deviceId;
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                // Zoek voorkamera
+                frontCamera = videoDevices.find(cam => cam.label.toLowerCase().includes('front')) || null;
+                // Zoek standaard achterkamera
+                backCamera = videoDevices.find(cam => cam.label.toLowerCase().includes('back') || cam.label.toLowerCase().includes('rear')) || null;
+
+                if (frontCamera || backCamera) {
+                    // Start met voorkamera als standaard
+                    const initialCamera = frontCamera || backCamera;
+                    currentDeviceId = initialCamera.deviceId;
                     setVideoStream(currentDeviceId);
                 } else {
-                    console.error("No cameras found.");
+                    console.error("No suitable cameras found.");
                 }
             })
             .catch(err => console.error('Error enumerating devices:', err));
 
-        // Switch between cameras
+        // Toggle tussen voorkamera en achterkamera
         flipCameraContainer.addEventListener('click', function () {
-            if (availableCameras.length > 1) {
-                // Toggle between front and back cameras
-                const newCamera = availableCameras.find(cam => cam.deviceId !== currentDeviceId);
-                if (newCamera) {
-                    currentDeviceId = newCamera.deviceId;
-                    setVideoStream(currentDeviceId);
-                }
+            if (frontCamera && backCamera) {
+                const newDeviceId = currentDeviceId === frontCamera.deviceId ? backCamera.deviceId : frontCamera.deviceId;
+                currentDeviceId = newDeviceId;
+                setVideoStream(newDeviceId);
             } else {
-                console.log("Only one camera available.");
+                console.log("Not enough cameras to toggle.");
             }
         });
 
