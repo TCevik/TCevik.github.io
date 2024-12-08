@@ -40,7 +40,8 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 30px 30px;
+            width: 63px;
+            height: 63px;
             font-size: 16px;
             background-color: #333;
             color: white;
@@ -50,6 +51,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             z-index: 10;
             transition: background-color 0.3s, transform 0.2s;
+            margin: 0px;
+            padding: 0px;
         }
 
         #photo-container {
@@ -98,6 +101,28 @@
                 opacity: 1;
             }
         }
+
+        #latest-photo {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-left: 100px;
+            width: 60px;
+            height: 60px;
+            background-color: #fff;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        #latest-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 
@@ -114,6 +139,11 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const captureButton = document.getElementById('capture');
+
+        const latestPhotoContainer = document.createElement('div');
+        latestPhotoContainer.id = 'latest-photo';
+        document.body.appendChild(latestPhotoContainer);
+
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
@@ -161,6 +191,37 @@
             };
         }
 
+        function loadLatestPhoto() {
+            const request = indexedDB.open("TC_tamCameraDB", 1);
+
+            request.onsuccess = function (e) {
+                const db = e.target.result;
+                const transaction = db.transaction("photos", "readonly");
+                const store = transaction.objectStore("photos");
+                const getRequest = store.openCursor(null, "prev");
+
+                getRequest.onsuccess = function (e) {
+                    const cursor = e.target.result;
+                    if (cursor) {
+                        const latestPhoto = cursor.value.photo;
+                        const img = document.createElement('img');
+                        img.src = latestPhoto;
+                        latestPhotoContainer.innerHTML = '';
+                        latestPhotoContainer.appendChild(img);
+                    }
+                };
+            };
+
+            request.onerror = function (e) {
+                console.error("Error loading the latest photo from IndexedDB: ", e);
+            };
+        }
+
+        window.onload = function () {
+            initDB();
+            loadLatestPhoto();
+        };
+
         function capturePhoto() {
             const existingPhotoContainer = document.getElementById('photo-container');
             if (existingPhotoContainer) {
@@ -195,13 +256,10 @@
                 setTimeout(function () {
                     photoContainer.remove();
                 }, 250);
+                loadLatestPhoto();
             };
             photoContainer.appendChild(saveBtn);
         }
-
-        window.onload = function () {
-            initDB();
-        };
     </script>
 </body>
 
