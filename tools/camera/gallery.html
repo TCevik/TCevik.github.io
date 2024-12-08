@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam Gallery</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding: 0;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .photo {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .photo img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .photo img.loaded {
+            opacity: 1;
+        }
+
+        #backBtn {
+            display: flex;
+            left: 20px;
+            top: 20px;
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="backBtn">Back</button>
+
+    <div class="gallery-container" id="gallery"></div>
+
+    <script>
+        backBtn = document.getElementById('backBtn');
+        backBtn.onclick = function () {
+            window.location.href = '/tools/camera';
+        };
+
+        const BATCH_SIZE = 100;
+        let cursorPosition = null;
+        let isLoading = false;
+
+        function loadGalleryBatch(db) {
+            if (isLoading) return;
+            isLoading = true;
+
+            const galleryContainer = document.getElementById('gallery');
+            const transaction = db.transaction("photos", "readonly");
+            const store = transaction.objectStore("photos");
+            const request = cursorPosition ? store.openCursor(cursorPosition) : store.openCursor();
+
+            let loadedCount = 0;
+
+            request.onsuccess = function (e) {
+                const cursor = e.target.result;
+                if (cursor && loadedCount < BATCH_SIZE) {
+                    const photoElement = document.createElement('div');
+                    photoElement.classList.add('photo');
+
+                    const img = document.createElement('img');
+                    img.dataset.src = cursor.value.photo;
+                    img.alt = "Gallery Photo";
+
+                    photoElement.appendChild(img);
+                    galleryContainer.appendChild(photoElement);
+
+                    loadedCount++;
+                    cursorPosition = cursor.key;
+                    cursor.continue();
+                } else {
+                    isLoading = false;
+                    if (!cursor) cursorPosition = null;
+                    observeNewPhotos();
+                }
+            };
+
+            request.onerror = function (e) {
+                console.error("Error loading photos from IndexedDB: ", e);
+                isLoading = false;
+            };
+        }
+
+        function observeNewPhotos() {
+            const photos = document.querySelectorAll('.photo img:not(.loaded)');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.onload = () => img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            photos.forEach(photo => observer.observe(photo));
+        }
+
+        function initializeGallery() {
+            const request = indexedDB.open("TC_tamCameraDB", 1);
+
+            request.onsuccess = function (e) {
+                const db = e.target.result;
+                loadGalleryBatch(db);
+
+                setInterval(() => {
+                    if (
+                        window.innerHeight + window.scrollY >=
+                        document.body.offsetHeight - 100
+                    ) {
+                        loadGalleryBatch(db);
+                    }
+                }, 100);
+            };
+
+            request.onerror = function (e) {
+                console.error("Error opening IndexedDB: ", e);
+            };
+        }
+
+        window.onload = initializeGallery;
+    </script>
+</body>
+
+</html>
