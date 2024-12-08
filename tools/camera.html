@@ -84,6 +84,20 @@
                 opacity: 0;
             }
         }
+
+        .fade-in {
+            animation: fadeIn 250ms forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
@@ -132,11 +146,12 @@
             img.src = photoData;
             photoContainer.appendChild(img);
 
+            photoContainer.classList.add('fade-in');
+
             const saveBtn = document.createElement('div');
             saveBtn.id = 'saveBtn';
             saveBtn.onclick = function () {
-                notification('Foto opgeslagen!');
-
+                photoContainer.classList.remove('fade-in');
                 photoContainer.classList.add('fade-out');
                 setTimeout(function () {
                     photoContainer.remove();
