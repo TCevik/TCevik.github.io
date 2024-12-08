@@ -48,7 +48,8 @@
             opacity: 1;
         }
 
-        #backBtn {
+        #backBtn,
+        #deleteAllBtn {
             display: flex;
             left: 20px;
             top: 20px;
@@ -79,6 +80,7 @@
 </head>
 
 <body>
+    <button id="deleteAllBtn" style="margin-left: 100px; background-color: red; display: none;">Delete All</button>
     <button id="backBtn">Back</button>
 
     <div class="gallery-container" id="gallery"></div>
@@ -95,14 +97,13 @@
         let noMorePhotos = false;
 
         function loadGalleryBatch(db) {
-            if (isLoading || noMorePhotos) return; // Stop als er al geladen wordt of er geen foto's meer zijn.
+            if (isLoading || noMorePhotos) return;
             isLoading = true;
 
             const galleryContainer = document.getElementById('gallery');
             const transaction = db.transaction("photos", "readonly");
             const store = transaction.objectStore("photos");
 
-            // Gebruik 'prev' voor omgekeerde volgorde
             const request = cursorPosition
                 ? store.openCursor(cursorPosition, 'prev')
                 : store.openCursor(null, 'prev');
@@ -128,7 +129,7 @@
                 } else {
                     isLoading = false;
                     if (!cursor) {
-                        noMorePhotos = true; // Geen verdere foto's meer te laden.
+                        noMorePhotos = true;
                     }
                     observeNewPhotos();
                 }
@@ -139,6 +140,31 @@
                 isLoading = false;
             };
         }
+
+        document.getElementById('deleteAllBtn').onclick = function () {
+            const request = indexedDB.open("TC_tamCameraDB", 1);
+
+            request.onsuccess = function (e) {
+                const db = e.target.result;
+                const transaction = db.transaction("photos", "readwrite");
+                const store = transaction.objectStore("photos");
+
+                const deleteRequest = store.clear();
+
+                deleteRequest.onsuccess = function () {
+                    notification("All photos have been deleted!");
+                    document.getElementById('gallery').innerHTML = '';
+                };
+
+                deleteRequest.onerror = function () {
+                    console.error("Error deleting photos from IndexedDB");
+                };
+            };
+
+            request.onerror = function (e) {
+                console.error("Error opening IndexedDB: ", e);
+            };
+        };
 
         function observeNewPhotos() {
             const photos = document.querySelectorAll('.photo img:not(.loaded)');
@@ -181,25 +207,20 @@
         window.onload = initializeGallery;
 
         function enableFullscreen(imgSrc) {
-            // Creëer een overlay-element voor fullscreen
             const fullscreenOverlay = document.createElement('div');
             fullscreenOverlay.classList.add('fullscreen');
 
-            // Voeg een afbeelding toe aan de overlay
             const fullscreenImage = document.createElement('img');
             fullscreenImage.src = imgSrc;
             fullscreenOverlay.appendChild(fullscreenImage);
 
-            // Voeg de overlay toe aan de body
             document.body.appendChild(fullscreenOverlay);
 
-            // Verwijder de overlay bij klikken
             fullscreenOverlay.addEventListener('click', () => {
                 fullscreenOverlay.remove();
             });
         }
 
-        // Voeg klikfunctionaliteit toe aan elke foto
         document.addEventListener('click', function (e) {
             if (e.target.tagName === 'IMG' && e.target.closest('.photo')) {
                 const imgSrc = e.target.src;
