@@ -217,7 +217,8 @@ var buttons = `
 	<select style="width: 90%; margin-top: 10px;" id="theme-switch">
 	    <option value="lightmode">Light Mode</option>
 	    <option value="darkmode">Dark Mode</option>
-		<option value="neutralmode">Neutral Mode</option>
+		<option value="neutrallightmode">Neutral Light Mode</option>
+		<option value="neutraldarkmode">Neutral Dark Mode</option>
 		<option value="underwatermode">Underwater Mode</option>
 		<option value="pinkmode">Pink Mode</option>
 		<option value="highcontrast">High Contrast</option>

@@ -62,7 +62,7 @@ body {
     --select-bgcolor: #58bf33;
 }
 
-.neutralmode {
+.neutrallightmode {
     --background-color: #ffffff;
     --text-color: #000000;
     --h1234-color: #333333;
@@ -75,6 +75,21 @@ body {
     --hover-border-color: #007bff;
     --disabled-border-color: #cccccc;
     --select-bgcolor: #333333;
+}
+
+.neutraldarkmode {
+    --background-color: #000000;
+    --text-color: #ffffff;
+    --h1234-color: #cccccc;
+    --custom-link-color: #66b2ff;
+    --button-bgcolor: #333333;
+    --bg-accent-color1: #1a1a1a;
+    --bg-accent-color2: #262626;
+    --button-text-color: #ffffff;
+    --button-border-color: #4d4d4d;
+    --hover-border-color: #66b2ff;
+    --disabled-border-color: #4d4d4d;
+    --select-bgcolor: #262626;
 }
 
 .highcontrast {
