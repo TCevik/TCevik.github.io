@@ -57,6 +57,9 @@
                     if (!money) {
                         const starterMoney = { id: 'money', value: 10000 };
                         store.put(starterMoney);
+                        document.getElementById('money').innerText = starterMoney.value;
+                    } else {
+                        document.getElementById('money').innerText = money.value;
                     }
                 };
 
