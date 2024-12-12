@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam ReLife</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <h1>TC_tam ReLife</h1>
+    <p id="money"></p>
+
+    <script>
+        // Function to retrieve and display money from IndexedDB
+        document.addEventListener('DOMContentLoaded', () => {
+            const dbName = "TCtamReLife";
+            const objectStoreName = "moneyStore";
+            const moneyElement = document.getElementById('money');
+
+            // Open the IndexedDB
+            const request = indexedDB.open(dbName, 1);
+
+            request.onerror = (event) => {
+                console.error("Failed to open IndexedDB", event);
+                moneyElement.textContent = "Error loading data.";
+            };
+
+            request.onsuccess = (event) => {
+                const db = event.target.result;
+                const transaction = db.transaction(objectStoreName, 'readonly');
+                const objectStore = transaction.objectStore(objectStoreName);
+                const getRequest = objectStore.get("money");
+
+                getRequest.onsuccess = () => {
+                    const data = getRequest.result;
+                    if (data) {
+                        moneyElement.textContent = `Money: ${data.amount}`;
+                    } else {
+                        moneyElement.textContent = "No money data found.";
+                    }
+                };
+
+                getRequest.onerror = () => {
+                    console.error("Failed to retrieve money data");
+                    moneyElement.textContent = "Error retrieving money.";
+                };
+            };
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(objectStoreName)) {
+                    db.createObjectStore(objectStoreName, { keyPath: "id" });
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>
