@@ -32,7 +32,45 @@
     </div>
 
     <script>
+        function initialize() {
+            fetchGameProgressFromDB();
+        }
 
+        function fetchGameProgressFromDB() {
+            const request = indexedDB.open('TCtamReLife', 1);
+
+            request.onupgradeneeded = function (event) {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('gameProgress')) {
+                    db.createObjectStore('gameProgress', { keyPath: 'id' });
+                }
+            };
+
+            request.onsuccess = function (event) {
+                const db = event.target.result;
+                const transaction = db.transaction(['gameProgress'], 'readwrite');
+                const store = transaction.objectStore('gameProgress');
+                const moneyRequest = store.get('money');
+
+                moneyRequest.onsuccess = function (event) {
+                    const money = event.target.result;
+                    if (!money) {
+                        const starterMoney = { id: 'money', value: 10000 };
+                        store.put(starterMoney);
+                    }
+                };
+
+                moneyRequest.onerror = function () {
+                    notification('Error retrieving money from IndexedDB.');
+                };
+            };
+
+            request.onerror = function () {
+                notification('Error opening database.');
+            };
+        }
+
+        initialize();
     </script>
 </body>
 
