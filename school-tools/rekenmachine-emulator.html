@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rekenmachine</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/script.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -15,9 +19,10 @@
       width: 800px;
       height: 600px;
       position: fixed;
-      padding: 100px;
-      top: 50px;
-      left: 50px;
+      padding: 99999px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       cursor: move;
       z-index: 1000;
       border: none;
@@ -28,30 +33,33 @@
       height: 100%;
       border: 2px solid #000;
       user-select: none;
+      overflow: hidden; /* Zorgt ervoor dat er niet gescrold kan worden */
     }
   </style>
 </head>
+
 <body>
   <div class="draggable" id="draggable-iframe">
-    <iframe src="https://www.numworks.com/nl/emulator/" title="NumWorks Simulator"></iframe>
+    <iframe src="https://www.numworks.com/nl/emulator/" title="NumWorks Simulator" scrolling="no"></iframe>
   </div>
 
   <script>
     const draggable = document.getElementById("draggable-iframe");
+    const iframe = draggable.querySelector("iframe");
 
     let isDragging = false;
     let offsetX, offsetY;
+    let iframeWidth = draggable.offsetWidth;
+    let iframeHeight = draggable.offsetHeight;
 
     const startDrag = (e) => {
       isDragging = true;
-      // Bereken de offset ten opzichte van het element
       offsetX = e.clientX - draggable.offsetLeft;
       offsetY = e.clientY - draggable.offsetTop;
     };
 
     const doDrag = (e) => {
       if (isDragging) {
-        // Update de positie van de draggable
         draggable.style.left = `${e.clientX - offsetX}px`;
         draggable.style.top = `${e.clientY - offsetY}px`;
       }
@@ -61,9 +69,45 @@
       isDragging = false;
     };
 
-    // Koppel events aan het document
+    // Rescale iframe on mouse wheel scroll
+    const handleScroll = (e) => {
+      if (e.deltaY > 0) {
+        iframeWidth -= 20;  // Decrease width and height
+        iframeHeight -= 15;
+      } else {
+        iframeWidth += 20;  // Increase width and height
+        iframeHeight += 15;
+      }
+
+      // Min/max size checks to avoid it becoming too small or too large
+      iframeWidth = Math.max(400, Math.min(iframeWidth, 1200));  // width between 400px and 1200px
+      iframeHeight = Math.max(300, Math.min(iframeHeight, 800));  // height between 300px and 800px
+
+      // Update iframe size
+      draggable.style.width = `${iframeWidth}px`;
+      draggable.style.height = `${iframeHeight}px`;
+    };
+
+    // Change size using arrow keys
+    const handleKeydown = (e) => {
+      if (e.key === "ArrowUp") {
+        iframeWidth += 20;
+        iframeHeight += 15;
+      } else if (e.key === "ArrowDown") {
+        iframeWidth -= 20;
+        iframeHeight -= 15;
+      }
+
+      // Min/max size checks to avoid it becoming too small or too large
+      iframeWidth = Math.max(400, Math.min(iframeWidth, 1200));
+      iframeHeight = Math.max(300, Math.min(iframeHeight, 800));
+
+      // Update iframe size
+      draggable.style.width = `${iframeWidth}px`;
+      draggable.style.height = `${iframeHeight}px`;
+    };
+
     document.addEventListener("mousedown", (e) => {
-      // Controleer of de klik op de draggable gebeurde
       if (e.target.closest(".draggable")) {
         startDrag(e);
       }
@@ -71,6 +115,9 @@
 
     document.addEventListener("mousemove", doDrag);
     document.addEventListener("mouseup", stopDrag);
+    document.addEventListener("wheel", handleScroll);
+    document.addEventListener("keydown", handleKeydown);
   </script>
 </body>
+
 </html>
