@@ -93,16 +93,21 @@
 
     <div id="login-form-container" style="display: none;">
         <form id="login-form">
+            <br><span style="margin-right: -10px;">Email:</span>
             <input type="email" id="login-email" placeholder="Email" required>
+            <br><span style="margin-right: -10px;">Password:</span>
             <input type="password" id="login-password" placeholder="Password" required>
-            <button type="submit">Sign in</button>
+            <br><button type="submit">Sign in</button>
         </form>
 
         <form id="register-form" style="display: none;">
+            <br><span style="margin-right: -10px;">Username:</span>
             <input type="text" id="register-username" placeholder="Username" required>
+            <br><span style="margin-right: -10px;">Email:</span>
             <input type="email" id="register-email" placeholder="Email" required>
+            <br><span style="margin-right: -10px;">Password:</span>
             <input type="password" id="register-password" placeholder="Password" required>
-            <button type="submit">Sign up</button>
+            <br><button type="submit">Sign up</button>
         </form>
 
         <p id="login-message"></p>
@@ -141,6 +146,12 @@
 
                 const profilePicUrl = user.photoURL || defaultProfilePicture;
                 document.getElementById('profile-image').src = profilePicUrl;
+                user.updateProfile({
+                    photoURL: defaultProfilePicture
+                }).catch((error) => {
+                    console.error("Error updating profile picture: ", error);
+                    notification("Error updating profile picture: " + error);
+                });
 
                 dashboard.style.display = "block";
                 loginFormContainer.style.display = "none";
@@ -284,9 +295,9 @@
                         notification('Email is already in use.');
                     } else if (error.code === 'auth/password-does-not-meet-requirements') {
                         notification('Use a password of 6 to 4096 characters, which must contain at least 1 lowercase and 1 uppercase letter.');
-                    } 
+                    }
                     else {
-                        notification('An error occurred: " + error.code + ". Please try again.');
+                        notification('An error occurred: ' + error.code + '. Please try again.');
                     }
                 });
         });
