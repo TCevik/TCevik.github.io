@@ -105,7 +105,7 @@
             <input autocomplete="off" type="password" id="login-password" placeholder="Password" required>
             <br><button type="submit">Sign in</button>
 
-            <a id="forgot-password-button">Forgot your password?</a>
+            <br><a id="forgot-password-button">Forgot your password?</a>
             <br>
         </form>
 
@@ -120,7 +120,6 @@
             <br><button type="submit">Sign up</button>
         </form>
 
-        <br><button id="google-login-button">Login with Google</button>
         <br><a id="toggle-form">Don't have an account? Sign up</a>
 
         <div class="change-info-popup" id="reset-password-popup">
@@ -386,34 +385,6 @@
             } else {
                 notification("Please enter a valid email address.");
             }
-        });
-
-        document.getElementById('google-login-button').addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-
-                    if (result.additionalUserInfo.isNewUser) {
-                        const username = user.displayName || user.email.split('@')[0];
-                        user.updateProfile({
-                            displayName: username
-                        }).then(() => {
-                            notification('Successfully logged in with Google!');
-                        }).catch((error) => {
-                            console.error('Error updating profile: ', error);
-                            notification('Error updating profile: ' + error);
-                        });
-                    }
-
-                    dashboard.style.display = "block";
-                    loginFormContainer.style.display = "none";
-                })
-                .catch((error) => {
-                    console.error('Error during Google login: ', error);
-                    notification('An error occurred: ' + error.message);
-                });
         });
     </script>
 </body>
