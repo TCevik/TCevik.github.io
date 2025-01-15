@@ -225,6 +225,7 @@ var buttons = `
 	</select>
 
     <button onclick="window.location.href='/'">Home</button>
+	<button onclick="window.location.href='/account/'">Account</button>
     <h3 id="algemeen">General</h3>
     <button onclick="window.open('https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1', '_blank')">My YouTube channel</button>
     <button onclick="window.location.href='/games'">Games</button>
