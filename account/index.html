@@ -75,6 +75,7 @@
 
         <h2>Welcome, <span id="user-name"></span><span id="user-name-edit"> ✎</span></h2>
         <p id="email" style="margin-top: -20px;"></p>
+        <p id="verification-status"></p>
         <button id="logout-button">Sign out</button>
 
         <div class="change-info-popup" id="change-profile-popup">
@@ -105,7 +106,7 @@
             <br><button type="submit">Sign in</button>
 
             <br><a id="forgot-password-button">Forgot your password?</a>
-            <br>    
+            <br>
         </form>
 
         <form id="register-form" style="display: none;">
@@ -164,6 +165,27 @@
 
                 const profilePicUrl = user.photoURL || defaultProfilePicture;
                 document.getElementById('profile-image').src = profilePicUrl;
+
+                const emailVerifiedMessage = user.emailVerified
+                    ? "Your email is verified."
+                    : "Your email is not verified.";
+                const emailStatus = document.getElementById('verification-status');
+                emailStatus.textContent = emailVerifiedMessage;
+                emailStatus.style.marginTop = "-10px";
+                emailStatus.style.color = user.emailVerified ? "green" : "red";
+                document.getElementById('dashboard').appendChild(emailStatus);
+
+                if (!user.emailVerified) {
+                    user.sendEmailVerification()
+                        .then(() => {
+                            notification("Verification email sent.");
+                        })
+                        .catch((error) => {
+                            console.error("Error sending verification email: ", error);
+                            notification("Error sending verification email: " + error);
+                        });
+                }
+
                 if (!user.photoURL) {
                     user.updateProfile({
                         photoURL: defaultProfilePicture
