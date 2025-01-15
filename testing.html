@@ -30,12 +30,14 @@
             transform: scale(1.1);
         }
 
-        #user-name-edit, #user-name {
+        #user-name-edit,
+        #user-name {
             cursor: pointer;
             transition: transform 0.3s;
         }
 
-        #user-name-edit:hover, #user-name:hover {
+        #user-name-edit:hover,
+        #user-name:hover {
             transform: scale(1.1);
         }
 
@@ -48,7 +50,7 @@
             padding: 20px;
             background-color: var(--bg-accent-color1);
             border: 1px solid #ccc;
-            border-radius: 8px;
+            border-radius: var(--border-radius2);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -63,15 +65,17 @@
         <img id="profile-image" src="https://tctam.nl/assets/no-icon.jpg" title="Edit Profile Picture">
 
         <h2>Welcome, <span id="user-name"></span><span id="user-name-edit"> ✎</span></h2>
-        <p style="filter: brightness(80%); margin-top: -15px;">Manage your account to make the site work better for you.</p>
+        <p style="filter: brightness(80%); margin-top: -15px;">Manage your account to make the site work better for you.
+        </p>
         <button id="logout-button">Sign out</button>
 
         <div class="change-info-popup" id="change-profile-popup">
             <h3>New Profile Picture URL</h3>
             <input type="text" id="new-pfp-url" placeholder="Enter the new URL"
                 style="max-width: 100% !important; padding: 8px; margin-bottom: 10px;">
-            <button id="save-pfp-url">Save</button>
+            <br><button id="save-pfp-url">Save</button>
             <button id="cancel-pfp-url" style="margin-left: 10px;">Cancel</button>
+            <br><button id="remove-pfp-url" style="margin-top: 20px;">Remove</button>
         </div>
 
         <div class="change-info-popup" id="change-name-popup">
@@ -116,25 +120,30 @@
         const loginFormContainer = document.getElementById('login-form-container');
 
         firebase.auth().onAuthStateChanged((user) => {
+            const defaultProfilePicture = 'https://tctam.nl/assets/no-icon.jpg'
+
             if (user) {
                 const userName = user.displayName || user.email.split('@')[0];
                 document.getElementById('user-name').textContent = userName;
 
-                const profilePicUrl = user.photoURL || "https://tctam.nl/assets/no-icon.jpg";
+                const profilePicUrl = user.photoURL || defaultProfilePicture;
                 document.getElementById('profile-image').src = profilePicUrl;
 
                 dashboard.style.display = "block";
                 loginFormContainer.style.display = "none";
 
                 document.getElementById('user-name-edit').addEventListener('click', () => {
-                    document.getElementById('change-name-popup').style.display = "block";
-                    document.getElementById('new-name-url').value = userName;
+                    openNameChangePopup();
                 });
 
                 document.getElementById('user-name').addEventListener('click', () => {
-                    document.getElementById('change-name-popup').style.display = "block";
-                    document.getElementById('new-name-url').value = userName;
+                    openNameChangePopup();
                 });
+
+                function openNameChangePopup() {
+                    document.getElementById('change-name-popup').style.display = "block";
+                    document.getElementById('new-name-url').value = user.displayName;
+                }
 
                 document.getElementById('cancel-name-url').addEventListener('click', () => {
                     document.getElementById('change-name-popup').style.display = "none";
@@ -149,14 +158,19 @@
                             document.getElementById('user-name').textContent = newName;
                             document.getElementById('change-name-popup').style.display = "none";
                         }).catch((error) => {
-                            console.error("Error updating display name: ", error);
+                            if (error.code === 'auth/invalid-profile-attribute' && error.message.includes('Display name too long')) {
+                                notification("The name you entered is too long. Choose a shorter name and try again.");
+                            } else {
+                                console.error("Error updating display name: ", error);
+                                notification("Error updating display name: " + error);
+                            }
                         });
                     }
                 });
 
                 document.getElementById('profile-image').addEventListener('click', () => {
                     document.getElementById('change-profile-popup').style.display = "block";
-                    document.getElementById('new-pfp-url').value = profilePicUrl;
+                    document.getElementById('new-pfp-url').value = user.photoURL;
                 });
 
                 document.getElementById('cancel-pfp-url').addEventListener('click', () => {
@@ -173,8 +187,21 @@
                             document.getElementById('change-profile-popup').style.display = "none";
                         }).catch((error) => {
                             console.error("Error updating profile picture: ", error);
+                            notification("Error updating profile picture: " + error);
                         });
                     }
+                });
+
+                document.getElementById('remove-pfp-url').addEventListener('click', () => {
+                    user.updateProfile({
+                        photoURL: defaultProfilePicture
+                    }).then(() => {
+                        document.getElementById('profile-image').src = defaultProfilePicture;
+                        document.getElementById('change-profile-popup').style.display = "none";
+                    }).catch((error) => {
+                        console.error("Error updating profile picture: ", error);
+                        notification("Error updating profile picture: " + error);
+                    });
                 });
             } else {
                 dashboard.style.display = "none";
