@@ -29,6 +29,32 @@
         #profile-image:hover {
             transform: scale(1.1);
         }
+
+        #user-name-edit, #user-name {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #user-name-edit:hover, #user-name:hover {
+            transform: scale(1.1);
+        }
+
+        .change-info-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: var(--bg-accent-color1);
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .change-info-popup h3 {
+            margin-top: 0px;
+        }
     </style>
 </head>
 
@@ -36,17 +62,24 @@
     <div id="dashboard" style="display: none;">
         <img id="profile-image" src="https://tctam.nl/assets/no-icon.jpg" title="Edit Profile Picture">
 
-        <h2>Welcome, <span id="user-name"></span></h2>
-        <p style="filter: brightness(80%);">Manage your account to make the site work better for you.</p>
+        <h2>Welcome, <span id="user-name"></span><span id="user-name-edit"> ✎</span></h2>
+        <p style="filter: brightness(80%); margin-top: -15px;">Manage your account to make the site work better for you.</p>
         <button id="logout-button">Sign out</button>
 
-        <div id="change-profile-popup"
-            style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: var(--bg-accent-color1); border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div class="change-info-popup" id="change-profile-popup">
             <h3>New Profile Picture URL</h3>
-            <input type="text" id="new-pfp-url" placeholder="Voer nieuwe URL in"
+            <input type="text" id="new-pfp-url" placeholder="Enter the new URL"
                 style="max-width: 100% !important; padding: 8px; margin-bottom: 10px;">
             <button id="save-pfp-url">Save</button>
             <button id="cancel-pfp-url" style="margin-left: 10px;">Cancel</button>
+        </div>
+
+        <div class="change-info-popup" id="change-name-popup">
+            <h3>Change your TC_tam Account name</h3>
+            <input type="text" id="new-name-url" placeholder="Enter your new name"
+                style="max-width: 100% !important; padding: 8px; margin-bottom: 10px;">
+            <button id="save-name-url">Save</button>
+            <button id="cancel-name-url" style="margin-left: 10px;">Cancel</button>
         </div>
     </div>
 
@@ -93,6 +126,34 @@
                 dashboard.style.display = "block";
                 loginFormContainer.style.display = "none";
 
+                document.getElementById('user-name-edit').addEventListener('click', () => {
+                    document.getElementById('change-name-popup').style.display = "block";
+                    document.getElementById('new-name-url').value = userName;
+                });
+
+                document.getElementById('user-name').addEventListener('click', () => {
+                    document.getElementById('change-name-popup').style.display = "block";
+                    document.getElementById('new-name-url').value = userName;
+                });
+
+                document.getElementById('cancel-name-url').addEventListener('click', () => {
+                    document.getElementById('change-name-popup').style.display = "none";
+                });
+
+                document.getElementById('save-name-url').addEventListener('click', () => {
+                    const newName = document.getElementById('new-name-url').value;
+                    if (newName) {
+                        user.updateProfile({
+                            displayName: newName
+                        }).then(() => {
+                            document.getElementById('user-name').textContent = newName;
+                            document.getElementById('change-name-popup').style.display = "none";
+                        }).catch((error) => {
+                            console.error("Error updating display name: ", error);
+                        });
+                    }
+                });
+
                 document.getElementById('profile-image').addEventListener('click', () => {
                     document.getElementById('change-profile-popup').style.display = "block";
                     document.getElementById('new-pfp-url').value = profilePicUrl;
@@ -111,7 +172,7 @@
                             document.getElementById('profile-image').src = newUrl;
                             document.getElementById('change-profile-popup').style.display = "none";
                         }).catch((error) => {
-                            console.error("Fout bij het bijwerken van de profielfoto: ", error);
+                            console.error("Error updating profile picture: ", error);
                         });
                     }
                 });
