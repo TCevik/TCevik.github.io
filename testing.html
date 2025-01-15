@@ -41,6 +41,10 @@
             transform: scale(1.1);
         }
 
+        #forgot-password-button {
+            cursor: pointer;
+        }
+
         .change-info-popup {
             display: none;
             position: fixed;
@@ -52,6 +56,7 @@
             border: 1px solid #ccc;
             border-radius: var(--border-radius2);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
         }
 
         .change-info-popup h3 {
@@ -98,6 +103,9 @@
             <br><span style="margin-right: -10px;">Password:</span>
             <input autocomplete="off" type="password" id="login-password" placeholder="Password" required>
             <br><button type="submit">Sign in</button>
+
+            <br><a id="forgot-password-button">Forgot your password?</a>
+            <br>    
         </form>
 
         <form id="register-form" style="display: none;">
@@ -111,9 +119,15 @@
             <br><button type="submit">Sign up</button>
         </form>
 
-        <p id="login-message"></p>
+        <br><a id="toggle-form">Don't have an account? Sign up</a>
 
-        <a id="toggle-form">Don't have an account? Sign up</a>
+        <div class="change-info-popup" id="reset-password-popup">
+            <h3>Reset Password</h3>
+            <input type="email" id="reset-password-email" placeholder="Enter your email"
+                style="max-width: 100% !important; padding: 8px; margin-bottom: 10px;">
+            <button id="send-reset-link-button">Send link</button>
+            <button id="cancel-reset-password" style="margin-left: 10px;">Cancel</button>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
@@ -321,6 +335,33 @@
                 loginForm.style.display = 'none';
                 registerForm.style.display = 'block';
                 toggleButton.textContent = "Already have an account? Sign in";
+            }
+        });
+
+        document.getElementById('forgot-password-button').addEventListener('click', () => {
+            document.getElementById('reset-password-popup').style.display = "block";
+        });
+
+        document.getElementById('cancel-reset-password').addEventListener('click', () => {
+            document.getElementById('reset-password-popup').style.display = "none";
+        });
+
+        document.getElementById('send-reset-link-button').addEventListener('click', function () {
+            const email = document.getElementById('reset-password-email').value;
+
+            if (email) {
+                firebase.auth().sendPasswordResetEmail(email)
+                    .then(() => {
+                        notification("Reset link sent! Check your email.");
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.error(errorCode, errorMessage);
+                        notification("Error sending reset email. Please try again." + error);
+                    });
+            } else {
+                notification("Please enter a valid email address.");
             }
         });
     </script>
