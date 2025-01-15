@@ -69,8 +69,7 @@
         <img id="profile-image" src="https://tctam.nl/assets/no-icon.jpg" title="Edit Profile Picture">
 
         <h2>Welcome, <span id="user-name"></span><span id="user-name-edit"> ✎</span></h2>
-        <p style="filter: brightness(80%); margin-top: -15px;">Manage your account to make the site work better for you.
-        </p>
+        <p id="email" style="margin-top: -20px;"></p>
         <button id="logout-button">Sign out</button>
 
         <div class="change-info-popup" id="change-profile-popup">
@@ -145,6 +144,9 @@
             if (user) {
                 const userName = user.displayName || user.email.split('@')[0];
                 document.getElementById('user-name').textContent = userName;
+
+                const userEmail = user.email;
+                document.getElementById('email').textContent = userEmail;
 
                 const profilePicUrl = user.photoURL || defaultProfilePicture;
                 document.getElementById('profile-image').src = profilePicUrl;
