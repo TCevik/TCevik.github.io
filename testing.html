@@ -1,14 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TC_tam Chat</title>
+    <title>TC_tam Chat - Login</title>
 
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+
+    <style>
+        #logout-button {
+            position: fixed;
+            display: flex;
+            top: 15px;
+            right: 15px;
+        }
+
+        #profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-top: 50px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #profile-image:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
+
 <body>
-    
+    <div id="dashboard" style="display: none;">
+        <img id="profile-image" src="https://tctam.nl/assets/no-icon.jpg" title="Edit Profile Picture">
+
+        <h2>Welcome, <span id="user-name"></span></h2>
+        <p style="filter: brightness(80%);">Manage your account to make the site work better for you.</p>
+        <button id="logout-button">Sign out</button>
+
+        <div id="change-profile-popup"
+            style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: var(--bg-accent-color1); border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h3>New Profile Picture URL</h3>
+            <input type="text" id="new-pfp-url" placeholder="Voer nieuwe URL in"
+                style="max-width: 100% !important; padding: 8px; margin-bottom: 10px;">
+            <button id="save-pfp-url">Save</button>
+            <button id="cancel-pfp-url" style="margin-left: 10px;">Cancel</button>
+        </div>
+    </div>
+
+    <div id="login-form-container" style="display: none;">
+        <form id="login-form">
+            <input type="email" id="email" placeholder="E-mailadres" required>
+            <input type="password" id="password" placeholder="Wachtwoord" required>
+            <button type="submit">Sign in</button>
+        </form>
+
+        <p id="login-message"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+            authDomain: "tctam-d04b8.firebaseapp.com",
+            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tctam-d04b8",
+            storageBucket: "tctam-d04b8.appspot.com",
+            messagingSenderId: "793882705601",
+            appId: "1:793882705601:web:ac714f422263f4350b5e40",
+            measurementId: "G-TQLZK0WT42"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const loginForm = document.getElementById('login-form');
+        const loginMessage = document.getElementById('login-message');
+        const dashboard = document.getElementById('dashboard');
+        const loginFormContainer = document.getElementById('login-form-container');
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const userName = user.displayName || user.email.split('@')[0];
+                document.getElementById('user-name').textContent = userName;
+
+                const profilePicUrl = user.photoURL || "https://tctam.nl/assets/no-icon.jpg";
+                document.getElementById('profile-image').src = profilePicUrl;
+
+                dashboard.style.display = "block";
+                loginFormContainer.style.display = "none";
+
+                document.getElementById('profile-image').addEventListener('click', () => {
+                    document.getElementById('change-profile-popup').style.display = "block";
+                    document.getElementById('new-pfp-url').value = profilePicUrl;
+                });
+
+                document.getElementById('cancel-pfp-url').addEventListener('click', () => {
+                    document.getElementById('change-profile-popup').style.display = "none";
+                });
+
+                document.getElementById('save-pfp-url').addEventListener('click', () => {
+                    const newUrl = document.getElementById('new-pfp-url').value;
+                    if (newUrl) {
+                        user.updateProfile({
+                            photoURL: newUrl
+                        }).then(() => {
+                            document.getElementById('profile-image').src = newUrl;
+                            document.getElementById('change-profile-popup').style.display = "none";
+                        }).catch((error) => {
+                            console.error("Fout bij het bijwerken van de profielfoto: ", error);
+                        });
+                    }
+                });
+            } else {
+                dashboard.style.display = "none";
+                loginFormContainer.style.display = "block";
+            }
+        });
+
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.addEventListener('click', () => {
+            firebase.auth().signOut()
+                .then(() => {
+                    dashboard.style.display = "none";
+                    loginFormContainer.style.display = "block";
+                })
+                .catch((error) => {
+                    console.error("Error logging out: ", error);
+                    notification('Error logging out: ' + error)
+                });
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    notification('Succesfully logged in!')
+                    loginMessage.style.color = "green";
+                    dashboard.style.display = "block";
+                    loginFormContainer.style.display = "none";
+                })
+                .catch((error) => {
+                    if (error.code === 'auth/invalid-credential') {
+                        loginMessage.textContent = "Incorrect login details.";
+                    } else {
+                        loginMessage.textContent = "An error occurred: " + error.code + ". Please try again later.";
+                    }
+                    loginMessage.style.color = "red";
+                });
+        });
+    </script>
 </body>
+
 </html>
