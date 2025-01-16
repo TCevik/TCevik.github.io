@@ -79,12 +79,16 @@
         <button id="logout-button">Sign out</button>
 
         <div class="change-info-popup" id="change-profile-popup">
-            <h3>New Profile Picture URL</h3>
+            <h3>New Profile Picture</h3>
             <input autocomplete="off" type="text" id="new-pfp-url" placeholder="Enter the new URL"
                 style="max-width: 100% !important; padding: 8px; margin-bottom: 10px;">
-            <br><button id="save-pfp-url">Save</button>
+            <p style="margin: 10px 0;">OR</p>
+            <input type="file" id="upload-pfp" accept="image/*" style="margin-bottom: 10px;">
+            <br>
+            <button id="save-pfp-url">Save</button>
             <button id="cancel-pfp-url" style="margin-left: 10px;">Cancel</button>
-            <br><button id="remove-pfp-url" style="background-color: red; margin-top: 20px;">Remove</button>
+            <br>
+            <button id="remove-pfp-url" style="background-color: red; margin-top: 20px;">Remove</button>
         </div>
 
         <div class="change-info-popup" id="change-name-popup">
@@ -272,6 +276,74 @@
             } else {
                 dashboard.style.display = "none";
                 loginFormContainer.style.display = "block";
+            }
+        });
+
+        document.getElementById('upload-pfp').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        let maxWidth = 300;
+                        let maxHeight = 300;
+                        let quality = 1.0;
+                        let base64String = "";
+
+                        const compressImage = () => {
+                            const aspectRatio = img.width / img.height;
+
+                            if (img.width > img.height) {
+                                maxHeight = maxWidth / aspectRatio;
+                            } else {
+                                maxWidth = maxHeight * aspectRatio;
+                            }
+
+                            canvas.width = Math.floor(maxWidth);
+                            canvas.height = Math.floor(maxHeight);
+
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                            base64String = canvas.toDataURL('image/webp', quality);
+
+                            if (base64String.length > 2048) {
+                                if (quality > 0.3) {
+                                    quality -= 0.1;
+                                } else {
+                                    maxWidth *= 0.9;
+                                    maxHeight *= 0.9;
+                                }
+                                compressImage();
+                            }
+                        };
+
+                        compressImage();
+
+                        if (base64String.length <= 2048) {
+                            firebase.auth().currentUser.updateProfile({
+                                photoURL: base64String
+                            }).then(() => {
+                                document.getElementById('profile-image').src = base64String;
+                                document.getElementById('change-profile-popup').style.display = "none";
+                                notification("Profile picture updated successfully!");
+                            }).catch((error) => {
+                                console.error("Error updating profile picture:", error);
+                                notification("Error updating profile picture: " + error);
+                            });
+                        } else {
+                            notification("Unable to compress image sufficiently. Please upload a smaller image.");
+                        }
+                    };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                notification("No file selected.");
             }
         });
 
