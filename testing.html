@@ -36,7 +36,7 @@
         }
 
         .event h4 {
-            margin: 0;
+            margin: 0px;
             font-size: 1.1em;
         }
 
@@ -197,11 +197,11 @@
                     const dayString = date.toLocaleDateString();
                     const dayColumn = document.createElement('div');
                     dayColumn.classList.add('day-column');
-                    const dayTitle = document.createElement('h3');
+                    const dayTitle = document.createElement('h4');
                     dayTitle.textContent = date.toLocaleDateString('nl-NL', {
-                        weekday: 'long',
+                        weekday: 'short',
                         day: 'numeric',
-                        month: 'long',
+                        month: 'short',
                     });
                     dayColumn.appendChild(dayTitle);
 
@@ -210,9 +210,9 @@
                             const eventElement = document.createElement('div');
                             eventElement.classList.add('event');
                             eventElement.innerHTML = `
-                        <h4>${event.title}</h4>
-                        <p><strong>Tijd:</strong> ${event.startTime} - ${event.endTime}</p>
-                        <p><strong>Locatie:</strong> ${event.location}</p>
+                        <b style="text-align: left;" title="Titel: ${event.title}">${event.title}</b>
+                        <p style="text-align: left;" title="Tijd: ${event.startTime} - ${event.endTime}">${event.startTime} - ${event.endTime}</p>
+                        <p style="text-align: left;" title="Locatie: ${event.location}">${event.location}</p>
                     `;
                             dayColumn.appendChild(eventElement);
                         });
@@ -227,7 +227,6 @@
 
                 eventsContainer.appendChild(weekRow);
 
-                // Ga naar de volgende week
                 currentWeekStart = new Date(currentWeekStart);
                 currentWeekStart.setDate(currentWeekStart.getDate() + 7);
             }
