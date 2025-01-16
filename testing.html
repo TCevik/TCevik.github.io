@@ -66,7 +66,11 @@
 <body>
 
     <h2 style="text-align: left; margin-left: 5px;">Rooster:</h2>
-    <p style="text-align: left; margin-left: 5px; margin-top: -20px; font-size: 0.8em;" id="ical-link"></p>
+    <div style="display: flex; align-items: center;">
+        <p>Icalendar Token:</p>
+        <p style="text-align: left; margin-left: 5px; font-size: 0.8em;" id="ical-link" contenteditable="true"></p>
+        <button id="saveButton">Opslaan</button>
+    </div>
 
     <div style="display: flex;">
         <button id="toggleButton">Laat weekenden wel/niet zien</button>
@@ -79,7 +83,20 @@
 
     <script>
         let showWeekend = localStorage.getItem('tctamSRoosterShowWeekend') === 'true';
-        const apiUrl = 'https://api.somtoday.nl/rest/v1/icalendar/stream/84b872b2-462d-4f29-b924-f81cdf98c4ca/5d2f5a2f-0a12-43b8-a21a-66b42c392a20';
+        let apiUrl = localStorage.getItem('apiUrl') || 'https://api.somtoday.nl/rest/v1/icalendar/stream/84b872b2-462d-4f29-b924-f81cdf98c4ca/5d2f5a2f-0a12-43b8-a21a-66b42c392a20';
+
+        // Initialiseren van de link
+        document.getElementById('ical-link').textContent = apiUrl;
+
+        document.getElementById("saveButton").addEventListener("click", function () {
+            const newApiUrl = document.getElementById('ical-link').textContent.trim();
+            if (newApiUrl && newApiUrl !== apiUrl) {
+                apiUrl = newApiUrl;
+                localStorage.setItem('apiUrl', apiUrl);
+                console.log("API URL opgeslagen:", apiUrl);
+                location.reload()
+            }
+        });
 
         document.getElementById("toggleButton").addEventListener("click", function () {
             showWeekend = !showWeekend;
@@ -94,7 +111,6 @@
 
         document.getElementById("status").textContent = showWeekend ? "wel" : "niet";
         document.getElementById("toggleButton").textContent = showWeekend ? "Laat de weekenden niet zien" : "Laat de weekenden wel zien";
-        document.getElementById('ical-link').textContent = apiUrl;
 
         async function fetchAgendaData() {
             try {
