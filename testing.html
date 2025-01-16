@@ -21,7 +21,6 @@
             border: 1px solid var(--button-border-color);
             border-radius: 5px;
             height: 1800px;
-            /* 12 uur (7:00 - 19:00), 1 uur = 60px */
             background-color: var(--bg-accent-color1);
             overflow: hidden;
         }
@@ -30,11 +29,12 @@
             position: absolute;
             left: 5%;
             width: 90%;
-            background-color: var(--bg-accent-color2);
+            background-color: var(--bg-accent-color1);
             padding: 5px;
             border-radius: 5px;
             border: 1px solid var(--h1234-color);
             box-sizing: border-box;
+            box-shadow: 0 0 5px var(--h1234-color);
         }
 
         .event h4 {
@@ -51,7 +51,14 @@
             width: 100%;
             height: 1px;
             background-color: var(--text-color);
-            filter: opacity(0.5);
+            opacity: 0.5;
+        }
+
+        .grey-block {
+            position: absolute;
+            width: 100%;
+            background-color: var(--text-color);
+            opacity: 0.1;
         }
     </style>
 </head>
@@ -241,6 +248,27 @@
                 "16:50"
             ];
 
+            // Tijdblokken die je grijs wilt maken, gesplitst in begin- en eindtijd
+            const greyTimes = [
+                { start: "10:10", end: "10:30" },
+                { start: "12:10", end: "12:40" },
+                { start: "14:20", end: "14:35" }
+            ];
+
+            // Voeg voor elke pauze een grijs blok toe
+            greyTimes.forEach(greyTime => {
+                const startPosition = toMinutes(greyTime.start) - toMinutes("07:00"); // Omrekenen naar minuten vanaf 7:00
+                const endPosition = toMinutes(greyTime.end) - toMinutes("07:00");
+
+                const greyBlock = document.createElement('div');
+                greyBlock.classList.add('grey-block');
+                greyBlock.style.top = `${startPosition * 2.5}px`; // Omrekenen naar pixels (1 minuut = 1.5px)
+                greyBlock.style.height = `${(endPosition - startPosition) * 2.5}px`; // Hoogte op basis van het tijdsinterval
+
+                container.appendChild(greyBlock);
+            });
+
+            // Voeg de gewone tijdsblokken toe
             times.forEach(time => {
                 const [hours, minutes] = time.split(':').map(Number);
                 const blockPosition = ((hours - 7) * 150) + (minutes / 60) * 150; // Omzetten naar pixels (start om 7:00)
@@ -248,8 +276,14 @@
                 const timeBlock = document.createElement('div');
                 timeBlock.classList.add('time-block');
                 timeBlock.style.top = `${blockPosition}px`;
+
                 container.appendChild(timeBlock);
             });
+        }
+
+        function toMinutes(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes; // Zet de tijd om naar het aantal minuten sinds middernacht
         }
     </script>
 
