@@ -9,39 +9,41 @@
     <script src="/script.js"></script>
 
     <style>
-        body {
-            line-height: 1.6;
-        }
-
         .week {
             display: flex;
-            gap: 10px;
+            gap: 5px;
             margin-bottom: 20px;
         }
 
         .day-column {
             flex: 1;
+            position: relative;
             border: 1px solid var(--button-border-color);
             border-radius: 5px;
-            padding: 10px;
+            height: 1800px;
+            /* 12 uur (7:00 - 19:00), 1 uur = 60px */
             background-color: var(--bg-accent-color1);
+            overflow: hidden;
         }
 
         .event {
+            position: absolute;
+            left: 5%;
+            width: 90%;
             background-color: var(--bg-accent-color2);
-            padding: 10px;
-            margin: 5px 0;
+            padding: 5px;
             border-radius: 5px;
             border: 1px solid var(--h1234-color);
+            box-sizing: border-box;
         }
 
         .event h4 {
-            margin: 0px;
-            font-size: 1.1em;
+            margin: 0;
+            font-size: 0.9em;
         }
 
         .event p {
-            margin: 5px 0;
+            margin: 3px 0;
         }
     </style>
 </head>
@@ -142,31 +144,18 @@
             eventsContainer.innerHTML = '';
 
             const today = new Date();
-            const weekStart = getMonday(today); // Eerste week begint op maandag
-            const allDays = {}; // Object om evenementen per dag op te slaan
-            let lastEventDate = weekStart; // Houd de laatste datum met een evenement bij
+            const weekStart = getMonday(today);
+            const allDays = {};
 
-            // Verwerk alle evenementen en sorteer ze per datum
             events.forEach(event => {
                 const eventTitle = event.getFirstPropertyValue('summary') || 'Onbekende afspraak';
-                const eventStart = event.getFirstPropertyValue('dtstart');
-                const eventEnd = event.getFirstPropertyValue('dtend');
+                const eventStart = new Date(event.getFirstPropertyValue('dtstart'));
+                const eventEnd = new Date(event.getFirstPropertyValue('dtend'));
                 const eventLocation = event.getFirstPropertyValue('location') || 'Geen locatie opgegeven';
+                const eventDate = eventStart.toLocaleDateString();
 
-                const startTime = new Date(eventStart).toLocaleTimeString('nl-NL', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                });
-                const endTime = new Date(eventEnd).toLocaleTimeString('nl-NL', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                });
-                const eventDate = new Date(eventStart).toLocaleDateString();
-
-                // Update laatste datum met evenement
-                if (new Date(eventStart) > lastEventDate) {
-                    lastEventDate = new Date(eventStart);
-                }
+                const duration = (eventEnd - eventStart) / (1000 * 60); // Duur in minuten
+                const startHour = eventStart.getHours() + eventStart.getMinutes() / 60;
 
                 if (!allDays[eventDate]) {
                     allDays[eventDate] = [];
@@ -174,62 +163,59 @@
 
                 allDays[eventDate].push({
                     title: eventTitle,
-                    startTime: startTime,
-                    endTime: endTime,
-                    location: eventLocation
+                    startHour: startHour,
+                    duration: duration,
+                    location: eventLocation,
                 });
             });
 
-            // Bepaal de einddatum van de laatste week met evenementen
-            const lastWeekStart = getMonday(lastEventDate);
+            const weekDays = generateWeekDays(weekStart);
 
-            // Genereer weken van huidige week tot laatste week met evenementen
-            let currentWeekStart = weekStart;
-            while (currentWeekStart <= lastWeekStart) {
-                const weekDays = generateWeekDays(currentWeekStart);
+            const weekRow = document.createElement('div');
+            weekRow.classList.add('week');
 
-                // Week container
-                const weekRow = document.createElement('div');
-                weekRow.classList.add('week');
+            weekDays.forEach(date => {
+                const dayString = date.toLocaleDateString();
+                const dayColumn = document.createElement('div');
+                dayColumn.classList.add('day-column');
 
-                // Voeg dagen toe aan de week
-                weekDays.forEach(date => {
-                    const dayString = date.toLocaleDateString();
-                    const dayColumn = document.createElement('div');
-                    dayColumn.classList.add('day-column');
-                    const dayTitle = document.createElement('h4');
-                    dayTitle.textContent = date.toLocaleDateString('nl-NL', {
-                        weekday: 'short',
-                        day: 'numeric',
-                        month: 'short',
-                    });
-                    dayColumn.appendChild(dayTitle);
-
-                    if (allDays[dayString]) {
-                        allDays[dayString].forEach(event => {
-                            const eventElement = document.createElement('div');
-                            eventElement.classList.add('event');
-                            eventElement.innerHTML = `
-                        <b style="text-align: left;" title="Titel: ${event.title}">${event.title}</b>
-                        <p style="text-align: left;" title="Tijd: ${event.startTime} - ${event.endTime}">${event.startTime} - ${event.endTime}</p>
-                        <p style="text-align: left;" title="Locatie: ${event.location}">${event.location}</p>
-                    `;
-                            dayColumn.appendChild(eventElement);
-                        });
-                    } else {
-                        const noEvents = document.createElement('p');
-                        noEvents.textContent = 'Geen afspraken.';
-                        dayColumn.appendChild(noEvents);
-                    }
-
-                    weekRow.appendChild(dayColumn);
+                const dayTitle = document.createElement('h4');
+                dayTitle.textContent = date.toLocaleDateString('nl-NL', {
+                    weekday: 'short',
+                    day: 'numeric',
+                    month: 'short',
                 });
+                dayColumn.appendChild(dayTitle);
 
-                eventsContainer.appendChild(weekRow);
+                if (allDays[dayString]) {
+                    allDays[dayString].forEach(event => {
+                        const topPosition = (event.startHour - 7) * 150; // Start om 7:00, 1 uur = 150px
+                        const eventHeight = (event.duration / 60) * 150; // Duur in minuten, 1 uur = 150px
 
-                currentWeekStart = new Date(currentWeekStart);
-                currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-            }
+                        const eventElement = document.createElement('div');
+                        eventElement.classList.add('event');
+                        eventElement.style.top = `${topPosition}px`;
+                        eventElement.style.height = `${eventHeight}px`;
+
+                        eventElement.innerHTML = `
+                            <b>${event.title}</b>
+                            <p>${formatTime(event.startHour)} - ${formatTime(event.startHour + event.duration / 60)}</p>
+                            <p>${event.location}</p>
+                        `;
+                        dayColumn.appendChild(eventElement);
+
+                        function formatTime(decimalTime) {
+                            const hours = Math.floor(decimalTime);
+                            const minutes = Math.round((decimalTime - hours) * 60);
+                            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                        }
+                    });
+                }
+
+                weekRow.appendChild(dayColumn);
+            });
+
+            eventsContainer.appendChild(weekRow);
         }
 
         window.onload = fetchAgendaData;
