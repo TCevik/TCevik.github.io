@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOMTODAY OVERZICHTELIJK</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        body {
+            line-height: 1.6;
+        }
+
+        .week {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .day-column {
+            flex: 1;
+            border: 1px solid var(--button-border-color);
+            border-radius: 5px;
+            padding: 10px;
+            background-color: var(--bg-accent-color1);
+        }
+
+        .event {
+            background-color: var(--bg-accent-color2);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid var(--h1234-color);
+        }
+
+        .event h4 {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        .event p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="text-align: left; margin-left: 5px;">Rooster:</h2>
+    <p style="text-align: left; margin-left: 5px; margin-top: -20px; font-size: 0.8em;" id="ical-link"></p>
+
+    <div style="display: flex;">
+        <button id="toggleButton">Laat weekenden wel/niet zien</button>
+        <p>De weekenden worden nu <span id="status"></span> weergegeven.</p>
+    </div>
+
+    <div id="events-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
+
+    <script>
+        let showWeekend = localStorage.getItem('tctamSRoosterShowWeekend') === 'true';
+        const apiUrl = 'https://api.somtoday.nl/rest/v1/icalendar/stream/84b872b2-462d-4f29-b924-f81cdf98c4ca/5d2f5a2f-0a12-43b8-a21a-66b42c392a20';
+
+        document.getElementById("toggleButton").addEventListener("click", function () {
+            showWeekend = !showWeekend;
+            document.getElementById("status").textContent = showWeekend ? "wel" : "niet";
+            document.getElementById("toggleButton").textContent = showWeekend ? "Laat de weekenden niet zien" : "Laat de weekenden wel zien";
+            console.log("showWeekend is now:", showWeekend);
+
+            localStorage.setItem('tctamSRoosterShowWeekend', showWeekend);
+
+            fetchAgendaData();
+        });
+
+        document.getElementById("status").textContent = showWeekend ? "wel" : "niet";
+        document.getElementById("toggleButton").textContent = showWeekend ? "Laat de weekenden niet zien" : "Laat de weekenden wel zien";
+        document.getElementById('ical-link').textContent = apiUrl;
+
+        async function fetchAgendaData() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.text();
+                parseIcalData(data);
+            } catch (error) {
+                console.error('Er is een fout opgetreden bij het ophalen van de agenda:', error);
+                document.getElementById('events-container').innerHTML = 'Er is een fout opgetreden bij het ophalen van de agenda.';
+            }
+        }
+
+        function parseIcalData(icalData) {
+            if (typeof ICAL === 'undefined') {
+                console.error('ICAL.js is niet geladen.');
+                return;
+            }
+
+            const jcalData = ICAL.parse(icalData);
+            const comp = new ICAL.Component(jcalData);
+            const events = comp.getAllSubcomponents('vevent');
+
+            if (events.length > 0) {
+                displayEvents(events);
+            } else {
+                document.getElementById('events-container').innerHTML = 'Geen afspraken gevonden.';
+            }
+        }
+
+        function getMonday(date) {
+            const day = date.getDay();
+            const diff = (day === 0 ? -6 : 1) - day;
+            const monday = new Date(date);
+            monday.setDate(date.getDate() + diff);
+            return monday;
+        }
+
+        function getSunday(date) {
+            const sunday = new Date(date);
+            sunday.setDate(date.getDate() + (7 - date.getDay() || 7));
+            return sunday;
+        }
+
+        function generateWeekDays(startDate) {
+            const days = [];
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(startDate);
+                day.setDate(startDate.getDate() + i);
+
+                // Als showWeekend false is, sla dan zaterdag (6) en zondag (0) over
+                if (showWeekend === false && (day.getDay() === 0 || day.getDay() === 6)) {
+                    continue; // Sla zaterdag en zondag over
+                }
+
+                days.push(day);
+            }
+            return days;
+        }
+
+        function displayEvents(events) {
+            const eventsContainer = document.getElementById('events-container');
+            eventsContainer.innerHTML = '';
+
+            const today = new Date();
+            const weekStart = getMonday(today); // Eerste week begint op maandag
+            const allDays = {}; // Object om evenementen per dag op te slaan
+            let lastEventDate = weekStart; // Houd de laatste datum met een evenement bij
+
+            // Verwerk alle evenementen en sorteer ze per datum
+            events.forEach(event => {
+                const eventTitle = event.getFirstPropertyValue('summary') || 'Onbekende afspraak';
+                const eventStart = event.getFirstPropertyValue('dtstart');
+                const eventEnd = event.getFirstPropertyValue('dtend');
+                const eventLocation = event.getFirstPropertyValue('location') || 'Geen locatie opgegeven';
+
+                const startTime = new Date(eventStart).toLocaleTimeString('nl-NL', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+                const endTime = new Date(eventEnd).toLocaleTimeString('nl-NL', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+                const eventDate = new Date(eventStart).toLocaleDateString();
+
+                // Update laatste datum met evenement
+                if (new Date(eventStart) > lastEventDate) {
+                    lastEventDate = new Date(eventStart);
+                }
+
+                if (!allDays[eventDate]) {
+                    allDays[eventDate] = [];
+                }
+
+                allDays[eventDate].push({
+                    title: eventTitle,
+                    startTime: startTime,
+                    endTime: endTime,
+                    location: eventLocation
+                });
+            });
+
+            // Bepaal de einddatum van de laatste week met evenementen
+            const lastWeekStart = getMonday(lastEventDate);
+
+            // Genereer weken van huidige week tot laatste week met evenementen
+            let currentWeekStart = weekStart;
+            while (currentWeekStart <= lastWeekStart) {
+                const weekDays = generateWeekDays(currentWeekStart);
+
+                // Week container
+                const weekRow = document.createElement('div');
+                weekRow.classList.add('week');
+
+                // Voeg dagen toe aan de week
+                weekDays.forEach(date => {
+                    const dayString = date.toLocaleDateString();
+                    const dayColumn = document.createElement('div');
+                    dayColumn.classList.add('day-column');
+                    const dayTitle = document.createElement('h3');
+                    dayTitle.textContent = date.toLocaleDateString('nl-NL', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                    });
+                    dayColumn.appendChild(dayTitle);
+
+                    if (allDays[dayString]) {
+                        allDays[dayString].forEach(event => {
+                            const eventElement = document.createElement('div');
+                            eventElement.classList.add('event');
+                            eventElement.innerHTML = `
+                        <h4>${event.title}</h4>
+                        <p><strong>Tijd:</strong> ${event.startTime} - ${event.endTime}</p>
+                        <p><strong>Locatie:</strong> ${event.location}</p>
+                    `;
+                            dayColumn.appendChild(eventElement);
+                        });
+                    } else {
+                        const noEvents = document.createElement('p');
+                        noEvents.textContent = 'Geen afspraken.';
+                        dayColumn.appendChild(noEvents);
+                    }
+
+                    weekRow.appendChild(dayColumn);
+                });
+
+                eventsContainer.appendChild(weekRow);
+
+                // Ga naar de volgende week
+                currentWeekStart = new Date(currentWeekStart);
+                currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+            }
+        }
+
+        window.onload = fetchAgendaData;
+    </script>
+
+</body>
+
+</html>
