@@ -144,9 +144,8 @@
                 const day = new Date(startDate);
                 day.setDate(startDate.getDate() + i);
 
-                // Als showWeekend false is, sla dan zaterdag (6) en zondag (0) over
                 if (showWeekend === false && (day.getDay() === 0 || day.getDay() === 6)) {
-                    continue; // Sla zaterdag en zondag over
+                    continue;
                 }
 
                 days.push(day);
@@ -169,7 +168,7 @@
                 const eventLocation = event.getFirstPropertyValue('location') || 'Geen locatie opgegeven';
                 const eventDate = eventStart.toLocaleDateString();
 
-                const duration = (eventEnd - eventStart) / (1000 * 60); // Duur in minuten
+                const duration = (eventEnd - eventStart) / (1000 * 60);
                 const startHour = eventStart.getHours() + eventStart.getMinutes() / 60;
 
                 if (!allDays[eventDate]) {
@@ -206,8 +205,8 @@
 
                 if (allDays[dayString]) {
                     allDays[dayString].forEach(event => {
-                        const topPosition = (event.startHour - 7) * 150; // Start om 7:00, 1 uur = 150px
-                        const eventHeight = (event.duration / 60) * 150; // Duur in minuten, 1 uur = 150px
+                        const topPosition = (event.startHour - 7) * 150;
+                        const eventHeight = (event.duration / 60) * 150;
 
                         const eventElement = document.createElement('div');
                         eventElement.classList.add('event');
@@ -240,38 +239,35 @@
         function addTimeBlocks(container) {
             const times = [
                 "08:30", "09:20",
-                "10:10", "10:30", // Pauze
+                "10:10", "10:30",
                 "11:20", "12:10",
                 "12:40", "13:30",
-                "14:20", "14:35", // Pauze
+                "14:20", "14:35",
                 "15:20", "16:05",
                 "16:50"
             ];
 
-            // Tijdblokken die je grijs wilt maken, gesplitst in begin- en eindtijd
             const greyTimes = [
                 { start: "10:10", end: "10:30" },
                 { start: "12:10", end: "12:40" },
                 { start: "14:20", end: "14:35" }
             ];
 
-            // Voeg voor elke pauze een grijs blok toe
             greyTimes.forEach(greyTime => {
-                const startPosition = toMinutes(greyTime.start) - toMinutes("07:00"); // Omrekenen naar minuten vanaf 7:00
+                const startPosition = toMinutes(greyTime.start) - toMinutes("07:00");
                 const endPosition = toMinutes(greyTime.end) - toMinutes("07:00");
 
                 const greyBlock = document.createElement('div');
                 greyBlock.classList.add('grey-block');
-                greyBlock.style.top = `${startPosition * 2.5}px`; // Omrekenen naar pixels (1 minuut = 1.5px)
-                greyBlock.style.height = `${(endPosition - startPosition) * 2.5}px`; // Hoogte op basis van het tijdsinterval
+                greyBlock.style.top = `${startPosition * 2.5}px`;
+                greyBlock.style.height = `${(endPosition - startPosition) * 2.5}px`;
 
                 container.appendChild(greyBlock);
             });
 
-            // Voeg de gewone tijdsblokken toe
             times.forEach(time => {
                 const [hours, minutes] = time.split(':').map(Number);
-                const blockPosition = ((hours - 7) * 150) + (minutes / 60) * 150; // Omzetten naar pixels (start om 7:00)
+                const blockPosition = ((hours - 7) * 150) + (minutes / 60) * 150;
 
                 const timeBlock = document.createElement('div');
                 timeBlock.classList.add('time-block');
@@ -283,7 +279,7 @@
 
         function toMinutes(time) {
             const [hours, minutes] = time.split(':').map(Number);
-            return hours * 60 + minutes; // Zet de tijd om naar het aantal minuten sinds middernacht
+            return hours * 60 + minutes;
         }
     </script>
 
