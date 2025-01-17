@@ -27,7 +27,7 @@
 
         .event {
             position: absolute;
-            margin-left: 5%;
+            left: 5%;
             width: 90%;
             background-color: var(--bg-accent-color1);
             padding: 5px;
@@ -204,7 +204,6 @@
             const weekStart = getMonday(currentWeekStartDate);
             const allDays = {};
 
-            // Verzamel alle afspraken per dag en per starttijd
             events.forEach(event => {
                 const eventTitle = event.getFirstPropertyValue('summary') || 'Onbekende afspraak';
                 const eventStart = new Date(event.getFirstPropertyValue('dtstart'));
@@ -216,14 +215,10 @@
                 const startHour = eventStart.getHours() + eventStart.getMinutes() / 60;
 
                 if (!allDays[eventDate]) {
-                    allDays[eventDate] = {};
+                    allDays[eventDate] = [];
                 }
 
-                if (!allDays[eventDate][startHour]) {
-                    allDays[eventDate][startHour] = [];
-                }
-
-                allDays[eventDate][startHour].push({
+                allDays[eventDate].push({
                     title: eventTitle,
                     startHour: startHour,
                     duration: duration,
@@ -252,33 +247,27 @@
                 addTimeBlocks(dayColumn);
 
                 if (allDays[dayString]) {
-                    Object.keys(allDays[dayString]).forEach(startHour => {
-                        const eventsAtTime = allDays[dayString][startHour];
+                    allDays[dayString].forEach(event => {
+                        const topPosition = (event.startHour - 7) * 150;
+                        const eventHeight = (event.duration / 60) * 150;
 
-                        // Bepaal de breedte per event, afhankelijk van het aantal evenementen op hetzelfde tijdstip
-                        const numberOfEvents = eventsAtTime.length;
-                        const eventWidth = 90 / numberOfEvents; // Maak de breedte kleiner als er meerdere afspraken zijn
+                        const eventElement = document.createElement('div');
+                        eventElement.classList.add('event');
+                        eventElement.style.top = `${topPosition}px`;
+                        eventElement.style.height = `${eventHeight}px`;
 
-                        eventsAtTime.forEach((event, index) => {
-                            const topPosition = (event.startHour - 7) * 150;
-                            const eventHeight = (event.duration / 60) * 150;
+                        eventElement.innerHTML = `
+                            <b>${event.title}</b>
+                            <p>${formatTime(event.startHour)} - ${formatTime(event.startHour + event.duration / 60)}</p>
+                            <p>${event.location}</p>
+                        `;
+                        dayColumn.appendChild(eventElement);
 
-                            const eventElement = document.createElement('div');
-                            eventElement.classList.add('event');
-                            eventElement.style.top = `${topPosition}px`;
-                            eventElement.style.height = `${eventHeight}px`;
-                            eventElement.style.width = `${eventWidth}%`; // Stel de breedte in op basis van het aantal afspraken
-
-                            // Verschuif de events horizontaal zodat ze niet overlappen
-                            eventElement.style.left = `${index * eventWidth}%`;
-
-                            eventElement.innerHTML = `
-                        <b>${event.title}</b>
-                        <p>${formatTime(event.startHour)} - ${formatTime(event.startHour + event.duration / 60)}</p>
-                        <p>${event.location}</p>
-                    `;
-                            dayColumn.appendChild(eventElement);
-                        });
+                        function formatTime(decimalTime) {
+                            const hours = Math.floor(decimalTime);
+                            const minutes = Math.round((decimalTime - hours) * 60);
+                            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                        }
                     });
                 }
 
@@ -286,18 +275,6 @@
             });
 
             eventsContainer.appendChild(weekRow);
-        }
-
-        function formatTime(decimalTime) {
-            const hours = Math.floor(decimalTime);
-            const minutes = Math.round((decimalTime - hours) * 60);
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-        }
-
-        function formatTime(decimalTime) {
-            const hours = Math.floor(decimalTime);
-            const minutes = Math.round((decimalTime - hours) * 60);
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         }
 
         window.onload = fetchAgendaData;
