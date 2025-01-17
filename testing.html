@@ -60,6 +60,19 @@
             background-color: var(--text-color);
             opacity: 0.1;
         }
+
+        .nav-buttons {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-buttons button {
+            padding: 5px 10px;
+            font-size: 1em;
+        }
     </style>
 </head>
 
@@ -79,13 +92,18 @@
 
     <div id="events-container"></div>
 
+    <div class="nav-buttons">
+        <button id="prevWeek">Vorige week</button>
+        <button id="nextWeek">Volgende week</button>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
 
     <script>
         let showWeekend = localStorage.getItem('tctamSRoosterShowWeekend') === 'true';
-        let apiUrl = localStorage.getItem('apiUrl') || 'Vul hier de ICalendar Token in om je agenda te laden. ';
+        let apiUrl = localStorage.getItem('apiUrl') || 'Vul hier de ICalendar Token in om je agenda te laden.';
+        let currentWeekStartDate = new Date();
 
-        // Initialiseren van de link
         document.getElementById('ical-link').textContent = apiUrl;
 
         document.getElementById("saveButton").addEventListener("click", function () {
@@ -111,6 +129,16 @@
 
         document.getElementById("status").textContent = showWeekend ? "wel" : "niet";
         document.getElementById("toggleButton").textContent = showWeekend ? "Laat de weekenden niet zien" : "Laat de weekenden wel zien";
+
+        document.getElementById("prevWeek").addEventListener("click", function () {
+            currentWeekStartDate.setDate(currentWeekStartDate.getDate() - 7);
+            fetchAgendaData();
+        });
+
+        document.getElementById("nextWeek").addEventListener("click", function () {
+            currentWeekStartDate.setDate(currentWeekStartDate.getDate() + 7);
+            fetchAgendaData();
+        });
 
         async function fetchAgendaData() {
             try {
@@ -173,8 +201,7 @@
             const eventsContainer = document.getElementById('events-container');
             eventsContainer.innerHTML = '';
 
-            const today = new Date();
-            const weekStart = getMonday(today);
+            const weekStart = getMonday(currentWeekStartDate);
             const allDays = {};
 
             events.forEach(event => {
