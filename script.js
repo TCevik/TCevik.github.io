@@ -373,7 +373,8 @@ function setCorrectTheme() {
 
 	const themeOptions = Array.from(themeSwitch.options).map(option => option.value);
 	if (!themeOptions.includes(savedTheme)) {
-		savedTheme = themeOptions[0];
+		const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		savedTheme = prefersDark ? "darkmode" : "lightmode";
 		localStorage.setItem("themeSetting", savedTheme);
 	}
 
