@@ -64,26 +64,6 @@
             border-radius: var(--border-radius2);
         }
 
-        @media (max-width: 800px) {
-            #input-container {
-                flex-direction: column;
-                height: 150px;
-            }
-
-            #message-input,
-            #send-message {
-                width: 80% !important;
-            }
-
-            #send-message {
-                margin-top: 10px;
-            }
-
-            #messages {
-                height: calc(100% - 180px);
-            }
-        }
-
         #messages {
             position: fixed;
             top: 0px;
@@ -130,6 +110,52 @@
 </body>
 
 <script>
+    function checkOrientation() {
+        const warningElement = document.getElementById('blockedOrientation');
+
+        if (window.innerWidth < window.innerHeight) {
+            warningElement.style.display = 'flex';
+        } else {
+            warningElement.style.display = 'none';
+        }
+    }
+
+    if (!document.getElementById('orientationWarning')) {
+        const blockedElement = document.createElement('div');
+        blockedElement.id = 'blockedOrientation';
+        blockedElement.style.position = 'fixed';
+        blockedElement.style.display = 'flex';
+        blockedElement.style.justifyContent = 'center';
+        blockedElement.style.alignItems = 'center';
+        blockedElement.style.top = '0';
+        blockedElement.style.left = '0';
+        blockedElement.style.width = '100vw';
+        blockedElement.style.height = '100vh';
+        blockedElement.style.backdropFilter = 'blur(10px)';
+        blockedElement.style.zIndex = '100';
+
+        const blockedContainer = document.createElement('div');
+        blockedContainer.id = 'blockedContainer';
+        blockedContainer.style.backgroundColor = 'var(--bg-accent-color1)';
+        blockedContainer.style.padding = '20px';
+        blockedContainer.style.borderRadius = 'var(--border-radius2)';
+        blockedContainer.style.textAlign = 'center';
+        blockedContainer.style.width = '600px';
+        blockedContainer.style.maxWidth = '80%';
+
+        const message = document.createElement('h3');
+        message.textContent = 'Rotate your screen to use the chat.';
+        message.style.margin = '0px';
+        message.style.marginBottom = '10px'
+
+        blockedContainer.appendChild(message);
+        blockedElement.appendChild(blockedContainer);
+        document.body.appendChild(blockedElement);
+    }
+
+    window.addEventListener('resize', checkOrientation);
+    checkOrientation();
+
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-message');
     messageInput.addEventListener('keydown', (event) => {
