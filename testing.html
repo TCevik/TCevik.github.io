@@ -8,6 +8,65 @@
     <meta name='viewport' content='width=device-width, initializeial-scale=1'>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+
+    <style>
+        .message-name {
+            font-weight: bolder;
+            margin-top: 20px;
+        }
+
+        .message-name,
+        .message-text {
+            text-align: left;
+            margin-left: 0px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .message {
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        .message-text {
+            border-left: 4px solid red;
+            padding-left: 8px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding: 2.5px;
+        }
+
+        .own-message .message-text {
+            border-left: 4px solid blue;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        #message-input {
+            width: 70%;
+        }
+
+        #send-message {
+            width: 20%;
+        }
+
+        #input-container {
+            display: flex;
+            position: fixed;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 80%;
+            height: 100px;
+            background-color: var(--bg-accent-color1);
+            border-radius: var(--border-radius2);
+        }
+
+        #chat {
+            margin-bottom: 110px;
+        }
+    </style>
 </head>
 
 <body>
@@ -36,8 +95,7 @@
         <h2>Chat</h2>
         <div id="messages"></div>
         <div id="input-container">
-            <input style="width: 50%;" type="text" id="message-input" placeholder="Type a message..." maxlength="1024"
-                autocomplete="off">
+            <input type="text" id="message-input" placeholder="Type a message..." maxlength="1024" autocomplete="off">
             <button style="width: 20%;" id="send-message">Verzend</button>
         </div>
     </div>
@@ -45,6 +103,14 @@
 </body>
 
 <script>
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-message');
+    messageInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            sendButton.click();
+        }
+    });
+
     let peerConnection = new RTCPeerConnection();
     let dataChannel;
     let initialize = async () => {
@@ -53,9 +119,8 @@
         peerConnection.ondatachannel = (event) => {
             const receiveChannel = event.channel;
             receiveChannel.onmessage = (event) => {
-                let messageDiv = document.createElement('div');
-                messageDiv.textContent = event.data;
-                document.getElementById('messages').appendChild(messageDiv);
+                let message = JSON.parse(event.data);
+                displayMessage(message);
             };
         };
 
@@ -70,6 +135,7 @@
     function showChat() {
         document.getElementById('add-person').style.display = 'none'; // Hide the SDP offer/answer section
         document.getElementById('chat').style.display = 'block'; // Show the chat section
+        document.getElementById("message-input").focus();
     }
 
     let createOffer = async () => {
@@ -129,15 +195,42 @@
     let sendMessage = () => {
         let message = document.getElementById('message-input').value;
         if (dataChannel && message) {
-            let messageWithName = `${userName}${randomId}: ${message}`;
+            let dataToSend = { name: `${userName}${randomId}`, text: message };
 
-            dataChannel.send(messageWithName);
-            let messageDiv = document.createElement('div');
-            messageDiv.textContent = messageWithName;
-            document.getElementById('messages').appendChild(messageDiv);
+            dataChannel.send(JSON.stringify(dataToSend));
+
+            displayMessage(dataToSend, true);
             document.getElementById('message-input').value = '';
             document.getElementById("message-input").focus();
         }
+    };
+
+    let lastSender = null; // Houdt de laatste afzender bij
+
+    let displayMessage = (data, isOwnMessage = false) => {
+        let messageContainer = document.createElement('div');
+        messageContainer.className = isOwnMessage ? 'message own-message' : 'message';
+
+        // Laat de naam alleen zien als de afzender anders is dan de laatste
+        if (data.name !== lastSender) {
+            let nameDiv = document.createElement('div');
+            nameDiv.className = 'message-name';
+            nameDiv.textContent = data.name;
+            messageContainer.appendChild(nameDiv);
+        }
+
+        // Maak de tekst-div
+        let textDiv = document.createElement('div');
+        textDiv.className = 'message-text';
+        textDiv.textContent = data.text;
+
+        messageContainer.appendChild(textDiv);
+
+        // Voeg het bericht toe aan het berichtenelement
+        document.getElementById('messages').appendChild(messageContainer);
+
+        // Update de laatste afzender
+        lastSender = data.name;
     };
 
     initialize();
