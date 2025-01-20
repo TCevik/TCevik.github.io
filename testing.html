@@ -55,16 +55,44 @@
             position: fixed;
             bottom: 5px;
             left: 50%;
+            align-items: center;
             transform: translateX(-50%);
-            z-index: 1000;
+            z-index: 3;
             width: 80%;
             height: 100px;
             background-color: var(--bg-accent-color1);
             border-radius: var(--border-radius2);
         }
 
-        #chat {
-            margin-bottom: 130px;
+        @media (max-width: 800px) {
+            #input-container {
+                flex-direction: column;
+                height: 150px;
+            }
+
+            #message-input,
+            #send-message {
+                width: 80% !important;
+            }
+
+            #send-message {
+                margin-top: 10px;
+            }
+
+            #messages {
+                height: calc(100% - 180px);
+            }
+        }
+
+        #messages {
+            position: fixed;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            width: 80%;
+            height: calc(100% - 130px);
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -227,10 +255,14 @@
         messageContainer.appendChild(textDiv);
 
         // Voeg het bericht toe aan het berichtenelement
-        document.getElementById('messages').appendChild(messageContainer);
+        let messagesContainer = document.getElementById('messages');
+        messagesContainer.appendChild(messageContainer);
 
         // Update de laatste afzender
         lastSender = data.name;
+
+        // Scroll naar het nieuwe bericht
+        messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
 
     initialize();
