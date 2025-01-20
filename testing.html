@@ -215,6 +215,7 @@
             let nameDiv = document.createElement('div');
             nameDiv.className = 'message-name';
             nameDiv.textContent = data.name;
+            nameDiv.style.color = isOwnMessage ? 'blue' : 'red';
             messageContainer.appendChild(nameDiv);
         }
 
