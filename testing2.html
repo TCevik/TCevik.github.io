@@ -22,10 +22,18 @@
             <button id="user-2-btn">User 2</button>
         </div>
 
-        <div id="qr-scanner">
+        <div id="qr-shower" style="display: none; width: 100%; height: 100%;">
+            <canvas style="border: 1px solid black;" id="qrCodeContainer"></canvas>
+        </div>
+
+        <div id="qr-scanner" style="display: none;">
             <p>Scan the QR code that the other user has on the screen.</p>
+            <div id="reader"></div>
         </div>
     </div>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
     <script>
         let peerConnection = new RTCPeerConnection()
@@ -105,12 +113,60 @@
 
             document.getElementById('user-1-btn').addEventListener('click', function () {
                 document.getElementById('user-nr-select').style.display = 'none';
+                document.getElementById('qr-shower').style.display = 'block';
                 createOffer();
+                setTimeout(() => {
+                    generateQRCode(offerSDP);
+                }, 500);
             });
 
             document.getElementById('user-2-btn').addEventListener('click', function () {
                 document.getElementById('user-nr-select').style.display = 'none';
                 document.getElementById('qr-scanner').style.display = 'block';
+                startScanner();
+            });
+        }
+
+        function startScanner() {
+            const html5QrCode = new Html5Qrcode("reader");
+
+            const config = { fps: 10 };
+
+            navigator.mediaDevices.enumerateDevices().then(devices => {
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+                if (videoDevices.length > 0) {
+                    const deviceId = videoDevices[1].deviceId;
+
+                    html5QrCode.start(
+                        { deviceId: { exact: deviceId } }, 
+                        config,
+                        (decodedText, decodedResult) => {
+                            createAnswer(decodedText);
+                            html5QrCode.stop().then(() => {
+                                console.log("Scanner gestopt");
+                            }).catch(err => {
+                                console.error("Fout bij stoppen van de scanner: ", err);
+                            });
+                        },
+                        (errorMessage) => {
+                            console.log("Scanning... " + errorMessage);
+                        }
+                    ).catch(err => {
+                        console.error("Fout bij starten van de scanner: ", err);
+                    });
+                } else {
+                    alert("Geen camera gevonden.");
+                }
+            }).catch(err => {
+                console.error("Fout bij het ophalen van camera-apparaten: ", err);
+            });
+        }
+
+        function generateQRCode(text) {
+            QRCode.toCanvas(document.getElementById('qrCodeContainer'), offerSDP, { width: 800, errorCorrectionLevel: 'L' }, function (error) {
+                if (error) console.error(error);
+                console.log('QR code generated');
             });
         }
     </script>
