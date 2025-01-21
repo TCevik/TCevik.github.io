@@ -5,6 +5,21 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>WebRTC</title>
+
+    <style>
+        #qr-scanner,
+        #qr-shower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+    </style>
 </head>
 
 <body>
@@ -129,8 +144,18 @@
         }
 
         function startScanner() {
+            const minSize = Math.min(window.innerWidth, window.innerHeight);
+            const readerElement = document.getElementById('reader');
             const html5QrCode = new Html5Qrcode("reader");
-            const config = { fps: 30 };
+            readerElement.style.width = `${minSize}px`;
+            readerElement.style.height = `${minSize}px`;
+
+            const config = {
+                fps: 10,
+                qrbox: { width: minSize, height: minSize }
+            };
+
+            console.log(config);
 
             navigator.mediaDevices.enumerateDevices().then(devices => {
                 const videoDevices = devices.filter(device => device.kind === 'videoinput');
@@ -182,7 +207,7 @@
                         }, 1000);
                     });
 
-                    cameraSelect.value = videoDevices[1].deviceId;
+                    cameraSelect.value = videoDevices[videoDevices.length - 1].deviceId;
                     cameraSelect.dispatchEvent(new Event('change'));
                 } else {
                     alert("Geen camera gevonden.");
@@ -193,7 +218,9 @@
         }
 
         function generateQRCode(text) {
-            QRCode.toCanvas(document.getElementById('qrCodeContainer'), offerSDP, { width: 800, errorCorrectionLevel: 'L' }, function (error) {
+            const minSize = Math.min(window.innerWidth, window.innerHeight);
+
+            QRCode.toCanvas(document.getElementById('qrCodeContainer'), offerSDP, { width: minSize, errorCorrectionLevel: 'L' }, function (error) {
                 if (error) console.error(error);
                 console.log('QR code generated');
             });
