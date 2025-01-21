@@ -28,6 +28,7 @@
 
         <div id="qr-scanner" style="display: none;">
             <p>Scan the QR code that the other user has on the screen.</p>
+            <select id="camera-select"></select>
             <div id="reader"></div>
         </div>
     </div>
@@ -129,32 +130,60 @@
 
         function startScanner() {
             const html5QrCode = new Html5Qrcode("reader");
-
-            const config = { fps: 10 };
+            const config = { fps: 30 };
 
             navigator.mediaDevices.enumerateDevices().then(devices => {
                 const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
                 if (videoDevices.length > 0) {
-                    const deviceId = videoDevices[1].deviceId;
+                    const cameraSelect = document.getElementById('camera-select');
+                    cameraSelect.innerHTML = '';
 
-                    html5QrCode.start(
-                        { deviceId: { exact: deviceId } }, 
-                        config,
-                        (decodedText, decodedResult) => {
-                            createAnswer(decodedText);
+                    videoDevices.forEach((device, index) => {
+                        const option = document.createElement('option');
+                        option.value = device.deviceId;
+                        option.textContent = device.label || `Camera ${index + 1}`;
+                        cameraSelect.appendChild(option);
+                    });
+
+                    let cameraRunning = false;
+                    cameraSelect.addEventListener('change', (event) => {
+                        const selectedDeviceId = event.target.value;
+
+                        if (cameraRunning === true) {
                             html5QrCode.stop().then(() => {
                                 console.log("Scanner gestopt");
+                                cameraRunning = false;
                             }).catch(err => {
                                 console.error("Fout bij stoppen van de scanner: ", err);
                             });
-                        },
-                        (errorMessage) => {
-                            console.log("Scanning... " + errorMessage);
                         }
-                    ).catch(err => {
-                        console.error("Fout bij starten van de scanner: ", err);
+
+                        setTimeout(() => {
+                            cameraRunning = true;
+                            html5QrCode.start(
+                                { deviceId: { exact: selectedDeviceId } },
+                                config,
+                                (decodedText, decodedResult) => {
+                                    createAnswer(decodedText);
+                                    html5QrCode.stop().then(() => {
+                                        console.log("Scanner gestopt");
+                                        cameraRunning = false;
+                                    }).catch(err => {
+                                        console.error("Fout bij stoppen van de scanner: ", err);
+                                    });
+                                },
+                                (errorMessage) => {
+                                    console.log("Scanning... " + errorMessage);
+                                }
+                            ).catch(err => {
+                                console.error("Fout bij starten van de scanner: ", err);
+                            });
+                        }, 1000);
                     });
+
+                    cameraSelect.value = videoDevices[1].deviceId;
+                    cameraSelect.dispatchEvent(new Event('change'));
                 } else {
                     alert("Geen camera gevonden.");
                 }
