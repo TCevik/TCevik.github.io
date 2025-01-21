@@ -8,14 +8,29 @@
 </head>
 
 <body>
-    <div>
+    <div id="setup-container">
         <button id="create-offer">Create Offer</button>
         <button id="create-answer">Create Answer</button>
         <button id="add-answer">Add Answer</button>
+        <button id="fast-setup">Fast Setup</button>
+    </div>
+
+    <div id="fast-setup-container" style="display: none;">
+        <div id="user-nr-select">
+            <p>What user do you want to be? (this will not make a difference when using the app)</p>
+            <button id="user-1-btn">User 1</button>
+            <button id="user-2-btn">User 2</button>
+        </div>
+
+        <div id="qr-scanner">
+            <p>Scan the QR code that the other user has on the screen.</p>
+        </div>
     </div>
 
     <script>
         let peerConnection = new RTCPeerConnection()
+        let offerSDP
+        let answerSDP
 
         let init = () => {
             peerConnection.createDataChannel('dataChannel');
@@ -33,7 +48,7 @@
 
             peerConnection.onicecandidate = async (event) => {
                 if (event.candidate === null) {
-                    let offerSDP = JSON.stringify(peerConnection.localDescription);
+                    offerSDP = JSON.stringify(peerConnection.localDescription);
                     await navigator.clipboard.writeText(offerSDP);
                     peerConnection.onicecandidate = null;
                 }
@@ -48,7 +63,7 @@
 
             peerConnection.onicecandidate = async (event) => {
                 if (event.candidate === null) {
-                    let answerSDP = JSON.stringify(peerConnection.localDescription);
+                    answerSDP = JSON.stringify(peerConnection.localDescription);
                     await navigator.clipboard.writeText(answerSDP);
                     peerConnection.onicecandidate = null;
                 }
@@ -64,8 +79,9 @@
         init()
 
         document.getElementById('create-offer').addEventListener('click', createOfferBtnClick);
-        document.getElementById('create-answer').addEventListener('click',takeOffer)
-        document.getElementById('add-answer').addEventListener('click', takeAnswer)
+        document.getElementById('create-answer').addEventListener('click', takeOffer);
+        document.getElementById('add-answer').addEventListener('click', takeAnswer);
+        document.getElementById('fast-setup').addEventListener('click', fastSetup);
 
         function createOfferBtnClick() {
             alert('Offer SDP copied to clipboard!');
@@ -81,6 +97,21 @@
         function takeAnswer() {
             let answer = JSON.parse(prompt('Paste the answer SDP here:'));
             addAnswer(answer);
+        }
+
+        function fastSetup() {
+            document.getElementById('setup-container').style.display = "none";
+            document.getElementById('fast-setup-container').style.display = "block";
+
+            document.getElementById('user-1-btn').addEventListener('click', function () {
+                document.getElementById('user-nr-select').style.display = 'none';
+                createOffer();
+            });
+
+            document.getElementById('user-2-btn').addEventListener('click', function () {
+                document.getElementById('user-nr-select').style.display = 'none';
+                document.getElementById('qr-scanner').style.display = 'block';
+            });
         }
     </script>
 </body>
