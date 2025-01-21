@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>WebRTC</title>
+</head>
+
+<body>
+    <div>
+        <button id="create-offer">Create Offer</button>
+        <button id="create-answer">Create Answer</button>
+        <button id="add-answer">Add Answer</button>
+    </div>
+
+    <script>
+        let peerConnection = new RTCPeerConnection()
+
+        let init = () => {
+            peerConnection.createDataChannel('dataChannel');
+
+            peerConnection.onconnectionstatechange = () => {
+                if (peerConnection.connectionState === 'connected') {
+                    alert('Connection established!');
+                }
+            };
+        }
+
+        let createOffer = async () => {
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+
+            peerConnection.onicecandidate = async (event) => {
+                if (event.candidate === null) {
+                    let offerSDP = JSON.stringify(peerConnection.localDescription);
+                    await navigator.clipboard.writeText(offerSDP);
+                    peerConnection.onicecandidate = null;
+                }
+            };
+        }
+
+        let createAnswer = async (offer) => {
+            await peerConnection.setRemoteDescription(offer);
+
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+
+            peerConnection.onicecandidate = async (event) => {
+                if (event.candidate === null) {
+                    let answerSDP = JSON.stringify(peerConnection.localDescription);
+                    await navigator.clipboard.writeText(answerSDP);
+                    peerConnection.onicecandidate = null;
+                }
+            };
+        }
+
+        let addAnswer = async (answer) => {
+            if (!peerConnection.currentRemoteDescription) {
+                peerConnection.setRemoteDescription(answer);
+            }
+        }
+
+        init()
+
+        document.getElementById('create-offer').addEventListener('click', createOfferBtnClick);
+        document.getElementById('create-answer').addEventListener('click',takeOffer)
+        document.getElementById('add-answer').addEventListener('click', takeAnswer)
+
+        function createOfferBtnClick() {
+            alert('Offer SDP copied to clipboard!');
+            createOffer();
+        }
+
+        function takeOffer() {
+            let offer = JSON.parse(prompt('Paste the offer SDP here:'));
+            alert('Answer SDP copied to clipboard!');
+            createAnswer(offer);
+        }
+
+        function takeAnswer() {
+            let answer = JSON.parse(prompt('Paste the answer SDP here:'));
+            addAnswer(answer);
+        }
+    </script>
+</body>
+
+</html>

@@ -18,7 +18,7 @@
         let peerConnection = new RTCPeerConnection()
 
         let init = () => {
-            peerConnection.createDataChannel('dummy');
+            peerConnection.createDataChannel('dataChannel');
 
             peerConnection.onconnectionstatechange = () => {
                 if (peerConnection.connectionState === 'connected') {
@@ -35,14 +35,12 @@
                 if (event.candidate === null) {
                     let offerSDP = JSON.stringify(peerConnection.localDescription);
                     await navigator.clipboard.writeText(offerSDP);
-                    alert('Offer SDP copied to clipboard!');
                     peerConnection.onicecandidate = null;
                 }
             };
         }
 
-        let createAnswer = async () => {
-            let offer = JSON.parse(prompt('Paste the offer SDP here:'));
+        let createAnswer = async (offer) => {
             await peerConnection.setRemoteDescription(offer);
 
             const answer = await peerConnection.createAnswer();
@@ -52,14 +50,12 @@
                 if (event.candidate === null) {
                     let answerSDP = JSON.stringify(peerConnection.localDescription);
                     await navigator.clipboard.writeText(answerSDP);
-                    alert('Answer SDP copied to clipboard!');
                     peerConnection.onicecandidate = null;
                 }
             };
         }
 
-        let addAnswer = async () => {
-            let answer = JSON.parse(prompt('Paste the answer SDP here:'));
+        let addAnswer = async (answer) => {
             if (!peerConnection.currentRemoteDescription) {
                 peerConnection.setRemoteDescription(answer);
             }
@@ -67,9 +63,25 @@
 
         init()
 
-        document.getElementById('create-offer').addEventListener('click', createOffer)
-        document.getElementById('create-answer').addEventListener('click', createAnswer)
-        document.getElementById('add-answer').addEventListener('click', addAnswer)
+        document.getElementById('create-offer').addEventListener('click', createOfferBtnClick);
+        document.getElementById('create-answer').addEventListener('click',takeOffer)
+        document.getElementById('add-answer').addEventListener('click', takeAnswer)
+
+        function createOfferBtnClick() {
+            alert('Offer SDP copied to clipboard!');
+            createOffer();
+        }
+
+        function takeOffer() {
+            let offer = JSON.parse(prompt('Paste the offer SDP here:'));
+            alert('Answer SDP copied to clipboard!');
+            createAnswer(offer);
+        }
+
+        function takeAnswer() {
+            let answer = JSON.parse(prompt('Paste the answer SDP here:'));
+            addAnswer(answer);
+        }
     </script>
 </body>
 
