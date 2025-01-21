@@ -180,7 +180,10 @@
         // Show chat and hide the input fields once the connection is established
         peerConnection.onconnectionstatechange = () => {
             if (peerConnection.connectionState === 'connected') {
-                showChat(); // Show chat when connection is established
+                showChat(); // Toon de chat wanneer de verbinding is gemaakt
+            } else if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
+                console.warn('Verbinding verbroken. Pagina wordt opnieuw geladen...');
+                location.reload(); // Herlaad de pagina
             }
         };
     };
