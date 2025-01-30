@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Seconds</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+</head>
+<body>
+    <h1>30 Seconds</h1>
+    <p>Klik op de knop om 5 willekeurige woorden te zien en probeer ze vervolgens te raden!</p>
+    <div class="time-inputs">
+        <label>
+            Minuten: 
+            <input type="number" id="inputMinuten" min="0" max="59" value="0">
+        </label>
+        <label>
+            Seconden: 
+            <input type="number" id="inputSeconden" min="0" max="59" value="0">
+        </label>
+    </div>
+    <button onclick="genereerWoorden()">Genereer Woorden</button>
+    <div class="woorden-container" id="woordenContainer">
+        <!-- Hier komen de woorden -->
+    </div>
+    <br>
+    <div class="timer" id="timerDisplay"></div>
+
+    <script>
+        const woordenLijst = [
+            "appel", "banaan", "citroen", "druif", "kers", 
+            "peer", "mango", "papaja", "perzik", "abrikoos",
+            "watermeloen", "aardbei", "blauwe bes", "framboos", 
+            "ananas", "kiwi", "limoen", "mandarijn", "vijg", 
+            "pruim", "kokosnoot", "grapefruit", "guave"
+        ];
+
+        let timer;
+        let tijdOver;
+
+        function genereerWoorden() {
+            clearInterval(timer);
+
+            const minuten = parseInt(document.getElementById("inputMinuten").value) || 0;
+            const seconden = parseInt(document.getElementById("inputSeconden").value) || 0;
+
+            if (minuten > 59 || seconden > 59) {
+                alert("De minuten en seconden mogen niet meer dan 59 zijn.");
+                return;
+            }
+
+            tijdOver = minuten * 60 + seconden;
+
+            const woorden = [...woordenLijst];
+            const geselecteerdeWoorden = [];
+
+            while (geselecteerdeWoorden.length < 5 && woorden.length > 0) {
+                const randomIndex = Math.floor(Math.random() * woorden.length);
+                geselecteerdeWoorden.push(woorden[randomIndex]);
+                woorden.splice(randomIndex, 1);
+            }
+
+            const container = document.getElementById("woordenContainer");
+            container.innerHTML = geselecteerdeWoorden.map(woord => `<h4>${woord}</h4>`).join("");
+
+            if (tijdOver > 0) {
+                startTimer();
+            } else {
+                document.getElementById("timerDisplay").textContent = "Timer: Oneindig";
+            }
+        }
+
+        function startTimer() {
+            const display = document.getElementById("timerDisplay");
+            timer = setInterval(() => {
+                if (tijdOver <= 0) {
+                    clearInterval(timer);
+                    alert("De tijd is op!");
+                } else {
+                    tijdOver--;
+                    const minuten = Math.floor(tijdOver / 60);
+                    const seconden = tijdOver % 60;
+                    display.textContent = `Timer: ${minuten}:${seconden.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
