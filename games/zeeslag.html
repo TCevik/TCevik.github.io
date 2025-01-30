@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10x10 Grid</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(11, 1fr);
+            grid-template-rows: repeat(11, 1fr);
+            gap: 5px;
+            width: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
+            margin: 30px auto;
+        }
+
+        .square {
+            width: 100%;
+            height: 100%;
+            background-color: #4caf50;
+            border: 1px solid #333;
+        }
+
+        .header,
+        .row-label,
+        .column-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .column-label {
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid"></div>
+
+    <script>
+        window.addEventListener('resize', resizeGrid);
+        resizeGrid();
+
+        function resizeGrid() {
+            const grid = document.querySelector('.grid');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const size = Math.min(width, height) - 60;
+
+            grid.style.width = `${size}px`;
+            grid.style.height = `${size}px`;
+        }
+
+        const grid = document.querySelector('.grid');
+
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        for (let i = 0; i <= 10; i++) {
+            const label = document.createElement('div');
+            label.className = 'header';
+            if (i === 0) label.textContent = '';
+            else label.textContent = letters[i - 1];
+            grid.appendChild(label);
+        }
+
+        for (let i = 0; i < 10; i++) {
+            const rowLabel = document.createElement('div');
+            rowLabel.className = 'row-label';
+            rowLabel.textContent = `${i + 1}`;
+            grid.appendChild(rowLabel);
+
+            for (let j = 0; j < 10; j++) {
+                const square = document.createElement('div');
+                square.className = 'square';
+                grid.appendChild(square);
+            }
+        }
+    </script>
+</body>
+
+</html>
