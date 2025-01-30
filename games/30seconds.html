@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,17 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 </head>
+
 <body>
     <h1>30 Seconds</h1>
     <p>Klik op de knop om 5 willekeurige woorden te zien en probeer ze vervolgens te raden!</p>
     <div class="time-inputs">
         <label>
-            Minuten: 
+            Minuten:
             <input type="number" id="inputMinuten" min="0" max="59" value="0">
         </label>
         <label>
-            Seconden: 
+            Seconden:
             <input type="number" id="inputSeconden" min="0" max="59" value="0">
         </label>
     </div>
@@ -29,12 +31,156 @@
 
     <script>
         const woordenLijst = [
-            "appel", "banaan", "citroen", "druif", "kers", 
+            "appel", "banaan", "citroen", "druif", "kers",
             "peer", "mango", "papaja", "perzik", "abrikoos",
-            "watermeloen", "aardbei", "blauwe bes", "framboos", 
-            "ananas", "kiwi", "limoen", "mandarijn", "vijg", 
-            "pruim", "kokosnoot", "grapefruit", "guave"
+            "watermeloen", "aardbei", "blauwe bes", "framboos",
+            "ananas", "kiwi", "limoen", "mandarijn", "vijg",
+            "pruim", "kokosnoot", "grapefruit", "guave",
+            "auto", "fiets", "trein", "vliegtuig", "boot",
+            "computer", "telefoon", "tablet", "laptop", "monitor",
+            "tafel", "stoel", "bank", "bed", "kast",
+            "lamp", "klok", "schilderij", "gordijn",
+            "boek", "pen", "potlood", "papier", "notitieblok",
+            "school", "klas", "leraar", "student", "bibliotheek",
+            "stad", "dorp", "land", "straat", "plein",
+            "winkel", "restaurant", "café", "supermarkt", "bioscoop",
+            "hond", "kat", "vogel", "vis", "konijn",
+            "leeuw", "tijger", "olifant", "giraf", "zebra",
+            "regen", "zon", "wolken", "sneeuw", "storm",
+            "herfst", "winter", "lente", "zomer", "jaar",
+            "feest", "verjaardag", "kerst", "oud en nieuw", "huwelijk",
+            "pizza", "pasta", "brood", "kaas", "salade",
+            "water", "thee", "koffie", "sap", "bier",
+            "film", "muziek", "sport", "game",
+            "voetbal", "tennis", "basketbal", "zwemmen", "hardlopen",
+            "museum", "park", "strand", "bos", "berg",
+            "dokter", "verpleegster", "politie", "brandweer", "piloot",
+            "camera", "fototoestel", "microfoon", "speaker", "hoofdtelefoon",
+            "station", "kaartje", "reiziger", "locomotief",
+            "droom", "nacht", "dag", "avond", "ochtend",
+            "familie", "vriend", "collega", "buurman", "buurvrouw",
+            "schilder", "tekenaar", "muzikant", "acteur", "dichter",
+            "kleuren", "rood", "blauw", "geel", "groen",
+            "zwart", "wit", "grijs", "bruin", "oranje",
+            "paars", "roze", "beige", "goud", "zilver",
+            "taart", "ijs", "chocolade", "koekje", "snoep",
+            "haring", "tonijn", "zalm", "krab", "garnaal",
+            "motor", "step", "skateboard", "scooter", "hoverboard",
+            "hobby", "wandelen", "fietsen", "reizen", "fotografie",
+            "tuin", "plant", "boom", "bloem", "gras",
+            "vogelhuisje", "vijver", "schutting", "kas", "tuinhuis",
+            "kerstboom", "cadeau", "lichtjes", "versiering", "sneeuwpop",
+            "vakantie", "hotel", "camping", "strandstoel", "zwembad",
+            "koken", "bakken", "recept", "eten",
+            "boekwinkel", "tijdschrift", "krant", "roman", "thriller",
+            "kind", "baby", "peuter", "kleuter", "puber",
+            "wasmachine", "stofzuiger", "magnetron", "oven", "koelkast",
+            "televisie", "radio", "afstandsbediening", "antenne", "decoder",
+            "woordenboek", "encyclopedie", "woordenlijst", "naslagwerk",
+            "wekker", "timer", "horloge", "stopwatch",
+            "brief", "envelop", "postzegel", "pakket",
+            "toerist", "gids", "kaart", "sightseeing", "excursie",
+            "lade", "plank", "deur", "slot",
+            "deurbel", "sleutel", "kruk", "handvat", "scharnier",
+            "fietsbel", "fietsband", "fietsmand", "fietsstandaard", "fietsketting",
+            "autoportier", "motorkap", "kofferbak", "voorruit", "achteruit",
+            "rem", "band", "uitlaat", "spiegel",
+            "muziekinstrument", "gitaar", "piano", "viool", "drumstel",
+            "orkest", "koor", "dirigent", "zanger", "sopraan",
+            "voetbalclub", "stadion", "wedstrijd", "trainer", "scheidsrechter",
+            "boerderij", "tractor", "schuur", "stal", "hooiberg",
+            "dierentuin", "aquarium", "vlindertuin", "safaripark", "pretpark",
+            "kasteel", "toren", "muur", "poort", "slotgracht",
+            "schoolbord", "krijt", "marker", "liniaal", "gum",
+            "agenda", "kalender", "klapper", "map", "notitieboek",
+            "computerprogramma", "applicatie", "software", "bestand", "document",
+            "keyboard", "muis", "toets", "scherm", "printer",
+            "universiteit", "campus", "docent",
+            "diploma", "scriptie", "tentamen", "college", "presentatie",
+            "cultuur", "kunst", "geschiedenis", "taal", "literatuur",
+            "tijdperk", "periode", "revolutie", "oorlog", "verdrag",
+            "wetenschap", "onderzoek", "experiment", "laboratorium", "microscoop",
+            "robot", "technologie", "innovatie", "toekomst", "programma",
+            "raket", "satelliet", "telescoop", "planeet", "sterrenstelsel",
+            "regenboog", "bliksem", "donder", "mist", "maan",
+            "bloedmaan", "zonsverduistering", "supernova", "meteoriet", "komeet",
+            "arend", "uil", "havik", "specht", "kolibrie",
+            "pinguïn", "zeeschildpad", "dolfijn", "walvis", "kwal",
+            "ijsbeer", "kameel", "hyena", "nijlpaard", "panda",
+            "broccoli", "courgette", "aubergine", "spinazie", "boon",
+            "erwt", "asperge", "pompoen", "pastinaak", "biet",
+            "peper", "gember", "koriander", "basilicum", "rozemarijn",
+            "havermout", "crackers", "muesli", "pannenkoek", "quiche",
+            "yoghurt", "smoothie", "milkshake", "friet", "burger",
+            "saus", "mayonaise", "ketchup", "mosterd", "dressing",
+            "kleurpotlood", "verf", "kwast", "canvas", "palet",
+            "beeldhouwwerk", "galerij", "museumstuk", "fotolijst", "portret",
+            "speelgoed", "lego", "puzzel", "knuffel", "pop",
+            "treinbaan", "raceauto", "gokmachine", "kaartspel", "dobbelsteen",
+            "gitarist", "bassist", "drummer", "toetsenist", "songwriter",
+            "publicatie", "uitgeverij", "redacteur", "schrijver", "illustrator",
+            "kaartlezer", "kompas", "verrekijker", "rugzak", "thermosfles",
+            "sneeuwschoen", "ijsbijl", "slaapzak", "tent", "kampeerstoel",
+            "duikbril", "snorkel", "flippers", "surfplank", "kano",
+            "vlieger", "parachute", "ballon", "luchtbed", "waterscooter",
+            "herdenking", "jubileum", "ceremonie", "optreden", "evenement",
+            "schaatsbaan", "ijsbaan", "rodelbaan", "bobslee", 
+            "spelcomputer", "console", "controller", "headset", "joystick",
+            "beker", "medaille", "trofee", "lint", "wedstrijdschema",
+            "stapelaar", "heftruck", "kruiwagen", "transportband", "container",
+            "loods", "dok", "vrachtwagen", "haven", "scheepswerf",
+            "theater", "toneelstuk", "voorstelling", "repetitie", "coulisse",
+            "dansschool", "ballet", "choreografie", "dansvloer", "salsa",
+            "avondzon", "boemerang", "cactus", "dampkring", "edelsteen",
+            "fantasie", "gidsboek", "horizon", "juwelier",
+            "lavendel", "magma", "nevel", "oase",
+            "pionier", "quarantaine", "reus", "saffier", "toendra",
+            "ultra", "vulkanisme", "wijngaard", "xylofoon", "yoghurtijs",
+            "zolderkamer", "ambacht", "berenklauw", "confetti", "dozijn",
+            "emmer", "flamingo", "grafsteen", "harmonie", "ijspegels",
+            "juweel", "karabijnhaak", "lantaarn", "mandoline", "navigatie",
+            "orkestbak", "pyramide", "queeste", "robotica", "schaalmodel",
+            "toverdrank", "urania", "viooltjes", "wandklok", "x-factor",
+            "yurt", "zaagsel", "aanslag", "blokkade", "controverse",
+            "dilemma", "economisch", "filantroop", "galjoen", "historicus",
+            "ijswand", "jurist", "kabelbaan", "leesbril", "mandarijnboom",
+            "notitie", "oxideren", "periscoop", "quantum",
+            "scepter", "televisiestudio", "uitkijkpunt", "verkeerslicht", "wolkendek",
+            "xenonlamp", "yoga", "zangvogel", "accumulator", "brandweerauto",
+            "cabriolet", "damwand", "embleem", "façade", "garantie",
+            "inkomhal", "jaszak", "klinknagel", "loodlijn",
+            "marmer", "nieuwbouw", "oasebron", "projectiel", "quizmaster",
+            "reclamebord", "slingerklok", "trekkoord", "uithangbord", "vaartboot",
+            "weerspiegeling", "xenofobie", "zeilboot", "ambassadeur", "binnenplaats",
+            "cassetteband", "draaibank", "elfje", "fietspad", "garage",
+            "handboei", "insectenhotel", "jenever", "kaarsvet", "luchtpijp",
+            "maansverduistering", "nachtegaal", "ooievaar", "penseel", "quinoa",
+            "radiografisch", "seismoloog", "tropenhelm", "uitvinder", "ventilator",
+            "wijkraad", "xylotoon", "yeti", "zilverpapier", "ankerplaats",
+            "badmuts", "cultuurlandschap", "dagdroom", "ether", "filmrol",
+            "gletsjer", "hoogtemeter", "inburgering", "jungle", "kijkglas",
+            "landmeter", "marslander", "noorderlicht", "officier", "pantserglas",
+            "quizvraag", "rekenmachine", "schaapherder", "toverspreuk", "utopie",
+            "vaartbrug", "windmolen", "xenofilie", "zandloper", "aandrijving",
+            "boodschappentas", "cabaretier", "dolfijnentrainer", "eetkamerstoel",
+            "folklore", "garde", "haringkar", "jojo",
+            "koelkastmagneet", "liftdeur", "melkweg", "navel", "observatorium",
+            "passe-partout", "quinine", "receptieklok", "tangens",
+            "uittreksel", "voorportaal", "wandrek", "xenoplant", "yoghurtmaker",
+            "zeewier", "adapter", "bejaardentehuis", "cirkelzaag", "deltavlieger",
+            "evenwichtsbalk", "fluweel", "gasfornuis", "huisbaas", "ijsbakje",
+            "juridisch", "koepel", "luchthaven", "magneetbord", "nagelborstel",
+            "olijfolie", "postzegelalbum", "quichevorm", "raadgever", "scheikunde",
+            "toerisme", "uitzettingskoe", "verjaardagskaart", "woudreuzen",
+            "xylograaf", "zaklamp"
         ];
+
+        const duplicates = woordenLijst.filter((item, index) => woordenLijst.indexOf(item) !== index);
+        if (duplicates.length > 0) {
+            console.log("Dubbele woorden gevonden:", duplicates);
+        } else {
+            console.log("Geen dubbele woorden gevonden.");
+        }
 
         let timer;
         let tijdOver;
@@ -87,4 +233,5 @@
         }
     </script>
 </body>
+
 </html>
