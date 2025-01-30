@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <style>
-        .grid-container {
-            display: flex;
+        #grid-container {
+            display: none;
             justify-content: space-around;
             flex-wrap: wrap;
             gap: 20px;
@@ -75,7 +75,7 @@
         <button id="add-answer">Add Answer</button>
     </div>
 
-    <div class="grid-container">
+    <div id="grid-container">
         <div class="grid" id="selfGrid"></div>
         <div class="grid" id="opponentGrid"></div>
     </div>
@@ -149,6 +149,7 @@
                 if (peerConnection.connectionState === 'connected') {
                     alert('Connection established!');
                     document.getElementById('connect-buttons').style.display = 'none';
+                    document.getElementById('grid-container').style.display = 'flex';
                 }
             };
         }
