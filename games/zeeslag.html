@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
     <style>
+        .grid-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(11, 1fr);
@@ -15,7 +22,6 @@
             gap: 5px;
             width: 100%;
             max-width: 100vw;
-            max-height: 100vh;
             margin: 30px auto;
         }
 
@@ -36,6 +42,10 @@
             border: 1px solid var(--text-color);
         }
 
+        .square.disabled {
+            pointer-events: none;
+        }
+
         .header,
         .row-label,
         .column-label {
@@ -48,56 +58,155 @@
         .column-label {
             text-transform: uppercase;
         }
+
+        #connect-buttons {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+        }
     </style>
 </head>
 
 <body>
-    <div class="grid"></div>
+    <div id="connect-buttons">
+        <button id="create-offer">Create Offer</button>
+        <button id="create-answer">Create Answer</button>
+        <button id="add-answer">Add Answer</button>
+    </div>
+
+    <div class="grid-container">
+        <div class="grid" id="selfGrid"></div>
+        <div class="grid" id="opponentGrid"></div>
+    </div>
 
     <script>
         window.addEventListener('resize', resizeGrid);
         resizeGrid();
 
         function resizeGrid() {
-            const grid = document.querySelector('.grid');
+            const grids = document.querySelectorAll('.grid');
             const width = window.innerWidth;
             const height = window.innerHeight;
 
             const size = Math.min(width, height) - 60;
 
-            grid.style.width = `${size}px`;
-            grid.style.height = `${size}px`;
+            grids.forEach(grid => {
+                grid.style.width = `${size}px`;
+                grid.style.height = `${size}px`;
+            });
         }
 
-        const grid = document.querySelector('.grid');
+        const selfGrid = document.querySelector('#selfGrid');
+        const opponentGrid = document.querySelector('#opponentGrid');
 
         const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
-        for (let i = 0; i <= 10; i++) {
-            const label = document.createElement('div');
-            label.className = 'header';
-            if (i === 0) label.textContent = '';
-            else label.textContent = letters[i - 1];
-            grid.appendChild(label);
+        function createGrid(grid, isOpponent = false) {
+            for (let i = 0; i <= 10; i++) {
+                const label = document.createElement('div');
+                label.className = 'header';
+                if (i === 0) label.textContent = '';
+                else label.textContent = letters[i - 1];
+                grid.appendChild(label);
+            }
+
+            for (let i = 0; i < 10; i++) {
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = `${i + 1}`;
+                grid.appendChild(rowLabel);
+
+                for (let j = 0; j < 10; j++) {
+                    const square = document.createElement('div');
+                    square.className = 'square';
+                    square.id = `${i + 1}${letters[j]}`;
+
+                    if (isOpponent) {
+                        square.classList.add('disabled');
+                    } else {
+                        square.addEventListener('click', function () {
+                            console.log('Geklikt op vakje (self): ' + square.id);
+                        });
+                    }
+
+                    grid.appendChild(square);
+                }
+            }
         }
 
-        for (let i = 0; i < 10; i++) {
-            const rowLabel = document.createElement('div');
-            rowLabel.className = 'row-label';
-            rowLabel.textContent = `${i + 1}`;
-            grid.appendChild(rowLabel);
+        createGrid(selfGrid, false);
+        createGrid(opponentGrid, true);
+    </script>
 
-            for (let j = 0; j < 10; j++) {
-                const square = document.createElement('div');
-                square.className = 'square';
-                square.id = `${i + 1}${letters[j]}`;
-                
-                square.addEventListener('click', function() {
-                    console.log('Geklikt op vakje:' + square.id);
-                });
+    <script>
+        let peerConnection = new RTCPeerConnection()
 
-                grid.appendChild(square);
+        let init = () => {
+            peerConnection.createDataChannel('dataChannel');
+
+            peerConnection.onconnectionstatechange = () => {
+                if (peerConnection.connectionState === 'connected') {
+                    alert('Connection established!');
+                    document.getElementById('connect-buttons').style.display = 'none';
+                }
+            };
+        }
+
+        let createOffer = async () => {
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+
+            peerConnection.onicecandidate = async (event) => {
+                if (event.candidate === null) {
+                    let offerSDP = JSON.stringify(peerConnection.localDescription);
+                    await navigator.clipboard.writeText(offerSDP);
+                    peerConnection.onicecandidate = null;
+                }
+            };
+        }
+
+        let createAnswer = async (offer) => {
+            await peerConnection.setRemoteDescription(offer);
+
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+
+            peerConnection.onicecandidate = async (event) => {
+                if (event.candidate === null) {
+                    let answerSDP = JSON.stringify(peerConnection.localDescription);
+                    await navigator.clipboard.writeText(answerSDP);
+                    peerConnection.onicecandidate = null;
+                }
+            };
+        }
+
+        let addAnswer = async (answer) => {
+            if (!peerConnection.currentRemoteDescription) {
+                peerConnection.setRemoteDescription(answer);
             }
+        }
+
+        init()
+
+        document.getElementById('create-offer').addEventListener('click', createOfferBtnClick);
+        document.getElementById('create-answer').addEventListener('click', takeOffer)
+        document.getElementById('add-answer').addEventListener('click', takeAnswer)
+
+        function createOfferBtnClick() {
+            alert('Offer SDP copied to clipboard!');
+            createOffer();
+        }
+
+        function takeOffer() {
+            let offer = JSON.parse(prompt('Paste the offer SDP here:'));
+            alert('Answer SDP copied to clipboard!');
+            createAnswer(offer);
+        }
+
+        function takeAnswer() {
+            let answer = JSON.parse(prompt('Paste the answer SDP here:'));
+            addAnswer(answer);
         }
     </script>
 </body>
