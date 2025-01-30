@@ -22,8 +22,18 @@
         .square {
             width: 100%;
             height: 100%;
-            background-color: #4caf50;
-            border: 1px solid #333;
+            background-color: var(--bg-accent-color2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 5px;
+        }
+
+        .square:hover {
+            transform: scale(1.1);
+            border: 1px solid var(--text-color);
         }
 
         .header,
@@ -62,7 +72,7 @@
         const grid = document.querySelector('.grid');
 
         const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-        
+
         for (let i = 0; i <= 10; i++) {
             const label = document.createElement('div');
             label.className = 'header';
@@ -81,6 +91,11 @@
                 const square = document.createElement('div');
                 square.className = 'square';
                 square.id = `${i + 1}${letters[j]}`;
+                
+                square.addEventListener('click', function() {
+                    console.log('Geklikt op vakje:' + square.id);
+                });
+
                 grid.appendChild(square);
             }
         }
