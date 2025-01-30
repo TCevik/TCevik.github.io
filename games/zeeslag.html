@@ -42,6 +42,10 @@
             border: 1px solid var(--text-color);
         }
 
+        .square.clicked {
+            background-color: red;
+        }
+
         .square.disabled {
             pointer-events: none;
         }
@@ -99,15 +103,16 @@
 
         const selfGrid = document.querySelector('#selfGrid');
         const opponentGrid = document.querySelector('#opponentGrid');
-
+        
         const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        let dataChannel;
+        let peerConnection = new RTCPeerConnection();
 
         function createGrid(grid, isOpponent = false) {
             for (let i = 0; i <= 10; i++) {
                 const label = document.createElement('div');
                 label.className = 'header';
-                if (i === 0) label.textContent = '';
-                else label.textContent = letters[i - 1];
+                label.textContent = i === 0 ? '' : letters[i - 1];
                 grid.appendChild(label);
             }
 
@@ -126,7 +131,10 @@
                         square.classList.add('disabled');
                     } else {
                         square.addEventListener('click', function () {
-                            console.log('Geklikt op vakje (self): ' + square.id);
+                            if (!square.classList.contains('clicked')) {
+                                square.classList.add('clicked');
+                                sendMove(square.id);
+                            }
                         });
                     }
 
@@ -135,15 +143,28 @@
             }
         }
 
+        function sendMove(cellId) {
+            if (dataChannel && dataChannel.readyState === "open") {
+                dataChannel.send(cellId);
+            }
+        }
+
+        function handleIncomingMove(cellId) {
+            const opponentSquare = document.querySelector(`#opponentGrid .square[id="${cellId}"]`);
+            if (opponentSquare && !opponentSquare.classList.contains('clicked')) {
+                opponentSquare.classList.add('clicked');
+            }
+        }
+
         createGrid(selfGrid, false);
         createGrid(opponentGrid, true);
-    </script>
-
-    <script>
-        let peerConnection = new RTCPeerConnection()
 
         let init = () => {
-            peerConnection.createDataChannel('dataChannel');
+            dataChannel = peerConnection.createDataChannel("game");
+
+            dataChannel.onmessage = (event) => {
+                handleIncomingMove(event.data);
+            };
 
             peerConnection.onconnectionstatechange = () => {
                 if (peerConnection.connectionState === 'connected') {
@@ -152,63 +173,63 @@
                     document.getElementById('grid-container').style.display = 'flex';
                 }
             };
-        }
+        };
 
         let createOffer = async () => {
             const offer = await peerConnection.createOffer();
             await peerConnection.setLocalDescription(offer);
 
             peerConnection.onicecandidate = async (event) => {
-                if (event.candidate === null) {
+                if (!event.candidate) {
                     let offerSDP = JSON.stringify(peerConnection.localDescription);
                     await navigator.clipboard.writeText(offerSDP);
-                    peerConnection.onicecandidate = null;
+                    alert('Offer SDP copied to clipboard!');
                 }
             };
-        }
+        };
 
         let createAnswer = async (offer) => {
-            await peerConnection.setRemoteDescription(offer);
+            peerConnection.ondatachannel = (event) => {
+                dataChannel = event.channel;
+                dataChannel.onmessage = (event) => {
+                    handleIncomingMove(event.data);
+                };
+            };
 
+            await peerConnection.setRemoteDescription(offer);
             const answer = await peerConnection.createAnswer();
             await peerConnection.setLocalDescription(answer);
 
             peerConnection.onicecandidate = async (event) => {
-                if (event.candidate === null) {
+                if (!event.candidate) {
                     let answerSDP = JSON.stringify(peerConnection.localDescription);
                     await navigator.clipboard.writeText(answerSDP);
-                    peerConnection.onicecandidate = null;
+                    alert('Answer SDP copied to clipboard!');
                 }
             };
-        }
+        };
 
         let addAnswer = async (answer) => {
             if (!peerConnection.currentRemoteDescription) {
-                peerConnection.setRemoteDescription(answer);
+                await peerConnection.setRemoteDescription(answer);
             }
-        }
+        };
 
-        init()
+        init();
 
-        document.getElementById('create-offer').addEventListener('click', createOfferBtnClick);
-        document.getElementById('create-answer').addEventListener('click', takeOffer)
-        document.getElementById('add-answer').addEventListener('click', takeAnswer)
-
-        function createOfferBtnClick() {
-            alert('Offer SDP copied to clipboard!');
+        document.getElementById('create-offer').addEventListener('click', () => {
             createOffer();
-        }
+        });
 
-        function takeOffer() {
+        document.getElementById('create-answer').addEventListener('click', () => {
             let offer = JSON.parse(prompt('Paste the offer SDP here:'));
-            alert('Answer SDP copied to clipboard!');
             createAnswer(offer);
-        }
+        });
 
-        function takeAnswer() {
+        document.getElementById('add-answer').addEventListener('click', () => {
             let answer = JSON.parse(prompt('Paste the answer SDP here:'));
             addAnswer(answer);
-        }
+        });
     </script>
 </body>
 
