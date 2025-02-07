@@ -177,6 +177,7 @@ function showPopup() {
 	closeButton.style.border = "none";
 	closeButton.style.fontSize = "16px";
 	closeButton.style.cursor = "pointer";
+	closeButton.style.color = "var(--text-color)";
 	closeButton.textContent = "x";
 	closeButton.onclick = () => {
 		popup.style.display = "none";
