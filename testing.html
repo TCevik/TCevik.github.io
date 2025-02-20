@@ -206,6 +206,16 @@
                     option.textContent = device.label || `Camera ${index + 1}`;
                     cameraSelect.appendChild(option);
                 });
+
+                // Ophalen van de opgeslagen camera uit localStorage
+                const savedDeviceId = localStorage.getItem('selectedCamera');
+                if (savedDeviceId) {
+                    // Zoek de optie die overeenkomt met de opgeslagen camera en zet deze als geselecteerd
+                    const savedOption = cameraSelect.querySelector(`option[value="${savedDeviceId}"]`);
+                    if (savedOption) {
+                        savedOption.selected = true;
+                    }
+                }
             }
         }
 
@@ -215,9 +225,18 @@
                 stopCamera();
             }
             startCamera(deviceId);
+            // Opslaan van de geselecteerde camera in localStorage
+            localStorage.setItem('selectedCamera', deviceId);
         }
 
         function startCamera(deviceId = null) {
+            if (deviceId === null) {
+                const savedDeviceId = localStorage.getItem('selectedCamera');
+                if (savedDeviceId) {
+                    deviceId = savedDeviceId;
+                }
+            }
+
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             } else if (document.documentElement.mozRequestFullScreen) {
@@ -244,6 +263,16 @@
                 stream.getTracks().forEach(track => track.stop());
             }
             cameraContainer.style.display = "none";
+
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
         }
 
         captureButton.addEventListener("click", () => {
