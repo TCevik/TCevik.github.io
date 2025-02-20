@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            width: 90%;
+            max-width: 100%;
+            justify-items: center;
+        }
+
+        .photo-container {
+            position: relative;
+            width: 250px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .photo-container span {
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .add-photo {
+            width: 250px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            background-color: #ddd;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .camera-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .video-wrapper {
+            width: 100vw;
+            height: 100vw;
+            max-width: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .capture-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Foto Grid</h1>
+    <div class="grid" id="photoGrid">
+        <div class="add-photo" onclick="startCamera()">📷</div>
+    </div>
+
+    <div class="camera-container" id="cameraContainer">
+        <div class="video-wrapper">
+            <video id="camera" autoplay></video>
+        </div>
+        <button class="close-button" onclick="stopCamera()">✖</button>
+        <button class="capture-button" id="captureButton"></button>
+    </div>
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <script>
+        const video = document.getElementById("camera");
+        const canvas = document.getElementById("canvas");
+        const captureButton = document.getElementById("captureButton");
+        const photoGrid = document.getElementById("photoGrid");
+        const cameraContainer = document.getElementById("cameraContainer");
+        let stream;
+
+        // IndexedDB setup
+        const dbName = 'photoDB';
+        const storeName = 'photos';
+        let db;
+
+        // Open IndexedDB
+        function openDB() {
+            const request = indexedDB.open(dbName, 1);
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                if (!db.objectStoreNames.contains(storeName)) {
+                    db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+                }
+            };
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                loadPhotos();
+            };
+            request.onerror = (event) => {
+                console.error("Fout bij het openen van IndexedDB:", event);
+            };
+        }
+
+        // Load photos from IndexedDB
+        function loadPhotos() {
+            const transaction = db.transaction([storeName], 'readonly');
+            const store = transaction.objectStore(storeName);
+            const request = store.getAll();
+
+            request.onsuccess = () => {
+                const photos = request.result;
+                photos.forEach(photo => {
+                    displayPhoto(photo.imgData, photo.titleMap, photo.titleBox);
+                });
+            };
+        }
+
+        // Display photo in the grid
+        function displayPhoto(imgData, titleMap, titleBox) {
+            const container = document.createElement("div");
+            container.classList.add("photo-container");
+
+            const img = document.createElement("img");
+            img.src = imgData;
+
+            const titleSpanMap = document.createElement("span");
+            titleSpanMap.textContent = `Map: ${titleMap || "Geen titel"}`;
+
+            const titleSpanBox = document.createElement("span");
+            titleSpanBox.textContent = `Doos: ${titleBox || "Geen titel"}`;
+
+            container.appendChild(img);
+            container.appendChild(titleSpanMap);
+            container.appendChild(titleSpanBox);
+            photoGrid.appendChild(container);
+        }
+
+        // Save photo to IndexedDB
+        function savePhoto(imgData, titleMap, titleBox) {
+            const transaction = db.transaction([storeName], 'readwrite');
+            const store = transaction.objectStore(storeName);
+            const photo = { imgData, titleMap, titleBox };
+            store.add(photo);
+        }
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(camStream => {
+                    stream = camStream;
+                    video.srcObject = stream;
+                    cameraContainer.style.display = "flex";
+                })
+                .catch(err => console.error("Camera-toegang geweigerd", err));
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            cameraContainer.style.display = "none";
+        }
+
+        captureButton.addEventListener("click", () => {
+            const size = Math.min(video.videoWidth, video.videoHeight);
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, (video.videoWidth - size) / 2, (video.videoHeight - size) / 2, size, size, 0, 0, size, size);
+
+            const imgData = canvas.toDataURL("image/png");
+
+            const titleMap = prompt("Voer hier de naam in die in de map staat:");
+            const titleBox = prompt("Voer hier de naam in die op de doos staat:");
+
+            displayPhoto(imgData, titleMap, titleBox);
+            savePhoto(imgData, titleMap, titleBox);
+
+            stopCamera();
+        });
+
+        openDB();
+    </script>
+</body>
+
+</html>
