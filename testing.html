@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foto Grid</title>
+    <title>Foto's - Titels</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -207,10 +207,8 @@
                     cameraSelect.appendChild(option);
                 });
 
-                // Ophalen van de opgeslagen camera uit localStorage
                 const savedDeviceId = localStorage.getItem('selectedCamera');
                 if (savedDeviceId) {
-                    // Zoek de optie die overeenkomt met de opgeslagen camera en zet deze als geselecteerd
                     const savedOption = cameraSelect.querySelector(`option[value="${savedDeviceId}"]`);
                     if (savedOption) {
                         savedOption.selected = true;
@@ -225,7 +223,6 @@
                 stopCamera();
             }
             startCamera(deviceId);
-            // Opslaan van de geselecteerde camera in localStorage
             localStorage.setItem('selectedCamera', deviceId);
         }
 
@@ -333,14 +330,14 @@
 
             const img = document.createElement("img");
             img.src = imgData;
-            img.addEventListener("click", toggleFullscreen);  // Voeg event listener toe voor fullscreen
+            img.addEventListener("click", toggleFullscreen);
 
             const titleSpanMap = document.createElement("span");
-            titleSpanMap.classList.add("title-map");  // Voeg een class toe voor het ophalen in fullscreen
+            titleSpanMap.classList.add("title-map");
             titleSpanMap.textContent = `Map: ${titleMap || "Geen titel"}`;
 
             const titleSpanBox = document.createElement("span");
-            titleSpanBox.classList.add("title-box");  // Voeg een class toe voor het ophalen in fullscreen
+            titleSpanBox.classList.add("title-box");
             titleSpanBox.textContent = `Doos: ${titleBox || "Geen titel"}`;
 
             container.appendChild(img);
@@ -355,23 +352,18 @@
             const fullscreenTitleMap = document.getElementById("fullscreenTitleMap");
             const fullscreenTitleBox = document.getElementById("fullscreenTitleBox");
 
-            // Als je op de afbeelding zelf klikt, doe dan niets
             if (event.target === fullscreenImage) return;
 
-            // Als de container al zichtbaar is, sluit deze dan
             if (fullscreenContainer.style.display === "flex") {
                 fullscreenContainer.style.display = "none";
             } else {
-                // Toon de afbeelding fullscreen
                 fullscreenContainer.style.display = "flex";
                 fullscreenImage.src = event.target.src;
 
-                // Zoek de bijbehorende titels voor map en doos
                 const container = event.target.closest(".photo-container");
                 const titleMap = container.querySelector(".title-map").textContent;
                 const titleBox = container.querySelector(".title-box").textContent;
 
-                // Werk de titels bij in de fullscreen container
                 fullscreenTitleMap.textContent = titleMap;
                 fullscreenTitleBox.textContent = titleBox;
             }
