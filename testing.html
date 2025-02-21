@@ -181,6 +181,10 @@
             <img id="fullscreenImage" src="" alt="Fullscreen Image" />
             <div style="color: white;" id="fullscreenTitleMap"></div>
             <div style="color: white;" id="fullscreenTitleBox"></div>
+            <button id="deleteButton" onclick="event.stopPropagation(); deletePhoto();"
+                style="margin-top:10px; padding:10px; font-size:16px; cursor:pointer;">
+                Foto verwijderen
+            </button>
         </div>
     </div>
 
@@ -284,8 +288,8 @@
             const titleMap = prompt("Voer hier de naam in die in de map staat:");
             const titleBox = prompt("Voer hier de naam in die op de doos staat:");
 
-            displayPhoto(imgData, titleMap, titleBox);
-            savePhoto(imgData, titleMap, titleBox);
+            const container = displayPhoto(imgData, titleMap, titleBox);
+            savePhoto(imgData, titleMap, titleBox, container);
 
             stopCamera();
         });
@@ -319,14 +323,40 @@
             request.onsuccess = () => {
                 const photos = request.result;
                 photos.forEach(photo => {
-                    displayPhoto(photo.imgData, photo.titleMap, photo.titleBox);
+                    displayPhoto(photo.imgData, photo.titleMap, photo.titleBox, photo.id);
                 });
             };
         }
 
-        function displayPhoto(imgData, titleMap, titleBox) {
+        function deletePhoto() {
+            const fullscreenImage = document.getElementById("fullscreenImage");
+            const src = fullscreenImage.src;
+            const photoContainers = document.querySelectorAll(".photo-container");
+            let targetContainer = null;
+            photoContainers.forEach(container => {
+                const img = container.querySelector("img");
+                if (img.src === src) {
+                    targetContainer = container;
+                }
+            });
+            if (targetContainer) {
+                targetContainer.remove();
+                const id = targetContainer.getAttribute("data-id");
+                if (id !== null) {
+                    const transaction = db.transaction([storeName], 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    store.delete(Number(id));
+                }
+                document.getElementById("fullscreenContainer").style.display = "none";
+            }
+        }
+
+        function displayPhoto(imgData, titleMap, titleBox, id = null) {
             const container = document.createElement("div");
             container.classList.add("photo-container");
+            if (id !== null) {
+                container.setAttribute("data-id", id);
+            }
 
             const img = document.createElement("img");
             img.src = imgData;
@@ -344,6 +374,8 @@
             container.appendChild(titleSpanMap);
             container.appendChild(titleSpanBox);
             photoGrid.appendChild(container);
+
+            return container;
         }
 
         function toggleFullscreen(event) {
@@ -369,11 +401,14 @@
             }
         }
 
-        function savePhoto(imgData, titleMap, titleBox) {
+        function savePhoto(imgData, titleMap, titleBox, container) {
             const transaction = db.transaction([storeName], 'readwrite');
             const store = transaction.objectStore(storeName);
             const photo = { imgData, titleMap, titleBox };
-            store.add(photo);
+            const request = store.add(photo);
+            request.onsuccess = (event) => {
+                container.setAttribute("data-id", event.target.result);
+            };
         }
 
         openDB();
