@@ -135,7 +135,7 @@ if ('serviceWorker' in navigator) {
 
 /* site review form */
 function showPopup() {
-	const amountToDismiss = 2;
+	const amountToDismiss = 0;
 
 	const dynamicContent = `
 			<h3 style="margin: 0px; font-size: 22px;">I'd love your feedback!</h3>
