@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Scorebord - Dark Mode</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #000000; /* Donkere achtergrond */
+            color: #ffffff; /* Witte tekst voor contrast */
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000; /* Iets lichtere donkere achtergrond voor de container */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Aangepaste schaduw voor dark mode */
+        }
+
+        .kant {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #bb86fc; /* Paarse kleur voor de headers */
+        }
+
+        .score {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background-color: #bb86fc; /* Paarse knoppen */
+            color: #000000; /* Zwarte tekst op de knoppen */
+            font-size: 1.2em;
+        }
+
+        button:hover {
+            background-color: #6200ee; /* Donkerder paars bij hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="kant">
+            <h2>Kant 1</h2>
+            <div id="score1" class="score">0</div>
+            <button onclick="verhoogScore('score1')">+1</button>
+            <button onclick="verlaagScore('score1')">-1</button>
+        </div>
+        <div class="kant">
+            <h2>Kant 2</h2>
+            <div id="score2" class="score">0</div>
+            <button onclick="verhoogScore('score2')">+1</button>
+            <button onclick="verlaagScore('score2')">-1</button>
+        </div>
+    </div>
+
+    <script>
+        const body = document.body;
+
+        body.addEventListener('click', function() {
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) { /* Firefox */
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                body.webkitRequestFullscreen();
+            } else if (body.msRequestFullscreen) { /* IE/Edge */
+                body.msRequestFullscreen();
+            }
+        });
+
+        function verhoogScore(scoreId) {
+            let scoreElement = document.getElementById(scoreId);
+            let huidigeScore = parseInt(scoreElement.innerText);
+            scoreElement.innerText = huidigeScore + 1;
+        }
+
+        function verlaagScore(scoreId) {
+            let scoreElement = document.getElementById(scoreId);
+            let huidigeScore = parseInt(scoreElement.innerText);
+            scoreElement.innerText = huidigeScore - 1;
+        }
+    </script>
+</body>
+</html>
