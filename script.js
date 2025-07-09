@@ -1,5 +1,5 @@
 /* block pages for school */
-const gamePaths = ['/tools/hz-geluiden', '/tools/bookmarklets'];
+/* const gamePaths = ['/tools/hz-geluiden', '/tools/bookmarklets'];
 if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 	fetch('https://api.ipify.org?format=json')
 		.then(response => response.json())
@@ -45,7 +45,7 @@ if (gamePaths.some(path => window.location.pathname.startsWith(path))) {
 			}
 		})
 		.catch(error => console.error('Error fetching IP address:', error));
-}
+} */
 
 /* custom notification */
 function notification(message) {
