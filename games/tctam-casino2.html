@@ -66,6 +66,23 @@
                 transform: scale(1.2);
             }
         }
+        
+        #info-bar {
+            background-color: var(--bg-accent-color2);
+            align-items: center;
+            text-align: left;
+            padding: 20px;
+            position: fixed;
+            display: flex;
+            top: 0;
+            left: 50%;
+            width: 80%;
+            transform: translateX(-50%);
+            z-index: 10;
+            border-bottom-left-radius: var(--border-radius2);
+            border-bottom-right-radius: var(--border-radius2);
+            justify-content: space-between;
+        }
     </style>
     <script src="/script.js"></script>
 </head>
@@ -74,6 +91,14 @@
     <div id="welcome-container">
         <h1 id="welcome-text">Welcome to</h1>
         <h1 id="casino-text">TC_tam Casino 2</h1>
+    </div>
+
+    <div id="info-bar">
+        <h4>Money: 0</h4>
+    </div>
+
+    <div id="game-container">
+
     </div>
 
     <script>
