@@ -66,7 +66,7 @@
                 transform: scale(1.2);
             }
         }
-        
+
         #info-bar {
             background-color: var(--bg-accent-color2);
             align-items: center;
@@ -83,6 +83,14 @@
             border-bottom-right-radius: var(--border-radius2);
             justify-content: space-between;
         }
+
+        #money {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 90%;
+            display: inline-block;
+        }
     </style>
     <script src="/script.js"></script>
 </head>
@@ -94,7 +102,7 @@
     </div>
 
     <div id="info-bar">
-        <h4>Money: 0</h4>
+        <h4>Money: <span id="money">0</span></h4>
     </div>
 
     <div id="game-container">
@@ -102,7 +110,65 @@
     </div>
 
     <script>
+        let db;
+        const moneySpan = document.getElementById('money');
+
+        function initDB() {
+            const request = indexedDB.open("casino", 1);
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                const objectStore = db.createObjectStore("user", {
+                    keyPath: "id"
+                });
+                objectStore.transaction.oncomplete = (event) => {
+                    const userObjectStore = db.transaction("user", "readwrite").objectStore("user");
+                    userObjectStore.add({
+                        id: "money",
+                        value: BigInt(1000)
+                    });
+                };
+            };
+
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                getMoney();
+            };
+        }
+
+        function getMoney() {
+            const transaction = db.transaction(["user"], "readwrite");
+            const objectStore = transaction.objectStore("user");
+            const request = objectStore.get("money");
+
+            request.onsuccess = (event) => {
+                if (request.result) {
+                    moneySpan.textContent = BigInt(request.result.value).toString();
+                } else {
+                    objectStore.add({ id: "money", value: BigInt(1000) });
+                    moneySpan.textContent = "1000";
+                }
+            };
+        }
+
+        function addMoney(amount) {
+            const transaction = db.transaction(["user"], "readwrite");
+            const objectStore = transaction.objectStore("user");
+            const request = objectStore.get("money");
+
+            request.onsuccess = (event) => {
+                let data = request.result;
+                data.value = BigInt(data.value) + BigInt(amount);
+                const updateRequest = objectStore.put(data);
+
+                updateRequest.onsuccess = () => {
+                    moneySpan.textContent = data.value.toString();
+                };
+            };
+        }
+
         window.addEventListener('load', () => {
+            initDB();
             const welcomeContainer = document.getElementById('welcome-container');
             if (sessionStorage.getItem('visited')) {
                 welcomeContainer.style.display = 'none';
