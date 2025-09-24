@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -7,97 +7,18 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
-    <style>
-        @media only screen and (max-width: 800px) {
-            body {
-                display: block;
-                height: 100vh;
-                width: 100vw;
-                margin: 0;
-            }
-
-            #right {
-                display: none;
-            }
-
-            #left {
-                padding-right: 50px !important;
-            }
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-        }
-
-        #left {
-            padding: 50px;
-            padding-right: 0px;
-        }
-
-        #left {
-            flex: 4;
-        }
-
-        #right {
-            flex: 2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #countdown {
-            font-weight: bold;
-        }
-
-        #startbutton {
-            border-radius: var(--border-radius4);
-        }
-
-        #backbutton {
-            cursor: pointer
-        }
-    </style>
-
     <script>
-        const redirects = {
-            '/tctam-casino': '/games/tctam-casino',
-            '/schoolsite': '/s-site',
-            '/games/alle-games': '/games',
-        };
-
-        const currentUrl = window.location.pathname;
-
-        if (redirects[currentUrl]) {
-            window.location.href = redirects[currentUrl];
-        }
+        const path = window.location.pathname;
+    
+        const newUrl = "https://tctam-site-oud.github.io" + path;
+    
+        window.location.replace(newUrl);
     </script>
 </head>
 
 <body>
-    <div id="left">
-        <h1>404 - Page not found</h1>
-        <p>Sorry, this page could not be found. Please check the URL and try again or go to the home page.
-        </p>
-        <br><button style="margin-bottom: 40px;" id="startbutton" onclick="window.location.href='/'">Back to the
-            homepage</button>
-
-        <br><b>Tip: If this page keeps appearing, it may help to go to the <a id="backbutton">previous
-                page</a> and click
-            refresh or ctrl + r.</b>
-    </div>
-
-    <div id="right">
-        <img src="/assets/404-robot.png" width="100%" alt="404 Robot Image">
-    </div>
-
-    <script>
-        document.getElementById('backbutton').addEventListener('click', function () {
-            history.go(-1);
-        });
-    </script>
+    <h1>Title</h1>
+    <p>Text</p>
 </body>
 
 </html>
