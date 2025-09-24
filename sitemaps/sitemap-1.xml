@@ -4,4 +4,19 @@
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
+	<url>
+		<loc>https://tctam.nl/picto-planner/</loc>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://tctam.nl/games/</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+	</url>
+	<url>
+		<loc>https://tctam.nl/blogs/alle-blogs</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+	</url>
 </urlset>
