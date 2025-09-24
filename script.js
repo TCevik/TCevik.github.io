@@ -241,11 +241,6 @@ var buttons = `
     <button onclick="window.location.href='/tools/ide'">IDE</button>
 	<button onclick="window.location.href='/tools/useful-pages'">Useful Pages / Simple Tools</button>
 
-	<h3 style="margin-top: 50px;" id="archief">Archive (DUTCH)</h3>
-    <button onclick="window.location.href='/archief/school-hack-1'">School hack 1</button>
-	<button onclick="window.location.href='/archief/school-hack-2'">School hack 2</button>
-    <button onclick="window.location.href='/archief/school-hack-3'">School hack 3</button>
-
 	<h3 style="margin-top: 50px;" id="overwebsite">About</h3>
 	<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSd2I8nAoty8Zp-akaEThrUnWLLBfj5V843WSkj0h8EjApAHWg/viewform', '_blank')">Report an error</button>
 	<button onclick="window.open('/terms-of-service', '_blank')">Terms of Service</button>
