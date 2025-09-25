@@ -2,6 +2,11 @@
 
 body {
     overflow-x: hidden;
+    margin: 30px;
+    margin-top: 80px;
+}
+
+* {
     font-family: Lexend, Arial, sans-serif;
-    margin: 0;
+    -webkit-tap-highlight-color: transparent;
 }

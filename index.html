@@ -3,14 +3,120 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC_tam Homepage</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
+
+    <style>
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo a {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu {
+            display: flex;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background 0.3s;
+            border-radius: 6px;
+        }
+
+        .menu a:hover {
+            background-color: #555;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Mobile styling */
+        @media (max-width: 600px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #333;
+                position: absolute;
+                top: 100%;
+                left: 0;
+            }
+
+            .menu.active {
+                display: flex;
+            }
+
+            .menu a {
+                padding: 12px 15px;
+                border-top: 1px solid #444;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                flex: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Click on the button to go to the site!</h1>
-    <button onclick="location.href = '/https://tctam-site-oud.github.io/';">Go to the temporary site</button>
+    <nav class="navbar">
+        <div class="logo"><a href="#">TC_tam</a></div>
+        <button class="menu-toggle">☰</button>
+        <div class="menu">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Click on the button to go to the site!</h1>
+        <button onclick="location.href='https://tctam-site-oud.github.io/';">Go to the temporary site</button>
+    </main>
+
+    <script>
+        const toggleButton = document.querySelector('.menu-toggle');
+        const menu = document.querySelector('.menu');
+
+        toggleButton.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>
