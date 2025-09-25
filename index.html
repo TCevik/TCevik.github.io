@@ -9,7 +9,6 @@
     <script src="/script.js"></script>
 
     <style>
-        /* Navbar styling */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -22,31 +21,33 @@
             width: 100%;
             z-index: 1000;
             box-sizing: border-box;
+            height: 56px;
         }
-
+    
         .logo a {
             font-size: 26px;
             font-weight: bold;
             color: white;
             text-decoration: none;
         }
-
+    
         .menu {
             display: flex;
         }
-
+    
         .menu a {
             color: white;
             text-decoration: none;
             padding: 8px 12px;
-            transition: background 0.3s;
+            transition: background 0.3s, color 0.3s;
             border-radius: 6px;
         }
-
+    
         .menu a:hover {
-            background-color: #555;
+            background-color: #28a745;
+            color: white;
         }
-
+    
         .menu-toggle {
             display: none;
             font-size: 28px;
@@ -55,40 +56,60 @@
             border: none;
             cursor: pointer;
         }
-
-        /* Mobile styling */
+    
         .mobile .menu {
             display: none;
             flex-direction: column;
             width: 100%;
-            background-color: #333;
+            background-color: #343533;
             position: absolute;
             top: 100%;
             left: 0;
         }
-
+    
         .mobile .menu.active {
             display: flex;
         }
-
+    
         .mobile .menu a {
             padding: 12px 15px;
-            border-top: 1px solid #444;
+            border-top: 1px solid #e8ffed;
         }
-
+    
+        .mobile .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+    
         .mobile .menu-toggle {
             display: block;
+            max-height: 36px;
+            margin-top: -30px;
         }
-
+    
         .mobile .navbar {
             flex-wrap: wrap;
         }
-
+    
         .mobile .logo {
             flex: 1;
         }
+    
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+    
+        button:hover {
+            background-color: #218838;
+        }
     </style>
-</head>
+    </head>
 
 <body>
     <nav class="navbar">
