@@ -26,8 +26,3 @@ headElement.insertBefore(manifestLink, headElement.firstChild);
 
 	gtag('config', 'G-7KL389S9VR');
 })();
-
-/* DIT MOET WEG NA OPENING NIEUWE SITE */
-const path = window.location.pathname;
-const newUrl = "https://tctam-site-oud.github.io" + path;
-window.location.replace(newUrl);
