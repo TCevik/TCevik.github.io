@@ -57,37 +57,35 @@
         }
 
         /* Mobile styling */
-        @media (max-width: 600px) {
-            .menu {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: #333;
-                position: absolute;
-                top: 100%;
-                left: 0;
-            }
+        .mobile .menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background-color: #333;
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
 
-            .menu.active {
-                display: flex;
-            }
+        .mobile .menu.active {
+            display: flex;
+        }
 
-            .menu a {
-                padding: 12px 15px;
-                border-top: 1px solid #444;
-            }
+        .mobile .menu a {
+            padding: 12px 15px;
+            border-top: 1px solid #444;
+        }
 
-            .menu-toggle {
-                display: block;
-            }
+        .mobile .menu-toggle {
+            display: block;
+        }
 
-            .navbar {
-                flex-wrap: wrap;
-            }
+        .mobile .navbar {
+            flex-wrap: wrap;
+        }
 
-            .logo {
-                flex: 1;
-            }
+        .mobile .logo {
+            flex: 1;
         }
     </style>
 </head>
@@ -104,7 +102,7 @@
         </div>
     </nav>
 
-    <main>
+    <main style="margin-top:100px;">
         <h1>Click on the button to go to the site!</h1>
         <button onclick="location.href='https://tctam-site-oud.github.io/';">Go to the temporary site</button>
     </main>
@@ -112,11 +110,30 @@
     <script>
         const toggleButton = document.querySelector('.menu-toggle');
         const menu = document.querySelector('.menu');
-
+        const navbar = document.querySelector('.navbar');
+        const body = document.body;
+    
         toggleButton.addEventListener('click', () => {
             menu.classList.toggle('active');
         });
+    
+        const menuOriginalWidth = menu.offsetWidth;
+        const logoWidth = document.querySelector('.logo').offsetWidth;
+        const totalDesktopWidth = logoWidth + menuOriginalWidth + 200;
+    
+        function checkNavbarWidth() {
+            if (window.innerWidth < totalDesktopWidth) {
+                body.classList.add('mobile');
+            } else {
+                body.classList.remove('mobile');
+                menu.classList.remove('active');
+            }
+        }
+    
+        window.addEventListener('load', checkNavbarWidth);
+        window.addEventListener('resize', checkNavbarWidth);
     </script>
+    
 </body>
 
 </html>
