@@ -1,14 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC_tam Homepage</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
-
+    
     <style>
+        /* --- ALGEMENE STIJLEN (ongewijzigd) --- */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding-top: 77.6px; /* Ruimte voor vaste navbar */
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -23,32 +33,14 @@
             box-sizing: border-box;
             height: 77.6px;
         }
-    
+
         .logo a {
             font-size: 26px;
             font-weight: bold;
             color: white;
             text-decoration: none;
         }
-    
-        .menu {
-            display: flex;
-        }
-    
-        .menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            transition: background 0.3s, color 0.3s;
-            border-radius: 6px;
-            margin-right: 10px  ;
-        }
-    
-        .menu a:hover {
-            background-color: #28a745;
-            color: white;
-        }
-    
+
         .menu-toggle {
             display: none;
             font-size: 28px;
@@ -56,44 +48,9 @@
             background: none;
             border: none;
             cursor: pointer;
+            z-index: 1010; /* Zorgt dat de knop boven de menu's blijft */
         }
-    
-        .mobile .menu {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            background-color: #343533;
-            position: absolute;
-            top: 100%;
-            left: 0;
-        }
-    
-        .mobile .menu.active {
-            display: flex;
-        }
-    
-        .mobile .menu a {
-            padding: 12px 15px;
-            border-top: 1px solid #e8ffed;
-        }
-    
-        .mobile .menu a:hover {
-            background-color: #28a745;
-            color: white;
-        }
-    
-        .mobile .menu-toggle {
-            display: block;
-        }
-    
-        .mobile .navbar {
-            flex-wrap: wrap;
-        }
-    
-        .mobile .logo {
-            flex: 1;
-        }
-    
+        
         button {
             background-color: #28a745;
             color: white;
@@ -103,22 +60,145 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-    
+        
         button:hover {
             background-color: #218838;
         }
+
+        /* --- NIEUW: Menu Wrapper voor animatie --- */
+        .menu-wrapper {
+            position: relative; /* Noodzakelijk voor positionering van menu's */
+            flex-grow: 1; /* Neemt de beschikbare ruimte in */
+            display: flex;
+            justify-content: flex-end; /* Lijn menu's rechts uit op desktop */
+            overflow: hidden; /* Verbergt de menu's die buiten beeld schuiven */
+        }
+
+        /* --- AANGEPAST: Basisstijl voor alle menu's --- */
+        .menu {
+            display: flex;
+            flex-direction: row; /* Standaard voor desktop */
+            transition: transform 0.35s ease-in-out; /* Animatie voor het schuiven */
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 6px;
+            margin-right: 10px;
+            white-space: nowrap; /* Zorgt dat tekst niet ongewenst afbreekt */
+        }
+        
+        .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        /* --- NIEUW: Stijlen voor submenu's --- */
+        .submenu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #333; /* Zelfde achtergrond */
+            transform: translateX(100%); /* Start buiten beeld (rechts) */
+            justify-content: flex-end; /* Lijn items rechts uit op desktop */
+        }
+
+        .back-link {
+            font-weight: bold;
+        }
+
+        /* --- NIEUW: Logica voor het tonen van het submenu --- */
+        .menu-wrapper.submenu-active > .main-menu {
+            transform: translateX(-100%); /* Schuif hoofdmenu naar links weg */
+        }
+
+        .menu-wrapper.submenu-active > .submenu.active {
+            transform: translateX(0); /* Schuif actief submenu in beeld */
+        }
+
+
+        /* --- MOBIELE WEERGAVE --- */
+        body.mobile .menu-toggle {
+            display: block;
+        }
+        
+        body.mobile .navbar {
+            flex-wrap: wrap;
+        }
+        
+        body.mobile .logo {
+            flex: 1;
+        }
+        
+        /* De wrapper neemt nu de volledige breedte op mobiel */
+        body.mobile .menu-wrapper {
+            display: none; /* Standaard verborgen op mobiel */
+            position: absolute;
+            top: 77.6px; /* Onder de navbar */
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 77.6px); /* Volledige schermhoogte */
+            background-color: #343533;
+        }
+
+        body.mobile .menu-wrapper.active {
+            display: block; /* Toon de wrapper als het mobiele menu actief is */
+        }
+        
+        /* Op mobiel zijn menu's verticale blokken */
+        body.mobile .menu {
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: absolute; /* Zorgt dat ze over elkaar kunnen schuiven */
+            top: 0;
+            left: 0;
+        }
+
+        body.mobile .menu a {
+            padding: 15px 20px;
+            border-top: 1px solid #444;
+            border-radius: 0;
+            margin: 0;
+        }
+
+        body.mobile .submenu {
+            background-color: #343533;
+            justify-content: flex-start; /* Items links uitlijnen */
+        }
+        
     </style>
-    </head>
+</head>
 
 <body>
     <nav class="navbar">
         <div class="logo"><a href="#">TC_tam</a></div>
         <button class="menu-toggle">☰</button>
-        <div class="menu">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
+        
+        <!-- NIEUW: Wrapper om de menu's voor de schuif-animatie -->
+        <div class="menu-wrapper">
+            <!-- Het hoofdmenu heeft nu de class 'main-menu' -->
+            <div class="menu main-menu">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <!-- Dit item opent een submenu -->
+                <a href="#" class="submenu-trigger" data-submenu="services-submenu">Services →</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <!-- NIEUW: Het submenu -->
+            <div id="services-submenu" class="menu submenu">
+                <!-- De 'terug' knop -->
+                <a href="#" class="back-link">← Terug</a>
+                <a href="#webdesign">Web Design</a>
+                <a href="#hosting">Hosting</a>
+                <a href="#seo">SEO Optimalisatie</a>
+            </div>
         </div>
     </nav>
 
@@ -129,24 +209,51 @@
 
     <script>
         const toggleButton = document.querySelector('.menu-toggle');
-        const menu = document.querySelector('.menu');
-        const navbar = document.querySelector('.navbar');
+        const menuWrapper = document.querySelector('.menu-wrapper'); // We targetten nu de wrapper
         const body = document.body;
     
+        // Oorspronkelijke functie voor mobiele toggle
         toggleButton.addEventListener('click', () => {
-            menu.classList.toggle('active');
+            menuWrapper.classList.toggle('active');
         });
     
-        const menuOriginalWidth = menu.offsetWidth;
-        const logoWidth = document.querySelector('.logo').offsetWidth;
-        const totalDesktopWidth = logoWidth + menuOriginalWidth + 200;
-    
+        // --- NIEUW: LOGICA VOOR SUBMENU'S ---
+        const submenuTriggers = document.querySelectorAll('.submenu-trigger');
+        const backLinks = document.querySelectorAll('.back-link');
+
+        // Voeg een event listener toe aan elke knop die een submenu opent
+        submenuTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault(); // Voorkom dat de pagina verspringt
+                const submenuId = trigger.dataset.submenu;
+                const targetSubmenu = document.getElementById(submenuId);
+
+                // Activeer de wrapper en het specifieke submenu
+                menuWrapper.classList.add('submenu-active');
+                targetSubmenu.classList.add('active');
+            });
+        });
+
+        // Voeg een event listener toe aan elke 'terug' knop
+        backLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const parentSubmenu = link.closest('.submenu');
+
+                // Deactiveer de wrapper en het submenu
+                menuWrapper.classList.remove('submenu-active');
+                parentSubmenu.classList.remove('active');
+            });
+        });
+
+        // Oorspronkelijke functie om te wisselen naar mobiele weergave
         function checkNavbarWidth() {
-            if (window.innerWidth < totalDesktopWidth) {
+            // Een wat robuustere check, 768px is een veelgebruikte breakpoint
+            if (window.innerWidth < 768) {
                 body.classList.add('mobile');
             } else {
                 body.classList.remove('mobile');
-                menu.classList.remove('active');
+                menuWrapper.classList.remove('active'); // Sluit mobiel menu als scherm groter wordt
             }
         }
     
@@ -155,5 +262,4 @@
     </script>
     
 </body>
-
 </html>
