@@ -1,23 +1,14 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC_tam Homepage</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
 
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding-top: 77.6px;
-        }
-
-        main {
-            padding: 20px;
-            text-align: center;
-        }
-
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -32,14 +23,32 @@
             box-sizing: border-box;
             height: 77.6px;
         }
-
+    
         .logo a {
             font-size: 26px;
             font-weight: bold;
             color: white;
             text-decoration: none;
         }
-
+    
+        .menu {
+            display: flex;
+        }
+    
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 6px;
+            margin-right: 10px  ;
+        }
+    
+        .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+    
         .menu-toggle {
             display: none;
             font-size: 28px;
@@ -47,9 +56,44 @@
             background: none;
             border: none;
             cursor: pointer;
-            z-index: 1010;
         }
-
+    
+        .mobile .menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background-color: #343533;
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
+    
+        .mobile .menu.active {
+            display: flex;
+        }
+    
+        .mobile .menu a {
+            padding: 12px 15px;
+            border-top: 1px solid #e8ffed;
+        }
+    
+        .mobile .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+    
+        .mobile .menu-toggle {
+            display: block;
+        }
+    
+        .mobile .navbar {
+            flex-wrap: wrap;
+        }
+    
+        .mobile .logo {
+            flex: 1;
+        }
+    
         button {
             background-color: #28a745;
             color: white;
@@ -59,132 +103,22 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-
+    
         button:hover {
             background-color: #218838;
         }
-
-        .menu-wrapper {
-            position: relative;
-            flex-grow: 1;
-            display: flex;
-            justify-content: flex-end;
-            overflow: hidden;
-        }
-
-        .menu {
-            display: flex;
-            flex-direction: row;
-            transition: transform 0.35s ease-in-out;
-        }
-
-        .menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            transition: background 0.3s, color 0.3s;
-            border-radius: 6px;
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-
-        .menu a:hover {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .submenu {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #333;
-            transform: translateX(100%);
-            justify-content: flex-end;
-        }
-
-        .back-link {
-            font-weight: bold;
-        }
-
-        .menu-wrapper.submenu-active>.main-menu {
-            transform: translateX(-100%);
-        }
-
-        .menu-wrapper.submenu-active>.submenu.active {
-            transform: translateX(0);
-        }
-
-
-        body.mobile .menu-toggle {
-            display: block;
-        }
-
-        body.mobile .navbar {
-            flex-wrap: wrap;
-        }
-
-        body.mobile .logo {
-            flex: 1;
-        }
-
-        body.mobile .menu-wrapper {
-            display: none;
-            position: absolute;
-            top: 77.6px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 77.6px);
-            background-color: #343533;
-        }
-
-        body.mobile .menu-wrapper.active {
-            display: block;
-        }
-
-        body.mobile .menu {
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        body.mobile .menu a {
-            padding: 15px 20px;
-            border-top: 1px solid #444;
-            border-radius: 0;
-            margin: 0;
-        }
-
-        body.mobile .submenu {
-            background-color: #343533;
-            justify-content: flex-start;
-        }
     </style>
-</head>
+    </head>
 
 <body>
     <nav class="navbar">
         <div class="logo"><a href="#">TC_tam</a></div>
         <button class="menu-toggle">☰</button>
-
-        <div class="menu-wrapper">
-            <div class="menu main-menu">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#" class="submenu-trigger" data-submenu="services-submenu">Services →</a>
-                <a href="#contact">Contact</a>
-            </div>
-
-            <div id="services-submenu" class="menu submenu">
-                <a href="#" class="back-link">← Terug</a>
-                <a href="#webdesign">Web Design</a>
-                <a href="#hosting">Hosting</a>
-                <a href="#seo">SEO Optimalisatie</a>
-            </div>
+        <div class="menu">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
@@ -195,50 +129,31 @@
 
     <script>
         const toggleButton = document.querySelector('.menu-toggle');
-        const menuWrapper = document.querySelector('.menu-wrapper');
+        const menu = document.querySelector('.menu');
+        const navbar = document.querySelector('.navbar');
         const body = document.body;
-
+    
         toggleButton.addEventListener('click', () => {
-            menuWrapper.classList.toggle('active');
+            menu.classList.toggle('active');
         });
-
-        const submenuTriggers = document.querySelectorAll('.submenu-trigger');
-        const backLinks = document.querySelectorAll('.back-link');
-
-        submenuTriggers.forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-                const submenuId = trigger.dataset.submenu;
-                const targetSubmenu = document.getElementById(submenuId);
-
-                menuWrapper.classList.add('submenu-active');
-                targetSubmenu.classList.add('active');
-            });
-        });
-
-        backLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const parentSubmenu = link.closest('.submenu');
-
-                menuWrapper.classList.remove('submenu-active');
-                parentSubmenu.classList.remove('active');
-            });
-        });
-
+    
+        const menuOriginalWidth = menu.offsetWidth;
+        const logoWidth = document.querySelector('.logo').offsetWidth;
+        const totalDesktopWidth = logoWidth + menuOriginalWidth + 200;
+    
         function checkNavbarWidth() {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < totalDesktopWidth) {
                 body.classList.add('mobile');
             } else {
                 body.classList.remove('mobile');
-                menuWrapper.classList.remove('active');
+                menu.classList.remove('active');
             }
         }
-
+    
         window.addEventListener('load', checkNavbarWidth);
         window.addEventListener('resize', checkNavbarWidth);
     </script>
-
+    
 </body>
 
 </html>
