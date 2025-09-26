@@ -7,13 +7,90 @@
     <title>TC_tam Homepage</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
-    </head>
+
+    <style>
+        .open-btn {
+            font-size: 18px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .open-btn:hover {
+            background: #45a049;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #f1f1f1;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #575757;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 20px;
+        }
+    </style>
+</head>
 
 <body>
+    <button class="open-btn" onclick="openNav()">☰ Menu</button>
+    <div id="mySidebar" class="sidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
     <main>
         <h1>Click on the button to go to the site!</h1>
         <button onclick="location.href='https://tctam-site-oud.github.io/';">Go to the temporary site</button>
     </main>
+
+    <script>
+        function openNav() {
+          document.getElementById("mySidebar").style.width = "250px";
+        }
+    
+        function closeNav() {
+          document.getElementById("mySidebar").style.width = "0";
+        }
+      </script>    
 </body>
 
 </html>
