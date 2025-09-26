@@ -16,9 +16,6 @@
             color: white;
             padding: 10px 20px;
             border: none;
-            position: fixed;
-            top: 20px;
-            left: 20px;
             border-radius: 8px;
             transition: 0.3s;
         }
@@ -36,7 +33,7 @@
             background-color: #111;
             overflow-x: hidden;
             transition: 0.5s;
-            padding-top: 60px;
+            padding-top: 50px;
         }
 
         .sidebar a {
@@ -54,7 +51,7 @@
 
         .sidebar .close-btn {
             position: absolute;
-            top: 20px;
+            top: 8px;
             right: 25px;
             font-size: 36px;
             color: white;
@@ -64,11 +61,68 @@
         .content {
             padding: 20px;
         }
+
+        #navbar {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 20px; 
+            justify-content: space-between;
+            align-items: center;
+        }   
+
+        #navbar .logoandnav {
+            display: flex;
+        }
+
+        .logoandnav .logo {
+            margin-top: 3px;
+        }
+
+        .logoandnav .logo a {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .menu {
+            padding-right: 40px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 6px;
+            margin-right: 0px;
+            background-color: #676767;
+        }
+
+        .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
-    <button class="open-btn" onclick="openNav()">☰ Menu</button>
+    <nav id="navbar">
+        <div class="logoandnav">
+            <button class="open-btn" onclick="openNav()">☰</button>
+            <div class="logo"><a href="#">TC_tam</a></div>
+        </div>
+
+        <div class="menu">
+            <a href="#settings">Settings</a>
+        </div>
+    </nav>
+
     <div id="mySidebar" class="sidebar">
         <span class="close-btn" onclick="closeNav()">&times;</span>
         <a href="#">Home</a>
