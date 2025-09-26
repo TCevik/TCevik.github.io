@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam Homepage</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box;
+            height: 77.6px;
+        }
+        
+        .logo a {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+    
+        .menu {
+            display: flex;
+        }
+    
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 6px;
+            margin-right: 10px  ;
+        }
+    
+        .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+    
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    
+        .mobile .menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background-color: #343533;
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
+    
+        .mobile .menu.active {
+            display: flex;
+        }
+    
+        .mobile .menu a {
+            padding: 12px 15px;
+            border-top: 1px solid #e8ffed;
+            border-radius: 0px;
+        }
+    
+        .mobile .menu a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+    
+        .mobile .menu-toggle {
+            display: block;
+        }
+    
+        .mobile .navbar {
+            flex-wrap: wrap;
+        }
+    
+        .mobile .logo {
+            flex: 1;
+        }
+    
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+    
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+    </head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"><a href="#">TC_tam</a></div>
+        <button class="menu-toggle">☰</button>
+        <div class="menu">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#apps">Apps</a>
+            <a href="#games">Games</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Click on the button to go to the site!</h1>
+        <button onclick="location.href='https://tctam-site-oud.github.io/';">Go to the temporary site</button>
+    </main>
+
+    <script>
+        const toggleButton = document.querySelector('.menu-toggle');
+        const menu = document.querySelector('.menu');
+        const navbar = document.querySelector('.navbar');
+        const body = document.body;
+    
+        toggleButton.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    
+        const menuOriginalWidth = menu.offsetWidth;
+        const logoWidth = document.querySelector('.logo').offsetWidth;
+        const totalDesktopWidth = logoWidth + menuOriginalWidth + 200;
+    
+        function checkNavbarWidth() {
+            if (window.innerWidth < totalDesktopWidth) {
+                body.classList.add('mobile');
+            } else {
+                body.classList.remove('mobile');
+                menu.classList.remove('active');
+            }
+        }
+    
+        window.addEventListener('load', checkNavbarWidth);
+        window.addEventListener('resize', checkNavbarWidth);
+    </script>
+    
+</body>
+
+</html>

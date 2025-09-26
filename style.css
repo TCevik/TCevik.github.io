@@ -3,10 +3,23 @@
 body {
     overflow-x: hidden;
     margin: 30px;
-    margin-top: 100px;
 }
 
 * {
     font-family: Lexend, Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
 }
