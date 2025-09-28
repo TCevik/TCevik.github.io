@@ -28,7 +28,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            box-sizing: border-box; 
+            box-sizing: border-box;
             width: 100%;
             height: 56px;
             padding: 0 16px;
@@ -129,7 +129,8 @@
 
         button:hover {
             transform: scale(1.05);
-            background-color: var(--primary-hover);;
+            background-color: var(--primary-hover);
+            ;
         }
 
         @media (max-width: 768px) {
@@ -167,31 +168,90 @@
     <script>
         document.getElementById("copyrightyear").textContent = new Date().getFullYear();
 
+        const sidebar = document.getElementById("sidebar");
+        const openBtn = document.getElementById("navbar-icon");
+
+        const sidebarMaxWidth = window.innerWidth <= 496 ? window.innerWidth - 32 : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
+
         function openNav() {
-            const sidebar = document.getElementById("sidebar");
-            if (window.innerWidth <= 768) {
-                sidebar.style.width = "calc(100% - 32px)";
-            } else {
-                sidebar.style.width = "var(--sidebar-width)";
-            }
+            sidebar.style.transition = "0.3s";
+            sidebar.style.width = sidebarMaxWidth + "px";
         }
 
         function closeNav() {
-            document.getElementById("sidebar").style.width = "0";
+            sidebar.style.transition = "0.3s";
+            sidebar.style.width = "0";
         }
 
         document.addEventListener("click", function (event) {
-            const sidebar = document.getElementById("sidebar");
-            const openBtn = document.getElementById("navbar-icon");
-
             const isClickInside = sidebar.contains(event.target) || (openBtn && openBtn.contains(event.target));
-
             const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
 
             if (!isClickInside && sidebarWidth > 0) {
                 closeNav();
             }
         });
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        let currentSidebarWidth = 0;
+        let isHorizontalSwipe = false;
+
+        document.addEventListener("touchstart", function (event) {
+            touchStartX = event.changedTouches[0].clientX;
+            touchStartY = event.changedTouches[0].clientY;
+            touchStartTime = Date.now();
+            currentSidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+            isHorizontalSwipe = false;
+            sidebar.style.transition = "none";
+        }, false);
+
+        document.addEventListener("touchmove", function (event) {
+            const touchX = event.changedTouches[0].clientX;
+            const touchY = event.changedTouches[0].clientY;
+            const deltaX = touchX - touchStartX;
+            const deltaY = touchY - touchStartY;
+
+            if (!isHorizontalSwipe) {
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+                    isHorizontalSwipe = true;
+                } else {
+                    return;
+                }
+            }
+
+            let newWidth = currentSidebarWidth + deltaX;
+            if (newWidth > sidebarMaxWidth) newWidth = sidebarMaxWidth;
+            if (newWidth < 0) newWidth = 0;
+
+            sidebar.style.width = newWidth + "px";
+        }, false);
+
+        document.addEventListener("touchend", function (event) {
+            if (!isHorizontalSwipe) return;
+
+            const touchX = event.changedTouches[0].clientX;
+            const deltaX = touchX - touchStartX;
+            const deltaTime = Date.now() - touchStartTime;
+            const swipeSpeed = deltaX / deltaTime;
+
+            const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+
+            const fastSwipeThreshold = 0.5;
+
+            if (swipeSpeed > fastSwipeThreshold) {
+                openNav();
+            } else if (swipeSpeed < -fastSwipeThreshold) {
+                closeNav();
+            } else {
+                if (sidebarWidth < sidebarMaxWidth / 2) {
+                    closeNav();
+                } else {
+                    openNav();
+                }
+            }
+        }, false);
     </script>
 </body>
 
