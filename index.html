@@ -9,8 +9,8 @@
     <script src="/script.js"></script>
 
     <style>
-        .sidebar {
-            height: 100%;
+        #sidebar {
+            height: calc(100% - 50px);
             width: 0;
             position: fixed;
             top: 0;
@@ -21,26 +21,38 @@
             padding-top: 50px;
         }
 
-        .sidebar a {
-            padding: 10px 20px;
+        #sidebar a {
+            padding: 12px 20px;
+            margin: 0;
             text-decoration: none;
             font-size: 20px;
             color: #000;
             display: block;
+            border-top: 1px solid #c0e0c0;
             transition: 0.3s;
         }
 
-        .sidebar .close-btn {
+        #sidebar p {
+            padding: 12px 20px;
+            border-top: 1px solid #c0e0c0;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        #sidebar a:hover {
+            background-color: #b2ecb2;
+            color: #000;
+            transform: scale(1.02);
+        }
+
+
+        #sidebar #close-btn {
             position: absolute;
-            top: 8px;
-            right: 25px;
+            top: 0px;
+            right: 18px;
             font-size: 36px;
             color: #000;
             cursor: pointer;
-        }
-
-        .content {
-            padding: 20px;
         }
 
         #navbar {
@@ -55,15 +67,15 @@
             align-items: center;
         }
 
-        #navbar .logoandnav {
+        #navbar #logoandnav {
             display: flex;
         }
 
-        .logoandnav .logo {
+        #logoandnav #logo {
             margin-top: 3px;
         }
 
-        .logoandnav .logo a {
+        #logoandnav #logo a {
             font-size: 26px;
             font-weight: bold;
             color: #fff;
@@ -71,12 +83,11 @@
             margin-left: 20px;
         }
 
-        .menu {
+        #quickbuttons {
             padding-right: 40px;
         }
 
-        .menu img,
-        .open-btn {
+        #navbar-icon {
             padding: 8px 12px;
             transition: transform 0.3s ease;
             background-color: transparent;
@@ -84,10 +95,10 @@
             margin-right: 0px;
             transform: scale(1.0);
             border: 0px;
+            filter: invert(0);
         }
 
-        .menu img:hover,
-        .open-btn:hover {
+        #navbar-icon:hover {
             transform: scale(1.3);
         }
     </style>
@@ -95,23 +106,56 @@
 
 <body>
     <nav id="navbar">
-        <div class="logoandnav">
-            <a class="open-btn" onclick="openNav()"><img class="navbar-icon" src="assets/menu-icon.svg"
+        <div id="logoandnav">
+            <a id="open-btn" onclick="openNav()"><img id="navbar-icon" src="assets/menu-icon.svg"
                     alt="Settings Icon"></a>
-            <div class="logo"><a href="#">TC_tam</a></div>
+            <div id="logo"><a href="#">TC_tam</a></div>
         </div>
 
-        <div class="menu">
-            <a href="#settings"><img class="navbar-icon" src="assets/settings-icon.svg" alt="Settings Icon"></a>
+        <div id="quickbuttons">
+            <a href="#settings"><img id="navbar-icon" src="assets/settings-icon.svg" alt="Settings Icon"></a>
         </div>
     </nav>
 
-    <div id="mySidebar" class="sidebar">
-        <span class="close-btn" onclick="closeNav()">&times;</span>
+    <div id="sidebar">
+        <span id="close-btn" onclick="closeNav()">&times;</span>
         <a href="#">Home</a>
         <a href="#">About</a>
         <a href="#">Services</a>
         <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">bottom</a>
+        <p id="copyright">TC_tam &copy; 2023 - <span id="copyrightyear"></span></p>
     </div>
 
     <main>
@@ -120,20 +164,28 @@
     </main>
 
     <script>
+        document.getElementById("copyrightyear").textContent = new Date().getFullYear();
+
         function openNav() {
-            document.getElementById("mySidebar").style.width = "250px";
+            const sidebar = document.getElementById("sidebar");
+            if (window.innerWidth <= 768) {
+                sidebar.style.width = "calc(100% - 60px)";
+            } else {
+                sidebar.style.width = "250px";
+            }
         }
 
         function closeNav() {
-            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("sidebar").style.width = "0";
         }
 
-        const sidebar = document.getElementById("mySidebar");
-        const openBtn = document.querySelector(".open-btn");
+        const sidebar = document.getElementById("sidebar");
+        const openBtn = document.getElementById("open-btn");
 
         document.addEventListener("click", function (event) {
             const isClickInside = sidebar.contains(event.target) || openBtn.contains(event.target);
-            if (!isClickInside && sidebar.style.width === "250px") {
+            const sidebarWidth = parseInt(sidebar.style.width, 10);
+            if (!isClickInside && sidebarWidth > 0) {
                 closeNav();
             }
         });
