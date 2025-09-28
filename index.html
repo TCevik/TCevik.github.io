@@ -179,12 +179,14 @@
             document.getElementById("sidebar").style.width = "0";
         }
 
-        const sidebar = document.getElementById("sidebar");
-        const openBtn = document.getElementById("open-btn");
-
         document.addEventListener("click", function (event) {
-            const isClickInside = sidebar.contains(event.target) || openBtn.contains(event.target);
-            const sidebarWidth = parseInt(sidebar.style.width, 10);
+            const sidebar = document.getElementById("sidebar");
+            const openBtn = document.getElementById("openBtn");
+
+            const isClickInside = sidebar.contains(event.target) || (openBtn && openBtn.contains(event.target));
+
+            const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+
             if (!isClickInside && sidebarWidth > 0) {
                 closeNav();
             }
