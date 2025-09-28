@@ -9,97 +9,133 @@
     <script src="/script.js"></script>
 
     <style>
+        /* === Material 3 Expressive Styles === */
+        :root {
+            --primary-color: #4CAF50; /* soft green */
+            --on-primary: #ffffff;
+            --surface-color: #f5f5f5;
+            --on-surface: #000000;
+            --hover-color: #e0f2e9;
+            --shadow-elevation: 0 3px 6px rgba(0, 0, 0, 0.16);
+            --sidebar-width: 280px;
+        }
+
+        /* Navbar */
+        #navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-sizing: border-box; 
+            width: 100%;
+            height: 56px;
+            padding: 0 16px;
+            background-color: var(--primary-color);
+            color: var(--on-primary);
+            box-shadow: var(--shadow-elevation);
+            border-radius: 0 0 16px 16px;
+            z-index: 1000;
+        }
+
+        #logoandnav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #logo a {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--on-primary);
+            text-decoration: none;
+        }
+
+        #navbar-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #navbar-icon:hover {
+            transform: scale(1.2);
+        }
+
+        #quickbuttons a img {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        #quickbuttons a img:hover {
+            transform: scale(1.15);
+        }
+
+        /* Sidebar */
         #sidebar {
-            height: calc(100% - 50px);
+            height: 100%;
             width: 0;
             position: fixed;
             top: 0;
             left: 0;
-            background-color: rgb(230, 255, 230);
+            background-color: #ffffff;
             overflow-x: hidden;
+            padding-top: 60px;
+            box-shadow: var(--shadow-elevation);
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
             transition: 0.5s;
-            padding-top: 50px;
+            z-index: 999;
         }
 
         #sidebar a {
-            padding: 12px 20px;
-            margin: 0;
-            text-decoration: none;
-            font-size: 20px;
-            color: #000;
             display: block;
-            border-top: 1px solid #c0e0c0;
-            transition: 0.3s;
-        }
-
-        #sidebar p {
-            padding: 12px 20px;
-            border-top: 1px solid #c0e0c0;
-            margin: 0;
-            opacity: 0.8;
+            padding: 14px 24px;
+            margin: 8px 16px;
+            text-decoration: none;
+            font-size: 18px;
+            color: var(--on-surface);
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
 
         #sidebar a:hover {
-            background-color: #b2ecb2;
-            color: #000;
-            transform: scale(1.02);
+            background-color: var(--hover-color);
+            transform: scale(1.03);
         }
 
+        #sidebar p {
+            margin: 16px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
 
-        #sidebar #close-btn {
-            position: absolute;
-            top: 0px;
-            right: 18px;
-            font-size: 36px;
-            color: #000;
+        button {
+            font-size: 16px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            background-color: var(--primary-color);
+            color: var(--on-primary);
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        #navbar {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #081c15;
-            padding: 10px 20px;
-            justify-content: space-between;
-            align-items: center;
+        button:hover {
+            transform: scale(1.05);
+            background-color: #43a047;
         }
 
-        #navbar #logoandnav {
-            display: flex;
-        }
-
-        #logoandnav #logo {
-            margin-top: 3px;
-        }
-
-        #logoandnav #logo a {
-            font-size: 26px;
-            font-weight: bold;
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        #quickbuttons {
-            padding-right: 40px;
-        }
-
-        #navbar-icon {
-            padding: 8px 12px;
-            transition: transform 0.3s ease;
-            background-color: transparent;
-            border-radius: 6px;
-            margin-right: 0px;
-            transform: scale(1.0);
-            border: 0px;
-            filter: invert(0);
-        }
-
-        #navbar-icon:hover {
-            transform: scale(1.3);
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 0;
+            }
         }
     </style>
 </head>
@@ -107,55 +143,20 @@
 <body>
     <nav id="navbar">
         <div id="logoandnav">
-            <a id="open-btn" onclick="openNav()"><img id="navbar-icon" src="assets/menu-icon.svg"
-                    alt="Settings Icon"></a>
+            <img id="navbar-icon" src="assets/menu-icon.svg" alt="Menu Icon" onclick="openNav()">
             <div id="logo"><a href="#">TC_tam</a></div>
         </div>
-
         <div id="quickbuttons">
-            <a href="#settings"><img id="navbar-icon" src="assets/settings-icon.svg" alt="Settings Icon"></a>
+            <a href="#settings"><img src="assets/settings-icon.svg" alt="Settings Icon"></a>
         </div>
     </nav>
 
     <div id="sidebar">
-        <span id="close-btn" onclick="closeNav()">&times;</span>
         <a href="#">Home</a>
         <a href="#">About</a>
         <a href="#">Services</a>
         <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">bottom</a>
-        <p id="copyright">TC_tam &copy; 2023 - <span id="copyrightyear"></span></p>
+        <a id="copyright">TC_tam &copy; 2023 - <span id="copyrightyear"></span></a>
     </div>
 
     <main>
@@ -169,9 +170,9 @@
         function openNav() {
             const sidebar = document.getElementById("sidebar");
             if (window.innerWidth <= 768) {
-                sidebar.style.width = "calc(100% - 60px)";
+                sidebar.style.width = "calc(100% - 32px)";
             } else {
-                sidebar.style.width = "250px";
+                sidebar.style.width = "var(--sidebar-width)";
             }
         }
 
@@ -181,7 +182,7 @@
 
         document.addEventListener("click", function (event) {
             const sidebar = document.getElementById("sidebar");
-            const openBtn = document.getElementById("openBtn");
+            const openBtn = document.getElementById("navbar-icon");
 
             const isClickInside = sidebar.contains(event.target) || (openBtn && openBtn.contains(event.target));
 
