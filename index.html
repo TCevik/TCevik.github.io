@@ -171,7 +171,9 @@
         const sidebar = document.getElementById("sidebar");
         const openBtn = document.getElementById("navbar-icon");
 
-        const sidebarMaxWidth = window.innerWidth <= 496 ? window.innerWidth - 32 : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
+        const sidebarMaxWidth = window.innerWidth <= 496
+            ? window.innerWidth - 32
+            : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
 
         function openNav() {
             sidebar.style.transition = "0.3s";
@@ -221,11 +223,14 @@
                 }
             }
 
-            let newWidth = currentSidebarWidth + deltaX;
-            if (newWidth > sidebarMaxWidth) newWidth = sidebarMaxWidth;
-            if (newWidth < 0) newWidth = 0;
+            if (currentSidebarWidth > 0) {
+                let newWidth = currentSidebarWidth + deltaX;
 
-            sidebar.style.width = newWidth + "px";
+                if (newWidth < currentSidebarWidth) {
+                    if (newWidth < 0) newWidth = 0;
+                    sidebar.style.width = newWidth + "px";
+                }
+            }
         }, false);
 
         document.addEventListener("touchend", function (event) {
@@ -240,9 +245,7 @@
 
             const fastSwipeThreshold = 0.5;
 
-            if (swipeSpeed > fastSwipeThreshold) {
-                openNav();
-            } else if (swipeSpeed < -fastSwipeThreshold) {
+            if (swipeSpeed < -fastSwipeThreshold) {
                 closeNav();
             } else {
                 if (sidebarWidth < sidebarMaxWidth / 2) {
