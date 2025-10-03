@@ -17,6 +17,13 @@ body {
     --background-color: #ffffff;
     --text-color: #000000;
     --accent-color: #4CAF50;
+
+    --h1234-color: #000000;
+    --h1-font-size: 42px;
+    --h2-font-size: 32px;
+    --h3-font-size: 24px;
+    --h4-font-size: 20px;
+
     --button-hover-color: #43a047;
     --button-border-color: #4CAF50;
     --button-border-hover-color: #00e508;
@@ -26,6 +33,35 @@ body {
     --sidebar-background-color: #fcfcfc;
     --shadow-elevation: 0 3px 6px rgba(0, 0, 0, 0.16);
     --navbar-logo-color: #ffffff;
+}
+
+h1 {
+    color: var(--h1234-color);
+    font-size: var(--h1-font-size);
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+}
+
+h2 {
+    color: var(--h1234-color);
+    font-size: var(--h2-font-size);
+    margin-bottom: 15px;
+    overflow-wrap: break-word;
+}
+
+h3 {
+    color: var(--h1234-color);
+    font-size: var(--h3-font-size);
+    margin-bottom: 5px;
+    overflow-wrap: break-word;
+}
+
+h4 {
+    color: var(--h1234-color);
+    font-size: var(--h4-font-size);
+    margin-bottom: 5px;
+    margin-top: 15px;
+    overflow-wrap: break-word;
 }
 
 button {
@@ -42,7 +78,6 @@ button {
 button:hover {
     background-color: var(--button-hover-color);
     border: 3px var(--button-border-hover-color) solid;
-    border-radius: 18px;
 }
 
 /* Navbar */
