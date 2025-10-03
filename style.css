@@ -1,18 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-body {
-    overflow-x: hidden;
-    margin: 30px;
-    margin-top: 80px;
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-* {
-    font-family: Lexend, Arial, sans-serif;
-    -webkit-tap-highlight-color: transparent;
-}
-
+/* Root variables */
 :root {
     --background-color: #ffffff;
     --text-color: #000000;
@@ -33,6 +21,21 @@ body {
     --sidebar-background-color: #fcfcfc;
     --shadow-elevation: 0 3px 6px rgba(0, 0, 0, 0.16);
     --navbar-logo-color: #ffffff;
+}
+
+/* General */
+* {
+    font-family: Lexend, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+    margin: 30px;
+    margin-top: 80px;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 h1 {
@@ -88,7 +91,6 @@ button:hover {
     position: fixed;
     top: 0;
     left: 0;
-    box-sizing: border-box;
     width: 100%;
     height: 56px;
     padding: 0 16px;
@@ -149,7 +151,7 @@ button:hover {
     box-shadow: var(--shadow-elevation);
     border-top-right-radius: 24px;
     border-bottom-right-radius: 24px;
-    transition: 0.5s;
+    transition: width 0.5s ease;
     z-index: 999;
 }
 

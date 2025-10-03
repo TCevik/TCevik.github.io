@@ -8,14 +8,12 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/script.js"></script>
 
-    <style>
-    </style>
 </head>
 
 <body>
     <nav id="nav_main">
         <div id="nav_logo_container">
-            <img id="nav_menu_icon" src="assets/menu-icon.svg" alt="Menu Icon" onclick="toggleNav()">
+            <img id="nav_menu_icon" src="assets/menu-icon.svg" alt="Menu Icon">
             <div id="nav_logo"><a href="#">TC_tam</a></div>
         </div>
         <div id="nav_quickbuttons">
@@ -37,106 +35,102 @@
     </main>
 
     <script>
-        document.getElementById("sidebar_copyright_year").textContent = new Date().getFullYear();
+document.getElementById("sidebar_copyright_year").textContent = new Date().getFullYear();
 
-        const sidebar = document.getElementById("sidebar_main");
-        const openBtn = document.getElementById("nav_menu_icon");
+const sidebar = document.getElementById("sidebar_main");
+const openBtn = document.getElementById("nav_menu_icon");
 
-        const sidebarMaxWidth = window.innerWidth <= 496
-            ? window.innerWidth - 32
-            : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
+let sidebarMaxWidth = window.innerWidth <= 496
+    ? window.innerWidth - 32
+    : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
 
-        function openNav() {
-            sidebar.style.width = sidebarMaxWidth + "px";
-            openBtn.classList.add("change");
+function openNav() {
+    sidebar.style.width = sidebarMaxWidth + "px";
+}
+
+function closeNav() {
+    sidebar.style.width = "0";
+}
+
+function toggleNav() {
+    const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+    if (sidebarWidth > 0) {
+        closeNav();
+    } else {
+        openNav();
+    }
+}
+
+openBtn.addEventListener("click", toggleNav);
+
+// Close sidebar on outside click
+document.addEventListener("click", function (event) {
+    const isClickInside = sidebar.contains(event.target) || openBtn.contains(event.target);
+    const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+    if (!isClickInside && sidebarWidth > 0) {
+        closeNav();
+    }
+});
+
+// --- Touch swipe to drag sidebar ---
+let touchStartX = 0;
+let touchStartY = 0;
+let currentSidebarWidth = 0;
+let isDragging = false;
+
+document.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+    currentSidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
+    isDragging = false;
+
+    // Zet transition tijdelijk uit zodat het meebeweegt
+    sidebar.style.transition = "none";
+}, false);
+
+document.addEventListener("touchmove", (e) => {
+    const touchX = e.changedTouches[0].clientX;
+    const touchY = e.changedTouches[0].clientY;
+    const deltaX = touchX - touchStartX;
+    const deltaY = touchY - touchStartY;
+
+    // Check of we horizontaal swipen
+    if (!isDragging) {
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
+            isDragging = true;
+        } else {
+            return;
         }
+    }
 
-        function closeNav() {
-            sidebar.style.width = "0";
-            openBtn.classList.remove("change");
-        }
+    let newWidth = currentSidebarWidth + deltaX;
+    if (newWidth < 0) newWidth = 0;
+    if (newWidth > sidebarMaxWidth) newWidth = sidebarMaxWidth;
 
-        function toggleNav() {
-            const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
-            if (sidebarWidth > 0) {
-                closeNav();
-            } else {
-                openNav();
-            }
-        }
+    sidebar.style.width = newWidth + "px";
+}, false);
 
-        openBtn.addEventListener("click", toggleNav);
+document.addEventListener("touchend", (e) => {
+    // Zet transition weer terug zodat open/close smooth gaat
+    sidebar.style.transition = "width 0.5s ease";
 
-        document.addEventListener("click", function (event) {
-            const isClickInside = sidebar.contains(event.target) || (openBtn && openBtn.contains(event.target));
-            const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+    const finalWidth = parseInt(getComputedStyle(sidebar).width, 10);
 
-            if (!isClickInside && sidebarWidth > 0) {
-                closeNav();
-            }
-        });
+    // Open of dicht op basis van waar je loslaat
+    if (finalWidth < sidebarMaxWidth / 2) {
+        closeNav();
+    } else {
+        openNav();
+    }
+}, false);
 
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchStartTime = 0;
-        let currentSidebarWidth = 0;
-        let isHorizontalSwipe = false;
+// Update sidebar width op resize
+window.addEventListener("resize", () => {
+    sidebarMaxWidth = window.innerWidth <= 496
+        ? window.innerWidth - 32
+        : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
+});
 
-        document.addEventListener("touchstart", function (event) {
-            touchStartX = event.changedTouches[0].clientX;
-            touchStartY = event.changedTouches[0].clientY;
-            touchStartTime = Date.now();
-            currentSidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
-            isHorizontalSwipe = false;
-            sidebar.style.transition = "none";
-        }, false);
-
-        document.addEventListener("touchmove", function (event) {
-            const touchX = event.changedTouches[0].clientX;
-            const touchY = event.changedTouches[0].clientY;
-            const deltaX = touchX - touchStartX;
-            const deltaY = touchY - touchStartY;
-
-            if (!isHorizontalSwipe) {
-                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
-                    isHorizontalSwipe = true;
-                } else {
-                    return;
-                }
-            }
-
-            if (currentSidebarWidth > 0) {
-                let newWidth = currentSidebarWidth + deltaX;
-
-                if (newWidth < currentSidebarWidth) {
-                    if (newWidth < 0) newWidth = 0;
-                    sidebar.style.width = newWidth + "px";
-                }
-            }
-        }, false);
-
-        document.addEventListener("touchend", function (event) {
-            if (!isHorizontalSwipe) return;
-
-            const touchX = event.changedTouches[0].clientX;
-            const deltaX = touchX - touchStartX;
-            const deltaTime = Date.now() - touchStartTime;
-            const swipeSpeed = deltaX / deltaTime;
-
-            const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
-
-            const fastSwipeThreshold = 0.5;
-
-            if (swipeSpeed < -fastSwipeThreshold) {
-                closeNav();
-            } else {
-                if (sidebarWidth < sidebarMaxWidth / 2) {
-                    closeNav();
-                } else {
-                    openNav();
-                }
-            }
-        }, false);
     </script>
 </body>
 
