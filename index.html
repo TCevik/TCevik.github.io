@@ -53,7 +53,7 @@ function closeNav() {
 }
 
 function toggleNav() {
-    const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+    const sidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
     if (sidebarWidth > 0) {
         closeNav();
     } else {
@@ -66,7 +66,7 @@ openBtn.addEventListener("click", toggleNav);
 // Close sidebar on outside click
 document.addEventListener("click", function (event) {
     const isClickInside = sidebar.contains(event.target) || openBtn.contains(event.target);
-    const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+    const sidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
     if (!isClickInside && sidebarWidth > 0) {
         closeNav();
     }
@@ -75,12 +75,14 @@ document.addEventListener("click", function (event) {
 // --- Touch swipe to drag sidebar ---
 let touchStartX = 0;
 let touchStartY = 0;
+let touchStartTime = 0;
 let currentSidebarWidth = 0;
 let isDragging = false;
 
 document.addEventListener("touchstart", (e) => {
     touchStartX = e.changedTouches[0].clientX;
     touchStartY = e.changedTouches[0].clientY;
+    touchStartTime = Date.now();
     currentSidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
     isDragging = false;
 
@@ -111,16 +113,29 @@ document.addEventListener("touchmove", (e) => {
 }, false);
 
 document.addEventListener("touchend", (e) => {
-    // Zet transition weer terug zodat open/close smooth gaat
     sidebar.style.transition = "width 0.5s ease";
 
     const finalWidth = parseInt(getComputedStyle(sidebar).width, 10);
+    const deltaX = e.changedTouches[0].clientX - touchStartX;
+    const deltaTime = Date.now() - touchStartTime;
+    const swipeSpeed = deltaX / deltaTime; // pixels per ms
 
-    // Open of dicht op basis van waar je loslaat
-    if (finalWidth < sidebarMaxWidth / 2) {
+    const fastSwipeThreshold = 0.5; // aanpasbaar
+
+    // Beslis open/dicht op basis van fast swipe of halve breedte
+    if (swipeSpeed < -fastSwipeThreshold) { 
+        // snelle swipe naar links → dicht
         closeNav();
-    } else {
+    } else if (swipeSpeed > fastSwipeThreshold) {
+        // snelle swipe naar rechts → open
         openNav();
+    } else {
+        // normale swipe → check halve breedte
+        if (finalWidth < sidebarMaxWidth / 2) {
+            closeNav();
+        } else {
+            openNav();
+        }
     }
 }, false);
 
