@@ -35,117 +35,116 @@
     </main>
 
     <script>
-document.getElementById("sidebar_copyright_year").textContent = new Date().getFullYear();
+        document.getElementById("sidebar_copyright_year").textContent = new Date().getFullYear();
 
-const sidebar = document.getElementById("sidebar_main");
-const openBtn = document.getElementById("nav_menu_icon");
+        const sidebar = document.getElementById("sidebar_main");
+        const openBtn = document.getElementById("nav_menu_icon");
 
-let sidebarMaxWidth = window.innerWidth <= 496
-    ? window.innerWidth - 32
-    : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
+        let sidebarMaxWidth = window.innerWidth <= 496
+            ? window.innerWidth - 32
+            : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
 
-function openNav() {
-    sidebar.style.width = sidebarMaxWidth + "px";
-}
-
-function closeNav() {
-    sidebar.style.width = "0";
-}
-
-function toggleNav() {
-    const sidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
-    if (sidebarWidth > 0) {
-        closeNav();
-    } else {
-        openNav();
-    }
-}
-
-openBtn.addEventListener("click", toggleNav);
-
-// Close sidebar on outside click
-document.addEventListener("click", function (event) {
-    const isClickInside = sidebar.contains(event.target) || openBtn.contains(event.target);
-    const sidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
-    if (!isClickInside && sidebarWidth > 0) {
-        closeNav();
-    }
-});
-
-// --- Touch swipe to drag sidebar ---
-let touchStartX = 0;
-let touchStartY = 0;
-let touchStartTime = 0;
-let currentSidebarWidth = 0;
-let isDragging = false;
-
-document.addEventListener("touchstart", (e) => {
-    touchStartX = e.changedTouches[0].clientX;
-    touchStartY = e.changedTouches[0].clientY;
-    touchStartTime = Date.now();
-    currentSidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
-    isDragging = false;
-
-    // Zet transition tijdelijk uit zodat het meebeweegt
-    sidebar.style.transition = "none";
-}, false);
-
-document.addEventListener("touchmove", (e) => {
-    const touchX = e.changedTouches[0].clientX;
-    const touchY = e.changedTouches[0].clientY;
-    const deltaX = touchX - touchStartX;
-    const deltaY = touchY - touchStartY;
-
-    // Check of we horizontaal swipen
-    if (!isDragging) {
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
-            isDragging = true;
-        } else {
-            return;
+        function openNav() {
+            sidebar.style.width = sidebarMaxWidth + "px";
         }
-    }
 
-    let newWidth = currentSidebarWidth + deltaX;
-    if (newWidth < 0) newWidth = 0;
-    if (newWidth > sidebarMaxWidth) newWidth = sidebarMaxWidth;
-
-    sidebar.style.width = newWidth + "px";
-}, false);
-
-document.addEventListener("touchend", (e) => {
-    sidebar.style.transition = "width 0.5s ease";
-
-    const finalWidth = parseInt(getComputedStyle(sidebar).width, 10);
-    const deltaX = e.changedTouches[0].clientX - touchStartX;
-    const deltaTime = Date.now() - touchStartTime;
-    const swipeSpeed = deltaX / deltaTime; // pixels per ms
-
-    const fastSwipeThreshold = 0.5; // aanpasbaar
-
-    // Beslis open/dicht op basis van fast swipe of halve breedte
-    if (swipeSpeed < -fastSwipeThreshold) { 
-        // snelle swipe naar links → dicht
-        closeNav();
-    } else if (swipeSpeed > fastSwipeThreshold) {
-        // snelle swipe naar rechts → open
-        openNav();
-    } else {
-        // normale swipe → check halve breedte
-        if (finalWidth < sidebarMaxWidth / 2) {
-            closeNav();
-        } else {
-            openNav();
+        function closeNav() {
+            sidebar.style.width = "0";
         }
-    }
-}, false);
 
-// Update sidebar width op resize
-window.addEventListener("resize", () => {
-    sidebarMaxWidth = window.innerWidth <= 496
-        ? window.innerWidth - 32
-        : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
-});
+        function toggleNav() {
+            const sidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
+            if (sidebarWidth > 0) {
+                closeNav();
+            } else {
+                openNav();
+            }
+        }
 
+        openBtn.addEventListener("click", toggleNav);
+
+        // Close sidebar on outside click
+        document.addEventListener("click", function (event) {
+            const isClickInside = sidebar.contains(event.target) || openBtn.contains(event.target);
+            const sidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
+            if (!isClickInside && sidebarWidth > 0) {
+                closeNav();
+            }
+        });
+
+        // --- Touch swipe to drag sidebar ---
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        let currentSidebarWidth = 0;
+        let isDragging = false;
+
+        document.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].clientX;
+            touchStartY = e.changedTouches[0].clientY;
+            touchStartTime = Date.now();
+            currentSidebarWidth = parseInt(getComputedStyle(sidebar).width, 10);
+            isDragging = false;
+
+            // Zet transition tijdelijk uit zodat het meebeweegt
+            sidebar.style.transition = "none";
+        }, false);
+
+        document.addEventListener("touchmove", (e) => {
+            const touchX = e.changedTouches[0].clientX;
+            const touchY = e.changedTouches[0].clientY;
+            const deltaX = touchX - touchStartX;
+            const deltaY = touchY - touchStartY;
+
+            // Check of we horizontaal swipen
+            if (!isDragging) {
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
+                    isDragging = true;
+                } else {
+                    return;
+                }
+            }
+
+            let newWidth = currentSidebarWidth + deltaX;
+            if (newWidth < 0) newWidth = 0;
+            if (newWidth > sidebarMaxWidth) newWidth = sidebarMaxWidth;
+
+            sidebar.style.width = newWidth + "px";
+        }, false);
+
+        document.addEventListener("touchend", (e) => {
+            sidebar.style.transition = "width 0.5s ease";
+
+            const finalWidth = parseInt(getComputedStyle(sidebar).width, 10);
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            const deltaTime = Date.now() - touchStartTime;
+            const swipeSpeed = deltaX / deltaTime; // pixels per ms
+
+            const fastSwipeThreshold = 0.5; // aanpasbaar
+
+            // Beslis open/dicht op basis van fast swipe of halve breedte
+            if (swipeSpeed < -fastSwipeThreshold) {
+                // snelle swipe naar links → dicht
+                closeNav();
+            } else if (swipeSpeed > fastSwipeThreshold) {
+                // snelle swipe naar rechts → open
+                openNav();
+            } else {
+                // normale swipe → check halve breedte
+                if (finalWidth < sidebarMaxWidth / 2) {
+                    closeNav();
+                } else {
+                    openNav();
+                }
+            }
+        }, false);
+
+        // Update sidebar width op resize
+        window.addEventListener("resize", () => {
+            sidebarMaxWidth = window.innerWidth <= 496
+                ? window.innerWidth - 32
+                : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
+        });
     </script>
 </body>
 
