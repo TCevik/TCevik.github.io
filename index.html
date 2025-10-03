@@ -10,18 +10,19 @@
 
     <style>
         :root {
-            --primary-color: #4CAF50;
             --primary-hover: #43a047;
-            --on-primary: #ffffff;
+            --background-color: #ffffff;
             --surface-color: #f5f5f5;
-            --on-surface: #000000;
+            --text-color: #000000;
             --hover-color: #e0f2e9;
-            --shadow-elevation: 0 3px 6px rgba(0, 0, 0, 0.16);
             --sidebar-width: 280px;
+            --accent-color: #4CAF50;
+            --button-border-color: #4CAF50;
+            --button-border-hover-color: #00e508;
         }
 
         /* Navbar */
-        #navbar {
+        #nav_main {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -32,27 +33,27 @@
             width: 100%;
             height: 56px;
             padding: 0 16px;
-            background-color: var(--primary-color);
-            color: var(--on-primary);
-            box-shadow: var(--shadow-elevation);
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
             border-radius: 0 0 16px 16px;
             z-index: 1000;
         }
 
-        #logoandnav {
+        #nav_logo_container {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        #logo a {
+        #nav_logo a {
             font-size: 24px;
             font-weight: 700;
-            color: var(--on-primary);
+            color: var(--background-color);
             text-decoration: none;
         }
 
-        #navbar-icon {
+        #nav_menu_icon {
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -61,11 +62,11 @@
             transition: all 0.3s ease;
         }
 
-        #navbar-icon:hover {
+        #nav_menu_icon:hover {
             transform: scale(1.15);
         }
 
-        #quickbuttons a img {
+        #nav_quickbuttons a img {
             width: 32px;
             height: 32px;
             cursor: pointer;
@@ -73,12 +74,12 @@
             transition: all 0.3s ease;
         }
 
-        #quickbuttons a img:hover {
+        #nav_quickbuttons a img:hover {
             transform: scale(1.15);
         }
 
         /* Sidebar */
-        #sidebar {
+        #sidebar_main {
             height: 100%;
             width: 0;
             position: fixed;
@@ -94,23 +95,23 @@
             z-index: 999;
         }
 
-        #sidebar a {
+        #sidebar_main a {
             display: block;
             padding: 14px 24px;
             margin: 8px 16px;
             text-decoration: none;
             font-size: 18px;
-            color: var(--on-surface);
+            color: var(--text-color);
             border-radius: 12px;
             transition: all 0.3s ease;
         }
 
-        #sidebar a:hover {
+        #sidebar_main a:hover {
             background-color: var(--hover-color);
             transform: scale(1.05);
         }
 
-        #sidebar p {
+        #sidebar_main p {
             margin: 16px;
             font-size: 14px;
             opacity: 0.7;
@@ -119,22 +120,23 @@
         button {
             font-size: 16px;
             padding: 12px 24px;
-            border: none;
+            border: 3px var(--button-border-color) solid;
             border-radius: 12px;
-            background-color: var(--primary-color);
-            color: var(--on-primary);
+            background-color: var(--accent-color);
+            color: var(--background-color);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         button:hover {
-            transform: scale(1.03);
             background-color: var(--primary-hover);
-            ;
+            border: 3px var(--button-border-hover-color) solid;
+            border-radius: 18px;
         }
 
+
         @media (max-width: 768px) {
-            #sidebar {
+            #sidebar_main {
                 width: 0;
             }
         }
@@ -142,22 +144,22 @@
 </head>
 
 <body>
-    <nav id="navbar">
-        <div id="logoandnav">
-            <img id="navbar-icon" src="assets/menu-icon.svg" alt="Menu Icon" onclick="openNav()">
-            <div id="logo"><a href="#">TC_tam</a></div>
+    <nav id="nav_main">
+        <div id="nav_logo_container">
+            <img id="nav_menu_icon" src="assets/menu-icon.svg" alt="Menu Icon" onclick="toggleNav()">
+            <div id="nav_logo"><a href="#">TC_tam</a></div>
         </div>
-        <div id="quickbuttons">
-            <a href="#settings"><img src="assets/settings-icon.svg" id="settings-icon" alt="Settings Icon"></a>
+        <div id="nav_quickbuttons">
+            <a href="#settings"><img src="assets/settings-icon.svg" id="nav_settings_icon" alt="Settings Icon"></a>
         </div>
     </nav>
 
-    <div id="sidebar">
-        <a href="#">Home</a>
+    <div id="sidebar_main">
+        <a href="/index">Home</a>
         <a href="#">About</a>
         <a href="#">Services</a>
         <a href="#">Contact</a>
-        <a id="copyright">TC_tam &copy; 2023 - <span id="copyrightyear"></span></a>
+        <a id="sidebar_copyright">TC_tam &copy; 2023 - <span id="sidebar_copyright_year"></span></a>
     </div>
 
     <main>
@@ -166,10 +168,10 @@
     </main>
 
     <script>
-        document.getElementById("copyrightyear").textContent = new Date().getFullYear();
+        document.getElementById("sidebar_copyright_year").textContent = new Date().getFullYear();
 
-        const sidebar = document.getElementById("sidebar");
-        const openBtn = document.getElementById("navbar-icon");
+        const sidebar = document.getElementById("sidebar_main");
+        const openBtn = document.getElementById("nav_menu_icon");
 
         const sidebarMaxWidth = window.innerWidth <= 496
             ? window.innerWidth - 32
