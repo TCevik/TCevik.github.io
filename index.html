@@ -176,14 +176,25 @@
             : parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'), 10);
 
         function openNav() {
-            sidebar.style.transition = "0.3s";
             sidebar.style.width = sidebarMaxWidth + "px";
+            openBtn.classList.add("change");
         }
 
         function closeNav() {
-            sidebar.style.transition = "0.3s";
             sidebar.style.width = "0";
+            openBtn.classList.remove("change");
         }
+
+        function toggleNav() {
+            const sidebarWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+            if (sidebarWidth > 0) {
+                closeNav();
+            } else {
+                openNav();
+            }
+        }
+
+        openBtn.addEventListener("click", toggleNav);
 
         document.addEventListener("click", function (event) {
             const isClickInside = sidebar.contains(event.target) || (openBtn && openBtn.contains(event.target));
