@@ -40,13 +40,25 @@
         // 3. Initialize messaging
         const messaging = firebase.messaging();
 
-        // 4. Request permission & get token
+        // 4. Register Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered:', registration);
+                messaging.useServiceWorker(registration);
+            })
+            .catch((err) => {
+                console.error('Service Worker registration failed:', err);
+            });
+        }
+
+        // 5. Request permission & get token
         document.getElementById('subscribeBtn').addEventListener('click', async () => {
             try {
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     const token = await messaging.getToken({
-                        vapidKey: 'BBaA4GZYuc-kGY16Ka3jETVfKkuHY_EewSjVhx-Cb4CXr9PbNv1lgac81mha3t33lTNbJhaMEact6307dxN7knk' // vul hier je web push certificate key in
+                        vapidKey: 'BBaA4GZYuc-kGY16Ka3jETVfKkuHY_EewSjVhx-Cb4CXr9PbNv1lgac81mha3t33lTNbJhaMEact6307dxN7knk'
                     });
                     document.getElementById('status').innerText = "FCM Token: " + token;
                     console.log("FCM Token:", token);
@@ -59,7 +71,7 @@
             }
         });
 
-        // 5. Handle incoming messages
+        // 6. Handle incoming messages
         messaging.onMessage((payload) => {
             console.log('Message received: ', payload);
             alert("New Notification: " + payload.notification.title + "\n" + payload.notification.body);
