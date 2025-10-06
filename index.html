@@ -23,6 +23,18 @@
     <p id="status"></p>
 
     <script>
+        // 4. Register Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered:', registration);
+                messaging.useServiceWorker(registration);
+            })
+            .catch((err) => {
+                console.error('Service Worker registration failed:', err);
+            });
+        }
+
         // 1. Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
@@ -40,19 +52,7 @@
         // 3. Initialize messaging
         const messaging = firebase.messaging();
 
-        // 4. Register Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('firebase-messaging-sw.js')
-            .then((registration) => {
-                console.log('Service Worker registered:', registration);
-                messaging.useServiceWorker(registration);
-            })
-            .catch((err) => {
-                console.error('Service Worker registration failed:', err);
-            });
-        }
-
-        // 5. Request permission & get token
+        // 3. Request permission & get token
         document.getElementById('subscribeBtn').addEventListener('click', async () => {
             try {
                 const permission = await Notification.requestPermission();
@@ -71,7 +71,7 @@
             }
         });
 
-        // 6. Handle incoming messages
+        // 5. Handle incoming messages
         messaging.onMessage((payload) => {
             console.log('Message received: ', payload);
             alert("New Notification: " + payload.notification.title + "\n" + payload.notification.body);
