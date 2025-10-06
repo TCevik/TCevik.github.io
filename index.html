@@ -10,10 +10,61 @@
 </head>
 
 <body>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+
     <main>
         <h1>Click on the button to go to the old site!</h1>
         <button onclick="location.href='https://tctam-site-oud.github.io/';">Go to the temporary site</button>
     </main>
+
+    <h1>Notifications</h1>
+    <button id="subscribeBtn">Sign up for notifications from tctam.nl</button>
+    <p id="status"></p>
+
+    <script>
+        // 1. Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp6L5-6r3a6yQV_py46q3GWf_ZL2ttfu8",
+            authDomain: "tctam-d04b8.firebaseapp.com",
+            databaseURL: "https://tctam-d04b8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tctam-d04b8",
+            storageBucket: "tctam-d04b8.appspot.com",
+            messagingSenderId: "793882705601",
+            appId: "1:793882705601:web:ac714f422263f4350b5e40"
+        };
+
+        // 2. Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // 3. Initialize messaging
+        const messaging = firebase.messaging();
+
+        // 4. Request permission & get token
+        document.getElementById('subscribeBtn').addEventListener('click', async () => {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const token = await messaging.getToken({
+                        vapidKey: 'BBaA4GZYuc-kGY16Ka3jETVfKkuHY_EewSjVhx-Cb4CXr9PbNv1lgac81mha3t33lTNbJhaMEact6307dxN7knk' // vul hier je web push certificate key in
+                    });
+                    document.getElementById('status').innerText = "FCM Token: " + token;
+                    console.log("FCM Token:", token);
+                } else {
+                    document.getElementById('status').innerText = "Notification permission denied.";
+                }
+            } catch (error) {
+                console.error("Error getting token:", error);
+                document.getElementById('status').innerText = "Error: " + error;
+            }
+        });
+
+        // 5. Handle incoming messages
+        messaging.onMessage((payload) => {
+            console.log('Message received: ', payload);
+            alert("New Notification: " + payload.notification.title + "\n" + payload.notification.body);
+        });
+    </script>
 </body>
 
 </html>
