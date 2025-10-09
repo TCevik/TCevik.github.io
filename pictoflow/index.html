@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PictoFlow</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+        * {
+            font-family: Lexend, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        #setupMenu div {
+            display: none;
+        }
+
+        #setupMenu #step1 {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="setupMenu">
+        <div id="step1">
+            <h1>Welcome!</h1>
+            <h4>PictoFlow: Organize your day with clarity, simplicity, and fun.</h4>
+            <button onclick="setupContinue(2)">Continue</button>
+        </div>
+
+        <div id="step2">
+            <h1>Would you like to set a PIN?</h1>
+            <h4>A PIN helps secure your PictoFlow plans, preventing unauthorized changes. You can also set it up later
+                if you prefer.</h4>
+            <button onclick="setupContinue(4)">No</button>
+            <button onclick="setupContinue(3)">Yes</button>
+        </div>
+
+        <div id="step3">
+            <h1>Please enter your PIN</h1>
+            <input type="number" placeholder="Enter a 4 to 6 digit PIN">
+            <button onclick="setupContinue(4)">Continue</button>
+        </div>
+
+        <div id="step4">
+            <h1>That's all! You're all set.</h1>
+            <button onclick="setupDone()">Go to PictoFlow</button>
+        </div>
+    </div>
+
+
+    <script>
+        function setupContinue(step) {
+            for (let i = 1; i < step; i++) {
+                let prevStep = document.getElementById("step" + i);
+                if (prevStep) {
+                    prevStep.style.display = "none";
+                }
+            }
+
+            let currentStep = document.getElementById("step" + step);
+            if (currentStep) {
+                currentStep.style.display = "block";
+            }
+        }
+        
+        function setupDone() {
+            document.getElementById("setupMenu").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
