@@ -64,6 +64,7 @@
 
     <script>
         let pictos = [];
+        const pictosSize = 120;
 
         // Laad pictos automatisch uit index.json
         fetch('index.json')
@@ -95,12 +96,12 @@
                 const img = document.createElement("img");
                 img.src = p.src;
                 img.title = p.name;
-                img.width = 80;
+                img.width = pictosSize;
                 img.style.cursor = "pointer";
                 img.onclick = () => {
                     const newImg = document.createElement("img");
                     newImg.src = p.src;
-                    newImg.width = 80;
+                    newImg.width = pictosSize;
                     planning.appendChild(newImg);
                     savePlanning();
                 };
@@ -267,7 +268,7 @@
                 // Nieuw plaatje uit editor
                 const img = document.createElement("img");
                 img.src = draggedItem.src;
-                img.width = 80;
+                img.width = pictosSize;
                 img.draggable = true;
                 if (afterElement == null) {
                     planning.appendChild(img);
@@ -433,7 +434,7 @@
                     request.result.images.forEach(src => {
                         const img = document.createElement("img");
                         img.src = src;
-                        img.width = 80;
+                        img.width = pictosSize;
                         img.draggable = false;
                         planning.appendChild(img);
                     });
@@ -441,7 +442,6 @@
             };
         }
 
-        // Zorg ervoor dat de placeholder tekst verdwijnt/verschijnt
         planning.addEventListener("DOMSubtreeModified", function () {
             const placeholder = planning.querySelector('p');
             if (!placeholder) return;
