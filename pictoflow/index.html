@@ -3,8 +3,21 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PictoFlow</title>
+    <style>
+        /* Stijl voor het originele item dat wordt versleept (zowel muis als touch) */
+        .dragging {
+            opacity: 0.4;
+        }
+
+        /* Voorkom dat de gebruiker per ongeluk tekst selecteert tijdens het slepen */
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -128,6 +141,8 @@
                     document.getElementById("setupMenu").style.display = "none";
                     document.getElementById("main").style.display = "block";
                     loadPlanning();
+                } else {
+                    document.getElementById("setupMenu").style.display = "block";
                 }
             };
         };
@@ -182,20 +197,23 @@
             });
         }
 
-        // Alleen slepen als editor open is
+        // ---------- Drag & Drop voor Desktop ----------
         document.addEventListener("dragstart", function (e) {
-            if (editor.style.display === "none") {
+            if (editor.style.display === "none" || e.target.tagName !== "IMG") {
                 e.preventDefault();
                 return;
             }
+            draggedItem = e.target;
+            e.target.classList.add("dragging");
+            e.dataTransfer.setData("imageSrc", e.target.src);
+        });
 
+        document.addEventListener("dragend", function(e) {
             if (e.target.tagName === "IMG") {
-                draggedItem = e.target;
-                e.dataTransfer.setData("imageSrc", e.target.src);
+                e.target.classList.remove("dragging");
             }
         });
 
-        // Planning - drop
         planning.addEventListener("dragover", function (e) {
             e.preventDefault();
         });
@@ -203,32 +221,35 @@
         planning.addEventListener("drop", function (e) {
             e.preventDefault();
             if (editor.style.display === "none") return;
-
-            const imageSrc = e.dataTransfer.getData("imageSrc");
-
+        
+            draggedItem.classList.remove("dragging");
+        
+            // Bepaal de positie waar het element moet komen
+            const afterElement = getDragAfterElement(planning, e.clientX);
+        
             if (!draggedItem.parentElement || draggedItem.parentElement.id === "imageContainer") {
                 // Nieuw plaatje uit editor
                 const img = document.createElement("img");
-                img.src = imageSrc;
+                img.src = draggedItem.src;
                 img.width = 80;
                 img.draggable = true;
-                img.addEventListener("dragstart", handlePlanningDragStart);
-                img.addEventListener("dragend", handlePlanningDragEnd);
-                planning.appendChild(img);
+                if (afterElement == null) {
+                    planning.appendChild(img);
+                } else {
+                    planning.insertBefore(img, afterElement);
+                }
             } else {
-                // Reorder bestaande
-                const afterElement = getDragAfterElement(planning, e.clientX);
+                // Herorden een bestaand plaatje
                 if (afterElement == null) {
                     planning.appendChild(draggedItem);
                 } else {
                     planning.insertBefore(draggedItem, afterElement);
                 }
             }
-
+        
             savePlanning();
         });
 
-        // ---------- Nieuw: terug slepen naar editor verwijdert afbeelding ----------
         editor.addEventListener("dragover", function (e) {
             e.preventDefault();
         });
@@ -236,22 +257,11 @@
         editor.addEventListener("drop", function (e) {
             e.preventDefault();
             if (draggedItem && draggedItem.parentElement === planning) {
-                draggedItem.remove(); // verwijder uit planning
+                draggedItem.remove();
                 savePlanning();
-                console.log("Afbeelding teruggesleept naar editor en verwijderd uit planning.");
             }
         });
-
-        function handlePlanningDragStart(e) {
-            draggedItem = e.target;
-            e.target.classList.add("dragging");
-        }
-
-        function handlePlanningDragEnd(e) {
-            e.target.classList.remove("dragging");
-            savePlanning();
-        }
-
+        
         function getDragAfterElement(container, x) {
             const draggableElements = [...container.querySelectorAll("img:not(.dragging)")];
             return draggableElements.reduce(
@@ -268,42 +278,132 @@
             ).element;
         }
 
-        planning.addEventListener("DOMNodeInserted", function (e) {
-            if (e.target.tagName === "IMG") {
-                e.target.addEventListener("dragstart", handlePlanningDragStart);
-                e.target.addEventListener("dragend", handlePlanningDragEnd);
+        // ---------- Touch / Swipe functionaliteit voor Mobiel (NIEUW) ----------
+        let touchedItem = null;
+        let ghostElement = null;
+        let offsetX = 0, offsetY = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.tagName !== 'IMG' || editor.style.display === 'none') {
+                return;
             }
+
+            touchedItem = e.target;
+            touchedItem.classList.add('dragging');
+
+            const rect = touchedItem.getBoundingClientRect();
+            offsetX = e.touches[0].clientX - rect.left;
+            offsetY = e.touches[0].clientY - rect.top;
+
+            ghostElement = touchedItem.cloneNode(true);
+            ghostElement.style.position = 'absolute';
+            ghostElement.style.zIndex = '1000';
+            ghostElement.style.opacity = '0.7';
+            ghostElement.style.pointerEvents = 'none'; // Zorgt ervoor dat de spook-afbeelding geen events afvuurt
+            document.body.appendChild(ghostElement);
+
+            updateGhostPosition(e.touches[0]);
+        }, { passive: false });
+
+        document.addEventListener('touchmove', function(e) {
+            if (!touchedItem) return;
+
+            e.preventDefault(); // Voorkom scrollen van de pagina
+            updateGhostPosition(e.touches[0]);
+        }, { passive: false });
+
+        document.addEventListener('touchend', function(e) {
+            if (!touchedItem) return;
+
+            ghostElement.style.display = 'none'; // Verberg spook om onderliggend element te vinden
+            const dropTarget = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+            document.body.removeChild(ghostElement);
+            touchedItem.classList.remove('dragging');
+
+            const planningContainer = dropTarget ? dropTarget.closest('#planning') : null;
+            const editorContainer = dropTarget ? dropTarget.closest('#editor') : null;
+            
+            if (planningContainer) {
+                const afterElement = getDragAfterElement(planning, e.changedTouches[0].clientX);
+                if (touchedItem.parentElement.id === 'imageContainer') {
+                    // Nieuw plaatje uit editor
+                    const newImg = touchedItem.cloneNode(true);
+                    newImg.draggable = true;
+                    if (afterElement) {
+                        planning.insertBefore(newImg, afterElement);
+                    } else {
+                        planning.appendChild(newImg);
+                    }
+                } else {
+                    // Herorden een bestaand plaatje
+                    if (afterElement) {
+                        planning.insertBefore(touchedItem, afterElement);
+                    } else {
+                        planning.appendChild(touchedItem);
+                    }
+                }
+                savePlanning();
+            } else if (editorContainer && touchedItem.parentElement === planning) {
+                // Verwijder plaatje door terug te slepen naar editor
+                touchedItem.remove();
+                savePlanning();
+            }
+
+            // Reset
+            touchedItem = null;
+            ghostElement = null;
         });
+
+        function updateGhostPosition(touch) {
+            if (ghostElement) {
+                ghostElement.style.left = touch.clientX - offsetX + 'px';
+                ghostElement.style.top = touch.clientY - offsetY + 'px';
+            }
+        }
+
 
         // ---------- Opslaan & Laden ----------
         function savePlanning() {
+            if (!db) return;
             const images = [...planning.querySelectorAll("img")].map(img => img.src);
             const transaction = db.transaction(["planning"], "readwrite");
             const store = transaction.objectStore("planning");
             store.put({ id: "userPlanning", images: images });
-            console.log("Planning saved:", images);
         }
 
         function loadPlanning() {
+            if (!db) return;
+            // Eerst de planning leegmaken om duplicaten te voorkomen
+            const existingImages = planning.querySelectorAll('img');
+            existingImages.forEach(img => img.remove());
+            const placeholder = planning.querySelector('p');
+            if (placeholder) placeholder.style.display = 'block';
+
             const transaction = db.transaction(["planning"], "readonly");
             const store = transaction.objectStore("planning");
             const request = store.get("userPlanning");
 
             request.onsuccess = function () {
-                if (request.result && request.result.images) {
+                if (request.result && request.result.images && request.result.images.length > 0) {
+                    if (placeholder) placeholder.style.display = 'none'; // Verberg de placeholder tekst
                     request.result.images.forEach(src => {
                         const img = document.createElement("img");
                         img.src = src;
                         img.width = 80;
                         img.draggable = false;
-                        img.addEventListener("dragstart", handlePlanningDragStart);
-                        img.addEventListener("dragend", handlePlanningDragEnd);
                         planning.appendChild(img);
                     });
-                    console.log("Planning loaded!");
                 }
             };
         }
+
+        // Zorg ervoor dat de placeholder tekst verdwijnt/verschijnt
+        planning.addEventListener("DOMSubtreeModified", function() {
+            const placeholder = planning.querySelector('p');
+            if (!placeholder) return;
+            const imageCount = planning.querySelectorAll('img').length;
+            placeholder.style.display = (imageCount > 0) ? 'none' : 'block';
+        });
     </script>
 </body>
 
