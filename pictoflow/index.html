@@ -261,7 +261,7 @@
             draggedItem.classList.remove("dragging");
 
             // Bepaal de positie waar het element moet komen
-            const afterElement = getDragAfterElement(planning, e.clientX);
+            const afterElement = getDragAfterElement(planning, e.clientX, e.clientY);
 
             if (!draggedItem.parentElement || draggedItem.parentElement.id === "imageContainer") {
                 // Nieuw plaatje uit editor
@@ -298,20 +298,21 @@
             }
         });
 
-        function getDragAfterElement(container, x) {
+        function getDragAfterElement(container, x, y) {
             const draggableElements = [...container.querySelectorAll("img:not(.dragging)")];
-            return draggableElements.reduce(
-                (closest, child) => {
-                    const box = child.getBoundingClientRect();
-                    const offset = x - box.left - box.width / 2;
-                    if (offset < 0 && offset > closest.offset) {
-                        return { offset: offset, element: child };
-                    } else {
-                        return closest;
-                    }
-                },
-                { offset: Number.NEGATIVE_INFINITY }
-            ).element;
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offsetX = x - (box.left + box.width / 2);
+                const offsetY = y - (box.top + box.height / 2);
+
+                // Kijk alleen naar elementen op dezelfde rij (y-offset dichtbij 0)
+                if (Math.abs(offsetY) < box.height / 2 && offsetX < 0 && offsetX > closest.offset) {
+                    return { offset: offsetX, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
         // ---------- Touch / Swipe functionaliteit voor Mobiel (NIEUW) ----------
@@ -320,26 +321,33 @@
         let offsetX = 0, offsetY = 0;
 
         document.addEventListener('touchstart', function (e) {
-            if (e.target.tagName !== 'IMG' || editor.style.display === 'none') {
-                return;
-            }
+            if (e.target.tagName !== 'IMG' || editor.style.display === 'none') return;
 
             touchedItem = e.target;
             touchedItem.classList.add('dragging');
 
             const rect = touchedItem.getBoundingClientRect();
+            // offset t.o.v. viewport
             offsetX = e.touches[0].clientX - rect.left;
             offsetY = e.touches[0].clientY - rect.top;
 
             ghostElement = touchedItem.cloneNode(true);
-            ghostElement.style.position = 'absolute';
+            ghostElement.style.position = 'fixed';
             ghostElement.style.zIndex = '1000';
             ghostElement.style.opacity = '0.7';
-            ghostElement.style.pointerEvents = 'none'; // Zorgt ervoor dat de spook-afbeelding geen events afvuurt
+            ghostElement.style.pointerEvents = 'none';
             document.body.appendChild(ghostElement);
 
             updateGhostPosition(e.touches[0]);
         }, { passive: false });
+
+        function updateGhostPosition(touch) {
+            if (ghostElement) {
+                ghostElement.style.left = (touch.clientX - offsetX) + 'px';
+                ghostElement.style.top = (touch.clientY - offsetY) + 'px';
+            }
+        }
+
 
         document.addEventListener('touchmove', function (e) {
             if (!touchedItem) return;
@@ -360,7 +368,7 @@
             const editorContainer = dropTarget ? dropTarget.closest('#editor') : null;
 
             if (planningContainer) {
-                const afterElement = getDragAfterElement(planning, e.changedTouches[0].clientX);
+                const afterElement = getDragAfterElement(planning, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
                 if (touchedItem.parentElement.id === 'imageContainer') {
                     // Nieuw plaatje uit editor
                     const newImg = touchedItem.cloneNode(true);
