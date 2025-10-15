@@ -77,6 +77,12 @@
         function searchPictos() {
             const q = document.getElementById("searchInput").value.toLowerCase();
 
+            // Check of de input minstens één letter bevat (a-z)
+            if (!/[a-z]/i.test(q)) {
+                document.getElementById("searchResults").innerHTML = ""; // resultaten leegmaken
+                return; // stop hier, laat niks zien
+            }
+
             const res = pictos.filter(p =>
                 p.name.toLowerCase().includes(q) ||
                 (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
