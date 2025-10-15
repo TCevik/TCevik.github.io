@@ -27,20 +27,17 @@
             <h4>PictoFlow: Organize your day with clarity, simplicity, and fun.</h4>
             <button onclick="setupContinue(2)">Continue</button>
         </div>
-
         <div id="step2" style="display:none;">
             <h1>Would you like to set a PIN?</h1>
             <h4>You can also set it later if you prefer.</h4>
             <button onclick="setupNoPin()">No</button>
             <button onclick="setupContinue(3)">Yes</button>
         </div>
-
         <div id="step3" style="display:none;">
             <h1>Please enter your PIN</h1>
             <input type="number" id="pinInput" placeholder="Enter a 4 to 6 digit PIN" maxlength="6">
             <button onclick="savePinAndContinue()">Continue</button>
         </div>
-
         <div id="step4" style="display:none;">
             <h1>That's all! You're all set.</h1>
             <button onclick="setupDone()">Go to PictoFlow</button>
@@ -56,23 +53,55 @@
 
         <div id="editor" style="display:none; border:1px solid black; margin-top:10px; padding:10px;">
             <h2>Editor</h2>
-            <div id="imageContainer">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" draggable="true" alt="Breakfast"
-                    width="80">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616430.png" draggable="true" alt="School"
-                    width="80">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616487.png" draggable="true" alt="Lunch"
-                    width="80">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616510.png" draggable="true" alt="Homework"
-                    width="80">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616545.png" draggable="true" alt="Play" width="80">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616491.png" draggable="true" alt="Sleep"
-                    width="80">
+
+            <!-- Nieuw: Zoekfunctie -->
+            <div id="searchContainer" style="margin-bottom:10px;">
+                <input type="text" id="searchInput" placeholder="Search for pictos" oninput="searchPictos()" />
+                <div id="searchResults" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px;"></div>
             </div>
         </div>
     </div>
 
     <script>
+        let pictos = [];
+
+        // Laad pictos automatisch uit index.json
+        fetch('index.json')
+            .then(response => response.json())
+            .then(data => {
+                pictos = data; // verwachte structuur: [{name:"", src:"", tags:[]}, ...]
+                searchPictos(); // eventueel initial search tonen
+            })
+            .catch(err => console.error("Kan index.json niet laden:", err));
+
+        function searchPictos() {
+            const q = document.getElementById("searchInput").value.toLowerCase();
+
+            const res = pictos.filter(p =>
+                p.name.toLowerCase().includes(q) ||
+                (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
+            ).slice(0, 50); // alleen de eerste 50 resultaten
+
+            const container = document.getElementById("searchResults");
+            container.innerHTML = ""; // oude resultaten verwijderen
+
+            res.forEach(p => {
+                const img = document.createElement("img");
+                img.src = p.src;
+                img.title = p.name;
+                img.width = 80;
+                img.style.cursor = "pointer";
+                img.onclick = () => {
+                    const newImg = document.createElement("img");
+                    newImg.src = p.src;
+                    newImg.width = 80;
+                    planning.appendChild(newImg);
+                    savePlanning();
+                };
+                container.appendChild(img);
+            });
+        }
+
         // ---------- Setup Menu ----------
         function setupContinue(step) {
             for (let i = 1; i <= 4; i++) {
