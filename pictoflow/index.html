@@ -6,448 +6,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PictoFlow</title>
     <style>
-        /* Stijl voor het originele item dat wordt versleept (zowel muis als touch) */
-        .dragging {
-            opacity: 0.4;
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+        * {
+            font-family: lexend, sans-serif;
         }
 
-        /* Voorkom dat de gebruiker per ongeluk tekst selecteert tijdens het slepen */
         body {
-            user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
+            background: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        #editor {
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        #SearchPictos {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .picto {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.1s ease;
+        }
+
+        .picto:hover {
+            transform: scale(1.05);
+        }
+
+        .picto img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .picto p {
+            font-size: 14px;
+            margin-top: 5px;
+            color: #333;
+            word-break: break-word;
         }
     </style>
 </head>
 
 <body>
-    <div id="setupMenu">
-        <div id="step1">
-            <h1>Welcome!</h1>
-            <h4>PictoFlow: Organize your day with clarity, simplicity, and fun.</h4>
-            <button onclick="setupContinue(2)">Continue</button>
-        </div>
-        <div id="step2" style="display:none;">
-            <h1>Would you like to set a PIN?</h1>
-            <h4>You can also set it later if you prefer.</h4>
-            <button onclick="setupNoPin()">No</button>
-            <button onclick="setupContinue(3)">Yes</button>
-        </div>
-        <div id="step3" style="display:none;">
-            <h1>Please enter your PIN</h1>
-            <input type="number" id="pinInput" placeholder="Enter a 4 to 6 digit PIN" maxlength="6">
-            <button onclick="savePinAndContinue()">Continue</button>
-        </div>
-        <div id="step4" style="display:none;">
-            <h1>That's all! You're all set.</h1>
-            <button onclick="setupDone()">Go to PictoFlow</button>
-        </div>
-    </div>
+    <main id="main">
+        <div id="planner"></div>
 
-    <div id="main" style="display:none;">
-        <button id="toggleEditorBtn" onclick="toggleEditor()">Open Editor</button>
-        <div id="planning" style="min-height:100px; border:1px solid black; padding:10px;">
-            <h2>Planning</h2>
-            <p>Drag images here to create or reorder your plan.</p>
+        <div id="editor">
+            <input type="search" placeholder="Search all picto's" id="SearchPictos" autocomplete="off">
         </div>
 
-        <div id="editor" style="display:none; border:1px solid black; margin-top:10px; padding:10px;">
-            <h2>Editor</h2>
-
-            <!-- Nieuw: Zoekfunctie -->
-            <div id="searchContainer" style="margin-bottom:10px;">
-                <input type="text" id="searchInput" placeholder="Search for pictos" oninput="searchPictos()" />
-                <div id="searchResults" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px;"></div>
-            </div>
-        </div>
-    </div>
+        <div id="results"></div>
+    </main>
 
     <script>
         let pictos = [];
-        const pictosSize = 120;
 
-        // Laad pictos automatisch uit index.json
-        fetch('index.json')
-            .then(response => response.json())
-            .then(data => {
-                pictos = data; // verwachte structuur: [{name:"", src:"", tags:[]}, ...]
-                searchPictos(); // eventueel initial search tonen
-            })
-            .catch(err => console.error("Kan index.json niet laden:", err));
+        // Laad het JSON-bestand
+        async function loadPictos() {
+            try {
+                const response = await fetch('index.json');
+                pictos = await response.json();
+            } catch (error) {
+                console.error('Fout bij laden van index.json:', error);
+            }
+        }
 
-        function searchPictos() {
-            const q = document.getElementById("searchInput").value.toLowerCase();
+        // Toon resultaten
+        function showResults(results) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
 
-            // Check of de input minstens één letter bevat (a-z)
-            if (!/[a-z]/i.test(q)) {
-                document.getElementById("searchResults").innerHTML = ""; // resultaten leegmaken
-                return; // stop hier, laat niks zien
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<p style="text-align:center;color:#777;">No results found.</p>';
+                return;
             }
 
-            const res = pictos.filter(p =>
-                p.name.toLowerCase().includes(q) ||
-                (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
-            ).slice(0, 50); // alleen de eerste 50 resultaten
-
-            const container = document.getElementById("searchResults");
-            container.innerHTML = ""; // oude resultaten verwijderen
-
-            res.forEach(p => {
-                const img = document.createElement("img");
-                img.src = p.src;
-                img.title = p.name;
-                img.width = pictosSize;
-                img.style.cursor = "pointer";
-                img.onclick = () => {
-                    const newImg = document.createElement("img");
-                    newImg.src = p.src;
-                    newImg.width = pictosSize;
-                    planning.appendChild(newImg);
-                    savePlanning();
-                };
-                container.appendChild(img);
+            results.slice(0, 100).forEach(picto => {
+                const div = document.createElement('div');
+                div.className = 'picto';
+                div.innerHTML = `
+          <img src="${picto.src}" alt="${picto.name}">
+          <p>${picto.name}</p>
+        `;
+                resultsContainer.appendChild(div);
             });
         }
 
-        // ---------- Setup Menu ----------
-        function setupContinue(step) {
-            for (let i = 1; i <= 4; i++) {
-                const stepDiv = document.getElementById("step" + i);
-                if (stepDiv) stepDiv.style.display = "none";
-            }
-            const currentStep = document.getElementById("step" + step);
-            if (currentStep) currentStep.style.display = "block";
-        }
-
-        function setupDone() {
-            const transaction = db.transaction(["settings"], "readwrite");
-            const store = transaction.objectStore("settings");
-            store.put({ id: "setupComplete", value: true });
-
-            transaction.oncomplete = function () {
-                document.getElementById("setupMenu").style.display = "none";
-                document.getElementById("main").style.display = "block";
-                loadPlanning();
-            };
-        }
-
-        let db;
-        const request = indexedDB.open("PictoFlowDB", 2);
-
-        request.onerror = function (event) {
-            console.error("Database error:", event.target.error);
-        };
-
-        request.onupgradeneeded = function (event) {
-            db = event.target.result;
-            if (!db.objectStoreNames.contains("settings")) {
-                db.createObjectStore("settings", { keyPath: "id" });
-            }
-            if (!db.objectStoreNames.contains("planning")) {
-                db.createObjectStore("planning", { keyPath: "id" });
-            }
-        };
-
-        request.onsuccess = function (event) {
-            db = event.target.result;
-            const transaction = db.transaction(["settings"], "readonly");
-            const store = transaction.objectStore("settings");
-            const getSetup = store.get("setupComplete");
-
-            getSetup.onsuccess = function () {
-                if (getSetup.result && getSetup.result.value === true) {
-                    document.getElementById("setupMenu").style.display = "none";
-                    document.getElementById("main").style.display = "block";
-                    loadPlanning();
-                } else {
-                    document.getElementById("setupMenu").style.display = "block";
-                }
-            };
-        };
-
-        function savePinAndContinue() {
-            const pinInput = document.getElementById("pinInput").value;
-            if (!pinInput || pinInput.length < 4 || pinInput.length > 6) {
-                alert("Please enter a valid 4 to 6 digit PIN.");
+        // Zoekfunctie
+        function searchPictos(query) {
+            query = query.trim().toLowerCase();
+            if (!query) {
+                document.getElementById('results').innerHTML = '';
                 return;
             }
-            const transaction = db.transaction(["settings"], "readwrite");
-            const store = transaction.objectStore("settings");
-            store.put({ id: "userPin", pin: pinInput });
-            transaction.oncomplete = function () {
-                setupContinue(4);
-            };
-        }
 
-        function setupNoPin() {
-            const transaction = db.transaction(["settings"], "readwrite");
-            const store = transaction.objectStore("settings");
-            store.put({ id: "userPin", pin: null });
-            transaction.oncomplete = function () {
-                setupContinue(4);
-            };
-        }
-
-        // ---------- Editor & Planning ----------
-        const planning = document.getElementById("planning");
-        const editor = document.getElementById("editor");
-        let draggedItem = null;
-
-        function toggleEditor() {
-            const btn = document.getElementById("toggleEditorBtn");
-
-            // Check de PIN eerst
-            const transaction = db.transaction(["settings"], "readonly");
-            const store = transaction.objectStore("settings");
-            const request = store.get("userPin");
-
-            request.onsuccess = function () {
-                const userPin = request.result ? request.result.pin : null;
-
-                if (userPin) {
-                    // Als er een PIN is, vraag de gebruiker om deze in te voeren
-                    const enteredPin = prompt("Please enter your PIN to open the editor:");
-                    if (enteredPin !== userPin) {
-                        alert("Incorrect PIN!");
-                        return;
-                    }
-                }
-
-                // Toggle editor als de PIN correct is of er geen PIN is
-                const isClosed = editor.style.display === "none";
-                if (isClosed) {
-                    editor.style.display = "block";
-                    btn.textContent = "Close Editor";
-                    setImagesDraggable(true);
-                } else {
-                    editor.style.display = "none";
-                    btn.textContent = "Open Editor";
-                    setImagesDraggable(false);
-                }
-            };
-        }
-
-        function setImagesDraggable(enabled) {
-            const allImages = document.querySelectorAll("#planning img, #imageContainer img");
-            allImages.forEach(img => {
-                img.draggable = enabled;
+            const results = pictos.filter(picto => {
+                const nameMatch = picto.name.toLowerCase().includes(query);
+                const tagsMatch = picto.tags.some(tag => tag.toLowerCase().includes(query));
+                return nameMatch || tagsMatch;
             });
+
+            // Relevantie bepalen: kortere matches & naam matches eerst
+            results.sort((a, b) => {
+                const aScore = a.name.toLowerCase().includes(query) ? 0 : 1;
+                const bScore = b.name.toLowerCase().includes(query) ? 0 : 1;
+                return aScore - bScore || a.name.length - b.name.length;
+            });
+
+            showResults(results);
         }
 
-        // ---------- Drag & Drop voor Desktop ----------
-        document.addEventListener("dragstart", function (e) {
-            if (editor.style.display === "none" || e.target.tagName !== "IMG") {
-                e.preventDefault();
-                return;
-            }
-            draggedItem = e.target;
-            e.target.classList.add("dragging");
-            e.dataTransfer.setData("imageSrc", e.target.src);
+        // Event listener voor zoekbalk
+        document.getElementById('SearchPictos').addEventListener('input', (e) => {
+            const query = e.target.value;
+            searchPictos(query);
         });
 
-        document.addEventListener("dragend", function (e) {
-            if (e.target.tagName === "IMG") {
-                e.target.classList.remove("dragging");
-            }
-        });
-
-        planning.addEventListener("dragover", function (e) {
-            e.preventDefault();
-        });
-
-        planning.addEventListener("drop", function (e) {
-            e.preventDefault();
-            if (editor.style.display === "none") return;
-
-            draggedItem.classList.remove("dragging");
-
-            // Bepaal de positie waar het element moet komen
-            const afterElement = getDragAfterElement(planning, e.clientX, e.clientY);
-
-            if (!draggedItem.parentElement || draggedItem.parentElement.id === "imageContainer") {
-                // Nieuw plaatje uit editor
-                const img = document.createElement("img");
-                img.src = draggedItem.src;
-                img.width = pictosSize;
-                img.draggable = true;
-                if (afterElement == null) {
-                    planning.appendChild(img);
-                } else {
-                    planning.insertBefore(img, afterElement);
-                }
-            } else {
-                // Herorden een bestaand plaatje
-                if (afterElement == null) {
-                    planning.appendChild(draggedItem);
-                } else {
-                    planning.insertBefore(draggedItem, afterElement);
-                }
-            }
-
-            savePlanning();
-        });
-
-        editor.addEventListener("dragover", function (e) {
-            e.preventDefault();
-        });
-
-        editor.addEventListener("drop", function (e) {
-            e.preventDefault();
-            if (draggedItem && draggedItem.parentElement === planning) {
-                draggedItem.remove();
-                savePlanning();
-            }
-        });
-
-        function getDragAfterElement(container, x, y) {
-            const draggableElements = [...container.querySelectorAll("img:not(.dragging)")];
-
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offsetX = x - (box.left + box.width / 2);
-                const offsetY = y - (box.top + box.height / 2);
-
-                // Kijk alleen naar elementen op dezelfde rij (y-offset dichtbij 0)
-                if (Math.abs(offsetY) < box.height / 2 && offsetX < 0 && offsetX > closest.offset) {
-                    return { offset: offsetX, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
-        }
-
-        // ---------- Touch / Swipe functionaliteit voor Mobiel (NIEUW) ----------
-        let touchedItem = null;
-        let ghostElement = null;
-        let offsetX = 0, offsetY = 0;
-
-        document.addEventListener('touchstart', function (e) {
-            if (e.target.tagName !== 'IMG' || editor.style.display === 'none') return;
-
-            touchedItem = e.target;
-            touchedItem.classList.add('dragging');
-
-            const rect = touchedItem.getBoundingClientRect();
-            // offset t.o.v. viewport
-            offsetX = e.touches[0].clientX - rect.left;
-            offsetY = e.touches[0].clientY - rect.top;
-
-            ghostElement = touchedItem.cloneNode(true);
-            ghostElement.style.position = 'fixed';
-            ghostElement.style.zIndex = '1000';
-            ghostElement.style.opacity = '0.7';
-            ghostElement.style.pointerEvents = 'none';
-            document.body.appendChild(ghostElement);
-
-            updateGhostPosition(e.touches[0]);
-        }, { passive: false });
-
-        function updateGhostPosition(touch) {
-            if (ghostElement) {
-                ghostElement.style.left = (touch.clientX - offsetX) + 'px';
-                ghostElement.style.top = (touch.clientY - offsetY) + 'px';
-            }
-        }
-
-
-        document.addEventListener('touchmove', function (e) {
-            if (!touchedItem) return;
-
-            e.preventDefault(); // Voorkom scrollen van de pagina
-            updateGhostPosition(e.touches[0]);
-        }, { passive: false });
-
-        document.addEventListener('touchend', function (e) {
-            if (!touchedItem) return;
-
-            ghostElement.style.display = 'none'; // Verberg spook om onderliggend element te vinden
-            const dropTarget = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-            document.body.removeChild(ghostElement);
-            touchedItem.classList.remove('dragging');
-
-            const planningContainer = dropTarget ? dropTarget.closest('#planning') : null;
-            const editorContainer = dropTarget ? dropTarget.closest('#editor') : null;
-
-            if (planningContainer) {
-                const afterElement = getDragAfterElement(planning, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                if (touchedItem.parentElement.id === 'imageContainer') {
-                    // Nieuw plaatje uit editor
-                    const newImg = touchedItem.cloneNode(true);
-                    newImg.draggable = true;
-                    if (afterElement) {
-                        planning.insertBefore(newImg, afterElement);
-                    } else {
-                        planning.appendChild(newImg);
-                    }
-                } else {
-                    // Herorden een bestaand plaatje
-                    if (afterElement) {
-                        planning.insertBefore(touchedItem, afterElement);
-                    } else {
-                        planning.appendChild(touchedItem);
-                    }
-                }
-                savePlanning();
-            } else if (editorContainer && touchedItem.parentElement === planning) {
-                // Verwijder plaatje door terug te slepen naar editor
-                touchedItem.remove();
-                savePlanning();
-            }
-
-            // Reset
-            touchedItem = null;
-            ghostElement = null;
-        });
-
-        function updateGhostPosition(touch) {
-            if (ghostElement) {
-                ghostElement.style.left = touch.clientX - offsetX + 'px';
-                ghostElement.style.top = touch.clientY - offsetY + 'px';
-            }
-        }
-
-
-        // ---------- Opslaan & Laden ----------
-        function savePlanning() {
-            if (!db) return;
-            const images = [...planning.querySelectorAll("img")].map(img => img.src);
-            const transaction = db.transaction(["planning"], "readwrite");
-            const store = transaction.objectStore("planning");
-            store.put({ id: "userPlanning", images: images });
-        }
-
-        function loadPlanning() {
-            if (!db) return;
-            // Eerst de planning leegmaken om duplicaten te voorkomen
-            const existingImages = planning.querySelectorAll('img');
-            existingImages.forEach(img => img.remove());
-            const placeholder = planning.querySelector('p');
-            if (placeholder) placeholder.style.display = 'block';
-
-            const transaction = db.transaction(["planning"], "readonly");
-            const store = transaction.objectStore("planning");
-            const request = store.get("userPlanning");
-
-            request.onsuccess = function () {
-                if (request.result && request.result.images && request.result.images.length > 0) {
-                    if (placeholder) placeholder.style.display = 'none'; // Verberg de placeholder tekst
-                    request.result.images.forEach(src => {
-                        const img = document.createElement("img");
-                        img.src = src;
-                        img.width = pictosSize;
-                        img.draggable = false;
-                        planning.appendChild(img);
-                    });
-                }
-            };
-        }
-
-        planning.addEventListener("DOMSubtreeModified", function () {
-            const placeholder = planning.querySelector('p');
-            if (!placeholder) return;
-            const imageCount = planning.querySelectorAll('img').length;
-            placeholder.style.display = (imageCount > 0) ? 'none' : 'block';
-        });
+        // Start
+        loadPictos();
     </script>
 </body>
 
