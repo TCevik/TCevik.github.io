@@ -88,7 +88,7 @@
         // Laad het JSON-bestand
         async function loadPictos() {
             try {
-                const response = await fetch('index.json');
+                const response = await fetch('indexEN.json');
                 pictos = await response.json();
             } catch (error) {
                 console.error('Fout bij laden van index.json:', error);
