@@ -13,9 +13,49 @@
         }
 
         body {
-            background: #fafafa;
+            background: #ffffff;
+            margin: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             margin: 0;
             padding: 0;
+        }
+
+        #setupMenu {
+            padding: 20px;
+        }
+
+        #topBar {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: rgb(222, 222, 222);
+            height: 80px;
+            gap: 10px;
+            z-index: 10000;
+            padding: 10px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-sizing: border-box;
+        }
+
+        #languageSelect {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        #main {
+            margin-top: 80px;
         }
 
         #editor {
@@ -25,6 +65,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            border-top: black 3px solid;
         }
 
         #SearchPictos {
@@ -72,7 +113,22 @@
 </head>
 
 <body>
-    <main id="main">
+    <div id="setupMenu" style="display: block;">
+        <h1>Hey! Welcome to PictoFlow.</h1>
+        <h3 style="margin-left: 8px; margin-top: 15px;">Let's get started:</h3>
+        <p style="margin-left: 13px; margin-top: 3px;">Select your language:</p>
+        <select style="margin-left: 13px;" id="languageSelect">
+            <option value="EN">English</option>
+            <option value="NL">Nederlands</option>
+        </select>
+        <br><button style="margin-top: 15px;" onclick="endSetup()">Start using PictoFlow!</button>
+    </div>
+
+    <main id="main" style="display: none;">
+        <div id="topBar">
+            <h1>PictoFlow</h1>
+        </div>
+
         <div id="planner"></div>
 
         <div id="editor">
@@ -80,22 +136,29 @@
         </div>
 
         <div id="results"></div>
+        </div>
     </main>
 
     <script>
+        function endSetup() {
+            document.getElementById('setupMenu').style.display = 'none';
+            document.getElementById('main').style.display = 'block';
+        }
+
         let pictos = [];
 
-        // Laad het JSON-bestand
-        async function loadPictos() {
+        async function loadPictos(language = 'EN') {
             try {
-                const response = await fetch('indexEN.json');
+                const file = language === 'NL' ? 'indexNL.json' : 'indexEN.json';
+                const response = await fetch(file);
                 pictos = await response.json();
+                document.getElementById('SearchPictos').value = ''; // reset search
+                showResults([]);
             } catch (error) {
-                console.error('Fout bij laden van index.json:', error);
+                console.error('Error loading JSON:', error);
             }
         }
 
-        // Toon resultaten
         function showResults(results) {
             const resultsContainer = document.getElementById('results');
             resultsContainer.innerHTML = '';
@@ -109,18 +172,17 @@
                 const div = document.createElement('div');
                 div.className = 'picto';
                 div.innerHTML = `
-          <img src="${picto.src}" alt="${picto.name}">
-          <p>${picto.name}</p>
-        `;
+                    <img src="${picto.src}" alt="${picto.name}">
+                    <p>${picto.name}</p>
+                `;
                 resultsContainer.appendChild(div);
             });
         }
 
-        // Zoekfunctie
         function searchPictos(query) {
             query = query.trim().toLowerCase();
             if (!query) {
-                document.getElementById('results').innerHTML = '';
+                showResults([]);
                 return;
             }
 
@@ -130,7 +192,6 @@
                 return nameMatch || tagsMatch;
             });
 
-            // Relevantie bepalen: kortere matches & naam matches eerst
             results.sort((a, b) => {
                 const aScore = a.name.toLowerCase().includes(query) ? 0 : 1;
                 const bScore = b.name.toLowerCase().includes(query) ? 0 : 1;
@@ -140,14 +201,15 @@
             showResults(results);
         }
 
-        // Event listener voor zoekbalk
-        document.getElementById('SearchPictos').addEventListener('input', (e) => {
-            const query = e.target.value;
-            searchPictos(query);
+        document.getElementById('SearchPictos').addEventListener('input', e => {
+            searchPictos(e.target.value);
         });
 
-        // Start
-        loadPictos();
+        document.getElementById('languageSelect').addEventListener('change', e => {
+            loadPictos(e.target.value);
+        });
+
+        loadPictos('EN');
     </script>
 </body>
 
