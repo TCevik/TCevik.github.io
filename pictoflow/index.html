@@ -10,6 +10,7 @@
 
         * {
             font-family: lexend, sans-serif;
+            user-select: none;
         }
 
         body {
@@ -17,12 +18,7 @@
             margin: 0;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        h1, h2, h3, h4, h5, h6 {
             margin: 0;
             padding: 0;
         }
@@ -58,12 +54,42 @@
             margin-top: 80px;
         }
 
+        #planner {
+            padding: 20px;
+            margin: 20px;
+            min-height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-content: flex-start;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        #planner.drag-over {
+            background-color: #e0f7fa;
+            border-color: #007bff;
+        }
+
+        .picto.dragging {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+
+        #planner .picto {
+            cursor: default;
+        }
+
         #editor {
             padding: 20px;
             background: white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: sticky;
-            top: 0;
+            top: 80px;
             z-index: 10;
             border-top: black 3px solid;
         }
@@ -85,16 +111,21 @@
         }
 
         .picto {
+            /* --- AANGEPASTE CSS --- */
+            width: 150px; /* Vaste breedte voor consistente grootte */
+            box-sizing: border-box; /* Zorgt dat padding binnen de 150px valt */
+            /* --- EINDE AANPASSING --- */
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 10px;
             transition: transform 0.1s ease;
+            cursor: grab;
         }
-
-        .picto:hover {
-            transform: scale(1.05);
+        
+        .picto:active {
+            cursor: grabbing;
         }
 
         .picto img {
@@ -128,15 +159,11 @@
         <div id="topBar">
             <h1>PictoFlow</h1>
         </div>
-
         <div id="planner"></div>
-
         <div id="editor">
             <input type="search" placeholder="Search all picto's" id="SearchPictos" autocomplete="off">
         </div>
-
         <div id="results"></div>
-        </div>
     </main>
 
     <script>
@@ -152,7 +179,7 @@
                 const file = language === 'NL' ? 'indexNL.json' : 'indexEN.json';
                 const response = await fetch(file);
                 pictos = await response.json();
-                document.getElementById('SearchPictos').value = ''; // reset search
+                document.getElementById('SearchPictos').value = '';
                 showResults([]);
             } catch (error) {
                 console.error('Error loading JSON:', error);
@@ -162,15 +189,15 @@
         function showResults(results) {
             const resultsContainer = document.getElementById('results');
             resultsContainer.innerHTML = '';
-
             if (results.length === 0) {
-                resultsContainer.innerHTML = '<p style="text-align:center;color:#777;">No results found.</p>';
+                resultsContainer.innerHTML = '<p style="text-align:center;color:#777;">Start typing to search for pictos.</p>';
                 return;
             }
-
             results.slice(0, 100).forEach(picto => {
                 const div = document.createElement('div');
                 div.className = 'picto';
+                div.dataset.src = picto.src;
+                div.dataset.name = picto.name;
                 div.innerHTML = `
                     <img src="${picto.src}" alt="${picto.name}">
                     <p>${picto.name}</p>
@@ -185,32 +212,135 @@
                 showResults([]);
                 return;
             }
-
             const results = pictos.filter(picto => {
                 const nameMatch = picto.name.toLowerCase().includes(query);
                 const tagsMatch = picto.tags.some(tag => tag.toLowerCase().includes(query));
                 return nameMatch || tagsMatch;
             });
-
             results.sort((a, b) => {
-                const aScore = a.name.toLowerCase().includes(query) ? 0 : 1;
-                const bScore = b.name.toLowerCase().includes(query) ? 0 : 1;
+                const aScore = a.name.toLowerCase().startsWith(query) ? 0 : 1;
+                const bScore = b.name.toLowerCase().startsWith(query) ? 0 : 1;
                 return aScore - bScore || a.name.length - b.name.length;
             });
-
             showResults(results);
         }
 
-        document.getElementById('SearchPictos').addEventListener('input', e => {
-            searchPictos(e.target.value);
-        });
-
-        document.getElementById('languageSelect').addEventListener('change', e => {
-            loadPictos(e.target.value);
-        });
-
+        document.getElementById('SearchPictos').addEventListener('input', e => searchPictos(e.target.value));
+        document.getElementById('languageSelect').addEventListener('change', e => loadPictos(e.target.value));
         loadPictos('EN');
+
+        // --- BIJGEWERKTE DRAG-AND-DROP LOGICA ---
+
+        let draggedElement = null;
+        let sourceElement = null;
+        let offsetX = 0, offsetY = 0;
+
+        // --- NIEUWE VARIABELEN VOOR AUTO-SCROLL ---
+        let isDragging = false;
+        let currentY = 0;
+        // --- EINDE NIEUWE VARIABELEN ---
+
+        const planner = document.getElementById('planner');
+        const resultsContainer = document.getElementById('results');
+
+        function getEventCoords(e) {
+            return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY };
+        }
+
+        // --- NIEUWE FUNCTIE VOOR AUTO-SCROLL ---
+        function autoScroll() {
+            if (!isDragging) return; // Stop de loop als we niet meer slepen
+
+            const scrollZone = 60; // De 'gevarenzone' aan de boven- en onderkant
+            const scrollSpeed = 10;
+
+            if (currentY < scrollZone) {
+                window.scrollBy(0, -scrollSpeed); // Scroll omhoog
+            } else if (currentY > window.innerHeight - scrollZone) {
+                window.scrollBy(0, scrollSpeed); // Scroll omlaag
+            }
+
+            requestAnimationFrame(autoScroll); // Blijf deze functie aanroepen voor een soepele animatie
+        }
+
+        function dragStart(e) {
+            sourceElement = e.target.closest('.picto');
+            if (!sourceElement) return;
+
+            e.preventDefault();
+
+            const rect = sourceElement.getBoundingClientRect();
+            const coords = getEventCoords(e);
+            
+            offsetX = coords.x - rect.left;
+            offsetY = coords.y - rect.top;
+
+            draggedElement = sourceElement.cloneNode(true);
+            draggedElement.classList.add('dragging');
+            document.body.appendChild(draggedElement);
+            
+            draggedElement.style.left = `${coords.x - offsetX}px`;
+            draggedElement.style.top = `${coords.y - offsetY}px`;
+            draggedElement.style.width = `${rect.width}px`;
+
+            document.addEventListener('mousemove', dragMove);
+            document.addEventListener('touchmove', dragMove, { passive: false });
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('touchend', dragEnd);
+
+            // --- START AUTO-SCROLL ---
+            isDragging = true;
+            requestAnimationFrame(autoScroll);
+            // --- EINDE START ---
+        }
+
+        function dragMove(e) {
+            if (!draggedElement) return;
+            e.preventDefault();
+
+            const coords = getEventCoords(e);
+
+            // --- UPDATE HUIDIGE Y-POSITIE ---
+            currentY = coords.y;
+            // --- EINDE UPDATE ---
+            
+            draggedElement.style.left = `${coords.x - offsetX}px`;
+            draggedElement.style.top = `${coords.y - offsetY}px`;
+
+            const elementBelow = document.elementFromPoint(coords.x, coords.y);
+            planner.classList.toggle('drag-over', elementBelow && (elementBelow === planner || planner.contains(elementBelow)));
+        }
+
+        function dragEnd(e) {
+            // --- STOP AUTO-SCROLL ---
+            isDragging = false;
+            // --- EINDE STOP ---
+
+            if (!draggedElement) return;
+
+            const coords = getEventCoords(e.changedTouches ? e.changedTouches[0] : e);
+            const elementBelow = document.elementFromPoint(coords.x, coords.y);
+            
+            if (elementBelow && (elementBelow === planner || planner.contains(elementBelow))) {
+                const newPicto = sourceElement.cloneNode(true);
+                newPicto.style.cursor = 'default';
+                planner.appendChild(newPicto);
+            }
+
+            document.body.removeChild(draggedElement);
+            planner.classList.remove('drag-over');
+            draggedElement = null;
+            sourceElement = null;
+
+            document.removeEventListener('mousemove', dragMove);
+            document.removeEventListener('touchmove', dragMove);
+            document.removeEventListener('mouseup', dragEnd);
+            document.removeEventListener('touchend', dragEnd);
+        }
+
+        resultsContainer.addEventListener('mousedown', dragStart);
+        resultsContainer.addEventListener('touchstart', dragStart, { passive: false });
     </script>
 </body>
 
-</html>
+</html> 
