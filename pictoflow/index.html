@@ -18,7 +18,12 @@
             margin: 0;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             margin: 0;
             padding: 0;
         }
@@ -79,10 +84,28 @@
             opacity: 0.8;
             transform: scale(1.1);
         }
-
-        #planner .picto {
-            cursor: default;
+        
+        /* --- NIEUWE CSS REGELS --- */
+        .picto.dragging-source {
+            opacity: 0.3;
         }
+
+        .drop-indicator {
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 123, 255, 0.1);
+            border: 2px dashed #007bff;
+            border-radius: 12px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        #editor.drag-over-delete {
+            background-color: #ffebee;
+            border-color: #f44336;
+            border-top: 3px solid #f44336;
+        }
+        /* --- EINDE NIEUWE CSS REGELS --- */
 
         #editor {
             padding: 20px;
@@ -92,6 +115,7 @@
             top: 80px;
             z-index: 10;
             border-top: black 3px solid;
+            transition: background-color 0.2s ease, border-color 0.2s ease, border-top-color 0.2s ease;
         }
 
         #SearchPictos {
@@ -111,19 +135,17 @@
         }
 
         .picto {
-            /* --- AANGEPASTE CSS --- */
-            width: 150px; /* Vaste breedte voor consistente grootte */
-            box-sizing: border-box; /* Zorgt dat padding binnen de 150px valt */
-            /* --- EINDE AANPASSING --- */
+            width: 150px;
+            box-sizing: border-box;
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 10px;
-            transition: transform 0.1s ease;
+            transition: transform 0.1s ease, opacity 0.2s ease;
             cursor: grab;
         }
-        
+
         .picto:active {
             cursor: grabbing;
         }
@@ -132,6 +154,7 @@
             width: 100%;
             height: auto;
             border-radius: 8px;
+            pointer-events: none; /* Voorkomt dat de afbeelding events afvangt */
         }
 
         .picto p {
@@ -139,6 +162,7 @@
             margin-bottom: 5px;
             font-weight: 600;
             word-break: break-word;
+            pointer-events: none; /* Voorkomt dat de tekst events afvangt */
         }
     </style>
 </head>
@@ -229,106 +253,163 @@
         document.getElementById('languageSelect').addEventListener('change', e => loadPictos(e.target.value));
         loadPictos('EN');
 
-        // --- BIJGEWERKTE DRAG-AND-DROP LOGICA ---
+        // --- VOLLEDIG VERNIEUWDE DRAG-AND-DROP LOGICA ---
 
-        let draggedElement = null;
-        let sourceElement = null;
+        let draggedElement = null; // Het visuele element dat de cursor volgt
+        let sourceElement = null;  // Het originele element dat wordt versleept
         let offsetX = 0, offsetY = 0;
-
-        // --- NIEUWE VARIABELEN VOOR AUTO-SCROLL ---
         let isDragging = false;
-        let currentY = 0;
-        // --- EINDE NIEUWE VARIABELEN ---
+        let currentY = 0; // Voor auto-scroll
 
         const planner = document.getElementById('planner');
+        const editor = document.getElementById('editor');
         const resultsContainer = document.getElementById('results');
+        
+        // Maak de drop indicator eenmalig aan
+        const dropIndicator = document.createElement('div');
+        dropIndicator.className = 'drop-indicator';
 
         function getEventCoords(e) {
             return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY };
         }
 
-        // --- NIEUWE FUNCTIE VOOR AUTO-SCROLL ---
         function autoScroll() {
-            if (!isDragging) return; // Stop de loop als we niet meer slepen
-
-            const scrollZone = 60; // De 'gevarenzone' aan de boven- en onderkant
+            if (!isDragging) return;
+            const scrollZone = 60;
             const scrollSpeed = 10;
-
             if (currentY < scrollZone) {
-                window.scrollBy(0, -scrollSpeed); // Scroll omhoog
+                window.scrollBy(0, -scrollSpeed);
             } else if (currentY > window.innerHeight - scrollZone) {
-                window.scrollBy(0, scrollSpeed); // Scroll omlaag
+                window.scrollBy(0, scrollSpeed);
             }
-
-            requestAnimationFrame(autoScroll); // Blijf deze functie aanroepen voor een soepele animatie
+            requestAnimationFrame(autoScroll);
         }
 
         function dragStart(e) {
             sourceElement = e.target.closest('.picto');
+            // Start alleen als we op een picto in de resultaten of planner klikken
             if (!sourceElement) return;
-
+            
             e.preventDefault();
+
+            isDragging = true;
+            requestAnimationFrame(autoScroll);
 
             const rect = sourceElement.getBoundingClientRect();
             const coords = getEventCoords(e);
-            
             offsetX = coords.x - rect.left;
             offsetY = coords.y - rect.top;
 
+            // Maak de visuele kloon die de muis volgt
             draggedElement = sourceElement.cloneNode(true);
             draggedElement.classList.add('dragging');
             document.body.appendChild(draggedElement);
-            
             draggedElement.style.left = `${coords.x - offsetX}px`;
             draggedElement.style.top = `${coords.y - offsetY}px`;
             draggedElement.style.width = `${rect.width}px`;
+
+            // Maak het origineel half-transparant als we vanuit de planner slepen
+            if (planner.contains(sourceElement)) {
+                sourceElement.classList.add('dragging-source');
+            }
 
             document.addEventListener('mousemove', dragMove);
             document.addEventListener('touchmove', dragMove, { passive: false });
             document.addEventListener('mouseup', dragEnd);
             document.addEventListener('touchend', dragEnd);
-
-            // --- START AUTO-SCROLL ---
-            isDragging = true;
-            requestAnimationFrame(autoScroll);
-            // --- EINDE START ---
         }
 
         function dragMove(e) {
-            if (!draggedElement) return;
+            if (!isDragging) return;
             e.preventDefault();
 
             const coords = getEventCoords(e);
+            currentY = coords.y; // Update voor auto-scroll
 
-            // --- UPDATE HUIDIGE Y-POSITIE ---
-            currentY = coords.y;
-            // --- EINDE UPDATE ---
-            
+            // Verplaats de visuele kloon
             draggedElement.style.left = `${coords.x - offsetX}px`;
             draggedElement.style.top = `${coords.y - offsetY}px`;
 
+            // Verberg de kloon even om te zien wat eronder zit
+            draggedElement.style.display = 'none';
             const elementBelow = document.elementFromPoint(coords.x, coords.y);
-            planner.classList.toggle('drag-over', elementBelow && (elementBelow === planner || planner.contains(elementBelow)));
+            draggedElement.style.display = '';
+
+            const isOverPlanner = planner.contains(elementBelow) || elementBelow === planner;
+            const isOverEditor = editor.contains(elementBelow) || elementBelow === editor;
+
+            if (isOverPlanner) {
+                planner.classList.add('drag-over');
+                editor.classList.remove('drag-over-delete');
+
+                // Vind de juiste plek voor de indicator
+                const afterElement = getDragAfterElement(planner, coords.x, coords.y);
+                if (afterElement) {
+                    planner.insertBefore(dropIndicator, afterElement);
+                } else {
+                    planner.appendChild(dropIndicator);
+                }
+            } else if (isOverEditor && planner.contains(sourceElement)) {
+                // Toon de "verwijderzone" alleen als we vanuit de planner slepen
+                editor.classList.add('drag-over-delete');
+                planner.classList.remove('drag-over');
+                dropIndicator.remove();
+            } else {
+                // Niet boven een geldige dropzone
+                planner.classList.remove('drag-over');
+                editor.classList.remove('drag-over-delete');
+                dropIndicator.remove();
+            }
+        }
+        
+        function getDragAfterElement(container, x, y) {
+            const draggableElements = [...container.querySelectorAll('.picto:not(.dragging-source)')];
+            for (const child of draggableElements) {
+                const box = child.getBoundingClientRect();
+                // Check of de cursor op dezelfde rij is en links van het midden van het element
+                if (y > box.top && y < box.bottom && x < box.left + box.width / 2) {
+                    return child; // Dit is het element waar we het vóór moeten plaatsen
+                }
+            }
+            return null; // Geen element gevonden, dus voeg achteraan toe
         }
 
         function dragEnd(e) {
-            // --- STOP AUTO-SCROLL ---
-            isDragging = false;
-            // --- EINDE STOP ---
-
-            if (!draggedElement) return;
+            if (!isDragging) return;
+            isDragging = false; // Stop auto-scroll
 
             const coords = getEventCoords(e.changedTouches ? e.changedTouches[0] : e);
+            draggedElement.style.display = 'none';
             const elementBelow = document.elementFromPoint(coords.x, coords.y);
+            draggedElement.style.display = '';
             
-            if (elementBelow && (elementBelow === planner || planner.contains(elementBelow))) {
-                const newPicto = sourceElement.cloneNode(true);
-                newPicto.style.cursor = 'default';
-                planner.appendChild(newPicto);
-            }
+            const isOverPlanner = dropIndicator.parentElement === planner;
+            const isOverEditor = editor.contains(elementBelow) || elementBelow === editor;
 
-            document.body.removeChild(draggedElement);
+            if (isOverPlanner) {
+                // Het is een NIEUW picto vanuit de zoekresultaten
+                if (resultsContainer.contains(sourceElement)) {
+                    const newPicto = sourceElement.cloneNode(true);
+                    planner.insertBefore(newPicto, dropIndicator);
+                } else { // Het is een BESTAAND picto dat we verplaatsen
+                    planner.insertBefore(sourceElement, dropIndicator);
+                }
+            } else if (isOverEditor && planner.contains(sourceElement)) {
+                // Verwijder het picto
+                sourceElement.remove();
+            }
+            
+            // --- Algemene opruim-acties ---
+            if (sourceElement) {
+               sourceElement.classList.remove('dragging-source');
+            }
+            if (draggedElement) {
+               draggedElement.remove();
+            }
+            dropIndicator.remove();
             planner.classList.remove('drag-over');
+            editor.classList.remove('drag-over-delete');
+            
             draggedElement = null;
             sourceElement = null;
 
@@ -338,9 +419,10 @@
             document.removeEventListener('touchend', dragEnd);
         }
 
-        resultsContainer.addEventListener('mousedown', dragStart);
-        resultsContainer.addEventListener('touchstart', dragStart, { passive: false });
+        // Event listeners voor het starten van de sleepactie
+        document.addEventListener('mousedown', dragStart);
+        document.addEventListener('touchstart', dragStart, { passive: false });
     </script>
 </body>
 
-</html> 
+</html>
