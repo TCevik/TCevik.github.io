@@ -4,32 +4,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TC_tam Homepage</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    <title>Tamer Çevik - Web Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ===== General Styles (Reset) ===== */
+        :root {
+            --color-primary: #3c8f6a;
+            --color-secondary: #2d6a4f;
+            --color-dark: #1b4332;
+            --color-white: #ffffff;
+            --font-main: "Lexend", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--color-dark), var(--color-secondary), var(--color-primary));
+            background-size: 300% 300%;
+            animation: gradientMove 30s ease infinite;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--color-white);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* ===== Header and Introduction ===== */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            color: var(--color-white);
+        }
+
+        .intro-section p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+
+        .main-button {
+            margin: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--color-white);
+            border: 2px solid var(--color-primary);
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .main-button:hover {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ===== Card Grid Layout ===== */
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 10px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            /* standaard 1 plek */
+            grid-column: span 1;
+        }
+
+        /* Cards met meerdere plekken */
+        .card[data-size="2"] {
+            grid-column: span 2;
+        }
+
+        .card[data-size="3"] {
+            grid-column: span 3;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h2 {
+            font-size: 1.7rem;
+            margin-bottom: 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .card h2 i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            opacity: 0.85;
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .social-links a img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .social-links a img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* ===== Media Queries for Mobile ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 30px 15px;
+            }
+
+            .main-button {
+                width: 80%;
+                max-width: 300px;
+                display: block;
+                margin: 15px auto;
+            }
+
+            /* Mobile: Cards altijd 1 plek */
+            .card {
+                grid-column: span 1 !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
-        crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862" data-ad-slot="5862330293"
-        data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <header class="intro-section">
+        <h1>Tamer Çevik</h1>
+        <p>Hi! I'm an enthusiastic Web Developer (HTML, CSS, JavaScript) with a passion for coding and creating fun,
+            user-friendly web apps.</p>
+
+        <a href="https://tctam-site-oud.github.io/" class="main-button" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Check Out My Old Website
+        </a>
+    </header>
 
     <main>
-        <h1>Click on the button to go to the old site!</h1>
-        <button onclick="location.href='https://tctam-site-oud.github.io/';">Go to the old site</button>
+        <div class="card" data-size="2">
+            <h2><i class="fa-solid fa-user-gear"></i> About Me</h2>
+            <p>
+                I am Tamer, 16 years old, and I focus on building websites and web apps using HTML, CSS, and
+                JavaScript. Besides coding, I practice karate and give swimming lessons to children. I love
+                learning new skills!
+            </p>
+        </div>
+
+        <div class="card" data-size="1">
+            <h2><i class="fa-solid fa-envelope"></i> Social Media</h2>
+            <p>Follow me on my social platforms to see my projects, fun moments, and updates!</p>
+            <div class="social-links">
+                <a href="https://www.snapchat.com/add/tam.c123?share_id=jAAFNArfe7w&locale=nl-NL" target="_blank">
+                    <img src="/assets/social-media/snapchat.png" alt="Snapchat">
+                </a>
+                <a href="https://www.youtube.com/@Tamer-Cevik?sub_confirmation=1" target="_blank">
+                    <img src="/assets/social-media/youtube.svg" alt="YouTube">
+                </a>
+                <a href="https://www.tiktok.com/@tc_tam" target="_blank">
+                    <img src="/assets/social-media/tiktok.webp" alt="TikTok">
+                </a>
+                <a href="https://www.instagram.com/tamer.cevik123/" target="_blank">
+                    <img src="/assets/social-media/instagram.png" alt="Instagram">
+                </a>
+                <a href="https://scratch.mit.edu/users/YT-TC_tam/" target="_blank">
+                    <img src="/assets/social-media/scratch.png" alt="Scratch">
+                </a>
+                <a href="https://discord.gg/KfMHZRUaxy" target="_blank">
+                    <img src="/assets/social-media/discord.png" alt="Discord">
+                </a>
+                <a href="https://github.com/TCevik" target="_blank">
+                    <img src="/assets/social-media/github.png" alt="Github">
+                </a>
+                <a href="https://x.com/YT_TC_tam" target="_blank">
+                    <img src="/assets/social-media/x.avif" alt="X">
+                </a>
+            </div>
+        </div>
+
+        <div class="card" data-size="1">
+            <h2><i class="fa-solid fa-book-open"></i> Mijn Hobby's</h2>
+            <p>
+                Mijn hoofdinteresses draaien om creatie en comfort. Ik ben een webontwikkelaar die zich toelegt op het
+                bouwen van **websites** en **web-apps** met **HTML, CSS en JavaScript**. Daarnaast breng ik mijn
+                vrije tijd door met de simpele genoegens van **lekker eten, voldoende slapen, en zwemmen**.
+            </p>
+        </div>
+
+        <div class="card" data-size="2">
+            <h2><i class="fa-solid fa-code"></i> Projecten</h2>
+            <p>
+                Als webontwikkelaar (HTML, CSS, JavaScript) heb ik al mijn projecten zelf gebouwd. Hoogtepunten zijn een
+                **Picto Planner** voor mijn autistische broertje, de grote **Casino** webgame (zonder in-app aankopen),
+                en de **Documents** editor om schoolnotities op te slaan. Mijn eerste project was **Chat**, wat me
+                veel leerde over databases en authenticatie; een verbeterde versie is in ontwikkeling.
+            </p>
+        </div>
     </main>
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
-        crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862" data-ad-slot="5862330293"
-        data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <footer>
+        &copy; Tamer Çevik - Built with HTML, CSS, and JavaScript.
+    </footer>
 </body>
 
 </html>

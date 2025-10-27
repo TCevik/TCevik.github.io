@@ -28,7 +28,7 @@
 
 body {
     overflow-x: hidden;
-    margin: 30px;
+    margin: 0px;
     margin-top: var(--magin-body-top);
     background-color: var(--background-color);
     color: var(--text-color);
