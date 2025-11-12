@@ -26,3 +26,10 @@ headElement.insertBefore(manifestLink, headElement.firstChild);
 
 	gtag('config', 'G-7KL389S9VR');
 })();
+
+/* Adsense */
+const adsenseScript = document.createElement('script');
+adsenseScript.async = true;
+adsenseScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862";
+adsenseScript.crossOrigin = "anonymous";
+document.head.appendChild(adsenseScript);
