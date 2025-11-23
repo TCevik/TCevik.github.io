@@ -18,7 +18,7 @@
     <div id="reclame-tegoedbon">
         <h3>Actiekorting Berekenen</h3>
         <p>Huidige prijs (€):</p>
-        <input type="number" placeholder="Bijv. 3.00 / 3">
+        <input type="number" id="huidigePrijs" placeholder="Bijv. 3.00 / 3">
 
         <p>Kies invoertype actieprijs:</p>
         <select id="typeInvoer">
@@ -43,27 +43,56 @@
         <button id="berekenKnop">Bereken Korting</button>
         <p>De te verrekenen korting is: <span id="resultaatKorting">€ 0.00</span></p>
         <script>
-            const type = document.getElementById("type");
+            const typeInvoer = document.getElementById("typeInvoer");
             const procentBox = document.getElementById("procentBox");
             const vastBox = document.getElementById("vastBox");
+            const berekenKnop = document.getElementById("berekenKnop");
+            const resultaatKortingSpan = document.getElementById("resultaatKorting");
 
-            type.addEventListener("change", function () {
-                if (type.value === "procent") {
+            typeInvoer.addEventListener("change", function () {
+                if (typeInvoer.value === "procent") {
                     procentBox.style.display = "block";
                     vastBox.style.display = "none";
-                } else {
+                } else if (typeInvoer.value === "vast") {
                     procentBox.style.display = "none";
                     vastBox.style.display = "block";
+                } else {
+                    procentBox.style.display = "none";
+                    vastBox.style.display = "none";
                 }
             });
 
-            getElementById("berekenKnop").addEventListener("click", function () {
-                const prijs = parseFloat(getElementById("prijs").value);
-                const kortingProcent = parseFloat(getElementById("kortingProcent").value);
-                const aantalProducten = parseInt(getElementById("aantalProducten").value);
+            berekenKnop.addEventListener("click", function () {
+                const prijsInput = document.getElementById("huidigePrijs");
+                const kortingProcentInput = document.getElementById("kortingProcent");
+                const vastePrijsInput = document.getElementById("vastePrijs");
+                const aantalProductenInput = document.getElementById("aantalProducten");
 
+                const huidigePrijs = parseFloat(prijsInput.value) || 0;
+                const kortingProcent = parseFloat(kortingProcentInput.value) || 0;
+                const vastePrijs = parseFloat(vastePrijsInput.value) || 0;
+                const aantalProducten = parseInt(aantalProductenInput.value) || 1;
+
+                const type = typeInvoer.value;
+                let totalePrijsZonderKorting = huidigePrijs * aantalProducten;
                 let teVerrekenenKorting = 0;
 
+                if (type === "procent") {
+                    if (kortingProcent > 0 && kortingProcent <= 100) {
+                        teVerrekenenKorting = huidigePrijs * (kortingProcent / 100) * aantalProducten;
+                    }
+                } else if (type === "vast") {
+                    if (vastePrijs < huidigePrijs) {
+                        let kortingPerProduct = huidigePrijs - vastePrijs;
+                        teVerrekenenKorting = kortingPerProduct * aantalProducten;
+                    }
+                }
+
+                if (teVerrekenenKorting < 0) {
+                    teVerrekenenKorting = 0;
+                }
+
+                resultaatKortingSpan.textContent = "€ " + teVerrekenenKorting.toFixed(2);
             });
         </script>
     </div>
