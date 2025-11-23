@@ -21,7 +21,7 @@
         <input type="number" placeholder="Bijv. 3.00 / 3">
 
         <p>Kies invoertype actieprijs:</p>
-        <select id="type">
+        <select id="typeInvoer">
             <option value="">-- Maak een keuze --</option>
             <option value="procent">Procent</option>
             <option value="vast">Vaste prijs</option>
@@ -29,19 +29,19 @@
 
         <div id="procentBox" style="display:none;">
             <p>Actie Korting (%):</p>
-            <input type="number" placeholder="Bijv. 20 (voor 20% korting)">
+            <input type="number" id="kortingProcent" placeholder="Bijv. 20 (voor 20% korting)">
         </div>
 
         <div id="vastBox" style="display:none;">
             Actie Prijs (€):
-            <input type="number" placeholder="Bijv. 7.50">
+            <input type="number" id="vastePrijs" placeholder="Bijv. 7.50">
         </div>
 
         <p>Aantal Producten:</p>
-        <input type="number" placeholder="Aantal producten (Bijv. 2)">
+        <input type="number" id="aantalProducten" placeholder="Aantal producten (Bijv. 2)">
 
-        <button>Bereken Korting</button>
-        <p>De te verrekenen korting is: € 0.00</p>
+        <button id="berekenKnop">Bereken Korting</button>
+        <p>De te verrekenen korting is: <span id="resultaatKorting">€ 0.00</span></p>
         <script>
             const type = document.getElementById("type");
             const procentBox = document.getElementById("procentBox");
@@ -57,7 +57,14 @@
                 }
             });
 
-            
+            getElementById("berekenKnop").addEventListener("click", function () {
+                const prijs = parseFloat(getElementById("prijs").value);
+                const kortingProcent = parseFloat(getElementById("kortingProcent").value);
+                const aantalProducten = parseInt(getElementById("aantalProducten").value);
+
+                let teVerrekenenKorting = 0;
+
+            });
         </script>
     </div>
 
