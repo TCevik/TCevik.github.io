@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoogvliet Tools</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="reclame-tegoedbon">
+        <h3>Actiekorting Berekenen</h3>
+        <p>Huidige prijs (€):</p>
+        <input type="number" placeholder="Bijv. 3.00 / 3">
+
+        <p>Kies invoertype actieprijs:</p>
+        <select id="type">
+            <option value="">-- Maak een keuze --</option>
+            <option value="procent">Procent</option>
+            <option value="vast">Vaste prijs</option>
+        </select>
+
+        <div id="procentBox" style="display:none;">
+            <p>Actie Korting (%):</p>
+            <input type="number" placeholder="Bijv. 20 (voor 20% korting)">
+        </div>
+
+        <div id="vastBox" style="display:none;">
+            Actie Prijs (€):
+            <input type="number" placeholder="Bijv. 7.50">
+        </div>
+
+        <p>Aantal Producten:</p>
+        <input type="number" placeholder="Aantal producten (Bijv. 2)">
+
+        <button>Bereken Korting</button>
+        <p>De te verrekenen korting is: € 0.00</p>
+        <script>
+            const type = document.getElementById("type");
+            const procentBox = document.getElementById("procentBox");
+            const vastBox = document.getElementById("vastBox");
+
+            type.addEventListener("change", function () {
+                if (type.value === "procent") {
+                    procentBox.style.display = "block";
+                    vastBox.style.display = "none";
+                } else {
+                    procentBox.style.display = "none";
+                    vastBox.style.display = "block";
+                }
+            });
+
+            
+        </script>
+    </div>
+
+</body>
+
+</html>
