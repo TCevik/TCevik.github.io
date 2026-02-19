@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TC_tam - Home</title>
+    <title>TC_tam - Developer Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <script src="/script.js"></script>
-
     <style>
-        /* ===== General Styles ===== */
         :root {
-            --color-primary: #3c8f6a;
-            --color-secondary: #2d6a4f;
-            --color-dark: #1b4332;
-            --color-white: #ffffff;
+            --color-bg-main: #0a0a0a; 
+            --color-bg-secondary: #141414; 
+            --color-card: #1a1a1a; 
+            --color-accent: #10b981;
+            --color-accent-hover: #34d399;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #a3a3a3; 
             --font-main: "Lexend", sans-serif;
+            --border-radius: 16px;
         }
 
         * {
@@ -31,195 +31,197 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--color-dark), var(--color-secondary), var(--color-primary));
-            background-size: 300% 300%;
-            animation: gradientMove 30s ease infinite;
-            background-attachment: fixed;
+            background: linear-gradient(to bottom right, #0a0a0a, #141414);
+            color: var(--color-text-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--color-white);
-            padding: 40px 20px;
-            line-height: 1.6;
+            padding: 60px 20px;
+            line-height: 1.7;
         }
 
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        /* ===== Header and Introduction ===== */
         .intro-section {
             text-align: center;
-            margin-bottom: 50px;
-            max-width: 800px;
+            margin-bottom: 60px;
+            max-width: 700px;
         }
 
         h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            margin-bottom: 10px;
-            color: var(--color-white);
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #fff, var(--color-accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h3 {
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
         }
 
         .intro-section p {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            opacity: 0.95;
-            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 35px;
         }
 
         .main-button {
-            margin: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--color-white);
-            border: 2px solid var(--color-primary);
-            border-radius: 12px;
-            padding: 12px 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--color-accent);
+            color: #0a0a0a;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 14px 35px;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
             text-decoration: none;
-            display: inline-block;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
         }
 
         .main-button:hover {
-            background: var(--color-primary);
-            color: var(--color-dark);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            background: var(--color-accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
         }
 
-        /* ===== Card Grid Layout ===== */
         main {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             width: 100%;
             max-width: 1100px;
-            padding: 0 10px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(8px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--color-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-
-            /* standaard 1 plek */
+            position: relative;
+            overflow: hidden;
             grid-column: span 1;
         }
 
-        /* Cards met meerdere plekken */
-        .card[data-size="2"] {
-            grid-column: span 2;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--color-accent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
         }
 
-        .card[data-size="3"] {
-            grid-column: span 3;
+        @media (hover: hover) and (pointer: fine) {
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+            .card:hover::before {
+                opacity: 0.5;
+            }
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
+        .card[data-size="2"] { grid-column: span 2; }
+        .card[data-size="3"] { grid-column: span 3; }
 
         .card h2 {
-            font-size: 1.7rem;
-            margin-bottom: 15px;
-            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--color-text-primary);
             display: flex;
             align-items: center;
+            font-weight: 700;
         }
 
         .card h2 i {
-            margin-right: 10px;
-            font-size: 1.5rem;
+            margin-right: 12px;
+            color: var(--color-accent);
+            font-size: 1.3rem;
         }
 
         .card p {
             font-size: 1rem;
-            opacity: 0.85;
+            color: var(--color-text-secondary);
             margin-bottom: 0;
             flex-grow: 1;
+        }
+
+        .card b {
+            color: var(--color-text-primary);
+            font-weight: 600;
         }
 
         .social-links {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 15px;
-            gap: 10px;
+            margin-top: 20px;
+            gap: 12px;
         }
 
         .social-links a img {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            filter: grayscale(20%);
         }
 
         .social-links a img:hover {
             transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            filter: grayscale(0%);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
         }
 
-        /* ===== Footer ===== */
         footer {
-            margin-top: 50px;
+            margin-top: 60px;
             padding: 20px;
             text-align: center;
             font-size: 0.9rem;
-            opacity: 0.7;
+            color: var(--color-text-secondary);
         }
 
-        /* ===== Media Queries for Mobile ===== */
         @media (max-width: 768px) {
-            body {
-                padding: 30px 15px;
+            body { padding: 40px 15px; }
+            .intro-section h1 { font-size: 3rem; }
+            .main-button { width: 100%; justify-content: center; }
+            .card { 
+                grid-column: span 1 !important; 
+                padding: 25px;
             }
-
-            .main-button {
-                width: 80%;
-                max-width: 300px;
-                display: block;
-                margin: 15px auto;
+            
+            .card.is-visible {
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
             }
-
-            /* Mobile: Cards altijd 1 plek */
-            .card {
-                grid-column: span 1 !important;
+            .card.is-visible::before {
+                opacity: 0.7;
             }
         }
     </style>
 </head>
-
 <body>
     <header class="intro-section">
         <h1 style="margin-bottom: 0px;">TC_tam</h1>
-        <h3 style="margin-bottom: 10px;">By Tamer Çevik</h3>
-        <p>Hi! I'm an enthusiastic Web Developer (HTML, CSS, JavaScript) with a passion for coding and creating fun,
-            user-friendly web apps.</p>
+        <h3>By Tamer Çevik</h3>
+        <p>Hi! I'm an enthusiastic Web Developer (HTML, CSS, JavaScript) with a passion for coding and creating fun, user-friendly web apps.</p>
 
-        <a href="https://old.tctam.nl/" class="main-button" target="_blank">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Check Out My Old Website
+        <a href="https://old.tctam.nl/" class="main-button" target="_blank" rel="noopener noreferrer">
+            <span>Check Out My Old Website</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
     </header>
 
@@ -227,11 +229,9 @@
         <div class="card" data-size="2">
             <h2><i class="fa-solid fa-user-gear"></i> About Me</h2>
             <p>
-                <b>My life:</b> I am Tamer, 16 years old, and I focus on building websites and web apps using HTML, CSS,
-                and
-                JavaScript. Besides coding, I did practice karate and waterpolo. I give swimming lessons to children.
-                <br><b>Education:</b> I follow Secondary vocational education and i did senior general secondary
-                education until the forth class.
+                <b>My life:</b> I am Tamer, 16 years old, and I focus on building websites and web apps using HTML, CSS, and JavaScript. Besides coding, I used to practice karate and water polo. I give swimming lessons to children.
+                <br><br>
+                <b>Education:</b> I am currently pursuing secondary vocational education (MBO), after completing senior general secondary education (HAVO) up to the fourth year.
             </p>
         </div>
 
@@ -239,63 +239,60 @@
             <h2><i class="fa-solid fa-envelope"></i> Social Media</h2>
             <p>Follow me on my social platforms to see my projects, fun moments, and updates!</p>
             <div class="social-links">
-                <a href="https://www.snapchat.com/add/tam.c071" target="_blank">
-                    <img src="/assets/social-media/snapchat.png" alt="Snapchat">
-                </a>
-                <a href="https://www.youtube.com/@Tamer-Cevik" target="_blank">
-                    <img src="/assets/social-media/youtube.svg" alt="YouTube">
-                </a>
-                <a href="https://www.tiktok.com/@tc_tam" target="_blank">
-                    <img src="/assets/social-media/tiktok.webp" alt="TikTok">
-                </a>
-                <a href="https://www.instagram.com/tamer.cevik123/" target="_blank">
-                    <img src="/assets/social-media/instagram.png" alt="Instagram">
-                </a>
-                <a href="https://scratch.mit.edu/users/YT-TC_tam/" target="_blank">
-                    <img src="/assets/social-media/scratch.png" alt="Scratch">
-                </a>
-                <a href="https://discord.gg/KfMHZRUaxy" target="_blank">
-                    <img src="/assets/social-media/discord.png" alt="Discord">
-                </a>
-                <a href="https://github.com/TCevik" target="_blank">
-                    <img src="/assets/social-media/github.png" alt="Github">
-                </a>
-                <a href="https://x.com/YT_TC_tam" target="_blank">
-                    <img src="/assets/social-media/x.avif" alt="X">
-                </a>
+                <a href="https://www.snapchat.com/add/tam.c071" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/snapchat.png" alt="Snapchat"></a>
+                <a href="https://www.youtube.com/@Tamer-Cevik" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/youtube.svg" alt="YouTube"></a>
+                <a href="https://www.tiktok.com/@tc_tam" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/tiktok.webp" alt="TikTok"></a>
+                <a href="https://www.instagram.com/tamer.cevik123/" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/instagram.png" alt="Instagram"></a>
+                <a href="https://scratch.mit.edu/users/YT-TC_tam/" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/scratch.png" alt="Scratch"></a>
+                <a href="https://discord.gg/KfMHZRUaxy" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/discord.png" alt="Discord"></a>
+                <a href="https://github.com/TCevik" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/github.png" alt="Github"></a>
+                <a href="https://x.com/YT_TC_tam" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/x.avif" alt="X"></a>
             </div>
         </div>
 
         <div class="card" data-size="1">
-            <h2><i class="fa-solid fa-book-open"></i> My Hobby's</h2>
-            <p>My main interests revolve around creation and comfort. I am a web developer dedicated to building
-                websites and web-apps using HTML, CSS, and JavaScript. Additionally, I spend my free time on the simple
-                pleasures of eating good food, getting enough sleep, calling with my girlfriend, and swimming.</p>
+            <h2><i class="fa-solid fa-book-open"></i> My Hobbies</h2>
+            <p>My main interests revolve around creation and comfort. I am a web developer dedicated to building websites and web-apps using HTML, CSS, and JavaScript. Additionally, I spend my free time on the simple pleasures of eating good food, getting enough sleep, calling with my girlfriend, and swimming.</p>
         </div>
 
         <div class="card" data-size="2">
             <h2><i class="fa-solid fa-code"></i> Projects</h2>
-            <p>
-                As a web developer (HTML, CSS, JavaScript), I have built all my projects myself. Highlights include a
-                Picto Planner for my autistic little brother, the large Casino web game (without in-app purchases), and
-                the Documents editor for saving school notes. My first project was a Chat, which taught me a lot about
-                databases and authentication; an improved version is in development.</p>
+            <p>As a web developer (HTML, CSS, JavaScript), I have built all my projects myself. Highlights include a Picto Planner for my autistic little brother, the large Casino web game (without in-app purchases), and the Documents editor for saving school notes. My first project was a Chat, which taught me a lot about databases and authentication; an improved version is in development.</p>
         </div>
     </main>
 
     <footer>
-        <p>&copy; Tamer Çevik - Built with HTML, CSS, and JavaScript.</p>
+        <p>&copy; 2026 Tamer Çevik - Built with HTML, CSS, and JavaScript.</p>
     </footer>
 
-    <!-- Display Advertisement Start  -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862"
-        crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862" data-ad-slot="5862330293"
-        data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth <= 768) {
+                const cards = document.querySelectorAll('.card');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                        } else {
+                            entry.target.classList.remove('is-visible');
+                        }
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '-25% 0px -25% 0px',
+                    threshold: 0.1
+                });
+
+                cards.forEach(card => observer.observe(card));
+            }
+        });
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862" data-ad-slot="5862330293" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
-    <!-- Advertisement End -->
 </body>
-
 </html>
