@@ -1,23 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>404 - Page not found</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | TC_tam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-bg-main: #0a0a0a; 
+            --color-bg-secondary: #141414; 
+            --color-card: #1a1a1a; 
+            --color-accent: #10b981;
+            --color-accent-hover: #34d399;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #a3a3a3; 
+            --font-main: "Lexend", sans-serif;
+            --border-radius: 16px;
+        }
 
-    <script>
-        /* DIT MOET WEG NA OPENING NIEUWE SITE */
-        const path = window.location.pathname;
-        const newUrl = "https://old.tctam.nl" + path;
-        window.location.replace(newUrl);
-    </script>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom right, #0a0a0a, #141414);
+            color: var(--color-text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .error-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: clamp(5rem, 15vw, 8rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--color-accent-hover));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--color-accent);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .main-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--color-accent);
+            color: #0a0a0a;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .main-button.secondary {
+            background: var(--color-card);
+            color: var(--color-text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .main-button:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .main-button.secondary:hover {
+            background: #252525;
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 480px) {
+            .button-group { flex-direction: column; }
+            .main-button { width: 100%; justify-content: center; }
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Title</h1>
-    <p>Text</p>
-</body>
 
+    <div class="error-container">
+        <h1>404</h1>
+        <h2>Oops! Page not found.</h2>
+        <p>The page you are looking for doesn't exist or has been moved. Don't worry, you can find your way back below.</p>
+
+        <div class="button-group">
+            <a href="javascript:history.back()" class="main-button secondary">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Go Back</span>
+            </a>
+            <a href="/" class="main-button">
+                <i class="fa-solid fa-house"></i>
+                <span>Go Home</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 - Now | Tamer Çevik</p>
+    </footer>
+
+</body>
 </html>
