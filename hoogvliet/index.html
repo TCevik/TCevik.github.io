@@ -5,8 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hoofdmenu</title>
-    <link rel="manifest" href="/manifest-hoogvliet.json">
+    <script>
+        const myManifest = {
+  "name": "Hoogvliet App",
+  "short_name": "Hoogvliet",
+  "start_url": "/hoogvliet/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png", // Zorg dat dit pad klopt!
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+};
 
+const stringManifest = JSON.stringify(myManifest);
+const blob = new Blob([stringManifest], {type: 'application/json'});
+const manifestURL = URL.createObjectURL(blob);
+
+const link = document.createElement('link');
+link.rel = 'manifest';
+link.href = manifestURL;
+document.head.appendChild(link);
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -40,11 +64,56 @@
 <body>
     <header>
         <p id="title">Homepage</p>
+        <button id="installBtn"
+            style="display: none; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Installeer Hoogvliet App
+        </button>
     </header>
 
     <div id="content">
 
     </div>
+
+    <script>
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Voorkom dat de browser direct de standaard prompt laat zien
+            e.preventDefault();
+            // Sla het event op zodat we het later kunnen triggeren
+            deferredPrompt = e;
+            // Maak de knop zichtbaar
+            installBtn.style.display = 'block';
+
+            installBtn.addEventListener('click', () => {
+                // Verberg de knop weer
+                installBtn.style.display = 'none';
+                // Laat de installatie-prompt zien
+                deferredPrompt.prompt();
+                // Wacht op de keuze van de gebruiker
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Gebruiker heeft de app geïnstalleerd');
+                    } else {
+                        console.log('Gebruiker heeft de installatie geannuleerd');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        });
+
+        // Verberg de knop als de app al geïnstalleerd is
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            deferredPrompt = null;
+            console.log('PWA is succesvol geïnstalleerd');
+        });
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
 </body>
 
 </html>
