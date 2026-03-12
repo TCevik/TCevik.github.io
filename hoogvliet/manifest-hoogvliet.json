@@ -1,0 +1,15 @@
+{
+    "name": "Mijn App - Hoogvliet",
+    "short_name": "Hoogvliet",
+    "start_url": "/hoogvliet/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#01abe8",
+    "icons": [
+      {
+        "src": "/icons/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
