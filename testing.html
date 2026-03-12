@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanner</title>
+    <title>Barcode Scanner Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap');
 
         * {
             font-family: Lexend, Arial;
@@ -17,17 +18,49 @@
 
         body {
             background-color: #f0f0f0;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
+        /* Grid Layout */
         #grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            padding-bottom: 100px; /* Ruimte voor de knop */
         }
 
+        #empty-text {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 50px;
+            color: #888;
+        }
+
+        .barcode-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .barcode-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+        }
+
+        .barcode-card span {
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Scanner Menu */
         #add {
             display: flex;
             flex-direction: column;
@@ -43,8 +76,6 @@
             border-top-right-radius: 25px;
             padding: 20px;
             box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-
-            /* Smooth animatie via max-height */
             height: auto; 
             min-height: 85px;
             max-height: 85px;
@@ -52,9 +83,7 @@
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        #add.open {
-            max-height: 90%; 
-        }
+        #add.open { max-height: 90%; }
 
         #add-btn {
             width: 100%;
@@ -66,34 +95,25 @@
             font-weight: 600;
             cursor: pointer;
             padding: 15px;
-            transition: all 0.3s ease;
             z-index: 10;
         }
 
-        #add-btn.close-style {
-            background-color: #ff4d4d;
-        }
+        #add-btn.close-style { background-color: #ff4d4d; }
 
         .menu-content {
             opacity: 0;
             width: 100%;
-            flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             padding-bottom: 20px;
-            transition: opacity 0.3s ease;
         }
 
-        #add.open .menu-content {
-            opacity: 1;
-            transition: opacity 0.5s ease 0.2s;
-        }
+        #add.open .menu-content { opacity: 1; transition: 0.5s; }
 
         #camera-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 300px;
             aspect-ratio: 1 / 1;
             background-color: black;
             border-radius: 20px;
@@ -102,17 +122,68 @@
             position: relative;
         }
 
-        video {
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Modal / Detail Scherm */
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            background: white;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #modal.active { display: flex; }
+
+        #close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #eee;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #delete-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #barcode-svg {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
 
 <body>
+
     <div id="grid">
         <p id="empty-text">Oeps, het is nog een beetje leeg hier.</p>
+    </div>
+
+    <div id="modal">
+        <button id="delete-btn">Verwijderen</button>
+        <button id="close-modal">X</button>
+        <svg id="barcode-svg"></svg>
+        <h2 id="modal-number" style="margin-top: 10px;"></h2>
     </div>
 
     <div id="add">
@@ -121,39 +192,141 @@
             <div id="camera-container">
                 <video id="webcam" autoplay playsinline></video>
             </div>
-            <p style="margin-top: 15px; color: #666;">Richt de camera op een streepjescode</p>
+            <p style="margin-top: 15px; color: #666;">Zoeken naar barcode...</p>
         </div>
         <button id="add-btn">Barcode toevoegen</button>
     </div>
+
+    <canvas id="snapshot" style="display:none;"></canvas>
 
     <script>
         const addDiv = document.getElementById('add');
         const addBtn = document.getElementById('add-btn');
         const video = document.getElementById('webcam');
+        const grid = document.getElementById('grid');
+        const emptyText = document.getElementById('empty-text');
+        const modal = document.getElementById('modal');
+        
         let stream = null;
+        let scanning = false;
+        let barcodes = []; // Hier slaan we de data op
+        let currentEditingId = null;
 
+        // 1. Camera Starten & Scannen
         async function startCamera() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { facingMode: "environment" } 
                 });
                 video.srcObject = stream;
+                scanning = true;
+                scanLoop(); // Start de check loop
             } catch (err) {
-                console.error("Camera fout: ", err);
-                alert("Kon de camera niet openen. Controleer je instellingen.");
+                alert("Camera fout: " + err);
             }
         }
 
         function stopCamera() {
+            scanning = false;
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
                 video.srcObject = null;
             }
         }
 
-        addBtn.addEventListener('click', () => {
-            const isOpen = addDiv.classList.toggle('open');
+        // 2. De Scan Loop (gebruikt de native BarcodeDetector)
+        async function scanLoop() {
+            if (!scanning) return;
+
+            // Check of de browser dit ondersteunt
+            if (!('BarcodeDetector' in window)) {
+                console.error("BarcodeDetector wordt niet ondersteund in deze browser.");
+                return;
+            }
+
+            const detector = new BarcodeDetector();
             
+            try {
+                const detected = await detector.detect(video);
+                if (detected.length > 0) {
+                    const code = detected[0].rawValue;
+                    addBarcode(code);
+                    toggleMenu(); // Sluit menu na succes
+                    return; // Stop met scannen
+                }
+            } catch (e) {}
+
+            requestAnimationFrame(scanLoop);
+        }
+
+        // 3. Barcode Toevoegen aan Grid
+        function addBarcode(code) {
+            // Maak screenshot van video
+            const canvas = document.getElementById('snapshot');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const screenshot = canvas.toDataURL('image/jpeg');
+
+            const item = {
+                id: Date.now(),
+                code: code,
+                image: screenshot
+            };
+
+            barcodes.push(item);
+            renderGrid();
+        }
+
+        function renderGrid() {
+            if (barcodes.length > 0) {
+                emptyText.style.display = 'none';
+            } else {
+                emptyText.style.display = 'block';
+            }
+
+            // Verwijder oude items (behalve de tekst)
+            const cards = document.querySelectorAll('.barcode-card');
+            cards.forEach(c => c.remove());
+
+            barcodes.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'barcode-card';
+                card.innerHTML = `
+                    <img src="${item.image}">
+                    <span>${item.code}</span>
+                `;
+                card.onclick = () => openModal(item);
+                grid.appendChild(card);
+            });
+        }
+
+        // 4. Modal Functies
+        function openModal(item) {
+            currentEditingId = item.id;
+            modal.classList.add('active');
+            document.getElementById('modal-number').innerText = item.code;
+            
+            // Genereer de "echte" barcode afbeelding
+            JsBarcode("#barcode-svg", item.code, {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 2,
+                height: 100,
+                displayValue: false
+            });
+        }
+
+        document.getElementById('close-modal').onclick = () => modal.classList.remove('active');
+
+        document.getElementById('delete-btn').onclick = () => {
+            barcodes = barcodes.filter(b => b.id !== currentEditingId);
+            modal.classList.remove('active');
+            renderGrid();
+        };
+
+        function toggleMenu() {
+            const isOpen = addDiv.classList.toggle('open');
             if (isOpen) {
                 addBtn.innerText = 'Sluiten';
                 addBtn.classList.add('close-style');
@@ -163,8 +336,9 @@
                 addBtn.classList.remove('close-style');
                 stopCamera();
             }
-        });
+        }
+
+        addBtn.addEventListener('click', toggleMenu);
     </script>
 </body>
-
 </html>
