@@ -11,6 +11,7 @@
 
         * {
             font-family: Lexend, Arial;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -31,6 +32,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            color: white;
         }
 
         header i {
@@ -38,11 +40,10 @@
             color: white;
         }
 
-        #title {
+        header #title {
             font-size: 30px;
             font-weight: 600;
             margin: 5px;
-            color: white;
         }
 
         .menu-opt {
@@ -70,10 +71,9 @@
 <body>
     <header>
         <p id="title">WinkelFix</p>
-        <i class="fa-solid fa-circle-info" onclick="showInfo()"></i>
     </header>
 
-    <div id="content">
+    <div id="menu">
         <button class="menu-opt">
             <i class="fa-solid fa-expand"></i> Scan naar scherm
         </button>
@@ -86,20 +86,8 @@
             <i class="fa-solid fa-calculator"></i> Prijs calculator
         </button>
     </div>
-
-    <div id="fullScreenMenu" class="menu-overlay">
-        <button class="close-btn" onclick="showInfo()">X</button>
-
-    </div>
-
-    <script>
-        function showInfo() {
-            const menu = document.getElementById('fullScreenMenu');
-            menu.classList.toggle('active');
-        }
-    </script>
-
 </body>
 
 </html>
 <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+<!-- <i class="fa-solid fa-circle-info"></i> -->
