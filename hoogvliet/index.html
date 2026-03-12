@@ -46,6 +46,14 @@
             margin: 5px;
         }
 
+        .screen {
+            display: none;
+        }
+
+        #menu {
+            display: block;
+        }
+
         .menu-opt {
             display: flex;
             justify-content: left;
@@ -71,21 +79,40 @@
 <body>
     <header>
         <p id="title">WinkelFix</p>
+        <i class="fa-solid fa-home" onclick="showScreen('menu')"></i>
     </header>
 
-    <div id="menu">
-        <button class="menu-opt">
+    <div class="screen" id="menu">
+        <button class="menu-opt" onclick="showScreen('scan-naar-scherm')">
             <i class="fa-solid fa-expand"></i> Scan naar scherm
         </button>
 
-        <button class="menu-opt">
+        <button class="menu-opt" onclick="">
             <i class="fa-solid fa-barcode"></i> Mijn barcodes
         </button>
 
-        <button class="menu-opt">
+        <button class="menu-opt" onclick="">
             <i class="fa-solid fa-calculator"></i> Prijs calculator
         </button>
     </div>
+
+    <div class="screen" id="scan-naar-scherm">
+
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+
+            screens.forEach(screen => {
+                screen.style.display = 'none';
+            });
+
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.style.display = 'block';
+            }
+        }    </script>
 </body>
 
 </html>
