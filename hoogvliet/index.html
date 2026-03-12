@@ -5,39 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hoofdmenu</title>
-    <script>
-        const myManifest = {
-  "name": "Hoogvliet App",
-  "short_name": "Hoogvliet",
-  "start_url": "/hoogvliet/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "icons": [
-    {
-      "src": "/icons/icon-192.png", // Zorg dat dit pad klopt!
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ]
-};
-
-const stringManifest = JSON.stringify(myManifest);
-const blob = new Blob([stringManifest], {type: 'application/json'});
-const manifestURL = URL.createObjectURL(blob);
-
-const link = document.createElement('link');
-link.rel = 'manifest';
-link.href = manifestURL;
-document.head.appendChild(link);
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-        body {
+        * {
             font-family: Lexend, Arial;
+        }
+
+        body {
             margin: 0 auto;
-            margin-top: 80.4px;
+            margin-top: 67.6px;
         }
 
         header {
@@ -50,70 +28,78 @@ document.head.appendChild(link);
             border-bottom-left-radius: 25px;
             border-bottom-right-radius: 25px;
             background-color: #01abe8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header i {
+            font-size: 26px;
+            color: white;
         }
 
         #title {
-            font-size: 24px;
+            font-size: 30px;
             font-weight: 600;
-            margin: 10px;
+            margin: 5px;
             color: white;
+        }
+
+        .menu-opt {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            width: 100%;
+            padding: 22px 25px;
+            font-size: 1.1rem;
+            min-height: 60px;
+            border: none;
+            background-color: white;
+            border-bottom: 3px #01abe8 solid;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .menu-opt i {
+            margin-right: 10px;
+            color: #01abe8;
         }
     </style>
 </head>
 
 <body>
     <header>
-        <p id="title">Homepage</p>
-        <button id="installBtn"
-            style="display: none; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            Installeer Hoogvliet App
-        </button>
+        <p id="title">WinkelFix</p>
+        <i class="fa-solid fa-circle-info" onclick="showInfo()"></i>
     </header>
 
     <div id="content">
+        <button class="menu-opt">
+            <i class="fa-solid fa-expand"></i> Scan naar scherm
+        </button>
+
+        <button class="menu-opt">
+            <i class="fa-solid fa-barcode"></i> Mijn barcodes
+        </button>
+
+        <button class="menu-opt">
+            <i class="fa-solid fa-calculator"></i> Prijs calculator
+        </button>
+    </div>
+
+    <div id="fullScreenMenu" class="menu-overlay">
+        <button class="close-btn" onclick="showInfo()">X</button>
 
     </div>
 
     <script>
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Voorkom dat de browser direct de standaard prompt laat zien
-            e.preventDefault();
-            // Sla het event op zodat we het later kunnen triggeren
-            deferredPrompt = e;
-            // Maak de knop zichtbaar
-            installBtn.style.display = 'block';
-
-            installBtn.addEventListener('click', () => {
-                // Verberg de knop weer
-                installBtn.style.display = 'none';
-                // Laat de installatie-prompt zien
-                deferredPrompt.prompt();
-                // Wacht op de keuze van de gebruiker
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Gebruiker heeft de app geïnstalleerd');
-                    } else {
-                        console.log('Gebruiker heeft de installatie geannuleerd');
-                    }
-                    deferredPrompt = null;
-                });
-            });
-        });
-
-        // Verberg de knop als de app al geïnstalleerd is
-        window.addEventListener('appinstalled', () => {
-            installBtn.style.display = 'none';
-            deferredPrompt = null;
-            console.log('PWA is succesvol geïnstalleerd');
-        });
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
+        function showInfo() {
+            const menu = document.getElementById('fullScreenMenu');
+            menu.classList.toggle('active');
         }
     </script>
+
 </body>
 
 </html>
+<!-- <i class="fa-solid fa-magnifying-glass"></i> -->
