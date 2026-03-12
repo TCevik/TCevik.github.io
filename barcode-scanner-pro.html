@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner Pro - Hoogvliet</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap');
+
+        :root {
+            --primary: #08afe8;
+            /* Hoogvliet Blauw */
+            --primary-hover: #0798c9;
+            /* Iets donkerder blauw voor knop-hover */
+            --danger: #EF4444;
+            --danger-hover: #DC2626;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+        }
+
+        * {
+            font-family: 'Lexend', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Grid Layout --- */
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            padding-bottom: 140px;
+            /* Ruimte voor de bottom menu */
+        }
+
+        #empty-state {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 60px;
+            color: var(--text-muted);
+            animation: fadeIn 0.5s ease;
+        }
+
+        #empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+            color: var(--primary);
+        }
+
+        .barcode-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            text-align: center;
+            padding-bottom: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: slideUp 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .barcode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(8, 175, 232, 0.15);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .barcode-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .barcode-card span {
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+            padding: 0 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- Scanner Menu (Bottom Sheet) --- */
+        #add {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+            height: auto;
+            min-height: 90px;
+            max-height: 90px;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #add.open {
+            max-height: 90vh;
+        }
+
+        #add-btn {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 100px;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 10;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 15px rgba(8, 175, 232, 0.4);
+            /* Hoogvliet blauwe gloed */
+        }
+
+        #add-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #add-btn.close-style {
+            background-color: var(--danger);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        #add-btn.close-style:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .menu-content {
+            opacity: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 25px;
+            transition: opacity 0.3s ease;
+        }
+
+        #add.open .menu-content {
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
+
+        /* --- Camera Container met Focus Overlay --- */
+        #camera-container {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1 / 1;
+            background-color: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-top: 15px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .scan-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scan-target {
+            width: 70%;
+            height: 40%;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .scan-target::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            /* Blauwe laser lijn */
+            box-shadow: 0 0 10px var(--primary);
+            animation: scanline 2s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% {
+                top: 0;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        #scan-status {
+            margin-top: 15px;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- Modal Styling --- */
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        #close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--bg-color);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #close-modal:hover {
+            background: #E5E7EB;
+        }
+
+        #barcode-svg {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-copy {
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .btn-copy:hover {
+            background: #E5E7EB;
+            color: var(--primary);
+        }
+
+        .btn-delete {
+            background: #FEF2F2;
+            color: var(--danger);
+        }
+
+        .btn-delete:hover {
+            background: #FEE2E2;
+        }
+
+        #modal-number {
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        /* --- Toast Notification --- */
+        #toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 2000;
+            box-shadow: 0 4px 12px rgba(8, 175, 232, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #toast.show {
+            top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1><i class="ph ph-barcode"></i> Barcode Scanner</h1>
+    </header>
+
+    <div id="grid">
+        <div id="empty-state">
+            <i class="ph ph-package"></i>
+            <p>Oeps, het is nog een beetje leeg hier.</p>
+        </div>
+    </div>
+
+    <div id="modal">
+        <div class="modal-content">
+            <button id="close-modal"><i class="ph ph-x"></i></button>
+            <h2 id="modal-number"></h2>
+            <svg id="barcode-svg"></svg>
+
+            <div class="modal-actions">
+                <button class="action-btn btn-copy" id="copy-btn">
+                    <i class="ph ph-copy"></i> Kopiëren
+                </button>
+                <button class="action-btn btn-delete" id="delete-btn">
+                    <i class="ph ph-trash"></i> Wissen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add">
+        <div class="menu-content">
+            <h2 style="margin-top: 10px; font-weight: 600;">Scan Barcode</h2>
+            <div id="camera-container">
+                <video id="webcam" autoplay playsinline></video>
+                <div class="scan-overlay">
+                    <div class="scan-target"></div>
+                </div>
+            </div>
+            <p id="scan-status"><i class="ph ph-scan"></i> Richt op een streepjescode</p>
+        </div>
+        <button id="add-btn"><i class="ph ph-plus-circle"></i> Barcode toevoegen</button>
+    </div>
+
+    <canvas id="snapshot" style="display:none;"></canvas>
+
+    <div id="toast"><i class="ph ph-check-circle"></i> <span id="toast-msg">Actie succesvol</span></div>
+
+    <script>
+        const addDiv = document.getElementById('add');
+        const addBtn = document.getElementById('add-btn');
+        const video = document.getElementById('webcam');
+        const grid = document.getElementById('grid');
+        const emptyState = document.getElementById('empty-state');
+        const modal = document.getElementById('modal');
+        const scanStatus = document.getElementById('scan-status');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-msg');
+
+        let stream = null;
+        let scanning = false;
+        let currentEditingItem = null;
+        let db = null;
+
+        // --- TOAST FUNCTIE ---
+        function showToast(message, iconClass = "ph-check-circle") {
+            toast.innerHTML = `<i class="ph ${iconClass}"></i> <span>${message}</span>`;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- 1. INDEXEDDB SETUP ---
+        const request = indexedDB.open("BarcodeAppDB", 1);
+
+        request.onupgradeneeded = (event) => {
+            db = event.target.result;
+            if (!db.objectStoreNames.contains("barcodes")) {
+                db.createObjectStore("barcodes", { keyPath: "id" });
+            }
+        };
+
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            loadFromDB();
+        };
+
+        // --- 2. DATA FUNCTIES ---
+        function saveToDB(item) {
+            const transaction = db.transaction(["barcodes"], "readwrite");
+            const store = transaction.objectStore("barcodes");
+            store.add(item);
+            transaction.oncomplete = () => {
+                loadFromDB();
+                showToast("Barcode succesvol opgeslagen!");
+            };
+        }
+
+        function deleteFromDB(id) {
+            const transaction = db.transaction(["barcodes"], "readwrite");
+            const store = transaction.objectStore("barcodes");
+            store.delete(id);
+            transaction.oncomplete = () => {
+                loadFromDB();
+                showToast("Barcode verwijderd", "ph-trash");
+            };
+        }
+
+        function loadFromDB() {
+            const transaction = db.transaction(["barcodes"], "readonly");
+            const store = transaction.objectStore("barcodes");
+            const request = store.getAll();
+
+            request.onsuccess = () => {
+                renderGrid(request.result);
+            };
+        }
+
+        // --- 3. UI & SCAN FUNCTIES ---
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "environment" }
+                });
+                video.srcObject = stream;
+                scanning = true;
+                scanStatus.innerHTML = '<i class="ph ph-spinner-gap ph-spin"></i> Zoeken naar barcode...';
+                scanLoop();
+            } catch (err) {
+                showToast("Camera toegang geweigerd of niet gevonden", "ph-warning-circle");
+            }
+        }
+
+        function stopCamera() {
+            scanning = false;
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+
+        async function scanLoop() {
+            if (!scanning) return;
+            if (!('BarcodeDetector' in window)) {
+                scanStatus.innerHTML = "Jouw browser ondersteunt de scanner niet direct.";
+                return;
+            }
+
+            const detector = new BarcodeDetector();
+
+            try {
+                const detected = await detector.detect(video);
+                if (detected.length > 0) {
+                    scanning = false;
+                    const code = detected[0].rawValue;
+                    scanStatus.innerHTML = '<i class="ph ph-check-circle" style="color: var(--primary);"></i> Barcode gevonden! Opslaan...';
+
+                    // HALVE SECONDE WACHTEN VOOR SCHERPE FOTO
+                    setTimeout(() => {
+                        processBarcode(code);
+                        toggleMenu();
+                    }, 500);
+                    return;
+                }
+            } catch (e) { }
+
+            if (scanning) requestAnimationFrame(scanLoop);
+        }
+
+        function processBarcode(code) {
+            const canvas = document.getElementById('snapshot');
+            // Zorg voor een vierkante crop voor in de grid
+            const minSize = Math.min(video.videoWidth, video.videoHeight);
+            canvas.width = minSize;
+            canvas.height = minSize;
+
+            const ctx = canvas.getContext('2d');
+            const startX = (video.videoWidth - minSize) / 2;
+            const startY = (video.videoHeight - minSize) / 2;
+
+            ctx.drawImage(video, startX, startY, minSize, minSize, 0, 0, minSize, minSize);
+            const screenshot = canvas.toDataURL('image/jpeg', 0.8);
+
+            const newItem = {
+                id: Date.now(),
+                code: code,
+                image: screenshot
+            };
+
+            saveToDB(newItem);
+        }
+
+        function renderGrid(barcodes) {
+            const cards = document.querySelectorAll('.barcode-card');
+            cards.forEach(c => c.remove());
+
+            if (barcodes.length > 0) {
+                emptyState.style.display = 'none';
+                // Loop backwards to show newest first
+                barcodes.slice().reverse().forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'barcode-card';
+                    card.style.animationDelay = `${index * 0.05}s`; // Staggered animatie
+                    card.innerHTML = `
+                        <img src="${item.image}" alt="Scan snapshot">
+                        <span>${item.code}</span>
+                    `;
+                    card.onclick = () => openModal(item);
+                    grid.appendChild(card);
+                });
+            } else {
+                emptyState.style.display = 'flex';
+            }
+        }
+
+        // --- 4. MODAL & KOPPELING ---
+        function openModal(item) {
+            currentEditingItem = item;
+            modal.classList.add('active');
+            document.getElementById('modal-number').innerText = item.code;
+
+            JsBarcode("#barcode-svg", item.code, {
+                format: "CODE128", // Fallback, werkt voor veel formaten
+                width: 2,
+                height: 80,
+                displayValue: false, // We tonen de waarde er al boven
+                lineColor: "#1F2937"
+            });
+        }
+
+        document.getElementById('close-modal').onclick = () => modal.classList.remove('active');
+
+        // Sluit modal als je buiten het witte vlak klikt
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        document.getElementById('delete-btn').onclick = () => {
+            if (confirm("Weet je zeker dat je deze barcode wilt verwijderen?")) {
+                deleteFromDB(currentEditingItem.id);
+                modal.classList.remove('active');
+            }
+        };
+
+        document.getElementById('copy-btn').onclick = () => {
+            navigator.clipboard.writeText(currentEditingItem.code).then(() => {
+                showToast("Barcode nummer gekopieerd!", "ph-copy");
+            });
+        };
+
+        function toggleMenu() {
+            const isOpen = addDiv.classList.toggle('open');
+            if (isOpen) {
+                addBtn.innerHTML = '<i class="ph ph-x-circle"></i> Sluiten';
+                addBtn.classList.add('close-style');
+                startCamera();
+            } else {
+                addBtn.innerHTML = '<i class="ph ph-plus-circle"></i> Barcode toevoegen';
+                addBtn.classList.remove('close-style');
+                stopCamera();
+            }
+        }
+
+        addBtn.addEventListener('click', toggleMenu);
+    </script>
+</body>
+
+</html>
