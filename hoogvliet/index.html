@@ -21,6 +21,7 @@
         body {
             margin: 0 auto;
             margin-top: 67.6px;
+            background-color: #f8f9fa;
         }
 
         header {
@@ -93,36 +94,191 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        #barcode-result {
-            display: none;
+        .barcode-view-area {
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 20px;
             text-align: center;
         }
 
-        #barcode-result h2 {
+        .barcode-view-area h2 {
             color: #01abe8;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
-        #barcode {
+        .snapshot-preview {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            border: 3px solid #01abe8;
+        }
+
+        .barcode-svg {
             width: 100%;
             max-width: 350px;
         }
 
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
         .action-btn {
-            margin-top: 40px;
-            padding: 15px 30px;
+            padding: 15px 25px;
             background-color: #01abe8;
             color: white;
             border: none;
             border-radius: 25px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .save-btn {
+            background-color: #28a745;
+        }
+
+        #mijn-barcodes {
+            padding: 20px 0;
+        }
+
+        .page-title {
+            color: #01abe8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            margin: 0 20px 20px 20px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-container input:focus {
+            border-color: #01abe8;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .barcode-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .barcode-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .barcode-card img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 15px;
+            border: 2px solid #eee;
+        }
+
+        .barcode-card .info {
+            cursor: pointer;
+            flex-grow: 1;
+            padding-right: 90px;
+        }
+
+        .barcode-card .info h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.1rem;
+            word-break: break-all;
+        }
+
+        .barcode-card .info p {
+            margin: 5px 0 0 0;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .barcode-card .info .sub-code {
+            color: #01abe8;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        .action-buttons {
+            position: absolute;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .edit-btn { background: #ffc107; }
+        .delete-btn { background: #ff4d4d; }
+
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 25px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1001;
+            left: 50%;
+            bottom: 30px;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
         }
     </style>
 </head>
@@ -133,12 +289,14 @@
         <i class="fa-solid fa-home" onclick="showScreen('home')"></i>
     </header>
 
+    <div id="toast">Barcode succesvol opgeslagen!</div>
+
     <div class="screen" id="home">
         <button class="home-opt" onclick="showScreen('scan-naar-scherm')">
             <i class="fa-solid fa-expand"></i> Scan naar scherm
         </button>
 
-        <button class="home-opt" onclick="">
+        <button class="home-opt" onclick="showScreen('mijn-barcodes')">
             <i class="fa-solid fa-barcode"></i> Mijn barcodes
         </button>
 
@@ -148,29 +306,78 @@
     </div>
 
     <div class="screen" id="scan-naar-scherm">
-        
         <div id="reader-container">
             <div id="reader"></div>
         </div>
 
-        <div id="barcode-result">
+        <div id="barcode-result" class="barcode-view-area" style="display: none;">
             <h2>Gevonden Barcode</h2>
-            <svg id="barcode"></svg>
-            <button class="action-btn" onclick="resetScanner()">
-                <i class="fa-solid fa-rotate-right"></i> Scan opnieuw
-            </button>
+            <img id="snapshot-preview" class="snapshot-preview" src="" alt="Product Foto" style="display: none;">
+            
+            <svg id="barcode" class="barcode-svg"></svg>
+            
+            <div class="btn-group">
+                <button class="action-btn" onclick="resetScanner()">
+                    <i class="fa-solid fa-rotate-right"></i> Opnieuw
+                </button>
+                <button class="action-btn save-btn" onclick="saveBarcodeToDB()">
+                    <i class="fa-solid fa-floppy-disk"></i> Opslaan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="mijn-barcodes">
+        <h2 class="page-title">Mijn Opgeslagen Barcodes</h2>
+        
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="Zoek op titel of barcode..." onkeyup="loadMijnBarcodes()">
         </div>
 
+        <div class="barcode-list" id="barcode-list-container">
+            </div>
+    </div>
+
+    <div class="screen" id="bekijk-barcode-scherm">
+        <div class="barcode-view-area">
+            <h2 id="bekijk-titel"></h2>
+            <img id="bekijk-snapshot" class="snapshot-preview" src="" alt="Product Foto" style="display: none;">
+            
+            <svg id="bekijk-svg" class="barcode-svg"></svg>
+            
+            <button class="action-btn" onclick="showScreen('mijn-barcodes')" style="margin-top:30px;">
+                <i class="fa-solid fa-arrow-left"></i> Terug
+            </button>
+        </div>
     </div>
 
     <script>
+        let db;
+        const request = indexedDB.open("WinkelFixDB", 1);
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            if (!db.objectStoreNames.contains("barcodes")) {
+                db.createObjectStore("barcodes", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+        };
+
+        request.onerror = function(event) {
+            console.error("IndexedDB error:", event.target.errorCode);
+        };
+
         let html5QrCode;
+        let currentBarcodeText = "";
+        let currentSnapshotBase64 = "";
 
         function showScreen(screenId) {
             const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => {
-                screen.style.display = 'none';
-            });
+            screens.forEach(screen => screen.style.display = 'none');
 
             const target = document.getElementById(screenId);
             if (target) {
@@ -182,11 +389,26 @@
             } else {
                 stopScanner();
             }
+
+            if (screenId === 'mijn-barcodes') {
+                document.getElementById('search-input').value = "";
+                loadMijnBarcodes();
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(function() { 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
         }
 
         function startScanner() {
             document.getElementById('reader-container').style.display = 'block';
             document.getElementById('barcode-result').style.display = 'none';
+            document.getElementById('snapshot-preview').style.display = 'none';
 
             if (!html5QrCode) {
                 html5QrCode = new Html5Qrcode("reader");
@@ -194,31 +416,39 @@
 
             html5QrCode.start(
                 { facingMode: "environment" }, 
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 150 }
-                },
+                { fps: 10, qrbox: { width: 250, height: 150 } },
                 onScanSuccess
             ).catch(err => {
-                console.error("Camera kon niet starten. Is er toestemming gegeven?", err);
+                console.error("Camera kon niet starten:", err);
             });
         }
 
         function onScanSuccess(decodedText, decodedResult) {
+            currentBarcodeText = decodedText;
+            
+            const videoElement = document.querySelector("#reader video");
+            if (videoElement) {
+                const canvas = document.createElement("canvas");
+                canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                currentSnapshotBase64 = canvas.toDataURL("image/jpeg", 0.7);
+            }
+
             stopScanner().then(() => {
                 document.getElementById('reader-container').style.display = 'none';
                 document.getElementById('barcode-result').style.display = 'flex';
 
+                const previewImg = document.getElementById('snapshot-preview');
+                if (currentSnapshotBase64) {
+                    previewImg.src = currentSnapshotBase64;
+                    previewImg.style.display = 'block';
+                }
+
                 JsBarcode("#barcode", decodedText, {
-                    format: "CODE128",
-                    lineColor: "#000000",
-                    width: 3,
-                    height: 120,
-                    displayValue: true,
-                    font: "Lexend",
-                    fontSize: 24,
-                    fontOptions: "bold",
-                    textMargin: 10
+                    format: "CODE128", lineColor: "#000000", width: 3, height: 100, 
+                    displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
                 });
             });
         }
@@ -226,10 +456,8 @@
         function stopScanner() {
             return new Promise((resolve) => {
                 if (html5QrCode && html5QrCode.isScanning) {
-                    html5QrCode.stop().then(() => {
-                        resolve();
-                    }).catch(err => {
-                        console.error("Fout bij stoppen van scanner", err);
+                    html5QrCode.stop().then(resolve).catch(err => {
+                        console.error("Fout bij stoppen scanner", err);
                         resolve();
                     });
                 } else {
@@ -239,7 +467,163 @@
         }
 
         function resetScanner() {
+            currentBarcodeText = "";
+            currentSnapshotBase64 = "";
             startScanner();
+        }
+
+        function saveBarcodeToDB() {
+            if (!db) {
+                showToast("Fout: Database niet geladen!");
+                return;
+            }
+
+            const transaction = db.transaction(["barcodes"], "readwrite");
+            const store = transaction.objectStore("barcodes");
+
+            const nieuwProduct = {
+                code: currentBarcodeText,
+                titel: "",
+                image: currentSnapshotBase64,
+                datum: new Date().toLocaleString("nl-NL")
+            };
+
+            const request = store.add(nieuwProduct);
+
+            request.onsuccess = function() {
+                showToast("Barcode succesvol opgeslagen!");
+                resetScanner();
+            };
+
+            request.onerror = function() {
+                showToast("Fout bij het opslaan van de barcode.");
+            };
+        }
+
+        function loadMijnBarcodes() {
+            if (!db) return;
+
+            const container = document.getElementById("barcode-list-container");
+            const searchQuery = document.getElementById("search-input").value.toLowerCase();
+            container.innerHTML = "";
+
+            const transaction = db.transaction(["barcodes"], "readonly");
+            const store = transaction.objectStore("barcodes");
+            const request = store.getAll();
+
+            request.onsuccess = function(event) {
+                let barcodes = event.target.result;
+                
+                if (searchQuery) {
+                    barcodes = barcodes.filter(item => {
+                        const titelMatch = item.titel && item.titel.toLowerCase().includes(searchQuery);
+                        const codeMatch = item.code && item.code.toLowerCase().includes(searchQuery);
+                        return titelMatch || codeMatch;
+                    });
+                }
+                
+                if (barcodes.length === 0) {
+                    container.innerHTML = "<p style='text-align:center;'>Geen barcodes gevonden.</p>";
+                    return;
+                }
+
+                barcodes.reverse().forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "barcode-card";
+                    
+                    const imgSrc = item.image ? item.image : "https://via.placeholder.com/70?text=Geen+Foto";
+                    const displayTitel = item.titel ? item.titel : item.code;
+                    const displayCodeHTML = item.titel ? `<span class="sub-code">#${item.code}</span><br>` : '';
+
+                    card.innerHTML = `
+                        <img src="${imgSrc}" alt="Product foto">
+                        <div class="info" onclick="openBekijkScherm(${item.id})">
+                            <h3>${displayTitel}</h3>
+                            <p>${displayCodeHTML}${item.datum}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="icon-btn edit-btn" onclick="editBarcode(${item.id})" title="Titel aanpassen">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button class="icon-btn delete-btn" onclick="deleteBarcode(${item.id})" title="Verwijderen">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            };
+        }
+
+        function editBarcode(id) {
+            if (!db) return;
+
+            const transaction = db.transaction(["barcodes"], "readwrite");
+            const store = transaction.objectStore("barcodes");
+            const request = store.get(id);
+
+            request.onsuccess = function(event) {
+                const item = event.target.result;
+                if (item) {
+                    const nieuweTitel = prompt("Voer een titel in (of laat leeg voor alleen de barcode):", item.titel || "");
+                    
+                    if (nieuweTitel !== null) {
+                        item.titel = nieuweTitel.trim();
+                        
+                        const updateRequest = store.put(item);
+                        updateRequest.onsuccess = function() {
+                            loadMijnBarcodes();
+                            showToast("Titel aangepast!");
+                        };
+                    }
+                }
+            };
+        }
+
+        function deleteBarcode(id) {
+            if (!db) return;
+            
+            const bevestiging = confirm("Weet je zeker dat je deze barcode wilt verwijderen?");
+            if (bevestiging) {
+                const transaction = db.transaction(["barcodes"], "readwrite");
+                const store = transaction.objectStore("barcodes");
+                const request = store.delete(id);
+
+                request.onsuccess = function() {
+                    loadMijnBarcodes();
+                    showToast("Barcode verwijderd!");
+                };
+            }
+        }
+
+         function openBekijkScherm(id) {
+            if (!db) return;
+
+            const transaction = db.transaction(["barcodes"], "readonly");
+            const store = transaction.objectStore("barcodes");
+            const request = store.get(id);
+
+            request.onsuccess = function(event) {
+                const item = event.target.result;
+                if (item) {
+                    document.getElementById("bekijk-titel").innerText = item.titel ? item.titel : "Gevonden Barcode";
+                    
+                    const snapshot = document.getElementById("bekijk-snapshot");
+                    if (item.image) {
+                        snapshot.src = item.image;
+                        snapshot.style.display = "block";
+                    } else {
+                        snapshot.style.display = "none";
+                    }
+
+                    JsBarcode("#bekijk-svg", item.code, {
+                        format: "CODE128", lineColor: "#000000", width: 3, height: 100, 
+                        displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
+                    });
+
+                    showScreen("bekijk-barcode-scherm");
+                }
+            };
         }
     </script>
 </body>
