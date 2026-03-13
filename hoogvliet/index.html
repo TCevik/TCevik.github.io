@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hoofdmenu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -33,11 +37,13 @@
             align-items: center;
             justify-content: space-between;
             color: white;
+            z-index: 1000;
         }
 
         header i {
             font-size: 26px;
             color: white;
+            cursor: pointer;
         }
 
         header #title {
@@ -73,6 +79,51 @@
             margin-right: 10px;
             color: #01abe8;
         }
+
+        #reader-container {
+            padding: 20px;
+        }
+
+        #reader {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #barcode-result {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        #barcode-result h2 {
+            color: #01abe8;
+            margin-bottom: 30px;
+        }
+
+        #barcode {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .action-btn {
+            margin-top: 40px;
+            padding: 15px 30px;
+            background-color: #01abe8;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 
@@ -97,13 +148,26 @@
     </div>
 
     <div class="screen" id="scan-naar-scherm">
+        
+        <div id="reader-container">
+            <div id="reader"></div>
+        </div>
+
+        <div id="barcode-result">
+            <h2>Gevonden Barcode</h2>
+            <svg id="barcode"></svg>
+            <button class="action-btn" onclick="resetScanner()">
+                <i class="fa-solid fa-rotate-right"></i> Scan opnieuw
+            </button>
+        </div>
 
     </div>
 
     <script>
+        let html5QrCode;
+
         function showScreen(screenId) {
             const screens = document.querySelectorAll('.screen');
-
             screens.forEach(screen => {
                 screen.style.display = 'none';
             });
@@ -112,9 +176,72 @@
             if (target) {
                 target.style.display = 'block';
             }
-        }    </script>
+
+            if (screenId === 'scan-naar-scherm') {
+                startScanner();
+            } else {
+                stopScanner();
+            }
+        }
+
+        function startScanner() {
+            document.getElementById('reader-container').style.display = 'block';
+            document.getElementById('barcode-result').style.display = 'none';
+
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader");
+            }
+
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 150 }
+                },
+                onScanSuccess
+            ).catch(err => {
+                console.error("Camera kon niet starten. Is er toestemming gegeven?", err);
+            });
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            stopScanner().then(() => {
+                document.getElementById('reader-container').style.display = 'none';
+                document.getElementById('barcode-result').style.display = 'flex';
+
+                JsBarcode("#barcode", decodedText, {
+                    format: "CODE128",
+                    lineColor: "#000000",
+                    width: 3,
+                    height: 120,
+                    displayValue: true,
+                    font: "Lexend",
+                    fontSize: 24,
+                    fontOptions: "bold",
+                    textMargin: 10
+                });
+            });
+        }
+
+        function stopScanner() {
+            return new Promise((resolve) => {
+                if (html5QrCode && html5QrCode.isScanning) {
+                    html5QrCode.stop().then(() => {
+                        resolve();
+                    }).catch(err => {
+                        console.error("Fout bij stoppen van scanner", err);
+                        resolve();
+                    });
+                } else {
+                    resolve();
+                }
+            });
+        }
+
+        function resetScanner() {
+            startScanner();
+        }
+    </script>
 </body>
 
 </html>
-<!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-<!-- <i class="fa-solid fa-circle-info"></i> -->
