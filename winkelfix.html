@@ -507,6 +507,7 @@
 
         function onScanSuccess(decodedText, decodedResult) {
             currentBarcodeText = decodedText;
+            playScanBeep();
 
             const videoElement = document.querySelector("#reader video");
             if (videoElement) {
@@ -533,6 +534,23 @@
                     displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
                 });
             });
+        }
+
+        function playScanBeep() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(2800, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {
+                console.warn("Geluids-API werkt niet in deze browser", e);
+            }
         }
 
         function stopScanner() {
