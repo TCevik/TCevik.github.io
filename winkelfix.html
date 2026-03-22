@@ -338,6 +338,102 @@
             opacity: 1;
             bottom: 50px;
         }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-box h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .modal-box p {
+            margin: 0 0 20px 0;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .modal-input:focus {
+            border-color: #01abe8;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-btn.cancel-btn {
+            background: #eee;
+            color: #555;
+        }
+
+        .modal-btn.cancel-btn:active {
+            background: #ddd;
+        }
+
+        .modal-btn.ok-btn {
+            background: #01abe8;
+            color: white;
+        }
+
+        .modal-btn.ok-btn:active {
+            background: #008fcc;
+        }
     </style>
 </head>
 
@@ -393,6 +489,10 @@
                     onkeyup="loadMijnBarcodes()">
             </div>
 
+            <button class="import-btn" onclick="addManualBarcode()"
+                title="Handmatig toevoegen" style="background-color: #ffc107;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
             <button class="import-btn" onclick="document.getElementById('image-upload').click()"
                 title="Foto importeren">
                 <i class="fa-solid fa-file-import"></i>
@@ -418,6 +518,18 @@
         </div>
     </div>
 
+    <div id="custom-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modal-title">Titel</h3>
+            <p id="modal-msg">Bericht</p>
+            <input type="text" id="modal-input" class="modal-input" style="display:none;" />
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn" class="modal-btn cancel-btn">Annuleren</button>
+                <button id="modal-ok-btn" class="modal-btn ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let db;
         const request = indexedDB.open("WinkelFixDB", 1);
@@ -440,6 +552,81 @@
         let html5QrCode;
         let currentBarcodeText = "";
         let currentSnapshotBase64 = "";
+        let isImportedPhoto = false;
+
+        const AppModal = {
+            show(options) {
+                return new Promise((resolve) => {
+                    const overlay = document.getElementById('custom-modal-overlay');
+                    const titleEl = document.getElementById('modal-title');
+                    const msgEl = document.getElementById('modal-msg');
+                    const inputEl = document.getElementById('modal-input');
+                    const okBtn = document.getElementById('modal-ok-btn');
+                    const cancelBtn = document.getElementById('modal-cancel-btn');
+
+                    titleEl.innerText = options.title || "Melding";
+                    
+                    if (options.message) {
+                        msgEl.innerText = options.message;
+                        msgEl.style.display = 'block';
+                    } else {
+                        msgEl.style.display = 'none';
+                    }
+
+                    if (options.type === 'prompt') {
+                        inputEl.style.display = 'block';
+                        inputEl.value = options.defaultValue || "";
+                        setTimeout(() => inputEl.focus(), 100);
+                    } else {
+                        inputEl.style.display = 'none';
+                    }
+
+                    if (options.type === 'alert') {
+                        cancelBtn.style.display = 'none';
+                    } else {
+                        cancelBtn.style.display = 'block';
+                        cancelBtn.innerText = options.cancelText || "Annuleren";
+                    }
+
+                    okBtn.innerText = options.okText || "OK";
+
+                    overlay.classList.add('show');
+
+                    const cleanup = () => {
+                        overlay.classList.remove('show');
+                        okBtn.onclick = null;
+                        cancelBtn.onclick = null;
+                        inputEl.onkeydown = null;
+                    };
+
+                    okBtn.onclick = () => {
+                        cleanup();
+                        if (options.type === 'prompt') resolve(inputEl.value);
+                        else resolve(true);
+                    };
+
+                    cancelBtn.onclick = () => {
+                        cleanup();
+                        resolve(null);
+                    };
+
+                    inputEl.onkeydown = (e) => {
+                        if (e.key === "Enter") {
+                            okBtn.click();
+                        }
+                    };
+                });
+            },
+            alert(message, title="Melding") {
+                return this.show({ type: 'alert', title, message });
+            },
+            confirm(message, title="Bevestigen") {
+                return this.show({ type: 'confirm', title, message });
+            },
+            prompt(message, defaultValue="", title="Invoer") {
+                return this.show({ type: 'prompt', title, message, defaultValue });
+            }
+        };
 
         function showScreen(screenId, preventCamera = false) {
             const screens = document.querySelectorAll('.screen');
@@ -488,6 +675,7 @@
         }
 
         function startScanner() {
+            isImportedPhoto = false;
             document.getElementById('reader-container').style.display = 'block';
             document.getElementById('barcode-result').style.display = 'none';
             document.getElementById('snapshot-preview').style.display = 'none';
@@ -569,7 +757,40 @@
         function resetScanner() {
             currentBarcodeText = "";
             currentSnapshotBase64 = "";
-            startScanner();
+            if (isImportedPhoto) {
+                isImportedPhoto = false;
+                showScreen('mijn-barcodes');
+            } else {
+                startScanner();
+            }
+        }
+
+        function resizeImageFile(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 500;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height = Math.round(height * (MAX_WIDTH / width));
+                        width = MAX_WIDTH;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const base64 = canvas.toDataURL("image/jpeg", 0.7);
+                    callback(base64);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function handleImageUpload(event) {
@@ -584,55 +805,96 @@
 
             html5QrCode.scanFile(file, true)
                 .then(decodedText => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const img = new Image();
-                        img.onload = function () {
-                            const canvas = document.createElement("canvas");
-                            const MAX_WIDTH = 500;
-                            let width = img.width;
-                            let height = img.height;
+                    resizeImageFile(file, function(base64) {
+                        currentSnapshotBase64 = base64;
+                        currentBarcodeText = decodedText;
+                        isImportedPhoto = true;
 
-                            if (width > MAX_WIDTH) {
-                                height = Math.round(height * (MAX_WIDTH / width));
-                                width = MAX_WIDTH;
-                            }
+                        stopScanner().then(() => {
+                            showScreen('scan-naar-scherm', true);
 
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext("2d");
-                            ctx.drawImage(img, 0, 0, width, height);
+                            document.getElementById('reader-container').style.display = 'none';
+                            document.getElementById('barcode-result').style.display = 'flex';
 
-                            currentSnapshotBase64 = canvas.toDataURL("image/jpeg", 0.7);
-                            currentBarcodeText = decodedText;
+                            const previewImg = document.getElementById('snapshot-preview');
+                            previewImg.src = currentSnapshotBase64;
+                            previewImg.style.display = 'block';
 
-                            stopScanner().then(() => {
-                                showScreen('scan-naar-scherm', true);
-
-                                document.getElementById('reader-container').style.display = 'none';
-                                document.getElementById('barcode-result').style.display = 'flex';
-
-                                const previewImg = document.getElementById('snapshot-preview');
-                                previewImg.src = currentSnapshotBase64;
-                                previewImg.style.display = 'block';
-
-                                JsBarcode("#barcode", decodedText, {
-                                    format: "CODE128", lineColor: "#000000", width: 3, height: 100,
-                                    displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
-                                });
-
-                                showToast("Barcode gevonden! Klik op Opslaan.");
+                            JsBarcode("#barcode", decodedText, {
+                                format: "CODE128", lineColor: "#000000", width: 3, height: 100,
+                                displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
                             });
-                        };
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
+
+                            showToast("Barcode gevonden! Klik op Opslaan.");
+                        });
+                    });
                 })
-                .catch(err => {
-                    showToast("Fout: Geen barcode in deze foto gevonden!");
+                .catch(async err => {
+                    const handmatigeCode = await AppModal.prompt("Geen barcode gevonden. Voer handmatig een barcode in:", "", "Barcode Invoeren");
+                    if (handmatigeCode && handmatigeCode.trim() !== "") {
+                        const handmatigeTitel = await AppModal.prompt("Voer een titel in (optioneel):", "", "Titel Invoeren");
+                        
+                        resizeImageFile(file, function(base64) {
+                            if (!db) return;
+                            const transaction = db.transaction(["barcodes"], "readwrite");
+                            const store = transaction.objectStore("barcodes");
+
+                            const nieuwProduct = {
+                                code: handmatigeCode.trim(),
+                                titel: handmatigeTitel ? handmatigeTitel.trim() : "",
+                                image: base64,
+                                datum: new Date().toLocaleString("nl-NL")
+                            };
+
+                            const request = store.add(nieuwProduct);
+
+                            request.onsuccess = function () {
+                                showToast("Handmatig ingevoerde barcode opgeslagen!");
+                                loadMijnBarcodes();
+                            };
+
+                            request.onerror = function () {
+                                showToast("Fout bij het opslaan van de barcode.");
+                            };
+                        });
+                    } else if (handmatigeCode !== null) {
+                        showToast("Geen geldige barcode ingevoerd.");
+                    }
                 });
 
             event.target.value = '';
+        }
+
+        async function addManualBarcode() {
+            if (!db) return;
+
+            const handmatigeCode = await AppModal.prompt("Voer handmatig een barcode in:", "", "Nieuwe Barcode");
+            if (handmatigeCode && handmatigeCode.trim() !== "") {
+                const handmatigeTitel = await AppModal.prompt("Voer een titel in (optioneel):", "", "Titel Invoeren");
+                
+                const transaction = db.transaction(["barcodes"], "readwrite");
+                const store = transaction.objectStore("barcodes");
+
+                const nieuwProduct = {
+                    code: handmatigeCode.trim(),
+                    titel: handmatigeTitel ? handmatigeTitel.trim() : "",
+                    image: "",
+                    datum: new Date().toLocaleString("nl-NL")
+                };
+
+                const request = store.add(nieuwProduct);
+
+                request.onsuccess = function () {
+                    showToast("Handmatig ingevoerde barcode opgeslagen!");
+                    loadMijnBarcodes();
+                };
+
+                request.onerror = function () {
+                    showToast("Fout bij het opslaan van de barcode.");
+                };
+            } else if (handmatigeCode !== null) {
+                showToast("Geen geldige barcode ingevoerd.");
+            }
         }
 
         function saveBarcodeToDB() {
@@ -718,22 +980,25 @@
             };
         }
 
-        function editBarcode(id) {
+        async function editBarcode(id) {
             if (!db) return;
 
-            const transaction = db.transaction(["barcodes"], "readwrite");
+            const transaction = db.transaction(["barcodes"], "readonly");
             const store = transaction.objectStore("barcodes");
             const request = store.get(id);
 
-            request.onsuccess = function (event) {
+            request.onsuccess = async function (event) {
                 const item = event.target.result;
                 if (item) {
-                    const nieuweTitel = prompt("Voer een titel in (of laat leeg voor alleen de barcode):", item.titel || "");
+                    const nieuweTitel = await AppModal.prompt("Voer een titel in (of laat leeg voor alleen de barcode):", item.titel || "", "Titel Aanpassen");
 
                     if (nieuweTitel !== null) {
                         item.titel = nieuweTitel.trim();
 
-                        const updateRequest = store.put(item);
+                        const updateTransaction = db.transaction(["barcodes"], "readwrite");
+                        const updateStore = updateTransaction.objectStore("barcodes");
+                        const updateRequest = updateStore.put(item);
+                        
                         updateRequest.onsuccess = function () {
                             loadMijnBarcodes();
                             showToast("Titel aangepast!");
@@ -743,10 +1008,10 @@
             };
         }
 
-        function deleteBarcode(id) {
+        async function deleteBarcode(id) {
             if (!db) return;
 
-            const bevestiging = confirm("Weet je zeker dat je deze barcode wilt verwijderen?");
+            const bevestiging = await AppModal.confirm("Weet je zeker dat je deze barcode wilt verwijderen?", "Verwijderen");
             if (bevestiging) {
                 const transaction = db.transaction(["barcodes"], "readwrite");
                 const store = transaction.objectStore("barcodes");
