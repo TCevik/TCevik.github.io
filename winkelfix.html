@@ -9,6 +9,7 @@
 
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -235,6 +236,19 @@
             align-items: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             position: relative;
+        }
+
+        .drag-handle {
+            color: #ddd;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
         }
 
         .barcode-card img {
@@ -952,15 +966,29 @@
                     return;
                 }
 
-                barcodes.reverse().forEach(item => {
+                let savedOrder = JSON.parse(localStorage.getItem('winkelFixOrder') || "[]");
+                
+                barcodes.sort((a, b) => {
+                    let indexA = savedOrder.indexOf(a.id);
+                    let indexB = savedOrder.indexOf(b.id);
+                    
+                    if (indexA === -1 && indexB === -1) return b.id - a.id; 
+                    if (indexA === -1) return -1;
+                    if (indexB === -1) return 1;
+                    return indexA - indexB;
+                });
+
+                barcodes.forEach(item => {
                     const card = document.createElement("div");
                     card.className = "barcode-card";
+                    card.dataset.id = item.id;
 
-                    const imgSrc = item.image ? item.image : "https://via.placeholder.com/70?text=Geen+Foto";
+                    const imgSrc = item.image ? item.image : "https://static.vecteezy.com/system/resources/previews/026/529/438/non_2x/simple-red-cross-mark-icon-vector.jpg";
                     const displayTitel = item.titel ? item.titel : item.code;
                     const displayCodeHTML = item.titel ? `<span class="sub-code">#${item.code}</span><br>` : '';
 
                     card.innerHTML = `
+                        <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
                         <img src="${imgSrc}" alt="Product foto">
                         <div class="info" onclick="openBekijkScherm(${item.id})">
                             <h3>${displayTitel}</h3>
@@ -977,6 +1005,20 @@
                     `;
                     container.appendChild(card);
                 });
+
+                if (!searchQuery && typeof Sortable !== 'undefined') {
+                    Sortable.create(container, {
+                        handle: '.drag-handle',
+                        animation: 150,
+                        onEnd: function () {
+                            const newOrder = [];
+                            document.querySelectorAll('.barcode-card').forEach(card => {
+                                newOrder.push(parseInt(card.dataset.id));
+                            });
+                            localStorage.setItem('winkelFixOrder', JSON.stringify(newOrder));
+                        }
+                    });
+                }
             };
         }
 
@@ -1039,10 +1081,10 @@
                     const snapshot = document.getElementById("bekijk-snapshot");
                     if (item.image) {
                         snapshot.src = item.image;
-                        snapshot.style.display = "block";
                     } else {
-                        snapshot.style.display = "none";
+                        snapshot.src = "https://static.vecteezy.com/system/resources/previews/026/529/438/non_2x/simple-red-cross-mark-icon-vector.jpg";
                     }
+                    snapshot.style.display = "block";
 
                     JsBarcode("#bekijk-svg", item.code, {
                         format: "CODE128", lineColor: "#000000", width: 3, height: 100,
