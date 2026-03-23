@@ -563,6 +563,7 @@
         let currentBarcodeText = "";
         let currentSnapshotBase64 = "";
         let isImportedPhoto = false;
+        let sortableInstance = null;
 
         const AppModal = {
             show(options) {
@@ -1002,18 +1003,24 @@
                     container.appendChild(card);
                 });
 
-                if (!searchQuery && typeof Sortable !== 'undefined') {
-                    Sortable.create(container, {
-                        handle: '.drag-handle',
-                        animation: 150,
-                        onEnd: function () {
-                            const newOrder = [];
-                            document.querySelectorAll('.barcode-card').forEach(card => {
-                                newOrder.push(parseInt(card.dataset.id));
-                            });
-                            localStorage.setItem('winkelFixOrder', JSON.stringify(newOrder));
-                        }
-                    });
+                if (typeof Sortable !== 'undefined') {
+                    if (sortableInstance) {
+                        sortableInstance.destroy();
+                        sortableInstance = null;
+                    }
+                    if (!searchQuery) {
+                        sortableInstance = Sortable.create(container, {
+                            handle: '.drag-handle',
+                            animation: 150,
+                            onEnd: function () {
+                                const newOrder = [];
+                                document.querySelectorAll('.barcode-card').forEach(card => {
+                                    newOrder.push(parseInt(card.dataset.id));
+                                });
+                                localStorage.setItem('winkelFixOrder', JSON.stringify(newOrder));
+                            }
+                        });
+                    }
                 }
             };
         }
