@@ -241,7 +241,7 @@
         .drag-handle {
             color: #ddd;
             font-size: 1.2rem;
-            margin-right: 15px;
+            margin-right: 5px;
             cursor: grab;
             display: flex;
             align-items: center;
@@ -536,6 +536,28 @@
             <div class="modal-buttons">
                 <button id="modal-cancel-btn" class="modal-btn cancel-btn">Annuleren</button>
                 <button id="modal-ok-btn" class="modal-btn ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin-bottom: 15px;">Barcode Bijwerken</h3>
+            <input type="text" id="edit-titel-input" class="modal-input" placeholder="Titel (optioneel)" style="margin-bottom: 20px;" />
+            
+            <div style="margin-bottom: 20px;">
+                <p style="margin: 0 0 10px 0; color: #666; font-size: 0.95rem; text-align: left;">Foto</p>
+                <img id="edit-foto-preview" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 2px solid #eee; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="modal-btn cancel-btn" style="padding: 8px; font-size: 0.85rem;" onclick="document.getElementById('edit-image-upload').click()"><i class="fa-solid fa-upload"></i> Foto wijzigen</button>
+                    <button class="modal-btn cancel-btn" style="padding: 8px; font-size: 0.85rem;" onclick="removeEditPhoto()"><i class="fa-solid fa-trash"></i> Foto wissen</button>
+                </div>
+                <input type="file" id="edit-image-upload" accept="image/*" style="display: none;" onchange="handleEditImageUpload(event)">
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeEditModal()">Annuleren</button>
+                <button class="modal-btn ok-btn" onclick="saveEdit()">Opslaan</button>
             </div>
         </div>
     </div>
@@ -1025,30 +1047,83 @@
             };
         }
 
-        async function editBarcode(id) {
+        let editCurrentId = null;
+        let editCurrentBase64 = "";
+
+        function editBarcode(id) {
             if (!db) return;
 
             const transaction = db.transaction(["barcodes"], "readonly");
             const store = transaction.objectStore("barcodes");
             const request = store.get(id);
 
-            request.onsuccess = async function (event) {
+            request.onsuccess = function (event) {
                 const item = event.target.result;
                 if (item) {
-                    const nieuweTitel = await AppModal.prompt("Voer een titel in (of laat leeg voor alleen de barcode):", item.titel || "", "Titel Aanpassen");
+                    editCurrentId = id;
+                    document.getElementById('edit-titel-input').value = item.titel || "";
+                    editCurrentBase64 = item.image || "";
+                    updateEditPhotoPreview();
+                    document.getElementById('edit-modal-overlay').classList.add('show');
+                }
+            };
+        }
 
-                    if (nieuweTitel !== null) {
-                        item.titel = nieuweTitel.trim();
+        function updateEditPhotoPreview() {
+            const preview = document.getElementById('edit-foto-preview');
+            if (editCurrentBase64) {
+                preview.src = editCurrentBase64;
+            } else {
+                preview.src = "https://static.vecteezy.com/system/resources/previews/026/529/438/non_2x/simple-red-cross-mark-icon-vector.jpg";
+            }
+        }
 
-                        const updateTransaction = db.transaction(["barcodes"], "readwrite");
-                        const updateStore = updateTransaction.objectStore("barcodes");
-                        const updateRequest = updateStore.put(item);
-                        
-                        updateRequest.onsuccess = function () {
-                            loadMijnBarcodes();
-                            showToast("Titel aangepast!");
-                        };
-                    }
+        function removeEditPhoto() {
+            editCurrentBase64 = "";
+            updateEditPhotoPreview();
+        }
+
+        function handleEditImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            resizeImageFile(file, function(base64) {
+                editCurrentBase64 = base64;
+                updateEditPhotoPreview();
+            });
+            event.target.value = '';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal-overlay').classList.remove('show');
+            editCurrentId = null;
+            editCurrentBase64 = "";
+        }
+
+        function saveEdit() {
+            if (!db || editCurrentId === null) return;
+
+            const newTitel = document.getElementById('edit-titel-input').value.trim();
+
+            const transaction = db.transaction(["barcodes"], "readonly");
+            const store = transaction.objectStore("barcodes");
+            const request = store.get(editCurrentId);
+
+            request.onsuccess = function (event) {
+                const item = event.target.result;
+                if (item) {
+                    item.titel = newTitel;
+                    item.image = editCurrentBase64;
+
+                    const updateTransaction = db.transaction(["barcodes"], "readwrite");
+                    const updateStore = updateTransaction.objectStore("barcodes");
+                    const updateRequest = updateStore.put(item);
+                    
+                    updateRequest.onsuccess = function () {
+                        closeEditModal();
+                        loadMijnBarcodes();
+                        showToast("Barcode bijgewerkt!");
+                    };
                 }
             };
         }
