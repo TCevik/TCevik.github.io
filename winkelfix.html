@@ -448,6 +448,51 @@
         .modal-btn.ok-btn:active {
             background: #008fcc;
         }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 15px 20px;
+            overflow-x: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .filter-container::-webkit-scrollbar {
+            display: none;
+        }
+        .filter-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: #eee;
+            color: #555;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+            border: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .filter-pill.active {
+            background-color: #01abe8;
+            color: white;
+            box-shadow: 0 4px 6px rgba(1, 171, 232, 0.3);
+        }
+        .modal-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            margin-bottom: 20px;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .modal-select:focus {
+            border-color: #01abe8;
+        }
     </style>
 </head>
 
@@ -511,6 +556,8 @@
                 onchange="handleImageUpload(event)">
         </div>
 
+        <div class="filter-container" id="category-filters"></div>
+
         <div class="barcode-list" id="barcode-list-container">
         </div>
     </div>
@@ -540,10 +587,37 @@
         </div>
     </div>
 
+    <div id="category-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin-bottom: 15px;">Kies Categorie</h3>
+            <select id="cat-modal-select" class="modal-select" onchange="toggleCatModalCustom()">
+                <option value="standaard">Standaard</option>
+                <option value="coupon">Coupon</option>
+                <option value="product">Product</option>
+                <option value="medewerkerspas">Medewerkerspas</option>
+                <option value="aangepast">Aangepast...</option>
+            </select>
+            <input type="text" id="cat-modal-custom" class="modal-input" placeholder="Aangepaste categorie" style="display: none; margin-bottom: 20px;" />
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="resolveCategoryModal(null)">Annuleren</button>
+                <button class="modal-btn ok-btn" onclick="resolveCategoryModalValue()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <div id="edit-modal-overlay" class="modal-overlay">
         <div class="modal-box">
             <h3 style="margin-bottom: 15px;">Barcode Bijwerken</h3>
             <input type="text" id="edit-titel-input" class="modal-input" placeholder="Titel (optioneel)" style="margin-bottom: 20px;" />
+            
+            <select id="edit-categorie-select" class="modal-select" onchange="toggleEditCustomCategory()">
+                <option value="standaard">Standaard</option>
+                <option value="coupon">Coupon</option>
+                <option value="product">Product</option>
+                <option value="medewerkerspas">Medewerkerspas</option>
+                <option value="aangepast">Aangepast...</option>
+            </select>
+            <input type="text" id="edit-custom-categorie-input" class="modal-input" placeholder="Aangepaste categorie" style="display: none; margin-bottom: 20px;" />
             
             <div style="margin-bottom: 20px;">
                 <p style="margin: 0 0 10px 0; color: #666; font-size: 0.95rem; text-align: left;">Foto</p>
@@ -586,6 +660,46 @@
         let currentSnapshotBase64 = "";
         let isImportedPhoto = false;
         let sortableInstance = null;
+        let currentCategoryFilter = 'alles';
+        let categoryModalResolver = null;
+
+        function showCategoryModal() {
+            document.getElementById('cat-modal-select').value = 'standaard';
+            document.getElementById('cat-modal-custom').value = '';
+            document.getElementById('cat-modal-custom').style.display = 'none';
+            document.getElementById('category-modal-overlay').classList.add('show');
+            return new Promise(resolve => {
+                categoryModalResolver = resolve;
+            });
+        }
+
+        function resolveCategoryModal(val) {
+            document.getElementById('category-modal-overlay').classList.remove('show');
+            if (categoryModalResolver) {
+                categoryModalResolver(val);
+                categoryModalResolver = null;
+            }
+        }
+
+        function resolveCategoryModalValue() {
+            let cat = document.getElementById('cat-modal-select').value;
+            if (cat === 'aangepast') {
+                cat = document.getElementById('cat-modal-custom').value.trim().toLowerCase();
+                if (!cat) cat = 'standaard';
+            }
+            resolveCategoryModal(cat);
+        }
+
+        function toggleCatModalCustom() {
+            const select = document.getElementById('cat-modal-select');
+            const custom = document.getElementById('cat-modal-custom');
+            if (select.value === 'aangepast') {
+                custom.style.display = 'block';
+                custom.focus();
+            } else {
+                custom.style.display = 'none';
+            }
+        }
 
         const AppModal = {
             show(options) {
@@ -866,6 +980,8 @@
                     const handmatigeCode = await AppModal.prompt("Geen barcode gevonden. Voer handmatig een barcode in:", "", "Barcode Invoeren");
                     if (handmatigeCode && handmatigeCode.trim() !== "") {
                         const handmatigeTitel = await AppModal.prompt("Voer een titel in (optioneel):", "", "Titel Invoeren");
+                        const catInfo = await showCategoryModal();
+                        if (!catInfo) return;
                         
                         resizeImageFile(file, function(base64) {
                             if (!db) return;
@@ -876,7 +992,8 @@
                                 code: handmatigeCode.trim(),
                                 titel: handmatigeTitel ? handmatigeTitel.trim() : "",
                                 image: base64,
-                                datum: new Date().toLocaleString("nl-NL")
+                                datum: new Date().toLocaleString("nl-NL"),
+                                categorie: catInfo
                             };
 
                             const request = store.add(nieuwProduct);
@@ -904,6 +1021,8 @@
             const handmatigeCode = await AppModal.prompt("Voer handmatig een barcode in:", "", "Nieuwe Barcode");
             if (handmatigeCode && handmatigeCode.trim() !== "") {
                 const handmatigeTitel = await AppModal.prompt("Voer een titel in (optioneel):", "", "Titel Invoeren");
+                const catInfo = await showCategoryModal();
+                if (!catInfo) return;
                 
                 const transaction = db.transaction(["barcodes"], "readwrite");
                 const store = transaction.objectStore("barcodes");
@@ -912,7 +1031,8 @@
                     code: handmatigeCode.trim(),
                     titel: handmatigeTitel ? handmatigeTitel.trim() : "",
                     image: "",
-                    datum: new Date().toLocaleString("nl-NL")
+                    datum: new Date().toLocaleString("nl-NL"),
+                    categorie: catInfo
                 };
 
                 const request = store.add(nieuwProduct);
@@ -930,11 +1050,14 @@
             }
         }
 
-        function saveBarcodeToDB() {
+        async function saveBarcodeToDB() {
             if (!db) {
                 showToast("Fout: Database niet geladen!");
                 return;
             }
+
+            const categorieInfo = await showCategoryModal();
+            if (!categorieInfo) return;
 
             const transaction = db.transaction(["barcodes"], "readwrite");
             const store = transaction.objectStore("barcodes");
@@ -943,7 +1066,8 @@
                 code: currentBarcodeText,
                 titel: "",
                 image: currentSnapshotBase64,
-                datum: new Date().toLocaleString("nl-NL")
+                datum: new Date().toLocaleString("nl-NL"),
+                categorie: categorieInfo
             };
 
             const request = store.add(nieuwProduct);
@@ -956,6 +1080,42 @@
             request.onerror = function () {
                 showToast("Fout bij het opslaan van de barcode.");
             };
+        }
+
+        function setCategoryFilter(category) {
+            currentCategoryFilter = category;
+            loadMijnBarcodes();
+        }
+
+        function renderFilterPills(allBarcodes) {
+            const filterContainer = document.getElementById('category-filters');
+            if (!filterContainer) return;
+
+            const categories = new Set();
+            allBarcodes.forEach(b => {
+                if (b.categorie) {
+                    categories.add(b.categorie);
+                } else {
+                    categories.add('standaard');
+                }
+            });
+
+            const standardCategories = ['standaard', 'coupon', 'product', 'medewerkerspas'];
+            const allCategories = ['alles', ...standardCategories];
+
+            categories.forEach(c => {
+                if (!allCategories.includes(c)) allCategories.push(c);
+            });
+
+            filterContainer.innerHTML = '';
+
+            allCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `filter-pill ${currentCategoryFilter === cat ? 'active' : ''}`;
+                btn.onclick = () => setCategoryFilter(cat);
+                btn.innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
+                filterContainer.appendChild(btn);
+            });
         }
 
         function loadMijnBarcodes() {
@@ -971,6 +1131,16 @@
 
             request.onsuccess = function (event) {
                 let barcodes = event.target.result;
+
+                barcodes.forEach(b => {
+                    if (!b.categorie) b.categorie = 'standaard';
+                });
+
+                renderFilterPills(barcodes);
+
+                if (currentCategoryFilter !== 'alles') {
+                    barcodes = barcodes.filter(item => item.categorie === currentCategoryFilter);
+                }
 
                 if (searchQuery) {
                     barcodes = barcodes.filter(item => {
@@ -1011,7 +1181,7 @@
                         <img src="${imgSrc}" alt="Product foto">
                         <div class="info" onclick="openBekijkScherm(${item.id})">
                             <h3>${displayTitel}</h3>
-                            <p>${displayCodeHTML}${item.datum}</p>
+                            <p>${displayCodeHTML}<span style="color: #666; font-weight: 500;">${item.categorie.charAt(0).toUpperCase() + item.categorie.slice(1)}</span> • ${item.datum}</p>
                         </div>
                         <div class="action-buttons">
                             <button class="icon-btn edit-btn" onclick="editBarcode(${item.id})" title="Titel aanpassen">
@@ -1062,6 +1232,21 @@
                 if (item) {
                     editCurrentId = id;
                     document.getElementById('edit-titel-input').value = item.titel || "";
+                    
+                    const cat = item.categorie || "standaard";
+                    const select = document.getElementById('edit-categorie-select');
+                    const custom = document.getElementById('edit-custom-categorie-input');
+                    
+                    if (["standaard", "coupon", "product", "medewerkerspas"].includes(cat)) {
+                        select.value = cat;
+                        custom.style.display = 'none';
+                        custom.value = '';
+                    } else {
+                        select.value = 'aangepast';
+                        custom.style.display = 'block';
+                        custom.value = cat;
+                    }
+
                     editCurrentBase64 = item.image || "";
                     updateEditPhotoPreview();
                     document.getElementById('edit-modal-overlay').classList.add('show');
@@ -1094,6 +1279,17 @@
             event.target.value = '';
         }
 
+        function toggleEditCustomCategory() {
+            const select = document.getElementById('edit-categorie-select');
+            const custom = document.getElementById('edit-custom-categorie-input');
+            if (select.value === 'aangepast') {
+                custom.style.display = 'block';
+                custom.focus();
+            } else {
+                custom.style.display = 'none';
+            }
+        }
+
         function closeEditModal() {
             document.getElementById('edit-modal-overlay').classList.remove('show');
             editCurrentId = null;
@@ -1104,6 +1300,12 @@
             if (!db || editCurrentId === null) return;
 
             const newTitel = document.getElementById('edit-titel-input').value.trim();
+            
+            let editCat = document.getElementById('edit-categorie-select').value;
+            if (editCat === 'aangepast') {
+                editCat = document.getElementById('edit-custom-categorie-input').value.trim().toLowerCase();
+                if (!editCat) editCat = 'standaard';
+            }
 
             const transaction = db.transaction(["barcodes"], "readonly");
             const store = transaction.objectStore("barcodes");
@@ -1113,6 +1315,7 @@
                 const item = event.target.result;
                 if (item) {
                     item.titel = newTitel;
+                    item.categorie = editCat;
                     item.image = editCurrentBase64;
 
                     const updateTransaction = db.transaction(["barcodes"], "readwrite");
