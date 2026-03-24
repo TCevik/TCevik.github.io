@@ -498,7 +498,7 @@
 
 <body>
     <header>
-        <p id="title">WinkelFix</p>
+        <p id="title">LOL</p>
         <i class="fa-solid fa-home" onclick="showScreen('home')"></i>
     </header>
 
@@ -591,7 +591,7 @@
         <div class="modal-box">
             <h3 style="margin-bottom: 15px;">Kies Categorie</h3>
             <select id="cat-modal-select" class="modal-select" onchange="toggleCatModalCustom()">
-                <option value="standaard">Standaard</option>
+                <option value="geen">geen</option>
                 <option value="coupon">Coupon</option>
                 <option value="product">Product</option>
                 <option value="medewerkerspas">Medewerkerspas</option>
@@ -611,7 +611,7 @@
             <input type="text" id="edit-titel-input" class="modal-input" placeholder="Titel (optioneel)" style="margin-bottom: 20px;" />
             
             <select id="edit-categorie-select" class="modal-select" onchange="toggleEditCustomCategory()">
-                <option value="standaard">Standaard</option>
+                <option value="geen">geen</option>
                 <option value="coupon">Coupon</option>
                 <option value="product">Product</option>
                 <option value="medewerkerspas">Medewerkerspas</option>
@@ -664,7 +664,7 @@
         let categoryModalResolver = null;
 
         function showCategoryModal() {
-            document.getElementById('cat-modal-select').value = 'standaard';
+            document.getElementById('cat-modal-select').value = 'geen';
             document.getElementById('cat-modal-custom').value = '';
             document.getElementById('cat-modal-custom').style.display = 'none';
             document.getElementById('category-modal-overlay').classList.add('show');
@@ -685,7 +685,7 @@
             let cat = document.getElementById('cat-modal-select').value;
             if (cat === 'aangepast') {
                 cat = document.getElementById('cat-modal-custom').value.trim().toLowerCase();
-                if (!cat) cat = 'standaard';
+                if (!cat) cat = 'geen';
             }
             resolveCategoryModal(cat);
         }
@@ -1096,11 +1096,11 @@
                 if (b.categorie) {
                     categories.add(b.categorie);
                 } else {
-                    categories.add('standaard');
+                    categories.add('geen');
                 }
             });
 
-            const standardCategories = ['standaard', 'coupon', 'product', 'medewerkerspas'];
+            const standardCategories = ['geen', 'coupon', 'product', 'medewerkerspas'];
             const allCategories = ['alles', ...standardCategories];
 
             categories.forEach(c => {
@@ -1133,7 +1133,7 @@
                 let barcodes = event.target.result;
 
                 barcodes.forEach(b => {
-                    if (!b.categorie) b.categorie = 'standaard';
+                    if (!b.categorie) b.categorie = 'geen';
                 });
 
                 renderFilterPills(barcodes);
@@ -1233,11 +1233,11 @@
                     editCurrentId = id;
                     document.getElementById('edit-titel-input').value = item.titel || "";
                     
-                    const cat = item.categorie || "standaard";
+                    const cat = item.categorie || "geen";
                     const select = document.getElementById('edit-categorie-select');
                     const custom = document.getElementById('edit-custom-categorie-input');
                     
-                    if (["standaard", "coupon", "product", "medewerkerspas"].includes(cat)) {
+                    if (["geen", "coupon", "product", "medewerkerspas"].includes(cat)) {
                         select.value = cat;
                         custom.style.display = 'none';
                         custom.value = '';
@@ -1304,7 +1304,7 @@
             let editCat = document.getElementById('edit-categorie-select').value;
             if (editCat === 'aangepast') {
                 editCat = document.getElementById('edit-custom-categorie-input').value.trim().toLowerCase();
-                if (!editCat) editCat = 'standaard';
+                if (!editCat) editCat = 'geen';
             }
 
             const transaction = db.transaction(["barcodes"], "readonly");
