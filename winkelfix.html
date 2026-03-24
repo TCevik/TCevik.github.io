@@ -14,15 +14,61 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --header-bg: #01abe8;
+            --header-text: white;
+            --card-bg: white;
+            --card-shadow: rgba(0, 0, 0, 0.05);
+            --input-border: #ddd;
+            --input-bg: white;
+            --btn-primary: #01abe8;
+            --btn-success: #28a745;
+            --modal-bg: white;
+            --modal-overlay: rgba(0, 0, 0, 0.5);
+            --secondary-text: #888;
+            --accent-color: #01abe8;
+            --toast-bg: #333;
+            --toast-text: #fff;
+            --filter-pill-bg: #eee;
+            --filter-pill-text: #555;
+            --drag-handle: #ddd;
+        }
+
+        :root[data-theme='dark'] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --header-bg: #1f1f1f;
+            --header-text: #01abe8;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --input-border: #333;
+            --input-bg: #2d2d2d;
+            --btn-primary: #01abe8;
+            --btn-success: #2e7d32;
+            --modal-bg: #252525;
+            --modal-overlay: rgba(0, 0, 0, 0.7);
+            --secondary-text: #aaa;
+            --accent-color: #01abe8;
+            --toast-bg: #01abe8;
+            --toast-text: #fff;
+            --filter-pill-bg: #333;
+            --filter-pill-text: #ccc;
+            --drag-handle: #444;
+        }
+
         * {
             font-family: Lexend, Arial;
             -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         body {
             margin: 0 auto;
             margin-top: 67.6px;
-            background-color: #f8f9fa;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
@@ -40,21 +86,21 @@
             top: 0;
             left: 0;
             width: calc(100% - 40px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 10px var(--card-shadow);
             padding: 10px 20px;
             border-bottom-left-radius: 25px;
             border-bottom-right-radius: 25px;
-            background-color: #01abe8;
+            background-color: var(--header-bg);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: white;
+            color: var(--header-text);
             z-index: 1000;
         }
 
         header i {
             font-size: 26px;
-            color: white;
+            color: var(--header-text);
             cursor: pointer;
         }
 
@@ -81,15 +127,16 @@
             font-size: 1.1rem;
             min-height: 60px;
             border: none;
-            background-color: white;
-            border-bottom: 3px #01abe8 solid;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-bottom: 3px var(--accent-color) solid;
             font-weight: 600;
             cursor: pointer;
         }
 
         .home-opt i {
             margin-right: 10px;
-            color: #01abe8;
+            color: var(--accent-color);
         }
 
         #reader-container {
@@ -115,7 +162,7 @@
         }
 
         .barcode-view-area h2 {
-            color: #01abe8;
+            color: var(--accent-color);
             margin-bottom: 15px;
         }
 
@@ -124,9 +171,9 @@
             height: 120px;
             object-fit: cover;
             border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px var(--card-shadow);
             margin-bottom: 20px;
-            border: 3px solid #01abe8;
+            border: 3px solid var(--accent-color);
         }
 
         .barcode-svg {
@@ -142,18 +189,18 @@
 
         .action-btn {
             padding: 15px 25px;
-            background-color: #01abe8;
+            background-color: var(--btn-primary);
             color: white;
             border: none;
             border-radius: 25px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px var(--card-shadow);
         }
 
         .save-btn {
-            background-color: #28a745;
+            background-color: var(--btn-success);
         }
 
         #mijn-barcodes {
@@ -161,7 +208,7 @@
         }
 
         .page-title {
-            color: #01abe8;
+            color: var(--accent-color);
             text-align: center;
             margin-bottom: 20px;
         }
@@ -181,16 +228,18 @@
         .search-container input {
             width: 100%;
             padding: 12px 15px 12px 40px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--input-border);
             border-radius: 25px;
             font-size: 1rem;
             box-sizing: border-box;
             outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
             transition: border-color 0.3s;
         }
 
         .search-container input:focus {
-            border-color: #01abe8;
+            border-color: var(--accent-color);
         }
 
         .search-container i {
@@ -198,11 +247,11 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #888;
+            color: var(--secondary-text);
         }
 
         .import-btn {
-            background-color: #01abe8;
+            background-color: var(--btn-primary);
             color: white;
             border: none;
             border-radius: 25px;
@@ -213,12 +262,13 @@
             align-items: center;
             font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px var(--card-shadow);
             transition: background 0.3s;
         }
 
         .import-btn:active {
-            background-color: #008fcc;
+            background-color: var(--btn-primary);
+            filter: brightness(0.9);
         }
 
         .barcode-list {
@@ -229,17 +279,17 @@
         }
 
         .barcode-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 15px;
             display: flex;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 8px var(--card-shadow);
             position: relative;
         }
 
         .drag-handle {
-            color: #ddd;
+            color: var(--drag-handle);
             font-size: 1.2rem;
             margin-right: 5px;
             cursor: grab;
@@ -257,7 +307,7 @@
             object-fit: cover;
             border-radius: 10px;
             margin-right: 15px;
-            border: 2px solid #eee;
+            border: 2px solid var(--input-border);
         }
 
         .barcode-card .info {
@@ -268,19 +318,19 @@
 
         .barcode-card .info h3 {
             margin: 0;
-            color: #333;
+            color: var(--text-color);
             font-size: 1.1rem;
             word-break: break-all;
         }
 
         .barcode-card .info p {
             margin: 5px 0 0 0;
-            color: #888;
+            color: var(--secondary-text);
             font-size: 0.85rem;
         }
 
         .barcode-card .info .sub-code {
-            color: #01abe8;
+            color: var(--accent-color);
             font-weight: 500;
             font-size: 0.8rem;
         }
@@ -302,7 +352,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 5px var(--card-shadow);
         }
 
         .edit-btn {
@@ -328,8 +378,8 @@
         }
 
         .toast-msg {
-            background-color: #333;
-            color: #fff;
+            background-color: var(--toast-bg);
+            color: var(--toast-text);
             text-align: center;
             border-radius: 25px;
             padding: 16px 20px;
@@ -337,7 +387,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px var(--card-shadow);
             width: 100%;
             box-sizing: border-box;
         }
@@ -356,7 +406,7 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--modal-overlay);
             display: none;
             justify-content: center;
             align-items: center;
@@ -371,12 +421,12 @@
         }
 
         .modal-box {
-            background: white;
+            background: var(--modal-bg);
             padding: 25px;
             border-radius: 20px;
             width: 90%;
             max-width: 350px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px var(--card-shadow);
             text-align: center;
             transform: scale(0.9);
             transition: transform 0.3s ease;
@@ -388,30 +438,32 @@
 
         .modal-box h3 {
             margin: 0 0 10px 0;
-            color: #333;
+            color: var(--text-color);
             font-size: 1.3rem;
         }
 
         .modal-box p {
             margin: 0 0 20px 0;
-            color: #666;
+            color: var(--secondary-text);
             font-size: 1rem;
         }
 
         .modal-input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--input-border);
             border-radius: 12px;
             font-size: 1rem;
             box-sizing: border-box;
             outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
             margin-bottom: 20px;
             transition: border-color 0.3s;
         }
 
         .modal-input:focus {
-            border-color: #01abe8;
+            border-color: var(--accent-color);
         }
 
         .modal-buttons {
@@ -432,21 +484,21 @@
         }
 
         .modal-btn.cancel-btn {
-            background: #eee;
-            color: #555;
+            background: var(--filter-pill-bg);
+            color: var(--filter-pill-text);
         }
 
         .modal-btn.cancel-btn:active {
-            background: #ddd;
+            filter: brightness(0.9);
         }
 
         .modal-btn.ok-btn {
-            background: #01abe8;
+            background: var(--btn-primary);
             color: white;
         }
 
         .modal-btn.ok-btn:active {
-            background: #008fcc;
+            filter: brightness(0.9);
         }
 
         .filter-container {
@@ -463,8 +515,8 @@
         .filter-pill {
             padding: 8px 16px;
             border-radius: 20px;
-            background-color: #eee;
-            color: #555;
+            background-color: var(--filter-pill-bg);
+            color: var(--filter-pill-text);
             font-size: 0.9rem;
             cursor: pointer;
             white-space: nowrap;
@@ -473,33 +525,88 @@
             font-weight: 500;
         }
         .filter-pill.active {
-            background-color: #01abe8;
+            background-color: var(--accent-color);
             color: white;
             box-shadow: 0 4px 6px rgba(1, 171, 232, 0.3);
         }
         .modal-select {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--input-border);
             border-radius: 12px;
             font-size: 1rem;
             box-sizing: border-box;
             outline: none;
             margin-bottom: 20px;
-            background-color: white;
+            background-color: var(--input-bg);
+            color: var(--text-color);
             cursor: pointer;
             transition: border-color 0.3s;
         }
         .modal-select:focus {
-            border-color: #01abe8;
+            border-color: var(--accent-color);
+        }
+
+        /* Prevent transitions on load */
+        .no-transition * {
+            transition: none !important;
         }
     </style>
+    <script>
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const toggleIcon = document.getElementById('theme-toggle');
+            if (toggleIcon) {
+                if (theme === 'dark') {
+                    toggleIcon.classList.remove('fa-moon');
+                    toggleIcon.classList.add('fa-sun');
+                } else {
+                    toggleIcon.classList.remove('fa-sun');
+                    toggleIcon.classList.add('fa-moon');
+                }
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(newTheme);
+        }
+
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            const theme = savedTheme || systemTheme;
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            // Add a class to temporarily disable transitions
+            document.documentElement.classList.add('no-transition');
+            window.addEventListener('load', () => {
+                // Ensure icon is correct after load
+                const toggleIcon = document.getElementById('theme-toggle');
+                if (toggleIcon) {
+                    if (theme === 'dark') {
+                        toggleIcon.classList.remove('fa-moon');
+                        toggleIcon.classList.add('fa-sun');
+                    }
+                }
+                // Allow transitions after a tiny delay
+                setTimeout(() => {
+                    document.documentElement.classList.remove('no-transition');
+                }, 100);
+            });
+        })();
+    </script>
 </head>
 
 <body>
     <header>
         <p id="title">WinkelFix</p>
-        <i class="fa-solid fa-home" onclick="showScreen('home')"></i>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <i class="fa-solid fa-moon" id="theme-toggle" onclick="toggleTheme()"></i>
+            <i class="fa-solid fa-home" onclick="showScreen('home')"></i>
+        </div>
     </header>
 
     <div class="screen" id="home">
