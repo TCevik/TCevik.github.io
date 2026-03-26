@@ -869,7 +869,6 @@
         </div>
     </header>
 
-    <!-- Side Menu -->
     <div id="side-menu" class="side-menu">
         <div class="menu-header">
             <h3>Menu</h3>
@@ -894,7 +893,6 @@
     </div>
     <div id="menu-overlay" class="menu-overlay" onclick="toggleMenu()"></div>
 
-    <!-- App Content Screens -->
     <div class="screen" id="home">
         <div class="dash-header">
             <h1>Welkom!</h1>
@@ -965,7 +963,6 @@
         <div class="filter-container" id="category-filters"></div>
 
         <div class="barcode-list" id="barcode-list-container">
-            <!-- Items generated via JS -->
         </div>
     </div>
 
@@ -984,7 +981,6 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="navigate('home')">
             <i class="fa-solid fa-house"></i>
@@ -1000,7 +996,6 @@
         </div>
     </nav>
 
-    <!-- Modals -->
     <div id="custom-modal-overlay" class="modal-overlay">
         <div class="modal-box">
             <h3 id="modal-title">Titel</h3>
@@ -1097,6 +1092,17 @@
         let sortableInstance = null;
         let currentCategoryFilter = 'alles';
         let categoryModalResolver = null;
+
+        // --- XSS BEVEILIGING FUNCTIE ---
+        function escapeHTML(str) {
+            if (!str) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
         // --- Navigation Logic ---
         function navigate(screenId, preventCamera = false) {
@@ -1646,16 +1652,22 @@
                     card.className = "barcode-card";
                     card.dataset.id = item.id;
                     const imgSrc = item.image ? item.image : "https://static.vecteezy.com/system/resources/previews/026/529/438/non_2x/simple-red-cross-mark-icon-vector.jpg";
-                    const displayTitel = item.titel ? item.titel : item.code;
-                    const displayCodeHTML = item.titel ? `<span class="sub-code">#${item.code}</span>` : '';
+
+                    // XSS Beveiliging toegepast
+                    const veiligeTitel = escapeHTML(item.titel ? item.titel : item.code);
+                    const veiligeCode = escapeHTML(item.code);
+                    const veiligeCategorie = escapeHTML(item.categorie.charAt(0).toUpperCase() + item.categorie.slice(1));
+                    const veiligeDatum = escapeHTML(item.datum);
+
+                    const displayCodeHTML = item.titel ? `<span class="sub-code">#${veiligeCode}</span>` : '';
 
                     card.innerHTML = `
                         <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
                         <img src="${imgSrc}" alt="Product foto">
                         <div class="info" onclick="openBekijkScherm(${item.id})">
-                            <h3>${displayTitel}</h3>
+                            <h3>${veiligeTitel}</h3>
                             ${displayCodeHTML}
-                            <p>${item.categorie.charAt(0).toUpperCase() + item.categorie.slice(1)} • ${item.datum}</p>
+                            <p>${veiligeCategorie} • ${veiligeDatum}</p>
                         </div>
                         <div class="action-buttons">
                             <button class="icon-btn edit-btn" onclick="editBarcode(${item.id})" title="Aanpassen"><i class="fa-solid fa-pen"></i></button>
