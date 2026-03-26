@@ -524,7 +524,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-end; /* Nu komen ze strak van onder (mobile first) */
-            z-index: 2000;
+            z-index: 4000;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s;
@@ -639,6 +639,85 @@
         }
 
         .no-transition * { transition: none !important; }
+
+        /* --- Side Menu (Main Menu) --- */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -285px;
+            width: 285px;
+            height: 100%;
+            background: var(--modal-bg);
+            z-index: 3000;
+            transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .side-menu.open {
+            left: 0;
+        }
+        .menu-header {
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--header-bg);
+            color: var(--header-text);
+        }
+        .menu-header h3 { margin: 0; font-size: 1.4rem; font-weight: 700; }
+        .menu-header i { font-size: 1.5rem; cursor: pointer; }
+        
+        .menu-content {
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+        .menu-section-title {
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--secondary-text);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .menu-item {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .menu-item:active {
+            background: var(--bg-color);
+        }
+        .menu-item i {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            width: 25px;
+            text-align: center;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
     <script>
         function applyTheme(theme) {
@@ -685,11 +764,38 @@
 
 <body>
     <header>
-        <p id="title">WinkelFix</p>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <i class="fa-solid fa-bars" id="menu-toggle" onclick="toggleMenu()" style="background: none; box-shadow: none; padding: 5px;"></i>
+            <p id="title">WinkelFix</p>
+        </div>
         <div>
             <i class="fa-solid fa-moon" id="theme-toggle" onclick="toggleTheme()"></i>
         </div>
     </header>
+
+    <!-- Side Menu -->
+    <div id="side-menu" class="side-menu">
+        <div class="menu-header">
+            <h3>Menu</h3>
+            <i class="fa-solid fa-xmark" onclick="toggleMenu()"></i>
+        </div>
+        <div class="menu-content">
+            <div class="menu-section-title">Data Beheer</div>
+            <div class="menu-item" onclick="exportData()">
+                <i class="fa-solid fa-file-export"></i>
+                <span>Alles Exporteren (JSON)</span>
+            </div>
+            <div class="menu-item" onclick="document.getElementById('import-file').click()">
+                <i class="fa-solid fa-file-import"></i>
+                <span>Alles Importeren (JSON)</span>
+            </div>
+            <input type="file" id="import-file" style="display: none" accept=".json" onchange="handleImportFile(event)">
+        </div>
+        <div style="padding: 20px; font-size: 0.8rem; color: var(--secondary-text); text-align: center; border-top: 1px solid var(--input-border);">
+            WinkelFix v1.5
+        </div>
+    </div>
+    <div id="menu-overlay" class="menu-overlay" onclick="toggleMenu()"></div>
 
     <!-- App Content Screens -->
     <div class="screen" id="home">
@@ -908,9 +1014,114 @@
                 loadMijnBarcodes();
             }
 
-            if (screenId === 'home') {
+        if (screenId === 'home') {
                 updateDashboardStats();
             }
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('menu-overlay');
+            if (!menu || !overlay) return;
+            menu.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function exportData() {
+            if (!db) return showToast("Fout: Database niet geladen.");
+            
+            const transaction = db.transaction(["barcodes"], "readonly");
+            const store = transaction.objectStore("barcodes");
+            const request = store.getAll();
+
+            request.onsuccess = function() {
+                const data = {
+                    barcodes: request.result,
+                    order: JSON.parse(localStorage.getItem('winkelFixOrder') || "[]"),
+                    theme: localStorage.getItem('theme') || 'light',
+                    version: "1.5",
+                    exportedAt: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `winkelfix-export-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showToast("Data succesvol geëxporteerd!");
+                toggleMenu();
+            };
+        }
+
+        async function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            toggleMenu(); // Sidebar dicht na selecteren bestand
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    if (!jsonData.barcodes || !Array.isArray(jsonData.barcodes)) {
+                        throw new Error("Ongeldig WinkelFix bestand.");
+                    }
+
+                    const confirm = await AppModal.confirm(
+                        `Weet je zeker dat je ${jsonData.barcodes.length} barcodes wilt importeren? Dit overschrijft je huidige data.`,
+                        "Data Importeren"
+                    );
+
+                    if (confirm) {
+                        await importDataIntoDB(jsonData);
+                    }
+                } catch (err) {
+                    AppModal.alert("Fout bij het laden van bestand: " + err.message, "Import Fout");
+                } finally {
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        async function importDataIntoDB(data) {
+            if (!db) return showToast("Fout: Database niet geladen.");
+
+            const tx = db.transaction(["barcodes"], "readwrite");
+            const store = tx.objectStore("barcodes");
+            
+            const clearReq = store.clear();
+            
+            clearReq.onsuccess = function() {
+                data.barcodes.forEach(item => {
+                    store.put(item);
+                });
+
+                tx.oncomplete = function() {
+                    if (data.order) {
+                        localStorage.setItem('winkelFixOrder', JSON.stringify(data.order));
+                    }
+                    if (data.theme) {
+                        applyTheme(data.theme);
+                    }
+                    
+                    showToast(`${data.barcodes.length} barcodes succesvol geïmporteerd!`);
+                    loadMijnBarcodes();
+                    updateDashboardStats();
+                    
+                    // Terug naar home om stats te zien
+                    navigate('home');
+                };
+            };
+            
+            clearReq.onerror = function() {
+                showToast("Fout bij het wissen van oude data.");
+            };
         }
 
         function updateDashboardStats() {
