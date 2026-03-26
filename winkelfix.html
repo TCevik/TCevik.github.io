@@ -70,7 +70,8 @@
 
         body {
             margin: 0;
-            padding: 85px 0 90px 0; /* Ruimte voor header en bottom nav */
+            padding: 85px 0 90px 0;
+            /* Ruimte voor header en bottom nav */
             background-color: var(--bg-color);
             color: var(--text-color);
             -webkit-user-select: none;
@@ -78,7 +79,8 @@
             overflow-x: hidden;
         }
 
-        input, textarea {
+        input,
+        textarea {
             -webkit-user-select: text;
             user-select: text;
         }
@@ -116,7 +118,7 @@
             cursor: pointer;
             padding: 10px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         header i:active {
@@ -177,11 +179,20 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        #home { display: block; }
+        #home {
+            display: block;
+        }
 
         /* --- Vernieuwd Dashboard (Home) --- */
         .dash-header {
@@ -251,7 +262,10 @@
         }
 
         /* --- Scanner --- */
-        #reader-container { margin-bottom: 20px; }
+        #reader-container {
+            margin-bottom: 20px;
+        }
+
         #reader {
             width: 100%;
             max-width: 100%;
@@ -290,15 +304,19 @@
 
         /* FIX: Altijd witte achtergrond zodat laser scanners dit kunnen lezen in dark mode */
         .barcode-svg-wrapper {
-            background-color: #ffffff; 
+            background-color: #ffffff;
             padding: 15px;
             border-radius: 15px;
             width: 100%;
             max-width: 350px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
         }
 
-        .barcode-svg { width: 100%; height: auto; display: block; }
+        .barcode-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
         .btn-group {
             display: flex;
@@ -324,7 +342,10 @@
             gap: 8px;
         }
 
-        .action-btn:active { transform: scale(0.96); }
+        .action-btn:active {
+            transform: scale(0.96);
+        }
+
         .save-btn {
             background-color: var(--btn-success);
             box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
@@ -362,7 +383,10 @@
             outline: none;
         }
 
-        .search-container input:focus { border-color: var(--accent-color); }
+        .search-container input:focus {
+            border-color: var(--accent-color);
+        }
+
         .search-container i {
             position: absolute;
             left: 18px;
@@ -393,8 +417,16 @@
             align-items: center;
             gap: 8px;
         }
-        .import-btn.manual { background-color: #ffc107; color: #333; }
-        .import-btn:active { filter: brightness(0.9); transform: scale(0.98); }
+
+        .import-btn.manual {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .import-btn:active {
+            filter: brightness(0.9);
+            transform: scale(0.98);
+        }
 
         .filter-container {
             display: flex;
@@ -404,8 +436,11 @@
             overflow-x: auto;
             scrollbar-width: none;
         }
-        .filter-container::-webkit-scrollbar { display: none; }
-        
+
+        .filter-container::-webkit-scrollbar {
+            display: none;
+        }
+
         .filter-pill {
             padding: 10px 20px;
             border-radius: 25px;
@@ -417,6 +452,7 @@
             white-space: nowrap;
             border: none;
         }
+
         .filter-pill.active {
             background-color: var(--accent-color);
             color: white;
@@ -449,7 +485,10 @@
             display: flex;
             align-items: center;
         }
-        .drag-handle:active { cursor: grabbing; }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
 
         .barcode-card img {
             width: 75px;
@@ -512,18 +551,32 @@
             align-items: center;
             font-size: 0.9rem;
         }
-        .edit-btn { background: #ffc107; color: #333; }
-        .delete-btn { background: #ff4d4d; }
-        .icon-btn:active { transform: scale(0.9); }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .delete-btn {
+            background: #ff4d4d;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.9);
+        }
 
         /* --- Modals (Bottom Sheet/Sleek style) --- */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: var(--modal-overlay);
             display: flex;
             justify-content: center;
-            align-items: flex-end; /* Nu komen ze strak van onder (mobile first) */
+            align-items: flex-end;
+            /* Nu komen ze strak van onder (mobile first) */
             z-index: 4000;
             opacity: 0;
             visibility: hidden;
@@ -542,7 +595,7 @@
             border-radius: 30px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
             transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -554,9 +607,19 @@
 
         /* Center modal for desktop viewing logic */
         @media (min-width: 600px) {
-            .modal-overlay { align-items: center; }
-            .modal-box { border-radius: 25px; transform: scale(0.9) translateY(20px); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-            .modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
+            .modal-overlay {
+                align-items: center;
+            }
+
+            .modal-box {
+                border-radius: 25px;
+                transform: scale(0.9) translateY(20px);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            }
+
+            .modal-overlay.show .modal-box {
+                transform: scale(1) translateY(0);
+            }
         }
 
         .modal-box h3 {
@@ -571,7 +634,8 @@
             line-height: 1.5;
         }
 
-        .modal-input, .modal-select {
+        .modal-input,
+        .modal-select {
             width: 100%;
             padding: 15px;
             border: 2px solid var(--input-border);
@@ -583,7 +647,10 @@
             outline: none;
         }
 
-        .modal-input:focus, .modal-select:focus { border-color: var(--accent-color); }
+        .modal-input:focus,
+        .modal-select:focus {
+            border-color: var(--accent-color);
+        }
 
         .modal-buttons {
             display: flex;
@@ -601,13 +668,22 @@
             cursor: pointer;
         }
 
-        .cancel-btn { background: var(--filter-pill-bg); color: var(--filter-pill-text); }
-        .ok-btn { background: var(--btn-primary); color: white; box-shadow: 0 4px 12px rgba(1, 171, 232, 0.3); }
+        .cancel-btn {
+            background: var(--filter-pill-bg);
+            color: var(--filter-pill-text);
+        }
+
+        .ok-btn {
+            background: var(--btn-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(1, 171, 232, 0.3);
+        }
 
         /* --- Toast --- */
         #toast-container {
             position: fixed;
-            top: 90px; /* Toast van boven ipv onder ivm bottom nav */
+            top: 90px;
+            /* Toast van boven ipv onder ivm bottom nav */
             left: 50%;
             transform: translateX(-50%);
             z-index: 3000;
@@ -630,7 +706,7 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         .toast-msg.show {
@@ -638,7 +714,9 @@
             transform: translateY(0);
         }
 
-        .no-transition * { transition: none !important; }
+        .no-transition * {
+            transition: none !important;
+        }
 
         /* --- Side Menu (Main Menu) --- */
         .side-menu {
@@ -650,14 +728,16 @@
             background: var(--modal-bg);
             z-index: 3000;
             transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
         }
+
         .side-menu.open {
             left: 0;
         }
+
         .menu-header {
             padding: 25px 20px;
             display: flex;
@@ -666,13 +746,23 @@
             background: var(--header-bg);
             color: var(--header-text);
         }
-        .menu-header h3 { margin: 0; font-size: 1.4rem; font-weight: 700; }
-        .menu-header i { font-size: 1.5rem; cursor: pointer; }
-        
+
+        .menu-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .menu-header i {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         .menu-content {
             padding: 20px 0;
             flex-grow: 1;
         }
+
         .menu-section-title {
             padding: 10px 20px;
             font-size: 0.8rem;
@@ -681,6 +771,7 @@
             font-weight: 700;
             letter-spacing: 1px;
         }
+
         .menu-item {
             padding: 18px 20px;
             display: flex;
@@ -691,22 +782,25 @@
             font-weight: 500;
             transition: background 0.2s;
         }
+
         .menu-item:active {
             background: var(--bg-color);
         }
+
         .menu-item i {
             font-size: 1.3rem;
             color: var(--accent-color);
             width: 25px;
             text-align: center;
         }
+
         .menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2999;
             opacity: 0;
             visibility: hidden;
@@ -714,6 +808,7 @@
             backdrop-filter: blur(3px);
             -webkit-backdrop-filter: blur(3px);
         }
+
         .menu-overlay.show {
             opacity: 1;
             visibility: visible;
@@ -746,7 +841,7 @@
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             const theme = savedTheme || systemTheme;
             document.documentElement.setAttribute('data-theme', theme);
-            
+
             document.documentElement.classList.add('no-transition');
             window.addEventListener('load', () => {
                 const toggleIcon = document.getElementById('theme-toggle');
@@ -765,7 +860,8 @@
 <body>
     <header>
         <div style="display: flex; align-items: center; gap: 15px;">
-            <i class="fa-solid fa-bars" id="menu-toggle" onclick="toggleMenu()" style="background: none; box-shadow: none; padding: 5px;"></i>
+            <i class="fa-solid fa-bars" id="menu-toggle" onclick="toggleMenu()"
+                style="background: none; box-shadow: none; padding: 5px;"></i>
             <p id="title">WinkelFix</p>
         </div>
         <div>
@@ -791,7 +887,8 @@
             </div>
             <input type="file" id="import-file" style="display: none" accept=".json" onchange="handleImportFile(event)">
         </div>
-        <div style="padding: 20px; font-size: 0.8rem; color: var(--secondary-text); text-align: center; border-top: 1px solid var(--input-border);">
+        <div
+            style="padding: 20px; font-size: 0.8rem; color: var(--secondary-text); text-align: center; border-top: 1px solid var(--input-border);">
             WinkelFix v1.5
         </div>
     </div>
@@ -831,7 +928,8 @@
             </div>
 
             <div class="btn-group">
-                <button class="action-btn" style="background-color: var(--input-border); color: var(--text-color);" onclick="resetScanner()">
+                <button class="action-btn" style="background-color: var(--input-border); color: var(--text-color);"
+                    onclick="resetScanner()">
                     <i class="fa-solid fa-rotate-right"></i> Opnieuw
                 </button>
                 <button class="action-btn save-btn" onclick="saveBarcodeToDB()">
@@ -847,17 +945,20 @@
         <div class="controls-section">
             <div class="search-container">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Zoek op titel of barcode..." onkeyup="loadMijnBarcodes()">
+                <input type="text" id="search-input" placeholder="Zoek op titel of barcode..."
+                    onkeyup="loadMijnBarcodes()">
             </div>
 
             <div class="action-row">
                 <button class="import-btn manual" onclick="addManualBarcode()" title="Handmatig toevoegen">
                     <i class="fa-solid fa-keyboard"></i> Handmatig
                 </button>
-                <button class="import-btn" onclick="document.getElementById('image-upload').click()" title="Foto importeren">
+                <button class="import-btn" onclick="document.getElementById('image-upload').click()"
+                    title="Foto importeren">
                     <i class="fa-solid fa-image"></i> Uit Foto
                 </button>
-                <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                <input type="file" id="image-upload" accept="image/*" style="display: none;"
+                    onchange="handleImageUpload(event)">
             </div>
         </div>
 
@@ -922,7 +1023,8 @@
                 <option value="medewerkerspas">Medewerkerspas</option>
                 <option value="aangepast">Aangepast...</option>
             </select>
-            <input type="text" id="cat-modal-custom" class="modal-input" placeholder="Type je categorie" style="display: none;" />
+            <input type="text" id="cat-modal-custom" class="modal-input" placeholder="Type je categorie"
+                style="display: none;" />
             <div class="modal-buttons">
                 <button class="modal-btn cancel-btn" onclick="resolveCategoryModal(null)">Annuleren</button>
                 <button class="modal-btn ok-btn" onclick="resolveCategoryModalValue()">OK</button>
@@ -934,7 +1036,7 @@
         <div class="modal-box">
             <h3>Barcode Bijwerken</h3>
             <input type="text" id="edit-titel-input" class="modal-input" placeholder="Titel (optioneel)" />
-            
+
             <select id="edit-categorie-select" class="modal-select" onchange="toggleEditCustomCategory()">
                 <option value="geen">Geen categorie</option>
                 <option value="coupon">Coupon</option>
@@ -942,18 +1044,25 @@
                 <option value="medewerkerspas">Medewerkerspas</option>
                 <option value="aangepast">Aangepast...</option>
             </select>
-            <input type="text" id="edit-custom-categorie-input" class="modal-input" placeholder="Type je categorie" style="display: none;" />
-            
+            <input type="text" id="edit-custom-categorie-input" class="modal-input" placeholder="Type je categorie"
+                style="display: none;" />
+
             <div style="background: var(--bg-color); padding: 15px; border-radius: 20px; margin-bottom: 20px;">
                 <p style="margin: 0 0 10px 0; font-size: 0.95rem; font-weight: 600;">Bijbehorende Foto</p>
-                <img id="edit-foto-preview" src="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 15px; border: 2px solid var(--input-border); margin: 0 auto 10px auto; display: block;">
+                <img id="edit-foto-preview" src=""
+                    style="width: 90px; height: 90px; object-fit: cover; border-radius: 15px; border: 2px solid var(--input-border); margin: 0 auto 10px auto; display: block;">
                 <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="modal-btn cancel-btn" style="padding: 10px; font-size: 0.85rem;" onclick="document.getElementById('edit-image-upload').click()"><i class="fa-solid fa-camera"></i> Wijzig</button>
-                    <button class="modal-btn cancel-btn" style="padding: 10px; font-size: 0.85rem; background: rgba(255, 77, 77, 0.1); color: #ff4d4d;" onclick="removeEditPhoto()"><i class="fa-solid fa-trash"></i> Wis</button>
+                    <button class="modal-btn cancel-btn" style="padding: 10px; font-size: 0.85rem;"
+                        onclick="document.getElementById('edit-image-upload').click()"><i
+                            class="fa-solid fa-camera"></i> Wijzig</button>
+                    <button class="modal-btn cancel-btn"
+                        style="padding: 10px; font-size: 0.85rem; background: rgba(255, 77, 77, 0.1); color: #ff4d4d;"
+                        onclick="removeEditPhoto()"><i class="fa-solid fa-trash"></i> Wis</button>
                 </div>
-                <input type="file" id="edit-image-upload" accept="image/*" style="display: none;" onchange="handleEditImageUpload(event)">
+                <input type="file" id="edit-image-upload" accept="image/*" style="display: none;"
+                    onchange="handleEditImageUpload(event)">
             </div>
-            
+
             <div class="modal-buttons">
                 <button class="modal-btn cancel-btn" onclick="closeEditModal()">Annuleren</button>
                 <button class="modal-btn ok-btn" onclick="saveEdit()">Opslaan</button>
@@ -993,15 +1102,15 @@
         function navigate(screenId, preventCamera = false) {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => s.style.display = 'none');
-            
+
             const target = document.getElementById(screenId);
             if (target) target.style.display = 'block';
 
             // Update Bottom Nav Active State
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            if(screenId === 'home') document.getElementById('nav-home').classList.add('active');
-            if(screenId === 'scan-naar-scherm') document.getElementById('nav-scan').classList.add('active');
-            if(screenId === 'mijn-barcodes' || screenId === 'bekijk-barcode-scherm') document.getElementById('nav-list').classList.add('active');
+            if (screenId === 'home') document.getElementById('nav-home').classList.add('active');
+            if (screenId === 'scan-naar-scherm') document.getElementById('nav-scan').classList.add('active');
+            if (screenId === 'mijn-barcodes' || screenId === 'bekijk-barcode-scherm') document.getElementById('nav-list').classList.add('active');
 
             if (screenId === 'scan-naar-scherm' && !preventCamera) {
                 startScanner();
@@ -1014,7 +1123,7 @@
                 loadMijnBarcodes();
             }
 
-        if (screenId === 'home') {
+            if (screenId === 'home') {
                 updateDashboardStats();
             }
         }
@@ -1029,12 +1138,12 @@
 
         function exportData() {
             if (!db) return showToast("Fout: Database niet geladen.");
-            
+
             const transaction = db.transaction(["barcodes"], "readonly");
             const store = transaction.objectStore("barcodes");
             const request = store.getAll();
 
-            request.onsuccess = function() {
+            request.onsuccess = function () {
                 const data = {
                     barcodes: request.result,
                     order: JSON.parse(localStorage.getItem('winkelFixOrder') || "[]"),
@@ -1052,7 +1161,7 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                
+
                 showToast("Data succesvol geëxporteerd!");
                 toggleMenu();
             };
@@ -1065,7 +1174,7 @@
             toggleMenu(); // Sidebar dicht na selecteren bestand
 
             const reader = new FileReader();
-            reader.onload = async function(e) {
+            reader.onload = async function (e) {
                 try {
                     const jsonData = JSON.parse(e.target.result);
                     if (!jsonData.barcodes || !Array.isArray(jsonData.barcodes)) {
@@ -1094,32 +1203,32 @@
 
             const tx = db.transaction(["barcodes"], "readwrite");
             const store = tx.objectStore("barcodes");
-            
+
             const clearReq = store.clear();
-            
-            clearReq.onsuccess = function() {
+
+            clearReq.onsuccess = function () {
                 data.barcodes.forEach(item => {
                     store.put(item);
                 });
 
-                tx.oncomplete = function() {
+                tx.oncomplete = function () {
                     if (data.order) {
                         localStorage.setItem('winkelFixOrder', JSON.stringify(data.order));
                     }
                     if (data.theme) {
                         applyTheme(data.theme);
                     }
-                    
+
                     showToast(`${data.barcodes.length} barcodes succesvol geïmporteerd!`);
                     loadMijnBarcodes();
                     updateDashboardStats();
-                    
+
                     // Terug naar home om stats te zien
                     navigate('home');
                 };
             };
-            
-            clearReq.onerror = function() {
+
+            clearReq.onerror = function () {
                 showToast("Fout bij het wissen van oude data.");
             };
         }
@@ -1129,7 +1238,7 @@
             const transaction = db.transaction(["barcodes"], "readonly");
             const store = transaction.objectStore("barcodes");
             const request = store.count();
-            request.onsuccess = function() {
+            request.onsuccess = function () {
                 document.getElementById('dash-count').innerText = request.result;
             }
         }
@@ -1184,7 +1293,7 @@
                     const cancelBtn = document.getElementById('modal-cancel-btn');
 
                     titleEl.innerText = options.title || "Melding";
-                    
+
                     if (options.message) {
                         msgEl.innerText = options.message;
                         msgEl.style.display = 'block';
@@ -1236,9 +1345,9 @@
                     };
                 });
             },
-            alert(message, title="Melding") { return this.show({ type: 'alert', title, message }); },
-            confirm(message, title="Bevestigen") { return this.show({ type: 'confirm', title, message }); },
-            prompt(message, defaultValue="", title="Invoer") { return this.show({ type: 'prompt', title, message, defaultValue }); }
+            alert(message, title = "Melding") { return this.show({ type: 'alert', title, message }); },
+            confirm(message, title = "Bevestigen") { return this.show({ type: 'confirm', title, message }); },
+            prompt(message, defaultValue = "", title = "Invoer") { return this.show({ type: 'prompt', title, message, defaultValue }); }
         };
 
         function showToast(message) {
@@ -1277,7 +1386,10 @@
                 { facingMode: "environment" },
                 { fps: 10, qrbox: { width: 250, height: 150 } },
                 onScanSuccess
-            ).catch(err => console.error("Camera kon niet starten:", err));
+            ).catch(err => {
+                console.error("Camera kon niet starten:", err);
+                showToast("Kan camera niet starten. Controleer permissies!");
+            });
         }
 
         function onScanSuccess(decodedText, decodedResult) {
@@ -1382,7 +1494,7 @@
 
             html5QrCode.scanFile(file, true)
                 .then(decodedText => {
-                    resizeImageFile(file, function(base64) {
+                    resizeImageFile(file, function (base64) {
                         currentSnapshotBase64 = base64;
                         currentBarcodeText = decodedText;
                         isImportedPhoto = true;
@@ -1411,8 +1523,8 @@
                         const handmatigeTitel = await AppModal.prompt("Titel (optioneel):", "", "Titel");
                         const catInfo = await showCategoryModal();
                         if (!catInfo) return;
-                        
-                        resizeImageFile(file, function(base64) {
+
+                        resizeImageFile(file, function (base64) {
                             if (!db) return;
                             const tx = db.transaction(["barcodes"], "readwrite");
                             const req = tx.objectStore("barcodes").add({
@@ -1436,7 +1548,7 @@
                 const handmatigeTitel = await AppModal.prompt("Titel (optioneel):", "", "Titel");
                 const catInfo = await showCategoryModal();
                 if (!catInfo) return;
-                
+
                 const tx = db.transaction(["barcodes"], "readwrite");
                 const req = tx.objectStore("barcodes").add({
                     code: handmatigeCode.trim(),
@@ -1523,7 +1635,7 @@
                 barcodes.sort((a, b) => {
                     let indexA = savedOrder.indexOf(a.id);
                     let indexB = savedOrder.indexOf(b.id);
-                    if (indexA === -1 && indexB === -1) return b.id - a.id; 
+                    if (indexA === -1 && indexB === -1) return b.id - a.id;
                     if (indexA === -1) return -1;
                     if (indexB === -1) return 1;
                     return indexA - indexB;
@@ -1582,7 +1694,7 @@
                     const cat = item.categorie || "geen";
                     const select = document.getElementById('edit-categorie-select');
                     const custom = document.getElementById('edit-custom-categorie-input');
-                    
+
                     if (["geen", "coupon", "product", "medewerkerspas"].includes(cat)) {
                         select.value = cat; custom.style.display = 'none'; custom.value = '';
                     } else {
@@ -1602,7 +1714,7 @@
         function handleEditImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-            resizeImageFile(file, function(base64) { editCurrentBase64 = base64; updateEditPhotoPreview(); });
+            resizeImageFile(file, function (base64) { editCurrentBase64 = base64; updateEditPhotoPreview(); });
             event.target.value = '';
         }
         function toggleEditCustomCategory() {
@@ -1664,4 +1776,5 @@
         }
     </script>
 </body>
+
 </html>
