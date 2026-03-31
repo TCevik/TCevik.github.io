@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamer's WebRTC Scan & Connect</title>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 100%; }
+        video { width: 100%; border-radius: 10px; background: #000; margin-top: 10px; }
+        #canvas { width: 200px !important; height: 200px !important; margin: 20px auto; }
+        .status { color: #666; font-size: 0.9em; margin: 10px 0; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>WebRTC Video Chat</h2>
+    <p class="status" id="status">Peer ID genereren...</p>
+    
+    <div id="qr-section">
+        <canvas id="canvas"></canvas>
+        <p>Scan deze code met een andere telefoon om te verbinden</p>
+    </div>
+
+    <div id="video-section" class="hidden">
+        <video id="remote-video" autoplay playsinline></video>
+        <video id="local-video" autoplay playsinline muted style="width: 30%; position: absolute; bottom: 10px; right: 10px; border: 2px solid white;"></video>
+        <p>Verbonden!</p>
+    </div>
+</div>
+
+<script>
+    const statusEl = document.getElementById('status');
+    const qrSection = document.getElementById('qr-section');
+    const videoSection = document.getElementById('video-section');
+    const remoteVideo = document.getElementById('remote-video');
+    const localVideo = document.getElementById('local-video');
+
+    // 1. Maak een Peer aan (PeerJS regelt de STUN server en Signaling)
+    const peer = new Peer(); 
+
+    // 2. Als de ID bekend is, maak de QR code
+    peer.on('open', (id) => {
+        statusEl.innerText = "Jouw ID: " + id;
+        const joinUrl = window.location.href.split('?')[0] + "?join=" + id;
+        
+        QRCode.toCanvas(document.getElementById('canvas'), joinUrl, function (error) {
+            if (error) console.error(error);
+        });
+    });
+
+    // 3. Check of we een "join" ID in de URL hebben (na het scannen)
+    const urlParams = new URLSearchParams(window.location.search);
+    const joinId = urlParams.get('join');
+
+    async function startCall(id) {
+        statusEl.innerText = "Verbinden met: " + id;
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localVideo.srcObject = stream;
+        
+        const call = peer.call(id, stream);
+        setupCallListeners(call);
+    }
+
+    if (joinId) {
+        qrSection.classList.add('hidden');
+        startCall(joinId);
+    }
+
+    // 4. Ontvang een oproep
+    peer.on('call', async (call) => {
+        statusEl.innerText = "Inkomende oproep...";
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localVideo.srcObject = stream;
+        
+        call.answer(stream); // Beantwoord de oproep met jouw stream
+        setupCallListeners(call);
+    });
+
+    function setupCallListeners(call) {
+        call.on('stream', (remoteStream) => {
+            qrSection.classList.add('hidden');
+            videoSection.classList.remove('hidden');
+            remoteVideo.srcObject = remoteStream;
+            statusEl.innerText = "Live verbinding!";
+        });
+    }
+
+    // Error handling
+    peer.on('error', (err) => {
+        console.error(err);
+        statusEl.innerText = "Fout: " + err.type;
+    });
+</script>
+
+</body>
+</html>
