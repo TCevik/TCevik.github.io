@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamer's Random Chat</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PeerJS (Gratis P2P Video/Audio) -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <!-- MQTT.js (Gratis openbare wachtkamer logica) -->
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    
+    <style>
+        #chat-output::-webkit-scrollbar { width: 6px; }
+        #chat-output::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        body { background-color: #0f172a; color: white; }
+        .toast-enter { animation: slideIn 0.3s ease-out forwards; }
+        .toast-leave { animation: fadeOut 0.3s ease-in forwards; }
+        @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col h-screen overflow-hidden">
+
+<!-- Header -->
+<header class="bg-slate-900 p-4 shadow-md flex justify-between items-center z-10">
+    <div>
+        <h1 class="text-2xl font-bold text-blue-500 tracking-wide"><i class="fa-solid fa-masks-theater mr-2"></i>TamerChat</h1>
+        <p id="subtitle-text" class="text-slate-400 text-xs mt-1">100% Gratis & Anoniem</p>
+    </div>
+    <div class="flex items-center gap-4">
+        <!-- Language Switcher -->
+        <div class="flex bg-slate-800 p-1 rounded-lg border border-slate-700">
+            <button id="lang-nl" onclick="changeLanguage('nl')" class="px-3 py-1 rounded-md text-xs font-bold transition bg-blue-600 text-white">NL</button>
+            <button id="lang-en" onclick="changeLanguage('en')" class="px-3 py-1 rounded-md text-xs font-bold transition text-slate-400 hover:text-white">EN</button>
+        </div>
+        <div id="status-indicator" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 text-sm font-medium border border-slate-700">
+            <i class="fa-solid fa-power-off text-red-500"></i> <span id="status-text">Offline</span>
+        </div>
+    </div>
+</header>
+
+<!-- Main App Area -->
+<div class="flex-1 flex flex-col md:flex-row w-full max-w-7xl mx-auto p-2 md:p-4 gap-4 overflow-hidden">
+    
+    <!-- Video Section -->
+    <div class="flex-1 bg-black rounded-2xl overflow-hidden relative shadow-2xl flex flex-col items-center justify-center border border-slate-800">
+        
+        <!-- Overlay for Waiting/Status -->
+        <div id="video-overlay" class="absolute inset-0 bg-slate-900 bg-opacity-80 flex flex-col items-center justify-center z-10 backdrop-blur-sm transition-opacity duration-300">
+            <i id="overlay-icon" class="fa-solid fa-video text-6xl text-slate-600 mb-4"></i>
+            <h2 id="overlay-text" class="text-xl font-medium text-slate-300">Klik op Start om te beginnen</h2>
+            
+            <button id="btn-start-init" onclick="startApp()" class="mt-6 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg shadow-blue-500/30 transition transform hover:scale-105">
+                Start Camera & Zoek
+            </button>
+        </div>
+
+        <!-- Remote Video -->
+        <video id="remote-video" class="w-full h-full object-cover" autoplay playsinline></video>
+        
+        <!-- Local Video -->
+        <video id="local-video" class="w-28 h-40 md:w-40 md:h-56 absolute bottom-4 right-4 bg-slate-800 border-2 border-slate-600 rounded-xl shadow-2xl object-cover z-20 transition-transform transform hover:scale-105" autoplay playsinline muted></video>
+        
+        <!-- Controls -->
+        <div class="absolute bottom-4 left-4 z-20 flex gap-2">
+            <button id="btn-next" onclick="nextStranger()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition hidden flex items-center gap-2">
+                <i class="fa-solid fa-forward-step"></i> Volgende
+            </button>
+            <button id="btn-stop" onclick="stopApp()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-3 rounded-xl font-bold shadow-lg transition hidden">
+                <i class="fa-solid fa-stop"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="w-full md:w-96 bg-slate-800 rounded-2xl flex flex-col border border-slate-700 shadow-xl overflow-hidden max-h-[40vh] md:max-h-full">
+        <div class="bg-slate-900 p-3 border-b border-slate-700 font-medium text-slate-300 flex justify-between items-center">
+            <span><i class="fa-solid fa-comments mr-2"></i><span id="chat-header-text">Chatbericht</span></span>
+            <span id="chat-status" class="text-xs text-slate-500">Niet verbonden</span>
+        </div>
+        
+        <div id="chat-output" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3">
+            <div class="text-center text-slate-500 text-sm italic mt-2">Systeem: Welkom bij TamerChat.</div>
+        </div>
+        
+        <form id="chat-form" class="p-3 bg-slate-900 border-t border-slate-700 flex gap-2" onsubmit="sendMessage(event)">
+            <input type="text" id="chat-input" class="flex-1 bg-slate-800 text-white placeholder-slate-400 px-4 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-blue-500 transition" placeholder="Typ een bericht..." disabled autocomplete="off">
+            <button type="submit" id="btn-send" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 z-50 pointer-events-none"></div>
+
+<script>
+    // --- Variabelen ---
+    let peer = null;
+    let myPeerId = null;
+    let currentConn = null;
+    let currentCall = null;
+    let localStream = null;
+    
+    // Matchmaking Logica
+    let isLooking = false;
+    let searchInterval = null;
+    let fallbackTimeout = null;
+    let isFallback = false;
+    let currentLang = 'nl'; // Standaard Nederlands
+    const mqttClient = mqtt.connect('wss://broker.emqx.io:8084/mqtt'); // Gratis openbare broker!
+    const LOBBY_TOPIC = 'tamer-chat-lobby-global-2026'; // Nieuwe gedeelde topic
+
+    // --- Vertalingen ---
+    const i18n = {
+        nl: {
+            subtitle: "100% Gratis & Anoniem",
+            offline: "Offline",
+            online: "Online",
+            clickStart: "Klik op Start om te beginnen",
+            btnStart: "Start Camera & Zoek",
+            searching: "Zoeken naar een vreemdeling...",
+            startingCamera: "Camera opstarten...",
+            connectingServer: "Verbinden met server...",
+            stopped: "Gestopt.",
+            btnNext: "Volgende",
+            btnStop: "Stop",
+            chatHeader: "Chatbericht",
+            chatStatusNotConnected: "Niet verbonden",
+            chatStatusSearching: "Zoeken...",
+            chatStatusConnected: "Verbonden!",
+            sysWelcome: "Welkom bij TamerChat.",
+            sysMatched: "Vreemdeling gevonden! Verbinden...",
+            sysStartChat: "Je praat nu met een vreemdeling. Zeg hallo!",
+            sysDisconnected: "Verbinding verbroken. Zoeken naar de volgende...",
+            sysStopped: "App gestopt.",
+            placeholder: "Typ een bericht...",
+            senderMe: "Jij",
+            senderStranger: "Vreemdeling",
+            toastCameraDenied: "Camera/microfoon toegang geweigerd!",
+            overlayCameraNeeded: "Camera nodig om te chatten"
+        },
+        en: {
+            subtitle: "100% Free & Anonymous",
+            offline: "Offline",
+            online: "Online",
+            clickStart: "Click Start to begin",
+            btnStart: "Start Camera & Search",
+            searching: "Searching for a stranger...",
+            startingCamera: "Starting camera...",
+            connectingServer: "Connecting to server...",
+            stopped: "Stopped.",
+            btnNext: "Next",
+            btnStop: "Stop",
+            chatHeader: "Chat Message",
+            chatStatusNotConnected: "Not connected",
+            chatStatusSearching: "Searching...",
+            chatStatusConnected: "Connected!",
+            sysWelcome: "Welcome to TamerChat.",
+            sysMatched: "Stranger found! Connecting...",
+            sysStartChat: "You are now chatting with a stranger. Say hi!",
+            sysDisconnected: "Connection lost. Searching for the next one...",
+            sysStopped: "App stopped.",
+            placeholder: "Type a message...",
+            senderMe: "You",
+            senderStranger: "Stranger",
+            toastCameraDenied: "Camera/microphone access denied!",
+            overlayCameraNeeded: "Camera needed to chat"
+        }
+    };
+
+    // --- UI Elementen ---
+    const statusIndicator = document.getElementById('status-indicator');
+    const statusText = document.getElementById('status-text');
+    const overlay = document.getElementById('video-overlay');
+    const overlayText = document.getElementById('overlay-text');
+    const overlayIcon = document.getElementById('overlay-icon');
+    const btnStartInit = document.getElementById('btn-start-init');
+    const btnNext = document.getElementById('btn-next');
+    const btnStop = document.getElementById('btn-stop');
+    const remoteVideo = document.getElementById('remote-video');
+    const localVideo = document.getElementById('local-video');
+    const chatOutput = document.getElementById('chat-output');
+    const chatInput = document.getElementById('chat-input');
+    const btnSend = document.getElementById('btn-send');
+    const chatStatus = document.getElementById('chat-status');
+    const subtitleText = document.getElementById('subtitle-text');
+    const chatHeaderText = document.getElementById('chat-header-text');
+
+    // --- Taalkeuze Logica ---
+    window.changeLanguage = function(lang) {
+        currentLang = lang;
+        
+        // Update knoppen UI
+        document.getElementById('lang-nl').className = `px-3 py-1 rounded-md text-xs font-bold transition ${lang === 'nl' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`;
+        document.getElementById('lang-en').className = `px-3 py-1 rounded-md text-xs font-bold transition ${lang === 'en' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`;
+        
+        applyTranslations();
+    }
+
+    function applyTranslations() {
+        const t = i18n[currentLang];
+        subtitleText.innerText = t.subtitle;
+        chatHeaderText.innerText = t.chatHeader;
+        chatInput.placeholder = t.placeholder;
+        
+        // Update status als we offline zijn
+        const statusEl = document.getElementById('status-text');
+        if (!peer && statusEl) {
+            statusEl.innerText = t.offline;
+        } else if (peer && statusEl) {
+            statusEl.innerText = t.online;
+        }
+
+        // Update overlays indien zichtbaar
+        if (!isLooking && !currentConn && !btnStartInit.style.display !== 'none') {
+             overlayText.innerText = t.clickStart;
+             btnStartInit.innerText = t.btnStart;
+        } else if (isLooking) {
+             overlayText.innerText = t.searching;
+        }
+
+        // Update knoppen
+        btnNext.innerHTML = `<i class="fa-solid fa-forward-step"></i> ${t.btnNext}`;
+        
+        // Verander chat status teksten
+        if (chatStatus.innerText === i18n['nl'].chatStatusNotConnected || chatStatus.innerText === i18n['en'].chatStatusNotConnected) {
+            chatStatus.innerText = t.chatStatusNotConnected;
+        } else if (chatStatus.innerText === i18n['nl'].chatStatusSearching || chatStatus.innerText === i18n['en'].chatStatusSearching) {
+            chatStatus.innerText = t.chatStatusSearching;
+        } else if (chatStatus.innerText === i18n['nl'].chatStatusConnected || chatStatus.innerText === i18n['en'].chatStatusConnected) {
+            chatStatus.innerText = t.chatStatusConnected;
+        }
+    }
+
+    // --- Helpers ---
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        const bgColors = { 'success': 'bg-green-600', 'error': 'bg-red-600', 'info': 'bg-blue-600', 'warning': 'bg-yellow-500' };
+        const icons = { 'success': 'fa-check-circle', 'error': 'fa-exclamation-circle', 'info': 'fa-info-circle', 'warning': 'fa-exclamation-triangle' };
+        toast.className = `${bgColors[type]} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium toast-enter pointer-events-auto max-w-xs`;
+        toast.innerHTML = `<i class="fa-solid ${icons[type]} text-lg"></i> <span>${message}</span>`;
+        document.getElementById('toast-container').appendChild(toast);
+        setTimeout(() => {
+            toast.classList.replace('toast-enter', 'toast-leave');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    function setStatus(textKey, iconClass) {
+        const t = i18n[currentLang];
+        statusIndicator.innerHTML = `<i class="${iconClass}"></i> <span id="status-text">${t[textKey] || textKey}</span>`;
+    }
+
+    function setOverlay(show, text = "", icon = "fa-video", showBtn = false) {
+        if(show) {
+            overlay.classList.remove('hidden');
+            overlayText.innerText = text;
+            overlayIcon.className = `fa-solid ${icon} text-6xl text-slate-500 mb-4`;
+            btnStartInit.style.display = showBtn ? 'block' : 'none';
+        } else {
+            overlay.classList.add('hidden');
+        }
+    }
+
+    function addChatMessage(senderKey, text, isSystem = false) {
+        const t = i18n[currentLang];
+        const div = document.createElement('div');
+        if (isSystem) {
+            div.className = "text-center text-slate-500 text-sm font-medium my-2";
+            // Check if text is a key or literal
+            const translatedText = t[text] || text;
+            div.innerText = `System: ${translatedText}`;
+        } else {
+            const isMe = senderKey === 'senderMe';
+            const senderName = t[senderKey] || senderKey;
+            div.className = `max-w-[85%] p-3 rounded-2xl text-sm shadow-sm ${isMe ? 'self-end bg-blue-600 text-white rounded-br-none' : 'self-start bg-slate-700 text-slate-200 rounded-bl-none'}`;
+            div.innerHTML = `<strong class="block text-[10px] uppercase tracking-wider opacity-70 mb-1">${senderName}</strong>${text}`;
+        }
+        chatOutput.appendChild(div);
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+    }
+
+    // --- Gratis Matchmaking Systeem (MQTT) ---
+    mqttClient.on('connect', () => {
+        mqttClient.subscribe(LOBBY_TOPIC);
+        console.log("Verbonden met gratis wachtkamer server.");
+    });
+
+    mqttClient.on('message', (topic, message) => {
+        if (topic === LOBBY_TOPIC && isLooking) {
+            try {
+                const data = JSON.parse(message.toString());
+                
+                // Als we een ID zien, en het is NIET ons eigen ID
+                if (data.id && data.id !== myPeerId) {
+                    
+                    // Prioriteit voor taal, of fallback als beide partijen zoeken
+                    const langMatches = (data.lang === currentLang);
+                    const canConnect = langMatches || (isFallback && data.fallback);
+
+                    if (canConnect) {
+                        isLooking = false;
+                        clearInterval(searchInterval);
+                        if (fallbackTimeout) clearTimeout(fallbackTimeout);
+                        
+                        addChatMessage("System", "sysMatched", true);
+                        
+                        // Om te voorkomen dat beide mensen tegelijk bellen, laten we de hoogste ID bellen
+                        if (myPeerId > data.id) {
+                            connectToStranger(data.id);
+                        } else {
+                            setTimeout(() => {
+                                if (!currentConn && !currentCall) {
+                                    startMatchmaking();
+                                }
+                            }, 5000);
+                        }
+                    }
+                }
+            } catch(e) {}
+        }
+    });
+
+    function startMatchmaking() {
+        if (!myPeerId) return;
+        
+        isLooking = true;
+        isFallback = false;
+        const t = i18n[currentLang];
+        chatStatus.innerText = t.chatStatusSearching;
+        setOverlay(true, t.searching, "fa-globe fa-spin");
+        
+        // Start fallback timer (7 seconden wachten op eigen taal)
+        if (fallbackTimeout) clearTimeout(fallbackTimeout);
+        fallbackTimeout = setTimeout(() => {
+            if (isLooking) {
+                isFallback = true;
+                console.log("Geen taal-match gevonden, fallback naar alle talen.");
+            }
+        }, 7000);
+
+        // Roep elke 2 seconden in de wachtkamer dat we er zijn
+        if(searchInterval) clearInterval(searchInterval);
+        searchInterval = setInterval(() => {
+            if(isLooking) mqttClient.publish(LOBBY_TOPIC, JSON.stringify({ id: myPeerId, lang: currentLang, fallback: isFallback }));
+        }, 2000);
+        
+        // Stuur direct ook één bericht
+        mqttClient.publish(LOBBY_TOPIC, JSON.stringify({ id: myPeerId, lang: currentLang, fallback: isFallback }));
+    }
+
+    // --- Hoofd App Logica ---
+    window.startApp = async function() {
+        const t = i18n[currentLang];
+        try {
+            setOverlay(true, t.startingCamera, "fa-camera fa-fade");
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            localVideo.srcObject = localStream;
+            
+            setOverlay(true, t.connectingServer, "fa-network-wired fa-fade");
+            peer = new Peer(); // Gebruikt gratis PeerJS netwerk
+            
+            peer.on('open', (id) => {
+                myPeerId = id;
+                setStatus("online", "fa-solid fa-circle text-green-500");
+                btnNext.classList.remove('hidden');
+                btnStop.classList.remove('hidden');
+                startMatchmaking(); // Ga direct de wachtkamer in
+            });
+
+            // Als iemand ons belt of een chat opent
+            peer.on('connection', (conn) => {
+                isLooking = false;
+                clearInterval(searchInterval);
+                setupDataConnection(conn);
+            });
+
+            peer.on('call', (call) => {
+                isLooking = false;
+                clearInterval(searchInterval);
+                call.answer(localStream);
+                setupMediaCall(call);
+            });
+
+            peer.on('error', (err) => {
+                if (err.type === 'peer-unavailable') {
+                    startMatchmaking(); // De ander is al weg, we zoeken verder
+                }
+            });
+
+        } catch(err) {
+            showToast(t.toastCameraDenied, "error");
+            setOverlay(true, t.overlayCameraNeeded, "fa-camera-slash text-red-500", true);
+        }
+    }
+
+    function connectToStranger(strangerId) {
+        const conn = peer.connect(strangerId);
+        setupDataConnection(conn);
+        const call = peer.call(strangerId, localStream);
+        setupMediaCall(call);
+    }
+
+    // --- Connectie Handlers ---
+    function setupDataConnection(conn) {
+        currentConn = conn;
+        conn.on('open', () => {
+            const t = i18n[currentLang];
+            setOverlay(false);
+            chatStatus.innerText = t.chatStatusConnected;
+            chatStatus.className = "text-xs font-bold text-green-500";
+            chatInput.disabled = false;
+            btnSend.disabled = false;
+            addChatMessage("System", "sysStartChat", true);
+        });
+
+        conn.on('data', (data) => {
+            if (data.type === 'text') addChatMessage("senderStranger", data.message);
+        });
+
+        conn.on('close', () => handleDisconnect());
+    }
+
+    function setupMediaCall(call) {
+        currentCall = call;
+        call.on('stream', (remoteStream) => {
+            remoteVideo.srcObject = remoteStream;
+            setOverlay(false);
+        });
+        call.on('close', () => handleDisconnect());
+    }
+
+    function handleDisconnect() {
+        if (!currentConn && !currentCall) return;
+        
+        addChatMessage("System", "sysDisconnected", true);
+        
+        currentConn = null;
+        currentCall = null;
+        
+        // Automatisch doorskippen naar de volgende vreemdeling
+        nextStranger();
+    }
+
+    // --- Knoppen & Chat ---
+    window.sendMessage = function(e) {
+        e.preventDefault();
+        const msg = chatInput.value.trim();
+        if (msg && currentConn && currentConn.open) {
+            currentConn.send({ type: 'text', message: msg });
+            addChatMessage("senderMe", msg);
+            chatInput.value = '';
+        }
+    }
+
+    window.nextStranger = function() {
+        if (currentConn) { currentConn.close(); currentConn = null; }
+        if (currentCall) { currentCall.close(); currentCall = null; }
+        if (fallbackTimeout) clearTimeout(fallbackTimeout);
+        remoteVideo.srcObject = null;
+        chatInput.disabled = true;
+        btnSend.disabled = true;
+        chatOutput.innerHTML = '';
+        startMatchmaking();
+    }
+
+    window.stopApp = function() {
+        const t = i18n[currentLang];
+        isLooking = false;
+        if (searchInterval) clearInterval(searchInterval);
+        if (fallbackTimeout) clearTimeout(fallbackTimeout);
+        if (currentConn) currentConn.close();
+        if (currentCall) currentCall.close();
+        if (localStream) localStream.getTracks().forEach(track => track.stop());
+        if (peer) peer.destroy();
+        
+        currentConn = null;
+        currentCall = null;
+        localStream = null;
+        peer = null;
+        
+        setStatus("offline", "fa-solid fa-power-off text-red-500");
+        setOverlay(true, t.stopped, "fa-stop", true);
+        btnNext.classList.add('hidden');
+        btnStop.classList.add('hidden');
+        chatOutput.innerHTML = '';
+        addChatMessage("System", "sysStopped", true);
+    }
+    
+    // Initialisatie
+    applyTranslations();
+</script>
+</body>
+</html>
