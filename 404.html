@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        const redirectMap = {
+            "/winkelfix": "/apps/winkelfix",
+            "/oude-link": "/nieuwe-bestemming",
+            "/test": "/apps"
+        };
+
+        let currentPath = window.location.pathname;
+
+        if (currentPath.endsWith('/') && currentPath.length > 1) {
+            currentPath = currentPath.slice(0, -1);
+        }
+
+        if (redirectMap[currentPath]) {
+            window.location.replace(redirectMap[currentPath]);
+        }
+    </script>
+
     <style>
         :root {
-            --color-bg-main: #0a0a0a; 
-            --color-bg-secondary: #141414; 
-            --color-card: #1a1a1a; 
+            --color-bg-main: #0a0a0a;
+            --color-bg-secondary: #141414;
+            --color-card: #1a1a1a;
             --color-accent: #10b981;
             --color-accent-hover: #34d399;
             --color-text-primary: #ffffff;
-            --color-text-secondary: #a3a3a3; 
+            --color-text-secondary: #a3a3a3;
             --font-main: "Lexend", sans-serif;
             --border-radius: 16px;
         }
@@ -118,11 +138,18 @@
         }
 
         @media (max-width: 480px) {
-            .button-group { flex-direction: column; }
-            .main-button { width: 100%; justify-content: center; }
+            .button-group {
+                flex-direction: column;
+            }
+
+            .main-button {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="error-container">
