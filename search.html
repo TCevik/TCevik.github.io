@@ -22,12 +22,10 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none; 
+            user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
-            /* Voorkomt blauwe highlight flits op mobiel tikken */
-            -webkit-tap-highlight-color: transparent; 
         }
 
         body {
@@ -37,22 +35,66 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 15px;
+            padding: 20px;
         }
 
-        /* Top Bar met Weer & Tijd */
+        /* --- Mobiel Blokkade Scherm --- */
+        #mobile-blocker {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            z-index: 99999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        #mobile-blocker i {
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        }
+
+        #mobile-blocker h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        #mobile-blocker p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        /* Toon blocker en verberg body content op mobiel */
+        @media (max-width: 767px) {
+            #mobile-blocker {
+                display: flex;
+            }
+
+            header,
+            .container {
+                display: none !important;
+            }
+        }
+
+        /* --- Bestaande CSS --- */
         header {
             width: 100%;
             display: flex;
-            flex-direction: row;
             justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            padding: 5px 10px;
-            flex-wrap: wrap;
+            padding: 10px 20px;
         }
 
-        .header-widget {
+        .weather-widget {
             background: var(--card-bg);
             padding: 10px 15px;
             border-radius: 12px;
@@ -60,10 +102,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.95rem;
         }
 
-        .header-widget i {
+        .weather-widget i {
             color: var(--accent-color);
         }
 
@@ -72,12 +113,11 @@
             width: 100%;
             text-align: center;
             margin: auto;
-            padding: 10px;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 25px;
+            font-size: 3rem;
+            margin-bottom: 30px;
             font-weight: 700;
         }
 
@@ -88,18 +128,18 @@
 
         .search-box {
             position: relative;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         .search-box input {
             width: 100%;
-            padding: 14px 20px;
-            padding-right: 55px;
+            padding: 15px 25px;
+            padding-right: 60px;
             background: var(--card-bg);
             border: 2px solid #333;
             border-radius: 30px;
             color: var(--text-color);
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             outline: none;
             transition: all 0.3s ease;
             user-select: text;
@@ -114,44 +154,43 @@
 
         .search-box button {
             position: absolute;
-            right: 8px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
             color: var(--accent-color);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
             padding: 10px;
         }
 
         .shortcuts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 20px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .shortcut-card {
             background: var(--card-bg);
-            padding: 15px 10px;
+            padding: 15px;
             border-radius: 16px;
             text-decoration: none;
             color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             transition: transform 0.2s, border-color 0.2s, opacity 0.2s;
             border: 1px solid #333;
             cursor: grab;
             position: relative;
-            touch-action: none; /* Cruciaal voor goede mobiele drag-and-drop */
         }
 
         .shortcut-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             border-color: var(--accent-color);
         }
 
@@ -162,16 +201,15 @@
         .shortcut-card.dragging {
             opacity: 0.4;
             border: 1px dashed var(--accent-color);
-            transform: scale(1.05);
         }
 
         .shortcut-card i {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: var(--accent-color);
         }
 
         .shortcut-card span {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -182,48 +220,46 @@
             cursor: pointer;
         }
 
-        /* Context Menu (Desktop & Mobiel) */
         .context-menu {
             position: fixed;
             background: var(--card-bg);
             border: 1px solid #333;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             display: none;
             z-index: 1000;
             overflow: hidden;
-            min-width: 150px;
+            min-width: 140px;
         }
 
         .context-menu-item {
-            padding: 12px 18px;
-            font-size: 0.95rem;
+            padding: 10px 15px;
+            font-size: 0.9rem;
             color: var(--text-color);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: background 0.2s, color 0.2s;
         }
 
-        .context-menu-item.edit-item:hover, .context-menu-item.edit-item:active {
-            background: rgba(0, 255, 102, 0.15);
-            color: rgba(0, 255, 102, 1);
+        .context-menu-item.edit-item:hover {
+            background: rgba(0, 191, 255, 0.15);
+            color: var(--edit-color);
         }
 
-        .context-menu-item.delete-item:hover, .context-menu-item.delete-item:active {
+        .context-menu-item.delete-item:hover {
             background: rgba(255, 51, 51, 0.15);
             color: var(--danger-color);
         }
 
-        /* Modal / Popup */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -231,7 +267,6 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
             z-index: 100;
-            padding: 10px;
         }
 
         .modal-overlay.active {
@@ -243,9 +278,9 @@
             background: var(--card-bg);
             border: 2px solid var(--accent-color);
             border-radius: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 440px;
+            padding: 25px;
+            width: 90%;
+            max-width: 460px;
             box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
             transform: scale(0.8);
             transition: transform 0.3s ease;
@@ -257,20 +292,20 @@
 
         .modal-box h3 {
             margin-bottom: 15px;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             color: var(--accent-color);
         }
 
         .modal-box input {
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px 15px;
             background: #121212;
             border: 1px solid #333;
             border-radius: 8px;
             color: #fff;
             margin-bottom: 15px;
             outline: none;
-            font-size: 0.95rem;
+            font-size: 1rem;
             user-select: text;
             -webkit-user-select: text;
             -moz-user-select: text;
@@ -291,17 +326,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
         }
 
         .icon-selector-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
-            white-space: nowrap;
         }
 
         .icon-search-input {
-            width: 55% !important;
+            width: 50% !important;
             margin-bottom: 0 !important;
             padding: 6px 12px !important;
             font-size: 0.85rem !important;
@@ -311,33 +344,39 @@
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
+            gap: 10px;
             background: #121212;
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #333;
-            max-height: 140px;
+            max-height: 160px;
             overflow-y: auto;
         }
 
         .icon-grid::-webkit-scrollbar {
-            width: 5px;
+            width: 6px;
         }
+
         .icon-grid::-webkit-scrollbar-track {
             background: #121212;
         }
+
         .icon-grid::-webkit-scrollbar-thumb {
             background: #333;
             border-radius: 3px;
         }
 
+        .icon-grid::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
         .icon-option {
             background: var(--card-bg);
             border: 1px solid #444;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-color);
             transition: all 0.2s;
             display: flex;
@@ -345,18 +384,23 @@
             justify-content: center;
         }
 
+        .icon-option:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
         .icon-option.selected {
             border-color: var(--accent-color);
             color: var(--accent-color);
-            box-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
             background: rgba(0, 255, 102, 0.05);
         }
 
         .no-icons-msg {
             grid-column: span 6;
             color: var(--text-muted);
-            font-size: 0.8rem;
-            padding: 15px 0;
+            font-size: 0.85rem;
+            padding: 20px 0;
             text-align: center;
         }
 
@@ -367,12 +411,17 @@
         }
 
         .modal-buttons button {
-            padding: 10px 18px;
+            padding: 10px 20px;
             border-radius: 8px;
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
             font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .modal-buttons button:hover {
+            opacity: 0.9;
         }
 
         .btn-cancel {
@@ -384,41 +433,20 @@
             background: var(--accent-color);
             color: #121212;
         }
-
-        /* Mobiele Responsive Aanpassingen */
-        @media (max-width: 480px) {
-            header {
-                justify-content: center;
-                width: 100%;
-            }
-            .header-widget {
-                flex: 1;
-                justify-content: center;
-                font-size: 0.85rem;
-                padding: 8px 12px;
-            }
-            h1 {
-                font-size: 2rem;
-                margin-top: 15px;
-            }
-            .icon-grid {
-                grid-template-columns: repeat(5, 1fr);
-            }
-            .no-icons-msg {
-                grid-column: span 5;
-            }
-        }
     </style>
 </head>
 
 <body>
 
+    <div id="mobile-blocker">
+        <i class="fas fa-desktop"></i>
+        <h2>Desktop Vereist</h2>
+        <p>TC_tam Search bevat functies zoals drag-and-drop en custom context-menu's die alleen goed werken op een
+            desktop of laptop.</p>
+    </div>
+
     <header>
-        <div class="header-widget" id="time-widget">
-            <i class="fas fa-clock"></i>
-            <span id="time-text">00:00:00</span>
-        </div>
-        <div class="header-widget" id="weather-widget">
+        <div class="weather-widget" id="weather-widget">
             <i class="fas fa-cloud-sun"></i>
             <span id="weather-text">Weer laden...</span>
         </div>
@@ -445,13 +473,15 @@
             <h3 id="modal-title">Snelkoppeling toevoegen</h3>
             <input type="text" id="shortcut-name" placeholder="Naam van de website" autocomplete="off">
             <input type="text" id="shortcut-url" placeholder="URL (bijv. github.com)" autocomplete="off">
-            
+
             <div class="icon-selector-wrapper">
                 <div class="icon-header-box">
                     <span class="icon-selector-label">Kies een icoon:</span>
-                    <input type="text" id="icon-search" class="icon-search-input" placeholder="Zoek icoon..." autocomplete="off">
+                    <input type="text" id="icon-search" class="icon-search-input" placeholder="Zoek door alle iconen..."
+                        autocomplete="off">
                 </div>
-                <div class="icon-grid" id="icon-picker-grid"></div>
+                <div class="icon-grid" id="icon-picker-grid">
+                </div>
             </div>
 
             <div class="modal-buttons">
@@ -471,7 +501,7 @@
     </div>
 
     <script>
-        // --- 1. Blokkeren van ContextMenu & Sneltoetsen ---
+        // --- 1. Blokkeren van Rechtermuisknop & Selecties ---
         document.addEventListener('contextmenu', (e) => e.preventDefault());
         document.addEventListener('keydown', (e) => {
             const isSelectAll = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a';
@@ -482,16 +512,7 @@
             }
         });
 
-        // --- 2. Live Klok Rechtsboven ---
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('nl-NL', { hour12: false });
-            document.getElementById('time-text').innerText = timeStr;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // --- 3. Bibliotheek & Data ---
+        // --- 2. Snelkoppelingen & Complete Font Awesome Bibliotheek ---
         const DEFAULT_SHORTCUTS = [
             { name: 'Maps', url: 'https://maps.google.com', icon: 'fas fa-map-marked-alt' },
             { name: 'YouTube', url: 'https://youtube.com', icon: 'fab fa-youtube' },
@@ -507,7 +528,7 @@
             'fab fa-google-drive', 'fas fa-map-marked-alt', 'fas fa-calendar-alt', 'fas fa-check-square', 'fas fa-folder-open', 'fas fa-file-alt', 'fas fa-envelope', 'fas fa-comment-alt', 'fas fa-users', 'fas fa-bullhorn', 'fas fa-paperclip', 'fas fa-trash-alt', 'fas fa-edit', 'fas fa-copy', 'fas fa-paste', 'fas fa-save', 'fas fa-print', 'fas fa-chart-bar', 'fas fa-chart-pie', 'fas fa-chart-line', 'fas fa-user', 'fas fa-user-shield', 'fas fa-lock', 'fas fa-key',
             'fas fa-book', 'fas fa-graduation-cap', 'fas fa-calculator', 'fas fa-lightbulb', 'fas fa-microscope', 'fas fa-atom', 'fas fa-brain', 'fas fa-compass-drafting', 'fas fa-flask', 'fas fa-school', 'fas fa-university',
             'fas fa-map-marker-alt', 'fas fa-car', 'fas fa-plane', 'fas fa-train', 'fas fa-bicycle', 'fas fa-rocket', 'fas fa-ship', 'fas fa-hotel', 'fas fa-store', 'fas fa-gas-pump', 'fas fa-suitcase',
-            'fas fa-shopping-cart', 'fas fa-tools', 'fas fa-wrench', 'fas fa-hammer', 'fas fa-dumbbell', 'fas fa-trophy', 'fas fa-medal', 'fas fa-soccer-ball', 'fas fa-utensils', 'fas fa-coffee', 'fas fa-beer', 'fas fa-pizza-slice', 'fas fa-ice-cream', 'fas fa-palette', 'fas fa-brush', 'fas fa-ticket-alt',
+            'fas fa-shopping-cart', 'fas fa-tools', 'fas fa-wrench', 'fas fa-hammer', 'fas fa-dumbbell', 'fas fa-trophy', 'fas fa-medal', 'fas fa-soccer-ball', 'fas fa-bicycle', 'fas fa-utensils', 'fas fa-coffee', 'fas fa-beer', 'fas fa-pizza-slice', 'fas fa-ice-cream', 'fas fa-palette', 'fas fa-brush', 'fas fa-ticket-alt',
             'fas fa-sun', 'fas fa-cloud', 'fas fa-cloud-showers-heavy', 'fas fa-snowflake', 'fas fa-wind', 'fas fa-umbrella', 'fas fa-tree', 'fas fa-leaf', 'fas fa-mountain', 'fas fa-water', 'fas fa-moon', 'fas fa-earth-europe',
             'fas fa-wallet', 'fas fa-credit-card', 'fas fa-money-bill-wave', 'fas fa-piggy-bank', 'fas fa-coins', 'fas fa-shopping-bag',
             'fas fa-info-circle', 'fas fa-question-circle', 'fas fa-exclamation-triangle', 'fas fa-check-circle', 'fas fa-times-circle', 'fas fa-plus-circle', 'fas fa-minus-circle', 'fas fa-briefcase-medical', 'fas fa-pills', 'fas fa-shield-alt', 'fas fa-gift', 'fas fa-crown', 'fas fa-gem'
@@ -523,27 +544,26 @@
         const iconPickerGrid = document.getElementById('icon-picker-grid');
         const modalCancelBtn = document.getElementById('modal-cancel');
         const modalSaveBtn = document.getElementById('modal-save');
-        
+
         const contextMenu = document.getElementById('custom-context-menu');
         const editContextItem = document.getElementById('edit-context-item');
         const deleteContextItem = document.getElementById('delete-context-item');
-        
+
         let activeShortcutIndex = null;
         let isEditMode = false;
         let selectedIconClass = ENTIRE_ICON_LIBRARY[0];
-        let touchTimer = null; // Voor mobiele long-press detection
 
         function buildIconPicker(filterText = '') {
             iconPickerGrid.innerHTML = '';
             const searchTerms = filterText.toLowerCase().trim();
-            
+
             const filteredIcons = ENTIRE_ICON_LIBRARY.filter(iconClass => {
-                const clean = iconClass.toLowerCase().replace('fas ', '').replace('fab ', '').replace('fa-', '');
-                return clean.includes(searchTerms);
+                const cleanClassName = iconClass.toLowerCase().replace('fas ', '').replace('fab ', '').replace('fa-', '');
+                return cleanClassName.includes(searchTerms);
             });
 
             if (filteredIcons.length === 0) {
-                iconPickerGrid.innerHTML = `<div class="no-icons-msg">Geen iconen gevonden...</div>`;
+                iconPickerGrid.innerHTML = `<div class="no-icons-msg">Geen icoontjes gevonden voor "${filterText}"...</div>`;
                 return;
             }
 
@@ -562,12 +582,16 @@
             if (!searchTerms) {
                 setTimeout(() => {
                     const selectedEl = iconPickerGrid.querySelector('.icon-option.selected');
-                    if (selectedEl) selectedEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    if (selectedEl) {
+                        selectedEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    }
                 }, 50);
             }
         }
 
-        iconSearchInput.addEventListener('input', (e) => buildIconPicker(e.target.value));
+        iconSearchInput.addEventListener('input', (e) => {
+            buildIconPicker(e.target.value);
+        });
 
         function getShortcuts() {
             let data = localStorage.getItem('customShortcuts');
@@ -580,18 +604,12 @@
 
         function loadShortcuts() {
             document.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)').forEach(el => el.remove());
+
             const list = getShortcuts();
             list.forEach((shortcut, index) => {
                 createShortcutDOM(shortcut.name, shortcut.url, shortcut.icon, index);
             });
             initDragAndDrop();
-        }
-
-        function openCustomMenu(x, y, index) {
-            activeShortcutIndex = index;
-            contextMenu.style.top = `${y}px`;
-            contextMenu.style.left = `${x}px`;
-            contextMenu.style.display = 'block';
         }
 
         function createShortcutDOM(name, url, icon, index) {
@@ -600,123 +618,148 @@
             a.className = 'shortcut-card';
             a.target = '_blank';
             a.dataset.index = index;
-            
+            a.draggable = true;
+
             a.innerHTML = `
                 <i class="${icon || 'fas fa-globe'}"></i>
                 <span>${name}</span>
             `;
 
-            // Desktop rechtermuisknop
             a.addEventListener('contextmenu', (e) => {
-                e.stopPropagation(); 
-                e.preventDefault(); 
-                openCustomMenu(e.clientX, e.clientY, index);
+                e.stopPropagation();
+                e.preventDefault();
+                activeShortcutIndex = index;
+
+                contextMenu.style.top = `${e.clientY}px`;
+                contextMenu.style.left = `${e.clientX}px`;
+                contextMenu.style.display = 'block';
             });
-
-            // Mobiele Long Press (0.5s inhouden opent menu)
-            a.addEventListener('touchstart', (e) => {
-                touchTimer = setTimeout(() => {
-                    const touch = e.touches[0];
-                    openCustomMenu(touch.clientX, touch.clientY, index);
-                }, 500);
-            }, { passive: true });
-
-            a.addEventListener('touchend', () => clearTimeout(touchTimer));
-            a.addEventListener('touchmove', () => clearTimeout(touchTimer));
 
             shortcutsContainer.insertBefore(a, addBtn);
         }
 
-        // --- 4. Cross-Platform Drag and Drop (Muis & Touch) ---
+        // --- 3. Drag and Drop Logica ---
+        let draggedElement = null;
+
         function initDragAndDrop() {
             const cards = document.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)');
-            
+
             cards.forEach(card => {
-                // Muis Drag
-                card.addEventListener('dragstart', () => card.classList.add('dragging'));
-                card.addEventListener('dragend', () => {
-                    card.classList.remove('dragging');
-                    saveNewOrder();
+                // Start met slepen
+                card.addEventListener('dragstart', (e) => {
+                    draggedElement = card;
+                    card.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
                 });
 
-                // Mobiel Touch Drag
-                card.addEventListener('touchmove', (e) => {
-                    // Blokkeer menu-timer zodra er bewogen wordt
-                    clearTimeout(touchTimer); 
-                    
-                    // Alleen slepen als het context-menu niet open staat
-                    if (contextMenu.style.display === 'block') return;
+                // Einde van de sleepactie (altijd opruimen)
+                card.addEventListener('dragend', () => {
+                    card.classList.remove('dragging');
+                    draggedElement = null;
+                    // Verwijder eventuele achtergebleven inline borders
+                    cards.forEach(c => c.style.border = '');
+                });
 
-                    card.classList.add('dragging');
-                    const touch = e.touches[0];
-                    
-                    // Vind element onder de huidige vingerpositie
-                    const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
-                    const afterElement = getDragAfterElement(shortcutsContainer, touch.clientX);
-                    
-                    if (afterElement == null) {
-                        shortcutsContainer.insertBefore(card, addBtn);
-                    } else {
-                        shortcutsContainer.insertBefore(card, afterElement);
+                // Muis beweegt over een andere kaart
+                card.addEventListener('dragover', (e) => {
+                    if (draggedElement && draggedElement !== card) {
+                        e.preventDefault(); // Nodig om drop toe te staan
+                        e.dataTransfer.dropEffect = 'move';
+                        // Geef visuele feedback waar de kaart gaat landen
+                        card.style.border = '1px dashed var(--accent-color)';
                     }
-                }, { passive: false });
+                });
 
-                card.addEventListener('touchend', () => {
-                    if (card.classList.contains('dragging')) {
-                        card.classList.remove('dragging');
-                        saveNewOrder();
+                // Muis verlaat een kaart zonder te droppen
+                card.addEventListener('dragleave', () => {
+                    card.style.border = '';
+                });
+
+                // Kaart wordt daadwerkelijk losgelaten op een andere kaart
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    card.style.border = '';
+
+                    if (draggedElement && draggedElement !== card) {
+                        const oldList = getShortcuts();
+                        const fromIndex = parseInt(draggedElement.dataset.index);
+                        const toIndex = parseInt(card.dataset.index);
+
+                        // Haal het versleepte item uit de array
+                        const [movedItem] = oldList.splice(fromIndex, 1);
+                        // Voeg hem in op de nieuwe positie
+                        oldList.splice(toIndex, 0, movedItem);
+
+                        // Sla op en herlaad de boel
+                        localStorage.setItem('customShortcuts', JSON.stringify(oldList));
+                        loadShortcuts();
                     }
                 });
             });
 
-            // Desktop Drag Over container
-            shortcutsContainer.addEventListener('dragover', (e) => {
+            // Zorg dat je ook achter de laatste kaart (op de toevoeg-knop) kunt droppen
+            addBtn.addEventListener('dragover', (e) => {
+                if (draggedElement) {
+                    e.preventDefault();
+                }
+            });
+
+            addBtn.addEventListener('drop', (e) => {
                 e.preventDefault();
-                const draggingCard = document.querySelector('.dragging');
-                if (!draggingCard) return;
-                const afterElement = getDragAfterElement(shortcutsContainer, e.clientX);
-                if (afterElement == null) {
-                    shortcutsContainer.insertBefore(draggingCard, addBtn);
-                } else {
-                    shortcutsContainer.insertBefore(draggingCard, afterElement);
+                if (draggedElement) {
+                    const oldList = getShortcuts();
+                    const fromIndex = parseInt(draggedElement.dataset.index);
+
+                    // Verplaats naar het einde van de lijst
+                    const [movedItem] = oldList.splice(fromIndex, 1);
+                    oldList.push(movedItem);
+
+                    localStorage.setItem('customShortcuts', JSON.stringify(oldList));
+                    loadShortcuts();
                 }
             });
         }
 
-        function getDragAfterElement(container, x) {
+        function getDragAfterElement(container, x, y) {
+            // Haal alle kaarten op behalve degene die gesleept wordt en de toevoeg-knop
             const draggableElements = [...container.querySelectorAll('.shortcut-card:not(.dragging):not(#add-shortcut-btn)')];
+
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
-                const offset = x - box.left - box.width / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
+
+                // Bereken het exacte middelpunt van de huidige kaart in de loop
+                const boxCenterX = box.left + box.width / 2;
+                const boxCenterY = box.top + box.height / 2;
+
+                // Bereken de afstand tussen de muis en het middelpunt van de kaart
+                const distance = Math.sqrt(Math.pow(x - boxCenterX, 2) + Math.pow(y - boxCenterY, 2));
+
+                // We zoeken de kaart die het dichtst bij de muis is
+                if (distance < closest.distance) {
+                    return { distance: distance, element: child };
                 } else {
                     return closest;
                 }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }, { distance: Number.POSITIVE_INFINITY }).element;
         }
 
-        function saveNewOrder() {
-            const currentCards = [...shortcutsContainer.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)')];
-            const oldList = getShortcuts();
-            const newList = currentCards.map(card => oldList[parseInt(card.dataset.index)]);
-            localStorage.setItem('customShortcuts', JSON.stringify(newList));
-            loadShortcuts(); 
-        }
-
-        // --- 5. Menu & Modal Event listeners ---
+        // --- 4. Context Menu Acties ---
         editContextItem.addEventListener('click', () => {
             if (activeShortcutIndex !== null) {
                 const list = getShortcuts();
                 const shortcut = list[activeShortcutIndex];
+
                 if (shortcut) {
                     isEditMode = true;
                     modalTitle.innerText = "Snelkoppeling bewerken";
                     modalSaveBtn.innerText = "Opslaan";
+
                     shortcutNameInput.value = shortcut.name;
                     shortcutUrlInput.value = shortcut.url;
                     iconSearchInput.value = '';
+
                     selectedIconClass = shortcut.icon || 'fas fa-globe';
+
                     buildIconPicker();
                     shortcutModal.classList.add('active');
                     shortcutNameInput.focus();
@@ -730,26 +773,26 @@
                 let list = getShortcuts();
                 list.splice(activeShortcutIndex, 1);
                 localStorage.setItem('customShortcuts', JSON.stringify(list));
+
                 loadShortcuts();
                 hideContextMenu();
             }
         });
 
         document.addEventListener('click', () => hideContextMenu());
-        document.addEventListener('touchstart', (e) => {
-            if (!contextMenu.contains(e.target)) hideContextMenu();
-        }, { passive: true });
-
         function hideContextMenu() { contextMenu.style.display = 'none'; }
 
+        // --- 5. Modal Handlers ---
         addBtn.addEventListener('click', () => {
             isEditMode = false;
             modalTitle.innerText = "Snelkoppeling toevoegen";
             modalSaveBtn.innerText = "Toevoegen";
+
             shortcutNameInput.value = '';
             shortcutUrlInput.value = '';
             iconSearchInput.value = '';
             selectedIconClass = ENTIRE_ICON_LIBRARY[0];
+
             buildIconPicker();
             shortcutModal.classList.add('active');
             shortcutNameInput.focus();
@@ -760,14 +803,20 @@
         modalSaveBtn.addEventListener('click', () => {
             const name = shortcutNameInput.value.trim();
             let url = shortcutUrlInput.value.trim();
+
             if (name && url) {
-                if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+
                 let list = getShortcuts();
+
                 if (isEditMode && activeShortcutIndex !== null) {
                     list[activeShortcutIndex] = { name, url, icon: selectedIconClass };
                 } else {
                     list.push({ name, url, icon: selectedIconClass });
                 }
+
                 localStorage.setItem('customShortcuts', JSON.stringify(list));
                 loadShortcuts();
                 shortcutModal.classList.remove('active');
@@ -795,13 +844,12 @@
                 else if (code >= 71 && code <= 75) { cond = "Sneeuw"; icon = "fas fa-snowflake"; }
                 else if (code >= 95) { cond = "Onweer"; icon = "fas fa-bolt"; }
 
-                weatherWidget.innerHTML = `<i class="${icon}"></i> <span>Leiden: ${temp}°C</span>`;
+                weatherWidget.innerHTML = `<i class="${icon}"></i> <span>Leiden: ${temp}°C, ${cond}</span>`;
             } catch {
-                document.getElementById('weather-text').innerText = "Weer fout";
+                document.getElementById('weather-text').innerText = "Weer niet beschikbaar";
             }
         }
 
-        // Init
         loadShortcuts();
         fetchWeather();
     </script>
