@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mijn Startpagina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #00ff66;
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+            --danger-color: #ff3333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Schakelt selecteren via muis-slepen uit op de hele pagina */
+            user-select: none; 
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        /* Top Bar met Weer */
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+        }
+
+        .weather-widget {
+            background: var(--card-bg);
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weather-widget i {
+            color: var(--accent-color);
+        }
+
+        /* Main Dashboard Layout */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        h1 span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+
+        /* Zoekmachine */
+        .search-box {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 25px;
+            padding-right: 60px;
+            background: var(--card-bg);
+            border: 2px solid #333;
+            border-radius: 30px;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            /* Zorg dat je in het invoerveld wél tekst kunt selecteren */
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Snelkoppelingen Grid */
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .shortcut-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s, border-color 0.2s;
+            border: 1px solid #333;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .shortcut-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .shortcut-card i {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+        }
+
+        .shortcut-card span {
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        /* Custom Context Menu */
+        .context-menu {
+            position: fixed;
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+            min-width: 140px;
+        }
+
+        .context-menu-item {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .context-menu-item:hover {
+            background: rgba(255, 51, 51, 0.15);
+            color: var(--danger-color);
+        }
+
+        /* In-site Popup (Modal) Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: var(--accent-color);
+        }
+
+        .modal-box input {
+            width: 100%;
+            padding: 10px 15px;
+            background: #121212;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            margin-bottom: 15px;
+            outline: none;
+            font-size: 1rem;
+            /* Zorg dat je in de pop-up inputs wél tekst kunt selecteren */
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+        }
+
+        .modal-box input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .modal-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        .btn-cancel {
+            background: #333;
+            color: #fff;
+        }
+
+        .btn-save {
+            background: var(--accent-color);
+            color: #121212;
+        }
+
+        footer {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="weather-widget" id="weather-widget">
+            <i class="fas fa-cloud-sun"></i>
+            <span id="weather-text">Weer laden...</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1><span>My</span>Google</h1>
+
+        <form action="https://www.google.com/search" method="GET" class="search-box">
+            <input type="text" name="q" placeholder="Zoek op het web of typ een URL..." autocomplete="off" autofocus>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+
+        <div class="shortcuts-grid" id="shortcuts-container">
+            <a href="https://maps.google.com" class="shortcut-card" target="_blank">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Maps</span>
+            </a>
+            <a href="https://youtube.com" class="shortcut-card" target="_blank">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+            </a>
+            <a href="https://drive.google.com" class="shortcut-card" target="_blank">
+                <i class="fab fa-google-drive"></i>
+                <span>Drive</span>
+            </a>
+            <a href="https://gmail.com" class="shortcut-card" target="_blank">
+                <i class="fas fa-envelope"></i>
+                <span>Gmail</span>
+            </a>
+
+            <div class="shortcut-card" id="add-shortcut-btn">
+                <i class="fas fa-plus"></i>
+                <span>Toevoegen</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="shortcut-modal">
+        <div class="modal-box">
+            <h3>Snelkoppeling toevoegen</h3>
+            <input type="text" id="shortcut-name" placeholder="Naam van de website" autocomplete="off">
+            <input type="text" id="shortcut-url" placeholder="URL (bijv. github.com)" autocomplete="off">
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="modal-cancel">Annuleren</button>
+                <button class="btn-save" id="modal-save">Toevoegen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="context-menu" id="custom-context-menu">
+        <div class="context-menu-item" id="delete-context-item">
+            <i class="fas fa-trash-alt"></i> Verwijderen
+        </div>
+    </div>
+
+    <footer>
+        © 2026 - Gemaakt met 💚
+    </footer>
+
+    <script>
+        // --- 1. Blokkeren van Selecties & Sneltoetsen ---
+        
+        // Blokkeer rechtermuisknop op de GEHELE pagina
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        // Blokkeer Ctrl+A / Cmd+A op de pagina (behalve in tekstvelden)
+        document.addEventListener('keydown', (e) => {
+            const isSelectAll = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a';
+            if (isSelectAll) {
+                // Toon de standaard select-all actie alleen als de gebruiker in een invoerveld typt
+                const activeEl = document.activeElement;
+                if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+                    return; // Sta selectie toe binnen de input/textarea
+                }
+                e.preventDefault(); // Blokkeer voor de rest van de pagina
+            }
+        });
+
+
+        // --- 2. Snelkoppelingen Functionaliteit ---
+        const shortcutsContainer = document.getElementById('shortcuts-container');
+        const addBtn = document.getElementById('add-shortcut-btn');
+        
+        const shortcutModal = document.getElementById('shortcut-modal');
+        const shortcutNameInput = document.getElementById('shortcut-name');
+        const shortcutUrlInput = document.getElementById('shortcut-url');
+        const modalCancelBtn = document.getElementById('modal-cancel');
+        const modalSaveBtn = document.getElementById('modal-save');
+        
+        const contextMenu = document.getElementById('custom-context-menu');
+        const deleteContextItem = document.getElementById('delete-context-item');
+        
+        let activeDeleteIndex = null;
+
+        function loadShortcuts() {
+            const customShortcuts = JSON.parse(localStorage.getItem('customShortcuts')) || [];
+            customShortcuts.forEach((shortcut, index) => {
+                createShortcutDOM(shortcut.name, shortcut.url, index);
+            });
+        }
+
+        function createShortcutDOM(name, url, index) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.className = 'shortcut-card';
+            a.target = '_blank';
+            a.dataset.index = index;
+            
+            a.innerHTML = `
+                <i class="fas fa-globe"></i>
+                <span>${name}</span>
+            `;
+
+            a.addEventListener('contextmenu', (e) => {
+                e.stopPropagation(); 
+                e.preventDefault(); 
+                activeDeleteIndex = index; 
+                
+                contextMenu.style.top = `${e.clientY}px`;
+                contextMenu.style.left = `${e.clientX}px`;
+                contextMenu.style.display = 'block';
+            });
+
+            shortcutsContainer.insertBefore(a, addBtn);
+        }
+
+        function removeShortcut(index) {
+            let customShortcuts = JSON.parse(localStorage.getItem('customShortcuts')) || [];
+            
+            customShortcuts.splice(index, 1);
+            localStorage.setItem('customShortcuts', JSON.stringify(customShortcuts));
+
+            document.querySelectorAll('.shortcuts-grid a[data-index]').forEach(el => el.remove());
+            loadShortcuts();
+        }
+
+        deleteContextItem.addEventListener('click', () => {
+            if (activeDeleteIndex !== null) {
+                removeShortcut(activeDeleteIndex);
+                hideContextMenu();
+            }
+        });
+
+        document.addEventListener('click', () => {
+            hideContextMenu();
+        });
+
+        function hideContextMenu() {
+            contextMenu.style.display = 'none';
+            activeDeleteIndex = null;
+        }
+
+        addBtn.addEventListener('click', () => {
+            shortcutNameInput.value = '';
+            shortcutUrlInput.value = '';
+            shortcutModal.classList.add('active');
+            shortcutNameInput.focus();
+        });
+
+        modalCancelBtn.addEventListener('click', () => {
+            shortcutModal.classList.remove('active');
+        });
+
+        modalSaveBtn.addEventListener('click', () => {
+            const name = shortcutNameInput.value.trim();
+            let url = shortcutUrlInput.value.trim();
+
+            if (name && url) {
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+
+                const customShortcuts = JSON.parse(localStorage.getItem('customShortcuts')) || [];
+                customShortcuts.push({ name, url });
+                localStorage.setItem('customShortcuts', JSON.stringify(customShortcuts));
+
+                createShortcutDOM(name, url, customShortcuts.length - 1);
+                shortcutModal.classList.remove('active');
+            }
+        });
+
+        shortcutModal.addEventListener('click', (e) => {
+            if (e.target === shortcutModal) {
+                shortcutModal.classList.remove('active');
+            }
+        });
+
+        // --- 3. Weer API Integratie ---
+        async function fetchWeather() {
+            const weatherText = document.getElementById('weather-text');
+            const weatherWidget = document.getElementById('weather-widget');
+
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=52.16&longitude=4.49&current_weather=true`;
+
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Netwerkrespons was niet ok');
+
+                const data = await response.json();
+                const temp = Math.round(data.current_weather.temperature);
+                const weatherCode = data.current_weather.weathercode;
+
+                let condition = "Bewolkt";
+                let iconClass = "fas fa-cloud";
+
+                if (weatherCode === 0) {
+                    condition = "Onbewolkt";
+                    iconClass = "fas fa-sun";
+                } else if (weatherCode >= 1 && weatherCode <= 3) {
+                    condition = "Licht bewolkt";
+                    iconClass = "fas fa-cloud-sun";
+                } else if (weatherCode >= 61 && weatherCode <= 65) {
+                    condition = "Regen";
+                    iconClass = "fas fa-cloud-showers-heavy";
+                } else if (weatherCode >= 71 && weatherCode <= 75) {
+                    condition = "Sneeuw";
+                    iconClass = "fas fa-snowflake";
+                } else if (weatherCode >= 95) {
+                    condition = "Onweer";
+                    iconClass = "fas fa-bolt";
+                }
+
+                weatherWidget.innerHTML = `<i class="${iconClass}"></i> <span>Leiden: ${temp}°C, ${condition}</span>`;
+
+            } catch (error) {
+                console.error("Fout bij ophalen weer:", error);
+                weatherText.innerText = "Weer niet beschikbaar";
+            }
+        }
+
+        // Initialize
+        loadShortcuts();
+        fetchWeather();
+    </script>
+</body>
+
+</html>
