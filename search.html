@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -38,7 +38,6 @@
             padding: 20px;
         }
 
-        /* --- Mobiel Blokkade Scherm --- */
         #mobile-blocker {
             display: none;
             position: fixed;
@@ -74,7 +73,6 @@
             line-height: 1.5;
         }
 
-        /* Toon blocker en verberg body content op mobiel */
         @media (max-width: 767px) {
             #mobile-blocker {
                 display: flex;
@@ -86,7 +84,6 @@
             }
         }
 
-        /* --- Bestaande CSS --- */
         header {
             width: 100%;
             display: flex;
@@ -440,15 +437,14 @@
 
     <div id="mobile-blocker">
         <i class="fas fa-desktop"></i>
-        <h2>Desktop Vereist</h2>
-        <p>TC_tam Search bevat functies zoals drag-and-drop en custom context-menu's die alleen goed werken op een
-            desktop of laptop.</p>
+        <h2>Desktop Required</h2>
+        <p>TC_tam Search includes features such as drag-and-drop and custom context menus that only work properly on a desktop or laptop.</p>
     </div>
 
     <header>
         <div class="weather-widget" id="weather-widget">
             <i class="fas fa-cloud-sun"></i>
-            <span id="weather-text">Weer laden...</span>
+            <span id="weather-text">Loading weather...</span>
         </div>
     </header>
 
@@ -456,28 +452,28 @@
         <h1><span>TC_tam</span>Search</h1>
 
         <form action="https://www.google.com/search" method="GET" class="search-box">
-            <input type="text" name="q" placeholder="Zoek op het web of typ een URL..." autocomplete="off" autofocus>
+            <input type="text" name="q" placeholder="Search the web or type a URL..." autocomplete="off" autofocus>
             <button type="submit"><i class="fas fa-search"></i></button>
         </form>
 
         <div class="shortcuts-grid" id="shortcuts-container">
             <div class="shortcut-card" id="add-shortcut-btn">
                 <i class="fas fa-plus"></i>
-                <span>Toevoegen</span>
+                <span>Add Shortcut</span>
             </div>
         </div>
     </div>
 
     <div class="modal-overlay" id="shortcut-modal">
         <div class="modal-box">
-            <h3 id="modal-title">Snelkoppeling toevoegen</h3>
-            <input type="text" id="shortcut-name" placeholder="Naam van de website" autocomplete="off">
-            <input type="text" id="shortcut-url" placeholder="URL (bijv. github.com)" autocomplete="off">
+            <h3 id="modal-title">Add Shortcut</h3>
+            <input type="text" id="shortcut-name" placeholder="Website name" autocomplete="off">
+            <input type="text" id="shortcut-url" placeholder="URL (e.g., github.com)" autocomplete="off">
 
             <div class="icon-selector-wrapper">
                 <div class="icon-header-box">
-                    <span class="icon-selector-label">Kies een icoon:</span>
-                    <input type="text" id="icon-search" class="icon-search-input" placeholder="Zoek door alle iconen..."
+                    <span class="icon-selector-label">Choose an icon:</span>
+                    <input type="text" id="icon-search" class="icon-search-input" placeholder="Search all icons..."
                         autocomplete="off">
                 </div>
                 <div class="icon-grid" id="icon-picker-grid">
@@ -485,23 +481,22 @@
             </div>
 
             <div class="modal-buttons">
-                <button class="btn-cancel" id="modal-cancel">Annuleren</button>
-                <button class="btn-save" id="modal-save">Toevoegen</button>
+                <button class="btn-cancel" id="modal-cancel">Cancel</button>
+                <button class="btn-save" id="modal-save">Add</button>
             </div>
         </div>
     </div>
 
     <div class="context-menu" id="custom-context-menu">
         <div class="context-menu-item edit-item" id="edit-context-item">
-            <i class="fas fa-edit"></i> Bewerken
+            <i class="fas fa-edit"></i> Edit
         </div>
         <div class="context-menu-item delete-item" id="delete-context-item">
-            <i class="fas fa-trash-alt"></i> Verwijderen
+            <i class="fas fa-trash-alt"></i> Delete
         </div>
     </div>
 
     <script>
-        // --- 1. Blokkeren van Rechtermuisknop & Selecties ---
         document.addEventListener('contextmenu', (e) => e.preventDefault());
         document.addEventListener('keydown', (e) => {
             const isSelectAll = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a';
@@ -512,7 +507,6 @@
             }
         });
 
-        // --- 2. Snelkoppelingen & Complete Font Awesome Bibliotheek ---
         const DEFAULT_SHORTCUTS = [
             { name: 'Maps', url: 'https://maps.google.com', icon: 'fas fa-map-marked-alt' },
             { name: 'YouTube', url: 'https://youtube.com', icon: 'fab fa-youtube' },
@@ -563,7 +557,7 @@
             });
 
             if (filteredIcons.length === 0) {
-                iconPickerGrid.innerHTML = `<div class="no-icons-msg">Geen icoontjes gevonden voor "${filterText}"...</div>`;
+                iconPickerGrid.innerHTML = `<div class="no-icons-msg">No icons found for "${filterText}"...</div>`;
                 return;
             }
 
@@ -638,44 +632,36 @@
             shortcutsContainer.insertBefore(a, addBtn);
         }
 
-        // --- 3. Drag and Drop Logica ---
         let draggedElement = null;
 
         function initDragAndDrop() {
             const cards = document.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)');
 
             cards.forEach(card => {
-                // Start met slepen
                 card.addEventListener('dragstart', (e) => {
                     draggedElement = card;
                     card.classList.add('dragging');
                     e.dataTransfer.effectAllowed = 'move';
                 });
 
-                // Einde van de sleepactie (altijd opruimen)
                 card.addEventListener('dragend', () => {
                     card.classList.remove('dragging');
                     draggedElement = null;
-                    // Verwijder eventuele achtergebleven inline borders
                     cards.forEach(c => c.style.border = '');
                 });
 
-                // Muis beweegt over een andere kaart
                 card.addEventListener('dragover', (e) => {
                     if (draggedElement && draggedElement !== card) {
-                        e.preventDefault(); // Nodig om drop toe te staan
+                        e.preventDefault();
                         e.dataTransfer.dropEffect = 'move';
-                        // Geef visuele feedback waar de kaart gaat landen
                         card.style.border = '1px dashed var(--accent-color)';
                     }
                 });
 
-                // Muis verlaat een kaart zonder te droppen
                 card.addEventListener('dragleave', () => {
                     card.style.border = '';
                 });
 
-                // Kaart wordt daadwerkelijk losgelaten op een andere kaart
                 card.addEventListener('drop', (e) => {
                     e.preventDefault();
                     card.style.border = '';
@@ -685,19 +671,15 @@
                         const fromIndex = parseInt(draggedElement.dataset.index);
                         const toIndex = parseInt(card.dataset.index);
 
-                        // Haal het versleepte item uit de array
                         const [movedItem] = oldList.splice(fromIndex, 1);
-                        // Voeg hem in op de nieuwe positie
                         oldList.splice(toIndex, 0, movedItem);
 
-                        // Sla op en herlaad de boel
                         localStorage.setItem('customShortcuts', JSON.stringify(oldList));
                         loadShortcuts();
                     }
                 });
             });
 
-            // Zorg dat je ook achter de laatste kaart (op de toevoeg-knop) kunt droppen
             addBtn.addEventListener('dragover', (e) => {
                 if (draggedElement) {
                     e.preventDefault();
@@ -710,7 +692,6 @@
                     const oldList = getShortcuts();
                     const fromIndex = parseInt(draggedElement.dataset.index);
 
-                    // Verplaats naar het einde van de lijst
                     const [movedItem] = oldList.splice(fromIndex, 1);
                     oldList.push(movedItem);
 
@@ -721,20 +702,16 @@
         }
 
         function getDragAfterElement(container, x, y) {
-            // Haal alle kaarten op behalve degene die gesleept wordt en de toevoeg-knop
             const draggableElements = [...container.querySelectorAll('.shortcut-card:not(.dragging):not(#add-shortcut-btn)')];
 
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
 
-                // Bereken het exacte middelpunt van de huidige kaart in de loop
                 const boxCenterX = box.left + box.width / 2;
                 const boxCenterY = box.top + box.height / 2;
 
-                // Bereken de afstand tussen de muis en het middelpunt van de kaart
                 const distance = Math.sqrt(Math.pow(x - boxCenterX, 2) + Math.pow(y - boxCenterY, 2));
 
-                // We zoeken de kaart die het dichtst bij de muis is
                 if (distance < closest.distance) {
                     return { distance: distance, element: child };
                 } else {
@@ -743,7 +720,6 @@
             }, { distance: Number.POSITIVE_INFINITY }).element;
         }
 
-        // --- 4. Context Menu Acties ---
         editContextItem.addEventListener('click', () => {
             if (activeShortcutIndex !== null) {
                 const list = getShortcuts();
@@ -751,8 +727,8 @@
 
                 if (shortcut) {
                     isEditMode = true;
-                    modalTitle.innerText = "Snelkoppeling bewerken";
-                    modalSaveBtn.innerText = "Opslaan";
+                    modalTitle.innerText = "Edit Shortcut";
+                    modalSaveBtn.innerText = "Save";
 
                     shortcutNameInput.value = shortcut.name;
                     shortcutUrlInput.value = shortcut.url;
@@ -782,11 +758,10 @@
         document.addEventListener('click', () => hideContextMenu());
         function hideContextMenu() { contextMenu.style.display = 'none'; }
 
-        // --- 5. Modal Handlers ---
         addBtn.addEventListener('click', () => {
             isEditMode = false;
-            modalTitle.innerText = "Snelkoppeling toevoegen";
-            modalSaveBtn.innerText = "Toevoegen";
+            modalTitle.innerText = "Add Shortcut";
+            modalSaveBtn.innerText = "Add";
 
             shortcutNameInput.value = '';
             shortcutUrlInput.value = '';
@@ -827,7 +802,6 @@
             if (e.target === shortcutModal) shortcutModal.classList.remove('active');
         });
 
-        // --- 6. Weer API ---
         async function fetchWeather() {
             const weatherWidget = document.getElementById('weather-widget');
             try {
@@ -837,16 +811,16 @@
                 const temp = Math.round(data.current_weather.temperature);
                 const code = data.current_weather.weathercode;
 
-                let cond = "Bewolkt", icon = "fas fa-cloud";
-                if (code === 0) { cond = "Onbewolkt"; icon = "fas fa-sun"; }
-                else if (code >= 1 && code <= 3) { cond = "Licht bewolkt"; icon = "fas fa-cloud-sun"; }
-                else if (code >= 61 && code <= 65) { cond = "Regen"; icon = "fas fa-cloud-showers-heavy"; }
-                else if (code >= 71 && code <= 75) { cond = "Sneeuw"; icon = "fas fa-snowflake"; }
-                else if (code >= 95) { cond = "Onweer"; icon = "fas fa-bolt"; }
+                let cond = "Cloudy", icon = "fas fa-cloud";
+                if (code === 0) { cond = "Clear"; icon = "fas fa-sun"; }
+                else if (code >= 1 && code <= 3) { cond = "Partly Cloudy"; icon = "fas fa-cloud-sun"; }
+                else if (code >= 61 && code <= 65) { cond = "Rain"; icon = "fas fa-cloud-showers-heavy"; }
+                else if (code >= 71 && code <= 75) { cond = "Snow"; icon = "fas fa-snowflake"; }
+                else if (code >= 95) { cond = "Thunderstorm"; icon = "fas fa-bolt"; }
 
                 weatherWidget.innerHTML = `<i class="${icon}"></i> <span>Leiden: ${temp}°C, ${cond}</span>`;
             } catch {
-                document.getElementById('weather-text').innerText = "Weer niet beschikbaar";
+                document.getElementById('weather-text').innerText = "Weather unavailable";
             }
         }
 
