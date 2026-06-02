@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>TC_tam - Developer Portfolio</title>
@@ -8,95 +9,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="/script.js"></script>
+
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
         :root {
-            --color-bg-main: #0a0a0a; 
-            --color-bg-secondary: #141414; 
-            --color-card: #1a1a1a; 
+            --color-bg-main: #0a0a0a;
+            --color-bg-secondary: #141414;
+            --color-card: #1a1a1a;
             --color-accent: #10b981;
             --color-accent-hover: #34d399;
             --color-text-primary: #ffffff;
-            --color-text-secondary: #a3a3a3; 
+            --color-text-secondary: #c5c5c5;
             --font-main: "Lexend", sans-serif;
             --border-radius: 16px;
         }
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
             font-family: var(--font-main);
         }
 
         body {
-            min-height: 100vh;
-            background: linear-gradient(to bottom right, #0a0a0a, #141414);
+            margin: 0;
+            background: linear-gradient(135deg, var(--color-bg-main), var(--color-bg-secondary));
             color: var(--color-text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #252525;
+            border-radius: 5px;
+            border: 2px solid var(--color-bg-main);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent);
+        }
+
+        header {
+            background-color: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 15px 40px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding: 60px 20px;
-            line-height: 1.7;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .intro-section {
-            text-align: center;
-            margin-bottom: 60px;
-            max-width: 700px;
+        #header-title {
+            font-weight: 700;
+            font-size: 22px;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(to right, #ffffff, var(--color-accent-hover));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
         }
 
-        h1 {
-            font-size: clamp(3rem, 6vw, 5rem);
+        #header-right {
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            gap: 20px;
+        }
+
+        #header-right a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        #header-right a:hover {
+            color: var(--color-accent);
+        }
+
+        main {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        main h1 {
+            font-size: 2.8rem;
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 5px;
-            background: linear-gradient(to right, #fff, var(--color-accent-hover));
+            margin-bottom: 12px;
+            background: linear-gradient(to right, #ffffff, var(--color-accent));
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        h3 {
-            color: var(--color-accent);
-            font-weight: 600;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        .intro-section p {
-            font-size: 1.1rem;
+        main p {
+            font-size: 1.15rem;
             color: var(--color-text-secondary);
-            margin-bottom: 35px;
+            margin-bottom: 40px;
+            max-width: 750px;
         }
 
-        .main-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--color-accent);
-            color: #0a0a0a;
-            border: none;
-            border-radius: var(--border-radius);
-            padding: 14px 35px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
-        }
-
-        .main-button:hover {
-            background: var(--color-accent-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
-        }
-
-        main {
+        #cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
-            width: 100%;
-            max-width: 1100px;
         }
 
         .card {
@@ -116,7 +142,10 @@
         .card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             border-radius: var(--border-radius);
             border: 2px solid var(--color-accent);
             opacity: 0;
@@ -129,13 +158,19 @@
                 transform: translateY(-5px);
                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             }
+
             .card:hover::before {
                 opacity: 0.5;
             }
         }
 
-        .card[data-size="2"] { grid-column: span 2; }
-        .card[data-size="3"] { grid-column: span 3; }
+        .card[data-size="2"] {
+            grid-column: span 2;
+        }
+
+        .card[data-size="3"] {
+            grid-column: span 3;
+        }
 
         .card h2 {
             font-size: 1.5rem;
@@ -186,112 +221,141 @@
         }
 
         footer {
-            margin-top: 60px;
-            padding: 20px;
             text-align: center;
-            font-size: 0.9rem;
+            padding: 40px 20px;
             color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 1024px) {
+            #cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .card[data-size="3"] {
+                grid-column: span 2;
+            }
         }
 
         @media (max-width: 768px) {
-            body { padding: 40px 15px; }
-            .intro-section h1 { font-size: 3rem; }
-            .main-button { width: 100%; justify-content: center; }
-            .card { 
-                grid-column: span 1 !important; 
-                padding: 25px;
+            #cards {
+                grid-template-columns: 1fr;
             }
-            
-            .card.is-visible {
-                transform: translateY(-3px) scale(1.02);
-                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            .card[data-size="2"],
+            .card[data-size="3"] {
+                grid-column: span 1;
             }
-            .card.is-visible::before {
-                opacity: 0.7;
+            header {
+                padding: 15px 20px;
+            }
+            main h1 {
+                font-size: 2.2rem;
             }
         }
     </style>
 </head>
-<body>
-    <header class="intro-section">
-        <h1 style="margin-bottom: 0px;">TC_tam</h1>
-        <h3>By Tamer Çevik</h3>
-        <p>Hi! I'm an enthusiastic Web Developer (HTML, CSS, JavaScript) with a passion for coding and creating fun, user-friendly web apps.</p>
 
-        <a href="https://old.tctam.nl/" class="main-button" target="_blank" rel="noopener noreferrer">
-            <span>Check Out My Old Website</span>
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
+<body>
+    <header>
+        <h1 id="header-title" onclick="location.href='/'">TC_tam - Homepage</h1>
+        <div id="header-right">
+            <a href="https://old.tctam.nl">Old Website</a>
+            <a href="https://github.com/TCevik">GitHub</a>
+        </div>
     </header>
 
     <main>
-        <div class="card" data-size="2">
-            <h2><i class="fa-solid fa-user-gear"></i> About Me</h2>
-            <p>
-                <b>My life:</b> I am Tamer, 16 years old, and I focus on building websites and web apps using HTML, CSS, and JavaScript. Besides coding, I used to practice karate and water polo. I give swimming lessons to children.
-                <br><br>
-                <b>Education:</b> I am currently pursuing secondary vocational education (MBO), after completing senior general secondary education (HAVO) up to the fourth year.
+        <div>
+            <h1>Welcome to my website</h1>
+            <p>I am a developer working on various projects. This is my homepage where I share my work and interests.
             </p>
         </div>
 
-        <div class="card" data-size="1">
-            <h2><i class="fa-solid fa-envelope"></i> Social Media</h2>
-            <p>Follow me on my social platforms to see my projects, fun moments, and updates!</p>
-            <div class="social-links">
-                <a href="https://www.snapchat.com/add/tam.c071" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/snapchat.png" alt="Snapchat"></a>
-                <a href="https://www.youtube.com/@Tamer-Cevik" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/youtube.svg" alt="YouTube"></a>
-                <a href="https://www.tiktok.com/@tc_tam" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/tiktok.webp" alt="TikTok"></a>
-                <a href="https://www.instagram.com/tamer.cevik123/" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/instagram.png" alt="Instagram"></a>
-                <a href="https://scratch.mit.edu/users/YT-TC_tam/" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/scratch.png" alt="Scratch"></a>
-                <a href="https://discord.gg/KfMHZRUaxy" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/discord.png" alt="Discord"></a>
-                <a href="https://github.com/TCevik" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/github.png" alt="Github"></a>
-                <a href="https://x.com/YT_TC_tam" target="_blank" rel="noopener noreferrer"><img src="/assets/social-media/x.avif" alt="X"></a>
+        <div id="cards">
+            <div class="card" data-size="2">
+                <h2><i class="fa-solid fa-user-gear"></i> About Me</h2>
+                <p>
+                    <b>My life:</b> I am Tamer, 16 years old, and I focus on building websites and web apps using HTML,
+                    CSS, and JavaScript. Besides coding, I used to practice karate and water polo. I give swimming
+                    lessons to children.
+                    <br><br>
+                    <b>Education:</b> I am currently pursuing secondary vocational education (MBO), after completing
+                    senior general secondary education (HAVO) up to the fourth year.
+                </p>
             </div>
-        </div>
 
-        <div class="card" data-size="1">
-            <h2><i class="fa-solid fa-book-open"></i> My Hobbies</h2>
-            <p>My main interests revolve around creation and comfort. I am a web developer dedicated to building websites and web-apps using HTML, CSS, and JavaScript. Additionally, I spend my free time on the simple pleasures of eating good food, getting enough sleep, calling with my girlfriend, and swimming.</p>
-        </div>
+            <div class="card" data-size="1">
+                <h2><i class="fa-solid fa-envelope"></i> Social Media</h2>
+                <p>Follow me on my social platforms to see my projects, fun moments, and updates!</p>
+                <div class="social-links">
+                    <a href="https://www.snapchat.com/add/tam.c071" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/snapchat.png" alt="Snapchat"></a>
+                    <a href="https://www.youtube.com/@Tamer-Cevik" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/youtube.svg" alt="YouTube"></a>
+                    <a href="https://www.tiktok.com/@tc_tam" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/tiktok.webp" alt="TikTok"></a>
+                    <a href="https://www.instagram.com/tamer.cevik123/" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/instagram.png" alt="Instagram"></a>
+                    <a href="https://scratch.mit.edu/users/YT-TC_tam/" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/scratch.png" alt="Scratch"></a>
+                    <a href="https://discord.gg/KfMHZRUaxy" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/discord.png" alt="Discord"></a>
+                    <a href="https://github.com/TCevik" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/github.png" alt="Github"></a>
+                    <a href="https://x.com/YT_TC_tam" target="_blank" rel="noopener noreferrer"><img
+                            src="/assets/social-media/x.avif" alt="X"></a>
+                </div>
+            </div>
 
-        <div class="card" data-size="2">
-            <h2><i class="fa-solid fa-code"></i> Projects</h2>
-            <p>As a web developer (HTML, CSS, JavaScript), I have built all my projects myself. Highlights include a Picto Planner for my autistic little brother, the large TC_tam Casino web game (without in-app purchases), and the Documents editor for saving school notes. My first project was a Chat, which taught me a lot about databases and authentication; an improved version is in development.</p>
-        </div>
+            <div class="card" data-size="1">
+                <h2><i class="fa-solid fa-book-open"></i> My Hobbies</h2>
+                <p>My main interests revolve around creation and comfort. I am a web developer dedicated to building
+                    websites and web-apps using HTML, CSS, and JavaScript. Additionally, I spend my free time on the
+                    simple pleasures of eating good food, getting enough sleep, calling with my girlfriend, and
+                    swimming.</p>
+            </div>
+
+            <div class="card" data-size="2">
+                <h2><i class="fa-solid fa-code"></i> Projects</h2>
+                <p>As a web developer (HTML, CSS, JavaScript), I have built all my projects myself. Highlights include a
+                    Picto Planner for my autistic little brother, the large TC_tam Casino web game (without in-app
+                    purchases), and the Documents editor for saving school notes. My first project was a Chat, which
+                    taught me a lot about databases and authentication; an improved version is in development.</p>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (window.innerWidth <= 768) {
+                        const cards = document.querySelectorAll('.card');
+
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add('is-visible');
+                                } else {
+                                    entry.target.classList.remove('is-visible');
+                                }
+                            });
+                        }, {
+                            root: null,
+                            rootMargin: '-25% 0px -25% 0px',
+                            threshold: 0.1
+                        });
+
+                        cards.forEach(card => observer.observe(card));
+                    }
+                });
+            </script>
     </main>
 
     <footer>
         <p>&copy; 2023 - Now | Tamer Çevik</p>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.innerWidth <= 768) {
-                const cards = document.querySelectorAll('.card');
-                
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                        } else {
-                            entry.target.classList.remove('is-visible');
-                        }
-                    });
-                }, {
-                    root: null,
-                    rootMargin: '-25% 0px -25% 0px',
-                    threshold: 0.1
-                });
-
-                cards.forEach(card => observer.observe(card));
-            }
-        });
-    </script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8924607946192862" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8924607946192862" data-ad-slot="5862330293" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 </body>
+
 </html>
