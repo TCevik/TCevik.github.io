@@ -4,25 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>TC_tam - Developer Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="/script.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
         :root {
-            --color-bg-main: #0a0a0a;
-            --color-bg-secondary: #141414;
-            --color-card: #1a1a1a;
-            --color-accent: #10b981;
-            --color-accent-hover: #34d399;
+            --color-bg-main: #121212;
+            --color-bg-secondary: #121212;
+            --color-card: #1e1e1e;
+            --color-accent: #00ff66;
+            --color-accent-hover: #33ff88;
             --color-text-primary: #ffffff;
-            --color-text-secondary: #c5c5c5;
-            --font-main: "Lexend", sans-serif;
+            --color-text-secondary: #a0a0a0;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             --border-radius: 16px;
+            --border-color: #333;
         }
 
         * {
@@ -55,7 +52,7 @@
         }
 
         header {
-            background-color: rgba(10, 10, 10, 0.85);
+            background-color: rgba(18, 18, 18, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             color: white;
@@ -63,7 +60,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -74,10 +71,13 @@
             font-size: 22px;
             cursor: pointer;
             user-select: none;
-            background: linear-gradient(to right, #ffffff, var(--color-accent-hover));
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
             margin: 0;
+        }
+
+        #header-title span {
+            color: var(--color-accent);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
         }
 
         #header-right {
@@ -85,16 +85,43 @@
             font-size: 15px;
             display: flex;
             gap: 20px;
+            align-items: center;
         }
 
         #header-right a {
             color: var(--color-text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         #header-right a:hover {
             color: var(--color-accent);
+        }   
+
+        #header-right a.search-btn {
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+        }
+
+        #header-right a.search-btn:hover {
+            background: var(--color-accent);
+            color: #121212;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            #header-right a.search-btn span {
+                display: none;
+            }
+            #header-right a.search-btn {
+                padding: 6px 10px;
+            }
         }
 
         main {
@@ -107,9 +134,7 @@
             font-size: 2.8rem;
             font-weight: 800;
             margin-bottom: 12px;
-            background: linear-gradient(to right, #ffffff, var(--color-accent));
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--color-accent);
         }
 
         main p {
@@ -127,7 +152,7 @@
 
         .card {
             background: var(--color-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             padding: 35px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -157,6 +182,7 @@
             .card:hover {
                 transform: translateY(-5px);
                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+                border-color: var(--color-accent);
             }
 
             .card:hover::before {
@@ -175,6 +201,7 @@
         .card h2 {
             font-size: 1.5rem;
             margin-bottom: 20px;
+            margin-top: -15px;
             color: var(--color-text-primary);
             display: flex;
             align-items: center;
@@ -217,7 +244,7 @@
         .social-links a img:hover {
             transform: scale(1.1);
             filter: grayscale(0%);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 255, 102, 0.3);
         }
 
         footer {
@@ -225,7 +252,7 @@
             padding: 40px 20px;
             color: var(--color-text-secondary);
             font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--border-color);
             margin-top: 60px;
         }
 
@@ -262,8 +289,9 @@
 
 <body>
     <header>
-        <h1 id="header-title" onclick="location.href='/'">TC_tam - Homepage</h1>
+        <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span> - Homepage</h1>
         <div id="header-right">
+            <a href="search.html" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i><span>Ga hier naar TC_tam Search</span></a>
             <a href="https://old.tctam.nl">Old Website</a>
             <a href="https://github.com/TCevik">GitHub</a>
         </div>
