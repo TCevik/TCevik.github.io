@@ -292,13 +292,85 @@
             main h1 {
                 font-size: 2.2rem;
             }
+
+            /* Scroll animation for cards (progressive enhancement) */
+            .js .card {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .js .card.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-subtitle {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            #header-right {
+                gap: 12px;
+                font-size: 14px;
+            }
+
+            main {
+                padding: 25px 15px;
+            }
+
+            main h1 {
+                font-size: 2rem;
+            }
+
+            main p {
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .card h2 {
+                margin-top: -5px;
+                font-size: 1.3rem;
+            }
+
+            .card p {
+                margin-top: -5px;
+                font-size: 0.95rem;
+            }
+
+            .social-links {
+                gap: 8px;
+                margin-top: 15px;
+            }
+
+            .social-links a img {
+                width: 44px;
+                height: 44px;
+                border-radius: 8px;
+            }
+
+            footer {
+                margin-top: 40px;
+                padding: 30px 15px;
+            }
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span> - Homepage</h1>
+        <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span><span class="header-subtitle"> - Homepage</span></h1>
         <div id="header-right">
             <a href="https://old.tctam.nl">Old Website</a>
             <a href="https://github.com/TCevik">GitHub</a>
@@ -382,8 +454,8 @@
                             });
                         }, {
                             root: null,
-                            rootMargin: '-25% 0px -25% 0px',
-                            threshold: 0.1
+                            rootMargin: '0px 0px -10% 0px',
+                            threshold: 0.05
                         });
 
                         cards.forEach(card => observer.observe(card));
