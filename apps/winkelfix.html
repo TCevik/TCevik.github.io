@@ -13,56 +13,60 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap');
-
         :root {
-            /* Originele kleuren - NIET GEWIJZIGD */
+            /* Stijl van index en search - Light Mode variant met groene accenten */
             --bg-color: #f8f9fa;
-            --text-color: #333;
-            --header-bg: #01abe8;
-            --header-text: white;
-            --card-bg: white;
+            --text-color: #121212;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-text: #121212;
+            --card-bg: #ffffff;
             --card-shadow: rgba(0, 0, 0, 0.05);
-            --input-border: #ddd;
-            --input-bg: white;
-            --btn-primary: #01abe8;
-            --btn-success: #28a745;
-            --modal-bg: white;
+            --input-border: #e0e0e0;
+            --input-bg: #ffffff;
+            --btn-primary: #00cc52;
+            --btn-primary-hover: #00e65c;
+            --btn-success: #00cc52;
+            --btn-text: #ffffff;
+            --modal-bg: #ffffff;
             --modal-overlay: rgba(0, 0, 0, 0.5);
-            --secondary-text: #888;
-            --accent-color: #01abe8;
+            --secondary-text: #666666;
+            --accent-color: #00cc52;
             --toast-bg: #333;
-            --toast-text: #fff;
+            --toast-text: #ffffff;
             --filter-pill-bg: #eee;
             --filter-pill-text: #555;
             --drag-handle: #ddd;
+            --border-color: #e0e0e0;
         }
 
         :root[data-theme='dark'] {
-            /* Originele dark mode kleuren - NIET GEWIJZIGD */
+            /* Stijl van index en search - Standaard Premium Dark Mode */
             --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --header-bg: #1f1f1f;
-            --header-text: #01abe8;
+            --text-color: #ffffff;
+            --header-bg: rgba(18, 18, 18, 0.85);
+            --header-text: #ffffff;
             --card-bg: #1e1e1e;
-            --card-shadow: rgba(0, 0, 0, 0.3);
+            --card-shadow: rgba(0, 0, 0, 0.4);
             --input-border: #333;
-            --input-bg: #2d2d2d;
-            --btn-primary: #01abe8;
-            --btn-success: #2e7d32;
-            --modal-bg: #252525;
-            --modal-overlay: rgba(0, 0, 0, 0.7);
-            --secondary-text: #aaa;
-            --accent-color: #01abe8;
-            --toast-bg: #01abe8;
-            --toast-text: #fff;
-            --filter-pill-bg: #333;
-            --filter-pill-text: #ccc;
-            --drag-handle: #444;
+            --input-bg: #121212;
+            --btn-primary: #00ff66;
+            --btn-primary-hover: #33ff88;
+            --btn-success: #00ff66;
+            --btn-text: #121212;
+            --modal-bg: #1e1e1e;
+            --modal-overlay: rgba(0, 0, 0, 0.8);
+            --secondary-text: #a0a0a0;
+            --accent-color: #00ff66;
+            --toast-bg: #1e1e1e;
+            --toast-text: #ffffff;
+            --filter-pill-bg: #222;
+            --filter-pill-text: #a0a0a0;
+            --drag-handle: #555;
+            --border-color: #333;
         }
 
         * {
-            font-family: 'Lexend', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -70,9 +74,9 @@
 
         body {
             margin: 0;
-            padding: 85px 0 90px 0;
+            padding: 95px 0 90px 0;
             /* Ruimte voor header en bottom nav */
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, var(--bg-color), var(--bg-color));
             color: var(--text-color);
             -webkit-user-select: none;
             user-select: none;
@@ -85,6 +89,25 @@
             user-select: text;
         }
 
+        /* Custom Scrollbar in de stijl van index/search */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-bg);
+            border-radius: 5px;
+            border: 2px solid var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
         /* --- Vernieuwde Header (Zwevend) --- */
         header {
             position: fixed;
@@ -95,14 +118,15 @@
             border-radius: 20px;
             background-color: var(--header-bg);
             box-shadow: 0 4px 15px var(--card-shadow);
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
             color: var(--header-text);
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         header #title {
@@ -110,15 +134,30 @@
             font-weight: 700;
             margin: 0;
             letter-spacing: -0.5px;
+            color: var(--text-color);
+        }
+
+        header #title span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
         }
 
         header i {
-            font-size: 22px;
-            color: var(--header-text);
+            font-size: 20px;
+            color: var(--text-color);
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        header i:hover {
+            color: var(--accent-color);
+            background: rgba(0, 255, 102, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         header i:active {
@@ -134,6 +173,7 @@
             height: 70px;
             background-color: var(--card-bg);
             box-shadow: 0 -4px 20px var(--card-shadow);
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -163,8 +203,13 @@
             transition: transform 0.2s ease;
         }
 
+        .nav-item:hover {
+            color: var(--accent-color);
+        }
+
         .nav-item.active {
             color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
         }
 
         .nav-item.active i {
@@ -204,6 +249,7 @@
             font-size: 1.8rem;
             margin: 0 0 5px 0;
             color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .dash-header p {
@@ -222,6 +268,7 @@
             border-radius: 20px;
             padding: 25px 20px;
             box-shadow: 0 6px 15px var(--card-shadow);
+            border: 1px solid var(--border-color);
             text-align: center;
             cursor: pointer;
             display: flex;
@@ -230,6 +277,31 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dash-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(0, 255, 102, 0.15);
+        }
+
+        .dash-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            border: 2px solid var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .dash-card:hover::before {
+            opacity: 0.3;
         }
 
         .dash-card:active {
@@ -240,6 +312,7 @@
             font-size: 2.5rem;
             color: var(--accent-color);
             margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
         }
 
         .dash-card h3 {
@@ -254,11 +327,12 @@
             top: 15px;
             right: 15px;
             background-color: var(--accent-color);
-            color: white;
+            color: #121212;
             font-size: 0.8rem;
             font-weight: bold;
             padding: 4px 10px;
             border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
         }
 
         /* --- Scanner --- */
@@ -280,6 +354,7 @@
             border-radius: 25px;
             padding: 30px 20px;
             box-shadow: 0 8px 25px var(--card-shadow);
+            border: 1px solid var(--border-color);
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -290,6 +365,7 @@
             color: var(--accent-color);
             margin: 0 0 20px 0;
             font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .snapshot-preview {
@@ -329,26 +405,33 @@
             flex: 1;
             padding: 16px;
             background-color: var(--btn-primary);
-            color: white;
+            color: var(--btn-text);
             border: none;
             border-radius: 20px;
             font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(1, 171, 232, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 255, 102, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: var(--btn-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 102, 0.3);
         }
 
         .action-btn:active {
-            transform: scale(0.96);
+            transform: scale(0.96) translateY(0);
         }
 
         .save-btn {
             background-color: var(--btn-success);
-            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+            color: var(--btn-text);
         }
 
         /* --- Mijn Barcodes --- */
@@ -357,6 +440,7 @@
             font-size: 1.6rem;
             margin: 0 0 20px 0;
             font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .controls-section {
@@ -364,6 +448,7 @@
             border-radius: 25px;
             padding: 15px;
             margin-bottom: 20px;
+            border: 1px solid var(--border-color);
             box-shadow: 0 4px 15px var(--card-shadow);
         }
 
@@ -381,10 +466,12 @@
             background-color: var(--input-bg);
             color: var(--text-color);
             outline: none;
+            transition: all 0.3s ease;
         }
 
         .search-container input:focus {
             border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .search-container i {
@@ -406,7 +493,7 @@
             flex: 1;
             padding: 12px;
             background-color: var(--btn-primary);
-            color: white;
+            color: var(--btn-text);
             border: none;
             border-radius: 15px;
             font-size: 0.95rem;
@@ -416,16 +503,26 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .import-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 102, 0.25);
         }
 
         .import-btn.manual {
             background-color: #ffc107;
-            color: #333;
+            color: #121212;
+        }
+
+        .import-btn.manual:hover {
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
         }
 
         .import-btn:active {
             filter: brightness(0.9);
-            transform: scale(0.98);
+            transform: scale(0.98) translateY(0);
         }
 
         .filter-container {
@@ -450,13 +547,20 @@
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
-            border: none;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .filter-pill:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .filter-pill.active {
             background-color: var(--accent-color);
-            color: white;
-            box-shadow: 0 4px 10px rgba(1, 171, 232, 0.3);
+            color: #121212;
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 10px rgba(0, 255, 102, 0.3);
         }
 
         /* --- Vernieuwde Lijst --- */
@@ -474,7 +578,14 @@
             display: flex;
             align-items: center;
             box-shadow: 0 4px 12px var(--card-shadow);
+            border: 1px solid var(--border-color);
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .barcode-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 20px rgba(0, 255, 102, 0.1);
         }
 
         .drag-handle {
@@ -497,6 +608,7 @@
             border-radius: 15px;
             margin: 0 15px 0 5px;
             background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
         }
 
         .barcode-card .info {
@@ -523,7 +635,8 @@
         .barcode-card .info .sub-code {
             color: var(--accent-color);
             font-weight: 600;
-            background: var(--bg-color);
+            background: rgba(0, 255, 102, 0.1);
+            border: 1px solid rgba(0, 255, 102, 0.2);
             padding: 2px 8px;
             border-radius: 8px;
             font-size: 0.75rem;
@@ -550,15 +663,27 @@
             justify-content: center;
             align-items: center;
             font-size: 0.9rem;
+            transition: all 0.2s ease;
         }
 
         .edit-btn {
-            background: #ffc107;
-            color: #333;
+            background: #00bfff; /* --edit-color */
+            color: #ffffff;
+        }
+
+        .edit-btn:hover {
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+            transform: scale(1.05);
         }
 
         .delete-btn {
-            background: #ff4d4d;
+            background: #ff3333; /* --danger-color */
+            color: #ffffff;
+        }
+
+        .delete-btn:hover {
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+            transform: scale(1.05);
         }
 
         .icon-btn:active {
@@ -582,6 +707,8 @@
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s;
             padding: 20px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .modal-overlay.show {
@@ -596,6 +723,7 @@
             width: 100%;
             max-width: 450px;
             box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--accent-color);
             text-align: center;
             transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -614,7 +742,7 @@
             .modal-box {
                 border-radius: 25px;
                 transform: scale(0.9) translateY(20px);
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 10px 40px rgba(0, 255, 102, 0.2);
             }
 
             .modal-overlay.show .modal-box {
@@ -624,8 +752,9 @@
 
         .modal-box h3 {
             margin: 0 0 15px 0;
-            color: var(--text-color);
+            color: var(--accent-color);
             font-size: 1.4rem;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .modal-box p {
@@ -645,11 +774,13 @@
             color: var(--text-color);
             margin-bottom: 20px;
             outline: none;
+            transition: all 0.3s ease;
         }
 
         .modal-input:focus,
         .modal-select:focus {
             border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .modal-buttons {
@@ -666,23 +797,40 @@
             font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .cancel-btn {
             background: var(--filter-pill-bg);
             color: var(--filter-pill-text);
+            border: 1px solid var(--border-color);
+        }
+
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--secondary-text);
         }
 
         .ok-btn {
             background: var(--btn-primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(1, 171, 232, 0.3);
+            color: var(--btn-text);
+            box-shadow: 0 4px 12px rgba(0, 255, 102, 0.25);
+        }
+
+        .ok-btn:hover {
+            background: var(--btn-primary-hover);
+            box-shadow: 0 6px 16px rgba(0, 255, 102, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .ok-btn:active {
+            transform: scale(0.96) translateY(0);
         }
 
         /* --- Toast --- */
         #toast-container {
             position: fixed;
-            top: 90px;
+            top: 95px;
             /* Toast van boven ipv onder ivm bottom nav */
             left: 50%;
             transform: translateX(-50%);
@@ -707,6 +855,7 @@
             transform: translateY(-20px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-color);
         }
 
         .toast-msg.show {
@@ -729,6 +878,7 @@
             z-index: 3000;
             transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -745,6 +895,7 @@
             align-items: center;
             background: var(--header-bg);
             color: var(--header-text);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .menu-header h3 {
@@ -781,6 +932,11 @@
             color: var(--text-color);
             font-weight: 500;
             transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 255, 102, 0.05);
+            color: var(--accent-color);
         }
 
         .menu-item:active {
@@ -838,8 +994,7 @@
 
         (function () {
             const savedTheme = localStorage.getItem('theme');
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            const theme = savedTheme || systemTheme;
+            const theme = savedTheme || 'dark'; // Standaard dark mode in de stijl van index/search
             document.documentElement.setAttribute('data-theme', theme);
 
             document.documentElement.classList.add('no-transition');
@@ -849,6 +1004,9 @@
                     if (theme === 'dark') {
                         toggleIcon.classList.remove('fa-moon');
                         toggleIcon.classList.add('fa-sun');
+                    } else {
+                        toggleIcon.classList.remove('fa-sun');
+                        toggleIcon.classList.add('fa-moon');
                     }
                 }
                 setTimeout(() => document.documentElement.classList.remove('no-transition'), 100);
@@ -862,10 +1020,10 @@
         <div style="display: flex; align-items: center; gap: 15px;">
             <i class="fa-solid fa-bars" id="menu-toggle" onclick="toggleMenu()"
                 style="background: none; box-shadow: none; padding: 5px;"></i>
-            <p id="title">WinkelFix</p>
+            <p id="title">Winkel<span>Fix</span></p>
         </div>
         <div>
-            <i class="fa-solid fa-moon" id="theme-toggle" onclick="toggleTheme()"></i>
+            <i class="fa-solid fa-sun" id="theme-toggle" onclick="toggleTheme()"></i>
         </div>
     </header>
 
@@ -1424,7 +1582,7 @@
 
                 JsBarcode("#barcode", decodedText, {
                     format: "CODE128", lineColor: "#000000", background: "#ffffff", width: 3, height: 100,
-                    displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
+                    displayValue: true, font: "Segoe UI", fontSize: 20, fontOptions: "bold", textMargin: 10
                 });
             });
         }
@@ -1516,7 +1674,7 @@
 
                             JsBarcode("#barcode", decodedText, {
                                 format: "CODE128", lineColor: "#000000", background: "#ffffff", width: 3, height: 100,
-                                displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
+                                displayValue: true, font: "Segoe UI", fontSize: 20, fontOptions: "bold", textMargin: 10
                             });
 
                             showToast("Barcode gevonden! Klik op Opslaan.");
@@ -1780,7 +1938,7 @@
                     snap.style.display = "block";
                     JsBarcode("#bekijk-svg", item.code, {
                         format: "CODE128", lineColor: "#000000", background: "#ffffff", width: 3, height: 100,
-                        displayValue: true, font: "Lexend", fontSize: 20, fontOptions: "bold", textMargin: 10
+                        displayValue: true, font: "Segoe UI", fontSize: 20, fontOptions: "bold", textMargin: 10
                     });
                     navigate("bekijk-barcode-scherm");
                 }
