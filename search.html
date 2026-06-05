@@ -15,6 +15,7 @@
             --text-muted: #a0a0a0;
             --danger-color: #ff3333;
             --edit-color: #00bfff;
+            --border-color: #333333;
         }
 
         * {
@@ -36,6 +37,7 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         #mobile-blocker {
@@ -87,15 +89,79 @@
         header {
             width: 100%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
             padding: 10px 20px;
+        }
+
+        /* Color Picker Styles */
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .color-picker-icon {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .color-picker-container:hover .color-picker-icon {
+            transform: rotate(30deg);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .color-dot[data-theme="green"] { background-color: #00ff66; }
+        .color-dot[data-theme="red"] { background-color: #ff3b30; }
+        .color-dot[data-theme="lightblue"] { background-color: #1890ff; }
+        .color-dot[data-theme="dark"] { background-color: #333333; border-color: #555; }
+        .color-dot[data-theme="white"] { background-color: #ffffff; border-color: #ccc; }
+        .color-dot[data-theme="yellow"] { background-color: #fadb14; }
+        .color-dot[data-theme="pink"] { background-color: #eb2f96; }
+        .color-dot[data-theme="orange"] { background-color: #fa8c16; }
+        .color-dot[data-theme="purple"] { background-color: #722ed1; }
+
+        .color-dot:hover {
+            transform: scale(1.25);
+        }
+
+        .color-dot.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 8px var(--accent-color);
+            border: 2px solid #ffffff;
+        }
+
+        body[data-theme="white"] .color-dot.active {
+            border: 2px solid #000000;
         }
 
         .weather-widget {
             background: var(--card-bg);
             padding: 10px 15px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 255, 102, 0.2);
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -120,7 +186,8 @@
 
         h1 span {
             color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+            transition: color 0.3s ease;
         }
 
         .search-box {
@@ -133,7 +200,7 @@
             padding: 15px 25px;
             padding-right: 60px;
             background: var(--card-bg);
-            border: 2px solid #333;
+            border: 2px solid var(--border-color);
             border-radius: 30px;
             color: var(--text-color);
             font-size: 1.1rem;
@@ -146,7 +213,7 @@
 
         .search-box input:focus {
             border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
         }
 
         .search-box button {
@@ -172,23 +239,47 @@
 
         .shortcut-card {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 0;
             border-radius: 16px;
-            text-decoration: none;
             color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
-            transition: transform 0.2s, border-color 0.2s, opacity 0.2s;
-            border: 1px solid #333;
+            transition: transform 0.2s, border-color 0.2s, opacity 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border-color);
             cursor: grab;
             position: relative;
+            overflow: visible;
         }
 
         .shortcut-card:hover {
             transform: translateY(-5px);
             border-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .shortcut-link {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+
+        .shortcut-link i {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            transition: transform 0.2s;
+        }
+
+        .shortcut-link:hover i {
+            transform: scale(1.1);
         }
 
         .shortcut-card:active {
@@ -200,11 +291,6 @@
             border: 1px dashed var(--accent-color);
         }
 
-        .shortcut-card i {
-            font-size: 1.8rem;
-            color: var(--accent-color);
-        }
-
         .shortcut-card span {
             font-size: 0.85rem;
             white-space: nowrap;
@@ -213,14 +299,75 @@
             width: 100%;
         }
 
+        /* Hover action buttons (Edit/Delete) */
+        .card-action-btn {
+            position: absolute;
+            top: -8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+
+        body[data-theme="white"] .card-action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-action-btn:hover {
+            color: var(--text-color);
+            transform: scale(1.1);
+        }
+
+        .card-action-btn.edit {
+            left: 10px;
+        }
+
+        .card-action-btn.edit:hover {
+            background: var(--edit-color);
+            border-color: var(--edit-color);
+            color: #ffffff;
+        }
+
+        .card-action-btn.delete {
+            right: 10px;
+        }
+
+        .card-action-btn.delete:hover {
+            background: var(--danger-color);
+            border-color: var(--danger-color);
+            color: #ffffff;
+        }
+
+        .shortcut-card:hover .card-action-btn {
+            opacity: 1;
+        }
+
         #add-shortcut-btn {
             cursor: pointer;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        #add-shortcut-btn i {
+            font-size: 1.8rem;
+            color: var(--accent-color);
         }
 
         .context-menu {
             position: fixed;
             background: var(--card-bg);
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             display: none;
@@ -278,9 +425,9 @@
             padding: 25px;
             width: 90%;
             max-width: 460px;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.1);
             transform: scale(0.8);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .modal-overlay.active .modal-box {
@@ -297,7 +444,7 @@
             width: 100%;
             padding: 10px 15px;
             background: #121212;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             color: #fff;
             margin-bottom: 15px;
@@ -345,7 +492,7 @@
             background: #121212;
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
             max-height: 160px;
             overflow-y: auto;
         }
@@ -359,7 +506,7 @@
         }
 
         .icon-grid::-webkit-scrollbar-thumb {
-            background: #333;
+            background: var(--border-color);
             border-radius: 3px;
         }
 
@@ -369,7 +516,7 @@
 
         .icon-option {
             background: var(--card-bg);
-            border: 1px solid #444;
+            border: 1px solid var(--border-color);
             padding: 12px;
             border-radius: 6px;
             cursor: pointer;
@@ -389,7 +536,7 @@
         .icon-option.selected {
             border-color: var(--accent-color);
             color: var(--accent-color);
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
             background: rgba(0, 255, 102, 0.05);
         }
 
@@ -422,13 +569,106 @@
         }
 
         .btn-cancel {
-            background: #333;
-            color: #fff;
+            background: var(--border-color);
+            color: var(--text-color);
         }
 
         .btn-save {
             background: var(--accent-color);
             color: #121212;
+        }
+
+        /* White Theme Overrides */
+        body[data-theme="white"] {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        body[data-theme="white"] .search-box input {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-color: var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        body[data-theme="white"] .search-box input:focus {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="white"] .shortcut-card {
+            background: var(--card-bg);
+            border-color: var(--border-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        body[data-theme="white"] .shortcut-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="white"] .weather-widget {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        body[data-theme="white"] .modal-box {
+            background: var(--card-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="white"] .modal-box h3 {
+            color: var(--text-color);
+        }
+
+        body[data-theme="white"] .modal-box input {
+            background: #ffffff;
+            border-color: var(--border-color);
+            color: #121212;
+        }
+
+        body[data-theme="white"] .icon-grid {
+            background: #f5f5f7;
+            border-color: var(--border-color);
+        }
+
+        body[data-theme="white"] .icon-option {
+            background: #ffffff;
+            border-color: var(--border-color);
+            color: #121212;
+        }
+
+        body[data-theme="white"] .icon-option:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        body[data-theme="white"] .icon-option.selected {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        body[data-theme="white"] .context-menu {
+            background: #ffffff;
+            border-color: #e5e5ea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="white"] .context-menu-item {
+            color: #1d1d1f;
+        }
+
+        body[data-theme="white"] .context-menu-item:hover {
+            background: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body[data-theme="white"] .btn-cancel {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+
+        body[data-theme="white"] .btn-save {
+            background: var(--accent-color);
+            color: #ffffff;
         }
     </style>
 </head>
@@ -443,6 +683,20 @@
     </div>
 
     <header>
+        <div class="color-picker-container" id="color-picker-container">
+            <i class="fas fa-palette color-picker-icon" title="Wijzig thema"></i>
+            <div class="color-options" id="color-options">
+                <span class="color-dot green active" data-theme="green" title="Groen (Origineel)"></span>
+                <span class="color-dot red" data-theme="red" title="Rood"></span>
+                <span class="color-dot lightblue" data-theme="lightblue" title="Lichtblauw"></span>
+                <span class="color-dot dark" data-theme="dark" title="Donker"></span>
+                <span class="color-dot white" data-theme="white" title="Wit"></span>
+                <span class="color-dot yellow" data-theme="yellow" title="Geel"></span>
+                <span class="color-dot pink" data-theme="pink" title="Roze"></span>
+                <span class="color-dot orange" data-theme="orange" title="Oranje"></span>
+                <span class="color-dot purple" data-theme="purple" title="Paars"></span>
+            </div>
+        </div>
         <div class="weather-widget" id="weather-widget">
             <i class="fas fa-cloud-sun"></i>
             <span id="weather-text">Loading weather...</span>
@@ -498,6 +752,94 @@
     </div>
 
     <script>
+        const THEMES = {
+            green: {
+                accent: '#00ff66',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            },
+            red: {
+                accent: '#ff3b30',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            },
+            lightblue: {
+                accent: '#1890ff',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            },
+            dark: {
+                accent: '#ffffff',
+                bg: '#000000',
+                cardBg: '#121212',
+                text: '#ffffff',
+                textMuted: '#888888',
+                border: '#222222'
+            },
+            white: {
+                accent: '#000000',
+                bg: '#f5f5f7',
+                cardBg: '#ffffff',
+                text: '#1d1d1f',
+                textMuted: '#86868b',
+                border: '#e5e5ea'
+            },
+            yellow: {
+                accent: '#fadb14',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            },
+            pink: {
+                accent: '#eb2f96',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            },
+            orange: {
+                accent: '#fa8c16',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            },
+            purple: {
+                accent: '#722ed1',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
+                text: '#ffffff',
+                textMuted: '#a0a0a0',
+                border: '#333333'
+            }
+        };
+
+        // Immediately apply theme before document body parses fully to prevent flashing
+        (function() {
+            const savedTheme = localStorage.getItem('themeColor') || 'green';
+            const theme = THEMES[savedTheme] || THEMES.green;
+            const root = document.documentElement;
+            root.style.setProperty('--accent-color', theme.accent);
+            root.style.setProperty('--bg-color', theme.bg);
+            root.style.setProperty('--card-bg', theme.cardBg);
+            root.style.setProperty('--text-color', theme.text);
+            root.style.setProperty('--text-muted', theme.textMuted);
+            root.style.setProperty('--border-color', theme.border);
+        })();
+
         document.addEventListener('contextmenu', (e) => e.preventDefault());
         document.addEventListener('keydown', (e) => {
             const isSelectAll = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a';
@@ -547,6 +889,34 @@
         let activeShortcutIndex = null;
         let isEditMode = false;
         let selectedIconClass = ENTIRE_ICON_LIBRARY[0];
+
+        // Theme changer function
+        function setTheme(themeKey) {
+            const theme = THEMES[themeKey] || THEMES.green;
+            document.documentElement.style.setProperty('--accent-color', theme.accent);
+            document.documentElement.style.setProperty('--bg-color', theme.bg);
+            document.documentElement.style.setProperty('--card-bg', theme.cardBg);
+            document.documentElement.style.setProperty('--text-color', theme.text);
+            document.documentElement.style.setProperty('--text-muted', theme.textMuted);
+            document.documentElement.style.setProperty('--border-color', theme.border);
+            
+            document.body.setAttribute('data-theme', themeKey);
+            localStorage.setItem('themeColor', themeKey);
+
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.classList.toggle('active', dot.dataset.theme === themeKey);
+            });
+        }
+
+        function initColorPicker() {
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    setTheme(dot.dataset.theme);
+                });
+            });
+            const savedTheme = localStorage.getItem('themeColor') || 'green';
+            setTheme(savedTheme);
+        }
 
         function buildIconPicker(filterText = '') {
             iconPickerGrid.innerHTML = '';
@@ -607,30 +977,101 @@
             initDragAndDrop();
         }
 
+        function updateCardIndices() {
+            const cards = document.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)');
+            cards.forEach((card, index) => {
+                card.dataset.index = index;
+            });
+        }
+
+        function saveCurrentOrder() {
+            const cards = document.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)');
+            const currentList = [];
+            cards.forEach(card => {
+                const link = card.querySelector('.shortcut-link');
+                const name = card.querySelector('span').innerText;
+                const url = link.href;
+                const icon = link.querySelector('i').className;
+                currentList.push({ name, url, icon });
+            });
+            localStorage.setItem('customShortcuts', JSON.stringify(currentList));
+        }
+
         function createShortcutDOM(name, url, icon, index) {
+            const card = document.createElement('div');
+            card.className = 'shortcut-card';
+            card.dataset.index = index;
+            card.draggable = true;
+
+            // Hover action controls
+            const editBtn = document.createElement('div');
+            editBtn.className = 'card-action-btn edit';
+            editBtn.title = 'Edit Shortcut';
+            editBtn.innerHTML = '<i class="fas fa-pencil-alt"></i>';
+
+            const deleteBtn = document.createElement('div');
+            deleteBtn.className = 'card-action-btn delete';
+            deleteBtn.title = 'Delete Shortcut';
+            deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+
             const a = document.createElement('a');
             a.href = url;
-            a.className = 'shortcut-card';
+            a.className = 'shortcut-link';
             a.target = '_blank';
-            a.dataset.index = index;
-            a.draggable = true;
-
             a.innerHTML = `
                 <i class="${icon || 'fas fa-globe'}"></i>
                 <span>${name}</span>
             `;
 
+            card.appendChild(editBtn);
+            card.appendChild(deleteBtn);
+            card.appendChild(a);
+
             a.addEventListener('contextmenu', (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                activeShortcutIndex = index;
+                activeShortcutIndex = parseInt(card.dataset.index);
 
                 contextMenu.style.top = `${e.clientY}px`;
                 contextMenu.style.left = `${e.clientX}px`;
                 contextMenu.style.display = 'block';
             });
 
-            shortcutsContainer.insertBefore(a, addBtn);
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                activeShortcutIndex = parseInt(card.dataset.index);
+                
+                const list = getShortcuts();
+                const shortcut = list[activeShortcutIndex];
+                if (shortcut) {
+                    isEditMode = true;
+                    modalTitle.innerText = "Edit Shortcut";
+                    modalSaveBtn.innerText = "Save";
+
+                    shortcutNameInput.value = shortcut.name;
+                    shortcutUrlInput.value = shortcut.url;
+                    iconSearchInput.value = '';
+
+                    selectedIconClass = shortcut.icon || 'fas fa-globe';
+
+                    buildIconPicker();
+                    shortcutModal.classList.add('active');
+                    shortcutNameInput.focus();
+                }
+            });
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const deleteIndex = parseInt(card.dataset.index);
+                let list = getShortcuts();
+                list.splice(deleteIndex, 1);
+                localStorage.setItem('customShortcuts', JSON.stringify(list));
+                loadShortcuts();
+            });
+
+            shortcutsContainer.insertBefore(card, addBtn);
         }
 
         let draggedElement = null;
@@ -649,34 +1090,25 @@
                     card.classList.remove('dragging');
                     draggedElement = null;
                     cards.forEach(c => c.style.border = '');
+                    saveCurrentOrder();
                 });
 
                 card.addEventListener('dragover', (e) => {
                     if (draggedElement && draggedElement !== card) {
                         e.preventDefault();
                         e.dataTransfer.dropEffect = 'move';
-                        card.style.border = '1px dashed var(--accent-color)';
-                    }
-                });
-
-                card.addEventListener('dragleave', () => {
-                    card.style.border = '';
-                });
-
-                card.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    card.style.border = '';
-
-                    if (draggedElement && draggedElement !== card) {
-                        const oldList = getShortcuts();
+                        
+                        const targetIndex = parseInt(card.dataset.index);
                         const fromIndex = parseInt(draggedElement.dataset.index);
-                        const toIndex = parseInt(card.dataset.index);
 
-                        const [movedItem] = oldList.splice(fromIndex, 1);
-                        oldList.splice(toIndex, 0, movedItem);
-
-                        localStorage.setItem('customShortcuts', JSON.stringify(oldList));
-                        loadShortcuts();
+                        if (fromIndex !== targetIndex) {
+                            if (fromIndex < targetIndex) {
+                                shortcutsContainer.insertBefore(draggedElement, card.nextSibling);
+                            } else {
+                                shortcutsContainer.insertBefore(draggedElement, card);
+                            }
+                            updateCardIndices();
+                        }
                     }
                 });
             });
@@ -690,35 +1122,11 @@
             addBtn.addEventListener('drop', (e) => {
                 e.preventDefault();
                 if (draggedElement) {
-                    const oldList = getShortcuts();
-                    const fromIndex = parseInt(draggedElement.dataset.index);
-
-                    const [movedItem] = oldList.splice(fromIndex, 1);
-                    oldList.push(movedItem);
-
-                    localStorage.setItem('customShortcuts', JSON.stringify(oldList));
-                    loadShortcuts();
+                    shortcutsContainer.insertBefore(draggedElement, addBtn);
+                    updateCardIndices();
+                    saveCurrentOrder();
                 }
             });
-        }
-
-        function getDragAfterElement(container, x, y) {
-            const draggableElements = [...container.querySelectorAll('.shortcut-card:not(.dragging):not(#add-shortcut-btn)')];
-
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-
-                const boxCenterX = box.left + box.width / 2;
-                const boxCenterY = box.top + box.height / 2;
-
-                const distance = Math.sqrt(Math.pow(x - boxCenterX, 2) + Math.pow(y - boxCenterY, 2));
-
-                if (distance < closest.distance) {
-                    return { distance: distance, element: child };
-                } else {
-                    return closest;
-                }
-            }, { distance: Number.POSITIVE_INFINITY }).element;
         }
 
         editContextItem.addEventListener('click', () => {
@@ -825,6 +1233,7 @@
             }
         }
 
+        initColorPicker();
         loadShortcuts();
         fetchWeather();
     </script>
