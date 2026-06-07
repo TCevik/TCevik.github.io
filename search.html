@@ -670,6 +670,73 @@
             background: var(--accent-color);
             color: #ffffff;
         }
+
+        /* Extension banner styles */
+        #extension-banner {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            z-index: 1000;
+            max-width: 380px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #extension-banner h4 {
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        #extension-banner p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        #extension-banner .banner-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        #extension-banner button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, background 0.2s, color 0.2s;
+        }
+        
+        #extension-banner .btn-banner-dismiss {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        #extension-banner .btn-banner-install {
+            background: var(--accent-color);
+            color: #121212;
+        }
+
+        body[data-theme="white"] #extension-banner .btn-banner-install {
+            color: #ffffff;
+        }
+        
+        #extension-banner button:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 
@@ -748,6 +815,34 @@
         </div>
         <div class="context-menu-item delete-item" id="delete-context-item">
             <i class="fas fa-trash-alt"></i> Delete
+        </div>
+    </div>
+
+    <div id="extension-banner">
+        <h4>Make TC_tam Search default</h4>
+        <p>Set this search page as your default homepage and new tab page using our extension.</p>
+        <div class="banner-buttons">
+            <button class="btn-banner-dismiss" id="ext-banner-dismiss">Maybe later</button>
+            <button class="btn-banner-install" id="ext-banner-install">Install</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="extension-modal">
+        <div class="modal-box" style="max-width: 500px;">
+            <h3>Install Extension</h3>
+            <div style="text-align: left; margin: 15px 0 25px 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-color); user-select: text; -webkit-user-select: text;">
+                <p style="margin-bottom: 15px;">Follow these steps to install the TC_tam Search extension in Chrome:</p>
+                <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 12px;">
+                    <li><strong>Download the extension:</strong> <a href="/tctam-search-ext.zip" download style="color: var(--accent-color); font-weight: bold; text-decoration: underline;">Click here to download the extension (.zip)</a></li>
+                    <li><strong>Extract the zip file</strong> to a folder on your computer (e.g., in your Documents).</li>
+                    <li>Open a new tab and navigate to: <code style="background: var(--bg-color); border: 1px solid var(--border-color); padding: 2px 6px; border-radius: 4px; font-family: monospace;">chrome://extensions/</code></li>
+                    <li>In the top-right corner, enable <strong>Developer mode</strong>.</li>
+                    <li>In the top-left, click <strong>Load unpacked</strong> and select the extracted folder (the folder containing `manifest.json`).</li>
+                </ol>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="ext-modal-close" style="background: var(--accent-color); color: #121212;">Got it!</button>
+            </div>
         </div>
     </div>
 
@@ -1235,6 +1330,80 @@
         initColorPicker();
         loadShortcuts();
         fetchWeather();
+
+        function initExtensionPrompt() {
+            const isLocalExtension = window.location.protocol === 'chrome-extension:';
+            const isInstalled = document.documentElement.hasAttribute('data-tctam-search-extension-installed');
+            
+            // Non-irritating: Check if they clicked dismiss within the last 14 days
+            const dismissedTime = localStorage.getItem('tctam-extension-prompt-dismissed-time');
+            const isDismissed = dismissedTime && (Date.now() - parseInt(dismissedTime) < 14 * 24 * 60 * 60 * 1000);
+
+            if (!isLocalExtension && !isInstalled && !isDismissed) {
+                // Wait 2 seconds before showing the prompt (non-irritating, allows page to load smoothly)
+                setTimeout(() => {
+                    // Double check in case content script was slow to inject
+                    if (!document.documentElement.hasAttribute('data-tctam-search-extension-installed')) {
+                        const banner = document.getElementById('extension-banner');
+                        if (banner) {
+                            banner.style.display = 'block';
+                            // Wait a tiny bit for display block to take effect, then trigger transitions
+                            setTimeout(() => {
+                                banner.style.opacity = '1';
+                                banner.style.transform = 'translateY(0)';
+                            }, 50);
+                        }
+                    }
+                }, 2000);
+            }
+
+            const banner = document.getElementById('extension-banner');
+            const dismissBtn = document.getElementById('ext-banner-dismiss');
+            const installBtn = document.getElementById('ext-banner-install');
+            const extModal = document.getElementById('extension-modal');
+            const extModalClose = document.getElementById('ext-modal-close');
+
+            if (dismissBtn && banner) {
+                dismissBtn.addEventListener('click', () => {
+                    banner.style.opacity = '0';
+                    banner.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        banner.style.display = 'none';
+                    }, 300);
+                    localStorage.setItem('tctam-extension-prompt-dismissed-time', Date.now().toString());
+                });
+            }
+
+            if (installBtn && extModal && banner) {
+                installBtn.addEventListener('click', () => {
+                    extModal.classList.add('active');
+                    // Fade out and close the banner immediately
+                    banner.style.opacity = '0';
+                    banner.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        banner.style.display = 'none';
+                    }, 300);
+                });
+            }
+
+            if (extModalClose && extModal) {
+                extModalClose.addEventListener('click', () => {
+                    extModal.classList.remove('active');
+                    localStorage.setItem('tctam-extension-prompt-dismissed-time', Date.now().toString());
+                });
+            }
+
+            if (extModal) {
+                extModal.addEventListener('click', (e) => {
+                    if (e.target === extModal) {
+                        extModal.classList.remove('active');
+                        localStorage.setItem('tctam-extension-prompt-dismissed-time', Date.now().toString());
+                    }
+                });
+            }
+        }
+
+        initExtensionPrompt();
     </script>
 </body>
 

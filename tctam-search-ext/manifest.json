@@ -6,5 +6,16 @@
   "author": "TC_tam",
   "chrome_url_overrides": {
     "newtab": "redirect.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://tctam.nl/*",
+        "*://localhost/*",
+        "*://127.0.0.1/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
 }
