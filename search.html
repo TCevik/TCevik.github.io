@@ -98,19 +98,30 @@
         .color-picker-container {
             display: flex;
             align-items: center;
-            gap: 10px;
             background: var(--card-bg);
             padding: 8px 12px;
             border-radius: 20px;
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), gap 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+            max-width: 42px;
+            gap: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .color-picker-container:hover {
+            max-width: 500px;
+            gap: 12px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
         .color-picker-icon {
             color: var(--accent-color);
             font-size: 1.1rem;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
         }
 
         .color-picker-container:hover .color-picker-icon {
@@ -119,8 +130,81 @@
 
         .color-options {
             display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-10px);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+        }
+
+        .color-picker-container:hover .color-options {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        /* Mode Toggle Group */
+        .mode-toggle-group {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2px;
+            border: 1px solid var(--border-color);
+            gap: 2px;
+        }
+
+        body[data-theme="white"] .mode-toggle-group {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            width: 24px;
+            height: 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn:hover {
+            color: var(--text-color);
+        }
+
+        .mode-btn.active {
+            background: var(--bg-color);
+            color: var(--accent-color);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+
+        body[data-theme="white"] .mode-btn.active {
+            background: #ffffff;
+            color: var(--accent-color);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Picker Divider */
+        .picker-divider {
+            width: 1px;
+            height: 18px;
+            background: var(--border-color);
+            flex-shrink: 0;
+        }
+
+        /* Color Dots Group */
+        .color-dots-group {
+            display: flex;
             gap: 8px;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .color-dot {
@@ -131,17 +215,20 @@
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            flex-shrink: 0;
         }
 
-        .color-dot[data-theme="green"] { background-color: #00ff66; }
-        .color-dot[data-theme="red"] { background-color: #ff3b30; }
-        .color-dot[data-theme="lightblue"] { background-color: #1890ff; }
-        .color-dot[data-theme="dark"] { background-color: #333333; border-color: #555; }
-        .color-dot[data-theme="white"] { background-color: #ffffff; border-color: #ccc; }
-        .color-dot[data-theme="yellow"] { background-color: #fadb14; }
-        .color-dot[data-theme="pink"] { background-color: #eb2f96; }
-        .color-dot[data-theme="orange"] { background-color: #fa8c16; }
-        .color-dot[data-theme="purple"] { background-color: #722ed1; }
+        .color-dot[data-color="green"] { background-color: #00ff66; }
+        .color-dot[data-color="red"] { background-color: #ff3b30; }
+        .color-dot[data-color="lightblue"] { background-color: #1890ff; }
+        .color-dot[data-color="yellow"] { background-color: #fadb14; }
+        .color-dot[data-color="pink"] { background-color: #eb2f96; }
+        .color-dot[data-color="orange"] { background-color: #fa8c16; }
+        .color-dot[data-color="purple"] { background-color: #722ed1; }
+
+        body[data-theme="white"] .color-dot {
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
 
         .color-dot:hover {
             transform: scale(1.25);
@@ -245,7 +332,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform 0.2s, border-color 0.2s, opacity 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, border-color 0.2s, opacity 0.2s, box-shadow 0.2s, background-color 0.3s ease;
             border: 1px solid var(--border-color);
             cursor: grab;
             position: relative;
@@ -753,15 +840,24 @@
         <div class="color-picker-container" id="color-picker-container">
             <i class="fas fa-palette color-picker-icon" title="Wijzig thema"></i>
             <div class="color-options" id="color-options">
-                <span class="color-dot green active" data-theme="green" title="Groen (Origineel)"></span>
-                <span class="color-dot red" data-theme="red" title="Rood"></span>
-                <span class="color-dot lightblue" data-theme="lightblue" title="Lichtblauw"></span>
-                <span class="color-dot dark" data-theme="dark" title="Donker"></span>
-                <span class="color-dot white" data-theme="white" title="Wit"></span>
-                <span class="color-dot yellow" data-theme="yellow" title="Geel"></span>
-                <span class="color-dot pink" data-theme="pink" title="Roze"></span>
-                <span class="color-dot orange" data-theme="orange" title="Oranje"></span>
-                <span class="color-dot purple" data-theme="purple" title="Paars"></span>
+                <div class="mode-toggle-group">
+                    <button class="mode-btn dark" data-mode="dark" title="Zwart modus">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="mode-btn light" data-mode="light" title="Wit modus">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+                <div class="picker-divider"></div>
+                <div class="color-dots-group">
+                    <span class="color-dot green" data-color="green" title="Groen"></span>
+                    <span class="color-dot red" data-color="red" title="Rood"></span>
+                    <span class="color-dot lightblue" data-color="lightblue" title="Lichtblauw"></span>
+                    <span class="color-dot yellow" data-color="yellow" title="Geel"></span>
+                    <span class="color-dot pink" data-color="pink" title="Roze"></span>
+                    <span class="color-dot orange" data-color="orange" title="Oranje"></span>
+                    <span class="color-dot purple" data-color="purple" title="Paars"></span>
+                </div>
             </div>
         </div>
         <div class="weather-widget" id="weather-widget">
@@ -847,92 +943,75 @@
     </div>
 
     <script>
-        const THEMES = {
-            green: {
-                accent: '#00ff66',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
-            },
-            red: {
-                accent: '#ff3b30',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
-            },
-            lightblue: {
-                accent: '#1890ff',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
-            },
+        const MODE_COLORS = {
             dark: {
-                accent: '#ffffff',
-                bg: '#000000',
-                cardBg: '#121212',
+                bg: '#121212',
+                cardBg: '#1e1e1e',
                 text: '#ffffff',
-                textMuted: '#888888',
-                border: '#222222'
+                textMuted: '#a0a0a0',
+                border: '#333333'
             },
-            white: {
-                accent: '#000000',
+            light: {
                 bg: '#f5f5f7',
                 cardBg: '#ffffff',
                 text: '#1d1d1f',
                 textMuted: '#86868b',
                 border: '#e5e5ea'
-            },
-            yellow: {
-                accent: '#fadb14',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
-            },
-            pink: {
-                accent: '#eb2f96',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
-            },
-            orange: {
-                accent: '#fa8c16',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
-            },
-            purple: {
-                accent: '#722ed1',
-                bg: '#121212',
-                cardBg: '#1e1e1e',
-                text: '#ffffff',
-                textMuted: '#a0a0a0',
-                border: '#333333'
             }
         };
 
-        // Immediately apply theme before document body parses fully to prevent flashing
+        const ACCENT_COLORS = {
+            green: { dark: '#00ff66', light: '#00aa44' },
+            red: { dark: '#ff3b30', light: '#e53e3e' },
+            lightblue: { dark: '#1890ff', light: '#0066cc' },
+            yellow: { dark: '#fadb14', light: '#b8860b' },
+            pink: { dark: '#eb2f96', light: '#d81b60' },
+            orange: { dark: '#fa8c16', light: '#e65100' },
+            purple: { dark: '#722ed1', light: '#6200ea' }
+        };
+
+        // Immediately apply theme to prevent flashing
         (function() {
-            const savedTheme = localStorage.getItem('themeColor') || 'green';
-            const theme = THEMES[savedTheme] || THEMES.green;
+            let mode = localStorage.getItem('themeMode');
+            let color = localStorage.getItem('themeColor');
+
+            // Compatibility check
+            if (!mode) {
+                if (color === 'white') {
+                    mode = 'light';
+                    color = 'green';
+                } else if (color === 'dark') {
+                    mode = 'dark';
+                    color = 'green';
+                } else if (color) {
+                    mode = 'dark';
+                } else {
+                    mode = 'dark';
+                    color = 'green';
+                }
+            }
+            if (!color || !ACCENT_COLORS[color]) {
+                color = 'green';
+            }
+
             const root = document.documentElement;
-            root.style.setProperty('--accent-color', theme.accent);
-            root.style.setProperty('--bg-color', theme.bg);
-            root.style.setProperty('--card-bg', theme.cardBg);
-            root.style.setProperty('--text-color', theme.text);
-            root.style.setProperty('--text-muted', theme.textMuted);
-            root.style.setProperty('--border-color', theme.border);
+            const modeVars = MODE_COLORS[mode] || MODE_COLORS.dark;
+            const accentVal = ACCENT_COLORS[color][mode] || ACCENT_COLORS[color].dark;
+
+            root.style.setProperty('--accent-color', accentVal);
+            root.style.setProperty('--bg-color', modeVars.bg);
+            root.style.setProperty('--card-bg', modeVars.cardBg);
+            root.style.setProperty('--text-color', modeVars.text);
+            root.style.setProperty('--text-muted', modeVars.textMuted);
+            root.style.setProperty('--border-color', modeVars.border);
+            
+            if (document.body) {
+                document.body.setAttribute('data-theme', mode === 'light' ? 'white' : 'dark');
+            } else {
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.body.setAttribute('data-theme', mode === 'light' ? 'white' : 'dark');
+                });
+            }
         })();
 
         document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -986,31 +1065,79 @@
         let selectedIconClass = ENTIRE_ICON_LIBRARY[0];
 
         // Theme changer function
-        function setTheme(themeKey) {
-            const theme = THEMES[themeKey] || THEMES.green;
-            document.documentElement.style.setProperty('--accent-color', theme.accent);
-            document.documentElement.style.setProperty('--bg-color', theme.bg);
-            document.documentElement.style.setProperty('--card-bg', theme.cardBg);
-            document.documentElement.style.setProperty('--text-color', theme.text);
-            document.documentElement.style.setProperty('--text-muted', theme.textMuted);
-            document.documentElement.style.setProperty('--border-color', theme.border);
-            
-            document.body.setAttribute('data-theme', themeKey);
-            localStorage.setItem('themeColor', themeKey);
+        function setTheme(mode, color) {
+            if (!MODE_COLORS[mode]) mode = 'dark';
+            if (!ACCENT_COLORS[color]) color = 'green';
 
+            const root = document.documentElement;
+            const modeVars = MODE_COLORS[mode];
+            const accentVal = ACCENT_COLORS[color][mode];
+
+            root.style.setProperty('--accent-color', accentVal);
+            root.style.setProperty('--bg-color', modeVars.bg);
+            root.style.setProperty('--card-bg', modeVars.cardBg);
+            root.style.setProperty('--text-color', modeVars.text);
+            root.style.setProperty('--text-muted', modeVars.textMuted);
+            root.style.setProperty('--border-color', modeVars.border);
+            
+            document.body.setAttribute('data-theme', mode === 'light' ? 'white' : 'dark');
+            localStorage.setItem('themeMode', mode);
+            localStorage.setItem('themeColor', color);
+
+            // Update mode toggles in DOM
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+
+            // Update color dots in DOM
             document.querySelectorAll('.color-dot').forEach(dot => {
-                dot.classList.toggle('active', dot.dataset.theme === themeKey);
+                dot.classList.toggle('active', dot.dataset.color === color);
             });
         }
 
         function initColorPicker() {
-            document.querySelectorAll('.color-dot').forEach(dot => {
-                dot.addEventListener('click', () => {
-                    setTheme(dot.dataset.theme);
+            // Mode buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.dataset.mode;
+                    const color = localStorage.getItem('themeColor') || 'green';
+                    setTheme(mode, color);
                 });
             });
-            const savedTheme = localStorage.getItem('themeColor') || 'green';
-            setTheme(savedTheme);
+
+            // Color dots
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const mode = localStorage.getItem('themeMode') || 'dark';
+                    const color = dot.dataset.color;
+                    setTheme(mode, color);
+                });
+            });
+
+            // Load saved settings
+            let mode = localStorage.getItem('themeMode');
+            let color = localStorage.getItem('themeColor');
+
+            // Compatibility check
+            if (!mode) {
+                if (color === 'white') {
+                    mode = 'light';
+                    color = 'green';
+                } else if (color === 'dark') {
+                    mode = 'dark';
+                    color = 'green';
+                } else if (color) {
+                    mode = 'dark';
+                } else {
+                    mode = 'dark';
+                    color = 'green';
+                }
+            }
+            if (!color || !ACCENT_COLORS[color]) {
+                color = 'green';
+            }
+
+            setTheme(mode, color);
         }
 
         function buildIconPicker(filterText = '') {
