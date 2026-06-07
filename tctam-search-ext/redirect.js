@@ -1,1 +1,1 @@
-window.location.replace("https://tctam.nl/search");
+chrome.tabs.update({ url: "https://tctam.nl/search" });
