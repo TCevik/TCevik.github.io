@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "TC_tam Search",
+  "version": "1.0",
+  "description": "The extention makes the TC_tam Search new tab the standard homepage.",
+  "author": "TC_tam",
+  "chrome_url_overrides": {
+    "newtab": "redirect.html"
+  }
+}
