@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam - Online IDE</title>
+
+    <!-- Font Awesome for sleek icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- JSZip for dynamic ZIP package exporting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- AMD Loader for Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+
+    <style>
+        :root {
+            --color-bg-main: #121212;
+            --color-bg-secondary: #0d0d0d;
+            --color-card: #1e1e1e;
+            --color-accent: #00ff66;
+            --color-accent-hover: #33ff88;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #a0a0a0;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --border-color: #2a2a2a;
+            
+            /* VS Code specific color adaptations */
+            --color-sidebar-bg: #161616;
+            --color-activity-bg: #0f0f0f;
+            --color-editor-bg: #1e1e1e;
+            --color-panel-bg: #181818;
+            --color-tabs-bg: #161616;
+            --color-tab-active: #1e1e1e;
+            --color-tab-inactive: #131313;
+            --color-preview-toolbar: #1a1a1a;
+            --color-status-bg: #0a0a0a;
+            --color-divider: #262626;
+            --color-divider-hover: #00ff66;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: var(--font-main);
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--color-bg-main);
+            color: var(--color-text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #252525;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent);
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            flex-shrink: 0;
+            height: 55px;
+        }
+
+        #header-title {
+            font-weight: 700;
+            font-size: 20px;
+            cursor: pointer;
+            user-select: none;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        #header-title span {
+            color: var(--color-accent);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        }
+
+        #header-right {
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        #header-right a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #header-right a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Workspace Core Layout */
+        #workspace {
+            display: flex;
+            flex-grow: 1;
+            width: 100%;
+            height: calc(100vh - 55px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Activity Bar (VS Code left strip) */
+        #activity-bar {
+            width: 50px;
+            background-color: var(--color-activity-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 15px;
+            gap: 20px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .activity-btn {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-text-secondary);
+            font-size: 1.15rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .activity-btn:hover {
+            color: var(--color-text-primary);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-btn.active {
+            color: var(--color-accent);
+            background-color: rgba(0, 255, 102, 0.08);
+            border-left: 3px solid var(--color-accent);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .activity-btn .tooltip {
+            position: absolute;
+            left: 55px;
+            background-color: #1a1a1a;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .activity-btn:hover .tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Sidebar (VS Code left side drawer) */
+        #sidebar {
+            width: 240px;
+            background-color: var(--color-sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow: hidden;
+            z-index: 5;
+            transition: width 0.1s ease;
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        /* Sidebar section - Explorer view */
+        .sidebar-pane {
+            display: none;
+        }
+
+        .sidebar-pane.active {
+            display: block;
+        }
+
+        /* File Explorer item styling */
+        .explorer-folder {
+            padding: 4px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .explorer-file {
+            padding: 8px 16px 8px 28px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .explorer-file:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--color-text-primary);
+        }
+
+        .explorer-file.active {
+            background-color: rgba(0, 255, 102, 0.05);
+            color: var(--color-accent);
+            border-right: 2px solid var(--color-accent);
+        }
+
+        .explorer-file-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explorer-file i {
+            font-size: 14px;
+        }
+
+        .icon-html { color: #e34c26; }
+        .icon-css { color: #264de4; }
+        .icon-js { color: #f0db4f; }
+
+        /* Sidebar section - Templates styling */
+        .template-item {
+            margin: 10px 16px;
+            background: var(--color-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-item:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 102, 0.1);
+        }
+
+        .template-item h4 {
+            margin: 0 0 6px;
+            color: var(--color-text-primary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .template-item h4 i {
+            color: var(--color-accent);
+        }
+
+        .template-item p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* Sidebar section - Settings styling */
+        .settings-group {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-group:last-child {
+            border-bottom: none;
+        }
+
+        .settings-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+        }
+
+        .settings-control {
+            margin-bottom: 12px;
+        }
+
+        .settings-control label {
+            display: block;
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .settings-control input[type="number"],
+        .settings-control select {
+            width: 100%;
+            background-color: var(--color-bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--color-text-primary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .settings-control input[type="number"]:focus,
+        .settings-control select:focus {
+            border-color: var(--color-accent);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            cursor: pointer;
+            accent-color: var(--color-accent);
+        }
+
+        /* Import/Export buttons */
+        .action-btn {
+            width: calc(100% - 32px);
+            margin: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--color-text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background-color: rgba(0, 255, 102, 0.03);
+        }
+
+        .action-btn-primary {
+            background-color: var(--color-accent);
+            color: #121212;
+            border-color: var(--color-accent);
+        }
+
+        .action-btn-primary:hover {
+            background-color: var(--color-accent-hover);
+            color: #121212;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+        }
+
+        /* Resizing Dividers */
+        .divider {
+            background-color: var(--color-divider);
+            position: relative;
+            z-index: 20;
+            transition: background-color 0.2s ease;
+        }
+
+        .divider:hover, .divider.dragging {
+            background-color: var(--color-accent);
+        }
+
+        .divider-vertical {
+            width: 4px;
+            cursor: col-resize;
+            height: 100%;
+            flex-shrink: 0;
+        }
+
+        .divider-horizontal {
+            height: 4px;
+            cursor: row-resize;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        /* Editor Workspace Wrapper (Editor + Console) */
+        #editor-workspace {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            height: 100%;
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+
+
+        /* Monaco Editor Panel */
+        #editor-container {
+            flex-grow: 1;
+            width: 100%;
+            background-color: var(--color-editor-bg);
+            position: relative;
+        }
+
+        /* Console Panel (Bottom Section) */
+        #console-panel {
+            height: 180px;
+            min-height: 35px;
+            background-color: var(--color-panel-bg);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .console-header {
+            height: 35px;
+            background-color: #151515;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-secondary);
+            user-select: none;
+        }
+
+        .console-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .console-title i {
+            color: var(--color-accent);
+        }
+
+        .console-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .console-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .console-btn:hover {
+            color: var(--color-accent);
+        }
+
+        .console-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 16px;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            background-color: #0f0f0f;
+        }
+
+        /* Colored logs output */
+        .log-line {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .log-line:last-child {
+            border-bottom: none;
+        }
+
+        .log-icon {
+            margin-top: 2px;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .log-system {
+            color: #7a7a7a;
+            font-style: italic;
+        }
+        
+        .log-info {
+            color: #00bfff;
+        }
+
+        .log-log {
+            color: #e0e0e0;
+        }
+
+        .log-warn {
+            color: #ffd700;
+            background-color: rgba(255, 215, 0, 0.03);
+        }
+
+        .log-error {
+            color: #ff4500;
+            background-color: rgba(255, 69, 0, 0.05);
+        }
+
+        /* Live Preview Panel (Right Section) */
+        #preview-panel {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            height: 100%;
+            min-width: 200px;
+            overflow: hidden;
+            background-color: #1e1e1e;
+        }
+
+        .preview-toolbar {
+            height: 35px;
+            background-color: var(--color-preview-toolbar);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .preview-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preview-title i {
+            color: var(--color-accent);
+        }
+
+        .preview-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .preview-status {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--color-accent);
+            box-shadow: 0 0 8px var(--color-accent);
+        }
+
+        .status-dot.saving {
+            background-color: #ffa500;
+            box-shadow: 0 0 8px #ffa500;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .preview-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-btn:hover {
+            color: var(--color-accent);
+            transform: scale(1.05);
+        }
+
+        .responsive-selectors {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            padding: 1px;
+            gap: 1px;
+        }
+
+        .resp-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            width: 24px;
+            height: 20px;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .resp-btn:hover {
+            color: var(--color-text-primary);
+        }
+
+        .resp-btn.active {
+            background-color: var(--color-accent);
+            color: #121212;
+        }
+
+        /* Iframe Preview Container wrapper */
+        #iframe-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            background-color: #ffffff;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #ffffff;
+            transition: border-radius 0.15s ease, box-shadow 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        /* Simulated frames for tablet/mobile responsiveness */
+        #preview-iframe.tablet-size {
+            width: 768px !important;
+            height: 95% !important;
+            min-width: 768px !important;
+            min-height: 95% !important;
+            max-width: 768px !important;
+            max-height: 95% !important;
+            border-radius: 12px;
+            border: 8px solid #333333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        #preview-iframe.mobile-size {
+            width: 375px !important;
+            height: 85% !important;
+            min-width: 375px !important;
+            min-height: 85% !important;
+            max-width: 375px !important;
+            max-height: 85% !important;
+            border-radius: 16px;
+            border: 12px solid #333333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        /* Hidden inputs */
+        #import-input {
+            display: none;
+        }
+
+        /* Safe drag shield for iframe */
+        #drag-shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            display: none;
+            background-color: transparent;
+        }
+
+        /* Responsive stack styling for mobile devices */
+        @media (max-width: 900px) {
+            #workspace {
+                flex-direction: column;
+                height: auto;
+                overflow-y: auto;
+            }
+            #activity-bar {
+                width: 100%;
+                height: 45px;
+                flex-direction: row;
+                padding-top: 0;
+                justify-content: space-around;
+                gap: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .activity-btn {
+                height: 100%;
+                border-left: none;
+            }
+            .activity-btn.active {
+                border-left: none;
+                border-bottom: 3px solid var(--color-accent);
+                border-radius: 0;
+            }
+            .activity-btn .tooltip {
+                display: none !important;
+            }
+            #sidebar {
+                width: 100% !important;
+                height: 250px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .divider-vertical {
+                display: none !important;
+            }
+            #editor-workspace {
+                height: 400px;
+            }
+            #preview-panel {
+                height: 400px;
+            }
+            #preview-iframe.tablet-size,
+            #preview-iframe.mobile-size {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Site Navigation Header -->
+    <header>
+        <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span><span class="header-subtitle"> - Online IDE</span></h1>
+        <div id="header-right">
+            <a href="index.html">Home</a>
+            <a href="search.html">Search</a>
+            <a href="https://github.com/TCevik" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <div id="workspace">
+        
+        <!-- Activity Bar -->
+        <div id="activity-bar">
+            <div class="activity-btn active" data-target="pane-settings">
+                <i class="fa-solid fa-sliders"></i>
+                <span class="tooltip">Settings</span>
+            </div>
+            <div style="flex-grow: 1;"></div>
+            <div class="activity-btn" id="run-btn-sidebar" onclick="runPreview()">
+                <i class="fa-solid fa-play" style="color: var(--color-accent);"></i>
+                <span class="tooltip">Run Code</span>
+            </div>
+        </div>
+
+        <!-- Sidebar Drawer -->
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <span id="sidebar-title-text">Settings</span>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
+            <div class="sidebar-content">
+                
+                <!-- Pane: Settings -->
+                <div class="sidebar-pane active" id="pane-settings">
+                    <div class="settings-group">
+                        <div class="settings-title">Editor Settings</div>
+                        <div class="settings-control">
+                            <label for="font-size-input">Font Size (px)</label>
+                            <input type="number" id="font-size-input" value="14" min="10" max="30">
+                        </div>
+                        <div class="settings-control">
+                            <label for="tab-size-select">Tab Spacing</label>
+                            <select id="tab-size-select">
+                                <option value="2">2 spaces</option>
+                                <option value="4" selected>4 spaces</option>
+                                <option value="8">8 spaces</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <div class="settings-title">Execution</div>
+                        <div class="settings-control">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="auto-run-checkbox" checked>
+                                <span>Auto-update preview</span>
+                            </label>
+                        </div>
+                        <div class="settings-control">
+                            <label for="debounce-input">Auto-run Delay (ms)</label>
+                            <input type="number" id="debounce-input" value="500" min="200" max="3000" step="100">
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-title">File Management</div>
+                        <input type="file" id="import-input" accept=".html">
+                        <button class="action-btn" onclick="document.getElementById('import-input').click()">
+                            <i class="fa-solid fa-file-import"></i> Import HTML
+                        </button>
+                        <button class="action-btn action-btn-primary" onclick="downloadSingleFile()">
+                            <i class="fa-solid fa-file-arrow-down"></i> Export HTML
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Resize Handle 1 (Vertical) -->
+        <div class="divider divider-vertical" id="divider-sidebar"></div>
+
+        <!-- Editor View (Monaco, Console) -->
+        <div id="editor-workspace">
+
+            <!-- Editor Container -->
+            <div id="editor-container"></div>
+
+            <!-- Resize Handle 2 (Horizontal) -->
+            <div class="divider divider-horizontal" id="divider-console"></div>
+
+            <!-- Console Panel -->
+            <div id="console-panel">
+                <div class="console-header">
+                    <div class="console-title">
+                        <i class="fa-solid fa-terminal"></i>
+                        <span>Console Output</span>
+                    </div>
+                    <div class="console-actions">
+                        <button class="console-btn" onclick="clearConsole()">
+                            <i class="fa-solid fa-trash-can"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                <div class="console-body" id="console-output">
+                    <div class="log-line log-system">
+                        <i class="fa-solid fa-circle-info log-icon"></i>
+                        <span>TC_tam Terminal initialized. Ready for logs.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Resize Handle 3 (Vertical) -->
+        <div class="divider divider-vertical" id="divider-split"></div>
+
+        <!-- Live Preview Panel -->
+        <div id="preview-panel">
+            
+            <!-- Toolbar -->
+            <div class="preview-toolbar">
+                <div class="preview-title">
+                    <i class="fa-solid fa-desktop"></i>
+                    <span>Live Preview</span>
+                </div>
+                <div class="preview-actions">
+                    <div class="preview-status">
+                        <div class="status-dot" id="status-dot"></div>
+                        <span id="status-text">Ready</span>
+                    </div>
+                    <div class="responsive-selectors">
+                        <button class="resp-btn active" data-size="full" title="Desktop Size">
+                            <i class="fa-solid fa-maximize"></i>
+                        </button>
+                        <button class="resp-btn" data-size="tablet" title="Tablet Size (768px)">
+                            <i class="fa-solid fa-tablet-screen-button"></i>
+                        </button>
+                        <button class="resp-btn" data-size="mobile" title="Mobile Size (375px)">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </button>
+                    </div>
+                    <button class="preview-btn" onclick="runPreview()" title="Force Refresh">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <button class="preview-btn" onclick="openInNewTab()" title="Open in New Tab">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Iframe Container Wrapper -->
+            <div id="iframe-wrapper">
+                <iframe id="preview-iframe" sandbox="allow-scripts allow-modals" src="about:blank"></iframe>
+                <div id="drag-shield"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Scripting and logic -->
+    <script>
+        // Core State
+        let editorInstance = null;
+        let htmlModel = null;
+        let debounceTimer = null;
+        let childWindow = null;
+        const dividerSidebar = document.getElementById('divider-sidebar');
+        const dividerConsole = document.getElementById('divider-console');
+        const dividerSplit = document.getElementById('divider-split');
+        const sidebar = document.getElementById('sidebar');
+        const consolePanel = document.getElementById('console-panel');
+        const previewPanel = document.getElementById('preview-panel');
+        const dragShield = document.getElementById('drag-shield');
+        const workspace = document.getElementById('workspace');
+        const editorWorkspace = document.getElementById('editor-workspace');
+        
+        const autoRunCheckbox = document.getElementById('auto-run-checkbox');
+        const debounceInput = document.getElementById('debounce-input');
+        const fontSizeInput = document.getElementById('font-size-input');
+        const tabSizeSelect = document.getElementById('tab-size-select');
+        
+        const previewIframe = document.getElementById('preview-iframe');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const consoleOutput = document.getElementById('console-output');
+
+        // Initial loading of files
+        let savedHTML = '';
+        let savedFontSize = parseInt(localStorage.getItem('tctam-ide-fontsize') || '14');
+        let savedTabSize = parseInt(localStorage.getItem('tctam-ide-tabsize') || '4');
+        let savedAutoRun = localStorage.getItem('tctam-ide-autorun') !== 'false';
+        let savedDebounce = parseInt(localStorage.getItem('tctam-ide-debounce') || '500');
+
+        // Populate controls to match loaded config
+        autoRunCheckbox.checked = savedAutoRun;
+        debounceInput.value = savedDebounce;
+        fontSizeInput.value = savedFontSize;
+        tabSizeSelect.value = savedTabSize;
+
+        // Initialize Monaco Editor
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
+
+        require(['vs/editor/editor.main'], function() {
+            // Define custom green branding theme
+            monaco.editor.defineTheme('tctam-dark', {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [
+                    { token: 'comment', foreground: '6a9955', fontStyle: 'italic' },
+                    { token: 'keyword', foreground: '00ff66' },
+                    { token: 'string', foreground: 'a5d6ff' },
+                    { token: 'number', foreground: 'b5cea8' },
+                    { token: 'tag', foreground: '00bfff' },
+                    { token: 'attribute.name', foreground: '9cdcfe' },
+                    { token: 'attribute.value', foreground: 'ce9178' },
+                    { token: 'delimiter', foreground: 'd4d4d4' }
+                ],
+                colors: {
+                    'editor.background': '#1e1e1e',
+                    'editor.foreground': '#ffffff',
+                    'editorCursor.foreground': '#00ff66',
+                    'editor.lineHighlightBackground': '#252525',
+                    'editorLineNumber.foreground': '#757575',
+                    'editorLineNumber.activeForeground': '#00ff66',
+                    'editorWidget.background': '#1e1e1e',
+                    'editorWidget.border': '#333333',
+                    'dropdown.background': '#121212',
+                    'scrollbarSlider.background': '#333333aa',
+                    'scrollbarSlider.hoverBackground': '#00ff66aa',
+                    'scrollbarSlider.activeBackground': '#00ff66',
+                    'editor.selectionBackground': '#00ff6622',
+                    'editor.selectionHighlightBackground': '#00ff6611'
+                }
+            });
+
+            // Create HTML code model
+            htmlModel = monaco.editor.createModel(savedHTML, 'html');
+
+            // Initialize Editor
+            editorInstance = monaco.editor.create(document.getElementById('editor-container'), {
+                model: htmlModel,
+                theme: 'tctam-dark',
+                fontSize: savedFontSize,
+                automaticLayout: true,
+                minimap: { enabled: false },
+                tabSize: savedTabSize,
+                lineNumbersMinChars: 3,
+                wordWrap: 'on',
+                scrollBeyondLastLine: false,
+                bracketPairColorization: { enabled: true }
+            });
+
+            // Listen for changes
+            htmlModel.onDidChangeContent(() => triggerAutoSave());
+
+            // Initial load of preview
+            runPreview();
+        });
+
+        // Sidebar Activity Buttons
+        document.querySelectorAll('.activity-btn[data-target]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetPaneId = this.dataset.target;
+                const targetPane = document.getElementById(targetPaneId);
+                const titleText = this.querySelector('.tooltip').textContent;
+                
+                // If clicking an already active button, collapse the sidebar
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    sidebar.style.width = '0px';
+                } else {
+                    // Remove active from all
+                    document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.sidebar-pane').forEach(p => p.classList.remove('active'));
+                    
+                    // Activate this
+                    this.classList.add('active');
+                    targetPane.classList.add('active');
+                    sidebar.style.width = '240px';
+                    document.getElementById('sidebar-title-text').textContent = titleText;
+                }
+                
+                // Force monaco layout recalculation
+                if (editorInstance) editorInstance.layout();
+            });
+        });
+
+        // Safe Resizer Drag Handlers
+        let activeDrag = null;
+
+        function startResize(dividerId, e) {
+            activeDrag = dividerId;
+            dragShield.style.display = 'block'; // Block pointer events on iframe during drag
+            document.getElementById(dividerId).classList.add('dragging');
+            document.body.style.userSelect = 'none';
+            e.preventDefault();
+        }
+
+        dividerSidebar.addEventListener('mousedown', (e) => startResize('divider-sidebar', e));
+        dividerConsole.addEventListener('mousedown', (e) => startResize('divider-console', e));
+        dividerSplit.addEventListener('mousedown', (e) => startResize('divider-split', e));
+
+        // Touch support for tablets/devices
+        dividerSidebar.addEventListener('touchstart', (e) => startResize('divider-sidebar', e.touches[0]));
+        dividerConsole.addEventListener('touchstart', (e) => startResize('divider-console', e.touches[0]));
+        dividerSplit.addEventListener('touchstart', (e) => startResize('divider-split', e.touches[0]));
+
+        window.addEventListener('mousemove', (e) => {
+            if (!activeDrag) return;
+            performResize(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!activeDrag) return;
+            performResize(e.touches[0].clientX, e.touches[0].clientY);
+        });
+
+        function performResize(clientX, clientY) {
+            if (activeDrag === 'divider-sidebar') {
+                const workspaceRect = workspace.getBoundingClientRect();
+                const newWidth = Math.max(0, Math.min(450, clientX - workspaceRect.left - 50));
+                
+                if (newWidth < 50) {
+                    sidebar.style.width = '0px';
+                    document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+                } else {
+                    sidebar.style.width = `${newWidth}px`;
+                    // Ensure at least one activity bar icon is checked as active
+                    const openPane = document.querySelector('.sidebar-pane.active');
+                    if (openPane) {
+                        const targetId = openPane.id;
+                        const correspondingBtn = document.querySelector(`.activity-btn[data-target="${targetId}"]`);
+                        if (correspondingBtn) correspondingBtn.classList.add('active');
+                    }
+                }
+            } else if (activeDrag === 'divider-console') {
+                const workspaceRect = workspace.getBoundingClientRect();
+                const newHeight = Math.max(35, Math.min(500, workspaceRect.bottom - clientY));
+                consolePanel.style.height = `${newHeight}px`;
+            } else if (activeDrag === 'divider-split') {
+                const workspaceRect = workspace.getBoundingClientRect();
+                const editorWorkspaceRect = editorWorkspace.getBoundingClientRect();
+                
+                // Calculate split position relative to screen width
+                const relativeX = clientX - editorWorkspaceRect.left;
+                const totalWidth = editorWorkspaceRect.width + dividerSplit.offsetWidth + previewPanel.offsetWidth;
+                const leftPercentage = (relativeX / totalWidth) * 100;
+                
+                // Constrain percentages to reasonable bounds
+                const constrainedPercent = Math.max(15, Math.min(85, leftPercentage));
+                editorWorkspace.style.flexGrow = '0';
+                editorWorkspace.style.width = `${constrainedPercent}%`;
+                previewPanel.style.width = `${100 - constrainedPercent}%`;
+            }
+
+            if (editorInstance) {
+                editorInstance.layout();
+            }
+        }
+
+        function stopResize() {
+            if (!activeDrag) return;
+            document.getElementById(activeDrag).classList.remove('dragging');
+            activeDrag = null;
+            dragShield.style.display = 'none';
+            document.body.style.userSelect = '';
+        }
+
+        window.addEventListener('mouseup', stopResize);
+        window.addEventListener('touchend', stopResize);
+
+        // Responsive simulation size selector buttons
+        document.querySelectorAll('.responsive-selectors .resp-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.responsive-selectors .resp-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const size = this.dataset.size;
+                previewIframe.className = ''; // Reset sizes
+                
+                if (size === 'tablet') {
+                    previewIframe.classList.add('tablet-size');
+                } else if (size === 'mobile') {
+                    previewIframe.classList.add('mobile-size');
+                }
+            });
+        });
+
+        // Compiler & Iframe Injector
+        function getCombinedSource() {
+            const html = htmlModel ? htmlModel.getValue() : '';
+
+            // Console injection script to capture logs and pipe them back to the parent page
+            const consoleCaptureScript = `
+<script>
+    (function() {
+        const _log = console.log;
+        const _error = console.error;
+        const _warn = console.warn;
+        const _info = console.info;
+
+        function sanitizeArg(arg) {
+            if (arg === null) return 'null';
+            if (arg === undefined) return 'undefined';
+            if (typeof arg === 'object') {
+                try {
+                    return JSON.stringify(arg, null, 2);
+                } catch (e) {
+                    return arg.toString();
+                }
+            }
+            return arg.toString();
+        }
+
+        function sendLog(type, args) {
+            const parsedArgs = Array.from(args).map(sanitizeArg);
+            window.parent.postMessage({
+                type: 'iframe-console',
+                logType: type,
+                content: parsedArgs.join(' ')
+            }, '*');
+        }
+
+        console.log = function() {
+            sendLog('log', arguments);
+            _log.apply(console, arguments);
+        };
+        console.error = function() {
+            sendLog('error', arguments);
+            _error.apply(console, arguments);
+        };
+        console.warn = function() {
+            sendLog('warn', arguments);
+            _warn.apply(console, arguments);
+        };
+        console.info = function() {
+            sendLog('info', arguments);
+            _info.apply(console, arguments);
+        };
+
+        // Catch runtime uncaught errors
+        window.addEventListener('error', function(e) {
+            window.parent.postMessage({
+                type: 'iframe-console',
+                logType: 'error',
+                content: 'Error: ' + e.message + ' (line ' + e.lineno + ', col ' + e.colno + ')'
+            }, '*');
+        });
+    })();
+<\/script>
+`;
+
+            let combined = html;
+
+            // Inject script into head tag or at top of file
+            if (combined.includes('<head>')) {
+                combined = combined.replace('<head>', '<head>\n' + consoleCaptureScript);
+            } else {
+                combined = consoleCaptureScript + combined;
+            }
+
+            return combined;
+        }
+
+        // Live preview execution
+        function runPreview() {
+            statusDot.className = 'status-dot saving';
+            statusText.textContent = 'Refreshing...';
+            
+            // Add a small terminal indicator
+            appendConsoleLog('system', 'Refreshing sandbox preview...');
+
+            // Re-mount the iframe using srcdoc to retrigger execution
+            const source = getCombinedSource();
+            previewIframe.srcdoc = source;
+
+            // Auto-update the external tab if it is open
+            if (childWindow && !childWindow.closed) {
+                try {
+                    childWindow.document.open();
+                    childWindow.document.write(source);
+                    childWindow.document.close();
+                } catch (err) {
+                    console.warn("Could not auto-update external preview tab:", err);
+                }
+            }
+
+            setTimeout(() => {
+                statusDot.className = 'status-dot';
+                statusText.textContent = 'Live';
+            }, 400);
+        }
+
+        // Listen for logs sent from inside the Iframe sandbox
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'iframe-console') {
+                appendConsoleLog(event.data.logType, event.data.content);
+            }
+        });
+
+        // Console Log Visual Appender
+        function appendConsoleLog(type, content) {
+            const line = document.createElement('div');
+            line.classList.add('log-line', `log-${type}`);
+
+            // Pick icon
+            let iconClass = 'fa-solid fa-chevron-right';
+            if (type === 'error') iconClass = 'fa-solid fa-circle-xmark';
+            if (type === 'warn') iconClass = 'fa-solid fa-triangle-exclamation';
+            if (type === 'info') iconClass = 'fa-solid fa-circle-info';
+            if (type === 'system') iconClass = 'fa-solid fa-rotate';
+
+            line.innerHTML = `<i class="${iconClass} log-icon"></i><span>${escapeHtml(content)}</span>`;
+            consoleOutput.appendChild(line);
+
+            // Auto-scroll
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function clearConsole() {
+            consoleOutput.innerHTML = '';
+            appendConsoleLog('system', 'Console cleared.');
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Auto Save and Debounced reload
+        function triggerAutoSave(language) {
+            // Live Preview Auto update
+            if (autoRunCheckbox.checked) {
+                if (debounceTimer) clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    runPreview();
+                }, parseInt(debounceInput.value || '500'));
+            }
+        }
+
+        // Open code in a new independent tab
+        function openInNewTab() {
+            const source = getCombinedSource();
+            const blob = new Blob([source], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+            childWindow = window.open(blobUrl, '_blank');
+        }
+
+
+        // Settings updates
+        fontSizeInput.addEventListener('input', function() {
+            const size = Math.max(10, Math.min(30, parseInt(this.value) || 14));
+            if (editorInstance) {
+                editorInstance.updateOptions({ fontSize: size });
+            }
+            localStorage.setItem('tctam-ide-fontsize', size);
+        });
+
+        tabSizeSelect.addEventListener('change', function() {
+            const size = parseInt(this.value) || 4;
+            if (editorInstance) {
+                editorInstance.updateOptions({ tabSize: size });
+            }
+            localStorage.setItem('tctam-ide-tabsize', size);
+        });
+
+        autoRunCheckbox.addEventListener('change', function() {
+            localStorage.setItem('tctam-ide-autorun', this.checked);
+        });
+
+        debounceInput.addEventListener('input', function() {
+            const val = Math.max(200, parseInt(this.value) || 500);
+            localStorage.setItem('tctam-ide-debounce', val);
+        });
+
+        // Warn user before losing changes on reload/close
+        window.addEventListener('beforeunload', function(e) {
+            const hasHTML = htmlModel && htmlModel.getValue().trim() !== '';
+            
+            if (hasHTML) {
+                e.preventDefault();
+                e.returnValue = 'Weet je het zeker? Dan ben je alles kwijt.';
+                return e.returnValue;
+            }
+        });
+
+        // Export Actions: Download single bundle HTML file
+        function downloadSingleFile() {
+            const source = getCombinedSource();
+            const blob = new Blob([source], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            appendConsoleLog('system', 'Downloaded combined single-file HTML bundle.');
+        }
+
+        // Import Actions: Import files from user system
+        document.getElementById('import-input').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            let importedCount = 0;
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                reader.onload = function(evt) {
+                    const content = evt.target.result;
+                    if (ext === 'html') {
+                        htmlModel.setValue(content);
+                        importedCount++;
+                    }
+                    
+                    if (importedCount > 0) {
+                        appendConsoleLog('system', `Imported ${file.name} successfully.`);
+                        runPreview();
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+        });
+    </script>
+</body>
+
+</html>
