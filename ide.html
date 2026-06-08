@@ -856,10 +856,89 @@
                 border: none;
             }
         }
+
+        /* Sleek Premium Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--color-bg-secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+            visibility: visible;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .loader-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            user-select: none;
+        }
+
+        .loader-logo span {
+            color: var(--color-accent);
+            text-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            border-top-color: var(--color-accent);
+            animation: spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
+        }
+
+        .loader-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            letter-spacing: 0.5px;
+            animation: pulse-text 1.5s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Sleek Premium Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="loader-logo">TC<span>_tam</span></div>
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading Online IDE...</div>
+        </div>
+    </div>
+
     <!-- Site Navigation Header -->
     <header>
         <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span><span class="header-subtitle"> - Online IDE</span></h1>
@@ -1352,6 +1431,12 @@
             // Force final monaco layout recalculation
             if (editorInstance) {
                 editorInstance.layout();
+            }
+
+            // Hide loading screen with a fade-out transition
+            const loader = document.getElementById('loading-screen');
+            if (loader) {
+                loader.classList.add('fade-out');
             }
         }
 
