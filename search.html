@@ -40,51 +40,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        #mobile-blocker {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            z-index: 99999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
-        }
 
-        #mobile-blocker i {
-            font-size: 4rem;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
-        }
-
-        #mobile-blocker h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        #mobile-blocker p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 300px;
-            line-height: 1.5;
-        }
-
-        @media (max-width: 767px) {
-            #mobile-blocker {
-                display: flex;
-            }
-
-            header,
-            .container {
-                display: none !important;
-            }
-        }
 
         header {
             width: 100%;
@@ -824,16 +780,546 @@
         #extension-banner button:hover {
             opacity: 0.9;
         }
+
+        /* Mobile specific styles */
+        .mobile-header, .mobile-container, .mobile-theme-drawer-overlay {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            /* Hide desktop layout */
+            header:not(.mobile-header), .container {
+                display: none !important;
+            }
+
+            /* Show mobile elements */
+            .mobile-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                padding: 15px 20px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                box-sizing: border-box;
+            }
+
+            .mobile-theme-trigger {
+                width: 40px;
+                height: 40px;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--accent-color);
+                font-size: 1.1rem;
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            .mobile-header .weather-widget.compact {
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                padding: 8px 14px;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            .mobile-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                min-height: calc(100vh - 40px);
+                margin: 0;
+                padding: 60px 10px 10px 10px;
+                box-sizing: border-box;
+                gap: 25px;
+            }
+
+            /* Widget Styling */
+            .mobile-clock-widget {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .mobile-time {
+                font-size: 3.5rem;
+                font-weight: 700;
+                letter-spacing: -1px;
+                color: var(--text-color);
+                line-height: 1;
+            }
+
+            .mobile-date {
+                font-size: 0.95rem;
+                color: var(--text-muted);
+                margin-top: 5px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                font-weight: 600;
+            }
+
+            /* Search Section Styling (Centered/Bottom layout) */
+            .mobile-search-section {
+                width: 100%;
+                max-width: 500px;
+                margin-top: auto;
+                margin-bottom: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            /* Engine selection tabs on mobile */
+            .mobile-engine-tabs {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                background: rgba(255, 255, 255, 0.03);
+                padding: 4px;
+                border-radius: 25px;
+                border: 1px solid var(--border-color);
+                width: fit-content;
+                margin: 0 auto;
+                backdrop-filter: blur(10px);
+            }
+
+            body[data-theme="white"] .mobile-engine-tabs {
+                background: rgba(0, 0, 0, 0.03);
+            }
+
+            .engine-tab {
+                background: transparent;
+                border: none;
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                color: var(--text-muted);
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+
+            .engine-tab:hover, .engine-tab.active {
+                color: var(--accent-color);
+                background: var(--card-bg);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+                transform: scale(1.1);
+            }
+
+            /* Mobile Search box */
+            .mobile-search-box {
+                position: relative;
+                width: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            .mobile-search-box input {
+                width: 100%;
+                padding: 16px 20px;
+                padding-right: 95px;
+                background: var(--card-bg);
+                border: 2px solid var(--border-color);
+                border-radius: 30px;
+                color: var(--text-color);
+                font-size: 1.05rem;
+                outline: none;
+                transition: all 0.3s ease;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+                backdrop-filter: blur(10px);
+                user-select: text;
+                -webkit-user-select: text;
+            }
+
+            .mobile-search-box input:focus {
+                border-color: var(--accent-color);
+                box-shadow: 0 8px 32px rgba(0, 255, 102, 0.08), 0 0 15px rgba(0, 255, 102, 0.1);
+            }
+
+            .mobile-search-box button {
+                position: absolute;
+                background: none;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                padding: 0 12px;
+            }
+
+            .mobile-search-box .voice-search-btn {
+                right: 48px;
+                color: var(--text-muted);
+                font-size: 1.1rem;
+                transition: color 0.2s;
+            }
+
+            .mobile-search-box .voice-search-btn.listening {
+                color: var(--danger-color);
+                animation: pulse-mic 1.5s infinite;
+            }
+
+            .mobile-search-box .search-submit-btn {
+                right: 12px;
+                color: var(--accent-color);
+                font-size: 1.1rem;
+            }
+
+            @keyframes pulse-mic {
+                0% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.2); opacity: 0.7; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+
+            /* Mobile Shortcuts Section */
+            .mobile-shortcuts-section {
+                width: 100%;
+                margin-top: auto;
+                padding-bottom: 20px;
+            }
+
+            .mobile-shortcuts-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+                padding: 0 10px;
+            }
+
+            .mobile-shortcuts-header h3 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .mobile-edit-shortcuts-btn {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid var(--border-color);
+                padding: 4px 12px;
+                border-radius: 12px;
+                color: var(--text-color);
+                font-size: 0.8rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+                min-width: 85px;
+                text-align: center;
+            }
+
+            body[data-theme="white"] .mobile-edit-shortcuts-btn {
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            .mobile-edit-shortcuts-btn.editing {
+                background: var(--accent-color);
+                color: #121212;
+                border-color: var(--accent-color);
+            }
+
+            body[data-theme="white"] .mobile-edit-shortcuts-btn.editing {
+                color: #ffffff;
+            }
+
+            .mobile-shortcuts-carousel {
+                display: flex;
+                gap: 15px;
+                overflow-x: auto;
+                padding: 10px;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .mobile-shortcuts-carousel::-webkit-scrollbar {
+                display: none;
+            }
+
+            .mobile-shortcut-card {
+                scroll-snap-align: start;
+                flex: 0 0 75px;
+                height: 75px;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 18px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                color: var(--text-color);
+                text-decoration: none;
+                position: relative;
+                transition: transform 0.2s, border-color 0.2s, opacity 0.2s, visibility 0.2s;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-shortcut-card i {
+                font-size: 1.4rem;
+                color: var(--accent-color);
+            }
+
+            .mobile-shortcut-card span {
+                font-size: 0.75rem;
+                max-width: 65px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: var(--text-color);
+            }
+
+            .mobile-shortcut-card .mobile-delete-btn {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                width: 20px;
+                height: 20px;
+                background: var(--danger-color);
+                color: #ffffff;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.7rem;
+                border: 1.5px solid var(--card-bg);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                z-index: 5;
+            }
+
+            .mobile-shortcuts-carousel.editing-mode .mobile-shortcut-card:not(#mobile-add-shortcut-btn) {
+                animation: wobble 0.3s ease-in-out infinite alternate;
+                transition: none;
+            }
+
+            .mobile-shortcuts-carousel.editing-mode #mobile-add-shortcut-btn {
+                opacity: 0;
+                pointer-events: none;
+                visibility: hidden;
+            }
+
+            .mobile-shortcuts-carousel.editing-mode .mobile-delete-btn {
+                display: flex;
+            }
+
+            @keyframes wobble {
+                0% { transform: rotate(-1.5deg); }
+                100% { transform: rotate(1.5deg); }
+            }
+
+            /* Theme Drawer Styles */
+            .mobile-theme-drawer-overlay {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 1000;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            .mobile-theme-drawer-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .mobile-theme-drawer {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                border-top: 2px solid var(--border-color);
+                border-top-left-radius: 24px;
+                border-top-right-radius: 24px;
+                padding: 24px;
+                box-sizing: border-box;
+                transform: translateY(100%);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+            }
+
+            .mobile-theme-drawer-overlay.active .mobile-theme-drawer {
+                transform: translateY(0);
+            }
+
+            .drawer-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .drawer-header h3 {
+                font-size: 1.15rem;
+                font-weight: 600;
+                color: var(--text-color);
+            }
+
+            .drawer-close {
+                background: none;
+                border: none;
+                font-size: 1.8rem;
+                color: var(--text-muted);
+                cursor: pointer;
+                padding: 0 5px;
+            }
+
+            .drawer-section {
+                margin-bottom: 24px;
+            }
+
+            .drawer-section h4 {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: var(--text-muted);
+                margin-bottom: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .mobile-mode-toggle {
+                width: 100%;
+                padding: 4px;
+                border-radius: 14px;
+            }
+
+            .mobile-mode-toggle .mode-btn {
+                flex: 1;
+                height: 38px;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                gap: 8px;
+                width: auto;
+            }
+
+            .mobile-color-dots {
+                justify-content: space-between;
+                padding: 5px 0;
+            }
+
+            .mobile-color-dots .color-dot {
+                width: 28px;
+                height: 28px;
+            }
+
+            .icon-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div id="mobile-blocker">
-        <i class="fas fa-desktop"></i>
-        <h2>Desktop Required</h2>
-        <p>TC_tam Search includes features such as drag-and-drop and custom context menus that only work properly on a desktop or laptop.</p>
-        <button style="padding: 10px 20px; border-radius: 8px; border: none; font-size: 0.95rem; cursor: pointer; font-weight: 600; transition: opacity 0.2s; background-color: var(--accent-color); margin-top: 20px;" onclick="window.location.href='/'">Back</button>
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <div class="mobile-theme-trigger" id="mobile-theme-trigger">
+            <i class="fas fa-palette"></i>
+        </div>
+        <div class="weather-widget compact" id="mobile-weather-widget">
+            <i class="fas fa-cloud-sun"></i>
+            <span id="mobile-weather-text">Loading weather...</span>
+        </div>
+    </header>
+
+    <!-- Mobile Main Container -->
+    <div class="mobile-container">
+        <div class="mobile-clock-widget">
+            <div class="mobile-time" id="mobile-time">12:00</div>
+            <div class="mobile-date" id="mobile-date">Maandag 8 juni</div>
+        </div>
+
+        <div class="mobile-search-section">
+            <!-- Search Engine Tabs -->
+            <div class="mobile-engine-tabs" id="mobile-engine-tabs">
+                <button class="engine-tab active" data-engine="google" data-action="https://www.google.com/search" data-name="q" title="Google">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button class="engine-tab" data-engine="youtube" data-action="https://www.youtube.com/results" data-name="search_query" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </button>
+                <button class="engine-tab" data-engine="wikipedia" data-action="https://en.wikipedia.org/w/index.php" data-name="search" title="Wikipedia">
+                    <i class="fab fa-wikipedia-w"></i>
+                </button>
+                <button class="engine-tab" data-engine="github" data-action="https://github.com/search" data-name="q" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </button>
+            </div>
+
+            <!-- Search Form -->
+            <form action="https://www.google.com/search" method="GET" class="mobile-search-box" id="mobile-search-form">
+                <input type="text" name="q" id="mobile-search-input" placeholder="Search Google..." autocomplete="off">
+                <button type="button" class="voice-search-btn" id="mobile-voice-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
+                <button type="submit" class="search-submit-btn"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+
+        <!-- Shortcuts Section -->
+        <div class="mobile-shortcuts-section">
+            <div class="mobile-shortcuts-header">
+                <h3>Snelkoppelingen</h3>
+                <button class="mobile-edit-shortcuts-btn" id="mobile-edit-shortcuts-btn">Bewerken</button>
+            </div>
+            <div class="mobile-shortcuts-carousel" id="mobile-shortcuts-carousel">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Theme Drawer -->
+    <div class="mobile-theme-drawer-overlay" id="mobile-theme-drawer-overlay">
+        <div class="mobile-theme-drawer" id="mobile-theme-drawer">
+            <div class="drawer-header">
+                <h3>Thema-instellingen</h3>
+                <button class="drawer-close" id="mobile-theme-drawer-close">&times;</button>
+            </div>
+            <div class="drawer-content">
+                <div class="drawer-section">
+                    <h4>Weergave</h4>
+                    <div class="mode-toggle-group mobile-mode-toggle">
+                        <button class="mode-btn dark" data-mode="dark" title="Zwart modus">
+                            <i class="fas fa-moon"></i> Donker
+                        </button>
+                        <button class="mode-btn light" data-mode="light" title="Wit modus">
+                            <i class="fas fa-sun"></i> Licht
+                        </button>
+                    </div>
+                </div>
+                <div class="drawer-section">
+                    <h4>Accentkleur</h4>
+                    <div class="color-dots-group mobile-color-dots">
+                        <span class="color-dot green" data-color="green" title="Groen"></span>
+                        <span class="color-dot red" data-color="red" title="Rood"></span>
+                        <span class="color-dot lightblue" data-color="lightblue" title="Lichtblauw"></span>
+                        <span class="color-dot yellow" data-color="yellow" title="Geel"></span>
+                        <span class="color-dot pink" data-color="pink" title="Roze"></span>
+                        <span class="color-dot orange" data-color="orange" title="Oranje"></span>
+                        <span class="color-dot purple" data-color="purple" title="Paars"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <header>
@@ -1081,8 +1567,12 @@
             root.style.setProperty('--border-color', modeVars.border);
             
             document.body.setAttribute('data-theme', mode === 'light' ? 'white' : 'dark');
-            localStorage.setItem('themeMode', mode);
-            localStorage.setItem('themeColor', color);
+            try {
+                localStorage.setItem('themeMode', mode);
+                localStorage.setItem('themeColor', color);
+            } catch (e) {
+                console.warn("Failed to save theme settings to localStorage:", e);
+            }
 
             // Update mode toggles in DOM
             document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -1190,13 +1680,109 @@
         }
 
         function loadShortcuts() {
+            // Desktop
             document.querySelectorAll('.shortcut-card:not(#add-shortcut-btn)').forEach(el => el.remove());
+            
+            // Mobile
+            const mobileCarousel = document.getElementById('mobile-shortcuts-carousel');
+            if (mobileCarousel) {
+                mobileCarousel.innerHTML = '';
+            }
 
             const list = getShortcuts();
             list.forEach((shortcut, index) => {
                 createShortcutDOM(shortcut.name, shortcut.url, shortcut.icon, index);
+                if (mobileCarousel) {
+                    createMobileShortcutDOM(shortcut.name, shortcut.url, shortcut.icon, index);
+                }
             });
+            
+            // Append mobile add shortcut button
+            if (mobileCarousel) {
+                const addCard = document.createElement('div');
+                addCard.className = 'mobile-shortcut-card';
+                addCard.id = 'mobile-add-shortcut-btn';
+                addCard.innerHTML = `
+                    <i class="fas fa-plus"></i>
+                    <span>Toevoegen</span>
+                `;
+                addCard.addEventListener('click', () => {
+                    isEditMode = false;
+                    modalTitle.innerText = "Snelkoppeling toevoegen";
+                    modalSaveBtn.innerText = "Toevoegen";
+
+                    shortcutNameInput.value = '';
+                    shortcutUrlInput.value = '';
+                    iconSearchInput.value = '';
+                    selectedIconClass = ENTIRE_ICON_LIBRARY[0];
+
+                    buildIconPicker();
+                    shortcutModal.classList.add('active');
+                    shortcutNameInput.focus();
+                });
+                mobileCarousel.appendChild(addCard);
+            }
+
             initDragAndDrop();
+        }
+
+        function createMobileShortcutDOM(name, url, icon, index) {
+            const mobileCarousel = document.getElementById('mobile-shortcuts-carousel');
+            if (!mobileCarousel) return;
+
+            const card = document.createElement('a');
+            card.href = url;
+            card.className = 'mobile-shortcut-card';
+            card.dataset.index = index;
+
+            // Delete button overlay
+            const deleteBtn = document.createElement('div');
+            deleteBtn.className = 'mobile-delete-btn';
+            deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const deleteIndex = parseInt(card.dataset.index);
+                let list = getShortcuts();
+                list.splice(deleteIndex, 1);
+                localStorage.setItem('customShortcuts', JSON.stringify(list));
+                loadShortcuts();
+            });
+
+            card.innerHTML = `
+                <i class="${icon || 'fas fa-globe'}"></i>
+                <span>${name}</span>
+            `;
+            card.appendChild(deleteBtn);
+
+            // In editing mode, clicking the card opens the edit modal instead of navigating
+            card.addEventListener('click', (e) => {
+                if (mobileCarousel.classList.contains('editing-mode')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    activeShortcutIndex = parseInt(card.dataset.index);
+                    
+                    const list = getShortcuts();
+                    const shortcut = list[activeShortcutIndex];
+                    if (shortcut) {
+                        isEditMode = true;
+                        modalTitle.innerText = "Snelkoppeling bewerken";
+                        modalSaveBtn.innerText = "Opslaan";
+
+                        shortcutNameInput.value = shortcut.name;
+                        shortcutUrlInput.value = shortcut.url;
+                        iconSearchInput.value = '';
+
+                        selectedIconClass = shortcut.icon || 'fas fa-globe';
+
+                        buildIconPicker();
+                        shortcutModal.classList.add('active');
+                        shortcutNameInput.focus();
+                    }
+                }
+            });
+
+            mobileCarousel.appendChild(card);
         }
 
         function updateCardIndices() {
@@ -1434,6 +2020,7 @@
 
         async function fetchWeather() {
             const weatherWidget = document.getElementById('weather-widget');
+            const mobileWeatherWidget = document.getElementById('mobile-weather-widget');
             try {
                 const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=52.16&longitude=4.49&current_weather=true`);
                 if (!response.ok) throw new Error();
@@ -1441,22 +2028,195 @@
                 const temp = Math.round(data.current_weather.temperature);
                 const code = data.current_weather.weathercode;
 
-                let cond = "Cloudy", icon = "fas fa-cloud";
-                if (code === 0) { cond = "Clear"; icon = "fas fa-sun"; }
-                else if (code >= 1 && code <= 3) { cond = "Partly Cloudy"; icon = "fas fa-cloud-sun"; }
-                else if (code >= 61 && code <= 65) { cond = "Rain"; icon = "fas fa-cloud-showers-heavy"; }
-                else if (code >= 71 && code <= 75) { cond = "Snow"; icon = "fas fa-snowflake"; }
-                else if (code >= 95) { cond = "Thunderstorm"; icon = "fas fa-bolt"; }
+                let cond = "Bewolkt", icon = "fas fa-cloud";
+                if (code === 0) { cond = "Helder"; icon = "fas fa-sun"; }
+                else if (code >= 1 && code <= 3) { cond = "Licht Bewolkt"; icon = "fas fa-cloud-sun"; }
+                else if (code >= 61 && code <= 65) { cond = "Regen"; icon = "fas fa-cloud-showers-heavy"; }
+                else if (code >= 71 && code <= 75) { cond = "Sneeuw"; icon = "fas fa-snowflake"; }
+                else if (code >= 95) { cond = "Onweer"; icon = "fas fa-bolt"; }
 
-                weatherWidget.innerHTML = `<i class="${icon}"></i> <span>Leiden: ${temp}°C, ${cond}</span>`;
+                const html = `<i class="${icon}"></i> <span>Leiden: ${temp}°C, ${cond}</span>`;
+                if (weatherWidget) weatherWidget.innerHTML = html;
+                if (mobileWeatherWidget) mobileWeatherWidget.innerHTML = html;
             } catch {
-                document.getElementById('weather-text').innerText = "Weather unavailable";
+                if (document.getElementById('weather-text')) {
+                    document.getElementById('weather-text').innerText = "Weer niet beschikbaar";
+                }
+                const mobileWeatherText = document.getElementById('mobile-weather-text');
+                if (mobileWeatherText) {
+                    mobileWeatherText.innerText = "Weer niet beschikbaar";
+                }
             }
+        }
+
+        function handleSearchSubmit(e, inputEl) {
+            const val = inputEl.value.trim();
+            const urlPattern = /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-./?%&=]*)?$/i;
+            if (urlPattern.test(val)) {
+                e.preventDefault();
+                let url = val;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                window.location.href = url;
+            }
+        }
+
+        function initSearchFormSubmit() {
+            const desktopForm = document.querySelector('.container .search-box');
+            const desktopInput = document.querySelector('.container .search-box input');
+            if (desktopForm && desktopInput) {
+                desktopForm.addEventListener('submit', (e) => handleSearchSubmit(e, desktopInput));
+            }
+
+            const mobileForm = document.getElementById('mobile-search-form');
+            const mobileInput = document.getElementById('mobile-search-input');
+            if (mobileForm && mobileInput) {
+                mobileForm.addEventListener('submit', (e) => handleSearchSubmit(e, mobileInput));
+            }
+        }
+
+        function initMobileClock() {
+            const timeEl = document.getElementById('mobile-time');
+            const dateEl = document.getElementById('mobile-date');
+            if (!timeEl || !dateEl) return;
+
+            function updateTime() {
+                const now = new Date();
+                let hours = now.getHours().toString().padStart(2, '0');
+                let minutes = now.getMinutes().toString().padStart(2, '0');
+                timeEl.innerText = `${hours}:${minutes}`;
+
+                const options = { weekday: 'long', day: 'numeric', month: 'long' };
+                dateEl.innerText = now.toLocaleDateString('nl-NL', options);
+            }
+
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function initMobileSearchEngine() {
+            const tabs = document.querySelectorAll('.mobile-engine-tabs .engine-tab');
+            const form = document.getElementById('mobile-search-form');
+            const input = document.getElementById('mobile-search-input');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const action = tab.dataset.action;
+                    const queryName = tab.dataset.name;
+                    const engine = tab.dataset.engine;
+
+                    form.action = action;
+                    input.name = queryName;
+                    input.placeholder = `Zoeken op ${engine.charAt(0).toUpperCase() + engine.slice(1)}...`;
+                    input.focus();
+                });
+            });
+        }
+
+        function initMobileThemeDrawer() {
+            const trigger = document.getElementById('mobile-theme-trigger');
+            const overlay = document.getElementById('mobile-theme-drawer-overlay');
+            const closeBtn = document.getElementById('mobile-theme-drawer-close');
+
+            if (!trigger || !overlay || !closeBtn) return;
+
+            trigger.addEventListener('click', () => {
+                overlay.classList.add('active');
+            });
+
+            closeBtn.addEventListener('click', () => {
+                overlay.classList.remove('active');
+            });
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        }
+
+        function initMobileShortcutsEditor() {
+            const editBtn = document.getElementById('mobile-edit-shortcuts-btn');
+            const carousel = document.getElementById('mobile-shortcuts-carousel');
+            if (!editBtn || !carousel) return;
+
+            editBtn.addEventListener('click', () => {
+                const isEditing = carousel.classList.toggle('editing-mode');
+                editBtn.classList.toggle('editing', isEditing);
+                editBtn.innerText = isEditing ? 'Klaar' : 'Bewerken';
+            });
+        }
+
+        function initVoiceSearch() {
+            const micBtn = document.getElementById('mobile-voice-btn');
+            const input = document.getElementById('mobile-search-input');
+            const form = document.getElementById('mobile-search-form');
+
+            if (!micBtn || !input) return;
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                micBtn.style.display = 'none';
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'nl-NL';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            let isListening = false;
+
+            micBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn.classList.add('listening');
+                input.placeholder = "Aan het luisteren...";
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.classList.remove('listening');
+                const activeTab = document.querySelector('.mobile-engine-tabs .engine-tab.active');
+                const engine = activeTab ? activeTab.dataset.engine : 'Google';
+                input.placeholder = `Zoeken op ${engine.charAt(0).toUpperCase() + engine.slice(1)}...`;
+            };
+
+            recognition.onresult = (event) => {
+                const speechResult = event.results[0][0].transcript;
+                input.value = speechResult;
+                form.submit();
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                recognition.stop();
+            };
         }
 
         initColorPicker();
         loadShortcuts();
         fetchWeather();
+        initSearchFormSubmit();
+        initMobileClock();
+        initMobileSearchEngine();
+        initMobileThemeDrawer();
+        initMobileShortcutsEditor();
+        initVoiceSearch();
 
         function initExtensionPrompt() {
             const isLocalExtension = window.location.protocol === 'chrome-extension:';
