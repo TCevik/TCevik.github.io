@@ -439,12 +439,19 @@
             flex-shrink: 0;
         }
 
-        .divider-horizontal {
-            height: 4px;
-            cursor: row-resize;
-            width: 100%;
-            flex-shrink: 0;
+        /* Expanded hit target for vertical dividers */
+        .divider-vertical::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -8px;
+            right: -8px;
+            z-index: 30;
+            cursor: col-resize;
         }
+
+        /* Horizontal divider styling has been removed as console resizing is disabled */
 
         /* Editor Workspace Wrapper (Editor + Console) */
         #editor-workspace {
@@ -464,17 +471,23 @@
             width: 100%;
             background-color: var(--color-editor-bg);
             position: relative;
+            min-height: 0;
         }
 
         /* Console Panel (Bottom Section) */
         #console-panel {
             height: 180px;
-            min-height: 35px;
             background-color: var(--color-panel-bg);
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
             border-top: 1px solid var(--border-color);
+            transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        #console-panel.collapsed {
+            height: 36px !important; /* Header height (35px) + container border-top (1px) */
         }
 
         .console-header {
@@ -491,6 +504,20 @@
             letter-spacing: 0.5px;
             color: var(--color-text-secondary);
             user-select: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .console-header:hover {
+            background-color: #1a1a1a;
+        }
+
+        #console-toggle-icon {
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #console-panel.collapsed #console-toggle-icon {
+            transform: rotate(180deg);
         }
 
         .console-title {
@@ -533,6 +560,18 @@
             font-size: 12px;
             line-height: 1.6;
             background-color: #0f0f0f;
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        #console-panel.collapsed .console-body {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            height: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            transition: opacity 0.2s ease-in-out, visibility 0s 0.2s;
         }
 
         /* Colored logs output */
@@ -585,7 +624,7 @@
             flex-direction: column;
             flex-grow: 1;
             height: 100%;
-            min-width: 200px;
+            min-width: 400px;
             overflow: hidden;
             background-color: #1e1e1e;
         }
@@ -826,8 +865,6 @@
         <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span><span class="header-subtitle"> - Online IDE</span></h1>
         <div id="header-right">
             <a href="index.html">Home</a>
-            <a href="search.html">Search</a>
-            <a href="https://github.com/TCevik" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
     </header>
 
@@ -911,19 +948,19 @@
             <!-- Editor Container -->
             <div id="editor-container"></div>
 
-            <!-- Resize Handle 2 (Horizontal) -->
-            <div class="divider divider-horizontal" id="divider-console"></div>
-
             <!-- Console Panel -->
             <div id="console-panel">
-                <div class="console-header">
+                <div class="console-header" onclick="toggleConsole(event)">
                     <div class="console-title">
                         <i class="fa-solid fa-terminal"></i>
                         <span>Console Output</span>
                     </div>
                     <div class="console-actions">
-                        <button class="console-btn" onclick="clearConsole()">
+                        <button class="console-btn" onclick="clearConsole(event)">
                             <i class="fa-solid fa-trash-can"></i> Clear
+                        </button>
+                        <button class="console-btn" id="console-toggle-btn" title="Toggle Console">
+                            <i class="fa-solid fa-chevron-down" id="console-toggle-icon"></i>
                         </button>
                     </div>
                 </div>
@@ -991,8 +1028,8 @@
         let htmlModel = null;
         let debounceTimer = null;
         let childWindow = null;
+        let lastManualEditorPercent = parseFloat(localStorage.getItem('tctam-ide-last-editor-percent') || '50');
         const dividerSidebar = document.getElementById('divider-sidebar');
-        const dividerConsole = document.getElementById('divider-console');
         const dividerSplit = document.getElementById('divider-split');
         const sidebar = document.getElementById('sidebar');
         const consolePanel = document.getElementById('console-panel');
@@ -1082,6 +1119,9 @@
 
             // Initial load of preview
             runPreview();
+
+            // Restore all layout states (sidebar width, sidebar collapse, console collapse, preview size, sim mode)
+            restoreLayoutState();
         });
 
         // Sidebar Activity Buttons
@@ -1095,6 +1135,7 @@
                 if (this.classList.contains('active')) {
                     this.classList.remove('active');
                     sidebar.style.width = '0px';
+                    localStorage.setItem('tctam-ide-sidebar-collapsed', 'true');
                 } else {
                     // Remove active from all
                     document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
@@ -1103,7 +1144,9 @@
                     // Activate this
                     this.classList.add('active');
                     targetPane.classList.add('active');
-                    sidebar.style.width = '240px';
+                    const savedWidth = localStorage.getItem('tctam-ide-sidebar-width') || '240';
+                    sidebar.style.width = `${savedWidth}px`;
+                    localStorage.setItem('tctam-ide-sidebar-collapsed', 'false');
                     document.getElementById('sidebar-title-text').textContent = titleText;
                 }
                 
@@ -1120,16 +1163,17 @@
             dragShield.style.display = 'block'; // Block pointer events on iframe during drag
             document.getElementById(dividerId).classList.add('dragging');
             document.body.style.userSelect = 'none';
+            if (dividerId === 'divider-sidebar') {
+                sidebar.style.transition = 'none';
+            }
             e.preventDefault();
         }
 
         dividerSidebar.addEventListener('mousedown', (e) => startResize('divider-sidebar', e));
-        dividerConsole.addEventListener('mousedown', (e) => startResize('divider-console', e));
         dividerSplit.addEventListener('mousedown', (e) => startResize('divider-split', e));
 
         // Touch support for tablets/devices
         dividerSidebar.addEventListener('touchstart', (e) => startResize('divider-sidebar', e.touches[0]));
-        dividerConsole.addEventListener('touchstart', (e) => startResize('divider-console', e.touches[0]));
         dividerSplit.addEventListener('touchstart', (e) => startResize('divider-split', e.touches[0]));
 
         window.addEventListener('mousemove', (e) => {
@@ -1147,11 +1191,14 @@
                 const workspaceRect = workspace.getBoundingClientRect();
                 const newWidth = Math.max(0, Math.min(450, clientX - workspaceRect.left - 50));
                 
-                if (newWidth < 50) {
+                if (newWidth < 180) {
                     sidebar.style.width = '0px';
                     document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+                    localStorage.setItem('tctam-ide-sidebar-collapsed', 'true');
                 } else {
                     sidebar.style.width = `${newWidth}px`;
+                    localStorage.setItem('tctam-ide-sidebar-width', newWidth);
+                    localStorage.setItem('tctam-ide-sidebar-collapsed', 'false');
                     // Ensure at least one activity bar icon is checked as active
                     const openPane = document.querySelector('.sidebar-pane.active');
                     if (openPane) {
@@ -1160,10 +1207,6 @@
                         if (correspondingBtn) correspondingBtn.classList.add('active');
                     }
                 }
-            } else if (activeDrag === 'divider-console') {
-                const workspaceRect = workspace.getBoundingClientRect();
-                const newHeight = Math.max(35, Math.min(500, workspaceRect.bottom - clientY));
-                consolePanel.style.height = `${newHeight}px`;
             } else if (activeDrag === 'divider-split') {
                 const workspaceRect = workspace.getBoundingClientRect();
                 const editorWorkspaceRect = editorWorkspace.getBoundingClientRect();
@@ -1171,13 +1214,26 @@
                 // Calculate split position relative to screen width
                 const relativeX = clientX - editorWorkspaceRect.left;
                 const totalWidth = editorWorkspaceRect.width + dividerSplit.offsetWidth + previewPanel.offsetWidth;
-                const leftPercentage = (relativeX / totalWidth) * 100;
                 
-                // Constrain percentages to reasonable bounds
-                const constrainedPercent = Math.max(15, Math.min(85, leftPercentage));
+                // Constrain relativeX to ensure min widths are respected (editor >= 200px, preview >= 400px)
+                const minEditorWidth = 200;
+                const minPreviewWidth = 400;
+                const constrainedX = Math.max(minEditorWidth, Math.min(totalWidth - minPreviewWidth - dividerSplit.offsetWidth, relativeX));
+                
+                const leftPercentage = (constrainedX / totalWidth) * 100;
+                lastManualEditorPercent = leftPercentage;
+                localStorage.setItem('tctam-ide-last-editor-percent', leftPercentage);
+                localStorage.setItem('tctam-ide-sim-mode', 'full');
+                
                 editorWorkspace.style.flexGrow = '0';
-                editorWorkspace.style.width = `${constrainedPercent}%`;
-                previewPanel.style.width = `${100 - constrainedPercent}%`;
+                editorWorkspace.style.width = `${leftPercentage}%`;
+                previewPanel.style.width = `${100 - leftPercentage}%`;
+
+                // Reset simulator buttons and iframe classes on manual drag resize
+                document.querySelectorAll('.responsive-selectors .resp-btn').forEach(b => b.classList.remove('active'));
+                const fullBtn = document.querySelector('.responsive-selectors .resp-btn[data-size="full"]');
+                if (fullBtn) fullBtn.classList.add('active');
+                previewIframe.className = '';
             }
 
             if (editorInstance) {
@@ -1188,6 +1244,9 @@
         function stopResize() {
             if (!activeDrag) return;
             document.getElementById(activeDrag).classList.remove('dragging');
+            if (activeDrag === 'divider-sidebar') {
+                sidebar.style.transition = '';
+            }
             activeDrag = null;
             dragShield.style.display = 'none';
             document.body.style.userSelect = '';
@@ -1205,13 +1264,96 @@
                 const size = this.dataset.size;
                 previewIframe.className = ''; // Reset sizes
                 
+                const editorWorkspaceRect = editorWorkspace.getBoundingClientRect();
+                const totalWidth = editorWorkspaceRect.width + dividerSplit.offsetWidth + previewPanel.offsetWidth;
+                const manualPreviewWidth = (100 - lastManualEditorPercent) * totalWidth / 100;
+                
                 if (size === 'tablet') {
                     previewIframe.classList.add('tablet-size');
+                    adjustPreviewWidth(800);
                 } else if (size === 'mobile') {
                     previewIframe.classList.add('mobile-size');
+                    adjustPreviewWidth(410);
+                } else {
+                    adjustPreviewWidth(manualPreviewWidth);
                 }
             });
         });
+
+        function adjustPreviewWidth(requiredWidth) {
+            const editorWorkspaceRect = editorWorkspace.getBoundingClientRect();
+            const totalWidth = editorWorkspaceRect.width + dividerSplit.offsetWidth + previewPanel.offsetWidth;
+            
+            const maxPreviewWidth = totalWidth - 200 - dividerSplit.offsetWidth;
+            const targetPreviewWidth = Math.min(requiredWidth, maxPreviewWidth);
+            
+            const targetEditorWidth = totalWidth - targetPreviewWidth - dividerSplit.offsetWidth;
+            const leftPercentage = (targetEditorWidth / totalWidth) * 100;
+            
+            editorWorkspace.style.flexGrow = '0';
+            editorWorkspace.style.width = `${leftPercentage}%`;
+            previewPanel.style.width = `${100 - leftPercentage}%`;
+            
+            if (editorInstance) {
+                editorInstance.layout();
+            }
+        }
+
+        function restoreLayoutState() {
+            // 1. Restore Sidebar State
+            const sidebarCollapsed = localStorage.getItem('tctam-ide-sidebar-collapsed') === 'true';
+            const sidebarWidth = localStorage.getItem('tctam-ide-sidebar-width') || '240';
+            
+            if (sidebarCollapsed) {
+                sidebar.style.width = '0px';
+                document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+            } else {
+                sidebar.style.width = `${sidebarWidth}px`;
+                const pane = document.querySelector('.sidebar-pane.active');
+                if (pane) {
+                    const btn = document.querySelector(`.activity-btn[data-target="${pane.id}"]`);
+                    if (btn) btn.classList.add('active');
+                }
+            }
+
+            // 2. Restore Console State
+            const consoleCollapsed = localStorage.getItem('tctam-ide-console-collapsed') === 'true';
+            if (consoleCollapsed) {
+                consolePanel.classList.add('collapsed');
+            } else {
+                consolePanel.classList.remove('collapsed');
+            }
+
+            // 3. Restore Split Layout & Sim Mode
+            const savedPercent = parseFloat(localStorage.getItem('tctam-ide-last-editor-percent') || '50');
+            lastManualEditorPercent = savedPercent;
+            
+            const simMode = localStorage.getItem('tctam-ide-sim-mode') || 'full';
+            
+            // Deactivate all simulation buttons, activate the saved one
+            document.querySelectorAll('.responsive-selectors .resp-btn').forEach(b => b.classList.remove('active'));
+            const targetBtn = document.querySelector(`.responsive-selectors .resp-btn[data-size="${simMode}"]`);
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            previewIframe.className = '';
+            
+            if (simMode === 'tablet') {
+                previewIframe.classList.add('tablet-size');
+                adjustPreviewWidth(800);
+            } else if (simMode === 'mobile') {
+                previewIframe.classList.add('mobile-size');
+                adjustPreviewWidth(410);
+            } else {
+                editorWorkspace.style.flexGrow = '0';
+                editorWorkspace.style.width = `${lastManualEditorPercent}%`;
+                previewPanel.style.width = `${100 - lastManualEditorPercent}%`;
+            }
+
+            // Force final monaco layout recalculation
+            if (editorInstance) {
+                editorInstance.layout();
+            }
+        }
 
         // Compiler & Iframe Injector
         function getCombinedSource() {
@@ -1344,9 +1486,40 @@
             consoleOutput.scrollTop = consoleOutput.scrollHeight;
         }
 
-        function clearConsole() {
+        function clearConsole(e) {
+            if (e) e.stopPropagation();
             consoleOutput.innerHTML = '';
             appendConsoleLog('system', 'Console cleared.');
+        }
+
+        function toggleConsole(e) {
+            // Prevent toggling if user clicked on Clear button or other header button, except the toggle chevron
+            if (e && e.target.closest('button') && !e.target.closest('#console-toggle-btn')) {
+                return;
+            }
+            
+            consolePanel.classList.toggle('collapsed');
+            
+            // Periodically force editor layout recalculation during CSS transition for fluid animation
+            const startTime = performance.now();
+            const duration = 250; // matching CSS transition duration
+            
+            function animateLayout(time) {
+                if (editorInstance) {
+                    editorInstance.layout();
+                }
+                if (time - startTime < duration) {
+                    requestAnimationFrame(animateLayout);
+                } else {
+                    if (editorInstance) {
+                        editorInstance.layout();
+                    }
+                }
+            }
+            requestAnimationFrame(animateLayout);
+            
+            // Save state in localStorage
+            localStorage.setItem('tctam-ide-console-collapsed', consolePanel.classList.contains('collapsed'));
         }
 
         function escapeHtml(text) {
