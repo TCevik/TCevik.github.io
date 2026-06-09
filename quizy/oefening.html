@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <script src="auth-check.js"></script>
     <meta charset="UTF-8">
@@ -116,7 +117,7 @@
             padding: 40px;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             margin: 40px auto;
             max-width: 450px;
@@ -133,7 +134,9 @@
         }
 
         @keyframes spin {
-            100% { transform: rotate(360deg); }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Practice Layout */
@@ -265,7 +268,7 @@
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.6s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             border-radius: 16px;
         }
 
@@ -438,7 +441,7 @@
             color: #ffffff;
             padding: 12px 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -524,6 +527,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -558,7 +562,8 @@
                 <div class="mode-tabs">
                     <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')">📖 Leren</button>
                     <button class="tab-btn" id="tab-test" onclick="switchMode('test')">📝 Oefentoets</button>
-                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')">📇 Flashcards</button>
+                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')">📇
+                        Flashcards</button>
                     <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')">✅ Meerkeuze</button>
                     <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')">✍️ Spelling</button>
                 </div>
@@ -588,7 +593,8 @@
     <div id="resumeModal" class="prompt-modal hidden">
         <div class="prompt-modal-content">
             <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: #0f172a;">Voortgang gevonden!</h3>
-            <p style="color: #64748b; margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze leermethode. Wil je verdergaan waar je gebleven was?</p>
+            <p style="color: #64748b; margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze
+                leermethode. Wil je verdergaan waar je gebleven was?</p>
             <div class="prompt-modal-actions">
                 <button class="btn btn-secondary" onclick="startFresh()">Opnieuw starten</button>
                 <button class="btn" onclick="resumeProgress()">Verdergaan</button>
@@ -610,7 +616,7 @@
 
     <script>
         const TOKEN = localStorage.getItem('google_access_token');
-        
+
         // URL Parameter Setup
         const urlParams = new URLSearchParams(window.location.search);
         const fileId = urlParams.get('id');
@@ -646,7 +652,7 @@
 
         // Test variables
         let generatedQuestions = [];
-        
+
         // Flashcard state
         let flashcardStates = { known: [], unknown: [] };
         let flashcardQueue = [];
@@ -662,7 +668,7 @@
                     headers: { 'Authorization': `Bearer ${TOKEN}` }
                 });
                 if (!response.ok) throw new Error("Kon bestand niet laden");
-                
+
                 setFile = await response.json();
                 setTerms = setFile.items || [];
 
@@ -676,7 +682,7 @@
                     headers: { 'Authorization': `Bearer ${TOKEN}` }
                 });
                 const meta = await metaResponse.json();
-                
+
                 setLabelTitle.textContent = setFile.title || meta.name.replace('quizy_set_', '').replace('.json', '');
                 setLabelCount.textContent = `${setTerms.length} ${setTerms.length === 1 ? 'kaart' : 'kaarten'}`;
 
@@ -703,7 +709,7 @@
         function checkSavedProgress() {
             if (gameProgress[currentMode]) {
                 const prog = gameProgress[currentMode];
-                
+
                 // Verschillende modes hebben verschillende criteria
                 let hasProg = false;
                 if (currentMode === 'learn' && prog.currentIndex > 0 && prog.currentIndex < setTerms.length) hasProg = true;
@@ -737,7 +743,7 @@
             flashcardQueue = [];
             activeRepetitionQueue = [];
             activeCompletedCount = 0;
-            
+
             // Initialiseer leeg progress record
             if (currentMode === 'flashcards') {
                 flashcardQueue = setTerms.map((_, i) => i);
@@ -748,7 +754,7 @@
             } else if (currentMode !== 'test') {
                 gameProgress[currentMode] = { currentIndex: 0 };
             }
-            
+
             launchMode();
         }
 
@@ -782,7 +788,7 @@
 
             // Reset state
             learnRetypeMode = false;
-            
+
             // Check progress
             checkSavedProgress();
         }
@@ -901,7 +907,7 @@
                     `;
                     input.disabled = true;
                     submitBtn.disabled = true;
-                    
+
                     setTimeout(() => {
                         currentIdx++;
                         gameProgress.learn.currentIndex = currentIdx;
@@ -1009,12 +1015,12 @@
                     const options = [item.definition];
                     const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
                     const shuffledOthers = otherDefs.sort(() => 0.5 - Math.random());
-                    
+
                     // Voeg distractors toe
                     for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
                         options.push(shuffledOthers[i]);
                     }
-                    
+
                     generatedQuestions.push({
                         type: 'choice',
                         prompt: `Wat is de definitie van: '${item.term}'?`,
@@ -1128,7 +1134,7 @@
                         flashcardQueue = [...flashcardStates.unknown];
                         flashcardStates.unknown = [];
                         currentIdx = 0;
-                        
+
                         gameProgress.flashcards = {
                             queue: flashcardQueue,
                             known: flashcardStates.known,
@@ -1194,7 +1200,7 @@
             }
 
             currentIdx++;
-            
+
             gameProgress.flashcards = {
                 queue: flashcardQueue,
                 known: flashcardStates.known,
@@ -1280,7 +1286,7 @@
                     }
                 });
                 document.getElementById('choiceFeedback').innerHTML = `<div class="status-box incorrect">Helaas, niet juist.</div>`;
-                
+
                 // Fout beantwoord: gewicht + 1 (tot max 4) en achteraan aansluiten
                 activeItem.weight = Math.min(4, activeItem.weight + 1);
                 activeRepetitionQueue.push(activeItem);
@@ -1471,4 +1477,5 @@
         loadSet();
     </script>
 </body>
+
 </html>

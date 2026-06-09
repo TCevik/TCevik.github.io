@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <script src="auth-check.js"></script>
     <meta charset="UTF-8">
@@ -134,7 +135,7 @@
             padding: 40px;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             margin: 40px auto;
             max-width: 450px;
@@ -150,7 +151,9 @@
         }
 
         @keyframes spin {
-            100% { transform: rotate(360deg); }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Set Details Layout */
@@ -207,7 +210,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -217,7 +220,7 @@
 
         .study-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
             border-color: #52873e;
         }
 
@@ -272,7 +275,7 @@
             grid-template-columns: 1fr 1fr auto;
             gap: 20px;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             transition: border-color 0.2s;
         }
 
@@ -321,6 +324,7 @@
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
+
             .term-word {
                 border-right: none;
                 padding-right: 0;
@@ -487,6 +491,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -566,23 +571,27 @@
                 <h3 id="modalTitle">Set bewerken</h3>
                 <button id="closeModalBtn" class="close-btn">&times;</button>
             </div>
-            
+
             <div class="form-group">
                 <label for="setTitleInput">Titel van de set</label>
                 <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1">
             </div>
 
             <div class="form-group">
-                <label style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <label
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                     <span>Kaarten (Termen & Definities)</span>
                     <div style="display: flex; gap: 8px;">
                         <button id="toggleImportBtn" class="btn btn-secondary btn-sm">Snel importeren</button>
                     </div>
                 </label>
-                
-                <div id="importPanel" class="hidden" style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left;">
-                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #475569; font-weight: 600;">Plak je lijst in het formaat: <code>woord, definitie; woord, definitie;</code></p>
-                    <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
+
+                <div id="importPanel" class="hidden"
+                    style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left;">
+                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #475569; font-weight: 600;">Plak je lijst in
+                        het formaat: <code>woord, definitie; woord, definitie;</code></p>
+                    <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4"
+                        style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
                     <div style="display: flex; gap: 8px; justify-content: flex-end;">
                         <button id="cancelImportBtn" class="btn btn-secondary btn-sm">Annuleren</button>
                         <button id="processImportBtn" class="btn btn-sm">Voeg toe</button>
@@ -591,10 +600,6 @@
 
                 <div id="cardRowsContainer">
                     <!-- Dynamische rijen komen hier -->
-                </div>
-
-                <div style="display: flex; justify-content: center; margin-top: 15px;">
-                    <button id="addCardRowBtn" class="btn btn-secondary btn-sm">+ Kaart toevoegen</button>
                 </div>
             </div>
 
@@ -641,7 +646,7 @@
         const setViewUpdated = document.getElementById('setViewUpdated');
         const termsList = document.getElementById('termsList');
         const termsBadge = document.getElementById('termsBadge');
-        
+
         const logoutBtn = document.getElementById('logoutBtn');
         const editSetBtn = document.getElementById('editSetBtn');
         const deleteSetBtn = document.getElementById('deleteSetBtn');
@@ -650,7 +655,6 @@
         const setModal = document.getElementById('setModal');
         const setTitleInput = document.getElementById('setTitleInput');
         const cardRowsContainer = document.getElementById('cardRowsContainer');
-        const addCardRowBtn = document.getElementById('addCardRowBtn');
         const saveSetBtn = document.getElementById('saveSetBtn');
         const cancelSetBtn = document.getElementById('cancelSetBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -776,11 +780,39 @@
                 currentSetData.items.forEach(item => {
                     addCardRow(item.term, item.definition);
                 });
-            } else {
-                addCardRow();
             }
 
+            manageEmptyRows();
+
             setModal.classList.remove('hidden');
+        }
+
+        function manageEmptyRows() {
+            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
+            if (rows.length === 0) {
+                addCardRow();
+                return;
+            }
+
+            const lastRow = rows[rows.length - 1];
+            const lastInputs = lastRow.querySelectorAll('input');
+            const lastHasText = lastInputs[0].value.trim() !== "" || lastInputs[1].value.trim() !== "";
+
+            if (lastHasText) {
+                addCardRow();
+                return;
+            }
+
+            if (rows.length > 1) {
+                const secondLastRow = rows[rows.length - 2];
+                const secondLastInputs = secondLastRow.querySelectorAll('input');
+                const secondLastHasText = secondLastInputs[0].value.trim() !== "" || secondLastInputs[1].value.trim() !== "";
+
+                if (!secondLastHasText) {
+                    lastRow.remove();
+                    manageEmptyRows();
+                }
+            }
         }
 
         function addCardRow(term = "", definition = "") {
@@ -791,9 +823,15 @@
                 <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
                 <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
             `;
-            
+
             row.querySelector('.remove-row-btn').addEventListener('click', () => {
                 row.remove();
+                manageEmptyRows();
+            });
+
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', manageEmptyRows);
             });
 
             cardRowsContainer.appendChild(row);
@@ -905,6 +943,7 @@
                 importTextarea.value = '';
                 importPanel.classList.add('hidden');
                 cleanEmptyRows();
+                manageEmptyRows();
             }
         }
 
@@ -946,7 +985,6 @@
         deleteSetBtn.addEventListener('click', deleteSet);
         closeModalBtn.addEventListener('click', () => setModal.classList.add('hidden'));
         cancelSetBtn.addEventListener('click', () => setModal.classList.add('hidden'));
-        addCardRowBtn.addEventListener('click', () => addCardRow());
         saveSetBtn.addEventListener('click', saveSet);
 
         toggleImportBtn.addEventListener('click', () => {
@@ -965,4 +1003,5 @@
         fetchSetDetails();
     </script>
 </body>
+
 </html>

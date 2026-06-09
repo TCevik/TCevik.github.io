@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <script src="auth-check.js"></script>
     <meta charset="UTF-8">
@@ -151,7 +152,7 @@
             padding: 40px;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             margin: 40px auto;
         }
@@ -166,7 +167,9 @@
         }
 
         @keyframes spin {
-            100% { transform: rotate(360deg); }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Eerste Keer Setup Card */
@@ -174,7 +177,7 @@
             background: #ffffff;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             text-align: center;
             margin: 40px auto;
@@ -192,6 +195,47 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
+        }
+
+        /* AI Banner */
+        .ai-banner {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .ai-banner-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .ai-banner-icon {
+            font-size: 2.2rem;
+            line-height: 1;
+        }
+
+        .ai-banner-text h4 {
+            margin: 0 0 6px 0;
+            font-size: 1.15rem;
+            color: #1e3a8a;
+            font-weight: 700;
+        }
+
+        .ai-banner-text p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #1e40af;
+            line-height: 1.5;
         }
 
         .welcome-title-container {
@@ -219,7 +263,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .edit-icon-btn:hover {
@@ -475,6 +519,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -511,7 +556,11 @@
                             <h2 id="welcomeTitle">Welkom terug!</h2>
                         </div>
                         <button id="editUsernameBtn" class="edit-icon-btn" title="Naam bewerken">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
                         </button>
 
                         <div id="usernameEdit" class="username-edit-form hidden">
@@ -520,6 +569,22 @@
                             <button id="cancelUsernameBtn" class="btn btn-secondary btn-sm">Annuleer</button>
                         </div>
                     </div>
+                </div>
+
+                <!-- AI Set Maker Banner -->
+                <div class="ai-banner">
+                    <div class="ai-banner-content">
+                        <div class="ai-banner-icon">🤖</div>
+                        <div class="ai-banner-text">
+                            <h4>TC_tam Quizy Set Maker (Gemini AI)</h4>
+                            <p>Importeer heel gemakkelijk woordenlijsten van andere platforms (zoals Quizlet of WRTS)!
+                                Kopieer de pagina met de woordjes, plak deze in onze speciale Gemini AI-tool, en kopieer
+                                de gegenereerde tekst om hier direct via <strong>Snel importeren</strong> te gebruiken.
+                            </p>
+                        </div>
+                    </div>
+                    <a href="https://gemini.google.com/gem/1m6sLmNZl6DWp9laUTM7lbZ9MYi_FOBk6?usp=sharing"
+                        target="_blank" class="btn btn-sm">Naar Gemini AI Tool ➔</a>
                 </div>
 
                 <!-- Quiz sets sectie -->
@@ -566,23 +631,27 @@
                 <h3 id="modalTitle">Nieuwe set maken</h3>
                 <button id="closeModalBtn" class="close-btn">&times;</button>
             </div>
-            
+
             <div class="form-group">
                 <label for="setTitleInput">Titel van de set</label>
                 <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1">
             </div>
 
             <div class="form-group">
-                <label style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <label
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                     <span>Kaarten (Termen & Definities)</span>
                     <div style="display: flex; gap: 8px;">
                         <button id="toggleImportBtn" class="btn btn-secondary btn-sm">Snel importeren</button>
                     </div>
                 </label>
-                
-                <div id="importPanel" class="hidden" style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left;">
-                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #475569; font-weight: 600;">Plak je lijst in het formaat: <code>woord, definitie; woord, definitie;</code></p>
-                    <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
+
+                <div id="importPanel" class="hidden"
+                    style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left;">
+                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #475569; font-weight: 600;">Plak je lijst in
+                        het formaat: <code>woord, definitie; woord, definitie;</code></p>
+                    <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4"
+                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
                     <div style="display: flex; gap: 8px; justify-content: flex-end;">
                         <button id="cancelImportBtn" class="btn btn-secondary btn-sm">Annuleren</button>
                         <button id="processImportBtn" class="btn btn-sm">Voeg toe</button>
@@ -591,10 +660,6 @@
 
                 <div id="cardRowsContainer">
                     <!-- Dynamische rijen komen hier -->
-                </div>
-
-                <div style="display: flex; justify-content: center; margin-top: 15px;">
-                    <button id="addCardRowBtn" class="btn btn-secondary btn-sm">+ Kaart toevoegen</button>
                 </div>
             </div>
 
@@ -622,7 +687,7 @@
         const welcomeBack = document.getElementById('welcomeBack');
         const usernameInput = document.getElementById('usernameInput');
         const saveBtn = document.getElementById('saveBtn');
-        
+
         const welcomeTitle = document.getElementById('welcomeTitle');
         const editUsernameBtn = document.getElementById('editUsernameBtn');
         const usernameView = document.getElementById('usernameView');
@@ -630,7 +695,7 @@
         const editUsernameInput = document.getElementById('editUsernameInput');
         const saveUsernameBtn = document.getElementById('saveUsernameBtn');
         const cancelUsernameBtn = document.getElementById('cancelUsernameBtn');
-        
+
         const logoutBtn = document.getElementById('logoutBtn');
         const createNewSetBtn = document.getElementById('createNewSetBtn');
         const emptyCreateBtn = document.getElementById('emptyCreateBtn');
@@ -643,7 +708,6 @@
         const modalTitle = document.getElementById('modalTitle');
         const setTitleInput = document.getElementById('setTitleInput');
         const cardRowsContainer = document.getElementById('cardRowsContainer');
-        const addCardRowBtn = document.getElementById('addCardRowBtn');
         const saveSetBtn = document.getElementById('saveSetBtn');
         const cancelSetBtn = document.getElementById('cancelSetBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -689,13 +753,13 @@
                     headers: { 'Authorization': `Bearer ${TOKEN}` }
                 });
                 const config = await response.json();
-                
+
                 currentUsername = config.username;
-                
+
                 // Toon welkom terug scherm
                 statusMessage.classList.add('hidden');
                 welcomeTitle.textContent = `Welkom terug, ${currentUsername}!`;
-                
+
                 // Container breed maken voor het dashboard
                 mainContainer.classList.add('wide');
                 welcomeBack.classList.remove('hidden');
@@ -816,7 +880,7 @@
 
                 if (data.files && data.files.length > 0) {
                     setsGrid.innerHTML = '';
-                    
+
                     data.files.forEach(file => {
                         // Haal de schone naam van de set uit de bestandsnaam
                         let setName = file.name;
@@ -894,16 +958,14 @@
                     headers: { 'Authorization': `Bearer ${TOKEN}` }
                 });
                 const setContent = await response.json();
-                
+
                 if (setContent && setContent.items) {
                     setContent.items.forEach(item => {
                         addCardRow(item.term, item.definition);
                     });
                 }
-                
-                if (cardRowsContainer.children.length === 0) {
-                    addCardRow();
-                }
+
+                manageEmptyRows();
 
                 setModal.classList.remove('hidden');
             } catch (error) {
@@ -1010,6 +1072,34 @@
         }
 
         // Hulpmiddelen voor de UI
+        function manageEmptyRows() {
+            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
+            if (rows.length === 0) {
+                addCardRow();
+                return;
+            }
+
+            const lastRow = rows[rows.length - 1];
+            const lastInputs = lastRow.querySelectorAll('input');
+            const lastHasText = lastInputs[0].value.trim() !== "" || lastInputs[1].value.trim() !== "";
+
+            if (lastHasText) {
+                addCardRow();
+                return;
+            }
+
+            if (rows.length > 1) {
+                const secondLastRow = rows[rows.length - 2];
+                const secondLastInputs = secondLastRow.querySelectorAll('input');
+                const secondLastHasText = secondLastInputs[0].value.trim() !== "" || secondLastInputs[1].value.trim() !== "";
+
+                if (!secondLastHasText) {
+                    lastRow.remove();
+                    manageEmptyRows();
+                }
+            }
+        }
+
         function addCardRow(term = "", definition = "") {
             const row = document.createElement('div');
             row.className = 'card-row';
@@ -1018,9 +1108,15 @@
                 <input type="text" class="def-input" placeholder="Definitie (bijv. Hallo)" value="${escapeHTML(definition)}">
                 <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
             `;
-            
+
             row.querySelector('.remove-row-btn').addEventListener('click', () => {
                 row.remove();
+                manageEmptyRows();
+            });
+
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', manageEmptyRows);
             });
 
             cardRowsContainer.appendChild(row);
@@ -1033,9 +1129,6 @@
             cardRowsContainer.innerHTML = '';
             importPanel.classList.add('hidden');
             importTextarea.value = '';
-            // Voeg standaard 3 lege rijen toe
-            addCardRow();
-            addCardRow();
             addCardRow();
             setModal.classList.remove('hidden');
         }
@@ -1093,6 +1186,7 @@
                 importTextarea.value = '';
                 importPanel.classList.add('hidden');
                 cleanEmptyRows();
+                manageEmptyRows();
             }
         }
 
@@ -1126,7 +1220,7 @@
 
         // Event listeners
         saveBtn.addEventListener('click', saveUsername);
-        
+
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('google_access_token');
             window.location.href = 'index.html';
@@ -1140,7 +1234,6 @@
         emptyCreateBtn.addEventListener('click', openSetModalForNew);
         cancelSetBtn.addEventListener('click', closeSetModal);
         closeModalBtn.addEventListener('click', closeSetModal);
-        addCardRowBtn.addEventListener('click', () => addCardRow());
 
         toggleImportBtn.addEventListener('click', () => {
             importPanel.classList.toggle('hidden');
@@ -1160,4 +1253,5 @@
         checkFirstTime();
     </script>
 </body>
+
 </html>
