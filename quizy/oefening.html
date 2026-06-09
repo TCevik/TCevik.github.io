@@ -1389,6 +1389,9 @@
             testResultsDiv.innerHTML = resultsHTML;
             document.getElementById('submitTestBtn').style.display = 'none';
 
+            // Update streak
+            updateStudyStreak();
+
             // Sla de toets score op in Drive progress
             if (!gameProgress.test) {
                 gameProgress.test = { bestScore: 0 };
