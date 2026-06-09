@@ -303,6 +303,8 @@
                 callback: (tokenResponse) => {
                     if (tokenResponse && tokenResponse.access_token) {
                         localStorage.setItem('google_access_token', tokenResponse.access_token);
+                        const expiryTime = Date.now() + (parseInt(tokenResponse.expires_in, 10) || 3600) * 1000;
+                        localStorage.setItem('google_token_expiry', expiryTime);
                         window.location.href = '/quizy/home.html';
                     }
                 },
@@ -322,6 +324,7 @@
             e.preventDefault();
             // Verwijder het token uit de opslag
             localStorage.removeItem('google_access_token');
+            localStorage.removeItem('google_token_expiry');
             // Herlaad de pagina zodat de knoppen weer resetten naar 'Inloggen'
             window.location.reload();
         }
@@ -355,6 +358,15 @@
             const startBtn = document.getElementById('startBtn');
 
             // Controleer of de gebruiker al is ingelogd
+            const token = localStorage.getItem('google_access_token');
+            const expiry = localStorage.getItem('google_token_expiry');
+            const isExpired = expiry && Date.now() > parseInt(expiry, 10);
+
+            if (token && isExpired) {
+                localStorage.removeItem('google_access_token');
+                localStorage.removeItem('google_token_expiry');
+            }
+
             const isLoggedIn = localStorage.getItem('google_access_token') !== null;
 
             if (isLoggedIn) {
