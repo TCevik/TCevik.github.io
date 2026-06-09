@@ -114,7 +114,7 @@
         <div style="display: flex; align-items: center; gap: 10px;">
             <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
             <nav class="nav-buttons">
-                <a href="#" id="loginBtn" class="big-btn">Inloggen</a>
+                <a href="#" id="loginBtn" class="big-btn">Inloggen met Google</a>
             </nav>
         </div>
     </header>
@@ -294,209 +294,43 @@
         </div>
     </footer>
 
-    <!-- Authentication Modal (Login / Register) -->
-    <div id="authModal" class="modal hidden">
-        <div class="modal-content" style="max-width: 450px;">
-            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 24px;">
-                <h3 id="authModalTitle" style="margin: 0; font-size: 1.5rem;">Inloggen</h3>
-                <button id="closeAuthModalBtn" class="close-btn" style="background: none; border: none; font-size: 1.75rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
-            </div>
-
-            <!-- E-mail/Wachtwoord Forms -->
-            <form id="authForm" style="display: flex; flex-direction: column; gap: 16px;">
-                <div style="display: flex; flex-direction: column; gap: 6px;">
-                    <label for="authEmail" style="font-weight: 600; font-size: 0.95rem;">E-mailadres</label>
-                    <input type="email" id="authEmail" required placeholder="naam@voorbeeld.nl" style="padding: 10px 14px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); border-radius: 8px; outline: none;">
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 6px;">
-                    <label for="authPassword" style="font-weight: 600; font-size: 0.95rem;">Wachtwoord</label>
-                    <input type="password" id="authPassword" required placeholder="••••••••" style="padding: 10px 14px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); border-radius: 8px; outline: none;">
-                </div>
-                <button type="submit" id="authSubmitBtn" class="big-btn" style="width: 100%; border-radius: 8px; margin-top: 10px;">Inloggen</button>
-            </form>
-
-            <div style="margin: 20px 0; text-align: center; color: var(--text-secondary); font-size: 0.9rem; position: relative;">
-                <span style="background: var(--modal-bg); padding: 0 10px; position: relative; z-index: 1;">of</span>
-                <hr style="position: absolute; top: 50%; left: 0; right: 0; border: none; border-top: 1px solid var(--border-color); margin: 0; z-index: 0;">
-            </div>
-
-            <!-- Google Sign-In -->
-            <button id="googleSignInBtn" class="big-btn" style="width: 100%; border-radius: 8px; background: #ea4335; box-shadow: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fa-brands fa-google"></i> Inloggen met Google
-            </button>
-
-            <div style="margin-top: 20px; text-align: center; font-size: 0.95rem;">
-                <span id="authSwitchText">Nog geen account?</span>
-                <a href="#" id="authSwitchBtn" style="color: var(--brand-color); font-weight: 600; text-decoration: none; margin-left: 5px;">Registreren</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Account Link Modal (Forced) -->
-    <div id="linkModal" class="modal hidden">
-        <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <div style="font-size: 3rem; color: var(--brand-color); margin-bottom: 15px;">
-                <i class="fa-solid fa-cloud"></i>
-            </div>
-            <h3 style="margin-top: 0; font-size: 1.5rem;">Google Drive Vereist</h3>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">
-                TC_tam Quizy slaat je quizzen op in je Google Drive. Koppel nu je Google-account om de app te kunnen gebruiken.
-            </p>
-            <button id="linkGoogleBtn" class="big-btn" style="width: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
-                <i class="fa-brands fa-google"></i> Google Account Koppelen
-            </button>
-            <button id="linkLogoutBtn" class="big-btn" style="width: 100%; border-radius: 8px; background: #64748b; box-shadow: none;">
-                Uitloggen
-            </button>
-        </div>
-    </div>
-
     <script>
         const SCOPES = 'https://www.googleapis.com/auth/drive.file'; 
 
-        // DOM Elements
-        const authModal = document.getElementById('authModal');
-        const closeAuthModalBtn = document.getElementById('closeAuthModalBtn');
-        const authForm = document.getElementById('authForm');
-        const authEmail = document.getElementById('authEmail');
-        const authPassword = document.getElementById('authPassword');
-        const authSubmitBtn = document.getElementById('authSubmitBtn');
-        const googleSignInBtn = document.getElementById('googleSignInBtn');
-        const authSwitchBtn = document.getElementById('authSwitchBtn');
-        const authSwitchText = document.getElementById('authSwitchText');
-        const authModalTitle = document.getElementById('authModalTitle');
-
-        const linkModal = document.getElementById('linkModal');
-        const linkGoogleBtn = document.getElementById('linkGoogleBtn');
-        const linkLogoutBtn = document.getElementById('linkLogoutBtn');
-
-        const loginBtn = document.getElementById('loginBtn');
-        const startBtn = document.getElementById('startBtn');
-
-        let isRegisterState = false; // true = register, false = login
-
-        // Switch between login and register
-        authSwitchBtn.addEventListener('click', (e) => {
+        function handleLoginClick(e) {
             e.preventDefault();
-            isRegisterState = !isRegisterState;
-            if (isRegisterState) {
-                authModalTitle.textContent = "Registreren";
-                authSubmitBtn.textContent = "Registreren";
-                authSwitchText.textContent = "Heb je al een account?";
-                authSwitchBtn.textContent = "Inloggen";
-            } else {
-                authModalTitle.textContent = "Inloggen";
-                authSubmitBtn.textContent = "Inloggen";
-                authSwitchText.textContent = "Nog geen account?";
-                authSwitchBtn.textContent = "Registreren";
-            }
-        });
-
-        // Open/Close Auth Modal
-        function showAuthModal(e) {
-            if (e) e.preventDefault();
-            authModal.classList.remove('hidden');
-        }
-        function hideAuthModal() {
-            authModal.classList.add('hidden');
-            authForm.reset();
-        }
-        closeAuthModalBtn.addEventListener('click', hideAuthModal);
-
-        // Handle Email/Password Auth
-        authForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = authEmail.value.trim();
-            const password = authPassword.value;
-
-            if (isRegisterState) {
-                firebase.auth().createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        hideAuthModal();
-                    })
-                    .catch((error) => {
-                        console.error("Registratiefout:", error);
-                        alert("Registratie mislukt: " + error.message);
-                    });
-            } else {
-                firebase.auth().signInWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        hideAuthModal();
-                    })
-                    .catch((error) => {
-                        console.error("Inlogfout:", error);
-                        alert("Inloggen mislukt: " + error.message);
-                    });
-            }
-        });
-
-        // Google Authentication Helper
-        function getGoogleProvider() {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope(SCOPES);
-            return provider;
-        }
 
-        // Handle Google Sign-In
-        googleSignInBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const provider = getGoogleProvider();
             firebase.auth().signInWithPopup(provider)
                 .then((result) => {
-                    const token = result.credential.accessToken;
+                    const credential = result.credential;
+                    const token = credential.accessToken;
                     if (token) {
                         localStorage.setItem('google_access_token', token);
-                        hideAuthModal();
                         window.location.href = 'home.html';
-                    }
-                })
-                .catch((error) => {
-                    console.error("Google inlogfout:", error);
-                    alert("Google inloggen mislukt: " + error.message);
-                });
-        });
-
-        // Link Google Account
-        linkGoogleBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const user = firebase.auth().currentUser;
-            if (!user) return;
-
-            const provider = getGoogleProvider();
-            user.linkWithPopup(provider)
-                .then((result) => {
-                    const token = result.credential.accessToken;
-                    if (token) {
-                        localStorage.setItem('google_access_token', token);
-                        linkModal.classList.add('hidden');
-                        window.location.href = 'home.html';
-                    }
-                })
-                .catch((error) => {
-                    console.error("Koppelfout:", error);
-                    if (error.code === 'auth/credential-already-in-use') {
-                        alert("Dit Google-account is al gekoppeld aan een andere gebruiker. Log uit en log in met Google.");
                     } else {
-                        alert("Koppelen mislukt: " + error.message);
+                        console.error("Geen access token ontvangen van Google.");
+                        alert("Inloggen mislukt: geen toegangstoken ontvangen.");
                     }
+                })
+                .catch((error) => {
+                    console.error("Firebase inlogfout:", error);
+                    alert("Inloggen mislukt: " + error.message);
                 });
-        });
+        }
 
-        // Logout Helper
-        function handleLogout(e) {
-            if (e) e.preventDefault();
+        function handleLogoutClick(e) {
+            e.preventDefault();
             firebase.auth().signOut().then(() => {
                 localStorage.removeItem('google_access_token');
-                linkModal.classList.add('hidden');
                 window.location.reload();
             }).catch((error) => {
                 console.error("Fout bij uitloggen:", error);
                 localStorage.removeItem('google_access_token');
-                linkModal.classList.add('hidden');
                 window.location.reload();
             });
         }
-        linkLogoutBtn.addEventListener('click', handleLogout);
 
         window.onload = function () {
             const themeToggleBtn = document.getElementById('themeToggle');
@@ -521,33 +355,26 @@
                 });
             }
 
-            // Listen for Auth State changes
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    const token = localStorage.getItem('google_access_token');
-                    if (token) {
-                        loginBtn.textContent = 'Uitloggen';
-                        loginBtn.addEventListener('click', handleLogout);
-                        startBtn.addEventListener('click', function() {
-                            window.location.href = 'home.html';
-                        });
-                        linkModal.classList.add('hidden');
-                    } else {
-                        linkModal.classList.remove('hidden');
-                        loginBtn.textContent = 'Uitloggen';
-                        loginBtn.addEventListener('click', handleLogout);
-                        startBtn.addEventListener('click', function() {
-                            linkModal.classList.remove('hidden');
-                        });
-                    }
-                } else {
-                    localStorage.removeItem('google_access_token');
-                    loginBtn.textContent = 'Inloggen';
-                    loginBtn.addEventListener('click', showAuthModal);
-                    startBtn.addEventListener('click', showAuthModal);
-                    linkModal.classList.add('hidden');
-                }
-            });
+            const loginBtn = document.getElementById('loginBtn');
+            const startBtn = document.getElementById('startBtn');
+
+            // Controleer of de gebruiker al is ingelogd
+            const isLoggedIn = localStorage.getItem('google_access_token') !== null;
+
+            if (isLoggedIn) {
+                // Pas de login knop aan naar Uitloggen
+                loginBtn.textContent = 'Uitloggen';
+                loginBtn.addEventListener('click', handleLogoutClick);
+
+                // Zorg dat 'Begin nu' direct naar home.html stuurt
+                startBtn.addEventListener('click', function() {
+                    window.location.href = 'home.html';
+                });
+            } else {
+                // Normale login flow als de gebruiker nog niet is ingelogd
+                loginBtn.addEventListener('click', handleLoginClick);
+                startBtn.addEventListener('click', handleLoginClick);
+            }
         };
     </script>
 </body>
