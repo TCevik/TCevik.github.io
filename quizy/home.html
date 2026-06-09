@@ -826,6 +826,12 @@
 
                         const card = document.createElement('div');
                         card.className = 'set-card';
+                        card.style.cursor = 'pointer';
+                        card.addEventListener('click', (e) => {
+                            if (!e.target.closest('.set-card-actions')) {
+                                window.location.href = `set.html?id=${file.id}`;
+                            }
+                        });
                         card.innerHTML = `
                             <div>
                                 <div class="set-card-title">${escapeHTML(setName)}</div>

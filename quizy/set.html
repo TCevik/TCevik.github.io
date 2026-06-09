@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <script src="auth-check.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Details - Quizy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        /* App Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+            text-decoration: none;
+        }
+
+        /* Main and Container */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        input[type="text"] {
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            color: #1e293b;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        input[type="text"]:focus {
+            border-color: #52873e;
+            box-shadow: 0 0 0 3px rgba(82, 135, 62, 0.15);
+        }
+
+        .btn {
+            background-color: #52873e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #436f32;
+            box-shadow: 0 4px 12px rgba(82, 135, 62, 0.15);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            border-radius: 6px;
+        }
+
+        .loading {
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            margin: 40px auto;
+            max-width: 450px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(82, 135, 62, 0.1);
+            border-left-color: #52873e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Set Details Layout */
+        .set-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .set-title-section h1 {
+            margin: 0 0 8px 0;
+            font-size: 2.2rem;
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .set-meta {
+            font-size: 0.95rem;
+            color: #64748b;
+            display: flex;
+            gap: 15px;
+        }
+
+        .set-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Study Options */
+        .study-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .study-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 45px;
+        }
+
+        .study-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .study-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            border-color: #52873e;
+        }
+
+        .study-card-icon {
+            font-size: 2.2rem;
+        }
+
+        .study-card-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        /* Terms List */
+        .terms-section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .terms-section-title h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .terms-count {
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .terms-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+
+        .term-row {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: border-color 0.2s;
+        }
+
+        .term-row:hover {
+            border-color: #cbd5e1;
+        }
+
+        .term-word {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0f172a;
+            border-right: 1px solid #f1f5f9;
+            padding-right: 20px;
+        }
+
+        .term-definition {
+            font-size: 1.05rem;
+            color: #334155;
+        }
+
+        .term-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            padding: 6px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+        @media (max-width: 640px) {
+            .term-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .term-word {
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 1px solid #f1f5f9;
+                padding-bottom: 12px;
+            }
+        }
+
+        /* Modal styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-sizing: border-box;
+            border: 1px solid #e2e8f0;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #0f172a;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #475569;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .card-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .card-row input {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .card-row input:focus {
+            border-color: #52873e;
+        }
+
+        .remove-row-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .remove-row-btn:hover {
+            color: #b91c1c;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #52873e;
+        }
+
+        .footer-copy {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="home.html" id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></a>
+        <div class="header-actions">
+            <a href="home.html" class="btn btn-secondary btn-sm" style="margin-right: 10px;">🏠 Dashboard</a>
+            <button id="logoutBtn" class="btn btn-secondary btn-sm">Uitloggen</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Loading indicator -->
+            <div id="loadingIndicator" class="loading">
+                <div class="spinner"></div>
+                <span>Set details laden uit Google Drive...</span>
+            </div>
+
+            <!-- Set Content -->
+            <div id="setContent" class="hidden">
+                <div class="set-header">
+                    <div class="set-title-section">
+                        <h1 id="setViewTitle">Titel van de set</h1>
+                        <div class="set-meta">
+                            <span id="setViewCount">0 kaarten</span>
+                            <span id="setViewUpdated">Bijgewerkt: -</span>
+                        </div>
+                    </div>
+                    <div class="set-actions">
+                        <button id="editSetBtn" class="btn">✏️ Bewerken</button>
+                        <button id="deleteSetBtn" class="btn btn-danger">🗑️ Verwijderen</button>
+                    </div>
+                </div>
+
+                <!-- Learning Options -->
+                <div class="study-section-title">Oefen deze set</div>
+                <div class="study-options-grid">
+                    <div class="study-card">
+                        <div class="study-card-icon">📖</div>
+                        <h3 class="study-card-title">Leren</h3>
+                    </div>
+                    <div class="study-card">
+                        <div class="study-card-icon">📝</div>
+                        <h3 class="study-card-title">Oefentoetsen</h3>
+                    </div>
+                    <div class="study-card">
+                        <div class="study-card-icon">📇</div>
+                        <h3 class="study-card-title">Flashcards</h3>
+                    </div>
+                    <div class="study-card">
+                        <div class="study-card-icon">✅</div>
+                        <h3 class="study-card-title">Meerkeuze</h3>
+                    </div>
+                    <div class="study-card">
+                        <div class="study-card-icon">✍️</div>
+                        <h3 class="study-card-title">Spelling</h3>
+                    </div>
+                </div>
+
+                <!-- Terms List Overview -->
+                <div class="terms-section-title">
+                    <h2>Woorden in deze set</h2>
+                    <span id="termsBadge" class="terms-count">0</span>
+                </div>
+
+                <div id="termsList" class="terms-list">
+                    <!-- Terms row will load dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal voor Set Bewerken -->
+    <div id="setModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Set bewerken</h3>
+                <button id="closeModalBtn" class="close-btn">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="setTitleInput">Titel van de set</label>
+                <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1">
+            </div>
+
+            <div class="form-group">
+                <label style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span>Kaarten (Termen & Definities)</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button id="toggleImportBtn" class="btn btn-secondary btn-sm">Snel importeren</button>
+                        <button id="addCardRowBtn" class="btn btn-secondary btn-sm">+ Kaart toevoegen</button>
+                    </div>
+                </label>
+                
+                <div id="importPanel" class="hidden" style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left;">
+                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #475569; font-weight: 600;">Plak je lijst in het formaat: <code>woord, definitie; woord, definitie;</code></p>
+                    <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                        <button id="cancelImportBtn" class="btn btn-secondary btn-sm">Annuleren</button>
+                        <button id="processImportBtn" class="btn btn-sm">Voeg toe</button>
+                    </div>
+                </div>
+
+                <div id="cardRowsContainer">
+                    <!-- Dynamische rijen komen hier -->
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="cancelSetBtn" class="btn btn-secondary">Annuleren</button>
+                <button id="saveSetBtn" class="btn">Set opslaan</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Over TC_tam Quizy</a>
+                <a href="#">Privacybeleid</a>
+                <a href="#">Voorwaarden</a>
+                <a href="#">Contact</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 TC_tam Quizy. Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+    <script>
+        const TOKEN = localStorage.getItem('google_access_token');
+        const SET_PREFIX = 'quizy_set_';
+
+        // URL parameters controleren
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileId = urlParams.get('id');
+
+        if (!TOKEN) {
+            window.location.href = 'index.html';
+        }
+
+        if (!fileId) {
+            window.location.href = 'home.html';
+        }
+
+        // Elementen
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const setContent = document.getElementById('setContent');
+        const setViewTitle = document.getElementById('setViewTitle');
+        const setViewCount = document.getElementById('setViewCount');
+        const setViewUpdated = document.getElementById('setViewUpdated');
+        const termsList = document.getElementById('termsList');
+        const termsBadge = document.getElementById('termsBadge');
+        
+        const logoutBtn = document.getElementById('logoutBtn');
+        const editSetBtn = document.getElementById('editSetBtn');
+        const deleteSetBtn = document.getElementById('deleteSetBtn');
+
+        // Modal elementen
+        const setModal = document.getElementById('setModal');
+        const setTitleInput = document.getElementById('setTitleInput');
+        const cardRowsContainer = document.getElementById('cardRowsContainer');
+        const addCardRowBtn = document.getElementById('addCardRowBtn');
+        const saveSetBtn = document.getElementById('saveSetBtn');
+        const cancelSetBtn = document.getElementById('cancelSetBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        const toggleImportBtn = document.getElementById('toggleImportBtn');
+        const importPanel = document.getElementById('importPanel');
+        const importTextarea = document.getElementById('importTextarea');
+        const cancelImportBtn = document.getElementById('cancelImportBtn');
+        const processImportBtn = document.getElementById('processImportBtn');
+
+        let currentSetData = null;
+
+        // Set ophalen
+        async function fetchSetDetails() {
+            try {
+                // 1. Metadata ophalen (voor de naam/titel en updated tijd)
+                const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?fields=name,modifiedTime`, {
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+                if (!metaResponse.ok) throw new Error("Kon metadata niet ophalen");
+                const metadata = await metaResponse.json();
+
+                // 2. Inhoud ophalen
+                const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+                if (!contentResponse.ok) throw new Error("Kon inhoud niet ophalen");
+                const content = await contentResponse.json();
+
+                currentSetData = {
+                    id: fileId,
+                    name: metadata.name,
+                    modifiedTime: metadata.modifiedTime,
+                    title: content.title || metadata.name.replace(SET_PREFIX, '').replace('.json', ''),
+                    items: content.items || []
+                };
+
+                renderSet();
+            } catch (error) {
+                console.error("Fout bij ophalen set:", error);
+                loadingIndicator.innerHTML = "<span>Fout bij het laden van de set details. Controleer of de set bestaat.</span>";
+            }
+        }
+
+        // Render details in UI
+        function renderSet() {
+            loadingIndicator.classList.add('hidden');
+            setContent.classList.remove('hidden');
+
+            setViewTitle.textContent = currentSetData.title;
+            const countText = `${currentSetData.items.length} ${currentSetData.items.length === 1 ? 'kaart' : 'kaarten'}`;
+            setViewCount.textContent = countText;
+            termsBadge.textContent = currentSetData.items.length;
+            setViewUpdated.textContent = `Bijgewerkt: ${new Date(currentSetData.modifiedTime).toLocaleDateString()}`;
+
+            termsList.innerHTML = '';
+            if (currentSetData.items.length > 0) {
+                currentSetData.items.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'term-row';
+                    row.innerHTML = `
+                        <div class="term-word">${escapeHTML(item.term)}</div>
+                        <div class="term-definition">${escapeHTML(item.definition)}</div>
+                        <div class="term-actions">
+                            <button class="icon-btn" onclick="speakText('${escapeJS(item.term)}')" title="Uitspreken">🔊</button>
+                        </div>
+                    `;
+                    termsList.appendChild(row);
+                });
+            } else {
+                termsList.innerHTML = '<div style="text-align: center; color: #64748b; padding: 20px;">Geen woorden gevonden in deze set.</div>';
+            }
+        }
+
+        // Spraaksynthese voor uitspraak (leuke micro-interactie)
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                // Probeer de taal van het woord te raden of standaard nederlands/engels
+                utterance.lang = 'nl-NL';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Set verwijderen
+        async function deleteSet() {
+            if (!confirm(`Weet je zeker dat je "${currentSetData.title}" wilt verwijderen?`)) {
+                return;
+            }
+
+            deleteSetBtn.disabled = true;
+            deleteSetBtn.textContent = "Verwijderen...";
+
+            try {
+                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+
+                if (response.ok) {
+                    window.location.href = 'home.html';
+                } else {
+                    alert("Verwijderen is mislukt. Probeer het opnieuw.");
+                    deleteSetBtn.disabled = false;
+                    deleteSetBtn.textContent = "🗑️ Verwijderen";
+                }
+            } catch (error) {
+                console.error("Fout bij verwijderen:", error);
+                alert("Er ging iets mis.");
+                deleteSetBtn.disabled = false;
+                deleteSetBtn.textContent = "🗑️ Verwijderen";
+            }
+        }
+
+        // Bewerken openen
+        function openEditModal() {
+            setTitleInput.value = currentSetData.title;
+            cardRowsContainer.innerHTML = '';
+            importPanel.classList.add('hidden');
+            importTextarea.value = '';
+
+            if (currentSetData.items && currentSetData.items.length > 0) {
+                currentSetData.items.forEach(item => {
+                    addCardRow(item.term, item.definition);
+                });
+            } else {
+                addCardRow();
+            }
+
+            setModal.classList.remove('hidden');
+        }
+
+        function addCardRow(term = "", definition = "") {
+            const row = document.createElement('div');
+            row.className = 'card-row';
+            row.innerHTML = `
+                <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(term)}">
+                <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
+                <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
+            `;
+            
+            row.querySelector('.remove-row-btn').addEventListener('click', () => {
+                row.remove();
+            });
+
+            cardRowsContainer.appendChild(row);
+        }
+
+        async function saveSet() {
+            const title = setTitleInput.value.trim();
+            if (!title) {
+                alert("Vul een titel in voor de set.");
+                return;
+            }
+
+            const items = [];
+            const rows = cardRowsContainer.getElementsByClassName('card-row');
+            for (let row of rows) {
+                const termInput = row.querySelector('.term-input');
+                const defInput = row.querySelector('.def-input');
+                const term = termInput.value.trim();
+                const definition = defInput.value.trim();
+                if (term || definition) {
+                    items.push({ term, definition });
+                }
+            }
+
+            if (items.length === 0) {
+                alert("Voeg ten minste één kaart toe.");
+                return;
+            }
+
+            saveSetBtn.disabled = true;
+            saveSetBtn.textContent = "Opslaan...";
+
+            const setFileName = `${SET_PREFIX}${title}.json`;
+            const fileData = {
+                title: title,
+                items: items,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                // Inhoud bijwerken
+                const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(fileData)
+                });
+
+                // Naam bijwerken
+                const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: setFileName })
+                });
+
+                if (response.ok && metaResponse.ok) {
+                    setModal.classList.add('hidden');
+                    // Details opnieuw laden
+                    loadingIndicator.classList.remove('hidden');
+                    setContent.classList.add('hidden');
+                    await fetchSetDetails();
+                } else {
+                    alert("Bijwerken mislukt.");
+                }
+            } catch (error) {
+                console.error("Fout bij opslaan:", error);
+                alert("Er ging iets mis.");
+            } finally {
+                saveSetBtn.disabled = false;
+                saveSetBtn.textContent = "Set opslaan";
+            }
+        }
+
+        // Import functies
+        function processImport() {
+            const text = importTextarea.value.trim();
+            if (!text) {
+                alert("Plak eerst tekst.");
+                return;
+            }
+
+            const pairs = text.split(';');
+            let count = 0;
+
+            pairs.forEach(pair => {
+                const cleanPair = pair.trim();
+                if (!cleanPair) return;
+
+                const commaIndex = cleanPair.indexOf(',');
+                if (commaIndex !== -1) {
+                    const term = cleanPair.substring(0, commaIndex).trim();
+                    const definition = cleanPair.substring(commaIndex + 1).trim();
+                    if (term || definition) {
+                        addCardRow(term, definition);
+                        count++;
+                    }
+                } else {
+                    addCardRow(cleanPair, "");
+                    count++;
+                }
+            });
+
+            if (count > 0) {
+                importTextarea.value = '';
+                importPanel.classList.add('hidden');
+                cleanEmptyRows();
+            }
+        }
+
+        function cleanEmptyRows() {
+            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
+            rows.forEach(row => {
+                const term = row.querySelector('.term-input').value.trim();
+                const def = row.querySelector('.def-input').value.trim();
+                if (!term && !def) {
+                    row.remove();
+                }
+            });
+            if (cardRowsContainer.children.length === 0) {
+                addCardRow();
+            }
+        }
+
+        // Helpers
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function escapeJS(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        // Event listeners
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('google_access_token');
+            window.location.href = 'index.html';
+        });
+
+        editSetBtn.addEventListener('click', openEditModal);
+        deleteSetBtn.addEventListener('click', deleteSet);
+        closeModalBtn.addEventListener('click', () => setModal.classList.add('hidden'));
+        cancelSetBtn.addEventListener('click', () => setModal.classList.add('hidden'));
+        addCardRowBtn.addEventListener('click', () => addCardRow());
+        saveSetBtn.addEventListener('click', saveSet);
+
+        toggleImportBtn.addEventListener('click', () => {
+            importPanel.classList.toggle('hidden');
+            if (!importPanel.classList.contains('hidden')) {
+                importTextarea.focus();
+            }
+        });
+        cancelImportBtn.addEventListener('click', () => {
+            importPanel.classList.add('hidden');
+            importTextarea.value = '';
+        });
+        processImportBtn.addEventListener('click', processImport);
+
+        // Laden starten
+        fetchSetDetails();
+    </script>
+</body>
+</html>
