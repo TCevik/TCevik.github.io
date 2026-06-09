@@ -284,7 +284,7 @@
             border-radius: 12px;
             padding: 20px 24px;
             display: grid;
-            grid-template-columns: 1fr 1fr auto;
+            grid-template-columns: auto 1fr 1fr auto;
             gap: 20px;
             align-items: center;
             box-shadow: var(--shadow-sm);
@@ -333,8 +333,13 @@
 
         @media (max-width: 640px) {
             .term-row {
-                grid-template-columns: 1fr;
+                grid-template-columns: auto 1fr;
                 gap: 12px;
+            }
+
+            .star-toggle-btn {
+                grid-row: 1 / span 3;
+                align-self: center;
             }
 
             .term-word {
@@ -644,6 +649,10 @@
                         <div class="study-card-icon" style="color: #f59e0b;"><i class="fa-solid fa-keyboard"></i></div>
                         <h3 class="study-card-title">Spelling</h3>
                     </div>
+                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=match'">
+                        <div class="study-card-icon" style="color: #ec4899;"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <h3 class="study-card-title">Verbinden</h3>
+                    </div>
                 </div>
 
                 <!-- Terms List Overview -->
@@ -675,6 +684,19 @@
             <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-bottom: 20px;">
                 <input type="checkbox" id="langLearningToggle" style="width: auto; cursor: pointer;">
                 <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren (Spraak & kolommen aanpassen)</label>
+            </div>
+
+            <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
+                <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
+                <select id="langSingleSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
+                    <option value="nl-NL">Nederlands</option>
+                    <option value="en-US">Engels</option>
+                    <option value="fr-FR">Frans</option>
+                    <option value="de-DE">Duits</option>
+                    <option value="es-ES">Spaans</option>
+                    <option value="it-IT">Italiaans</option>
+                    <option value="tr-TR">Turks</option>
+                </select>
             </div>
 
             <div id="langSelectorContainer" class="hidden" style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
@@ -906,7 +928,11 @@
                 currentSetData.items.forEach(item => {
                     const row = document.createElement('div');
                     row.className = 'term-row';
+                    const isStarred = !!item.starred;
                     row.innerHTML = `
+                        <button class="icon-btn star-toggle-btn" style="color: ${isStarred ? '#eab308' : 'var(--text-secondary)'}; font-size: 1.25rem;" title="Moeilijk woord markeren">
+                            <i class="${isStarred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+                        </button>
                         <div class="term-word">
                             <span style="font-size:0.75rem; color:var(--text-secondary); display:block; text-transform:uppercase; font-weight:normal; margin-bottom:4px;">${escapeHTML(leftLabel)}</span>
                             ${escapeHTML(item.term)}
@@ -920,6 +946,43 @@
                             <button class="icon-btn" onclick="speakText('${escapeJS(item.definition)}', '${escapeJS(currentSetData.langRight || 'en-US')}')" title="Uitspreken ${escapeHTML(rightLabel)}"><i class="fa-solid fa-volume-high"></i></button>
                         </div>
                     `;
+
+                    row.querySelector('.star-toggle-btn').addEventListener('click', async () => {
+                        item.starred = !item.starred;
+                        const newStarred = item.starred;
+                        const starBtn = row.querySelector('.star-toggle-btn');
+                        const starIcon = starBtn.querySelector('i');
+                        if (newStarred) {
+                            starBtn.style.color = '#eab308';
+                            starIcon.className = 'fa-solid fa-star';
+                        } else {
+                            starBtn.style.color = 'var(--text-secondary)';
+                            starIcon.className = 'fa-regular fa-star';
+                        }
+
+                        // Save to drive immediately
+                        try {
+                            const fileData = {
+                                title: currentSetData.title,
+                                items: currentSetData.items,
+                                isLanguageLearning: currentSetData.isLanguageLearning,
+                                langLeft: currentSetData.langLeft,
+                                langRight: currentSetData.langRight,
+                                updatedAt: new Date().toISOString()
+                            };
+                            await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Authorization': `Bearer ${TOKEN}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(fileData)
+                            });
+                        } catch (err) {
+                            console.error("Fout bij opslaan star:", err);
+                        }
+                    });
+
                     termsList.appendChild(row);
                 });
             } else {
@@ -1013,17 +1076,21 @@
             document.getElementById('langLearningToggle').checked = isLang;
             document.getElementById('langLeftSelect').value = currentSetData.langLeft || 'nl-NL';
             document.getElementById('langRightSelect').value = currentSetData.langRight || 'en-US';
+            document.getElementById('langSingleSelect').value = currentSetData.langLeft || 'nl-NL';
 
             const selectorContainer = document.getElementById('langSelectorContainer');
+            const singleLangContainer = document.getElementById('singleLangContainer');
             if (isLang) {
                 selectorContainer.classList.remove('hidden');
+                singleLangContainer.classList.add('hidden');
             } else {
                 selectorContainer.classList.add('hidden');
+                singleLangContainer.classList.remove('hidden');
             }
 
             if (currentSetData.items && currentSetData.items.length > 0) {
                 currentSetData.items.forEach(item => {
-                    addCardRow(item.term, item.definition);
+                    addCardRow(item.term, item.definition, !!item.starred);
                 });
             }
 
@@ -1082,14 +1149,29 @@
             }
         }
 
-        function addCardRow(term = "", definition = "") {
+        function addCardRow(term = "", definition = "", starred = false) {
             const row = document.createElement('div');
             row.className = 'card-row';
+            row.dataset.starred = starred ? "true" : "false";
             row.innerHTML = `
+                <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
                 <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(term)}">
                 <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
                 <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
             `;
+
+            row.querySelector('.star-row-btn').addEventListener('click', () => {
+                const isStarred = row.dataset.starred === "true";
+                row.dataset.starred = isStarred ? "false" : "true";
+                const starIcon = row.querySelector('.star-row-btn i');
+                if (isStarred) {
+                    row.querySelector('.star-row-btn').style.color = '#94a3b8';
+                    starIcon.className = 'fa-regular fa-star';
+                } else {
+                    row.querySelector('.star-row-btn').style.color = '#eab308';
+                    starIcon.className = 'fa-solid fa-star';
+                }
+            });
 
             row.querySelector('.remove-row-btn').addEventListener('click', () => {
                 row.remove();
@@ -1119,8 +1201,9 @@
                 const defInput = row.querySelector('.def-input');
                 const term = termInput.value.trim();
                 const definition = defInput.value.trim();
+                const starred = row.dataset.starred === "true";
                 if (term || definition) {
-                    items.push({ term, definition });
+                    items.push({ term, definition, starred });
                 }
             }
 
@@ -1130,8 +1213,8 @@
             }
 
             const isLangLearning = document.getElementById('langLearningToggle').checked;
-            const langLeft = document.getElementById('langLeftSelect').value;
-            const langRight = document.getElementById('langRightSelect').value;
+            const langLeft = isLangLearning ? document.getElementById('langLeftSelect').value : document.getElementById('langSingleSelect').value;
+            const langRight = isLangLearning ? document.getElementById('langRightSelect').value : document.getElementById('langSingleSelect').value;
 
             saveSetBtn.disabled = true;
             saveSetBtn.textContent = "Opslaan...";
@@ -1265,10 +1348,13 @@
         // Language learning events
         document.getElementById('langLearningToggle').addEventListener('change', (e) => {
             const container = document.getElementById('langSelectorContainer');
+            const singleContainer = document.getElementById('singleLangContainer');
             if (e.target.checked) {
                 container.classList.remove('hidden');
+                singleContainer.classList.add('hidden');
             } else {
                 container.classList.add('hidden');
+                singleContainer.classList.remove('hidden');
             }
             updatePlaceholderTexts();
         });

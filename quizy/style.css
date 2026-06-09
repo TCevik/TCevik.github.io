@@ -395,3 +395,85 @@ body .modal.hidden .modal-content {
     transform: scale(0.95) translateY(15px);
     opacity: 0;
 }
+
+/* MATCHING GAME SPECIFIC */
+.match-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.match-card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px 16px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    user-select: none;
+    box-shadow: var(--shadow-sm);
+    word-break: break-word;
+}
+
+.match-card:hover {
+    border-color: var(--brand-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.match-card.selected {
+    border-color: var(--brand-color);
+    background-color: var(--brand-glow);
+    color: var(--brand-color);
+}
+
+.match-card.matched {
+    border-color: #22c55e !important;
+    background-color: #dcfce7 !important;
+    color: #14532d !important;
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    transition: all 0.4s ease-out;
+}
+
+.match-card.incorrect {
+    border-color: #ef4444 !important;
+    background-color: #fee2e2 !important;
+    color: #7f1d1d !important;
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+@media (max-width: 768px) {
+    .match-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    .match-card {
+        padding: 16px 8px;
+        font-size: 0.9rem;
+        min-height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .match-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

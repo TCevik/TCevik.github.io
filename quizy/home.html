@@ -634,6 +634,13 @@
                             <button id="cancelUsernameBtn" class="btn btn-secondary btn-sm">Annuleer</button>
                         </div>
                     </div>
+
+                    <div id="streakContainer" style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                        <span style="font-size: 1.5rem;">🔥</span>
+                        <div style="text-align: left;">
+                            <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);" id="streakCount">0 dagen streak</div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Quiz sets sectie -->
@@ -690,6 +697,19 @@
             <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-bottom: 20px;">
                 <input type="checkbox" id="langLearningToggle" style="width: auto; cursor: pointer;">
                 <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren (Spraak & kolommen aanpassen)</label>
+            </div>
+
+            <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
+                <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
+                <select id="langSingleSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
+                    <option value="nl-NL">Nederlands</option>
+                    <option value="en-US">Engels</option>
+                    <option value="fr-FR">Frans</option>
+                    <option value="de-DE">Duits</option>
+                    <option value="es-ES">Spaans</option>
+                    <option value="it-IT">Italiaans</option>
+                    <option value="tr-TR">Turks</option>
+                </select>
             </div>
 
             <div id="langSelectorContainer" class="hidden" style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
@@ -909,6 +929,10 @@
                 const config = await response.json();
 
                 currentUsername = config.username;
+
+                // Update streak display
+                const streak = config.streak || 0;
+                document.getElementById('streakCount').textContent = `${streak} ${streak === 1 ? 'dag' : 'dagen'} streak`;
 
                 // Toon welkom terug scherm
                 statusMessage.classList.add('hidden');
@@ -1157,17 +1181,21 @@
                 document.getElementById('langLearningToggle').checked = isLang;
                 document.getElementById('langLeftSelect').value = setContent.langLeft || 'nl-NL';
                 document.getElementById('langRightSelect').value = setContent.langRight || 'en-US';
+                document.getElementById('langSingleSelect').value = setContent.langLeft || 'nl-NL';
 
                 const selectorContainer = document.getElementById('langSelectorContainer');
+                const singleLangContainer = document.getElementById('singleLangContainer');
                 if (isLang) {
                     selectorContainer.classList.remove('hidden');
+                    singleLangContainer.classList.add('hidden');
                 } else {
                     selectorContainer.classList.add('hidden');
+                    singleLangContainer.classList.remove('hidden');
                 }
 
                 if (setContent && setContent.items) {
                     setContent.items.forEach(item => {
-                        addCardRow(item.term, item.definition);
+                        addCardRow(item.term, item.definition, !!item.starred);
                     });
                 }
 
@@ -1202,8 +1230,9 @@
                 const defInput = row.querySelector('.def-input');
                 const term = termInput.value.trim();
                 const definition = defInput.value.trim();
+                const starred = row.dataset.starred === "true";
                 if (term || definition) {
-                    items.push({ term, definition });
+                    items.push({ term, definition, starred });
                 }
             }
 
@@ -1216,8 +1245,8 @@
             saveSetBtn.textContent = "Opslaan...";
 
             const isLangLearning = document.getElementById('langLearningToggle').checked;
-            const langLeft = document.getElementById('langLeftSelect').value;
-            const langRight = document.getElementById('langRightSelect').value;
+            const langLeft = isLangLearning ? document.getElementById('langLeftSelect').value : document.getElementById('langSingleSelect').value;
+            const langRight = isLangLearning ? document.getElementById('langRightSelect').value : document.getElementById('langSingleSelect').value;
 
             const setFileName = `${SET_PREFIX}${title}.json`;
             const fileData = {
@@ -1340,14 +1369,29 @@
             }
         }
 
-        function addCardRow(term = "", definition = "") {
+        function addCardRow(term = "", definition = "", starred = false) {
             const row = document.createElement('div');
             row.className = 'card-row';
+            row.dataset.starred = starred ? "true" : "false";
             row.innerHTML = `
+                <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
                 <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(term)}">
                 <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
                 <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
             `;
+
+            row.querySelector('.star-row-btn').addEventListener('click', () => {
+                const isStarred = row.dataset.starred === "true";
+                row.dataset.starred = isStarred ? "false" : "true";
+                const starIcon = row.querySelector('.star-row-btn i');
+                if (isStarred) {
+                    row.querySelector('.star-row-btn').style.color = '#94a3b8';
+                    starIcon.className = 'fa-regular fa-star';
+                } else {
+                    row.querySelector('.star-row-btn').style.color = '#eab308';
+                    starIcon.className = 'fa-solid fa-star';
+                }
+            });
 
             row.querySelector('.remove-row-btn').addEventListener('click', () => {
                 row.remove();
@@ -1374,7 +1418,9 @@
             document.getElementById('langLearningToggle').checked = false;
             document.getElementById('langLeftSelect').value = 'nl-NL';
             document.getElementById('langRightSelect').value = 'en-US';
+            document.getElementById('langSingleSelect').value = 'nl-NL';
             document.getElementById('langSelectorContainer').classList.add('hidden');
+            document.getElementById('singleLangContainer').classList.remove('hidden');
 
             addCardRow();
             updatePlaceholderTexts();
@@ -1500,10 +1546,13 @@
         // Language learning events
         document.getElementById('langLearningToggle').addEventListener('change', (e) => {
             const container = document.getElementById('langSelectorContainer');
+            const singleContainer = document.getElementById('singleLangContainer');
             if (e.target.checked) {
                 container.classList.remove('hidden');
+                singleContainer.classList.add('hidden');
             } else {
                 container.classList.add('hidden');
+                singleContainer.classList.remove('hidden');
             }
             updatePlaceholderTexts();
         });
