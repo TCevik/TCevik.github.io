@@ -741,10 +741,10 @@
     <footer>
         <div class="footer-content">
             <div class="footer-links">
-                <a href="#">Over TC_tam Quizy</a>
-                <a href="#">Privacybeleid</a>
-                <a href="#">Voorwaarden</a>
-                <a href="#">Contact</a>
+                <a href="javascript:void(0)" style="cursor:default; opacity:0.6;">Over TC_tam Quizy</a>
+                <a href="javascript:void(0)" style="cursor:default; opacity:0.6;">Privacybeleid</a>
+                <a href="javascript:void(0)" style="cursor:default; opacity:0.6;">Voorwaarden</a>
+                <a href="javascript:void(0)" style="cursor:default; opacity:0.6;">Contact</a>
             </div>
             <p class="footer-copy">&copy; 2026 TC_tam Quizy. Alle rechten voorbehouden.</p>
         </div>
@@ -972,6 +972,11 @@
 
         // 3. Switch mode tabs
         function switchMode(mode) {
+            // Voorkom geheugenlek: clear lopende match-timer
+            if (matchTimerInterval) {
+                clearInterval(matchTimerInterval);
+                matchTimerInterval = null;
+            }
             currentMode = mode;
             // Update URL query parameters silently without reload
             const newUrl = `${window.location.pathname}?id=${fileId}&mode=${mode}`;
@@ -2093,7 +2098,11 @@
         }
 
         function escapeJS(str) {
-            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r')
+                .replace(/'/g, "\\'");
         }
 
         // Logout action

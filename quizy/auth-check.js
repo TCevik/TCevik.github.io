@@ -2,7 +2,8 @@
     const token = localStorage.getItem('google_access_token');
     const expiry = localStorage.getItem('google_token_expiry');
 
-    const isExpired = expiry && Date.now() > parseInt(expiry, 10);
+    const parsedExpiry = parseInt(expiry, 10);
+    const isExpired = expiry && !isNaN(parsedExpiry) && Date.now() > parsedExpiry;
 
     if (!token || isExpired) {
         console.warn("Geen toegang: Gebruiker is niet ingelogd of token is verlopen. Redirecting...");
