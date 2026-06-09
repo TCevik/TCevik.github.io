@@ -570,10 +570,6 @@
             }
         }
     </style>
-    <!-- Firebase SDK Compat -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="firebase-config.js"></script>
 </head>
 
 <body>
@@ -904,7 +900,7 @@
                 if (response.ok) {
                     window.location.reload();
                 } else {
-                    alert("Opslaan mislukt. Probeer opnieuw in te loggen en het opnieuw te proberen. Vergeet geen toegang te verlenen tot je google drive.");
+                    alert("Opslaan mislukt. Probeer het opnieuw.");
                     saveBtn.disabled = false;
                     saveBtn.textContent = "Opslaan en beginnen";
                 }
@@ -1361,18 +1357,10 @@
         // Event listeners
         saveBtn.addEventListener('click', saveUsername);
 
-        function handleLogout() {
-            firebase.auth().signOut().then(() => {
-                localStorage.removeItem('google_access_token');
-                window.location.href = 'index.html';
-            }).catch((err) => {
-                console.error("Fout bij uitloggen uit Firebase:", err);
-                localStorage.removeItem('google_access_token');
-                window.location.href = 'index.html';
-            });
-        }
-
-        logoutBtn.addEventListener('click', handleLogout);
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('google_access_token');
+            window.location.href = 'index.html';
+        });
 
         editUsernameBtn.addEventListener('click', openUsernameEdit);
         cancelUsernameBtn.addEventListener('click', closeUsernameEdit);
@@ -1406,7 +1394,8 @@
         if (mobileLogoutBtn) {
             mobileLogoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                handleLogout();
+                localStorage.removeItem('google_access_token');
+                window.location.href = 'index.html';
             });
         }
 

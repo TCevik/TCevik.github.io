@@ -15,11 +15,7 @@
         }
     </script>
 
-    <!-- Firebase SDK Compat -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="firebase-config.js"></script>
-
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
 
     <style>
@@ -295,44 +291,44 @@
     </footer>
 
     <script>
+        const CLIENT_ID = '793882705601-59defi70hs2e9lc9n6adgnt10q5s0mht.apps.googleusercontent.com';
         const SCOPES = 'https://www.googleapis.com/auth/drive.file'; 
+
+        let tokenClient;
+
+        function initGoogleAuth() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: (tokenResponse) => {
+                    if (tokenResponse && tokenResponse.access_token) {
+                        localStorage.setItem('google_access_token', tokenResponse.access_token);
+                        window.location.href = '/quizy/home.html';
+                    }
+                },
+            });
+        }
 
         function handleLoginClick(e) {
             e.preventDefault();
-            const provider = new firebase.auth.GoogleAuthProvider();
-            provider.addScope(SCOPES);
-
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    const credential = result.credential;
-                    const token = credential.accessToken;
-                    if (token) {
-                        localStorage.setItem('google_access_token', token);
-                        window.location.href = 'home.html';
-                    } else {
-                        console.error("Geen access token ontvangen van Google.");
-                        alert("Inloggen mislukt: geen toegangstoken ontvangen.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Firebase inlogfout:", error);
-                    alert("Inloggen mislukt: " + error.message);
-                });
+            if (tokenClient) {
+                tokenClient.requestAccessToken();
+            } else {
+                console.error("Google Auth is nog niet geladen.");
+            }
         }
 
         function handleLogoutClick(e) {
             e.preventDefault();
-            firebase.auth().signOut().then(() => {
-                localStorage.removeItem('google_access_token');
-                window.location.reload();
-            }).catch((error) => {
-                console.error("Fout bij uitloggen:", error);
-                localStorage.removeItem('google_access_token');
-                window.location.reload();
-            });
+            // Verwijder het token uit de opslag
+            localStorage.removeItem('google_access_token');
+            // Herlaad de pagina zodat de knoppen weer resetten naar 'Inloggen'
+            window.location.reload();
         }
 
         window.onload = function () {
+            initGoogleAuth();
+
             const themeToggleBtn = document.getElementById('themeToggle');
             function applyTheme(theme) {
                 if (theme === 'dark') {
