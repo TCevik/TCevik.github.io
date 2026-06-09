@@ -3,6 +3,7 @@
 
 <head>
     <script src="auth-check.js"></script>
+    <script src="/script.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oefenen - Quizy</title>
@@ -550,44 +551,55 @@
                 align-items: stretch;
                 gap: 12px;
             }
+
             .practice-info h1 {
                 font-size: 1.5rem;
             }
+
             .mode-tabs {
                 gap: 5px;
                 padding-bottom: 8px;
                 margin-bottom: 20px;
                 scrollbar-width: none;
             }
+
             .mode-tabs::-webkit-scrollbar {
                 display: none;
             }
+
             .tab-btn {
                 padding: 8px 12px;
                 font-size: 0.9rem;
             }
+
             .panel {
                 padding: 20px 16px;
                 min-height: auto;
             }
+
             .prompt-text {
                 font-size: 1.25rem;
                 margin-bottom: 16px;
             }
+
             .flashcard-wrapper {
                 height: 250px;
                 margin-bottom: 20px;
             }
+
             .card-front {
                 font-size: 1.5rem;
             }
+
             .card-back {
                 font-size: 1.3rem;
             }
+
             .choice-btn {
                 padding: 14px;
                 font-size: 1rem;
             }
+
             .container {
                 padding: 16px 12px;
             }
@@ -600,10 +612,13 @@
     <header>
         <a href="home.html" id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></a>
         <div style="display: flex; align-items: center; gap: 10px;">
-            <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
+            <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i
+                    class="fa-solid fa-moon"></i></button>
             <div class="header-actions">
-                <a href="home.html" class="btn btn-secondary btn-sm" id="backToDashboardBtn"><i class="fa-solid fa-house"></i> Dashboard</a>
-                <button id="logoutBtn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Uitloggen</button>
+                <a href="home.html" class="btn btn-secondary btn-sm" id="backToDashboardBtn"><i
+                        class="fa-solid fa-house"></i> Dashboard</a>
+                <button id="logoutBtn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-from-bracket"></i>
+                    Uitloggen</button>
             </div>
         </div>
     </header>
@@ -630,11 +645,16 @@
 
                 <!-- Navigation Tabs -->
                 <div class="mode-tabs">
-                    <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')"><i class="fa-solid fa-book-open"></i> Leren</button>
-                    <button class="tab-btn" id="tab-test" onclick="switchMode('test')"><i class="fa-solid fa-file-lines"></i> Oefentoets</button>
-                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')"><i class="fa-solid fa-layer-group"></i> Flashcards</button>
-                    <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')"><i class="fa-solid fa-list-check"></i> Meerkeuze</button>
-                    <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')"><i class="fa-solid fa-keyboard"></i> Spelling</button>
+                    <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')"><i
+                            class="fa-solid fa-book-open"></i> Leren</button>
+                    <button class="tab-btn" id="tab-test" onclick="switchMode('test')"><i
+                            class="fa-solid fa-file-lines"></i> Oefentoets</button>
+                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')"><i
+                            class="fa-solid fa-layer-group"></i> Flashcards</button>
+                    <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')"><i
+                            class="fa-solid fa-list-check"></i> Meerkeuze</button>
+                    <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')"><i
+                            class="fa-solid fa-keyboard"></i> Spelling</button>
                 </div>
 
                 <!-- Play Board Panel -->
@@ -662,7 +682,8 @@
     <div id="resumeModal" class="prompt-modal hidden">
         <div class="prompt-modal-content">
             <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: var(--text-primary);">Voortgang gevonden!</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze
+            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend
+                met deze
                 leermethode. Wil je verdergaan waar je gebleven was?</p>
             <div class="prompt-modal-actions">
                 <button class="btn btn-secondary" onclick="startFresh()">Opnieuw starten</button>
@@ -674,15 +695,24 @@
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <a href="home.html" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
             <span>Home</span>
         </a>
         <a href="#" id="mobileBackToSetBtn" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
             <span>Set details</span>
         </a>
         <a href="#" id="mobileLogoutBtn" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
             <span>Uitloggen</span>
         </a>
     </div>
