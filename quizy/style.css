@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.big-btn {
+    background-color: #52873e;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.big-btn:hover {
+    background-color: #436f37;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
