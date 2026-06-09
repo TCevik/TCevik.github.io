@@ -747,6 +747,15 @@
     <script>
         const TOKEN = localStorage.getItem('google_access_token');
 
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
         // URL Parameter Setup
         const urlParams = new URLSearchParams(window.location.search);
         const fileId = urlParams.get('id');
@@ -1246,7 +1255,7 @@
         function generateTestQuestions() {
             generatedQuestions = [];
             // Neem maximaal 30 willekeurige termen of alle termen als het er minder dan 30 zijn
-            const shuffled = [...setTerms].sort(() => 0.5 - Math.random());
+            const shuffled = shuffleArray(setTerms);
             const sample = shuffled.slice(0, Math.min(30, setTerms.length));
 
             sample.forEach((item, index) => {
@@ -1257,7 +1266,7 @@
                     // Meerkeuze: Wat is de definitie van: 'term'?
                     const options = [item.definition];
                     const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
-                    const shuffledOthers = otherDefs.sort(() => 0.5 - Math.random());
+                    const shuffledOthers = shuffleArray(otherDefs);
 
                     for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
                         options.push(shuffledOthers[i]);
@@ -1267,13 +1276,13 @@
                         type: 'choice',
                         prompt: `Wat is de definitie van: '${item.term}'?`,
                         correctAnswer: item.definition,
-                        options: options.sort(() => 0.5 - Math.random())
+                        options: shuffleArray(options)
                     });
                 } else if (type === 'choice_reverse') {
                     // Omgekeerde Meerkeuze: Welk woord hoort bij de definitie: 'definition'?
                     const options = [item.term];
                     const otherTerms = setTerms.filter(t => t.term !== item.term).map(t => t.term);
-                    const shuffledOthers = otherTerms.sort(() => 0.5 - Math.random());
+                    const shuffledOthers = shuffleArray(otherTerms);
 
                     for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
                         options.push(shuffledOthers[i]);
@@ -1283,7 +1292,7 @@
                         type: 'choice_reverse',
                         prompt: `Welk woord hoort bij de definitie: '${item.definition}'?`,
                         correctAnswer: item.term,
-                        options: options.sort(() => 0.5 - Math.random())
+                        options: shuffleArray(options)
                     });
                 } else if (type === 'tf') {
                     // Waar / Niet Waar
@@ -1291,7 +1300,9 @@
                     let displayDef = item.definition;
                     if (!randomIsCorrect && setTerms.length > 1) {
                         const others = setTerms.filter(t => t.definition !== item.definition);
-                        displayDef = others[Math.floor(Math.random() * others.length)].definition;
+                        if (others.length > 0) {
+                            displayDef = others[Math.floor(Math.random() * others.length)].definition;
+                        }
                     }
 
                     generatedQuestions.push({
@@ -1390,7 +1401,7 @@
             document.getElementById('submitTestBtn').style.display = 'none';
 
             // Update streak
-            updateStudyStreak();
+            updateStudyStreak(null, percentage);
 
             // Sla de toets score op in Drive progress
             if (!gameProgress.test) {
@@ -1846,7 +1857,7 @@
                 matchTimerInterval = null;
             }
 
-            const shuffled = [...setTerms].sort(() => 0.5 - Math.random());
+            const shuffled = shuffleArray(setTerms);
             const sample = shuffled.slice(0, Math.min(6, setTerms.length));
 
             const cards = [];
@@ -1855,10 +1866,10 @@
                 cards.push({ text: item.definition, type: 'definition', index: index });
             });
 
-            cards.sort(() => 0.5 - Math.random());
+            const shuffledCards = shuffleArray(cards);
 
             let gridHTML = '';
-            cards.forEach(card => {
+            shuffledCards.forEach(card => {
                 gridHTML += `
                     <div class="match-card" data-index="${card.index}" data-type="${card.type}" onclick="selectMatchCard(this)">
                         ${escapeHTML(card.text)}
@@ -1918,9 +1929,18 @@
                 const matchedCards = document.querySelectorAll('.match-card.matched');
                 if (totalCards.length === matchedCards.length) {
                     clearInterval(matchTimerInterval);
-                    const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                    const elapsed = parseFloat(((Date.now() - matchStartTime) / 1000).toFixed(1));
+
+                    // Sla match highscore op
+                    if (!gameProgress.match) {
+                        gameProgress.match = { bestTime: null };
+                    }
+                    if (gameProgress.match.bestTime === null || gameProgress.match.bestTime === undefined || elapsed < gameProgress.match.bestTime) {
+                        gameProgress.match.bestTime = elapsed;
+                    }
+                    saveProgressToDrive();
                     
-                    updateStudyStreak();
+                    updateStudyStreak(elapsed);
 
                     setTimeout(() => {
                         modeContent.innerHTML = `
@@ -1956,7 +1976,7 @@
             return 'appDataFolder';
         }
 
-        async function updateStudyStreak() {
+        async function updateStudyStreak(matchTime = null, testPercentage = null) {
             try {
                 const fId = await getOrCreateFolderId();
                 const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and '${fId}' in parents and trashed=false`, {
@@ -1972,7 +1992,14 @@
 
                     const todayStr = new Date().toISOString().split('T')[0];
                     if (!config.streak) config.streak = 0;
+                    if (!config.streakFreezes) config.streakFreezes = 0;
                     if (!config.totalWordsStudied) config.totalWordsStudied = 0;
+                    if (!config.totalSessions) config.totalSessions = 0;
+                    if (!config.modesUsed) config.modesUsed = [];
+                    if (!config.bestTestScore) config.bestTestScore = 0;
+                    if (!config.fastestMatchTime) config.fastestMatchTime = null;
+
+                    let streakUpdated = false;
 
                     if (config.lastStudyDate) {
                         const lastDate = new Date(config.lastStudyDate);
@@ -1982,14 +2009,57 @@
 
                         if (diffDays === 1) {
                             config.streak += 1;
+                            streakUpdated = true;
                         } else if (diffDays > 1) {
-                            config.streak = 1;
+                            if (config.streakFreezes > 0) {
+                                config.streakFreezes--;
+                                config.streak += 1;
+                                streakUpdated = true;
+                            } else {
+                                config.streak = 1;
+                                streakUpdated = true;
+                            }
                         }
                     } else {
                         config.streak = 1;
+                        streakUpdated = true;
                     }
+
+                    // Award a streak freeze every 30 days of streak, max 3
+                    if (streakUpdated && config.streak > 0 && config.streak % 30 === 0) {
+                        config.streakFreezes = Math.min(3, (config.streakFreezes || 0) + 1);
+                    }
+
                     config.lastStudyDate = todayStr;
                     config.totalWordsStudied += setTerms.length;
+                    config.totalSessions += 1;
+
+                    // Update modes used
+                    if (currentMode && !config.modesUsed.includes(currentMode)) {
+                        config.modesUsed.push(currentMode);
+                    }
+
+                    // Update test score
+                    if (testPercentage !== null) {
+                        config.bestTestScore = Math.max(config.bestTestScore || 0, testPercentage);
+                    }
+
+                    // Update match time
+                    if (matchTime !== null) {
+                        if (config.fastestMatchTime === null || config.fastestMatchTime === undefined || matchTime < config.fastestMatchTime) {
+                            config.fastestMatchTime = matchTime;
+                        }
+                    }
+
+                    // Night Owl / Early Bird check
+                    const hour = new Date().getHours();
+                    if (hour >= 22 || hour < 4) {
+                        config.nightOwlUnlocked = true;
+                    }
+                    if (hour >= 5 && hour < 9) {
+                        config.earlyBirdUnlocked = true;
+                    }
+
                     config.updatedAt = new Date().toISOString();
 
                     await fetch(`https://www.googleapis.com/upload/drive/v3/files/${cfgId}?uploadType=media`, {

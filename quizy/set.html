@@ -623,6 +623,24 @@
                     </div>
                 </div>
 
+                <!-- Highscores Display -->
+                <div id="highscoreContainer" class="hidden" style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                    <div class="highscore-card" style="flex: 1; min-width: 180px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-sm);">
+                        <span style="font-size: 1.8rem; color: #eab308;">🏆</span>
+                        <div style="text-align: left;">
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Beste Toetsscore</div>
+                            <div id="bestTestScoreText" style="font-weight: 700; font-size: 1.15rem; color: var(--text-primary);">-</div>
+                        </div>
+                    </div>
+                    <div class="highscore-card" style="flex: 1; min-width: 180px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-sm);">
+                        <span style="font-size: 1.8rem; color: #ec4899;">⚡</span>
+                        <div style="text-align: left;">
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Snelste tijd Verbinden</div>
+                            <div id="bestMatchTimeText" style="font-weight: 700; font-size: 1.15rem; color: var(--text-primary);">-</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Learning Options -->
                 <div class="study-section-title">Oefen deze set</div>
                 <div class="study-options-grid">
@@ -878,7 +896,7 @@
                 if (!contentResponse.ok) throw new Error("Kon inhoud niet ophalen");
                 const content = await contentResponse.json();
 
-                currentSetData = {
+                 currentSetData = {
                     id: fileId,
                     name: metadata.name,
                     modifiedTime: metadata.modifiedTime,
@@ -886,7 +904,8 @@
                     items: content.items || [],
                     isLanguageLearning: content.isLanguageLearning || false,
                     langLeft: content.langLeft || 'nl-NL',
-                    langRight: content.langRight || 'en-US'
+                    langRight: content.langRight || 'en-US',
+                    progress: content.progress || {}
                 };
 
                 renderSet();
@@ -900,6 +919,22 @@
         function renderSet() {
             loadingIndicator.classList.add('hidden');
             setContent.classList.remove('hidden');
+
+            // Render highscores
+            const highscoreContainer = document.getElementById('highscoreContainer');
+            const bestTestScoreText = document.getElementById('bestTestScoreText');
+            const bestMatchTimeText = document.getElementById('bestMatchTimeText');
+
+            const bestTest = currentSetData.progress?.test?.bestScore;
+            const bestMatch = currentSetData.progress?.match?.bestTime;
+
+            if (bestTest !== undefined || bestMatch !== undefined) {
+                highscoreContainer.classList.remove('hidden');
+                bestTestScoreText.textContent = bestTest !== undefined ? `${bestTest}%` : '-';
+                bestMatchTimeText.textContent = bestMatch !== undefined ? `${bestMatch}s` : '-';
+            } else {
+                highscoreContainer.classList.add('hidden');
+            }
 
             setViewTitle.textContent = currentSetData.title;
             const countText = `${currentSetData.items.length} ${currentSetData.items.length === 1 ? 'kaart' : 'kaarten'}`;

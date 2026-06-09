@@ -577,6 +577,8 @@
                 padding: 16px 12px;
             }
         }
+
+
     </style>
 </head>
 
@@ -635,10 +637,18 @@
                         </div>
                     </div>
 
-                    <div id="streakContainer" style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
-                        <span style="font-size: 1.5rem;">🔥</span>
-                        <div style="text-align: left;">
-                            <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);" id="streakCount">0 dagen streak</div>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <div id="streakContainer" style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                            <span style="font-size: 1.5rem;">🔥</span>
+                            <div style="text-align: left;">
+                                <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);" id="streakCount">0 dagen streak</div>
+                            </div>
+                        </div>
+                        <div id="freezeContainer" style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                            <span style="font-size: 1.5rem;">❄️</span>
+                            <div style="text-align: left;">
+                                <div style="font-weight: 700; font-size: 1rem; color: #3b82f6;" id="freezeCount">0 freezes</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -665,6 +675,8 @@
                     <div class="empty-state-text">Je hebt nog geen quiz-sets gemaakt.</div>
                     <button id="emptyCreateBtn" class="btn">Maak je eerste set</button>
                 </div>
+
+
             </div>
         </div>
     </main>
@@ -853,6 +865,7 @@
         let configFileId = null;
         let currentUsername = "";
         let currentEditingSetId = null; // null voor nieuwe, id voor bewerken
+        let userConfig = null;
 
         // Elementen ophalen
         const mainContainer = document.getElementById('mainContainer');
@@ -933,12 +946,14 @@
                     headers: { 'Authorization': `Bearer ${TOKEN}` }
                 });
                 const config = await response.json();
+                userConfig = config;
 
                 currentUsername = config.username;
 
                 // Update streak display
                 const streak = config.streak || 0;
                 document.getElementById('streakCount').textContent = `${streak} ${streak === 1 ? 'dag' : 'dagen'} streak`;
+                document.getElementById('freezeCount').textContent = `${config.streakFreezes || 0} ${config.streakFreezes === 1 ? 'freeze' : 'freezes'}`;
 
                 // Toon welkom terug scherm
                 statusMessage.classList.add('hidden');
@@ -1101,6 +1116,10 @@
                     setsGrid.classList.remove('hidden');
                 } else {
                     emptyState.classList.remove('hidden');
+                }
+
+                if (userConfig) {
+
                 }
             } catch (error) {
                 console.error("Fout bij ophalen van sets:", error);
@@ -1599,6 +1618,8 @@
             }
         }
         applyTheme(localStorage.getItem('theme') || 'light');
+
+
         if (themeToggleBtn) {
             themeToggleBtn.addEventListener('click', () => {
                 const currentTheme = localStorage.getItem('theme') || 'light';
