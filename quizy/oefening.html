@@ -638,7 +638,15 @@
                         <h1 id="setLabelTitle">Set Titel</h1>
                         <span id="setLabelCount">0 kaarten</span>
                     </div>
-                    <div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <!-- Swap settings -->
+                        <div id="swapSettingsContainer" style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
+                            <label for="answerWithSelect" style="font-size: 0.9rem; font-weight: 600;">Vraag met:</label>
+                            <select id="answerWithSelect" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.9rem; cursor: pointer; outline: none;">
+                                <option value="definition">Term (Antwoord met definitie)</option>
+                                <option value="term">Definitie (Antwoord met term)</option>
+                            </select>
+                        </div>
                         <a href="#" id="backToSetBtn" class="btn btn-secondary btn-sm">Terug naar de set</a>
                     </div>
                 </div>
@@ -808,12 +816,44 @@
                 }
                 gameProgress = setFile.progress;
 
-                // Verberg lader, toon workspace
-                loadingIndicator.classList.add('hidden');
-                workspace.classList.remove('hidden');
+                 // Init select from localStorage
+                 const savedAnswerWith = localStorage.getItem('quizy_answer_with') || 'definition';
+                 const answerWithSelect = document.getElementById('answerWithSelect');
+                 if (answerWithSelect) {
+                      if (setFile.isLanguageLearning) {
+                          const localesMap = {
+                              'nl-NL': 'Nederlands',
+                              'en-US': 'Engels',
+                              'fr-FR': 'Frans',
+                              'de-DE': 'Duits',
+                              'es-ES': 'Spaans',
+                              'it-IT': 'Italiaans',
+                              'tr-TR': 'Turks'
+                          };
+                          const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                          const rightName = localesMap[setFile.langRight] || 'Taal 2';
+                          answerWithSelect.innerHTML = `
+                              <option value="definition">${leftName} (Antwoord met ${rightName})</option>
+                              <option value="term">${rightName} (Antwoord met ${leftName})</option>
+                          `;
+                      } else {
+                          answerWithSelect.innerHTML = `
+                              <option value="definition">Term (Antwoord met definitie)</option>
+                              <option value="term">Definitie (Antwoord met term)</option>
+                          `;
+                      }
+                      answerWithSelect.value = savedAnswerWith;
+                      if (answerWithSelect.value !== savedAnswerWith) {
+                          answerWithSelect.value = 'definition';
+                      }
+                 }
 
-                // Check of er voortgang is voor de gekozen leermethode
-                checkSavedProgress();
+                 // Verberg lader, toon workspace
+                 loadingIndicator.classList.add('hidden');
+                 workspace.classList.remove('hidden');
+ 
+                 // Check of er voortgang is voor de gekozen leermethode
+                 checkSavedProgress();
 
             } catch (error) {
                 console.error("Fout bij laden:", error);
@@ -916,6 +956,16 @@
             const activeTab = document.getElementById(`tab-${currentMode}`);
             if (activeTab) activeTab.classList.add('active');
 
+            // Show/hide swap settings (except for test)
+            const swapContainer = document.getElementById('swapSettingsContainer');
+            if (swapContainer) {
+                if (currentMode === 'test') {
+                    swapContainer.classList.add('hidden');
+                } else {
+                    swapContainer.classList.remove('hidden');
+                }
+            }
+
             // Render right screen
             if (currentMode === 'learn') {
                 renderLearn();
@@ -981,10 +1031,47 @@
             const activeWord = setTerms[currentIdx];
             learnRetypeMode = false;
 
+            const answerWith = document.getElementById('answerWithSelect').value;
+            let questionLabel, placeholderText, correctAnswer;
+
+            if (setFile.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+
+                if (answerWith === 'term') {
+                    questionLabel = `Wat is de vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>?`;
+                    placeholderText = `Typ het woord in het ${leftName}...`;
+                    correctAnswer = activeWord.term.trim();
+                } else {
+                    questionLabel = `Wat is de vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>?`;
+                    placeholderText = `Typ het woord in het ${rightName}...`;
+                    correctAnswer = activeWord.definition.trim();
+                }
+            } else {
+                if (answerWith === 'term') {
+                    questionLabel = `Wat is het woord voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>?`;
+                    placeholderText = "Typ het woord...";
+                    correctAnswer = activeWord.term.trim();
+                } else {
+                    questionLabel = `Wat is de definitie van: <br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>?`;
+                    placeholderText = "Typ de definitie...";
+                    correctAnswer = activeWord.definition.trim();
+                }
+            }
+
             modeContent.innerHTML = `
-                <div class="prompt-text">Wat is de definitie van: <br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>?</div>
+                <div class="prompt-text">${questionLabel}</div>
                 <div class="answer-form">
-                    <input type="text" id="learnInput" placeholder="Typ de definitie..." autofocus autocomplete="off">
+                    <input type="text" id="learnInput" placeholder="${placeholderText}" autofocus autocomplete="off">
                     <button class="btn" id="learnSubmitBtn">Controleren</button>
                 </div>
                 <div id="learnFeedback"></div>
@@ -998,18 +1085,17 @@
             // Submit handeling
             const checkAnswer = () => {
                 const answer = input.value.trim().toLowerCase();
-                const correctAnswer = activeWord.definition.trim().toLowerCase();
+                const correctWordLower = correctAnswer.toLowerCase();
 
                 if (learnRetypeMode) {
-                    // Als ze in fout/re-type modus zijn en ze typen het nu goed over
-                    if (answer === correctAnswer) {
+                    if (answer === correctWordLower) {
                         currentIdx++;
                         gameProgress.learn.currentIndex = currentIdx;
                         saveProgressToDrive();
                         renderLearn();
                     } else {
                         document.getElementById('learnFeedback').innerHTML = `
-                            <div class="status-box incorrect">Nog niet helemaal juist. Typ exact over: <br><strong>${escapeHTML(activeWord.definition)}</strong></div>
+                            <div class="status-box incorrect">Nog niet helemaal juist. Typ exact over: <br><strong>${escapeHTML(correctAnswer)}</strong></div>
                         `;
                         input.value = '';
                         input.focus();
@@ -1017,7 +1103,7 @@
                     return;
                 }
 
-                if (answer === correctAnswer) {
+                if (answer === correctWordLower) {
                     document.getElementById('learnFeedback').innerHTML = `
                         <div class="status-box correct">Goed zo! 🎉</div>
                     `;
@@ -1033,7 +1119,7 @@
                 } else {
                     learnRetypeMode = true;
                     document.getElementById('learnFeedback').innerHTML = `
-                        <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(activeWord.definition)}</strong><br><br>Typ de definitie hierboven nu correct over om door te gaan.</div>
+                        <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(correctAnswer)}</strong><br><br>Typ het antwoord hierboven nu correct over om door te gaan.</div>
                     `;
                     input.value = '';
                     input.focus();
@@ -1045,7 +1131,6 @@
                 if (e.key === 'Enter') checkAnswer();
             });
         }
-
 
         // ==========================================
         // LEERMETHODE 2: OEFENTOETSEN (TEST MODE)
@@ -1063,7 +1148,7 @@
                         <div class="test-question-title">${index + 1}. ${escapeHTML(q.prompt)}</div>
                 `;
 
-                if (q.type === 'choice') {
+                if (q.type === 'choice' || q.type === 'choice_reverse') {
                     questionsHTML += `<div class="test-choices">`;
                     q.options.forEach((opt, optIdx) => {
                         questionsHTML += `
@@ -1087,6 +1172,22 @@
                             </label>
                         </div>
                     `;
+                } else if (q.type === 'audio') {
+                    questionsHTML += `
+                        <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="speakSpellingWord('${escapeJS(q.audioText)}', '${escapeJS(q.lang || 'nl-NL')}')"><i class="fa-solid fa-volume-high"></i> Luister naar het woord</button>
+                        </div>
+                        <div class="answer-form" style="max-width:100%">
+                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Typ wat je hoort..." autocomplete="off">
+                        </div>
+                    `;
+                } else if (q.type === 'missing_letters') {
+                    questionsHTML += `
+                        <div style="margin-bottom: 15px; font-family: 'Courier New', Courier, monospace; font-size: 1.3rem; font-weight: bold; background: var(--bg-primary); padding: 10px 16px; border-radius: 8px; letter-spacing: 3px; white-space: pre-wrap; border: 1px solid var(--border-color); display: inline-block;">${escapeHTML(q.maskedTerm)}</div>
+                        <div class="answer-form" style="max-width:100%">
+                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Vul het hele woord in..." autocomplete="off">
+                        </div>
+                    `;
                 } else {
                     // Open vraag
                     questionsHTML += `
@@ -1102,7 +1203,7 @@
             modeContent.innerHTML = `
                 <div style="margin-bottom: 20px;">
                     <h2 style="margin:0; font-size:1.4rem;">Toets: ${escapeHTML(setLabelTitle.textContent)}</h2>
-                    <p style="color:#64748b; margin:5px 0 0 0;">Maak alle open- en meerkeuzevragen om je toets na te kijken.</p>
+                    <p style="color:#64748b; margin:5px 0 0 0;">Maak alle vragen om je toets na te kijken.</p>
                 </div>
                 <div>
                     ${questionsHTML}
@@ -1118,21 +1219,20 @@
 
         function generateTestQuestions() {
             generatedQuestions = [];
-            // Neem maximaal 10 willekeurige termen of alle termen als het er minder dan 10 zijn
+            // Neem maximaal 30 willekeurige termen of alle termen als het er minder dan 30 zijn
             const shuffled = [...setTerms].sort(() => 0.5 - Math.random());
-            const sample = shuffled.slice(0, 10);
+            const sample = shuffled.slice(0, Math.min(30, setTerms.length));
 
             sample.forEach((item, index) => {
-                const questionTypes = ['choice', 'open', 'tf'];
+                const questionTypes = ['choice', 'choice_reverse', 'open', 'tf', 'missing_letters', 'audio'];
                 const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
                 if (type === 'choice') {
-                    // Meerkeuze
+                    // Meerkeuze: Wat is de definitie van: 'term'?
                     const options = [item.definition];
                     const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
                     const shuffledOthers = otherDefs.sort(() => 0.5 - Math.random());
 
-                    // Voeg distractors toe
                     for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
                         options.push(shuffledOthers[i]);
                     }
@@ -1141,6 +1241,22 @@
                         type: 'choice',
                         prompt: `Wat is de definitie van: '${item.term}'?`,
                         correctAnswer: item.definition,
+                        options: options.sort(() => 0.5 - Math.random())
+                    });
+                } else if (type === 'choice_reverse') {
+                    // Omgekeerde Meerkeuze: Welk woord hoort bij de definitie: 'definition'?
+                    const options = [item.term];
+                    const otherTerms = setTerms.filter(t => t.term !== item.term).map(t => t.term);
+                    const shuffledOthers = otherTerms.sort(() => 0.5 - Math.random());
+
+                    for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                        options.push(shuffledOthers[i]);
+                    }
+
+                    generatedQuestions.push({
+                        type: 'choice_reverse',
+                        prompt: `Welk woord hoort bij de definitie: '${item.definition}'?`,
+                        correctAnswer: item.term,
                         options: options.sort(() => 0.5 - Math.random())
                     });
                 } else if (type === 'tf') {
@@ -1160,6 +1276,40 @@
                         actualTerm: item.term,
                         actualDef: item.definition
                     });
+                } else if (type === 'missing_letters') {
+                    // Vul de ontbrekende letters in
+                    let maskedTerm = '';
+                    for (let i = 0; i < item.term.length; i++) {
+                        const char = item.term[i];
+                        if (char === ' ') {
+                            maskedTerm += ' ';
+                        } else if (i % 2 === 1 && i > 0 && i < item.term.length - 1) {
+                            maskedTerm += '_';
+                        } else {
+                            maskedTerm += char;
+                        }
+                    }
+
+                    if (!maskedTerm.includes('_') && item.term.length > 1) {
+                        maskedTerm = item.term.substring(0, item.term.length - 1) + '_';
+                    }
+
+                    generatedQuestions.push({
+                        type: 'missing_letters',
+                        prompt: `Vul de ontbrekende letters in van het woord behorende bij de definitie '${item.definition}':`,
+                        maskedTerm: maskedTerm,
+                        correctAnswer: item.term
+                    });
+                } else if (type === 'audio') {
+                    // Audio luistervraag
+                    const audioLang = setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL';
+                    generatedQuestions.push({
+                        type: 'audio',
+                        prompt: `Luister naar het uitgesproken woord (clue: '${item.definition}') en typ het correcte woord:`,
+                        audioText: item.term,
+                        correctAnswer: item.term,
+                        lang: audioLang
+                    });
                 } else {
                     // Open vraag
                     generatedQuestions.push({
@@ -1178,10 +1328,7 @@
 
             generatedQuestions.forEach((q, index) => {
                 let userAnswer = '';
-                if (q.type === 'choice') {
-                    const checked = document.querySelector(`input[name="q-${index}"]:checked`);
-                    userAnswer = checked ? checked.value : '';
-                } else if (q.type === 'tf') {
+                if (q.type === 'choice' || q.type === 'choice_reverse' || q.type === 'tf') {
                     const checked = document.querySelector(`input[name="q-${index}"]:checked`);
                     userAnswer = checked ? checked.value : '';
                 } else {
@@ -1193,10 +1340,10 @@
                 if (isCorrect) score++;
 
                 resultsHTML += `
-                    <div style="padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid ${isCorrect ? '#bbf7d0' : '#fca5a5'}; background-color: ${isCorrect ? '#f0fdf4' : '#fff5f5'}">
+                    <div style="padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid ${isCorrect ? 'var(--correct-border)' : 'var(--incorrect-border)'}; background-color: ${isCorrect ? 'var(--correct-bg)' : 'var(--incorrect-bg)'}; color: var(--text-primary);">
                         <strong>Vraag ${index + 1}: ${escapeHTML(q.prompt)}</strong><br>
-                        <span>Jouw antwoord: <span style="color:${isCorrect ? '#16a34a' : '#dc2626'}">${escapeHTML(userAnswer || '(geen antwoord)')}</span></span><br>
-                        ${!isCorrect ? `<span>Juiste antwoord: <strong style="color:#16a34a">${escapeHTML(q.correctAnswer === 'True' ? 'Waar' : q.correctAnswer === 'False' ? 'Niet Waar' : q.correctAnswer)}</strong></span>` : ''}
+                        <span>Jouw antwoord: <span style="color:${isCorrect ? 'var(--correct-text)' : 'var(--incorrect-text)'}; font-weight: 600;">${escapeHTML(userAnswer || '(geen antwoord)')}</span></span><br>
+                        ${!isCorrect ? `<span>Juiste antwoord: <strong style="color:var(--correct-text)">${escapeHTML(q.correctAnswer === 'True' ? 'Waar' : q.correctAnswer === 'False' ? 'Niet Waar' : q.correctAnswer)}</strong></span>` : ''}
                     </div>
                 `;
             });
@@ -1205,10 +1352,10 @@
             const scoreGrade = (score / generatedQuestions.length * 9 + 1).toFixed(1); // Grade from 1.0 to 10.0
 
             resultsHTML = `
-                <div style="text-align: center; background:#f1f5f9; padding: 25px; border-radius: 12px; margin-top:35px; border:1px solid #cbd5e1;">
+                <div style="text-align: center; background: var(--result-banner-bg); padding: 25px; border-radius: 12px; margin-top: 35px; border: 1px solid var(--result-banner-border); color: var(--text-primary);">
                     <div style="font-size: 3rem;">🎓</div>
-                    <h2 style="margin:10px 0;">Je behaalde cijfer: <strong style="color:#52873e">${scoreGrade}</strong></h2>
-                    <p style="font-size:1.1rem; color:#475569; margin:0;">Je had ${score} van de ${generatedQuestions.length} vragen goed (${percentage}%).</p>
+                    <h2 style="margin: 10px 0;">Je behaalde cijfer: <strong style="color: var(--brand-color);">${scoreGrade}</strong></h2>
+                    <p style="font-size: 1.1rem; color: var(--result-banner-text); margin: 0;">Je had ${score} van de ${generatedQuestions.length} vragen goed (${percentage}%).</p>
                 </div>
                 ${resultsHTML}
             `;
@@ -1273,6 +1420,16 @@
             const termRealIdx = flashcardQueue[currentIdx];
             const activeWord = setTerms[termRealIdx];
 
+            const answerWith = document.getElementById('answerWithSelect').value;
+            let frontText, backText;
+            if (answerWith === 'term') {
+                frontText = activeWord.definition;
+                backText = activeWord.term;
+            } else {
+                frontText = activeWord.term;
+                backText = activeWord.definition;
+            }
+
             modeContent.innerHTML = `
                 <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
                     Kaart ${currentIdx + 1} / ${flashcardQueue.length} (Ronde) | Weet ik: ${flashcardStates.known.length}, Nog niet: ${flashcardStates.unknown.length}
@@ -1281,10 +1438,10 @@
                 <div class="flashcard-wrapper" onclick="toggleFlip()">
                     <div class="flashcard" id="activeFlashcard">
                         <div class="card-face card-front">
-                            <div>${escapeHTML(activeWord.term)}</div>
+                            <div>${escapeHTML(frontText)}</div>
                         </div>
                         <div class="card-face card-back">
-                            <div>${escapeHTML(activeWord.definition)}</div>
+                            <div>${escapeHTML(backText)}</div>
                         </div>
                     </div>
                 </div>
@@ -1342,13 +1499,45 @@
 
             const activeItem = activeRepetitionQueue[0];
             const activeWord = setTerms[activeItem.index];
+            const answerWith = document.getElementById('answerWithSelect').value;
 
-            // Maak 4 keuzes
-            const correctAns = activeWord.definition;
+            let correctAns, promptText, optionsSource;
+            if (setFile.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+
+                if (answerWith === 'term') {
+                    correctAns = activeWord.term;
+                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
+                } else {
+                    correctAns = activeWord.definition;
+                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+                }
+            } else {
+                if (answerWith === 'term') {
+                    correctAns = activeWord.term;
+                    promptText = `Kies het juiste woord voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
+                } else {
+                    correctAns = activeWord.definition;
+                    promptText = `Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+                }
+            }
+
             const options = [correctAns];
-
-            const others = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
-            const shuffledOthers = others.sort(() => 0.5 - Math.random());
+            const shuffledOthers = optionsSource.sort(() => 0.5 - Math.random());
 
             for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
                 options.push(shuffledOthers[i]);
@@ -1370,7 +1559,7 @@
                 <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
                     Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
                 </div>
-                <div class="prompt-text">Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong></div>
+                <div class="prompt-text">${promptText}</div>
                 <div class="choices-grid">
                     ${optionsHTML}
                 </div>
@@ -1437,13 +1626,54 @@
             const activeWord = setTerms[activeItem.index];
             learnRetypeMode = false;
 
+            const answerWith = document.getElementById('answerWithSelect').value;
+            let speakText, clueText, correctWord, promptLabel;
+
+            if (setFile.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+
+                if (answerWith === 'term') {
+                    speakText = activeWord.term;
+                    clueText = activeWord.definition;
+                    correctWord = activeWord.term.trim().toLowerCase();
+                    promptLabel = `Typ het woord in het <em>${escapeHTML(leftName)}</em> dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                } else {
+                    speakText = activeWord.definition;
+                    clueText = activeWord.term;
+                    correctWord = activeWord.definition.trim().toLowerCase();
+                    promptLabel = `Typ de vertaling in het <em>${escapeHTML(rightName)}</em> die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                }
+            } else {
+                if (answerWith === 'term') {
+                    speakText = activeWord.term;
+                    clueText = activeWord.definition;
+                    correctWord = activeWord.term.trim().toLowerCase();
+                    promptLabel = `Typ het woord dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                } else {
+                    speakText = activeWord.definition;
+                    clueText = activeWord.term;
+                    correctWord = activeWord.definition.trim().toLowerCase();
+                    promptLabel = `Typ de definitie die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                }
+            }
+
             const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
 
             modeContent.innerHTML = `
                 <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
                     Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
                 </div>
-                <div class="prompt-text">Typ het woord dat je hoort (clue: <em>${escapeHTML(activeWord.definition)}</em>)</div>
+                <div class="prompt-text">${promptLabel}</div>
                 <div style="text-align: center; margin-bottom: 25px;">
                     <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;">🔊 Luister</button>
                 </div>
@@ -1461,20 +1691,20 @@
             input.focus();
 
             // Automatisch uitspreken bij openen
-            speakSpellingWord(activeWord.term);
+            const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL');
+            speakSpellingWord(speakText, speakLang);
 
-            speakBtn.addEventListener('click', () => speakSpellingWord(activeWord.term));
+            speakBtn.addEventListener('click', () => speakSpellingWord(speakText, speakLang));
 
             const checkAnswer = () => {
                 const answer = input.value.trim().toLowerCase();
-                const correctWord = activeWord.term.trim().toLowerCase();
 
                 if (learnRetypeMode) {
                     if (answer === correctWord) {
                         renderSpelling();
                     } else {
                         document.getElementById('spellingFeedback').innerHTML = `
-                            <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(activeWord.term)}</strong></div>
+                            <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(speakText)}</strong></div>
                         `;
                         input.value = '';
                         input.focus();
@@ -1510,7 +1740,7 @@
                 } else {
                     learnRetypeMode = true;
                     document.getElementById('spellingFeedback').innerHTML = `
-                        <div class="status-box incorrect">Niet helemaal juist. Het juiste woord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(activeWord.term)}</strong><br><br>Typ het woord hierboven exact correct over om door te gaan.</div>
+                        <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
                     `;
                     input.value = '';
                     input.focus();
@@ -1533,11 +1763,11 @@
             });
         }
 
-        function speakSpellingWord(word) {
+        function speakSpellingWord(word, lang) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); // Annuleer lopende spraak
                 const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = 'nl-NL'; // Kan veranderd worden op basis van taal van set
+                utterance.lang = lang || 'nl-NL';
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -1618,6 +1848,17 @@
                 const newTheme = currentTheme === 'light' ? 'dark' : 'light';
                 localStorage.setItem('theme', newTheme);
                 applyTheme(newTheme);
+            });
+        }
+
+        const answerWithSelect = document.getElementById('answerWithSelect');
+        if (answerWithSelect) {
+            answerWithSelect.addEventListener('change', () => {
+                localStorage.setItem('quizy_answer_with', answerWithSelect.value);
+                if (currentMode === 'test') {
+                    generatedQuestions = [];
+                }
+                launchMode();
             });
         }
 

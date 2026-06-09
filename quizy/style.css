@@ -24,6 +24,17 @@
     --ai-border: #bfdbfe;
     --ai-text-h: #1e3a8a;
     --ai-text-p: #1e40af;
+
+    /* Test Results */
+    --correct-bg: #f0fdf4;
+    --correct-border: #bbf7d0;
+    --correct-text: #16a34a;
+    --incorrect-bg: #fff5f5;
+    --incorrect-border: #fca5a5;
+    --incorrect-text: #dc2626;
+    --result-banner-bg: #f1f5f9;
+    --result-banner-border: #cbd5e1;
+    --result-banner-text: #475569;
 }
 
 .dark-mode {
@@ -52,6 +63,17 @@
     --ai-border: #1d4ed8;
     --ai-text-h: #dbeafe;
     --ai-text-p: #93c5fd;
+
+    /* Test Results */
+    --correct-bg: rgba(22, 163, 74, 0.15);
+    --correct-border: rgba(22, 163, 74, 0.4);
+    --correct-text: #4ade80;
+    --incorrect-bg: rgba(220, 38, 38, 0.15);
+    --incorrect-border: rgba(220, 38, 38, 0.4);
+    --incorrect-text: #f87171;
+    --result-banner-bg: #1e293b;
+    --result-banner-border: #334155;
+    --result-banner-text: #94a3b8;
 }
 
 body {

@@ -672,6 +672,38 @@
                 <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1">
             </div>
 
+            <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <input type="checkbox" id="langLearningToggle" style="width: auto; cursor: pointer;">
+                <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren (Spraak & kolommen aanpassen)</label>
+            </div>
+
+            <div id="langSelectorContainer" class="hidden" style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
+                    <select id="langLeftSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
+                        <option value="nl-NL">Nederlands</option>
+                        <option value="en-US">Engels</option>
+                        <option value="fr-FR">Frans</option>
+                        <option value="de-DE">Duits</option>
+                        <option value="es-ES">Spaans</option>
+                        <option value="it-IT">Italiaans</option>
+                        <option value="tr-TR">Turks</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
+                    <select id="langRightSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
+                        <option value="nl-NL">Nederlands</option>
+                        <option value="en-US" selected>Engels</option>
+                        <option value="fr-FR">Frans</option>
+                        <option value="de-DE">Duits</option>
+                        <option value="es-ES">Spaans</option>
+                        <option value="it-IT">Italiaans</option>
+                        <option value="tr-TR">Turks</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label
                     style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
@@ -829,7 +861,10 @@
                     name: metadata.name,
                     modifiedTime: metadata.modifiedTime,
                     title: content.title || metadata.name.replace(SET_PREFIX, '').replace('.json', ''),
-                    items: content.items || []
+                    items: content.items || [],
+                    isLanguageLearning: content.isLanguageLearning || false,
+                    langLeft: content.langLeft || 'nl-NL',
+                    langRight: content.langRight || 'en-US'
                 };
 
                 renderSet();
@@ -850,16 +885,39 @@
             termsBadge.textContent = currentSetData.items.length;
             setViewUpdated.textContent = `Bijgewerkt: ${new Date(currentSetData.modifiedTime).toLocaleDateString()}`;
 
+            let leftLabel = 'Term';
+            let rightLabel = 'Definitie';
+            if (currentSetData.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                leftLabel = localesMap[currentSetData.langLeft] || 'Term';
+                rightLabel = localesMap[currentSetData.langRight] || 'Definitie';
+            }
+
             termsList.innerHTML = '';
             if (currentSetData.items.length > 0) {
                 currentSetData.items.forEach(item => {
                     const row = document.createElement('div');
                     row.className = 'term-row';
                     row.innerHTML = `
-                        <div class="term-word">${escapeHTML(item.term)}</div>
-                        <div class="term-definition">${escapeHTML(item.definition)}</div>
-                        <div class="term-actions">
-                            <button class="icon-btn" onclick="speakText('${escapeJS(item.term)}')" title="Uitspreken"><i class="fa-solid fa-volume-high"></i></button>
+                        <div class="term-word">
+                            <span style="font-size:0.75rem; color:var(--text-secondary); display:block; text-transform:uppercase; font-weight:normal; margin-bottom:4px;">${escapeHTML(leftLabel)}</span>
+                            ${escapeHTML(item.term)}
+                        </div>
+                        <div class="term-definition">
+                            <span style="font-size:0.75rem; color:var(--text-secondary); display:block; text-transform:uppercase; font-weight:normal; margin-bottom:4px;">${escapeHTML(rightLabel)}</span>
+                            ${escapeHTML(item.definition)}
+                        </div>
+                        <div class="term-actions" style="display:flex; gap:8px;">
+                            <button class="icon-btn" onclick="speakText('${escapeJS(item.term)}', '${escapeJS(currentSetData.langLeft || 'nl-NL')}')" title="Uitspreken ${escapeHTML(leftLabel)}"><i class="fa-solid fa-volume-high"></i></button>
+                            <button class="icon-btn" onclick="speakText('${escapeJS(item.definition)}', '${escapeJS(currentSetData.langRight || 'en-US')}')" title="Uitspreken ${escapeHTML(rightLabel)}"><i class="fa-solid fa-volume-high"></i></button>
                         </div>
                     `;
                     termsList.appendChild(row);
@@ -870,11 +928,10 @@
         }
 
         // Spraaksynthese voor uitspraak (leuke micro-interactie)
-        function speakText(text) {
+        function speakText(text, lang) {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
-                // Probeer de taal van het woord te raden of standaard nederlands/engels
-                utterance.lang = 'nl-NL';
+                utterance.lang = lang || 'nl-NL';
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -952,6 +1009,18 @@
             importPanel.classList.add('hidden');
             importTextarea.value = '';
 
+            const isLang = !!currentSetData.isLanguageLearning;
+            document.getElementById('langLearningToggle').checked = isLang;
+            document.getElementById('langLeftSelect').value = currentSetData.langLeft || 'nl-NL';
+            document.getElementById('langRightSelect').value = currentSetData.langRight || 'en-US';
+
+            const selectorContainer = document.getElementById('langSelectorContainer');
+            if (isLang) {
+                selectorContainer.classList.remove('hidden');
+            } else {
+                selectorContainer.classList.add('hidden');
+            }
+
             if (currentSetData.items && currentSetData.items.length > 0) {
                 currentSetData.items.forEach(item => {
                     addCardRow(item.term, item.definition);
@@ -959,6 +1028,7 @@
             }
 
             manageEmptyRows();
+            updatePlaceholderTexts();
 
             setModal.classList.remove('hidden');
         }
@@ -991,6 +1061,27 @@
             }
         }
 
+        function updatePlaceholderTexts() {
+            const isLangLearning = document.getElementById('langLearningToggle').checked;
+            const leftSelect = document.getElementById('langLeftSelect');
+            const rightSelect = document.getElementById('langRightSelect');
+            const leftLangName = leftSelect.options[leftSelect.selectedIndex].text;
+            const rightLangName = rightSelect.options[rightSelect.selectedIndex].text;
+
+            const rows = cardRowsContainer.getElementsByClassName('card-row');
+            for (let row of rows) {
+                const termInput = row.querySelector('.term-input');
+                const defInput = row.querySelector('.def-input');
+                if (isLangLearning) {
+                    termInput.placeholder = `Woord in ${leftLangName}`;
+                    defInput.placeholder = `Vertaling in ${rightLangName}`;
+                } else {
+                    termInput.placeholder = "Term (bijv. Hola)";
+                    defInput.placeholder = "Definitie (bijv. Hallo)";
+                }
+            }
+        }
+
         function addCardRow(term = "", definition = "") {
             const row = document.createElement('div');
             row.className = 'card-row';
@@ -1011,6 +1102,7 @@
             });
 
             cardRowsContainer.appendChild(row);
+            updatePlaceholderTexts();
         }
 
         async function saveSet() {
@@ -1037,6 +1129,10 @@
                 return;
             }
 
+            const isLangLearning = document.getElementById('langLearningToggle').checked;
+            const langLeft = document.getElementById('langLeftSelect').value;
+            const langRight = document.getElementById('langRightSelect').value;
+
             saveSetBtn.disabled = true;
             saveSetBtn.textContent = "Opslaan...";
 
@@ -1044,6 +1140,9 @@
             const fileData = {
                 title: title,
                 items: items,
+                isLanguageLearning: isLangLearning,
+                langLeft: langLeft,
+                langRight: langRight,
                 updatedAt: new Date().toISOString()
             };
 
@@ -1162,6 +1261,20 @@
         closeModalBtn.addEventListener('click', () => setModal.classList.add('hidden'));
         cancelSetBtn.addEventListener('click', () => setModal.classList.add('hidden'));
         saveSetBtn.addEventListener('click', saveSet);
+
+        // Language learning events
+        document.getElementById('langLearningToggle').addEventListener('change', (e) => {
+            const container = document.getElementById('langSelectorContainer');
+            if (e.target.checked) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+            updatePlaceholderTexts();
+        });
+
+        document.getElementById('langLeftSelect').addEventListener('change', updatePlaceholderTexts);
+        document.getElementById('langRightSelect').addEventListener('change', updatePlaceholderTexts);
 
         toggleImportBtn.addEventListener('click', () => {
             importPanel.classList.toggle('hidden');
