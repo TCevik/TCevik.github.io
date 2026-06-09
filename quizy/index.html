@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC_tam Quizy</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Set theme immediately to avoid flash
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
@@ -16,13 +24,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: var(--bg-secondary);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
         }
 
         #logo {
             font-size: 1.5rem;
             font-weight: bold;
+            color: var(--text-primary);
         }
 
         main {
@@ -35,11 +45,12 @@
             font-size: 2rem;
             font-weight: bold;
             margin-bottom: 10px;
+            color: var(--text-primary);
         }
 
         main p {
             font-size: 1.3rem;
-            color: #666;
+            color: var(--text-secondary);
             margin-top: 10px;
             max-width: 800px;
             display: flex;
@@ -51,8 +62,8 @@
 
         footer {
             flex-shrink: 0;
-            background-color: #ffffff;
-            border-top: 1px solid #e4e6eb;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
             padding: 30px 20px;
             text-align: center;
         }
@@ -74,7 +85,7 @@
         }
 
         .footer-links a {
-            color: #62677f;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.95rem;
             font-weight: 500;
@@ -82,11 +93,11 @@
         }
 
         .footer-links a:hover {
-            color: #52873e;
+            color: var(--brand-color);
         }
 
         .footer-copy {
-            color: #939bb4;
+            color: var(--text-secondary);
             font-size: 0.85rem;
             margin: 0;
         }
@@ -96,9 +107,12 @@
 <body>
     <header>
         <div id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></div>
-        <nav class="nav-buttons">
-            <a href="#" id="loginBtn" class="big-btn">Inloggen met Google</a>
-        </nav>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
+            <nav class="nav-buttons">
+                <a href="#" id="loginBtn" class="big-btn">Inloggen met Google</a>
+            </nav>
+        </div>
     </header>
 
     <main>
@@ -233,7 +247,7 @@
                 }
 
                 .q-card-inner {
-                    background-color: #ffffff;
+                    background-color: var(--card-bg);
                     flex-grow: 1;
                     margin: 0 15px;
                     border-top-left-radius: 12px;
@@ -253,7 +267,7 @@
                 }
 
                 .card-text {
-                    color: #333333;
+                    color: var(--text-primary);
                     font-weight: 500;
                     margin: 0;
                     text-align: center;
@@ -312,6 +326,28 @@
 
         window.onload = function () {
             initGoogleAuth();
+
+            const themeToggleBtn = document.getElementById('themeToggle');
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                    document.body.classList.add('dark-mode');
+                    if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                } else {
+                    document.documentElement.classList.remove('dark-mode');
+                    document.body.classList.remove('dark-mode');
+                    if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                }
+            }
+            applyTheme(localStorage.getItem('theme') || 'light');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const currentTheme = localStorage.getItem('theme') || 'light';
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('theme', newTheme);
+                    applyTheme(newTheme);
+                });
+            }
 
             const loginBtn = document.getElementById('loginBtn');
             const startBtn = document.getElementById('startBtn');

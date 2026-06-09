@@ -7,16 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oefenen - Quizy</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Set theme immediately to avoid flash
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
+            background-color: var(--bg-primary);
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            color: #1e293b;
+            color: var(--text-primary);
+            transition: background-color 0.2s, color 0.2s;
         }
 
         /* App Header */
@@ -25,17 +34,19 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background-color: var(--bg-secondary);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background-color 0.2s, border-color 0.2s;
         }
 
         #logo {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #1e293b;
+            color: var(--text-primary);
             text-decoration: none;
         }
 
@@ -58,7 +69,7 @@
         }
 
         .btn {
-            background-color: #52873e;
+            background-color: var(--brand-color);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -75,8 +86,8 @@
         }
 
         .btn:hover {
-            background-color: #436f32;
-            box-shadow: 0 4px 12px rgba(82, 135, 62, 0.15);
+            background-color: var(--brand-hover);
+            box-shadow: 0 4px 12px var(--brand-glow);
         }
 
         .btn:active {
@@ -109,16 +120,16 @@
 
         /* Loading */
         .loading {
-            color: #64748b;
+            color: var(--text-secondary);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 16px;
             padding: 40px;
-            background: #ffffff;
+            background: var(--bg-secondary);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
             margin: 40px auto;
             max-width: 450px;
             text-align: center;
@@ -127,8 +138,8 @@
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(82, 135, 62, 0.1);
-            border-left-color: #52873e;
+            border: 4px solid var(--border-color);
+            border-left-color: var(--brand-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -153,12 +164,12 @@
             margin: 0;
             font-size: 1.8rem;
             font-weight: 800;
-            color: #0f172a;
+            color: var(--text-primary);
         }
 
         .practice-info span {
             font-size: 0.95rem;
-            color: #64748b;
+            color: var(--text-secondary);
         }
 
         /* Mode Selector Tabs */
@@ -168,7 +179,7 @@
             margin-bottom: 30px;
             overflow-x: auto;
             padding-bottom: 5px;
-            border-bottom: 1px solid #cbd5e1;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .tab-btn {
@@ -177,7 +188,7 @@
             padding: 10px 16px;
             font-size: 1rem;
             font-weight: 600;
-            color: #64748b;
+            color: var(--text-secondary);
             cursor: pointer;
             border-bottom: 3px solid transparent;
             white-space: nowrap;
@@ -185,32 +196,33 @@
         }
 
         .tab-btn:hover {
-            color: #0f172a;
+            color: var(--text-primary);
         }
 
         .tab-btn.active {
-            color: #52873e;
-            border-bottom-color: #52873e;
+            color: var(--brand-color);
+            border-bottom-color: var(--brand-color);
         }
 
         /* Card panels */
         .panel {
-            background-color: #ffffff;
+            background-color: var(--card-bg);
             border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
             padding: 30px;
             min-height: 350px;
             display: flex;
             flex-direction: column;
             position: relative;
+            transition: background-color 0.2s, border-color 0.2s;
         }
 
         /* Progress indicator */
         .progress-bar-container {
             width: 100%;
             height: 8px;
-            background-color: #e2e8f0;
+            background-color: var(--border-color);
             border-radius: 999px;
             overflow: hidden;
             margin-bottom: 24px;
@@ -218,7 +230,7 @@
 
         .progress-bar {
             height: 100%;
-            background-color: #52873e;
+            background-color: var(--brand-color);
             width: 0%;
             transition: width 0.3s ease;
         }
@@ -227,7 +239,7 @@
         .prompt-text {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--text-primary);
             margin-bottom: 20px;
             text-align: center;
         }
@@ -287,23 +299,23 @@
             justify-content: center;
             padding: 30px;
             box-sizing: border-box;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
         }
 
         .card-front {
-            background-color: #ffffff;
-            color: #0f172a;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
             font-size: 1.8rem;
             font-weight: 700;
         }
 
         .card-back {
-            background-color: #f8fafc;
-            color: #334155;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             font-size: 1.5rem;
             font-weight: 600;
             transform: rotateY(180deg);
-            border-color: #cbd5e1;
+            border-color: var(--border-color);
         }
 
         .flashcard-actions {
@@ -322,21 +334,21 @@
         }
 
         .choice-btn {
-            background-color: #ffffff;
-            border: 2px solid #cbd5e1;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
             border-radius: 12px;
             padding: 16px;
             font-size: 1.1rem;
             font-weight: 600;
-            color: #334155;
+            color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s, background-color 0.2s, border-color 0.2s;
             text-align: left;
         }
 
         .choice-btn:hover {
-            border-color: #52873e;
-            background-color: #f0fdf4;
+            border-color: var(--brand-color);
+            background-color: var(--bg-primary);
         }
 
         .choice-btn.correct {
@@ -370,21 +382,23 @@
         .answer-form input[type="text"] {
             padding: 14px 18px;
             font-size: 1.1rem;
-            border: 2px solid #cbd5e1;
+            border: 2px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-primary);
             border-radius: 10px;
             outline: none;
             width: 100%;
             box-sizing: border-box;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background-color 0.2s;
         }
 
         .answer-form input[type="text"]:focus {
-            border-color: #52873e;
+            border-color: var(--brand-color);
         }
 
         /* TEST SPECIFIC */
         .test-question {
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 20px;
             margin-bottom: 25px;
         }
@@ -396,7 +410,7 @@
         .test-question-title {
             font-weight: 700;
             font-size: 1.1rem;
-            color: #0f172a;
+            color: var(--text-primary);
             margin-bottom: 12px;
         }
 
@@ -411,14 +425,16 @@
             align-items: center;
             gap: 8px;
             padding: 10px 14px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, border-color 0.2s;
         }
 
         .test-radio-label:hover {
-            background-color: #f8fafc;
+            background-color: var(--bg-primary);
         }
 
         /* Results & Completed State */
@@ -437,11 +453,12 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #1e293b;
-            color: #ffffff;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
             padding: 12px 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-md);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -466,14 +483,15 @@
         }
 
         .prompt-modal-content {
-            background-color: #ffffff;
+            background-color: var(--modal-bg);
             border-radius: 16px;
             padding: 30px;
             max-width: 450px;
             width: 90%;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             text-align: center;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
         }
 
         .prompt-modal-actions {
@@ -485,8 +503,8 @@
 
         /* Footer */
         footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e2e8f0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
             padding: 30px 20px;
             text-align: center;
             margin-top: auto;
@@ -509,7 +527,7 @@
         }
 
         .footer-links a {
-            color: #64748b;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.95rem;
             font-weight: 500;
@@ -517,13 +535,62 @@
         }
 
         .footer-links a:hover {
-            color: #52873e;
+            color: var(--brand-color);
         }
 
         .footer-copy {
-            color: #94a3b8;
+            color: var(--text-secondary);
             font-size: 0.875rem;
             margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .practice-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .practice-info h1 {
+                font-size: 1.5rem;
+            }
+            .mode-tabs {
+                gap: 5px;
+                padding-bottom: 8px;
+                margin-bottom: 20px;
+                scrollbar-width: none;
+            }
+            .mode-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            .panel {
+                padding: 20px 16px;
+                min-height: auto;
+            }
+            .prompt-text {
+                font-size: 1.25rem;
+                margin-bottom: 16px;
+            }
+            .flashcard-wrapper {
+                height: 250px;
+                margin-bottom: 20px;
+            }
+            .card-front {
+                font-size: 1.5rem;
+            }
+            .card-back {
+                font-size: 1.3rem;
+            }
+            .choice-btn {
+                padding: 14px;
+                font-size: 1rem;
+            }
+            .container {
+                padding: 16px 12px;
+            }
         }
     </style>
 </head>
@@ -532,9 +599,12 @@
 
     <header>
         <a href="home.html" id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></a>
-        <div class="header-actions">
-            <a href="home.html" class="btn btn-secondary btn-sm" id="backToDashboardBtn">🏠 Dashboard</a>
-            <button id="logoutBtn" class="btn btn-secondary btn-sm">Uitloggen</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
+            <div class="header-actions">
+                <a href="home.html" class="btn btn-secondary btn-sm" id="backToDashboardBtn"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <button id="logoutBtn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Uitloggen</button>
+            </div>
         </div>
     </header>
 
@@ -560,12 +630,11 @@
 
                 <!-- Navigation Tabs -->
                 <div class="mode-tabs">
-                    <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')">📖 Leren</button>
-                    <button class="tab-btn" id="tab-test" onclick="switchMode('test')">📝 Oefentoets</button>
-                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')">📇
-                        Flashcards</button>
-                    <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')">✅ Meerkeuze</button>
-                    <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')">✍️ Spelling</button>
+                    <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')"><i class="fa-solid fa-book-open"></i> Leren</button>
+                    <button class="tab-btn" id="tab-test" onclick="switchMode('test')"><i class="fa-solid fa-file-lines"></i> Oefentoets</button>
+                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')"><i class="fa-solid fa-layer-group"></i> Flashcards</button>
+                    <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')"><i class="fa-solid fa-list-check"></i> Meerkeuze</button>
+                    <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')"><i class="fa-solid fa-keyboard"></i> Spelling</button>
                 </div>
 
                 <!-- Play Board Panel -->
@@ -592,14 +661,30 @@
     <!-- Resume Prompt Modal -->
     <div id="resumeModal" class="prompt-modal hidden">
         <div class="prompt-modal-content">
-            <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: #0f172a;">Voortgang gevonden!</h3>
-            <p style="color: #64748b; margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze
+            <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: var(--text-primary);">Voortgang gevonden!</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze
                 leermethode. Wil je verdergaan waar je gebleven was?</p>
             <div class="prompt-modal-actions">
                 <button class="btn btn-secondary" onclick="startFresh()">Opnieuw starten</button>
                 <button class="btn" onclick="resumeProgress()">Verdergaan</button>
             </div>
         </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="home.html" class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Home</span>
+        </a>
+        <a href="#" id="mobileBackToSetBtn" class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>
+            <span>Set details</span>
+        </a>
+        <a href="#" id="mobileLogoutBtn" class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Uitloggen</span>
+        </a>
     </div>
 
     <footer>
@@ -631,6 +716,7 @@
 
         // Setup Back link
         document.getElementById('backToSetBtn').href = `set.html?id=${fileId}`;
+        document.getElementById('mobileBackToSetBtn').href = `set.html?id=${fileId}`;
 
         // Global DOM Elements
         const loadingIndicator = document.getElementById('loadingIndicator');
@@ -1442,7 +1528,7 @@
 
             modeContent.innerHTML = `
                 <div class="completed-screen">
-                    <div class="completed-icon">🎉</div>
+                    <div class="completed-icon" style="color: #52873e; font-size: 3.5rem; margin-bottom: 20px;"><i class="fa-solid fa-circle-check"></i></div>
                     <h2>${escapeHTML(titleText)}</h2>
                     <p style="color:#64748b; margin-bottom: 30px;">Goed gedaan, je hebt alle woorden in deze set geoefend met deze methode!</p>
                     <div style="display:flex; justify-content:center; gap:15px;">
@@ -1472,6 +1558,38 @@
             localStorage.removeItem('google_access_token');
             window.location.href = 'index.html';
         });
+
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        if (mobileLogoutBtn) {
+            mobileLogoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('google_access_token');
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Theme toggling logic
+        const themeToggleBtn = document.getElementById('themeToggle');
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+                document.body.classList.add('dark-mode');
+                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+                document.body.classList.remove('dark-mode');
+                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            }
+        }
+        applyTheme(localStorage.getItem('theme') || 'light');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = localStorage.getItem('theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        }
 
         // Start het inladen van de set
         loadSet();
