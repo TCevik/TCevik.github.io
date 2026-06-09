@@ -670,6 +670,19 @@
         </div>
     </div>
 
+    <!-- Custom Confirm Modal -->
+    <div id="confirmModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 15px;">🗑️</div>
+            <h3 style="margin-top: 0; color: #0f172a;" id="confirmModalTitle">Set verwijderen</h3>
+            <p id="confirmModalMessage" style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">Weet je zeker dat je deze set wilt verwijderen?</p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button id="confirmCancelBtn" class="btn btn-secondary">Annuleren</button>
+                <button id="confirmDeleteBtn" class="btn btn-danger">Verwijderen</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const TOKEN = localStorage.getItem('google_access_token');
         const FILE_NAME = 'quizy_config.json';
@@ -921,9 +934,45 @@
             }
         }
 
+        // Custom confirmation dialog using HTML popup
+        function customConfirm(message, title = "Set verwijderen") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('confirmModal');
+                const titleEl = document.getElementById('confirmModalTitle');
+                const messageEl = document.getElementById('confirmModalMessage');
+                const cancelBtn = document.getElementById('confirmCancelBtn');
+                const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+                titleEl.textContent = title;
+                messageEl.textContent = message;
+                
+                modal.classList.remove('hidden');
+
+                function cleanup() {
+                    modal.classList.add('hidden');
+                    cancelBtn.removeEventListener('click', onCancel);
+                    confirmBtn.removeEventListener('click', onConfirm);
+                }
+
+                function onCancel() {
+                    cleanup();
+                    resolve(false);
+                }
+
+                function onConfirm() {
+                    cleanup();
+                    resolve(true);
+                }
+
+                cancelBtn.addEventListener('click', onCancel);
+                confirmBtn.addEventListener('click', onConfirm);
+            });
+        }
+
         // 6. Set verwijderen uit Google Drive
         async function deleteSet(fileId) {
-            if (!confirm("Weet je zeker dat je deze set wilt verwijderen?")) {
+            const confirmed = await customConfirm("Weet je zeker dat je deze set wilt verwijderen?");
+            if (!confirmed) {
                 return;
             }
 
