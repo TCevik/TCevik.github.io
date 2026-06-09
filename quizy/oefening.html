@@ -1948,47 +1948,15 @@
             }
         }
 
-        let folderId = null;
-
+        // 0. Use the hidden Google Drive appDataFolder
         async function getOrCreateFolderId() {
-            if (folderId) return folderId;
-            try {
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files?q=name='TC_tam Quizy' and mimeType='application/vnd.google-apps.folder' and trashed=false`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
-                const data = await response.json();
-
-                if (data.files && data.files.length > 0) {
-                    folderId = data.files[0].id;
-                    return folderId;
-                } else {
-                    // Create folder
-                    const metadata = {
-                        name: 'TC_tam Quizy',
-                        mimeType: 'application/vnd.google-apps.folder'
-                    };
-                    const createResponse = await fetch('https://www.googleapis.com/drive/v3/files', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(metadata)
-                    });
-                    const folderData = await createResponse.json();
-                    folderId = folderData.id;
-                    return folderId;
-                }
-            } catch (error) {
-                console.error("Fout bij ophalen of maken van map:", error);
-                throw error;
-            }
+            return 'appDataFolder';
         }
 
         async function updateStudyStreak() {
             try {
                 const fId = await getOrCreateFolderId();
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files?q=name='quizy_config.json' and '${fId}' in parents and trashed=false`, {
+                const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and '${fId}' in parents and trashed=false`, {
                     headers: { 'Authorization': `Bearer ${TOKEN}` }
                 });
                 const data = await response.json();
