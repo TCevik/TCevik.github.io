@@ -626,22 +626,6 @@
                     </div>
                 </div>
 
-                <!-- AI Set Maker Banner -->
-                <div class="ai-banner">
-                    <div class="ai-banner-content">
-                        <div class="ai-banner-icon" style="color: #1e3a8a;"><i class="fa-solid fa-robot"></i></div>
-                        <div class="ai-banner-text">
-                            <h4>TC_tam Quizy Set Maker (Gemini AI)</h4>
-                            <p>Importeer heel gemakkelijk woordenlijsten van andere platforms (zoals Quizlet of StudyGo)!
-                                Kopieer de pagina met de woordjes, plak deze in onze speciale Gemini AI-tool, en kopieer
-                                de gegenereerde tekst om hier direct via <strong>Snel importeren</strong> te gebruiken.
-                            </p>
-                        </div>
-                    </div>
-                    <a href="https://gemini.google.com/gem/1m6sLmNZl6DWp9laUTM7lbZ9MYi_FOBk6?usp=sharing"
-                        target="_blank" class="btn btn-sm">Naar Gemini AI Tool <i class="fa-solid fa-arrow-right" style="margin-left: 4px;"></i></a>
-                </div>
-
                 <!-- Quiz sets sectie -->
                 <div class="section-title-bar">
                     <h3>Jouw Quiz-sets</h3>
@@ -703,6 +687,26 @@
 
                 <div id="importPanel" class="hidden"
                     style="margin-bottom: 15px; padding: 15px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px; text-align: left;">
+                    
+                    <!-- Gemini AI Tool Integration -->
+                    <div style="margin-bottom: 16px; padding: 12px 16px; background: var(--ai-bg, rgba(30, 58, 138, 0.08)); border: 1px solid var(--ai-border, rgba(30, 58, 138, 0.15)); border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-primary);">
+                            <span style="font-size: 1.2rem; color: #3b82f6;"><i class="fa-solid fa-robot"></i></span>
+                            <span>TC_tam Quizy Set Maker (Gemini AI)</span>
+                        </div>
+                        <p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.45;">
+                            Importeer heel gemakkelijk woordenlijsten van andere platforms (zoals Quizlet of StudyGo)! 
+                            Kopieer de pagina met de woordjes, plak deze in onze speciale Gemini AI-tool en kopieer 
+                            de gegenereerde tekst om hieronder te plakken.
+                        </p>
+                        <div style="margin-top: 4px;">
+                            <a href="https://gemini.google.com/gem/1m6sLmNZl6DWp9laUTM7lbZ9MYi_FOBk6?usp=sharing" 
+                               target="_blank" class="btn btn-sm" style="font-size: 0.8rem; padding: 6px 12px; gap: 6px;">
+                                Naar Gemini AI Tool <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+
                     <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Plak je lijst in
                         het formaat: <code>woord, definitie; woord, definitie;</code></p>
                     <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4"
