@@ -1,190 +1,102 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work-Space Customizer</title>
-
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .card {
-            background: #fff;
-            max-width: 600px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        h2 { margin-top: 0; color: #444; }
-
-        .step {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
-        }
-
-        .step-num {
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .code-snippet {
-            font-family: monospace;
-            background: #e9ecef;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-
-        .warning {
-            font-size: 0.85em;
-            color: #666;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-            margin-top: 20px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .btn-sec { background: #e2e6ea; color: #444; }
-        .btn-main { background: #007bff; color: #fff; }
-        button:hover { opacity: 0.8; }
-    </style>
+    <title>Overhoor App - Compleet</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-
 <body>
+    <h1>Overhoor App</h1>
 
-    <div class="card">
-        <h1>LET OP: SOMS BLOKKEERT CHROME EEN NIEUW TAB, DAN MOET JE IN DE ADRESBALK OP DE POPUP TOESTAAN KLIKKEN</h1>
+    <button id="loginBtn">Inloggen met Google</button>
 
-        <h2>Setup je Tabblad</h2>
-
-        <div class="step">
-            <span class="step-num">Stap 1: De Looks</span>
-            Kies het tabblad dat je als "cover" wilt gebruiken. Kopieer de link naar het icoontje (de favicon). <br> 
-            <em>Tip: Gebruik <span class="code-snippet">https://[site-naam].nl/favicon.ico</span> of een andere afbeeldingslink.</em>
-        </div>
-
-        <div class="step">
-            <span class="step-num">Stap 2: Instellen</span>
-            Klik op de blauwe knop hieronder. Voer de naam in die je bovenin het tabblad wilt zien en plak de link van het icoontje erbij. 
-        </div>
-
-        <div class="step">
-            <span class="step-num">Stap 3: Activeren</span>
-            Blijf ongeveer 20 seconden op je huidige werk-tabblad zodat alles goed is geladen, en switch dan pas naar je nieuwe gecustomizede tabblad, zo trick je eventuele extensies die willen meekijken, waardoor ze het vorige scherm zien en niet jouw ultra geheime tabblad.
-        </div>
-
-        <div class="warning">
-            <strong>Belangrijk:</strong> Zorg dat elke link begint met <span class="code-snippet">https://</span>. Sommige sites laten zich niet in een frame laden, dat ligt aan de beveiliging van die site.
-        </div>
-
-        <div class="buttons">
-            <button class="btn-sec" onclick="openNewTab()">Blanco Tab</button>
-            <button class="btn-main" onclick="openSecretTabFilling()">Start Custom Tab</button>
-        </div>
+    <div id="userSection" style="display:none;">
+        <p>Huidige gebruikersnaam: <strong id="displayUser">...</strong></p>
+        <input type="text" id="usernameInput" placeholder="Nieuwe naam invullen">
+        <button id="saveBtn">Naam opslaan in Drive</button>
     </div>
 
+    <pre id="status"></pre>
+
     <script>
-        function openNewTab() {
-            var url = prompt('Voer de URL in (LET OP: MOET BEGINNEN MET HTTPS://):');
-            
-            if (url !== null && url !== '' && url.startsWith('https://')) {
-                var newTab = window.open('about:blank', '_blank');
-                var iframe = newTab.document.createElement('iframe');
-                
-                iframe.src = url;
-                iframe.style.width = '100vw';
-                iframe.style.height = '100vh';
-                iframe.style.border = 'none';
-                iframe.style.position = 'fixed';
-                iframe.style.top = '0';
-                iframe.style.left = '0';
-                
-                newTab.document.body.appendChild(iframe);
+        const CLIENT_ID = '793882705601-59defi70hs2e9lc9n6adgnt10q5s0mht.apps.googleusercontent.com';
+        const SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
+        
+        let tokenClient;
+        let accessToken = null;
 
-                var link = newTab.document.createElement('link');
-                link.rel = 'icon';
-                link.href = 'https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png';
-
-                newTab.document.head.appendChild(link);
-                newTab.document.title = '‎';
-                newTab.document.body.style.margin = '0';
-                newTab.document.body.style.overflow = 'hidden';
-            } else {
-                alert('FOUT: De link is leeg of bevat geen HTTPS://');
-            }
+        window.onload = () => {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPE,
+                callback: (resp) => {
+                    accessToken = resp.access_token;
+                    document.getElementById('loginBtn').style.display = 'none';
+                    document.getElementById('userSection').style.display = 'block';
+                    loadUserData();
+                }
+            });
         };
 
-        function openSecretTabFilling() {
-            var url = prompt('Welke site moet er geopend worden? (MOET MET HTTPS://):');
-            if (!url || !url.startsWith('https://')) {
-                alert('FOUT: De website URL moet beginnen met https://');
-                return;
-            }
+        document.getElementById('loginBtn').onclick = () => tokenClient.requestAccessToken();
 
-            var tabName = prompt('Voer de naam van het tabblad in:');
-            
-            var faviconLink = prompt('Voer de favicon-link in (MOET MET HTTPS://):');
-            if (!faviconLink || !faviconLink.startsWith('https://')) {
-                alert('FOUT: De favicon link moet beginnen met https://');
-                return;
-            }
+        // Data ophalen bij start
+        async function loadUserData() {
+            const listResp = await fetch('https://www.googleapis.com/drive/v3/files?q=name="userdata.json"&spaces=appDataFolder', {
+                headers: { 'Authorization': 'Bearer ' + accessToken }
+            });
+            const list = await listResp.json();
 
-            if (tabName) {
-                openSecretTab(tabName, faviconLink, url);
+            if (list.files && list.files.length > 0) {
+                const fileId = list.files[0].id;
+                const fileResp = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+                    headers: { 'Authorization': 'Bearer ' + accessToken }
+                });
+                const data = await fileResp.json();
+                document.getElementById('displayUser').innerText = data.username;
+            } else {
+                document.getElementById('displayUser').innerText = "Nog geen naam ingesteld.";
             }
         }
 
-        function openSecretTab(name, link, url) {
-            var newTab = window.open('about:blank', '_blank');
-            var iframe = newTab.document.createElement('iframe');
-            
-            iframe.src = url;
-            iframe.style.width = '100vw';
-            iframe.style.height = '100vh';
-            iframe.style.border = 'none';
-            iframe.style.position = 'fixed';
-            iframe.style.top = '0';
-            iframe.style.left = '0';
-            
-            newTab.document.body.appendChild(iframe);
+        // Data opslaan/updaten
+        document.getElementById('saveBtn').onclick = async () => {
+            const username = document.getElementById('usernameInput').value;
+            if (!username) { alert("Vul een naam in!"); return; }
 
-            var icon = newTab.document.createElement('link');
-            icon.rel = 'icon';
-            icon.href = link;
+            const fileData = { username: username };
+            const blob = new Blob([JSON.stringify(fileData)], { type: 'application/json' });
 
-            newTab.document.head.appendChild(icon);
-            newTab.document.title = name;
-            newTab.document.body.style.margin = '0';
-            newTab.document.body.style.overflow = 'hidden';
-        }
+            const listResp = await fetch('https://www.googleapis.com/drive/v3/files?q=name="userdata.json"&spaces=appDataFolder', {
+                headers: { 'Authorization': 'Bearer ' + accessToken }
+            });
+            const list = await listResp.json();
+
+            if (list.files && list.files.length > 0) {
+                // Bestaat al: Update
+                const fileId = list.files[0].id;
+                await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(fileData)
+                });
+                document.getElementById('status').innerText = "Naam bijgewerkt in Drive!";
+            } else {
+                // Bestaat niet: Aanmaken
+                const meta = { name: 'userdata.json', parents: ['appDataFolder'] };
+                const form = new FormData();
+                form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
+                form.append('file', blob);
+
+                await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + accessToken },
+                    body: form
+                });
+                document.getElementById('status').innerText = "Naam opgeslagen in nieuw bestand!";
+            }
+            document.getElementById('displayUser').innerText = username;
+        };
     </script>
 </body>
-
 </html>
