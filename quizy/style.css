@@ -234,8 +234,8 @@ body {
     .card-row {
         flex-direction: column !important;
         align-items: stretch !important;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
         padding: 16px;
         border-radius: 12px;
         position: relative;

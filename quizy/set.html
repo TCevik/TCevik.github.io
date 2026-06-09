@@ -662,11 +662,11 @@
                 </label>
 
                 <div id="importPanel" class="hidden"
-                    style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left;">
-                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #475569; font-weight: 600;">Plak je lijst in
+                    style="margin-bottom: 15px; padding: 15px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px; text-align: left;">
+                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Plak je lijst in
                         het formaat: <code>woord, definitie; woord, definitie;</code></p>
                     <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4"
-                        style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
+                        style="width: 100%; padding: 10px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
                     <div style="display: flex; gap: 8px; justify-content: flex-end;">
                         <button id="cancelImportBtn" class="btn btn-secondary btn-sm">Annuleren</button>
                         <button id="processImportBtn" class="btn btn-sm">Voeg toe</button>
@@ -689,8 +689,8 @@
     <div id="confirmModal" class="modal hidden">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
             <div style="font-size: 3rem; margin-bottom: 15px; color: #ef4444;"><i class="fa-solid fa-trash-can"></i></div>
-            <h3 style="margin-top: 0; color: #0f172a;" id="confirmModalTitle">Set verwijderen</h3>
-            <p id="confirmModalMessage" style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">Weet je zeker dat je deze set wilt verwijderen?</p>
+            <h3 style="margin-top: 0; color: var(--text-primary);" id="confirmModalTitle">Set verwijderen</h3>
+            <p id="confirmModalMessage" style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">Weet je zeker dat je deze set wilt verwijderen?</p>
             <div style="display: flex; gap: 12px; justify-content: center;">
                 <button id="confirmCancelBtn" class="btn btn-secondary">Annuleren</button>
                 <button id="confirmDeleteBtn" class="btn btn-danger">Verwijderen</button>
