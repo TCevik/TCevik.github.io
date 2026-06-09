@@ -640,17 +640,23 @@
                     </div>
                     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                         <!-- Swap settings -->
-                        <div id="swapSettingsContainer" style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
-                            <label for="answerWithSelect" style="font-size: 0.9rem; font-weight: 600;">Vraag met:</label>
-                            <select id="answerWithSelect" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.9rem; cursor: pointer; outline: none;">
+                        <div id="swapSettingsContainer"
+                            style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
+                            <label for="answerWithSelect" style="font-size: 0.9rem; font-weight: 600;">Vraag
+                                met:</label>
+                            <select id="answerWithSelect"
+                                style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.9rem; cursor: pointer; outline: none;">
                                 <option value="definition">Term (Antwoord met definitie)</option>
                                 <option value="term">Definitie (Antwoord met term)</option>
                             </select>
                         </div>
                         <!-- Star filter -->
-                        <div id="starredFilterContainer" style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
+                        <div id="starredFilterContainer"
+                            style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
                             <input type="checkbox" id="starredFilterToggle" style="width: auto; cursor: pointer;">
-                            <label for="starredFilterToggle" style="font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-star" style="color: #eab308;"></i> Moeilijke woorden</label>
+                            <label for="starredFilterToggle"
+                                style="font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;"><i
+                                    class="fa-solid fa-star" style="color: #eab308;"></i> Moeilijke woorden</label>
                         </div>
                         <a href="#" id="backToSetBtn" class="btn btn-secondary btn-sm">Terug naar de set</a>
                     </div>
@@ -832,44 +838,44 @@
                 }
                 gameProgress = setFile.progress;
 
-                 // Init select from localStorage
-                 const savedAnswerWith = localStorage.getItem('quizy_answer_with') || 'definition';
-                 const answerWithSelect = document.getElementById('answerWithSelect');
-                 if (answerWithSelect) {
-                      if (setFile.isLanguageLearning) {
-                          const localesMap = {
-                              'nl-NL': 'Nederlands',
-                              'en-US': 'Engels',
-                              'fr-FR': 'Frans',
-                              'de-DE': 'Duits',
-                              'es-ES': 'Spaans',
-                              'it-IT': 'Italiaans',
-                              'tr-TR': 'Turks'
-                          };
-                          const leftName = localesMap[setFile.langLeft] || 'Taal 1';
-                          const rightName = localesMap[setFile.langRight] || 'Taal 2';
-                          answerWithSelect.innerHTML = `
+                // Init select from localStorage
+                const savedAnswerWith = localStorage.getItem('quizy_answer_with') || 'definition';
+                const answerWithSelect = document.getElementById('answerWithSelect');
+                if (answerWithSelect) {
+                    if (setFile.isLanguageLearning) {
+                        const localesMap = {
+                            'nl-NL': 'Nederlands',
+                            'en-US': 'Engels',
+                            'fr-FR': 'Frans',
+                            'de-DE': 'Duits',
+                            'es-ES': 'Spaans',
+                            'it-IT': 'Italiaans',
+                            'tr-TR': 'Turks'
+                        };
+                        const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                        const rightName = localesMap[setFile.langRight] || 'Taal 2';
+                        answerWithSelect.innerHTML = `
                               <option value="definition">${leftName} (Antwoord met ${rightName})</option>
                               <option value="term">${rightName} (Antwoord met ${leftName})</option>
                           `;
-                      } else {
-                          answerWithSelect.innerHTML = `
+                    } else {
+                        answerWithSelect.innerHTML = `
                               <option value="definition">Term (Antwoord met definitie)</option>
                               <option value="term">Definitie (Antwoord met term)</option>
                           `;
-                      }
-                      answerWithSelect.value = savedAnswerWith;
-                      if (answerWithSelect.value !== savedAnswerWith) {
-                          answerWithSelect.value = 'definition';
-                      }
-                 }
+                    }
+                    answerWithSelect.value = savedAnswerWith;
+                    if (answerWithSelect.value !== savedAnswerWith) {
+                        answerWithSelect.value = 'definition';
+                    }
+                }
 
-                 // Verberg lader, toon workspace
-                 loadingIndicator.classList.add('hidden');
-                 workspace.classList.remove('hidden');
- 
-                 // Check of er voortgang is voor de gekozen leermethode
-                 checkSavedProgress();
+                // Verberg lader, toon workspace
+                loadingIndicator.classList.add('hidden');
+                workspace.classList.remove('hidden');
+
+                // Check of er voortgang is voor de gekozen leermethode
+                checkSavedProgress();
 
             } catch (error) {
                 console.error("Fout bij laden:", error);
@@ -1402,15 +1408,6 @@
 
             // Update streak
             updateStudyStreak(null, percentage);
-
-            // Sla de toets score op in Drive progress
-            if (!gameProgress.test) {
-                gameProgress.test = { bestScore: 0 };
-            }
-            if (percentage > (gameProgress.test.bestScore || 0)) {
-                gameProgress.test.bestScore = percentage;
-                saveProgressToDrive();
-            }
         }
 
 
@@ -1919,7 +1916,7 @@
             if (idx1 === idx2 && type1 !== type2) {
                 firstSelectedCard.classList.remove('selected');
                 cardEl.classList.remove('selected');
-                
+
                 firstSelectedCard.classList.add('matched');
                 cardEl.classList.add('matched');
 
@@ -1931,15 +1928,8 @@
                     clearInterval(matchTimerInterval);
                     const elapsed = parseFloat(((Date.now() - matchStartTime) / 1000).toFixed(1));
 
-                    // Sla match highscore op
-                    if (!gameProgress.match) {
-                        gameProgress.match = { bestTime: null };
-                    }
-                    if (gameProgress.match.bestTime === null || gameProgress.match.bestTime === undefined || elapsed < gameProgress.match.bestTime) {
-                        gameProgress.match.bestTime = elapsed;
-                    }
                     saveProgressToDrive();
-                    
+
                     updateStudyStreak(elapsed);
 
                     setTimeout(() => {
@@ -1995,8 +1985,7 @@
                     if (!config.totalWordsStudied) config.totalWordsStudied = 0;
                     if (!config.totalSessions) config.totalSessions = 0;
                     if (!config.modesUsed) config.modesUsed = [];
-                    if (!config.bestTestScore) config.bestTestScore = 0;
-                    if (!config.fastestMatchTime) config.fastestMatchTime = null;
+
 
                     let streakUpdated = false;
 
@@ -2038,17 +2027,7 @@
                         config.modesUsed.push(currentMode);
                     }
 
-                    // Update test score
-                    if (testPercentage !== null) {
-                        config.bestTestScore = Math.max(config.bestTestScore || 0, testPercentage);
-                    }
 
-                    // Update match time
-                    if (matchTime !== null) {
-                        if (config.fastestMatchTime === null || config.fastestMatchTime === undefined || matchTime < config.fastestMatchTime) {
-                            config.fastestMatchTime = matchTime;
-                        }
-                    }
 
                     // Night Owl / Early Bird check
                     const hour = new Date().getHours();
