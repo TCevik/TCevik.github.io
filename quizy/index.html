@@ -7,6 +7,9 @@
     <title>TC_tam Quizy</title>
     <link rel="stylesheet" href="style.css">
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+
     <style>
         header {
             display: flex;
@@ -94,7 +97,7 @@
     <header>
         <div id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></div>
         <nav class="nav-buttons">
-            <a href="#" class="big-btn">Inloggen met Google</a>
+            <a href="#" id="loginBtn" class="big-btn">Inloggen met Google</a>
         </nav>
     </header>
 
@@ -103,7 +106,7 @@
         <p>Haal het maximale uit je studie met TC_tam Quizy: leer slimmer, oefen effectiever en zorg dat die goede
             cijfers binnen handbereik liggen.</p>
 
-        <button class="big-btn">Begin nu!</button>
+        <button id="startBtn" class="big-btn">Begin nu!</button>
 
         <div class="cards-container">
 
@@ -270,6 +273,68 @@
             <p class="footer-copy">&copy; 2026 TC_tam Quizy. Alle rechten voorbehouden.</p>
         </div>
     </footer>
+
+    <script>
+        const CLIENT_ID = '793882705601-59defi70hs2e9lc9n6adgnt10q5s0mht.apps.googleusercontent.com';
+        const SCOPES = 'https://www.googleapis.com/auth/drive.file'; 
+
+        let tokenClient;
+
+        function initGoogleAuth() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: (tokenResponse) => {
+                    if (tokenResponse && tokenResponse.access_token) {
+                        localStorage.setItem('google_access_token', tokenResponse.access_token);
+                        window.location.href = '/quizy/home.html';
+                    }
+                },
+            });
+        }
+
+        function handleLoginClick(e) {
+            e.preventDefault();
+            if (tokenClient) {
+                tokenClient.requestAccessToken();
+            } else {
+                console.error("Google Auth is nog niet geladen.");
+            }
+        }
+
+        function handleLogoutClick(e) {
+            e.preventDefault();
+            // Verwijder het token uit de opslag
+            localStorage.removeItem('google_access_token');
+            // Herlaad de pagina zodat de knoppen weer resetten naar 'Inloggen'
+            window.location.reload();
+        }
+
+        window.onload = function () {
+            initGoogleAuth();
+
+            const loginBtn = document.getElementById('loginBtn');
+            const startBtn = document.getElementById('startBtn');
+
+            // Controleer of de gebruiker al is ingelogd
+            const isLoggedIn = localStorage.getItem('google_access_token') !== null;
+
+            if (isLoggedIn) {
+                // Pas de login knop aan naar Uitloggen
+                loginBtn.textContent = 'Uitloggen';
+                loginBtn.addEventListener('click', handleLogoutClick);
+
+                // Zorg dat 'Begin nu' direct naar home.html stuurt
+                startBtn.addEventListener('click', function() {
+                    window.location.href = 'home.html';
+                });
+            } else {
+                // Normale login flow als de gebruiker nog niet is ingelogd
+                loginBtn.addEventListener('click', handleLoginClick);
+                startBtn.addEventListener('click', handleLoginClick);
+            }
+        };
+    </script>
 </body>
 
 </html>
