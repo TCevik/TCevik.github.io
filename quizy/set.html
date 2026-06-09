@@ -928,13 +928,9 @@
             const bestTest = currentSetData.progress?.test?.bestScore;
             const bestMatch = currentSetData.progress?.match?.bestTime;
 
-            if (bestTest !== undefined || bestMatch !== undefined) {
-                highscoreContainer.classList.remove('hidden');
-                bestTestScoreText.textContent = bestTest !== undefined ? `${bestTest}%` : '-';
-                bestMatchTimeText.textContent = bestMatch !== undefined ? `${bestMatch}s` : '-';
-            } else {
-                highscoreContainer.classList.add('hidden');
-            }
+            highscoreContainer.classList.remove('hidden');
+            bestTestScoreText.textContent = (bestTest !== undefined && bestTest !== null) ? `${bestTest}%` : '-';
+            bestMatchTimeText.textContent = (bestMatch !== undefined && bestMatch !== null) ? `${bestMatch}s` : '-';
 
             setViewTitle.textContent = currentSetData.title;
             const countText = `${currentSetData.items.length} ${currentSetData.items.length === 1 ? 'kaart' : 'kaarten'}`;
