@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <script src="auth-check.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oefenen - Quizy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        /* App Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn {
+            background-color: #52873e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #436f32;
+            box-shadow: 0 4px 12px rgba(82, 135, 62, 0.15);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            border-radius: 6px;
+        }
+
+        /* Loading */
+        .loading {
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            margin: 40px auto;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(82, 135, 62, 0.1);
+            border-left-color: #52873e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Practice Layout */
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .practice-info h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .practice-info span {
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+
+        /* Mode Selector Tabs */
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: #0f172a;
+        }
+
+        .tab-btn.active {
+            color: #52873e;
+            border-bottom-color: #52873e;
+        }
+
+        /* Card panels */
+        .panel {
+            background-color: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Progress indicator */
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #52873e;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* General styles for study screens */
+        .prompt-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-box {
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-box.correct {
+            background-color: #dcfce7;
+            color: #14532d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-box.incorrect {
+            background-color: #fee2e2;
+            color: #7f1d1d;
+            border: 1px solid #fca5a5;
+        }
+
+        /* FLASHCARD SPECIFIC */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            margin: 0 auto 30px auto;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 16px;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-front {
+            background-color: #ffffff;
+            color: #0f172a;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .card-back {
+            background-color: #f8fafc;
+            color: #334155;
+            font-size: 1.5rem;
+            font-weight: 600;
+            transform: rotateY(180deg);
+            border-color: #cbd5e1;
+        }
+
+        .flashcard-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* MULTIPLE CHOICE SPECIFIC */
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .choice-btn {
+            background-color: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            border-color: #52873e;
+            background-color: #f0fdf4;
+        }
+
+        .choice-btn.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #14532d !important;
+        }
+
+        .choice-btn.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #7f1d1d !important;
+        }
+
+        @media (max-width: 600px) {
+            .choices-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* LEARN / SPELLING SPECIFIC */
+        .answer-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 450px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .answer-form input[type="text"] {
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .answer-form input[type="text"]:focus {
+            border-color: #52873e;
+        }
+
+        /* TEST SPECIFIC */
+        .test-question {
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .test-question:last-child {
+            border-bottom: none;
+        }
+
+        .test-question-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .test-choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .test-radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .test-radio-label:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Results & Completed State */
+        .completed-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .completed-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        /* Save Alert */
+        .save-alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+
+        /* Resume Prompt Modal */
+        .prompt-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+
+        .prompt-modal-content {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .prompt-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 24px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #52873e;
+        }
+
+        .footer-copy {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="home.html" id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></a>
+        <div class="header-actions">
+            <a href="home.html" class="btn btn-secondary btn-sm" id="backToDashboardBtn">🏠 Dashboard</a>
+            <button id="logoutBtn" class="btn btn-secondary btn-sm">Uitloggen</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Loading -->
+            <div id="loadingIndicator" class="loading">
+                <div class="spinner"></div>
+                <span>Set laden en voorbereiden...</span>
+            </div>
+
+            <!-- Main Workspace -->
+            <div id="workspace" class="hidden">
+                <div class="practice-header">
+                    <div class="practice-info">
+                        <h1 id="setLabelTitle">Set Titel</h1>
+                        <span id="setLabelCount">0 kaarten</span>
+                    </div>
+                    <div>
+                        <a href="#" id="backToSetBtn" class="btn btn-secondary btn-sm">Terug naar de set</a>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="mode-tabs">
+                    <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')">📖 Leren</button>
+                    <button class="tab-btn" id="tab-test" onclick="switchMode('test')">📝 Oefentoets</button>
+                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')">📇 Flashcards</button>
+                    <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')">✅ Meerkeuze</button>
+                    <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')">✍️ Spelling</button>
+                </div>
+
+                <!-- Play Board Panel -->
+                <div class="panel" id="playPanel">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container" id="barContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+
+                    <!-- Panel Inner Screen Content -->
+                    <div id="modeContent">
+                        <!-- Dynamic screens will load here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Save Toast Alert -->
+    <div id="saveAlert" class="save-alert hidden">
+        <span>🔄 Voortgang opslaan in Google Drive...</span>
+    </div>
+
+    <!-- Resume Prompt Modal -->
+    <div id="resumeModal" class="prompt-modal hidden">
+        <div class="prompt-modal-content">
+            <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: #0f172a;">Voortgang gevonden!</h3>
+            <p style="color: #64748b; margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze leermethode. Wil je verdergaan waar je gebleven was?</p>
+            <div class="prompt-modal-actions">
+                <button class="btn btn-secondary" onclick="startFresh()">Opnieuw starten</button>
+                <button class="btn" onclick="resumeProgress()">Verdergaan</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Over TC_tam Quizy</a>
+                <a href="#">Privacybeleid</a>
+                <a href="#">Voorwaarden</a>
+                <a href="#">Contact</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 TC_tam Quizy. Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+    <script>
+        const TOKEN = localStorage.getItem('google_access_token');
+        
+        // URL Parameter Setup
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileId = urlParams.get('id');
+        let currentMode = urlParams.get('mode') || 'learn';
+
+        if (!TOKEN) {
+            window.location.href = 'index.html';
+        }
+        if (!fileId) {
+            window.location.href = 'home.html';
+        }
+
+        // Setup Back link
+        document.getElementById('backToSetBtn').href = `set.html?id=${fileId}`;
+
+        // Global DOM Elements
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const workspace = document.getElementById('workspace');
+        const setLabelTitle = document.getElementById('setLabelTitle');
+        const setLabelCount = document.getElementById('setLabelCount');
+        const modeContent = document.getElementById('modeContent');
+        const progressBar = document.getElementById('progressBar');
+        const barContainer = document.getElementById('barContainer');
+        const saveAlert = document.getElementById('saveAlert');
+        const resumeModal = document.getElementById('resumeModal');
+
+        // State variables
+        let setFile = null; // Full raw Google Drive JSON structure
+        let setTerms = [];  // Array of terms & definitions
+        let gameProgress = {}; // Store progress inside state
+        let currentIdx = 0; // Current question index
+        let learnRetypeMode = false; // Mode indicating they typed wrong in Learn and must retype
+
+        // Test variables
+        let generatedQuestions = [];
+        
+        // Flashcard state
+        let flashcardStates = { known: [], unknown: [] };
+        let flashcardQueue = [];
+
+        // Choice & Spelling repetition states
+        let activeRepetitionQueue = [];
+        let activeCompletedCount = 0;
+
+        // 1. Inladen van de set details
+        async function loadSet() {
+            try {
+                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+                if (!response.ok) throw new Error("Kon bestand niet laden");
+                
+                setFile = await response.json();
+                setTerms = setFile.items || [];
+
+                if (setTerms.length === 0) {
+                    loadingIndicator.innerHTML = '<span>Deze set bevat geen woorden. Voeg eerst woorden toe om te oefenen.</span>';
+                    return;
+                }
+
+                // Metadata ophalen voor titel
+                const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?fields=name`, {
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+                const meta = await metaResponse.json();
+                
+                setLabelTitle.textContent = setFile.title || meta.name.replace('quizy_set_', '').replace('.json', '');
+                setLabelCount.textContent = `${setTerms.length} ${setTerms.length === 1 ? 'kaart' : 'kaarten'}`;
+
+                // Init progress object if not exist
+                if (!setFile.progress) {
+                    setFile.progress = {};
+                }
+                gameProgress = setFile.progress;
+
+                // Verberg lader, toon workspace
+                loadingIndicator.classList.add('hidden');
+                workspace.classList.remove('hidden');
+
+                // Check of er voortgang is voor de gekozen leermethode
+                checkSavedProgress();
+
+            } catch (error) {
+                console.error("Fout bij laden:", error);
+                loadingIndicator.innerHTML = '<span>Er ging iets mis bij het laden van de oefening.</span>';
+            }
+        }
+
+        // 2. Check saved progress in file
+        function checkSavedProgress() {
+            if (gameProgress[currentMode]) {
+                const prog = gameProgress[currentMode];
+                
+                // Verschillende modes hebben verschillende criteria
+                let hasProg = false;
+                if (currentMode === 'learn' && prog.currentIndex > 0 && prog.currentIndex < setTerms.length) hasProg = true;
+                if (currentMode === 'flashcards') {
+                    const knownCount = prog.known ? prog.known.length : 0;
+                    if (knownCount > 0 && knownCount < setTerms.length) {
+                        hasProg = true;
+                    }
+                }
+                if (currentMode === 'choice' || currentMode === 'spelling') {
+                    const completed = prog.completedCount || 0;
+                    if (completed > 0 && completed < setTerms.length && prog.queue && prog.queue.length > 0) {
+                        hasProg = true;
+                    }
+                }
+
+                if (hasProg) {
+                    resumeModal.classList.remove('hidden');
+                    return;
+                }
+            }
+            startFresh();
+        }
+
+        function startFresh() {
+            resumeModal.classList.add('hidden');
+            // Reset index en data
+            currentIdx = 0;
+            learnRetypeMode = false;
+            flashcardStates = { known: [], unknown: [] };
+            flashcardQueue = [];
+            activeRepetitionQueue = [];
+            activeCompletedCount = 0;
+            
+            // Initialiseer leeg progress record
+            if (currentMode === 'flashcards') {
+                flashcardQueue = setTerms.map((_, i) => i);
+                gameProgress[currentMode] = { queue: flashcardQueue, known: [], unknown: [], currentIndex: 0 };
+            } else if (currentMode === 'choice' || currentMode === 'spelling') {
+                activeRepetitionQueue = setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                gameProgress[currentMode] = { queue: activeRepetitionQueue, completedCount: 0 };
+            } else if (currentMode !== 'test') {
+                gameProgress[currentMode] = { currentIndex: 0 };
+            }
+            
+            launchMode();
+        }
+
+        function resumeProgress() {
+            resumeModal.classList.add('hidden');
+            const prog = gameProgress[currentMode];
+            if (currentMode === 'flashcards') {
+                flashcardStates.known = prog.known || [];
+                flashcardStates.unknown = prog.unknown || [];
+                flashcardQueue = prog.queue || setTerms.map((_, i) => i);
+                currentIdx = prog.currentIndex !== undefined ? prog.currentIndex : (flashcardStates.known.length + flashcardStates.unknown.length);
+            } else if (currentMode === 'choice' || currentMode === 'spelling') {
+                activeRepetitionQueue = prog.queue || setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                activeCompletedCount = prog.completedCount || 0;
+            } else {
+                currentIdx = prog.currentIndex || 0;
+            }
+            launchMode();
+        }
+
+        // 3. Switch mode tabs
+        function switchMode(mode) {
+            currentMode = mode;
+            // Update URL query parameters silently without reload
+            const newUrl = `${window.location.pathname}?id=${fileId}&mode=${mode}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            // Activeer de juiste tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${mode}`).classList.add('active');
+
+            // Reset state
+            learnRetypeMode = false;
+            
+            // Check progress
+            checkSavedProgress();
+        }
+
+        // 4. Launch en Render the active mode
+        function launchMode() {
+            // Update tab styling
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeTab = document.getElementById(`tab-${currentMode}`);
+            if (activeTab) activeTab.classList.add('active');
+
+            // Render right screen
+            if (currentMode === 'learn') {
+                renderLearn();
+            } else if (currentMode === 'test') {
+                renderTest();
+            } else if (currentMode === 'flashcards') {
+                renderFlashcards();
+            } else if (currentMode === 'choice') {
+                renderChoice();
+            } else if (currentMode === 'spelling') {
+                renderSpelling();
+            }
+        }
+
+        // 5. Opslaan van voortgang naar Google Drive (Throttled/Debounced)
+        async function saveProgressToDrive() {
+            saveAlert.classList.remove('hidden');
+            saveAlert.style.opacity = '1';
+
+            // Zorg dat progress object up-to-date is
+            setFile.progress = gameProgress;
+            setFile.updatedAt = new Date().toISOString();
+
+            try {
+                const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(setFile)
+                });
+
+                if (!response.ok) console.warn("Opslaan van voortgang mislukt.");
+            } catch (err) {
+                console.error("Fout bij opslaan voortgang:", err);
+            } finally {
+                setTimeout(() => {
+                    saveAlert.style.opacity = '0';
+                    setTimeout(() => saveAlert.classList.add('hidden'), 300);
+                }, 800);
+            }
+        }
+
+        // Helper: Progress bar update
+        function updateProgressBar(percentage) {
+            barContainer.classList.remove('hidden');
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        // ==========================================
+        // LEERMETHODE 1: LEREN (LEARN MODE)
+        // ==========================================
+        function renderLearn() {
+            if (currentIdx >= setTerms.length) {
+                renderCompletedScreen('learn', '📖 Leren voltooid!');
+                return;
+            }
+
+            const pct = Math.round((currentIdx / setTerms.length) * 100);
+            updateProgressBar(pct);
+
+            const activeWord = setTerms[currentIdx];
+            learnRetypeMode = false;
+
+            modeContent.innerHTML = `
+                <div class="prompt-text">Wat is de definitie van: <br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>?</div>
+                <div class="answer-form">
+                    <input type="text" id="learnInput" placeholder="Typ de definitie..." autofocus autocomplete="off">
+                    <button class="btn" id="learnSubmitBtn">Controleren</button>
+                </div>
+                <div id="learnFeedback"></div>
+            `;
+
+            const input = document.getElementById('learnInput');
+            const submitBtn = document.getElementById('learnSubmitBtn');
+
+            input.focus();
+
+            // Submit handeling
+            const checkAnswer = () => {
+                const answer = input.value.trim().toLowerCase();
+                const correctAnswer = activeWord.definition.trim().toLowerCase();
+
+                if (learnRetypeMode) {
+                    // Als ze in fout/re-type modus zijn en ze typen het nu goed over
+                    if (answer === correctAnswer) {
+                        currentIdx++;
+                        gameProgress.learn.currentIndex = currentIdx;
+                        saveProgressToDrive();
+                        renderLearn();
+                    } else {
+                        document.getElementById('learnFeedback').innerHTML = `
+                            <div class="status-box incorrect">Nog niet helemaal juist. Typ exact over: <br><strong>${escapeHTML(activeWord.definition)}</strong></div>
+                        `;
+                        input.value = '';
+                        input.focus();
+                    }
+                    return;
+                }
+
+                if (answer === correctAnswer) {
+                    document.getElementById('learnFeedback').innerHTML = `
+                        <div class="status-box correct">Goed zo! 🎉</div>
+                    `;
+                    input.disabled = true;
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        currentIdx++;
+                        gameProgress.learn.currentIndex = currentIdx;
+                        saveProgressToDrive();
+                        renderLearn();
+                    }, 1000);
+                } else {
+                    learnRetypeMode = true;
+                    document.getElementById('learnFeedback').innerHTML = `
+                        <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(activeWord.definition)}</strong><br><br>Typ de definitie hierboven nu correct over om door te gaan.</div>
+                    `;
+                    input.value = '';
+                    input.focus();
+                }
+            };
+
+            submitBtn.addEventListener('click', checkAnswer);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkAnswer();
+            });
+        }
+
+
+        // ==========================================
+        // LEERMETHODE 2: OEFENTOETSEN (TEST MODE)
+        // ==========================================
+        function renderTest() {
+            barContainer.classList.add('hidden'); // Toets heeft geen voortgangsbalk tussendoor
+
+            // Genereer toetsvragen
+            generateTestQuestions();
+
+            let questionsHTML = '';
+            generatedQuestions.forEach((q, index) => {
+                questionsHTML += `
+                    <div class="test-question" data-idx="${index}">
+                        <div class="test-question-title">${index + 1}. ${escapeHTML(q.prompt)}</div>
+                `;
+
+                if (q.type === 'choice') {
+                    questionsHTML += `<div class="test-choices">`;
+                    q.options.forEach((opt, optIdx) => {
+                        questionsHTML += `
+                            <label class="test-radio-label">
+                                <input type="radio" name="q-${index}" value="${escapeHTML(opt)}">
+                                <span>${escapeHTML(opt)}</span>
+                            </label>
+                        `;
+                    });
+                    questionsHTML += `</div>`;
+                } else if (q.type === 'tf') {
+                    questionsHTML += `
+                        <div class="test-choices">
+                            <label class="test-radio-label">
+                                <input type="radio" name="q-${index}" value="True">
+                                <span>Waar</span>
+                            </label>
+                            <label class="test-radio-label">
+                                <input type="radio" name="q-${index}" value="False">
+                                <span>Niet Waar</span>
+                            </label>
+                        </div>
+                    `;
+                } else {
+                    // Open vraag
+                    questionsHTML += `
+                        <div class="answer-form" style="max-width:100%">
+                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Jouw antwoord..." autocomplete="off">
+                        </div>
+                    `;
+                }
+
+                questionsHTML += `</div>`;
+            });
+
+            modeContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="margin:0; font-size:1.4rem;">Toets: ${escapeHTML(setLabelTitle.textContent)}</h2>
+                    <p style="color:#64748b; margin:5px 0 0 0;">Maak alle open- en meerkeuzevragen om je toets na te kijken.</p>
+                </div>
+                <div>
+                    ${questionsHTML}
+                </div>
+                <div style="text-align: center; margin-top:30px;">
+                    <button class="btn" id="submitTestBtn">Toets nakijken</button>
+                </div>
+                <div id="testResults"></div>
+            `;
+
+            document.getElementById('submitTestBtn').addEventListener('click', checkTestAnswers);
+        }
+
+        function generateTestQuestions() {
+            generatedQuestions = [];
+            // Neem maximaal 10 willekeurige termen of alle termen als het er minder dan 10 zijn
+            const shuffled = [...setTerms].sort(() => 0.5 - Math.random());
+            const sample = shuffled.slice(0, 10);
+
+            sample.forEach((item, index) => {
+                const questionTypes = ['choice', 'open', 'tf'];
+                const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+
+                if (type === 'choice') {
+                    // Meerkeuze
+                    const options = [item.definition];
+                    const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
+                    const shuffledOthers = otherDefs.sort(() => 0.5 - Math.random());
+                    
+                    // Voeg distractors toe
+                    for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                        options.push(shuffledOthers[i]);
+                    }
+                    
+                    generatedQuestions.push({
+                        type: 'choice',
+                        prompt: `Wat is de definitie van: '${item.term}'?`,
+                        correctAnswer: item.definition,
+                        options: options.sort(() => 0.5 - Math.random())
+                    });
+                } else if (type === 'tf') {
+                    // Waar / Niet Waar
+                    const randomIsCorrect = Math.random() > 0.5;
+                    let displayDef = item.definition;
+                    if (!randomIsCorrect && setTerms.length > 1) {
+                        const others = setTerms.filter(t => t.definition !== item.definition);
+                        displayDef = others[Math.floor(Math.random() * others.length)].definition;
+                    }
+
+                    generatedQuestions.push({
+                        type: 'tf',
+                        prompt: `Betekent '${item.term}' inderdaad '${displayDef}'?`,
+                        correctAnswer: randomIsCorrect ? 'True' : 'False',
+                        displayDef: displayDef,
+                        actualTerm: item.term,
+                        actualDef: item.definition
+                    });
+                } else {
+                    // Open vraag
+                    generatedQuestions.push({
+                        type: 'open',
+                        prompt: `Vertaal/geef de definitie voor: '${item.term}'`,
+                        correctAnswer: item.definition
+                    });
+                }
+            });
+        }
+
+        function checkTestAnswers() {
+            let score = 0;
+            const testResultsDiv = document.getElementById('testResults');
+            let resultsHTML = '<h3 style="margin-top: 30px; font-size:1.3rem;">Nakijkresultaten:</h3>';
+
+            generatedQuestions.forEach((q, index) => {
+                let userAnswer = '';
+                if (q.type === 'choice') {
+                    const checked = document.querySelector(`input[name="q-${index}"]:checked`);
+                    userAnswer = checked ? checked.value : '';
+                } else if (q.type === 'tf') {
+                    const checked = document.querySelector(`input[name="q-${index}"]:checked`);
+                    userAnswer = checked ? checked.value : '';
+                } else {
+                    const input = document.querySelector(`input[name="q-${index}"]`);
+                    userAnswer = input ? input.value.trim() : '';
+                }
+
+                const isCorrect = userAnswer.toLowerCase() === q.correctAnswer.toLowerCase();
+                if (isCorrect) score++;
+
+                resultsHTML += `
+                    <div style="padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid ${isCorrect ? '#bbf7d0' : '#fca5a5'}; background-color: ${isCorrect ? '#f0fdf4' : '#fff5f5'}">
+                        <strong>Vraag ${index + 1}: ${escapeHTML(q.prompt)}</strong><br>
+                        <span>Jouw antwoord: <span style="color:${isCorrect ? '#16a34a' : '#dc2626'}">${escapeHTML(userAnswer || '(geen antwoord)')}</span></span><br>
+                        ${!isCorrect ? `<span>Juiste antwoord: <strong style="color:#16a34a">${escapeHTML(q.correctAnswer === 'True' ? 'Waar' : q.correctAnswer === 'False' ? 'Niet Waar' : q.correctAnswer)}</strong></span>` : ''}
+                    </div>
+                `;
+            });
+
+            const percentage = Math.round((score / generatedQuestions.length) * 100);
+            const scoreGrade = (score / generatedQuestions.length * 9 + 1).toFixed(1); // Grade from 1.0 to 10.0
+
+            resultsHTML = `
+                <div style="text-align: center; background:#f1f5f9; padding: 25px; border-radius: 12px; margin-top:35px; border:1px solid #cbd5e1;">
+                    <div style="font-size: 3rem;">🎓</div>
+                    <h2 style="margin:10px 0;">Je behaalde cijfer: <strong style="color:#52873e">${scoreGrade}</strong></h2>
+                    <p style="font-size:1.1rem; color:#475569; margin:0;">Je had ${score} van de ${generatedQuestions.length} vragen goed (${percentage}%).</p>
+                </div>
+                ${resultsHTML}
+            `;
+
+            testResultsDiv.innerHTML = resultsHTML;
+            document.getElementById('submitTestBtn').style.display = 'none';
+
+            // Sla de toets score op in Drive progress
+            if (!gameProgress.test) {
+                gameProgress.test = { bestScore: 0 };
+            }
+            if (percentage > (gameProgress.test.bestScore || 0)) {
+                gameProgress.test.bestScore = percentage;
+                saveProgressToDrive();
+            }
+        }
+
+
+        // ==========================================
+        // LEERMETHODE 3: FLASHCARDS (FLASHCARDS MODE)
+        // ==========================================
+        function renderFlashcards() {
+            if (!flashcardQueue || flashcardQueue.length === 0) {
+                flashcardQueue = setTerms.map((_, i) => i);
+            }
+
+            if (currentIdx >= flashcardQueue.length) {
+                if (flashcardStates.unknown.length > 0) {
+                    const numUnknown = flashcardStates.unknown.length;
+                    modeContent.innerHTML = `
+                        <div class="completed-screen">
+                            <div class="completed-icon">🔁</div>
+                            <h2>Ronde voltooid!</h2>
+                            <p style="color:#64748b; margin-bottom: 30px;">Je hebt alle kaarten gehad. Laten we de ${numUnknown} ${numUnknown === 1 ? 'kaart' : 'kaarten'} die je nog niet wist opnieuw proberen!</p>
+                            <button class="btn" id="startNextRoundBtn">Volgende ronde starten</button>
+                        </div>
+                    `;
+                    document.getElementById('startNextRoundBtn').addEventListener('click', () => {
+                        flashcardQueue = [...flashcardStates.unknown];
+                        flashcardStates.unknown = [];
+                        currentIdx = 0;
+                        
+                        gameProgress.flashcards = {
+                            queue: flashcardQueue,
+                            known: flashcardStates.known,
+                            unknown: flashcardStates.unknown,
+                            currentIndex: currentIdx
+                        };
+                        saveProgressToDrive();
+                        renderFlashcards();
+                    });
+                    return;
+                } else {
+                    renderCompletedScreen('flashcards', '📇 Flashcards voltooid!');
+                    return;
+                }
+            }
+
+            const pct = Math.round((currentIdx / flashcardQueue.length) * 100);
+            updateProgressBar(pct);
+
+            const termRealIdx = flashcardQueue[currentIdx];
+            const activeWord = setTerms[termRealIdx];
+
+            modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Kaart ${currentIdx + 1} / ${flashcardQueue.length} (Ronde) | Weet ik: ${flashcardStates.known.length}, Nog niet: ${flashcardStates.unknown.length}
+                </div>
+
+                <div class="flashcard-wrapper" onclick="toggleFlip()">
+                    <div class="flashcard" id="activeFlashcard">
+                        <div class="card-face card-front">
+                            <div>${escapeHTML(activeWord.term)}</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <div>${escapeHTML(activeWord.definition)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-actions">
+                    <button class="btn btn-danger" id="dontKnowBtn">❌ Weet ik niet</button>
+                    <button class="btn" id="knowBtn">✅ Weet ik</button>
+                </div>
+            `;
+
+            document.getElementById('knowBtn').addEventListener('click', () => recordFlashcardResult(true));
+            document.getElementById('dontKnowBtn').addEventListener('click', () => recordFlashcardResult(false));
+        }
+
+        function toggleFlip() {
+            document.getElementById('activeFlashcard').classList.toggle('flipped');
+        }
+
+        function recordFlashcardResult(known) {
+            const termRealIdx = flashcardQueue[currentIdx];
+            if (known) {
+                if (!flashcardStates.known.includes(termRealIdx)) {
+                    flashcardStates.known.push(termRealIdx);
+                }
+            } else {
+                if (!flashcardStates.unknown.includes(termRealIdx)) {
+                    flashcardStates.unknown.push(termRealIdx);
+                }
+            }
+
+            currentIdx++;
+            
+            gameProgress.flashcards = {
+                queue: flashcardQueue,
+                known: flashcardStates.known,
+                unknown: flashcardStates.unknown,
+                currentIndex: currentIdx
+            };
+            saveProgressToDrive();
+            renderFlashcards();
+        }
+
+
+        // ==========================================
+        // LEERMETHODE 4: MEERKEUZE (MULTIPLE CHOICE)
+        // ==========================================
+        function renderChoice() {
+            if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
+                renderCompletedScreen('choice', '✅ Meerkeuze voltooid!');
+                return;
+            }
+
+            const pct = Math.round((activeCompletedCount / setTerms.length) * 100);
+            updateProgressBar(pct);
+
+            const activeItem = activeRepetitionQueue[0];
+            const activeWord = setTerms[activeItem.index];
+
+            // Maak 4 keuzes
+            const correctAns = activeWord.definition;
+            const options = [correctAns];
+
+            const others = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+            const shuffledOthers = others.sort(() => 0.5 - Math.random());
+
+            for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                options.push(shuffledOthers[i]);
+            }
+
+            // Shuffle de options
+            options.sort(() => 0.5 - Math.random());
+
+            let optionsHTML = '';
+            options.forEach(opt => {
+                optionsHTML += `
+                    <button class="choice-btn" onclick="selectChoice(this, '${escapeJS(opt)}', '${escapeJS(correctAns)}')">${escapeHTML(opt)}</button>
+                `;
+            });
+
+            const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
+
+            modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
+                </div>
+                <div class="prompt-text">Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong></div>
+                <div class="choices-grid">
+                    ${optionsHTML}
+                </div>
+                <div id="choiceFeedback"></div>
+            `;
+        }
+
+        function selectChoice(button, selected, correct) {
+            const btns = document.querySelectorAll('.choice-btn');
+            btns.forEach(btn => btn.disabled = true);
+
+            const activeItem = activeRepetitionQueue.shift(); // Haal huidige item van de kop van de queue
+
+            if (selected === correct) {
+                button.classList.add('correct');
+                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! 🎉</div>`;
+                activeItem.weight--;
+                if (activeItem.weight > 0) {
+                    activeRepetitionQueue.push(activeItem); // Moet nog een keer, dus achteraan aansluiten
+                } else {
+                    activeCompletedCount++; // Helemaal klaar!
+                }
+            } else {
+                button.classList.add('incorrect');
+                // Toon het juiste antwoord
+                btns.forEach(btn => {
+                    if (btn.innerText === correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box incorrect">Helaas, niet juist.</div>`;
+                
+                // Fout beantwoord: gewicht + 1 (tot max 4) en achteraan aansluiten
+                activeItem.weight = Math.min(4, activeItem.weight + 1);
+                activeRepetitionQueue.push(activeItem);
+            }
+
+            // Opslaan in progress record
+            gameProgress.choice = {
+                queue: activeRepetitionQueue,
+                completedCount: activeCompletedCount
+            };
+            saveProgressToDrive();
+
+            setTimeout(() => {
+                renderChoice();
+            }, 1200);
+        }
+
+
+        // ==========================================
+        // LEERMETHODE 5: SPELLING (SPELLING/DICTATION)
+        // ==========================================
+        function renderSpelling() {
+            if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
+                renderCompletedScreen('spelling', '✍️ Spelling voltooid!');
+                return;
+            }
+
+            const pct = Math.round((activeCompletedCount / setTerms.length) * 100);
+            updateProgressBar(pct);
+
+            const activeItem = activeRepetitionQueue[0];
+            const activeWord = setTerms[activeItem.index];
+            learnRetypeMode = false;
+
+            const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
+
+            modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
+                </div>
+                <div class="prompt-text">Typ het woord dat je hoort (clue: <em>${escapeHTML(activeWord.definition)}</em>)</div>
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;">🔊 Luister</button>
+                </div>
+                <div class="answer-form">
+                    <input type="text" id="spellingInput" placeholder="Spelling..." autofocus autocomplete="off">
+                    <button class="btn" id="spellingSubmitBtn">Controleren</button>
+                </div>
+                <div id="spellingFeedback"></div>
+            `;
+
+            const input = document.getElementById('spellingInput');
+            const submitBtn = document.getElementById('spellingSubmitBtn');
+            const speakBtn = document.getElementById('speakWordBtn');
+
+            input.focus();
+
+            // Automatisch uitspreken bij openen
+            speakSpellingWord(activeWord.term);
+
+            speakBtn.addEventListener('click', () => speakSpellingWord(activeWord.term));
+
+            const checkAnswer = () => {
+                const answer = input.value.trim().toLowerCase();
+                const correctWord = activeWord.term.trim().toLowerCase();
+
+                if (learnRetypeMode) {
+                    if (answer === correctWord) {
+                        renderSpelling();
+                    } else {
+                        document.getElementById('spellingFeedback').innerHTML = `
+                            <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(activeWord.term)}</strong></div>
+                        `;
+                        input.value = '';
+                        input.focus();
+                    }
+                    return;
+                }
+
+                const activeItemProcessed = activeRepetitionQueue.shift(); // Haal item van kop
+
+                if (answer === correctWord) {
+                    document.getElementById('spellingFeedback').innerHTML = `
+                        <div class="status-box correct">Super, exact goed gespeld! 🌟</div>
+                    `;
+                    input.disabled = true;
+                    submitBtn.disabled = true;
+
+                    activeItemProcessed.weight--;
+                    if (activeItemProcessed.weight > 0) {
+                        activeRepetitionQueue.push(activeItemProcessed);
+                    } else {
+                        activeCompletedCount++;
+                    }
+
+                    gameProgress.spelling = {
+                        queue: activeRepetitionQueue,
+                        completedCount: activeCompletedCount
+                    };
+                    saveProgressToDrive();
+
+                    setTimeout(() => {
+                        renderSpelling();
+                    }, 1000);
+                } else {
+                    learnRetypeMode = true;
+                    document.getElementById('spellingFeedback').innerHTML = `
+                        <div class="status-box incorrect">Niet helemaal juist. Het juiste woord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(activeWord.term)}</strong><br><br>Typ het woord hierboven exact correct over om door te gaan.</div>
+                    `;
+                    input.value = '';
+                    input.focus();
+
+                    // Fout: gewicht + 1 (tot max 4) en achteraan aansluiten
+                    activeItemProcessed.weight = Math.min(4, activeItemProcessed.weight + 1);
+                    activeRepetitionQueue.push(activeItemProcessed);
+
+                    gameProgress.spelling = {
+                        queue: activeRepetitionQueue,
+                        completedCount: activeCompletedCount
+                    };
+                    saveProgressToDrive();
+                }
+            };
+
+            submitBtn.addEventListener('click', checkAnswer);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkAnswer();
+            });
+        }
+
+        function speakSpellingWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Annuleer lopende spraak
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'nl-NL'; // Kan veranderd worden op basis van taal van set
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+
+        // ==========================================
+        // COMPLETED STATE SCREEN
+        // ==========================================
+        function renderCompletedScreen(mode, titleText) {
+            updateProgressBar(100);
+
+            // Verwijder progress record omdat we klaar zijn
+            gameProgress[mode] = { currentIndex: 0 };
+            if (mode === 'flashcards') {
+                gameProgress[mode] = { known: [], unknown: [] };
+            }
+            saveProgressToDrive();
+
+            modeContent.innerHTML = `
+                <div class="completed-screen">
+                    <div class="completed-icon">🎉</div>
+                    <h2>${escapeHTML(titleText)}</h2>
+                    <p style="color:#64748b; margin-bottom: 30px;">Goed gedaan, je hebt alle woorden in deze set geoefend met deze methode!</p>
+                    <div style="display:flex; justify-content:center; gap:15px;">
+                        <button class="btn btn-secondary" onclick="startFresh()">Nog een keer</button>
+                        <a href="set.html?id=${fileId}" class="btn">Terug naar de set</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helpers
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function escapeJS(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        // Logout action
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('google_access_token');
+            window.location.href = 'index.html';
+        });
+
+        // Start het inladen van de set
+        loadSet();
+    </script>
+</body>
+</html>

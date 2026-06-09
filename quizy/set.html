@@ -524,23 +524,23 @@
                 <!-- Learning Options -->
                 <div class="study-section-title">Oefen deze set</div>
                 <div class="study-options-grid">
-                    <div class="study-card">
+                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=learn'">
                         <div class="study-card-icon">📖</div>
                         <h3 class="study-card-title">Leren</h3>
                     </div>
-                    <div class="study-card">
+                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=test'">
                         <div class="study-card-icon">📝</div>
                         <h3 class="study-card-title">Oefentoetsen</h3>
                     </div>
-                    <div class="study-card">
+                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=flashcards'">
                         <div class="study-card-icon">📇</div>
                         <h3 class="study-card-title">Flashcards</h3>
                     </div>
-                    <div class="study-card">
+                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=choice'">
                         <div class="study-card-icon">✅</div>
                         <h3 class="study-card-title">Meerkeuze</h3>
                     </div>
-                    <div class="study-card">
+                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=spelling'">
                         <div class="study-card-icon">✍️</div>
                         <h3 class="study-card-title">Spelling</h3>
                     </div>
@@ -577,7 +577,6 @@
                     <span>Kaarten (Termen & Definities)</span>
                     <div style="display: flex; gap: 8px;">
                         <button id="toggleImportBtn" class="btn btn-secondary btn-sm">Snel importeren</button>
-                        <button id="addCardRowBtn" class="btn btn-secondary btn-sm">+ Kaart toevoegen</button>
                     </div>
                 </label>
                 
@@ -592,6 +591,10 @@
 
                 <div id="cardRowsContainer">
                     <!-- Dynamische rijen komen hier -->
+                </div>
+
+                <div style="display: flex; justify-content: center; margin-top: 15px;">
+                    <button id="addCardRowBtn" class="btn btn-secondary btn-sm">+ Kaart toevoegen</button>
                 </div>
             </div>
 
