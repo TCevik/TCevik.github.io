@@ -165,57 +165,303 @@ function populateLanguageSelects() {
 }
 
 function createCardRowManager(cardRowsContainer) {
+    let allEditorItems = [];
+    let currentEditorPage = 1;
+    const editorPageSize = 50;
 
-    function addCardRow(term = '', definition = '', starred = false) {
+    let paginationDiv = document.getElementById('modalPagination');
+    
+    function getScrollParent(el) {
+        let parent = el.parentNode;
+        while (parent && parent !== document.body && parent !== document.documentElement) {
+            const style = window.getComputedStyle(parent);
+            const overflowY = style.overflowY;
+            if (overflowY === 'auto' || overflowY === 'scroll' || parent.scrollHeight > parent.clientHeight) {
+                return parent;
+            }
+            parent = parent.parentNode;
+        }
+        return window;
+    }
+
+    function renderEditorPageWithAnchoring(pageAction) {
+        const isVisible = paginationDiv && !paginationDiv.classList.contains('hidden');
+        let yBefore = 0;
+        if (isVisible) {
+            yBefore = paginationDiv.getBoundingClientRect().top;
+        }
+        
+        pageAction();
+        
+        if (isVisible) {
+            const yAfter = paginationDiv.getBoundingClientRect().top;
+            const scrollContainer = getScrollParent(cardRowsContainer);
+            if (scrollContainer === window) {
+                window.scrollBy(0, yAfter - yBefore);
+            } else {
+                scrollContainer.scrollTop += (yAfter - yBefore);
+            }
+        }
+    }
+
+    let addBtn = document.getElementById('addCardRowBtn');
+    let addBtnMsg = document.getElementById('addCardRowMsg');
+    if (!addBtn && cardRowsContainer) {
+        addBtn = document.createElement('button');
+        addBtn.id = 'addCardRowBtn';
+        addBtn.className = 'btn';
+        addBtn.style.cssText = 'background-color: #52873e; margin: 15px auto; display: flex; align-items: center; justify-content: center; height: 38px; padding: 0 16px; font-weight: 600; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; box-sizing: border-box;';
+        addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Nieuwe kaart';
+        cardRowsContainer.parentNode.insertBefore(addBtn, cardRowsContainer.nextSibling);
+
+        addBtnMsg = document.createElement('div');
+        addBtnMsg.id = 'addCardRowMsg';
+        addBtnMsg.style.cssText = 'text-align: center; margin: 15px auto; color: var(--text-secondary); font-weight: 600; font-size: 0.95rem; display: none; height: 38px; align-items: center; justify-content: center; box-sizing: border-box;';
+        addBtnMsg.textContent = 'Ga naar de laatste pagina om kaarten toe te voegen';
+        cardRowsContainer.parentNode.insertBefore(addBtnMsg, addBtn.nextSibling);
+
+        addBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            saveInputsToMemory();
+            
+            const newEmptyItem = { term: '', definition: '', starred: false };
+            allEditorItems.push(newEmptyItem);
+            
+            currentEditorPage = Math.ceil(allEditorItems.length / editorPageSize);
+            renderEditorPageWithAnchoring(() => {
+                renderEditorPage();
+            });
+            
+            setTimeout(() => {
+                const rows = cardRowsContainer.getElementsByClassName('card-row');
+                if (rows.length > 0) {
+                    const lastRow = rows[rows.length - 1];
+                    const input = lastRow.querySelector('.term-input');
+                    if (input) input.focus();
+                }
+            }, 50);
+        });
+    }
+
+    if (!paginationDiv && cardRowsContainer) {
+        paginationDiv = document.createElement('div');
+        paginationDiv.id = 'modalPagination';
+        paginationDiv.className = 'pagination-controls hidden';
+        paginationDiv.style.cssText = 'display:flex; justify-content:center; align-items:center; gap:15px; margin-top:15px; padding:10px; border-top: 1px solid var(--border-color);';
+        paginationDiv.innerHTML = `
+            <button id="modalSkipPrevBtn" class="btn btn-secondary btn-sm" style="padding: 6px 12px;"><i class="fa-solid fa-angles-left"></i> 10</button>
+            <button id="modalPrevPageBtn" class="btn btn-secondary btn-sm" style="padding: 6px 12px;"><i class="fa-solid fa-chevron-left"></i> Vorige</button>
+            <span id="modalPageInfo" style="font-weight:600; color:var(--text-primary);">Pagina 1 van 1</span>
+            <button id="modalNextPageBtn" class="btn btn-secondary btn-sm" style="padding: 6px 12px;">Volgende <i class="fa-solid fa-chevron-right"></i></button>
+            <button id="modalSkipNextBtn" class="btn btn-secondary btn-sm" style="padding: 6px 12px;">10 <i class="fa-solid fa-angles-right"></i></button>
+        `;
+        cardRowsContainer.parentNode.insertBefore(paginationDiv, addBtnMsg.nextSibling);
+
+        paginationDiv.querySelector('#modalSkipPrevBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentEditorPage > 1) {
+                renderEditorPageWithAnchoring(() => {
+                    saveInputsToMemory();
+                    currentEditorPage = Math.max(1, currentEditorPage - 10);
+                    renderEditorPage();
+                });
+            }
+        });
+
+        paginationDiv.querySelector('#modalPrevPageBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentEditorPage > 1) {
+                renderEditorPageWithAnchoring(() => {
+                    saveInputsToMemory();
+                    currentEditorPage--;
+                    renderEditorPage();
+                });
+            }
+        });
+
+        paginationDiv.querySelector('#modalNextPageBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
+            if (currentEditorPage < totalPages) {
+                renderEditorPageWithAnchoring(() => {
+                    saveInputsToMemory();
+                    currentEditorPage++;
+                    renderEditorPage();
+                });
+            }
+        });
+
+        paginationDiv.querySelector('#modalSkipNextBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
+            if (currentEditorPage < totalPages) {
+                renderEditorPageWithAnchoring(() => {
+                    saveInputsToMemory();
+                    currentEditorPage = Math.min(totalPages, currentEditorPage + 10);
+                    renderEditorPage();
+                });
+            }
+        });
+    }
+
+    function saveInputsToMemory() {
+        const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
+        rows.forEach(row => {
+            const idx = parseInt(row.dataset.index);
+            if (!isNaN(idx) && allEditorItems[idx]) {
+                allEditorItems[idx].term = row.querySelector('.term-input').value;
+                allEditorItems[idx].definition = row.querySelector('.def-input').value;
+                allEditorItems[idx].starred = row.dataset.starred === 'true';
+            }
+        });
+    }
+
+    function renderRowDOM(item, index) {
         const row = document.createElement('div');
         row.className = 'card-row';
-        row.dataset.starred = starred ? 'true' : 'false';
+        row.dataset.index = index;
+        row.dataset.starred = item.starred ? 'true' : 'false';
         row.innerHTML = `
-            <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
-            <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(term)}">
-            <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
+            <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${item.starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${item.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
+            <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(item.term)}">
+            <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(item.definition)}">
             <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
         `;
 
-        row.querySelector('.star-row-btn').addEventListener('click', () => {
+        row.querySelector('.star-row-btn').addEventListener('click', (e) => {
+            e.preventDefault();
             const isStarred = row.dataset.starred === 'true';
             row.dataset.starred = isStarred ? 'false' : 'true';
             const starBtn  = row.querySelector('.star-row-btn');
             const starIcon = starBtn.querySelector('i');
             starBtn.style.color = isStarred ? '#94a3b8' : '#eab308';
             starIcon.className  = isStarred ? 'fa-regular fa-star' : 'fa-solid fa-star';
+            
+            const idx = parseInt(row.dataset.index);
+            if (!isNaN(idx) && allEditorItems[idx]) {
+                allEditorItems[idx].starred = !isStarred;
+            }
         });
 
-        row.querySelector('.remove-row-btn').addEventListener('click', () => {
-            row.remove();
-            manageEmptyRows();
+        row.querySelector('.remove-row-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const idx = parseInt(row.dataset.index);
+            if (!isNaN(idx)) {
+                saveInputsToMemory();
+                allEditorItems.splice(idx, 1);
+                const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
+                if (currentEditorPage > totalPages) {
+                    currentEditorPage = Math.max(1, totalPages);
+                }
+                renderEditorPage();
+            }
         });
 
-        row.querySelectorAll('input').forEach(input =>
-            input.addEventListener('input', manageEmptyRows)
-        );
+        row.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                const idx = parseInt(row.dataset.index);
+                if (!isNaN(idx) && allEditorItems[idx]) {
+                    allEditorItems[idx].term = row.querySelector('.term-input').value;
+                    allEditorItems[idx].definition = row.querySelector('.def-input').value;
+                }
+                manageEmptyRows();
+            });
+        });
 
         cardRowsContainer.appendChild(row);
+    }
+
+    function updateAddBtnText() {
+        if (!addBtn) return;
+        const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
+        const isOnLastPage = currentEditorPage === totalPages;
+        const msgEl = document.getElementById('addCardRowMsg');
+        
+        if (isOnLastPage) {
+            addBtn.style.display = 'flex';
+            if (msgEl) msgEl.style.display = 'none';
+            const isPageFull = allEditorItems.length > 0 && allEditorItems.length % editorPageSize === 0;
+            if (isPageFull) {
+                addBtn.innerHTML = '<i class="fa-solid fa-file-circle-plus"></i> Nieuwe pagina';
+                addBtn.style.backgroundColor = '#3b82f6';
+            } else {
+                addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Nieuwe kaart';
+                addBtn.style.backgroundColor = '#52873e';
+            }
+        } else {
+            addBtn.style.display = 'none';
+            if (msgEl) msgEl.style.display = 'flex';
+        }
+    }
+
+    function renderEditorPage() {
+        cardRowsContainer.innerHTML = '';
+        const shouldPaginate = allEditorItems.length > editorPageSize;
+        
+        if (shouldPaginate) {
+            paginationDiv?.classList.remove('hidden');
+        } else {
+            cardRowsContainer.style.minHeight = '';
+            paginationDiv?.classList.add('hidden');
+        }
+        
+        const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
+        if (currentEditorPage > totalPages) {
+            currentEditorPage = Math.max(1, totalPages);
+        }
+        
+        const start = shouldPaginate ? (currentEditorPage - 1) * editorPageSize : 0;
+        const end = shouldPaginate ? Math.min(allEditorItems.length, currentEditorPage * editorPageSize) : allEditorItems.length;
+        
+        if (shouldPaginate && paginationDiv) {
+            paginationDiv.querySelector('#modalPageInfo').textContent = `Pagina ${currentEditorPage} van ${totalPages}`;
+            paginationDiv.querySelector('#modalSkipPrevBtn').disabled = currentEditorPage === 1;
+            paginationDiv.querySelector('#modalPrevPageBtn').disabled = currentEditorPage === 1;
+            paginationDiv.querySelector('#modalNextPageBtn').disabled = currentEditorPage === totalPages;
+            paginationDiv.querySelector('#modalSkipNextBtn').disabled = currentEditorPage === totalPages;
+        }
+        
+        for (let i = start; i < end; i++) {
+            const item = allEditorItems[i];
+            renderRowDOM(item, i);
+        }
+        
         updatePlaceholderTexts();
+        updateAddBtnText();
+    }
+
+    function addCardRow(term = '', definition = '', starred = false) {
+        allEditorItems.push({ term, definition, starred });
     }
 
     function manageEmptyRows() {
-        const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
-        if (rows.length === 0) { addCardRow(); return; }
-
-        const lastRow    = rows[rows.length - 1];
-        const lastInputs = lastRow.querySelectorAll('input');
-        const lastHasText = lastInputs[0].value.trim() !== '' || lastInputs[1].value.trim() !== '';
-
-        if (lastHasText) { addCardRow(); return; }
-
-        if (rows.length > 1) {
-            const secondLast = rows[rows.length - 2];
-            const slInputs   = secondLast.querySelectorAll('input');
-            const slHasText  = slInputs[0].value.trim() !== '' || slInputs[1].value.trim() !== '';
-            if (!slHasText) {
-                lastRow.remove();
-                manageEmptyRows();
+        updateAddBtnText();
+        
+        const lastItem = allEditorItems[allEditorItems.length - 1];
+        if (allEditorItems.length > 1) {
+            const secondLast = allEditorItems[allEditorItems.length - 2];
+            const lastItemEmpty = lastItem && !lastItem.term.trim() && !lastItem.definition.trim();
+            const secondLastEmpty = secondLast && !secondLast.term.trim() && !secondLast.definition.trim();
+            if (lastItemEmpty && secondLastEmpty) {
+                allEditorItems.pop();
+                const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
+                
+                const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
+                if (rows.length > 0) {
+                    rows[rows.length - 1].remove();
+                }
+                
+                if (currentEditorPage > totalPages) {
+                    currentEditorPage = Math.max(1, totalPages);
+                    renderEditorPageWithAnchoring(() => {
+                        renderEditorPage();
+                    });
+                } else if (paginationDiv && allEditorItems.length > editorPageSize) {
+                    paginationDiv.querySelector('#modalPageInfo').textContent = `Pagina ${currentEditorPage} van ${totalPages}`;
+                    paginationDiv.querySelector('#modalNextPageBtn').disabled = currentEditorPage === totalPages;
+                    paginationDiv.querySelector('#modalSkipNextBtn').disabled = currentEditorPage === totalPages;
+                }
+                updateAddBtnText();
             }
         }
     }
@@ -242,12 +488,10 @@ function createCardRowManager(cardRowsContainer) {
     }
 
     function cleanEmptyRows() {
-        Array.from(cardRowsContainer.getElementsByClassName('card-row')).forEach(row => {
-            const term = row.querySelector('.term-input').value.trim();
-            const def  = row.querySelector('.def-input').value.trim();
-            if (!term && !def) row.remove();
-        });
-        if (cardRowsContainer.children.length === 0) addCardRow();
+        allEditorItems = allEditorItems.filter(item => item.term.trim() !== '' || item.definition.trim() !== '');
+        if (allEditorItems.length === 0) {
+            allEditorItems.push({ term: '', definition: '', starred: false });
+        }
     }
 
     function processImport(importTextarea, importPanel) {
@@ -262,9 +506,9 @@ function createCardRowManager(cardRowsContainer) {
             if (commaIdx !== -1) {
                 const term = clean.substring(0, commaIdx).trim();
                 const def  = clean.substring(commaIdx + 1).trim();
-                if (term || def) { addCardRow(term, def); count++; }
+                if (term || def) { allEditorItems.push({ term, definition: def, starred: false }); count++; }
             } else {
-                addCardRow(clean, '');
+                allEditorItems.push({ term: clean, definition: '', starred: false });
                 count++;
             }
         });
@@ -273,12 +517,18 @@ function createCardRowManager(cardRowsContainer) {
             importTextarea.value = '';
             importPanel.classList.add('hidden');
             cleanEmptyRows();
-            manageEmptyRows();
+            if (allEditorItems.length >= 200) {
+                currentEditorPage = Math.ceil(allEditorItems.length / editorPageSize);
+            } else {
+                currentEditorPage = 1;
+            }
+            renderEditorPage();
         }
     }
 
     function resetForNew() {
-        cardRowsContainer.innerHTML = '';
+        allEditorItems = [{ term: '', definition: '', starred: false }];
+        currentEditorPage = 1;
         const toggle = document.getElementById('langLearningToggle');
         if (toggle) toggle.checked = false;
 
@@ -287,13 +537,13 @@ function createCardRowManager(cardRowsContainer) {
         document.getElementById('langSelectorContainer')?.classList.add('hidden');
         document.getElementById('singleLangContainer')?.classList.remove('hidden');
 
-        addCardRow();
-        updatePlaceholderTexts();
+        renderEditorPage();
     }
 
     function loadSetIntoEditor(setData) {
-        cardRowsContainer.innerHTML = '';
-
+        allEditorItems = [];
+        currentEditorPage = 1;
+        
         const isLang = !!setData.isLanguageLearning;
         const toggle = document.getElementById('langLearningToggle');
         if (toggle) toggle.checked = isLang;
@@ -319,20 +569,24 @@ function createCardRowManager(cardRowsContainer) {
             setData.items.forEach(item => addCardRow(item.term, item.definition, !!item.starred));
         }
 
-        manageEmptyRows();
-        updatePlaceholderTexts();
+        if (allEditorItems.length === 0) {
+            allEditorItems.push({ term: '', definition: '', starred: false });
+        }
+
+        renderEditorPage();
     }
 
     function collectItems() {
+        saveInputsToMemory();
         const items = [];
-        for (const row of cardRowsContainer.getElementsByClassName('card-row')) {
-            const term       = row.querySelector('.term-input').value.trim();
-            const definition = row.querySelector('.def-input').value.trim();
-            const starred    = row.dataset.starred === 'true';
-            if (term && !definition || !term && definition) {
+        for (let i = 0; i < allEditorItems.length; i++) {
+            const item = allEditorItems[i];
+            const term = item.term.trim();
+            const def  = item.definition.trim();
+            if (term && !def || !term && def) {
                 throw new Error('Elke kaart moet zowel een term als een definitie hebben.');
             }
-            if (term && definition) items.push({ term, definition, starred });
+            if (term && def) items.push({ term, definition: def, starred: item.starred });
         }
         return items;
     }

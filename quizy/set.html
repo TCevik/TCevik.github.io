@@ -93,6 +93,13 @@
                 <div id="termsList" class="terms-list">
                     <!-- Terms row will load dynamically -->
                 </div>
+                <div id="setPagination" class="pagination-controls hidden" style="display:flex; justify-content:center; align-items:center; gap:15px; margin-top:20px; padding:15px 0;">
+                    <button id="setSkipPrevBtn" class="btn btn-secondary btn-sm" style="padding: 8px 16px;"><i class="fa-solid fa-angles-left"></i> 10</button>
+                    <button id="setPrevPageBtn" class="btn btn-secondary btn-sm" style="padding: 8px 16px;"><i class="fa-solid fa-chevron-left"></i> Vorige</button>
+                    <span id="setPageInfo" style="font-weight:600; color:var(--text-primary);">Pagina 1 van 1</span>
+                    <button id="setNextPageBtn" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">Volgende <i class="fa-solid fa-chevron-right"></i></button>
+                    <button id="setSkipNextBtn" class="btn btn-secondary btn-sm" style="padding: 8px 16px;">10 <i class="fa-solid fa-angles-right"></i></button>
+                </div>
             </div>
 
             <!-- Oefening Workspace -->
@@ -272,9 +279,12 @@
         const processImportBtn = document.getElementById('processImportBtn');
 
         let currentSetData = null;
+        let currentSetPage = 1;
+        const setPageSize = 50;
 
         // Set ophalen
         async function fetchSetDetails() {
+            currentSetPage = 1;
             if (shareData) {
                 try {
                     const decodedStr = decodeURIComponent(escape(atob(shareData)));
@@ -363,8 +373,6 @@
                 viewSharedBy.classList.add('hidden');
             }
 
-
-
             setViewTitle.textContent = currentSetData.title;
             const countText = `${currentSetData.items.length} ${currentSetData.items.length === 1 ? 'kaart' : 'kaarten'}`;
             setViewCount.textContent = countText;
@@ -385,8 +393,37 @@
             }
 
             termsList.innerHTML = '';
-            if (currentSetData.items.length > 0) {
-                currentSetData.items.forEach(item => {
+            
+            const totalItems = currentSetData.items.length;
+            const shouldPaginate = totalItems > setPageSize;
+            const setPagination = document.getElementById('setPagination');
+            
+            if (shouldPaginate) {
+                setPagination.classList.remove('hidden');
+                const totalPages = Math.ceil(totalItems / setPageSize);
+                if (currentSetPage > totalPages) currentSetPage = totalPages;
+                if (currentSetPage < 1) currentSetPage = 1;
+                
+                document.getElementById('setPageInfo').textContent = `Pagina ${currentSetPage} van ${totalPages}`;
+                document.getElementById('setSkipPrevBtn').disabled = currentSetPage === 1;
+                document.getElementById('setPrevPageBtn').disabled = currentSetPage === 1;
+                document.getElementById('setNextPageBtn').disabled = currentSetPage === totalPages;
+                document.getElementById('setSkipNextBtn').disabled = currentSetPage === totalPages;
+                
+                const start = (currentSetPage - 1) * setPageSize;
+                const end = Math.min(totalItems, currentSetPage * setPageSize);
+                const pageItems = currentSetData.items.slice(start, end);
+                
+                renderTermsList(pageItems, leftLabel, rightLabel);
+            } else {
+                setPagination.classList.add('hidden');
+                renderTermsList(currentSetData.items, leftLabel, rightLabel);
+            }
+        }
+
+        function renderTermsList(items, leftLabel, rightLabel) {
+            if (items.length > 0) {
+                items.forEach(item => {
                     const row = document.createElement('div');
                     row.className = 'term-row';
                     const isStarred = !!item.starred;
@@ -581,6 +618,61 @@
         closeModalBtn.addEventListener('click', () => setModal.classList.add('hidden'));
         cancelSetBtn.addEventListener('click', () => setModal.classList.add('hidden'));
         saveSetBtn.addEventListener('click', saveSet);
+
+        // Paginering event listeners voor de set-pagina met scroll-anchoring om sprongen te voorkomen
+        function renderSetWithAnchoring(pageAction) {
+            const paginationEl = document.getElementById('setPagination');
+            const isVisible = paginationEl && !paginationEl.classList.contains('hidden');
+            let yBefore = 0;
+            if (isVisible) {
+                yBefore = paginationEl.getBoundingClientRect().top;
+            }
+            
+            pageAction();
+            
+            if (isVisible) {
+                const yAfter = paginationEl.getBoundingClientRect().top;
+                window.scrollBy(0, yAfter - yBefore);
+            }
+        }
+
+        document.getElementById('setSkipPrevBtn').addEventListener('click', () => {
+            if (currentSetPage > 1) {
+                renderSetWithAnchoring(() => {
+                    currentSetPage = Math.max(1, currentSetPage - 10);
+                    renderSet();
+                });
+            }
+        });
+
+        document.getElementById('setPrevPageBtn').addEventListener('click', () => {
+            if (currentSetPage > 1) {
+                renderSetWithAnchoring(() => {
+                    currentSetPage--;
+                    renderSet();
+                });
+            }
+        });
+
+        document.getElementById('setNextPageBtn').addEventListener('click', () => {
+            const totalPages = Math.ceil(currentSetData.items.length / setPageSize);
+            if (currentSetPage < totalPages) {
+                renderSetWithAnchoring(() => {
+                    currentSetPage++;
+                    renderSet();
+                });
+            }
+        });
+
+        document.getElementById('setSkipNextBtn').addEventListener('click', () => {
+            const totalPages = Math.ceil(currentSetData.items.length / setPageSize);
+            if (currentSetPage < totalPages) {
+                renderSetWithAnchoring(() => {
+                    currentSetPage = Math.min(totalPages, currentSetPage + 10);
+                    renderSet();
+                });
+            }
+        });
 
         // Share/Save Event Listeners
         shareSetBtn.addEventListener('click', () => {
