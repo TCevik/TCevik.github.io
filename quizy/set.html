@@ -1293,6 +1293,14 @@
                                     <span class="slider"></span>
                                 </label>
                             </div>
+                            <!-- Exact overtypen bij fout -->
+                            <div class="settings-option" id="retypeOnIncorrectContainer">
+                                <span class="option-label"><i class="fa-solid fa-pen-to-square"></i> Overtypen bij fout</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="retypeOnIncorrectToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2040,6 +2048,14 @@
                 .replace(/'/g, "\\'");
         }
 
+        function rescheduleItem(queue, item) {
+            const minPos = 3;
+            const maxPos = 5;
+            const offset = Math.floor(Math.random() * (maxPos - minPos + 1)) + minPos;
+            const targetIdx = Math.min(queue.length, offset);
+            queue.splice(targetIdx, 0, item);
+        }
+
         // Event listeners
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('google_access_token');
@@ -2205,14 +2221,13 @@
                 const prog = gameProgress[currentMode];
                 let hasProg = false;
 
-                if (currentMode === 'learn' && prog.currentIndex > 0 && prog.currentIndex < setTerms.length) hasProg = true;
                 if (currentMode === 'flashcards') {
                     const knownCount = prog.known ? prog.known.length : 0;
                     if (knownCount > 0 && knownCount < setTerms.length) {
                         hasProg = true;
                     }
                 }
-                if (currentMode === 'choice' || currentMode === 'spelling') {
+                if (currentMode === 'learn' || currentMode === 'choice' || currentMode === 'spelling') {
                     const completed = prog.completedCount || 0;
                     if (completed > 0 && completed < setTerms.length && prog.queue && prog.queue.length > 0) {
                         hasProg = true;
@@ -2255,7 +2270,7 @@
             if (currentMode === 'flashcards') {
                 flashcardQueue = setTerms.map((_, i) => i);
                 gameProgress[currentMode] = { queue: flashcardQueue, known: [], unknown: [], currentIndex: 0 };
-            } else if (currentMode === 'choice' || currentMode === 'spelling') {
+            } else if (currentMode === 'choice' || currentMode === 'spelling' || currentMode === 'learn') {
                 activeRepetitionQueue = setTerms.map((_, i) => ({ index: i, weight: 1 }));
                 gameProgress[currentMode] = { queue: activeRepetitionQueue, completedCount: 0 };
             } else if (currentMode !== 'test') {
@@ -2274,7 +2289,7 @@
                 flashcardStates.unknown = prog.unknown || [];
                 flashcardQueue = prog.queue || setTerms.map((_, i) => i);
                 currentIdx = prog.currentIndex !== undefined ? prog.currentIndex : (flashcardStates.known.length + flashcardStates.unknown.length);
-            } else if (currentMode === 'choice' || currentMode === 'spelling') {
+            } else if (currentMode === 'choice' || currentMode === 'spelling' || currentMode === 'learn') {
                 activeRepetitionQueue = prog.queue || setTerms.map((_, i) => ({ index: i, weight: 1 }));
                 activeCompletedCount = prog.completedCount || 0;
             } else {
@@ -2368,15 +2383,16 @@
         }
 
         function renderLearn() {
-            if (currentIdx >= setTerms.length) {
+            if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
                 renderCompletedScreen('learn', '📖 Leren voltooid!');
                 return;
             }
 
-            const pct = Math.round((currentIdx / setTerms.length) * 100);
+            const pct = Math.round((activeCompletedCount / setTerms.length) * 100);
             updateProgressBar(pct);
 
-            const activeWord = setTerms[currentIdx];
+            const activeItem = activeRepetitionQueue[0];
+            const activeWord = setTerms[activeItem.index];
             learnRetypeMode = false;
 
             const answerWith = document.getElementById('answerWithSelect').value;
@@ -2416,7 +2432,12 @@
                 }
             }
 
+            const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
+
             modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
+                </div>
                 <div class="prompt-text">${questionLabel}</div>
                 <div class="answer-form">
                     <input type="text" id="learnInput" placeholder="${placeholderText}" autofocus autocomplete="off">
@@ -2439,14 +2460,16 @@
             input.focus();
 
             const checkAnswer = () => {
+                if (submitBtn.textContent === 'Doorgaan') {
+                    renderLearn();
+                    return;
+                }
+
                 const answer = input.value.trim().toLowerCase();
                 const correctWordLower = correctAnswer.toLowerCase();
 
                 if (learnRetypeMode) {
                     if (answer === correctWordLower) {
-                        currentIdx++;
-                        gameProgress.learn.currentIndex = currentIdx;
-                        saveProgressToDrive();
                         renderLearn();
                     } else {
                         document.getElementById('learnFeedback').innerHTML = `
@@ -2458,6 +2481,8 @@
                     return;
                 }
 
+                const activeItemProcessed = activeRepetitionQueue.shift();
+
                 if (answer === correctWordLower) {
                     document.getElementById('learnFeedback').innerHTML = `
                         <div class="status-box correct">Goed zo! 🎉</div>
@@ -2465,19 +2490,49 @@
                     input.disabled = true;
                     submitBtn.disabled = true;
 
+                    activeItemProcessed.weight--;
+                    if (activeItemProcessed.weight > 0) {
+                        rescheduleItem(activeRepetitionQueue, activeItemProcessed);
+                    } else {
+                        activeCompletedCount++;
+                    }
+
+                    gameProgress.learn = {
+                        queue: activeRepetitionQueue,
+                        completedCount: activeCompletedCount
+                    };
+                    saveProgressToDrive();
+
                     setTimeout(() => {
-                        currentIdx++;
-                        gameProgress.learn.currentIndex = currentIdx;
-                        saveProgressToDrive();
                         renderLearn();
                     }, 1000);
                 } else {
-                    learnRetypeMode = true;
-                    document.getElementById('learnFeedback').innerHTML = `
-                        <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(correctAnswer)}</strong><br><br>Typ het antwoord hierboven nu correct over om door te gaan.</div>
-                    `;
-                    input.value = '';
-                    input.focus();
+                    const retypeEnabled = localStorage.getItem('quizy_retype_on_incorrect') !== 'false';
+
+                    activeItemProcessed.weight = Math.min(3, activeItemProcessed.weight + 1);
+                    rescheduleItem(activeRepetitionQueue, activeItemProcessed);
+
+                    gameProgress.learn = {
+                        queue: activeRepetitionQueue,
+                        completedCount: activeCompletedCount
+                    };
+                    saveProgressToDrive();
+
+                    if (retypeEnabled) {
+                        learnRetypeMode = true;
+                        document.getElementById('learnFeedback').innerHTML = `
+                            <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(correctAnswer)}</strong><br><br>Typ het antwoord hierboven nu correct over om door te gaan.</div>
+                        `;
+                        input.value = '';
+                        input.focus();
+                    } else {
+                        document.getElementById('learnFeedback').innerHTML = `
+                            <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(correctAnswer)}</strong></div>
+                        `;
+                        input.disabled = true;
+                        submitBtn.textContent = 'Doorgaan';
+                        submitBtn.focus();
+                    }
                 }
             };
 
@@ -2829,6 +2884,11 @@
                 if (!flashcardStates.unknown.includes(termRealIdx)) {
                     flashcardStates.unknown.push(termRealIdx);
                 }
+                const minPos = 3;
+                const maxPos = 5;
+                const offset = Math.floor(Math.random() * (maxPos - minPos + 1)) + minPos;
+                const targetIdx = Math.min(flashcardQueue.length, currentIdx + 1 + offset);
+                flashcardQueue.splice(targetIdx, 0, termRealIdx);
             }
 
             currentIdx++;
@@ -2948,7 +3008,7 @@
                 document.getElementById('choiceFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! 🎉</div>`;
                 activeItem.weight--;
                 if (activeItem.weight > 0) {
-                    activeRepetitionQueue.push(activeItem);
+                    rescheduleItem(activeRepetitionQueue, activeItem);
                 } else {
                     activeCompletedCount++;
                 }
@@ -2961,8 +3021,8 @@
                 });
                 document.getElementById('choiceFeedback').innerHTML = `<div class="status-box incorrect">Helaas, niet juist.</div>`;
 
-                activeItem.weight = Math.min(4, activeItem.weight + 1);
-                activeRepetitionQueue.push(activeItem);
+                activeItem.weight = Math.min(3, activeItem.weight + 1);
+                rescheduleItem(activeRepetitionQueue, activeItem);
             }
 
             gameProgress.choice = {
@@ -3063,6 +3123,11 @@
             speakBtn.addEventListener('click', () => speakSpellingWord(speakText, speakLang));
 
             const checkAnswer = () => {
+                if (submitBtn.textContent === 'Doorgaan') {
+                    renderSpelling();
+                    return;
+                }
+
                 const answer = input.value.trim().toLowerCase();
 
                 if (learnRetypeMode) {
@@ -3089,7 +3154,7 @@
 
                     activeItemProcessed.weight--;
                     if (activeItemProcessed.weight > 0) {
-                        activeRepetitionQueue.push(activeItemProcessed);
+                        rescheduleItem(activeRepetitionQueue, activeItemProcessed);
                     } else {
                         activeCompletedCount++;
                     }
@@ -3104,21 +3169,32 @@
                         renderSpelling();
                     }, 1000);
                 } else {
-                    learnRetypeMode = true;
-                    document.getElementById('spellingFeedback').innerHTML = `
-                        <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
-                    `;
-                    input.value = '';
-                    input.focus();
+                    const retypeEnabled = localStorage.getItem('quizy_retype_on_incorrect') !== 'false';
 
-                    activeItemProcessed.weight = Math.min(4, activeItemProcessed.weight + 1);
-                    activeRepetitionQueue.push(activeItemProcessed);
+                    activeItemProcessed.weight = Math.min(3, activeItemProcessed.weight + 1);
+                    rescheduleItem(activeRepetitionQueue, activeItemProcessed);
 
                     gameProgress.spelling = {
                         queue: activeRepetitionQueue,
                         completedCount: activeCompletedCount
                     };
                     saveProgressToDrive();
+
+                    if (retypeEnabled) {
+                        learnRetypeMode = true;
+                        document.getElementById('spellingFeedback').innerHTML = `
+                            <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
+                        `;
+                        input.value = '';
+                        input.focus();
+                    } else {
+                        document.getElementById('spellingFeedback').innerHTML = `
+                            <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong></div>
+                        `;
+                        input.disabled = true;
+                        submitBtn.textContent = 'Doorgaan';
+                        submitBtn.focus();
+                    }
                 }
             };
 
@@ -3400,6 +3476,16 @@
             globalAutoPlayToggle.checked = localStorage.getItem('quizy_auto_play_audio') === 'true';
             globalAutoPlayToggle.addEventListener('change', () => {
                 localStorage.setItem('quizy_auto_play_audio', globalAutoPlayToggle.checked);
+            });
+        }
+
+        const retypeOnIncorrectToggle = document.getElementById('retypeOnIncorrectToggle');
+        if (retypeOnIncorrectToggle) {
+            // Default to true if not set
+            const savedValue = localStorage.getItem('quizy_retype_on_incorrect');
+            retypeOnIncorrectToggle.checked = savedValue !== 'false';
+            retypeOnIncorrectToggle.addEventListener('change', () => {
+                localStorage.setItem('quizy_retype_on_incorrect', retypeOnIncorrectToggle.checked);
             });
         }
 
