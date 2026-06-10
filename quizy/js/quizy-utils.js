@@ -51,19 +51,6 @@ function logout() {
     window.location.href = '/quizy/index.html';
 }
 
-function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn') {
-    const desktopBtn = document.getElementById(desktopId);
-    if (desktopBtn) desktopBtn.addEventListener('click', logout);
-
-    const mobileBtn = document.getElementById(mobileId);
-    if (mobileBtn) {
-        mobileBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            logout();
-        });
-    }
-}
-
 // ── XSS-beveiliging ────────────────────────────────────────────────────────
 
 function escapeHTML(str) {
@@ -626,4 +613,17 @@ function injectCommonLayout() {
     // Initialize layout-wide event handlers
     initThemeToggle();
     initLogoutButtons();
+}
+
+function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn') {
+    const desktopBtn = document.getElementById(desktopId);
+    if (desktopBtn) desktopBtn.addEventListener('click', logout);
+
+    const mobileBtn = document.getElementById(mobileId);
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
 }
