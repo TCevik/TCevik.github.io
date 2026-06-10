@@ -817,7 +817,19 @@
             if (!currentSetData.progress) {
                 currentSetData.progress = {};
             }
-            gameProgress = currentSetData.progress;
+            gameProgress = new Proxy(currentSetData.progress, {
+                set(target, prop, value) {
+                    const filterToggle = document.getElementById('starredFilterToggle');
+                    if (filterToggle && filterToggle.checked) {
+                        if (value === null) {
+                            target[prop] = null;
+                        }
+                        return true;
+                    }
+                    target[prop] = value;
+                    return true;
+                }
+            });
 
             const savedAnswerWith = localStorage.getItem('quizy_answer_with') || 'definition';
             const answerWithSelect = document.getElementById('answerWithSelect');
@@ -872,6 +884,13 @@
         });
 
         function checkSavedProgress() {
+            const filterToggle = document.getElementById('starredFilterToggle');
+            if (filterToggle && filterToggle.checked) {
+                gameProgress[currentMode] = null;
+                saveProgressToDrive(true, true);
+                startFresh();
+                return;
+            }
             if (gameProgress[currentMode]) {
                 const prog = gameProgress[currentMode];
                 let hasProg = false;
@@ -1031,8 +1050,12 @@
             }
         }
 
-        async function saveProgressToDrive(immediate = false) {
+        async function saveProgressToDrive(immediate = false, force = false) {
             if (shareData) return;
+            const filterToggle = document.getElementById('starredFilterToggle');
+            if (filterToggle && filterToggle.checked && !force) {
+                return;
+            }
             setFile.progress = gameProgress;
             setFile.updatedAt = new Date().toISOString();
 
@@ -2442,6 +2465,10 @@
             starredFilterToggle.addEventListener('change', (e) => {
                 const proceed = confirm("Weet je zeker dat je de filter voor moeilijke woorden wilt wijzigen? Dit zal je huidige oefensessie opnieuw opstarten.");
                 if (proceed) {
+                    if (starredFilterToggle.checked) {
+                        gameProgress[currentMode] = null;
+                        saveProgressToDrive(true, true);
+                    }
                     startFresh();
                 } else {
                     e.preventDefault();
