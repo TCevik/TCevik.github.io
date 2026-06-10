@@ -400,3 +400,230 @@ function driveCreateFile(fileName, data) {
     form.append('file',     new Blob([JSON.stringify(data)],     { type: 'application/json' }));
     return driveRequest(`${DRIVE_UPLOAD}/files?uploadType=multipart`, { method: 'POST', body: form });
 }
+
+// ── Common Layout Injection ────────────────────────────────────────────────
+
+function injectCommonLayout() {
+    // 1. Inject header
+    let headerEl = document.querySelector('header');
+    if (!headerEl) {
+        headerEl = document.createElement('header');
+        document.body.insertBefore(headerEl, document.body.firstChild);
+    }
+    
+    const isHome = window.location.pathname.endsWith('home.html') || window.location.pathname.endsWith('home') || window.location.pathname === '/quizy/';
+    
+    headerEl.innerHTML = `
+        <a href="${isHome ? 'index.html' : 'home.html'}" id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></a>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
+            <div class="header-actions">
+                ${isHome ? '' : '<a href="home.html" class="btn btn-secondary btn-sm" style="margin-right: 10px;"><i class="fa-solid fa-house"></i> Dashboard</a>'}
+                <button id="logoutBtn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Uitloggen</button>
+            </div>
+        </div>
+    `;
+
+    // 2. Inject footer
+    let footerEl = document.querySelector('footer');
+    if (!footerEl) {
+        footerEl = document.createElement('footer');
+        const mainEl = document.querySelector('main');
+        if (mainEl && mainEl.nextSibling) {
+            document.body.insertBefore(footerEl, mainEl.nextSibling);
+        } else {
+            document.body.appendChild(footerEl);
+        }
+    }
+    footerEl.innerHTML = `
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="/privacy">Privacybeleid</a>
+                <a href="/terms">Voorwaarden</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 TC_tam Quizy. Alle rechten voorbehouden.</p>
+        </div>
+    `;
+
+    // 3. Inject bottom navigation
+    let bottomNavEl = document.querySelector('.bottom-nav');
+    if (!bottomNavEl) {
+        bottomNavEl = document.createElement('div');
+        bottomNavEl.className = 'bottom-nav';
+        document.body.appendChild(bottomNavEl);
+    }
+    bottomNavEl.innerHTML = `
+        <a href="home.html" class="bottom-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="https://gemini.google.com/gem/1m6sLmNZl6DWp9laUTM7lbZ9MYi_FOBk6?usp=sharing" target="_blank"
+            class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+            </svg>
+            <span>AI Tool</span>
+        </a>
+        <a href="#" id="mobileLogoutBtn" class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Uitloggen</span>
+        </a>
+    `;
+
+    // 4. Inject Modals
+    const modalContainerHTML = `
+    <!-- Modal voor Set Maken & Bewerken -->
+    <div id="setModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nieuwe set maken</h3>
+                <button id="closeModalBtn" class="close-btn">&times;</button>
+            </div>
+
+            <div class="form-group">
+                <label for="setTitleInput">Titel van de set</label>
+                <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1">
+            </div>
+
+            <div class="toggle-group">
+                <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;">
+                    <span style="font-weight: 700; font-size: 1rem; color: var(--text-primary);">Talen leren</span>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Spraaksynthese en kolomkeuze activeren voor vreemde talen</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="langLearningToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
+                <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
+                <div class="custom-select-wrapper" style="max-width: 300px;">
+                    <select id="langSingleSelect" class="custom-select"></select>
+                </div>
+            </div>
+
+            <div id="langSelectorContainer" class="hidden"
+                style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
+                    <div class="custom-select-wrapper">
+                        <select id="langLeftSelect" class="custom-select"></select>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
+                    <div class="custom-select-wrapper">
+                        <select id="langRightSelect" class="custom-select"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span>Kaarten (Termen & Definities)</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button id="toggleImportBtn" class="btn btn-secondary btn-sm">Snel importeren</button>
+                    </div>
+                </label>
+
+                <div id="importPanel" class="hidden"
+                    style="margin-bottom: 15px; padding: 15px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px; text-align: left;">
+                    
+                    <!-- Gemini AI Tool Integration -->
+                    <div id="geminiAiToolIntegration"
+                        style="margin-bottom: 16px; padding: 12px 16px; background: var(--ai-bg, rgba(30, 58, 138, 0.08)); border: 1px solid var(--ai-border, rgba(30, 58, 138, 0.15)); border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+                        <div
+                            style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-primary);">
+                            <span style="font-size: 1.2rem; color: #3b82f6;"><i class="fa-solid fa-robot"></i></span>
+                            <span>TC_tam Quizy Set Maker (Gemini AI)</span>
+                        </div>
+                        <p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.45;">
+                            Importeer heel gemakkelijk woordenlijsten van andere platforms (zoals Quizlet of StudyGo)!
+                            Kopieer de pagina met de woordjes, plak deze in onze speciale Gemini AI-tool en kopieer
+                            de gegenereerde tekst om hieronder te plakken.
+                        </p>
+                        <div style="margin-top: 4px;">
+                            <a href="https://gemini.google.com/gem/1m6sLmNZl6DWp9laUTM7lbZ9MYi_FOBk6?usp=sharing"
+                                target="_blank" class="btn btn-sm"
+                                style="font-size: 0.8rem; padding: 6px 12px; gap: 6px;">
+                                Naar Gemini AI Tool <i class="fa-solid fa-arrow-up-right-from-square"
+                                    style="font-size: 0.75rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">
+                        Plak je lijst in
+                        het formaat: <code>woord, definitie; woord, definitie;</code></p>
+                    <textarea id="importTextarea" placeholder="hola, hallo; adiós, doei; gracias, bedankt;" rows="4"
+                        style="width: 100%; padding: 10px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); border-radius: 6px; box-sizing: border-box; font-family: monospace; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                        <button id="cancelImportBtn" class="btn btn-secondary btn-sm">Annuleren</button>
+                        <button id="processImportBtn" class="btn btn-sm">Voeg toe</button>
+                    </div>
+                </div>
+
+                <div id="cardRowsContainer">
+                    <!-- Dynamische rijen komen hier -->
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="cancelSetBtn" class="btn btn-secondary">Annuleren</button>
+                <button id="saveSetBtn" class="btn">Set opslaan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="confirmModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 15px; color: #ef4444;"><i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 style="margin-top: 0; color: var(--text-primary);" id="confirmModalTitle">Set verwijderen</h3>
+            <p id="confirmModalMessage"
+                style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">Weet je
+                zeker dat je deze set wilt verwijderen?</p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button id="confirmCancelBtn" class="btn btn-secondary">Annuleren</button>
+                <button id="confirmDeleteBtn" class="btn btn-danger">Verwijderen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="customAlertModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div id="customAlertIcon" style="font-size: 3rem; margin-bottom: 15px; color: var(--brand-color);">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 style="margin-top: 0; color: var(--text-primary);" id="customAlertTitle">Melding</h3>
+            <p id="customAlertMessage" style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;"></p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button id="customAlertOkBtn" class="btn">Ok</button>
+            </div>
+        </div>
+    </div>
+    `;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = modalContainerHTML;
+    while (tempDiv.firstChild) {
+        document.body.appendChild(tempDiv.firstChild);
+    }
+
+    // Initialize layout-wide event handlers
+    initThemeToggle();
+    initLogoutButtons();
+}
