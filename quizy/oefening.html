@@ -604,6 +604,161 @@
                 padding: 16px 12px;
             }
         }
+
+        /* Settings Button & Popover */
+        .settings-popover {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 290px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: var(--shadow-md), 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 18px;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            opacity: 1;
+            visibility: visible;
+            transform-origin: top right;
+            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s;
+        }
+
+        .settings-popover.hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: scale(0.95) translateY(-8px);
+            pointer-events: none;
+            display: flex !important;
+        }
+
+        .settings-popover-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-option {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: opacity 0.2s ease;
+        }
+
+        .settings-option.hidden {
+            display: none !important;
+        }
+
+        .settings-option:has(.switch) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        input:checked + .slider {
+            background-color: var(--brand-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Custom Select */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 10px 36px 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1.5px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            border-radius: 10px;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .custom-select:focus {
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px var(--brand-glow);
+        }
+
+        .custom-select-wrapper::after {
+            content: "\f0d7";
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -638,27 +793,37 @@
                         <h1 id="setLabelTitle">Set Titel</h1>
                         <span id="setLabelCount">0 kaarten</span>
                     </div>
-                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                        <!-- Swap settings -->
-                        <div id="swapSettingsContainer"
-                            style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
-                            <label for="answerWithSelect" style="font-size: 0.9rem; font-weight: 600;">Vraag
-                                met:</label>
-                            <select id="answerWithSelect"
-                                style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.9rem; cursor: pointer; outline: none;">
-                                <option value="definition">Term (Antwoord met definitie)</option>
-                                <option value="term">Definitie (Antwoord met term)</option>
-                            </select>
-                        </div>
-                        <!-- Star filter -->
-                        <div id="starredFilterContainer"
-                            style="display: flex; align-items: center; gap: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
-                            <input type="checkbox" id="starredFilterToggle" style="width: auto; cursor: pointer;">
-                            <label for="starredFilterToggle"
-                                style="font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;"><i
-                                    class="fa-solid fa-star" style="color: #eab308;"></i> Moeilijke woorden</label>
-                        </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: relative;">
+                        <!-- Instellingen Knop -->
+                        <button id="practiceSettingsBtn" class="btn btn-secondary btn-sm" title="Instellingen">
+                            <i class="fa-solid fa-gear"></i> Instellingen
+                        </button>
                         <a href="#" id="backToSetBtn" class="btn btn-secondary btn-sm">Terug naar de set</a>
+
+                        <!-- Instellingen Popover -->
+                        <div id="practiceSettingsPopover" class="settings-popover hidden">
+                            <div class="settings-popover-header">
+                                <h3><i class="fa-solid fa-sliders"></i> Opties</h3>
+                            </div>
+                            <!-- Swap settings -->
+                            <div class="settings-option" id="swapSettingsContainer">
+                                <label for="answerWithSelect" class="option-label">Vraag met:</label>
+                                <div class="custom-select-wrapper">
+                                    <select id="answerWithSelect" class="custom-select">
+                                        <option value="definition">Term (Antwoord met definitie)</option>
+                                        <option value="term">Definitie (Antwoord met term)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Star filter -->
+                            <div class="settings-option" id="starredFilterContainer">
+                                <span class="option-label"><i class="fa-solid fa-star" style="color: #eab308;"></i> Moeilijke woorden</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="starredFilterToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1028,9 +1193,6 @@
 
         // 5. Opslaan van voortgang naar Google Drive (Throttled/Debounced)
         async function saveProgressToDrive() {
-            saveAlert.classList.remove('hidden');
-            saveAlert.style.opacity = '1';
-
             // Zorg dat progress object up-to-date is
             setFile.progress = gameProgress;
             setFile.updatedAt = new Date().toISOString();
@@ -1048,11 +1210,6 @@
                 if (!response.ok) console.warn("Opslaan van voortgang mislukt.");
             } catch (err) {
                 console.error("Fout bij opslaan voortgang:", err);
-            } finally {
-                setTimeout(() => {
-                    saveAlert.style.opacity = '0';
-                    setTimeout(() => saveAlert.classList.add('hidden'), 300);
-                }, 800);
             }
         }
 
@@ -2164,6 +2321,22 @@
                     e.preventDefault();
                     starredFilterToggle.checked = !starredFilterToggle.checked;
                 }
+            });
+        }
+
+        // Toggle settings popover
+        const settingsBtn = document.getElementById('practiceSettingsBtn');
+        const settingsPopover = document.getElementById('practiceSettingsPopover');
+        if (settingsBtn && settingsPopover) {
+            settingsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                settingsPopover.classList.toggle('hidden');
+            });
+            settingsPopover.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            document.addEventListener('click', () => {
+                settingsPopover.classList.add('hidden');
             });
         }
 
