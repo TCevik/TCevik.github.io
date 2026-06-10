@@ -605,6 +605,7 @@
                 if (data.files && data.files.length > 0) {
                     // Bestand bestaat -> Haal de inhoud (username) op
                     configFileId = data.files[0].id;
+                    localStorage.setItem('quizy_config_file_id', configFileId);
                     await fetchUsername(configFileId);
                 } else {
                     // Bestand bestaat niet -> Eerste keer setup tonen

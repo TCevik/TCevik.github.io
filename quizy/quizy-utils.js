@@ -68,12 +68,19 @@ async function saveConfigSettings(updates) {
     const token = localStorage.getItem('google_access_token');
     if (!token) return;
     try {
-        const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and 'appDataFolder' in parents and trashed=false`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-        if (data.files && data.files.length > 0) {
-            const cfgId = data.files[0].id;
+        let cfgId = localStorage.getItem('quizy_config_file_id');
+        if (!cfgId) {
+            const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and 'appDataFolder' in parents and trashed=false`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.files && data.files.length > 0) {
+                cfgId = data.files[0].id;
+                localStorage.setItem('quizy_config_file_id', cfgId);
+            }
+        }
+        
+        if (cfgId) {
             const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${cfgId}?alt=media`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -88,7 +95,8 @@ async function saveConfigSettings(updates) {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(config)
+                body: JSON.stringify(config),
+                keepalive: true
             });
         }
     } catch (err) {
@@ -100,12 +108,19 @@ async function loadConfigSettings() {
     const token = localStorage.getItem('google_access_token');
     if (!token) return;
     try {
-        const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and 'appDataFolder' in parents and trashed=false`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-        if (data.files && data.files.length > 0) {
-            const cfgId = data.files[0].id;
+        let cfgId = localStorage.getItem('quizy_config_file_id');
+        if (!cfgId) {
+            const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and 'appDataFolder' in parents and trashed=false`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.files && data.files.length > 0) {
+                cfgId = data.files[0].id;
+                localStorage.setItem('quizy_config_file_id', cfgId);
+            }
+        }
+        
+        if (cfgId) {
             const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${cfgId}?alt=media`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -129,6 +144,11 @@ async function loadConfigSettings() {
                 localStorage.setItem('quizy_retype_on_incorrect', config.retypeOnIncorrect);
                 const retypeOnIncorrectToggle = document.getElementById('retypeOnIncorrectToggle');
                 if (retypeOnIncorrectToggle) retypeOnIncorrectToggle.checked = (config.retypeOnIncorrect !== false && config.retypeOnIncorrect !== 'false');
+            }
+            if (config.starredFilter !== undefined) {
+                localStorage.setItem('quizy_starred_filter', config.starredFilter);
+                const starredFilterToggle = document.getElementById('starredFilterToggle');
+                if (starredFilterToggle) starredFilterToggle.checked = (config.starredFilter === true || config.starredFilter === 'true');
             }
             if (config.username) {
                 localStorage.setItem('quizy_username', config.username);

@@ -3744,9 +3744,12 @@
 
         const starredFilterToggle = document.getElementById('starredFilterToggle');
         if (starredFilterToggle) {
+            starredFilterToggle.checked = localStorage.getItem('quizy_starred_filter') === 'true';
             starredFilterToggle.addEventListener('change', (e) => {
                 const proceed = confirm("Weet je zeker dat je de filter voor moeilijke woorden wilt wijzigen? Dit zal je huidige oefensessie opnieuw opstarten.");
                 if (proceed) {
+                    localStorage.setItem('quizy_starred_filter', starredFilterToggle.checked);
+                    saveConfigSettings({ starredFilter: starredFilterToggle.checked });
                     startFresh();
                 } else {
                     e.preventDefault();
