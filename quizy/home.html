@@ -4,6 +4,7 @@
 <head>
     <script src="auth-check.js"></script>
     <script src="/script.js"></script>
+    <script src="quizy-utils.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - TC_tam Quizy</title>
@@ -17,40 +18,6 @@
         }
     </script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-primary);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: var(--text-primary);
-            transition: background-color 0.2s, color 0.2s;
-        }
-
-        /* App Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: var(--bg-secondary);
-            box-shadow: var(--shadow-sm);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-
-        #logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
         /* Main and Container */
         main {
             flex: 1;
@@ -76,112 +43,11 @@
             margin-bottom: 20px;
         }
 
-        .hidden {
-            display: none !important;
-        }
-
         .input-group {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
-
-        input[type="text"] {
-            padding: 12px 16px;
-            border: 1px solid var(--input-border);
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            box-sizing: border-box;
-            background-color: var(--input-bg);
-            color: var(--text-primary);
-            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--brand-color);
-            box-shadow: 0 0 0 3px var(--brand-glow);
-        }
-
-        .btn {
-            background-color: var(--brand-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            background-color: var(--brand-hover);
-            box-shadow: 0 4px 12px var(--brand-glow);
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background-color: #64748b;
-        }
-
-        .btn-secondary:hover {
-            background-color: #475569;
-            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.15);
-        }
-
-        .btn-danger {
-            background-color: #ef4444;
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
-        }
-
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 0.875rem;
-            border-radius: 6px;
-        }
-
-        .loading {
-            color: var(--text-secondary);
-            font-style: normal;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 40px;
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
-            margin: 40px auto;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border-color);
-            border-left-color: var(--brand-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
         }
 
         /* Eerste Keer Setup Card */
@@ -231,10 +97,7 @@
             min-width: 280px;
         }
 
-        .ai-banner-icon {
-            font-size: 2.2rem;
-            line-height: 1;
-        }
+        .ai-banner-icon { font-size: 2.2rem; line-height: 1; }
 
         .ai-banner-text h4 {
             margin: 0 0 6px 0;
@@ -357,10 +220,7 @@
             margin-bottom: 20px;
         }
 
-        .set-card-actions {
-            display: flex;
-            gap: 10px;
-        }
+        .set-card-actions { display: flex; gap: 10px; }
 
         /* Empty State */
         .empty-state {
@@ -371,25 +231,14 @@
             background-color: var(--bg-secondary);
         }
 
-        .empty-state-icon {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-        }
+        .empty-state-icon { font-size: 3.5rem; margin-bottom: 20px; color: var(--text-secondary); }
+        .empty-state-text { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 24px; }
 
-        .empty-state-text {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-
-        /* Modal styling */
+        /* Modal overlay */
         .modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-color: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(4px);
             display: flex;
@@ -398,184 +247,14 @@
             z-index: 1000;
         }
 
-        .modal-content {
-            background-color: var(--modal-bg);
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 650px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            box-sizing: border-box;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 24px;
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.75rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: color 0.2s;
-            line-height: 1;
-        }
-
-        .close-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .card-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            align-items: center;
-        }
-
-        .card-row input {
-            flex: 1;
-            padding: 10px 14px;
-            font-size: 0.95rem;
-            border: 1px solid var(--input-border);
-            background-color: var(--input-bg);
-            color: var(--text-primary);
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .card-row input:focus {
-            border-color: var(--brand-color);
-        }
-
-        .remove-row-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 4px;
-            line-height: 1;
-            transition: color 0.2s;
-        }
-
-        .remove-row-btn:hover {
-            color: #b91c1c;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 30px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            padding: 30px 20px;
-            text-align: center;
-            margin-top: auto;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--brand-color);
-        }
-
-        .footer-copy {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin: 0;
-        }
-
         @media (max-width: 768px) {
-            .sets-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .set-card {
-                padding: 18px;
-                min-height: auto;
-            }
-
-            .dashboard-intro,
-            .ai-banner {
-                padding: 16px;
-                margin-bottom: 20px;
-                border-radius: 12px;
-            }
-
-            .ai-banner-content {
-                gap: 10px;
-            }
-
-            .ai-banner-icon {
-                font-size: 1.8rem;
-            }
-
-            .welcome-title-container h2 {
-                font-size: 1.4rem;
-            }
-
-            .container {
-                padding: 16px 12px;
-            }
+            .sets-grid { grid-template-columns: 1fr; gap: 16px; }
+            .set-card { padding: 18px; min-height: auto; }
+            .dashboard-intro, .ai-banner { padding: 16px; margin-bottom: 20px; border-radius: 12px; }
+            .ai-banner-content { gap: 10px; }
+            .ai-banner-icon { font-size: 1.8rem; }
+            .welcome-title-container h2 { font-size: 1.4rem; }
+            .container { padding: 16px 12px; }
         }
     </style>
 </head>
@@ -720,46 +399,20 @@
             <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
                 <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
                 <select id="langSingleSelect"
-                    style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
-                    <option value="nl-NL">Nederlands</option>
-                    <option value="en-US">Engels</option>
-                    <option value="fr-FR">Frans</option>
-                    <option value="de-DE">Duits</option>
-                    <option value="es-ES">Spaans</option>
-                    <option value="it-IT">Italiaans</option>
-                    <option value="tr-TR">Turks</option>
-                </select>
+                    style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;"></select>
             </div>
 
             <div id="langSelectorContainer" class="hidden"
                 style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom
-                        1):</label>
+                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
                     <select id="langLeftSelect"
-                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
-                        <option value="nl-NL">Nederlands</option>
-                        <option value="en-US">Engels</option>
-                        <option value="fr-FR">Frans</option>
-                        <option value="de-DE">Duits</option>
-                        <option value="es-ES">Spaans</option>
-                        <option value="it-IT">Italiaans</option>
-                        <option value="tr-TR">Turks</option>
-                    </select>
+                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;"></select>
                 </div>
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom
-                        2):</label>
+                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
                     <select id="langRightSelect"
-                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
-                        <option value="nl-NL">Nederlands</option>
-                        <option value="en-US" selected>Engels</option>
-                        <option value="fr-FR">Frans</option>
-                        <option value="de-DE">Duits</option>
-                        <option value="es-ES">Spaans</option>
-                        <option value="it-IT">Italiaans</option>
-                        <option value="tr-TR">Turks</option>
-                    </select>
+                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;"></select>
                 </div>
             </div>
 
@@ -885,7 +538,6 @@
     <script>
         const TOKEN = localStorage.getItem('google_access_token');
         const FILE_NAME = 'quizy_config.json';
-        const SET_PREFIX = 'quizy_set_';
 
         // Globale variabelen
         let configFileId = null;
@@ -1167,81 +819,10 @@
             }
         }
 
-        // Custom alert dialog using HTML popup
-        function showAlert(message, title = "Melding") {
-            return new Promise((resolve) => {
-                const modal = document.getElementById('customAlertModal');
-                const titleEl = document.getElementById('customAlertTitle');
-                const messageEl = document.getElementById('customAlertMessage');
-                const okBtn = document.getElementById('customAlertOkBtn');
-                const iconEl = document.getElementById('customAlertIcon');
+        // Gebruik de gedeelde showAlert / customConfirm / overrideNativeAlert uit quizy-utils.js
+        overrideNativeAlert();
 
-                if (titleEl) titleEl.textContent = title;
-                if (messageEl) messageEl.textContent = message;
 
-                if (iconEl) {
-                    const msgLower = message.toLowerCase();
-                    if (msgLower.includes('succes') || msgLower.includes('gelukt') || msgLower.includes('opgeslagen')) {
-                        iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-                        iconEl.style.color = 'var(--brand-color)';
-                    } else if (msgLower.includes('fout') || msgLower.includes('mislukt') || msgLower.includes('mis') || msgLower.includes('vul') || msgLower.includes('voeg') || msgLower.includes('plak') || msgLower.includes('selecteer')) {
-                        iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-                        iconEl.style.color = '#ef4444';
-                    } else {
-                        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
-                        iconEl.style.color = '#3b82f6';
-                    }
-                }
-
-                if (modal) modal.classList.remove('hidden');
-
-                function onOk() {
-                    if (modal) modal.classList.add('hidden');
-                    if (okBtn) okBtn.removeEventListener('click', onOk);
-                    resolve();
-                }
-
-                if (okBtn) okBtn.addEventListener('click', onOk);
-            });
-        }
-        window.alert = function(message) {
-            showAlert(message);
-        };
-
-        // Custom confirmation dialog using HTML popup
-        function customConfirm(message, title = "Set verwijderen") {
-            return new Promise((resolve) => {
-                const modal = document.getElementById('confirmModal');
-                const titleEl = document.getElementById('confirmModalTitle');
-                const messageEl = document.getElementById('confirmModalMessage');
-                const cancelBtn = document.getElementById('confirmCancelBtn');
-                const confirmBtn = document.getElementById('confirmDeleteBtn');
-
-                titleEl.textContent = title;
-                messageEl.textContent = message;
-
-                modal.classList.remove('hidden');
-
-                function cleanup() {
-                    modal.classList.add('hidden');
-                    cancelBtn.removeEventListener('click', onCancel);
-                    confirmBtn.removeEventListener('click', onConfirm);
-                }
-
-                function onCancel() {
-                    cleanup();
-                    resolve(false);
-                }
-
-                function onConfirm() {
-                    cleanup();
-                    resolve(true);
-                }
-
-                cancelBtn.addEventListener('click', onCancel);
-                confirmBtn.addEventListener('click', onConfirm);
-            });
-        }
 
         // 6. Set verwijderen uit Google Drive
         async function deleteSet(fileId) {
@@ -1276,41 +857,12 @@
             currentEditingSetId = fileId;
             modalTitle.textContent = "Set bewerken";
             setTitleInput.value = setName;
-            cardRowsContainer.innerHTML = '';
             importPanel.classList.add('hidden');
             importTextarea.value = '';
 
             try {
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
-                const setContent = await response.json();
-
-                const isLang = !!setContent.isLanguageLearning;
-                document.getElementById('langLearningToggle').checked = isLang;
-                document.getElementById('langLeftSelect').value = setContent.langLeft || 'nl-NL';
-                document.getElementById('langRightSelect').value = setContent.langRight || 'en-US';
-                document.getElementById('langSingleSelect').value = setContent.langLeft || 'nl-NL';
-
-                const selectorContainer = document.getElementById('langSelectorContainer');
-                const singleLangContainer = document.getElementById('singleLangContainer');
-                if (isLang) {
-                    selectorContainer.classList.remove('hidden');
-                    singleLangContainer.classList.add('hidden');
-                } else {
-                    selectorContainer.classList.add('hidden');
-                    singleLangContainer.classList.remove('hidden');
-                }
-
-                if (setContent && setContent.items) {
-                    setContent.items.forEach(item => {
-                        addCardRow(item.term, item.definition, !!item.starred);
-                    });
-                }
-
-                manageEmptyRows();
-                updatePlaceholderTexts();
-
+                const setContent = await driveGetJSON(fileId);
+                cardRowMgr.loadSetIntoEditor(setContent);
                 setModal.classList.remove('hidden');
             } catch (error) {
                 console.error("Fout bij ophalen set details:", error);
@@ -1326,221 +878,68 @@
         // 8. Set opslaan (Nieuw of bewerken)
         async function saveSet() {
             const title = setTitleInput.value.trim();
-            if (!title) {
-                alert("Vul een titel in voor de set.");
+            if (!title) { alert('Vul een titel in voor de set.'); return; }
+
+            let items;
+            try {
+                items = cardRowMgr.collectItems();
+            } catch (e) {
+                alert(e.message);
                 return;
             }
 
-            // Verzamel kaarten
-            const items = [];
-            const rows = cardRowsContainer.getElementsByClassName('card-row');
-            for (let row of rows) {
-                const termInput = row.querySelector('.term-input');
-                const defInput = row.querySelector('.def-input');
-                const term = termInput.value.trim();
-                const definition = defInput.value.trim();
-                const starred = row.dataset.starred === "true";
-                
-                if ((term && !definition) || (!term && definition)) {
-                    alert("Elke kaart moet zowel een term als een definitie hebben.");
-                    return;
-                }
-                
-                if (term && definition) {
-                    items.push({ term, definition, starred });
-                }
-            }
-
             if (items.length < 4) {
-                alert("Een quiz-set moet minimaal 4 kaarten bevatten.");
+                alert('Een quiz-set moet minimaal 4 kaarten bevatten.');
                 return;
             }
 
             saveSetBtn.disabled = true;
-            saveSetBtn.textContent = "Opslaan...";
+            saveSetBtn.textContent = 'Opslaan...';
 
             const isLangLearning = document.getElementById('langLearningToggle').checked;
-            const langLeft = isLangLearning ? document.getElementById('langLeftSelect').value : document.getElementById('langSingleSelect').value;
+            const langLeft  = isLangLearning ? document.getElementById('langLeftSelect').value  : document.getElementById('langSingleSelect').value;
             const langRight = isLangLearning ? document.getElementById('langRightSelect').value : document.getElementById('langSingleSelect').value;
 
             const setFileName = `${SET_PREFIX}${title}.json`;
-            const fileData = {
-                title: title,
-                items: items,
-                isLanguageLearning: isLangLearning,
-                langLeft: langLeft,
-                langRight: langRight,
-                updatedAt: new Date().toISOString()
-            };
+            const fileData = { title, items, isLanguageLearning: isLangLearning, langLeft, langRight, updatedAt: new Date().toISOString() };
 
             try {
                 if (currentEditingSetId) {
-                    // Update bestaand bestand content
-                    const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${currentEditingSetId}?uploadType=media`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Authorization': `Bearer ${TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(fileData)
-                    });
-
-                    // Update bestandsnaam/metadata indien de titel veranderd is
-                    const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${currentEditingSetId}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Authorization': `Bearer ${TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ name: setFileName })
-                    });
-
-                    if (response.ok && metaResponse.ok) {
-                        closeSetModal();
-                        await loadSets();
-                    } else {
-                        alert("Bijwerken mislukt.");
-                    }
+                    const [r1, r2] = await Promise.all([
+                        drivePatchJSON(currentEditingSetId, fileData),
+                        driveRequest(`${DRIVE_BASE}/files/${currentEditingSetId}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: setFileName })
+                        })
+                    ]);
+                    if (r1.ok && r2.ok) { closeSetModal(); await loadSets(); }
+                    else alert('Bijwerken mislukt.');
                 } else {
-                    // Nieuw bestand aanmaken (Multipart upload)
-                    const fId = await getOrCreateFolderId();
-                    const metadata = {
-                        name: setFileName,
-                        mimeType: 'application/json',
-                        parents: [fId]
-                    };
-
-                    const form = new FormData();
-                    form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-                    form.append('file', new Blob([JSON.stringify(fileData)], { type: 'application/json' }));
-
-                    const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${TOKEN}` },
-                        body: form
-                    });
-
-                    if (response.ok) {
-                        closeSetModal();
-                        await loadSets();
-                    } else {
-                        alert("Opslaan mislukt.");
-                    }
+                    const response = await driveCreateFile(setFileName, fileData);
+                    if (response.ok) { closeSetModal(); await loadSets(); }
+                    else alert('Opslaan mislukt.');
                 }
             } catch (error) {
-                console.error("Fout bij opslaan set:", error);
-                alert("Er ging iets mis bij het opslaan van de set.");
+                console.error('Fout bij opslaan set:', error);
+                alert('Er ging iets mis bij het opslaan van de set.');
             } finally {
                 saveSetBtn.disabled = false;
-                saveSetBtn.textContent = "Set opslaan";
+                saveSetBtn.textContent = 'Set opslaan';
             }
         }
 
-        // Hulpmiddelen voor de UI
-        function manageEmptyRows() {
-            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
-            if (rows.length === 0) {
-                addCardRow();
-                return;
-            }
-
-            const lastRow = rows[rows.length - 1];
-            const lastInputs = lastRow.querySelectorAll('input');
-            const lastHasText = lastInputs[0].value.trim() !== "" || lastInputs[1].value.trim() !== "";
-
-            if (lastHasText) {
-                addCardRow();
-                return;
-            }
-
-            if (rows.length > 1) {
-                const secondLastRow = rows[rows.length - 2];
-                const secondLastInputs = secondLastRow.querySelectorAll('input');
-                const secondLastHasText = secondLastInputs[0].value.trim() !== "" || secondLastInputs[1].value.trim() !== "";
-
-                if (!secondLastHasText) {
-                    lastRow.remove();
-                    manageEmptyRows();
-                }
-            }
-        }
-
-        function updatePlaceholderTexts() {
-            const isLangLearning = document.getElementById('langLearningToggle').checked;
-            const leftSelect = document.getElementById('langLeftSelect');
-            const rightSelect = document.getElementById('langRightSelect');
-            const leftLangName = leftSelect.options[leftSelect.selectedIndex].text;
-            const rightLangName = rightSelect.options[rightSelect.selectedIndex].text;
-
-            const rows = cardRowsContainer.getElementsByClassName('card-row');
-            for (let row of rows) {
-                const termInput = row.querySelector('.term-input');
-                const defInput = row.querySelector('.def-input');
-                if (isLangLearning) {
-                    termInput.placeholder = `Woord in ${leftLangName}`;
-                    defInput.placeholder = `Vertaling in ${rightLangName}`;
-                } else {
-                    termInput.placeholder = "Term (bijv. Hola)";
-                    defInput.placeholder = "Definitie (bijv. Hallo)";
-                }
-            }
-        }
-
-        function addCardRow(term = "", definition = "", starred = false) {
-            const row = document.createElement('div');
-            row.className = 'card-row';
-            row.dataset.starred = starred ? "true" : "false";
-            row.innerHTML = `
-                <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
-                <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(term)}">
-                <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
-                <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
-            `;
-
-            row.querySelector('.star-row-btn').addEventListener('click', () => {
-                const isStarred = row.dataset.starred === "true";
-                row.dataset.starred = isStarred ? "false" : "true";
-                const starIcon = row.querySelector('.star-row-btn i');
-                if (isStarred) {
-                    row.querySelector('.star-row-btn').style.color = '#94a3b8';
-                    starIcon.className = 'fa-regular fa-star';
-                } else {
-                    row.querySelector('.star-row-btn').style.color = '#eab308';
-                    starIcon.className = 'fa-solid fa-star';
-                }
-            });
-
-            row.querySelector('.remove-row-btn').addEventListener('click', () => {
-                row.remove();
-                manageEmptyRows();
-            });
-
-            const inputs = row.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('input', manageEmptyRows);
-            });
-
-            cardRowsContainer.appendChild(row);
-            updatePlaceholderTexts();
-        }
+        // Initialiseer de kaart-rij manager (gedeelde logica vanuit quizy-utils.js)
+        const cardRowMgr = createCardRowManager(cardRowsContainer);
+        const { addCardRow, manageEmptyRows, updatePlaceholderTexts } = cardRowMgr;
 
         function openSetModalForNew() {
             currentEditingSetId = null;
-            modalTitle.textContent = "Nieuwe set maken";
-            setTitleInput.value = "";
-            cardRowsContainer.innerHTML = '';
+            modalTitle.textContent = 'Nieuwe set maken';
+            setTitleInput.value = '';
             importPanel.classList.add('hidden');
             importTextarea.value = '';
-
-            document.getElementById('langLearningToggle').checked = false;
-            document.getElementById('langLeftSelect').value = 'nl-NL';
-            document.getElementById('langRightSelect').value = 'en-US';
-            document.getElementById('langSingleSelect').value = 'nl-NL';
-            document.getElementById('langSelectorContainer').classList.add('hidden');
-            document.getElementById('singleLangContainer').classList.remove('hidden');
-
-            addCardRow();
-            updatePlaceholderTexts();
+            cardRowMgr.resetForNew();
             setModal.classList.remove('hidden');
         }
 
@@ -1564,82 +963,12 @@
             usernameEdit.classList.add('hidden');
         }
 
-        // Import functies
-        function processImport() {
-            const text = importTextarea.value.trim();
-            if (!text) {
-                alert("Plak eerst wat tekst om te kunnen importeren.");
-                return;
-            }
-
-            const pairs = text.split(';');
-            let count = 0;
-
-            pairs.forEach(pair => {
-                const cleanPair = pair.trim();
-                if (!cleanPair) return;
-
-                const commaIndex = cleanPair.indexOf(',');
-                if (commaIndex !== -1) {
-                    const term = cleanPair.substring(0, commaIndex).trim();
-                    const definition = cleanPair.substring(commaIndex + 1).trim();
-                    if (term || definition) {
-                        addCardRow(term, definition);
-                        count++;
-                    }
-                } else {
-                    addCardRow(cleanPair, "");
-                    count++;
-                }
-            });
-
-            if (count > 0) {
-                importTextarea.value = '';
-                importPanel.classList.add('hidden');
-                cleanEmptyRows();
-                manageEmptyRows();
-            }
-        }
-
-        function cleanEmptyRows() {
-            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
-            rows.forEach(row => {
-                const term = row.querySelector('.term-input').value.trim();
-                const def = row.querySelector('.def-input').value.trim();
-                if (!term && !def) {
-                    row.remove();
-                }
-            });
-            if (cardRowsContainer.children.length === 0) {
-                addCardRow();
-            }
-        }
-
-        // Helpers voor beveiliging tegen XSS in template literals
-        function escapeHTML(str) {
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function escapeJS(str) {
-            return str
-                .replace(/\\/g, '\\\\')
-                .replace(/\n/g, '\\n')
-                .replace(/\r/g, '\\r')
-                .replace(/'/g, "\\'");
-        }
+        // processImport delegeert naar de gedeelde cardRowMgr (quizy-utils.js)
+        function processImport() { cardRowMgr.processImport(importTextarea, importPanel); }
 
         // Event listeners
         saveBtn.addEventListener('click', saveUsername);
-
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('google_access_token');
-            window.location.href = 'index.html';
-        });
+        initLogoutButtons(); // quizy-utils.js
 
         editUsernameBtn.addEventListener('click', openUsernameEdit);
         cancelUsernameBtn.addEventListener('click', closeUsernameEdit);
@@ -1683,44 +1012,13 @@
 
         // Mobile specific listeners
         const mobileFab = document.getElementById('mobileFab');
-        if (mobileFab) {
-            mobileFab.addEventListener('click', openSetModalForNew);
-        }
-        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
-        if (mobileLogoutBtn) {
-            mobileLogoutBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('google_access_token');
-                window.location.href = 'index.html';
-            });
-        }
+        if (mobileFab) mobileFab.addEventListener('click', openSetModalForNew);
 
-        // Theme toggling logic
-        const themeToggleBtn = document.getElementById('themeToggle');
-        function applyTheme(theme) {
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            } else {
-                document.documentElement.classList.remove('dark-mode');
-                document.body.classList.remove('dark-mode');
-                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            }
-        }
-        applyTheme(localStorage.getItem('theme') || 'light');
-
-
-        if (themeToggleBtn) {
-            themeToggleBtn.addEventListener('click', () => {
-                const currentTheme = localStorage.getItem('theme') || 'light';
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                localStorage.setItem('theme', newTheme);
-                applyTheme(newTheme);
-            });
-        }
+        // Thema toggle (quizy-utils.js)
+        initThemeToggle();
 
         // Start de controle bij het laden van de pagina
+        populateLanguageSelects();
         checkFirstTime();
     </script>
 </body>

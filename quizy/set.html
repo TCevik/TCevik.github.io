@@ -4,18 +4,17 @@
 <head>
     <script src="auth-check.js"></script>
     <script src="/script.js"></script>
+    <script>
+        // Thema direct instellen om flicker te voorkomen
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark-mode');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Details - Quizy</title>
+    <meta name="description" content="Oefen en bestudeer je set met flashcards, meerkeuze en meer op TC_tam Quizy.">
+    <title>Set bekijken - TC_tam Quizy</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // Set theme immediately to avoid flash
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark-mode');
-        }
-    </script>
+    <script src="quizy-utils.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -1366,47 +1365,18 @@
 
             <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
                 <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
-                <select id="langSingleSelect"
-                    style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
-                    <option value="nl-NL">Nederlands</option>
-                    <option value="en-US">Engels</option>
-                    <option value="fr-FR">Frans</option>
-                    <option value="de-DE">Duits</option>
-                    <option value="es-ES">Spaans</option>
-                    <option value="it-IT">Italiaans</option>
-                    <option value="tr-TR">Turks</option>
-                </select>
+                <select id="langSingleSelect"></select>
             </div>
 
             <div id="langSelectorContainer" class="hidden"
                 style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom
-                        1):</label>
-                    <select id="langLeftSelect"
-                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
-                        <option value="nl-NL">Nederlands</option>
-                        <option value="en-US">Engels</option>
-                        <option value="fr-FR">Frans</option>
-                        <option value="de-DE">Duits</option>
-                        <option value="es-ES">Spaans</option>
-                        <option value="it-IT">Italiaans</option>
-                        <option value="tr-TR">Turks</option>
-                    </select>
+                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
+                    <select id="langLeftSelect"></select>
                 </div>
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom
-                        2):</label>
-                    <select id="langRightSelect"
-                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
-                        <option value="nl-NL">Nederlands</option>
-                        <option value="en-US" selected>Engels</option>
-                        <option value="fr-FR">Frans</option>
-                        <option value="de-DE">Duits</option>
-                        <option value="es-ES">Spaans</option>
-                        <option value="it-IT">Italiaans</option>
-                        <option value="tr-TR">Turks</option>
-                    </select>
+                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
+                    <select id="langRightSelect"></select>
                 </div>
             </div>
 
@@ -1544,7 +1514,6 @@
 
     <script>
         const TOKEN = localStorage.getItem('google_access_token');
-        const SET_PREFIX = 'quizy_set_';
 
         // URL parameters controleren
         const urlParams = new URLSearchParams(window.location.search);
@@ -1568,7 +1537,6 @@
         const termsList = document.getElementById('termsList');
         const termsBadge = document.getElementById('termsBadge');
 
-        const logoutBtn = document.getElementById('logoutBtn');
         const editSetBtn = document.getElementById('editSetBtn');
         const deleteSetBtn = document.getElementById('deleteSetBtn');
         const shareSetBtn = document.getElementById('shareSetBtn');
@@ -1803,81 +1771,10 @@
             }
         }
 
-        // Custom alert dialog using HTML popup
-        function showAlert(message, title = "Melding") {
-            return new Promise((resolve) => {
-                const modal = document.getElementById('customAlertModal');
-                const titleEl = document.getElementById('customAlertTitle');
-                const messageEl = document.getElementById('customAlertMessage');
-                const okBtn = document.getElementById('customAlertOkBtn');
-                const iconEl = document.getElementById('customAlertIcon');
-
-                if (titleEl) titleEl.textContent = title;
-                if (messageEl) messageEl.textContent = message;
-
-                if (iconEl) {
-                    const msgLower = message.toLowerCase();
-                    if (msgLower.includes('succes') || msgLower.includes('gelukt') || msgLower.includes('opgeslagen')) {
-                        iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-                        iconEl.style.color = 'var(--brand-color)';
-                    } else if (msgLower.includes('fout') || msgLower.includes('mislukt') || msgLower.includes('mis') || msgLower.includes('vul') || msgLower.includes('voeg') || msgLower.includes('plak') || msgLower.includes('selecteer')) {
-                        iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-                        iconEl.style.color = '#ef4444';
-                    } else {
-                        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
-                        iconEl.style.color = '#3b82f6';
-                    }
-                }
-
-                if (modal) modal.classList.remove('hidden');
-
-                function onOk() {
-                    if (modal) modal.classList.add('hidden');
-                    if (okBtn) okBtn.removeEventListener('click', onOk);
-                    resolve();
-                }
-
-                if (okBtn) okBtn.addEventListener('click', onOk);
-            });
-        }
-        window.alert = function(message) {
-            showAlert(message);
-        };
-
-        // Custom confirmation dialog using HTML popup
-        function customConfirm(message, title = "Set verwijderen") {
-            return new Promise((resolve) => {
-                const modal = document.getElementById('confirmModal');
-                const titleEl = document.getElementById('confirmModalTitle');
-                const messageEl = document.getElementById('confirmModalMessage');
-                const cancelBtn = document.getElementById('confirmCancelBtn');
-                const confirmBtn = document.getElementById('confirmDeleteBtn');
-
-                titleEl.textContent = title;
-                messageEl.textContent = message;
-
-                modal.classList.remove('hidden');
-
-                function cleanup() {
-                    modal.classList.add('hidden');
-                    cancelBtn.removeEventListener('click', onCancel);
-                    confirmBtn.removeEventListener('click', onConfirm);
-                }
-
-                function onCancel() {
-                    cleanup();
-                    resolve(false);
-                }
-
-                function onConfirm() {
-                    cleanup();
-                    resolve(true);
-                }
-
-                cancelBtn.addEventListener('click', onCancel);
-                confirmBtn.addEventListener('click', onConfirm);
-            });
-        }
+        // Initialisatie
+        initThemeToggle();
+        initLogoutButtons();
+        overrideNativeAlert();
 
         // Set verwijderen
         async function deleteSet() {
@@ -1913,153 +1810,33 @@
         // Bewerken openen
         function openEditModal() {
             setTitleInput.value = currentSetData.title;
-            cardRowsContainer.innerHTML = '';
             importPanel.classList.add('hidden');
             importTextarea.value = '';
 
-            const isLang = !!currentSetData.isLanguageLearning;
-            document.getElementById('langLearningToggle').checked = isLang;
-            document.getElementById('langLeftSelect').value = currentSetData.langLeft || 'nl-NL';
-            document.getElementById('langRightSelect').value = currentSetData.langRight || 'en-US';
-            document.getElementById('langSingleSelect').value = currentSetData.langLeft || 'nl-NL';
-
-            const selectorContainer = document.getElementById('langSelectorContainer');
-            const singleLangContainer = document.getElementById('singleLangContainer');
-            if (isLang) {
-                selectorContainer.classList.remove('hidden');
-                singleLangContainer.classList.add('hidden');
-            } else {
-                selectorContainer.classList.add('hidden');
-                singleLangContainer.classList.remove('hidden');
-            }
-
-            if (currentSetData.items && currentSetData.items.length > 0) {
-                currentSetData.items.forEach(item => {
-                    addCardRow(item.term, item.definition, !!item.starred);
-                });
-            }
-
-            manageEmptyRows();
-            updatePlaceholderTexts();
+            cardRowMgr.loadSetIntoEditor(currentSetData);
 
             setModal.classList.remove('hidden');
         }
 
-        function manageEmptyRows() {
-            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
-            if (rows.length === 0) {
-                addCardRow();
-                return;
-            }
-
-            const lastRow = rows[rows.length - 1];
-            const lastInputs = lastRow.querySelectorAll('input');
-            const lastHasText = lastInputs[0].value.trim() !== "" || lastInputs[1].value.trim() !== "";
-
-            if (lastHasText) {
-                addCardRow();
-                return;
-            }
-
-            if (rows.length > 1) {
-                const secondLastRow = rows[rows.length - 2];
-                const secondLastInputs = secondLastRow.querySelectorAll('input');
-                const secondLastHasText = secondLastInputs[0].value.trim() !== "" || secondLastInputs[1].value.trim() !== "";
-
-                if (!secondLastHasText) {
-                    lastRow.remove();
-                    manageEmptyRows();
-                }
-            }
-        }
-
-        function updatePlaceholderTexts() {
-            const isLangLearning = document.getElementById('langLearningToggle').checked;
-            const leftSelect = document.getElementById('langLeftSelect');
-            const rightSelect = document.getElementById('langRightSelect');
-            const leftLangName = leftSelect.options[leftSelect.selectedIndex].text;
-            const rightLangName = rightSelect.options[rightSelect.selectedIndex].text;
-
-            const rows = cardRowsContainer.getElementsByClassName('card-row');
-            for (let row of rows) {
-                const termInput = row.querySelector('.term-input');
-                const defInput = row.querySelector('.def-input');
-                if (isLangLearning) {
-                    termInput.placeholder = `Woord in ${leftLangName}`;
-                    defInput.placeholder = `Vertaling in ${rightLangName}`;
-                } else {
-                    termInput.placeholder = "Term (bijv. Hola)";
-                    defInput.placeholder = "Definitie (bijv. Hallo)";
-                }
-            }
-        }
-
-        function addCardRow(term = "", definition = "", starred = false) {
-            const row = document.createElement('div');
-            row.className = 'card-row';
-            row.dataset.starred = starred ? "true" : "false";
-            row.innerHTML = `
-                <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
-                <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(term)}">
-                <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(definition)}">
-                <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
-            `;
-
-            row.querySelector('.star-row-btn').addEventListener('click', () => {
-                const isStarred = row.dataset.starred === "true";
-                row.dataset.starred = isStarred ? "false" : "true";
-                const starIcon = row.querySelector('.star-row-btn i');
-                if (isStarred) {
-                    row.querySelector('.star-row-btn').style.color = '#94a3b8';
-                    starIcon.className = 'fa-regular fa-star';
-                } else {
-                    row.querySelector('.star-row-btn').style.color = '#eab308';
-                    starIcon.className = 'fa-solid fa-star';
-                }
-            });
-
-            row.querySelector('.remove-row-btn').addEventListener('click', () => {
-                row.remove();
-                manageEmptyRows();
-            });
-
-            const inputs = row.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('input', manageEmptyRows);
-            });
-
-            cardRowsContainer.appendChild(row);
-            updatePlaceholderTexts();
-        }
+        // Kaart-rij beheer (gedeeld via quizy-utils.js)
+        const cardRowMgr = createCardRowManager(cardRowsContainer);
+        const { addCardRow, manageEmptyRows, updatePlaceholderTexts } = cardRowMgr;
+        populateLanguageSelects();
 
         async function saveSet() {
             const title = setTitleInput.value.trim();
-            if (!title) {
-                alert("Vul een titel in voor de set.");
+            if (!title) { alert('Vul een titel in voor de set.'); return; }
+
+            let items;
+            try {
+                items = cardRowMgr.collectItems();
+            } catch (e) {
+                alert(e.message);
                 return;
             }
 
-            const items = [];
-            const rows = cardRowsContainer.getElementsByClassName('card-row');
-            for (let row of rows) {
-                const termInput = row.querySelector('.term-input');
-                const defInput = row.querySelector('.def-input');
-                const term = termInput.value.trim();
-                const definition = defInput.value.trim();
-                const starred = row.dataset.starred === "true";
-                
-                if ((term && !definition) || (!term && definition)) {
-                    alert("Elke kaart moet zowel een term als een definitie hebben.");
-                    return;
-                }
-                
-                if (term && definition) {
-                    items.push({ term, definition, starred });
-                }
-            }
-
             if (items.length < 4) {
-                alert("Een quiz-set moet minimaal 4 kaarten bevatten.");
+                alert('Een quiz-set moet minimaal 4 kaarten bevatten.');
                 return;
             }
 
@@ -2119,86 +1896,6 @@
             }
         }
 
-        // Import functies
-        function processImport() {
-            const text = importTextarea.value.trim();
-            if (!text) {
-                alert("Plak eerst tekst.");
-                return;
-            }
-
-            const pairs = text.split(';');
-            let count = 0;
-
-            pairs.forEach(pair => {
-                const cleanPair = pair.trim();
-                if (!cleanPair) return;
-
-                const commaIndex = cleanPair.indexOf(',');
-                if (commaIndex !== -1) {
-                    const term = cleanPair.substring(0, commaIndex).trim();
-                    const definition = cleanPair.substring(commaIndex + 1).trim();
-                    if (term || definition) {
-                        addCardRow(term, definition);
-                        count++;
-                    }
-                } else {
-                    addCardRow(cleanPair, "");
-                    count++;
-                }
-            });
-
-            if (count > 0) {
-                importTextarea.value = '';
-                importPanel.classList.add('hidden');
-                cleanEmptyRows();
-                manageEmptyRows();
-            }
-        }
-
-        function cleanEmptyRows() {
-            const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
-            rows.forEach(row => {
-                const term = row.querySelector('.term-input').value.trim();
-                const def = row.querySelector('.def-input').value.trim();
-                if (!term && !def) {
-                    row.remove();
-                }
-            });
-            if (cardRowsContainer.children.length === 0) {
-                addCardRow();
-            }
-        }
-
-        // Helpers
-        function escapeHTML(str) {
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function escapeJS(str) {
-            return str
-                .replace(/\\/g, '\\\\')
-                .replace(/\n/g, '\\n')
-                .replace(/\r/g, '\\r')
-                .replace(/'/g, "\\'");
-        }
-
-        function rescheduleItem(queue, item, minPos = 3, maxPos = 5) {
-            const offset = Math.floor(Math.random() * (maxPos - minPos + 1)) + minPos;
-            const targetIdx = Math.min(queue.length, offset);
-            queue.splice(targetIdx, 0, item);
-        }
-
-        // Event listeners
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('google_access_token');
-            window.location.href = 'index.html';
-        });
 
         editSetBtn.addEventListener('click', openEditModal);
         deleteSetBtn.addEventListener('click', deleteSet);
@@ -2334,14 +2031,20 @@
         });
         processImportBtn.addEventListener('click', processImport);
 
+        // Import en utils
+        function processImport() { cardRowMgr.processImport(importTextarea, importPanel); }
+        function cleanEmptyRows() { cardRowMgr.cleanEmptyRows(); }
+
+        function rescheduleItem(queue, item, minPos = 3, maxPos = 5) {
+            const offset = Math.floor(Math.random() * (maxPos - minPos + 1)) + minPos;
+            const targetIdx = Math.min(queue.length, offset);
+            queue.splice(targetIdx, 0, item);
+        }
+
         // Mobile specific listeners
         const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
         if (mobileLogoutBtn) {
-            mobileLogoutBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('google_access_token');
-                window.location.href = 'index.html';
-            });
+            mobileLogoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout(); });
         }
 
         // ==========================================
@@ -4129,29 +3832,6 @@
                 });
             }
         });
-
-        // Theme toggling logic
-        const themeToggleBtn = document.getElementById('themeToggle');
-        function applyTheme(theme) {
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            } else {
-                document.documentElement.classList.remove('dark-mode');
-                document.body.classList.remove('dark-mode');
-                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            }
-        }
-        applyTheme(localStorage.getItem('theme') || 'light');
-        if (themeToggleBtn) {
-            themeToggleBtn.addEventListener('click', () => {
-                const currentTheme = localStorage.getItem('theme') || 'light';
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                localStorage.setItem('theme', newTheme);
-                applyTheme(newTheme);
-            });
-        }
 
         // Laden starten
         fetchSetDetails();

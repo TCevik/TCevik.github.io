@@ -9,118 +9,17 @@
     <title>TC_tam Quizy</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="quizy-utils.js"></script>
     <script>
         // Set theme immediately to avoid flash
         const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark-mode');
-        }
+        if (savedTheme === 'dark') document.documentElement.classList.add('dark-mode');
     </script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
-
-    <style>
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: var(--bg-secondary);
-            box-shadow: var(--shadow-sm);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        #logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-
-        main {
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        main h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--text-primary);
-        }
-
-        main p {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            max-width: 800px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-            margin-bottom: 20px;
-        }
-
-        footer {
-            flex-shrink: 0;
-            background-color: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--brand-color);
-        }
-
-        .footer-copy {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin: 0;
-        }
-
-        /* Responsive header button styles */
-        header .big-btn {
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 480px) {
-            header .big-btn {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.85rem;
-            }
-            .hide-mobile {
-                display: none;
-            }
-        }
-    </style>
 </head>
+
 
 <body>
     <header>
@@ -214,6 +113,43 @@
             </a>
 
             <style>
+                main {
+                    text-align: center;
+                    padding: 40px 20px;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+
+                main h1 {
+                    font-size: 2.5rem;
+                    margin-bottom: 15px;
+                    font-weight: 800;
+                    color: var(--text-primary);
+                }
+
+                main p {
+                    font-size: 1.15rem;
+                    max-width: 600px;
+                    margin: 0 auto 30px auto;
+                    color: var(--text-secondary);
+                    line-height: 1.6;
+                }
+
+                #startBtn {
+                    margin-bottom: 40px;
+                }
+
+                @media (max-width: 768px) {
+                    main h1 {
+                        font-size: 2rem;
+                    }
+                    main p {
+                        font-size: 1rem;
+                    }
+                }
+
                 .cards-container {
                     display: flex;
                     justify-content: center;
@@ -366,27 +302,7 @@
         window.onload = function () {
             initGoogleAuth();
 
-            const themeToggleBtn = document.getElementById('themeToggle');
-            function applyTheme(theme) {
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark-mode');
-                    document.body.classList.add('dark-mode');
-                    if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-                } else {
-                    document.documentElement.classList.remove('dark-mode');
-                    document.body.classList.remove('dark-mode');
-                    if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-                }
-            }
-            applyTheme(localStorage.getItem('theme') || 'light');
-            if (themeToggleBtn) {
-                themeToggleBtn.addEventListener('click', () => {
-                    const currentTheme = localStorage.getItem('theme') || 'light';
-                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                    localStorage.setItem('theme', newTheme);
-                    applyTheme(newTheme);
-                });
-            }
+            initThemeToggle();
 
             const loginBtn = document.getElementById('loginBtn');
             const startBtn = document.getElementById('startBtn');
