@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC_tam - Gebruiksvoorwaarden</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --color-bg-main: #121212;
+            --color-bg-secondary: #121212;
+            --color-card: #1e1e1e;
+            --color-accent: #00ff66;
+            --color-accent-hover: #33ff88;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #a0a0a0;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --border-radius: 16px;
+            --border-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: var(--font-main);
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, var(--color-bg-main), var(--color-bg-secondary));
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #252525;
+            border-radius: 5px;
+            border: 2px solid var(--color-bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent);
+        }
+
+        header {
+            background-color: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #header-title {
+            font-weight: 700;
+            font-size: 22px;
+            cursor: pointer;
+            user-select: none;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        #header-title span {
+            color: var(--color-accent);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        }
+
+        #header-right {
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        #header-right a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #header-right a:hover {
+            color: var(--color-accent);
+        }
+
+        main {
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        main h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--color-accent);
+        }
+
+        main p.subtitle {
+            font-size: 1.15rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--color-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .card h2 i {
+            margin-right: 12px;
+            color: var(--color-accent);
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0;
+        }
+
+        .card b {
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        .card ul {
+            padding-left: 20px;
+            color: var(--color-text-secondary);
+            margin: 10px 0 0 0;
+        }
+
+        .card ul li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        footer a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--color-accent);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            main h1 {
+                font-size: 2.2rem;
+            }
+
+            .card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span><span class="header-subtitle"> - Terms</span></h1>
+        <div id="header-right">
+            <a href="/">Home</a>
+            <a href="https://github.com/TCevik">GitHub</a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Gebruiksvoorwaarden</h1>
+        <p class="subtitle">Laatst bijgewerkt: 10 juni 2026. Door gebruik te maken van de website en web-apps van TC_tam ga je akkoord met de onderstaande voorwaarden.</p>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-gavel"></i> 1. Akkoord met voorwaarden</h2>
+            <p>Welkom bij <b>TC_tam</b>. Door toegang te zoeken tot deze website en gebruik te maken van onze tools (zoals de Online IDE en overige projecten), verklaar je dat je deze gebruiksvoorwaarden hebt gelezen, begrepen en ermee akkoord gaat. Als je niet akkoord gaat met deze voorwaarden, dien je het gebruik van dit platform direct te staken.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-ban"></i> 2. Acceptabel gebruik</h2>
+            <p>Je stemt ermee in om de web-apps uitsluitend te gebruiken voor legale en legitieme doeleinden. Het is ten strengste verboden om:</p>
+            <ul>
+                <li>De infrastructuur te overbelasten, te scannen op kwetsbaarheden of te exploiteren (geen SQL-injecties, XSS of brute-force aanvallen).</li>
+                <li>Schadelijke software, scripts of malware uit te voeren binnen de sandboxes of te verspreiden via onze platformen.</li>
+                <li>Geautomatiseerde bots of scrapers te gebruiken die de normale werking van de applicaties of advertenties verstoren.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-copyright"></i> 3. Intellectueel eigendom</h2>
+            <p>Alle broncode, ontwerpen, lay-outs, logo's en merkelementen op deze website zijn het intellectuele eigendom van <b>Tamer Çevik</b>, tenzij expliciet anders vermeld (zoals ingebouwde open-source bibliotheken van derden). Het is niet toegestaan om het platform zonder voorafgaande toestemming commercieel te kopiëren of te distribueren.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> 4. Uitsluiting van aansprakelijkheid</h2>
+            <p>Alle applicaties en code-editors op dit platform worden aangeboden <b>"zoals ze zijn" (as is)</b>, zonder enige vorm van garantie. Wij garanderen niet dat de functies ononderbroken of foutloos zullen werken. TC_tam is op geen enkele wijze aansprakelijk voor eventueel dataverlies (zoals niet-geëxporteerde code in de IDE), downtime, of enige andere directe of indirecte schade die voortvloeit uit het gebruik van onze software.</p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> 5. Wijzigingen en updates</h2>
+            <p>Wij behouden ons het recht voor om de werking van de applicaties, de code-editor of deze voorwaarden op elk gewenst moment en zonder voorafgaande kennisgeving te wijzigen of stop te zetten. Door het platform te blijven gebruiken na wijzigingen, accepteer je de vernieuwde voorwaarden automatisch.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 - Now | Tamer Çevik</p>
+        <p style="margin-top: 10px;">
+            <a href="/">Home</a> | 
+            <a href="privacy.html">Privacybeleid</a>
+        </p>
+    </footer>
+</body>
+
+</html>
