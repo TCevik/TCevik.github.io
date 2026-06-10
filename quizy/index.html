@@ -339,6 +339,12 @@
                     }
                 },
             });
+
+            // Automatically request token if user was redirected here due to auth check
+            const redirectUrl = localStorage.getItem('login_redirect');
+            if (redirectUrl) {
+                tokenClient.requestAccessToken();
+            }
         }
 
         function handleLoginClick(e) {

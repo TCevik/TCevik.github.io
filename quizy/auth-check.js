@@ -9,6 +9,7 @@
         console.warn("Geen toegang: Gebruiker is niet ingelogd of token is verlopen. Redirecting...");
         localStorage.removeItem('google_access_token');
         localStorage.removeItem('google_token_expiry');
+        localStorage.setItem('login_redirect', window.location.href);
         window.location.href = '/quizy/index.html';
         return;
     }
@@ -22,6 +23,7 @@
                 console.warn("Google API Access Token is niet meer geldig (401 Unauthorized). Uitloggen...");
                 localStorage.removeItem('google_access_token');
                 localStorage.removeItem('google_token_expiry');
+                localStorage.setItem('login_redirect', window.location.href);
                 window.location.href = '/quizy/index.html';
             }
             return response;
