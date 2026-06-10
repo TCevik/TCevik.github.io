@@ -1020,14 +1020,18 @@
 
             const performSave = async () => {
                 try {
+                    const bodyStr = JSON.stringify(setFile);
                     const response = await driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(setFile)
+                        body: bodyStr,
+                        keepalive: bodyStr.length < 60000
                     });
                     if (!response.ok) console.warn("Opslaan van voortgang mislukt.");
                 } catch (err) {
                     console.error("Fout bij opslaan voortgang:", err);
+                } finally {
+                    saveTimeout = null;
                 }
             };
 
@@ -1037,6 +1041,14 @@
                 saveTimeout = setTimeout(performSave, 2000);
             }
         }
+
+        window.addEventListener('beforeunload', (e) => {
+            if (saveTimeout) {
+                e.preventDefault();
+                e.returnValue = 'Je voortgang wordt nog opgeslagen. Weet je zeker dat je wilt afsluiten?';
+                return e.returnValue;
+            }
+        });
 
         function updateProgressBar(percentage) {
             barContainer.classList.remove('hidden');
