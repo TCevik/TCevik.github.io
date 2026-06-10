@@ -1092,9 +1092,22 @@
                 });
                 const data = await response.json();
 
-                setsLoading.classList.add('hidden');
-
                 if (data.files && data.files.length > 0) {
+                    // Fetch set contents in parallel to get the number of items/words
+                    await Promise.all(data.files.map(async (file) => {
+                        try {
+                            const res = await fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
+                                headers: { 'Authorization': `Bearer ${TOKEN}` }
+                            });
+                            const content = await res.json();
+                            file.itemCount = (content.items && Array.isArray(content.items)) ? content.items.length : 0;
+                        } catch (err) {
+                            console.error("Fout bij ophalen set inhoud:", err);
+                            file.itemCount = 0;
+                        }
+                    }));
+
+                    setsLoading.classList.add('hidden');
                     setsGrid.innerHTML = '';
 
                     data.files.forEach(file => {
@@ -1118,7 +1131,7 @@
                         card.innerHTML = `
                             <div>
                                 <div class="set-card-title">${escapeHTML(setName)}</div>
-                                <div class="set-card-meta">Aangemaakt op: ${new Date(file.createdTime).toLocaleDateString()}</div>
+                                <div class="set-card-meta">Aangemaakt op: ${new Date(file.createdTime).toLocaleDateString()} | <strong>${file.itemCount} ${file.itemCount === 1 ? 'woord' : 'woorden'}</strong></div>
                             </div>
                             <div class="set-card-actions">
                                 <button class="btn btn-sm" onclick="editSet(this, '${file.id}', '${escapeJS(setName)}')"><i class="fa-solid fa-pen"></i> Bewerken</button>
@@ -1129,6 +1142,7 @@
                     });
                     setsGrid.classList.remove('hidden');
                 } else {
+                    setsLoading.classList.add('hidden');
                     emptyState.classList.remove('hidden');
                 }
 
