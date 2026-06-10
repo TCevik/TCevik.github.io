@@ -1,47 +1,9 @@
 /**
  * quizy-utils.js
  * Gedeelde hulpfuncties voor de Quizy-app.
- * Bevat logica die eerder gedupliceerd was in home.html en set.html.
  */
 
 // ── Thema ──────────────────────────────────────────────────────────────────
-
-/**
- * Vul de taal dropdowns.
- */
-function populateLanguageSelects() {
-    const languages = [
-        { code: 'nl-NL', name: 'Nederlands' },
-        { code: 'en-US', name: 'Engels' },
-        { code: 'fr-FR', name: 'Frans' },
-        { code: 'de-DE', name: 'Duits' },
-        { code: 'es-ES', name: 'Spaans' },
-        { code: 'it-IT', name: 'Italiaans' },
-        { code: 'tr-TR', name: 'Turks' }
-    ];
-
-    const selects = [
-        document.getElementById('langSingleSelect'),
-        document.getElementById('langLeftSelect'),
-        document.getElementById('langRightSelect')
-    ];
-
-    selects.forEach(select => {
-        if (!select) return;
-        select.innerHTML = '';
-        languages.forEach(lang => {
-            const option = document.createElement('option');
-            option.value = lang.code;
-            option.textContent = lang.name;
-            select.appendChild(option);
-        });
-    });
-
-    const leftSelect = document.getElementById('langLeftSelect');
-    const rightSelect = document.getElementById('langRightSelect');
-    if (leftSelect) leftSelect.value = 'nl-NL';
-    if (rightSelect) rightSelect.value = 'en-US';
-}
 
 /**
  * Pas het lichte of donkere thema toe op de pagina en update de toggle-knop.
@@ -62,7 +24,6 @@ function applyTheme(theme) {
 
 /**
  * Initialiseer de thema-toggle-knop.
- * Leest het opgeslagen thema en koppelt de click-event-listener.
  */
 function initThemeToggle() {
     let currentTheme = localStorage.getItem('theme');
@@ -84,20 +45,12 @@ function initThemeToggle() {
 
 // ── Uitloggen ──────────────────────────────────────────────────────────────
 
-/**
- * Log de gebruiker uit door het token te verwijderen en terug te sturen naar index.
- */
 function logout() {
     localStorage.removeItem('google_access_token');
     localStorage.removeItem('google_token_expiry');
     window.location.href = '/quizy/index.html';
 }
 
-/**
- * Koppel uitlog-listeners aan de bureau- en mobiele knop.
- * @param {string} [desktopId='logoutBtn']
- * @param {string} [mobileId='mobileLogoutBtn']
- */
 function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn') {
     const desktopBtn = document.getElementById(desktopId);
     if (desktopBtn) desktopBtn.addEventListener('click', logout);
@@ -113,11 +66,6 @@ function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn'
 
 // ── XSS-beveiliging ────────────────────────────────────────────────────────
 
-/**
- * Escape een string voor veilig gebruik in innerHTML.
- * @param {string} str
- * @returns {string}
- */
 function escapeHTML(str) {
     return String(str)
         .replace(/&/g, '&amp;')
@@ -127,11 +75,6 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
-/**
- * Escape een string voor veilig gebruik in inline onclick-attributen.
- * @param {string} str
- * @returns {string}
- */
 function escapeJS(str) {
     return String(str)
         .replace(/\\/g, '\\\\')
@@ -142,14 +85,6 @@ function escapeJS(str) {
 
 // ── Aangepaste Dialogen ────────────────────────────────────────────────────
 
-/**
- * Toon een aangepast meldingenvenster (vervangt window.alert).
- * Vereist de HTML-elementen: customAlertModal, customAlertTitle,
- * customAlertMessage, customAlertOkBtn, customAlertIcon.
- * @param {string} message
- * @param {string} [title='Melding']
- * @returns {Promise<void>}
- */
 function showAlert(message, title = 'Melding') {
     return new Promise((resolve) => {
         const modal   = document.getElementById('customAlertModal');
@@ -190,14 +125,6 @@ function showAlert(message, title = 'Melding') {
     });
 }
 
-/**
- * Toon een aangepast bevestigingsvenster (vervangt window.confirm).
- * Vereist de HTML-elementen: confirmModal, confirmModalTitle,
- * confirmModalMessage, confirmCancelBtn, confirmDeleteBtn.
- * @param {string} message
- * @param {string} [title='Set verwijderen']
- * @returns {Promise<boolean>}
- */
 function customConfirm(message, title = 'Set verwijderen') {
     return new Promise((resolve) => {
         const modal     = document.getElementById('confirmModal');
@@ -224,28 +151,18 @@ function customConfirm(message, title = 'Set verwijderen') {
     });
 }
 
-/**
- * Overschrijf window.alert zodat alle native alerts de aangepaste modal gebruiken.
- */
 function overrideNativeAlert() {
     window.alert = (message) => showAlert(message);
 }
 
 // ── Kaart-Editor Hulpmiddelen ──────────────────────────────────────────────
 
-/**
- * Vul de drie taal-dropdowns in de set-editor met de standaard taalopties.
- * Roep dit aan nadat de DOM geladen is.
- */
 function populateLanguageSelects() {
     const LANG_OPTIONS = [
         { value: 'nl-NL', label: 'Nederlands' },
         { value: 'en-US', label: 'Engels'      },
         { value: 'fr-FR', label: 'Frans'       },
         { value: 'de-DE', label: 'Duits'       },
-        { value: 'es-ES', label: 'Spaans'      },
-        { value: 'it-IT', label: 'Italiaans'   },
-        { value: 'tr-TR', label: 'Turks'       },
     ];
 
     const ids = ['langSingleSelect', 'langLeftSelect', 'langRightSelect'];
@@ -260,10 +177,6 @@ function populateLanguageSelects() {
     });
 }
 
-/**
- * De karteervelden voor de kaarteditor bijhouden.
- * @param {HTMLElement} cardRowsContainer – container element voor de kaartrijen
- */
 function createCardRowManager(cardRowsContainer) {
 
     function addCardRow(term = '', definition = '', starred = false) {
@@ -377,9 +290,6 @@ function createCardRowManager(cardRowsContainer) {
         }
     }
 
-    /**
-     * Reset de modal-editor naar de toestand voor een nieuwe set.
-     */
     function resetForNew() {
         cardRowsContainer.innerHTML = '';
         const toggle = document.getElementById('langLearningToggle');
@@ -394,10 +304,6 @@ function createCardRowManager(cardRowsContainer) {
         updatePlaceholderTexts();
     }
 
-    /**
-     * Vul de modal-editor met de gegevens van een bestaande set.
-     * @param {{ isLanguageLearning: boolean, langLeft: string, langRight: string, items: Array }} setData
-     */
     function loadSetIntoEditor(setData) {
         cardRowsContainer.innerHTML = '';
 
@@ -430,11 +336,6 @@ function createCardRowManager(cardRowsContainer) {
         updatePlaceholderTexts();
     }
 
-    /**
-     * Lees alle ingevulde kaarten uit de editor.
-     * Gooit een Error als de validatie mislukt.
-     * @returns {{ term: string, definition: string, starred: boolean }[]}
-     */
     function collectItems() {
         const items = [];
         for (const row of cardRowsContainer.getElementsByClassName('card-row')) {
@@ -468,35 +369,18 @@ const DRIVE_UPLOAD  = 'https://www.googleapis.com/upload/drive/v3';
 const APP_DATA_FOLDER = 'appDataFolder';
 const SET_PREFIX    = 'quizy_set_';
 
-/**
- * Maak een geautoriseerde fetch-aanvraag naar de Google Drive API.
- * @param {string} url
- * @param {RequestInit} [options]
- * @returns {Promise<Response>}
- */
 function driveRequest(url, options = {}) {
     const token = localStorage.getItem('google_access_token');
     options.headers = { 'Authorization': `Bearer ${token}`, ...(options.headers || {}) };
     return fetch(url, options);
 }
 
-/**
- * Haal de JSON-inhoud op van een Drive-bestand.
- * @param {string} fileId
- * @returns {Promise<object>}
- */
 async function driveGetJSON(fileId) {
     const res = await driveRequest(`${DRIVE_BASE}/files/${fileId}?alt=media`);
     if (!res.ok) throw new Error(`Kan bestand ${fileId} niet ophalen (${res.status})`);
     return res.json();
 }
 
-/**
- * Sla JSON-inhoud op in een bestaand Drive-bestand (PATCH).
- * @param {string} fileId
- * @param {object} data
- * @returns {Promise<Response>}
- */
 function drivePatchJSON(fileId, data) {
     return driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
         method: 'PATCH',
@@ -505,12 +389,6 @@ function drivePatchJSON(fileId, data) {
     });
 }
 
-/**
- * Maak een nieuw Drive-bestand aan via multipart upload.
- * @param {string} fileName
- * @param {object} data
- * @returns {Promise<Response>}
- */
 function driveCreateFile(fileName, data) {
     const metadata = {
         name: fileName,
