@@ -1460,6 +1460,20 @@
         </div>
     </div>
 
+    <!-- Custom Alert Modal -->
+    <div id="customAlertModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div id="customAlertIcon" style="font-size: 3rem; margin-bottom: 15px; color: var(--brand-color);">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 style="margin-top: 0; color: var(--text-primary);" id="customAlertTitle">Melding</h3>
+            <p id="customAlertMessage" style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;"></p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button id="customAlertOkBtn" class="btn">Ok</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal voor Set Delen -->
     <div id="shareModal" class="modal hidden">
         <div class="modal-content" style="max-width: 500px;">
@@ -1791,6 +1805,47 @@
             }
         }
 
+        // Custom alert dialog using HTML popup
+        function showAlert(message, title = "Melding") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('customAlertModal');
+                const titleEl = document.getElementById('customAlertTitle');
+                const messageEl = document.getElementById('customAlertMessage');
+                const okBtn = document.getElementById('customAlertOkBtn');
+                const iconEl = document.getElementById('customAlertIcon');
+
+                if (titleEl) titleEl.textContent = title;
+                if (messageEl) messageEl.textContent = message;
+
+                if (iconEl) {
+                    const msgLower = message.toLowerCase();
+                    if (msgLower.includes('succes') || msgLower.includes('gelukt') || msgLower.includes('opgeslagen')) {
+                        iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                        iconEl.style.color = 'var(--brand-color)';
+                    } else if (msgLower.includes('fout') || msgLower.includes('mislukt') || msgLower.includes('mis') || msgLower.includes('vul') || msgLower.includes('voeg') || msgLower.includes('plak') || msgLower.includes('selecteer')) {
+                        iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+                        iconEl.style.color = '#ef4444';
+                    } else {
+                        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+                        iconEl.style.color = '#3b82f6';
+                    }
+                }
+
+                if (modal) modal.classList.remove('hidden');
+
+                function onOk() {
+                    if (modal) modal.classList.add('hidden');
+                    if (okBtn) okBtn.removeEventListener('click', onOk);
+                    resolve();
+                }
+
+                if (okBtn) okBtn.addEventListener('click', onOk);
+            });
+        }
+        window.alert = function(message) {
+            showAlert(message);
+        };
+
         // Custom confirmation dialog using HTML popup
         function customConfirm(message, title = "Set verwijderen") {
             return new Promise((resolve) => {
@@ -1847,13 +1902,13 @@
                 } else {
                     alert("Verwijderen is mislukt. Probeer het opnieuw.");
                     deleteSetBtn.disabled = false;
-                    deleteSetBtn.textContent = "🗑️ Verwijderen";
+                    deleteSetBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i> Verwijderen';
                 }
             } catch (error) {
                 console.error("Fout bij verwijderen:", error);
                 alert("Er ging iets mis.");
                 deleteSetBtn.disabled = false;
-                deleteSetBtn.textContent = "🗑️ Verwijderen";
+                deleteSetBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i> Verwijderen';
             }
         }
 
@@ -2591,7 +2646,7 @@
 
         function renderLearn() {
             if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
-                renderCompletedScreen('learn', '📖 Leren voltooid!');
+                renderCompletedScreen('learn', 'Leren voltooid!');
                 return;
             }
 
@@ -2771,7 +2826,7 @@
 
                     if (answer === correctWordLower) {
                         document.getElementById('learnFeedback').innerHTML = `
-                            <div class="status-box correct">Goed zo! Level up naar Geleerd! 🎉</div>
+                            <div class="status-box correct">Goed zo! Level up naar Geleerd! <i class="fa-solid fa-circle-check"></i></div>
                         `;
                         input.disabled = true;
                         submitBtn.disabled = true;
@@ -2834,7 +2889,7 @@
 
             if (selected === correct) {
                 button.classList.add('correct');
-                document.getElementById('learnFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! Level up naar Bekend. 🎉</div>`;
+                document.getElementById('learnFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! Level up naar Bekend. <i class="fa-solid fa-circle-check"></i></div>`;
                 activeItem.level = 1;
                 rescheduleItem(activeRepetitionQueue, activeItem, 4, 6);
             } else {
@@ -3230,7 +3285,7 @@
 
             resultsHTML = `
                 <div style="text-align: center; background: var(--result-banner-bg); padding: 25px; border-radius: 12px; margin-top: 35px; border: 1px solid var(--result-banner-border); color: var(--text-primary);">
-                    <div style="font-size: 3rem;">🎓</div>
+                    <div style="font-size: 3rem;"><i class="fa-solid fa-graduation-cap"></i></div>
                     <h2 style="margin: 10px 0;">Je behaalde cijfer: <strong style="color: var(--brand-color);">${scoreGrade}</strong></h2>
                     <p style="font-size: 1.1rem; color: var(--result-banner-text); margin: 0;">Je had ${scorePoints} van de ${totalPoints} punten goed (${percentage}%).</p>
                     ${breakdownHTML}
@@ -3258,7 +3313,7 @@
                     const numUnknown = flashcardStates.unknown.length;
                     modeContent.innerHTML = `
                         <div class="completed-screen">
-                            <div class="completed-icon">🔁</div>
+                            <div class="completed-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
                             <h2>Ronde voltooid!</h2>
                             <p style="color:#64748b; margin-bottom: 30px;">Je hebt alle kaarten gehad. Laten we de ${numUnknown} ${numUnknown === 1 ? 'kaart' : 'kaarten'} die je nog niet wist opnieuw proberen!</p>
                             <button class="btn" id="startNextRoundBtn">Volgende ronde starten</button>
@@ -3280,7 +3335,7 @@
                     });
                     return;
                 } else {
-                    renderCompletedScreen('flashcards', '📇 Flashcards voltooid!');
+                    renderCompletedScreen('flashcards', 'Flashcards voltooid!');
                     return;
                 }
             }
@@ -3321,8 +3376,8 @@
                 </div>
 
                 <div class="flashcard-actions">
-                    <button class="btn btn-danger" id="dontKnowBtn">❌ Weet ik niet</button>
-                    <button class="btn" id="knowBtn">✅ Weet ik</button>
+                    <button class="btn btn-danger" id="dontKnowBtn"><i class="fa-solid fa-xmark"></i> Weet ik niet</button>
+                    <button class="btn" id="knowBtn"><i class="fa-solid fa-check"></i> Weet ik</button>
                 </div>
             `;
 
@@ -3407,7 +3462,7 @@
 
         function renderChoice() {
             if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
-                renderCompletedScreen('choice', '✅ Meerkeuze voltooid!');
+                renderCompletedScreen('choice', 'Meerkeuze voltooid!');
                 return;
             }
 
@@ -3507,7 +3562,7 @@
 
             if (selected === correct) {
                 button.classList.add('correct');
-                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! 🎉</div>`;
+                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! <i class="fa-solid fa-circle-check"></i></div>`;
                 activeItem.weight--;
                 if (activeItem.weight > 0) {
                     rescheduleItem(activeRepetitionQueue, activeItem);
@@ -3540,7 +3595,7 @@
 
         function renderSpelling() {
             if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
-                renderCompletedScreen('spelling', '✍️ Spelling voltooid!');
+                renderCompletedScreen('spelling', 'Spelling voltooid!');
                 return;
             }
 
@@ -3600,7 +3655,7 @@
                 </div>
                 <div class="prompt-text">${promptLabel}</div>
                 <div style="text-align: center; margin-bottom: 25px;">
-                    <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;">🔊 Luister</button>
+                    <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;"><i class="fa-solid fa-volume-high"></i> Luister</button>
                 </div>
                 <div class="answer-form">
                     <input type="text" id="spellingInput" placeholder="Spelling..." autofocus autocomplete="off">
@@ -3649,7 +3704,7 @@
 
                 if (answer === correctWord) {
                     document.getElementById('spellingFeedback').innerHTML = `
-                        <div class="status-box correct">Super, exact goed gespeld! 🌟</div>
+                        <div class="status-box correct">Super, exact goed gespeld! <i class="fa-solid fa-star" style="color: #eab308;"></i></div>
                     `;
                     input.disabled = true;
                     submitBtn.disabled = true;
@@ -3932,9 +3987,17 @@
             }
             saveProgressToDrive(true);
 
+            const modeIcons = {
+                learn: 'fa-book-open',
+                flashcards: 'fa-layer-group',
+                choice: 'fa-list-check',
+                spelling: 'fa-pen-nib'
+            };
+            const iconClass = modeIcons[mode] || 'fa-circle-check';
+
             modeContent.innerHTML = `
                 <div class="completed-screen">
-                    <div class="completed-icon" style="color: #52873e; font-size: 3.5rem; margin-bottom: 20px;"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="completed-icon" style="color: #52873e; font-size: 3.5rem; margin-bottom: 20px;"><i class="fa-solid ${iconClass}"></i></div>
                     <h2>${escapeHTML(titleText)}</h2>
                     <p style="color:#64748b; margin-bottom: 30px;">Goed gedaan, je hebt alle woorden in deze set geoefend met deze methode!</p>
                     <div style="display:flex; justify-content:center; gap:15px;">

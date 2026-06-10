@@ -638,7 +638,7 @@
                     <div style="display: flex; gap: 12px; align-items: center;">
                         <div id="streakContainer"
                             style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
-                            <span style="font-size: 1.5rem;">🔥</span>
+                            <span style="font-size: 1.5rem; display: flex; align-items: center;"><i class="fa-solid fa-fire" style="color: #f97316;"></i></span>
                             <div style="text-align: left;">
                                 <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);"
                                     id="streakCount">0 dagen streak</div>
@@ -646,7 +646,7 @@
                         </div>
                         <div id="freezeContainer"
                             style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
-                            <span style="font-size: 1.5rem;">❄️</span>
+                            <span style="font-size: 1.5rem; display: flex; align-items: center;"><i class="fa-solid fa-snowflake" style="color: #3b82f6;"></i></span>
                             <div style="text-align: left;">
                                 <div style="font-weight: 700; font-size: 1rem; color: #3b82f6;" id="freezeCount">0
                                     freezes</div>
@@ -835,6 +835,20 @@
             <div style="display: flex; gap: 12px; justify-content: center;">
                 <button id="confirmCancelBtn" class="btn btn-secondary">Annuleren</button>
                 <button id="confirmDeleteBtn" class="btn btn-danger">Verwijderen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="customAlertModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div id="customAlertIcon" style="font-size: 3rem; margin-bottom: 15px; color: var(--brand-color);">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 style="margin-top: 0; color: var(--text-primary);" id="customAlertTitle">Melding</h3>
+            <p id="customAlertMessage" style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;"></p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button id="customAlertOkBtn" class="btn">Ok</button>
             </div>
         </div>
     </div>
@@ -1154,6 +1168,47 @@
                 setsLoading.innerHTML = "<span>Fout bij het laden van quiz-sets.</span>";
             }
         }
+
+        // Custom alert dialog using HTML popup
+        function showAlert(message, title = "Melding") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('customAlertModal');
+                const titleEl = document.getElementById('customAlertTitle');
+                const messageEl = document.getElementById('customAlertMessage');
+                const okBtn = document.getElementById('customAlertOkBtn');
+                const iconEl = document.getElementById('customAlertIcon');
+
+                if (titleEl) titleEl.textContent = title;
+                if (messageEl) messageEl.textContent = message;
+
+                if (iconEl) {
+                    const msgLower = message.toLowerCase();
+                    if (msgLower.includes('succes') || msgLower.includes('gelukt') || msgLower.includes('opgeslagen')) {
+                        iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                        iconEl.style.color = 'var(--brand-color)';
+                    } else if (msgLower.includes('fout') || msgLower.includes('mislukt') || msgLower.includes('mis') || msgLower.includes('vul') || msgLower.includes('voeg') || msgLower.includes('plak') || msgLower.includes('selecteer')) {
+                        iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+                        iconEl.style.color = '#ef4444';
+                    } else {
+                        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+                        iconEl.style.color = '#3b82f6';
+                    }
+                }
+
+                if (modal) modal.classList.remove('hidden');
+
+                function onOk() {
+                    if (modal) modal.classList.add('hidden');
+                    if (okBtn) okBtn.removeEventListener('click', onOk);
+                    resolve();
+                }
+
+                if (okBtn) okBtn.addEventListener('click', onOk);
+            });
+        }
+        window.alert = function(message) {
+            showAlert(message);
+        };
 
         // Custom confirmation dialog using HTML popup
         function customConfirm(message, title = "Set verwijderen") {
