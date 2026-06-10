@@ -3375,11 +3375,22 @@
                 if (knownIdx !== -1) {
                     flashcardStates.known.splice(knownIdx, 1);
                 }
-                const minPos = 3;
-                const maxPos = 5;
-                const offset = Math.floor(Math.random() * (maxPos - minPos + 1)) + minPos;
-                const targetIdx = Math.min(flashcardQueue.length, currentIdx + 1 + offset);
-                flashcardQueue.splice(targetIdx, 0, termRealIdx);
+                
+                // Count how many times this card is already in the remaining queue
+                const remainingQueue = flashcardQueue.slice(currentIdx + 1);
+                const countInQueue = remainingQueue.filter(idx => idx === termRealIdx).length;
+                const copiesToAdd = Math.min(2, 3 - countInQueue);
+
+                if (copiesToAdd >= 1) {
+                    const offset1 = Math.floor(Math.random() * (5 - 3 + 1)) + 3; // 3 to 5 steps away
+                    const targetIdx1 = Math.min(flashcardQueue.length, currentIdx + 1 + offset1);
+                    flashcardQueue.splice(targetIdx1, 0, termRealIdx);
+                }
+                if (copiesToAdd >= 2) {
+                    const offset2 = Math.floor(Math.random() * (10 - 7 + 1)) + 7; // 7 to 10 steps away
+                    const targetIdx2 = Math.min(flashcardQueue.length, currentIdx + 1 + offset2);
+                    flashcardQueue.splice(targetIdx2, 0, termRealIdx);
+                }
             }
 
             currentIdx++;
