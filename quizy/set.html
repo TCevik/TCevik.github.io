@@ -156,6 +156,14 @@
                                     <span class="slider"></span>
                                 </label>
                             </div>
+                            <!-- Willekeurige volgorde -->
+                            <div class="settings-option" id="shuffleOptionContainer">
+                                <span class="option-label"><i class="fa-solid fa-shuffle"></i> Willekeurige volgorde</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="shuffleToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -998,14 +1006,25 @@
             activeRepetitionQueue = [];
             activeCompletedCount = 0;
 
+            const isShuffle = document.getElementById('shuffleToggle') && document.getElementById('shuffleToggle').checked;
+
             if (currentMode === 'flashcards') {
                 flashcardQueue = setTerms.map((_, i) => i);
+                if (isShuffle) {
+                    flashcardQueue = shuffleArray(flashcardQueue);
+                }
                 gameProgress[currentMode] = { queue: flashcardQueue, known: [], unknown: [], currentIndex: 0 };
             } else if (currentMode === 'learn') {
                 activeRepetitionQueue = setTerms.map((_, i) => ({ index: i, level: 0 }));
+                if (isShuffle) {
+                    activeRepetitionQueue = shuffleArray(activeRepetitionQueue);
+                }
                 gameProgress[currentMode] = { queue: activeRepetitionQueue, completedCount: 0 };
             } else if (currentMode === 'choice' || currentMode === 'spelling') {
                 activeRepetitionQueue = setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                if (isShuffle) {
+                    activeRepetitionQueue = shuffleArray(activeRepetitionQueue);
+                }
                 gameProgress[currentMode] = { queue: activeRepetitionQueue, completedCount: 0 };
             } else if (currentMode !== 'test') {
                 gameProgress[currentMode] = { currentIndex: 0 };
@@ -1078,6 +1097,24 @@
                     swapContainer.classList.add('hidden');
                 } else {
                     swapContainer.classList.remove('hidden');
+                }
+            }
+
+            const shuffleContainer = document.getElementById('shuffleOptionContainer');
+            if (shuffleContainer) {
+                if (['learn', 'flashcards', 'choice', 'spelling'].includes(currentMode)) {
+                    shuffleContainer.classList.remove('hidden');
+                } else {
+                    shuffleContainer.classList.add('hidden');
+                }
+            }
+
+            const retypeContainer = document.getElementById('retypeOnIncorrectContainer');
+            if (retypeContainer) {
+                if (['learn', 'spelling'].includes(currentMode)) {
+                    retypeContainer.classList.remove('hidden');
+                } else {
+                    retypeContainer.classList.add('hidden');
                 }
             }
 
@@ -1704,6 +1741,26 @@
             retypeOnIncorrectToggle.checked = savedValue !== 'false';
             retypeOnIncorrectToggle.addEventListener('change', () => {
                 localStorage.setItem('quizy_retype_on_incorrect', retypeOnIncorrectToggle.checked);
+            });
+        }
+
+        const shuffleToggle = document.getElementById('shuffleToggle');
+        if (shuffleToggle) {
+            shuffleToggle.checked = localStorage.getItem('quizy_shuffle') === 'true';
+            shuffleToggle.addEventListener('change', (e) => {
+                localStorage.setItem('quizy_shuffle', shuffleToggle.checked);
+                const hasProgress = gameProgress[currentMode] && (
+                    (currentMode === 'flashcards' && gameProgress[currentMode].known && gameProgress[currentMode].known.length > 0) ||
+                    ((currentMode === 'learn' || currentMode === 'choice' || currentMode === 'spelling') && gameProgress[currentMode].completedCount > 0)
+                );
+                
+                if (!hasProgress || confirm("Het wijzigen van de volgorde start een nieuwe sessie. Weet je het zeker?")) {
+                    startFresh();
+                } else {
+                    e.preventDefault();
+                    shuffleToggle.checked = !shuffleToggle.checked;
+                    localStorage.setItem('quizy_shuffle', shuffleToggle.checked);
+                }
             });
         }
 
