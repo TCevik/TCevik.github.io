@@ -2429,7 +2429,7 @@
             const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
             if (savedAutoPlay) {
                 const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
-                const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langRight : 'en-US') : (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL');
+                const speakLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
                 speakSpellingWord(speakWord, speakLang);
             }
 
@@ -2647,7 +2647,7 @@
                         correctAnswer: item.term
                     });
                 } else if (type === 'audio') {
-                    const audioLang = setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL';
+                    const audioLang = setFile.langLeft || 'nl-NL';
                     generatedQuestions.push({
                         type: 'audio',
                         prompt: `Luister naar het uitgesproken woord (clue: '${item.definition}') en typ het correcte woord:`,
@@ -2763,8 +2763,8 @@
                 backText = activeWord.definition;
             }
 
-            frontLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL');
-            backLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL');
+            frontLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
+            backLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
 
             modeContent.innerHTML = `
                 <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
@@ -2924,7 +2924,7 @@
             const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
             if (savedAutoPlay) {
                 const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
-                const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langRight : 'en-US') : (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL');
+                const speakLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
                 speakSpellingWord(speakWord, speakLang);
             }
         }
@@ -2937,7 +2937,7 @@
             const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
             if (savedAutoPlay) {
                 const answerWith = document.getElementById('answerWithSelect').value;
-                const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'en-US');
+                const speakLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
                 speakSpellingWord(selected, speakLang);
             }
 
@@ -3053,7 +3053,7 @@
 
             input.focus();
 
-            const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL');
+            const speakLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
             
             const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
             if (savedAutoPlay) {
@@ -3134,13 +3134,7 @@
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(word);
                     utterance.lang = lang || 'nl-NL';
-
-                    const voices = window.speechSynthesis.getVoices();
-                    if (voices.length > 0) {
-                        window.speechSynthesis.speak(utterance);
-                    } else {
-                        console.warn("Geen stemmen beschikbaar in deze browser.");
-                    }
+                    window.speechSynthesis.speak(utterance);
                 } catch (e) {
                     console.warn("Spraaksynthese mislukt:", e);
                 }
