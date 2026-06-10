@@ -463,7 +463,7 @@ body .modal.hidden .modal-content {
 /* MATCHING GAME SPECIFIC */
 .match-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(var(--cols, 4), 1fr);
     gap: 16px;
     margin-top: 20px;
     width: 100%;
@@ -527,18 +527,25 @@ body .modal.hidden .modal-content {
 @media (max-width: 768px) {
     .match-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 8px;
     }
     .match-card {
-        padding: 16px 8px;
-        font-size: 0.9rem;
-        min-height: 80px;
+        padding: 10px 6px;
+        font-size: 0.85rem;
+        min-height: 60px;
+        border-radius: 8px;
     }
 }
 
 @media (max-width: 480px) {
     .match-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    .match-card {
+        padding: 8px 4px;
+        font-size: 0.8rem;
+        min-height: 50px;
     }
 }
 
@@ -1853,6 +1860,12 @@ input[type="text"]:focus {
     .choice-btn {
         padding: 14px;
         font-size: 1rem;
+    }
+
+    .settings-popover {
+        right: auto;
+        left: 0;
+        transform-origin: top left;
     }
 }
 

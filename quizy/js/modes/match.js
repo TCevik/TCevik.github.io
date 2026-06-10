@@ -54,7 +54,7 @@ function renderMatch() {
             <h3 style="margin: 0; font-size: 1.25rem;">Tijd: <strong id="matchTimer" style="color: var(--brand-color);">0.0s</strong></h3>
             <button class="btn btn-secondary btn-sm" onclick="renderMatch()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
         </div>
-        <div class="match-grid" style="--cols: ${numCols}; grid-template-columns: repeat(var(--cols, 4), 1fr);">
+        <div class="match-grid" style="--cols: ${numCols};">
             ${gridHTML}
         </div>
     `;
@@ -91,6 +91,13 @@ function selectMatchCard(cardEl) {
 
         firstSelectedCard.classList.add('matched');
         cardEl.classList.add('matched');
+
+        const card1 = firstSelectedCard;
+        const card2 = cardEl;
+        setTimeout(() => {
+            card1.style.display = 'none';
+            card2.style.display = 'none';
+        }, 400);
 
         firstSelectedCard = null;
 
