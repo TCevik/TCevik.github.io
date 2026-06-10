@@ -725,7 +725,7 @@
 
         saveSharedSetBtn.addEventListener('click', async () => {
             if (!TOKEN) {
-                if (confirm("Je moet ingelogd zijn met Google om deze set op te slaan in je account. Wil je nu inloggen?")) {
+                if (await customConfirm("Je moet ingelogd zijn met Google om deze set op te slaan in je account. Wil je nu inloggen?", "Inloggen vereist", "Inloggen")) {
                     localStorage.setItem('login_redirect', window.location.href);
                     window.location.href = 'index.html';
                 }
@@ -1711,8 +1711,8 @@
 
         const starredFilterToggle = document.getElementById('starredFilterToggle');
         if (starredFilterToggle) {
-            starredFilterToggle.addEventListener('change', (e) => {
-                const proceed = confirm("Weet je zeker dat je de filter voor moeilijke woorden wilt wijzigen? Dit zal je huidige oefensessie opnieuw opstarten.");
+            starredFilterToggle.addEventListener('change', async (e) => {
+                const proceed = await customConfirm("Weet je zeker dat je de filter voor moeilijke woorden wilt wijzigen? Dit zal je huidige oefensessie opnieuw opstarten.", "Filter wijzigen", "Wijzigen");
                 if (proceed) {
                     if (starredFilterToggle.checked) {
                         gameProgress[currentMode] = null;
@@ -1747,14 +1747,14 @@
         const shuffleToggle = document.getElementById('shuffleToggle');
         if (shuffleToggle) {
             shuffleToggle.checked = localStorage.getItem('quizy_shuffle') === 'true';
-            shuffleToggle.addEventListener('change', (e) => {
+            shuffleToggle.addEventListener('change', async (e) => {
                 localStorage.setItem('quizy_shuffle', shuffleToggle.checked);
                 const hasProgress = gameProgress[currentMode] && (
                     (currentMode === 'flashcards' && gameProgress[currentMode].known && gameProgress[currentMode].known.length > 0) ||
                     ((currentMode === 'learn' || currentMode === 'choice' || currentMode === 'spelling') && gameProgress[currentMode].completedCount > 0)
                 );
                 
-                if (!hasProgress || confirm("Het wijzigen van de volgorde start een nieuwe sessie. Weet je het zeker?")) {
+                if (!hasProgress || await customConfirm("Het wijzigen van de volgorde start een nieuwe sessie. Weet je het zeker?", "Volgorde wijzigen", "Wijzigen")) {
                     startFresh();
                 } else {
                     e.preventDefault();

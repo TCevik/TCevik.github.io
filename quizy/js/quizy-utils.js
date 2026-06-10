@@ -112,16 +112,36 @@ function showAlert(message, title = 'Melding') {
     });
 }
 
-function customConfirm(message, title = 'Set verwijderen') {
+function customConfirm(message, title = 'Bevestigen', confirmText = 'Ja', isDanger = false) {
     return new Promise((resolve) => {
         const modal     = document.getElementById('confirmModal');
         const titleEl   = document.getElementById('confirmModalTitle');
         const msgEl     = document.getElementById('confirmModalMessage');
         const cancelBtn = document.getElementById('confirmCancelBtn');
         const confirmBtn = document.getElementById('confirmDeleteBtn');
+        const iconEl    = document.getElementById('confirmModalIcon');
 
         if (titleEl) titleEl.textContent = title;
         if (msgEl)   msgEl.textContent   = message;
+
+        if (confirmBtn) {
+            confirmBtn.textContent = confirmText;
+            if (isDanger) {
+                confirmBtn.className = 'btn btn-danger';
+            } else {
+                confirmBtn.className = 'btn';
+            }
+        }
+
+        if (iconEl) {
+            if (isDanger) {
+                iconEl.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                iconEl.style.color = '#ef4444';
+            } else {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
+                iconEl.style.color = '#3b82f6';
+            }
+        }
 
         if (modal) modal.classList.remove('hidden');
 
@@ -830,7 +850,7 @@ function injectCommonLayout() {
     <!-- Custom Confirm Modal -->
     <div id="confirmModal" class="modal hidden">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <div style="font-size: 3rem; margin-bottom: 15px; color: #ef4444;"><i class="fa-solid fa-trash-can"></i>
+            <div id="confirmModalIcon" style="font-size: 3rem; margin-bottom: 15px; color: #ef4444;"><i class="fa-solid fa-trash-can"></i>
             </div>
             <h3 style="margin-top: 0; color: var(--text-primary);" id="confirmModalTitle">Set verwijderen</h3>
             <p id="confirmModalMessage"
