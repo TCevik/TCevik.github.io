@@ -2176,7 +2176,18 @@
                 }
                 if (currentMode === 'learn' || currentMode === 'choice' || currentMode === 'spelling') {
                     const completed = prog.completedCount || 0;
-                    if (completed > 0 && completed < setTerms.length && prog.queue && prog.queue.length > 0) {
+                    let hasQueueProgress = false;
+                    if (prog.queue && prog.queue.length > 0) {
+                        if (currentMode === 'learn') {
+                            hasQueueProgress = prog.queue.some(item => (item.level !== undefined && item.level > 0));
+                        } else {
+                            hasQueueProgress = prog.queue.some(item => (item.weight !== undefined && item.weight !== 1));
+                        }
+                        if (prog.queue.length < setTerms.length) {
+                            hasQueueProgress = true;
+                        }
+                    }
+                    if ((completed > 0 || hasQueueProgress) && completed < setTerms.length && prog.queue && prog.queue.length > 0) {
                         hasProg = true;
                     }
                 }
