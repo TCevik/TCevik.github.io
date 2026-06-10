@@ -1370,18 +1370,24 @@
 
             <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
                 <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
-                <select id="langSingleSelect"></select>
+                <div class="custom-select-wrapper" style="max-width: 300px;">
+                    <select id="langSingleSelect" class="custom-select"></select>
+                </div>
             </div>
 
             <div id="langSelectorContainer" class="hidden"
                 style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
                     <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
-                    <select id="langLeftSelect"></select>
+                    <div class="custom-select-wrapper">
+                        <select id="langLeftSelect" class="custom-select"></select>
+                    </div>
                 </div>
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
                     <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
-                    <select id="langRightSelect"></select>
+                    <div class="custom-select-wrapper">
+                        <select id="langRightSelect" class="custom-select"></select>
+                    </div>
                 </div>
             </div>
 
