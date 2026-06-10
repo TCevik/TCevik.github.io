@@ -96,6 +96,59 @@ async function saveConfigSettings(updates) {
     }
 }
 
+async function loadConfigSettings() {
+    const token = localStorage.getItem('google_access_token');
+    if (!token) return;
+    try {
+        const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and 'appDataFolder' in parents and trashed=false`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (data.files && data.files.length > 0) {
+            const cfgId = data.files[0].id;
+            const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${cfgId}?alt=media`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const config = await contentResponse.json();
+            
+            if (config.theme) {
+                localStorage.setItem('theme', config.theme);
+                applyTheme(config.theme);
+            }
+            if (config.answerWith) {
+                localStorage.setItem('quizy_answer_with', config.answerWith);
+                const answerWithSelect = document.getElementById('answerWithSelect');
+                if (answerWithSelect) answerWithSelect.value = config.answerWith;
+            }
+            if (config.autoPlayAudio !== undefined) {
+                localStorage.setItem('quizy_auto_play_audio', config.autoPlayAudio);
+                const globalAutoPlayToggle = document.getElementById('globalAutoPlayAudioToggle');
+                if (globalAutoPlayToggle) globalAutoPlayToggle.checked = (config.autoPlayAudio === true || config.autoPlayAudio === 'true');
+            }
+            if (config.retypeOnIncorrect !== undefined) {
+                localStorage.setItem('quizy_retype_on_incorrect', config.retypeOnIncorrect);
+                const retypeOnIncorrectToggle = document.getElementById('retypeOnIncorrectToggle');
+                if (retypeOnIncorrectToggle) retypeOnIncorrectToggle.checked = (config.retypeOnIncorrect !== false && config.retypeOnIncorrect !== 'false');
+            }
+            if (config.username) {
+                localStorage.setItem('quizy_username', config.username);
+            }
+        }
+    } catch (err) {
+        console.error("Fout bij laden instellingen uit Drive:", err);
+    }
+}
+
+// Automatisch instellingen inladen bij openen van pagina
+if (localStorage.getItem('google_access_token')) {
+    // Voer uit nadat de DOM is geladen om eventuele UI elementen direct bij te werken
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadConfigSettings);
+    } else {
+        loadConfigSettings();
+    }
+}
+
 /**
  * Initialiseer de thema-toggle-knop.
  * Leest het opgeslagen thema en koppelt de click-event-listener.
