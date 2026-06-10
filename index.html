@@ -101,7 +101,8 @@
             color: var(--color-accent);
         }
 
-        #header-right a.search-btn, .ide-btn {
+        #header-right a.search-btn,
+        .ide-btn {
             color: var(--color-accent);
             border: 1px solid var(--color-accent);
             padding: 6px 14px;
@@ -114,7 +115,8 @@
             transition: all 0.3s ease;
         }
 
-        #header-right a.search-btn:hover, .ide-btn:hover {
+        #header-right a.search-btn:hover,
+        .ide-btn:hover {
             background: var(--color-accent);
             color: #121212;
             box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
@@ -446,16 +448,22 @@
             <div class="card" data-size="3">
                 <h2><i class="fa-solid fa-laptop-code"></i> Online IDE</h2>
                 <p>
-                    Probeer mijn vernieuwde <b>Online IDE</b>! Schrijf en test een HTML-bestand waarin je CSS en JavaScript combineert met een live interactieve preview direct in je browser.
+                    Probeer mijn vernieuwde <b>Online IDE</b>! Schrijf en test een HTML-bestand waarin je CSS en
+                    JavaScript combineert met een live interactieve preview direct in je browser.
                     <br><br>
                     <b>Belangrijkste functies:</b>
-                    <ul style="margin-top: 5px; margin-bottom: 25px; padding-left: 20px; color: var(--color-text-secondary);">
-                        <li><b>Single-File Workspace:</b> Schrijf al je code in één HTML-bestand met inline stijlen en scripts.</li>
-                        <li><b>Ingebouwde Console:</b> Vangt runtime-fouten en console-logs direct op in het console-paneel.</li>
-                        <li><b>Responsieve Demos:</b> Simuleer direct Desktop-, Tablet- en Mobiel-schermformaten zonder vertraging.</li>
-                        <li><b>Veiligheid & Beheer:</b> Importeer of exporteer je HTML-bestand direct, met ingebouwde sluitbeveiliging tegen per ongeluk herladen of sluiten.</li>
-                    </ul>
-                    <a href="ide.html" class="ide-btn"><i class="fa-solid fa-play"></i> <span>Open Online IDE</span></a>
+                <ul
+                    style="margin-top: 5px; margin-bottom: 25px; padding-left: 20px; color: var(--color-text-secondary);">
+                    <li><b>Single-File Workspace:</b> Schrijf al je code in één HTML-bestand met inline stijlen en
+                        scripts.</li>
+                    <li><b>Ingebouwde Console:</b> Vangt runtime-fouten en console-logs direct op in het console-paneel.
+                    </li>
+                    <li><b>Responsieve Demos:</b> Simuleer direct Desktop-, Tablet- en Mobiel-schermformaten zonder
+                        vertraging.</li>
+                    <li><b>Veiligheid & Beheer:</b> Importeer of exporteer je HTML-bestand direct, met ingebouwde
+                        sluitbeveiliging tegen per ongeluk herladen of sluiten.</li>
+                </ul>
+                <a href="ide.html" class="ide-btn"><i class="fa-solid fa-play"></i> <span>Open Online IDE</span></a>
                 </p>
             </div>
 
@@ -497,6 +505,12 @@
 
     <footer>
         <p>&copy; 2023 - Now | Tamer Çevik</p>
+        <p style="margin-top: 10px; font-size: 0.85rem;">
+            <a href="privacy.html"
+                style="color: var(--color-text-secondary); text-decoration: none; margin: 0 10px;">Privacybeleid</a> |
+            <a href="terms.html"
+                style="color: var(--color-text-secondary); text-decoration: none; margin: 0 10px;">Gebruiksvoorwaarden</a>
+        </p>
     </footer>
 </body>
 
