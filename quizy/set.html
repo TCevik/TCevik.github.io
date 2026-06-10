@@ -3734,7 +3734,6 @@
         if (answerWithSelect) {
             answerWithSelect.addEventListener('change', () => {
                 localStorage.setItem('quizy_answer_with', answerWithSelect.value);
-                saveConfigSettings({ answerWith: answerWithSelect.value });
                 if (currentMode === 'test') {
                     generatedQuestions = [];
                 }
@@ -3744,12 +3743,9 @@
 
         const starredFilterToggle = document.getElementById('starredFilterToggle');
         if (starredFilterToggle) {
-            starredFilterToggle.checked = localStorage.getItem('quizy_starred_filter') === 'true';
             starredFilterToggle.addEventListener('change', (e) => {
                 const proceed = confirm("Weet je zeker dat je de filter voor moeilijke woorden wilt wijzigen? Dit zal je huidige oefensessie opnieuw opstarten.");
                 if (proceed) {
-                    localStorage.setItem('quizy_starred_filter', starredFilterToggle.checked);
-                    saveConfigSettings({ starredFilter: starredFilterToggle.checked });
                     startFresh();
                 } else {
                     e.preventDefault();
@@ -3763,7 +3759,6 @@
             globalAutoPlayToggle.checked = localStorage.getItem('quizy_auto_play_audio') === 'true';
             globalAutoPlayToggle.addEventListener('change', () => {
                 localStorage.setItem('quizy_auto_play_audio', globalAutoPlayToggle.checked);
-                saveConfigSettings({ autoPlayAudio: globalAutoPlayToggle.checked });
             });
         }
 
@@ -3774,7 +3769,6 @@
             retypeOnIncorrectToggle.checked = savedValue !== 'false';
             retypeOnIncorrectToggle.addEventListener('change', () => {
                 localStorage.setItem('quizy_retype_on_incorrect', retypeOnIncorrectToggle.checked);
-                saveConfigSettings({ retypeOnIncorrect: retypeOnIncorrectToggle.checked });
             });
         }
 
