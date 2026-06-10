@@ -4107,7 +4107,6 @@
             const workspaceEl = document.getElementById('exerciseWorkspace');
             if (workspaceEl && !workspaceEl.classList.contains('hidden') && saveTimeout) {
                 saveProgressToDrive(true);
-                e.preventDefault();
                 e.returnValue = '';
                 return '';
             }
