@@ -629,19 +629,7 @@
 
         // Paginering event listeners voor de set-pagina met scroll-anchoring om sprongen te voorkomen
         function renderSetWithAnchoring(pageAction) {
-            const paginationEl = document.getElementById('setPagination');
-            const isVisible = paginationEl && !paginationEl.classList.contains('hidden');
-            let yBefore = 0;
-            if (isVisible) {
-                yBefore = paginationEl.getBoundingClientRect().top;
-            }
-            
-            pageAction();
-            
-            if (isVisible) {
-                const yAfter = paginationEl.getBoundingClientRect().top;
-                window.scrollBy(0, yAfter - yBefore);
-            }
+            runWithScrollAnchoring(document.getElementById('setPagination'), null, pageAction);
         }
 
         document.getElementById('setSkipPrevBtn').addEventListener('click', () => {
@@ -1464,18 +1452,14 @@
             }
         }
 
-        // Click handler voor Level 0 keuzes in Smart Learn
-        function selectLearnChoice(button, selected, correct) {
+        function handleChoiceSelection(button, selected, correct, feedbackElId, correctText, incorrectText) {
             const btns = document.querySelectorAll('.choice-btn');
             btns.forEach(btn => btn.disabled = true);
 
-            const activeItem = activeRepetitionQueue.shift();
-
-            if (selected === correct) {
+            const isCorrect = selected === correct;
+            if (isCorrect) {
                 button.classList.add('correct');
-                document.getElementById('learnFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! Level up naar Bekend. <i class="fa-solid fa-circle-check"></i></div>`;
-                activeItem.level = 1;
-                rescheduleItem(activeRepetitionQueue, activeItem, 4, 6);
+                document.getElementById(feedbackElId).innerHTML = `<div class="status-box correct">${correctText} <i class="fa-solid fa-circle-check"></i></div>`;
             } else {
                 button.classList.add('incorrect');
                 btns.forEach(btn => {
@@ -1483,7 +1467,24 @@
                         btn.classList.add('correct');
                     }
                 });
-                document.getElementById('learnFeedback').innerHTML = `<div class="status-box incorrect">Helaas, niet juist. Terug naar de stapel.</div>`;
+                document.getElementById(feedbackElId).innerHTML = `<div class="status-box incorrect">${incorrectText}</div>`;
+            }
+            return isCorrect;
+        }
+
+        // Click handler voor Level 0 keuzes in Smart Learn
+        function selectLearnChoice(button, selected, correct) {
+            const activeItem = activeRepetitionQueue.shift();
+            const isCorrect = handleChoiceSelection(
+                button, selected, correct, 'learnFeedback', 
+                'Goed beantwoord! Level up naar Bekend.', 
+                'Helaas, niet juist. Terug naar de stapel.'
+            );
+
+            if (isCorrect) {
+                activeItem.level = 1;
+                rescheduleItem(activeRepetitionQueue, activeItem, 4, 6);
+            } else {
                 activeItem.level = 0;
                 rescheduleItem(activeRepetitionQueue, activeItem, 2, 3);
             }
@@ -1593,9 +1594,6 @@
         }
 
         function selectChoice(button, selected, correct) {
-            const btns = document.querySelectorAll('.choice-btn');
-            btns.forEach(btn => btn.disabled = true);
-
             // Play the clicked choice audio if enabled
             const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
             if (savedAutoPlay) {
@@ -1605,10 +1603,13 @@
             }
 
             const activeItem = activeRepetitionQueue.shift();
+            const isCorrect = handleChoiceSelection(
+                button, selected, correct, 'choiceFeedback', 
+                'Goed beantwoord!', 
+                'Helaas, niet juist.'
+            );
 
-            if (selected === correct) {
-                button.classList.add('correct');
-                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! <i class="fa-solid fa-circle-check"></i></div>`;
+            if (isCorrect) {
                 activeItem.weight--;
                 if (activeItem.weight > 0) {
                     rescheduleItem(activeRepetitionQueue, activeItem);
@@ -1616,14 +1617,6 @@
                     activeCompletedCount++;
                 }
             } else {
-                button.classList.add('incorrect');
-                btns.forEach(btn => {
-                    if (btn.innerText === correct) {
-                        btn.classList.add('correct');
-                    }
-                });
-                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box incorrect">Helaas, niet juist.</div>`;
-
                 activeItem.weight = Math.min(3, activeItem.weight + 1);
                 rescheduleItem(activeRepetitionQueue, activeItem);
             }

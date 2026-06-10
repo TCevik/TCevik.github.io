@@ -184,44 +184,49 @@ function populateLanguageSelects() {
     });
 }
 
+function getScrollParent(el) {
+    let parent = el.parentNode;
+    while (parent && parent !== document.body && parent !== document.documentElement) {
+        const style = window.getComputedStyle(parent);
+        const overflowY = style.overflowY;
+        if (overflowY === 'auto' || overflowY === 'scroll' || parent.scrollHeight > parent.clientHeight) {
+            return parent;
+        }
+        parent = parent.parentNode;
+    }
+    return window;
+}
+
+function runWithScrollAnchoring(paginationEl, scrollAnchorEl, pageAction) {
+    const isVisible = paginationEl && !paginationEl.classList.contains('hidden') && paginationEl.style.display !== 'none';
+    let yBefore = 0;
+    if (isVisible) {
+        yBefore = paginationEl.getBoundingClientRect().top;
+    }
+    
+    pageAction();
+    
+    if (isVisible) {
+        const yAfter = paginationEl.getBoundingClientRect().top;
+        const scrollContainer = scrollAnchorEl ? getScrollParent(scrollAnchorEl) : window;
+        if (scrollContainer === window) {
+            window.scrollBy(0, yAfter - yBefore);
+        } else {
+            scrollContainer.scrollTop += (yAfter - yBefore);
+        }
+    }
+}
+
 function createCardRowManager(cardRowsContainer) {
     let allEditorItems = [];
     let currentEditorPage = 1;
     const editorPageSize = 50;
 
     let paginationDiv = document.getElementById('modalPagination');
-    
-    function getScrollParent(el) {
-        let parent = el.parentNode;
-        while (parent && parent !== document.body && parent !== document.documentElement) {
-            const style = window.getComputedStyle(parent);
-            const overflowY = style.overflowY;
-            if (overflowY === 'auto' || overflowY === 'scroll' || parent.scrollHeight > parent.clientHeight) {
-                return parent;
-            }
-            parent = parent.parentNode;
-        }
-        return window;
-    }
 
     function renderEditorPageWithAnchoring(pageAction) {
-        const isVisible = paginationDiv && !paginationDiv.classList.contains('hidden');
-        let yBefore = 0;
-        if (isVisible) {
-            yBefore = paginationDiv.getBoundingClientRect().top;
-        }
-        
-        pageAction();
-        
-        if (isVisible) {
-            const yAfter = paginationDiv.getBoundingClientRect().top;
-            const scrollContainer = getScrollParent(cardRowsContainer);
-            if (scrollContainer === window) {
-                window.scrollBy(0, yAfter - yBefore);
-            } else {
-                scrollContainer.scrollTop += (yAfter - yBefore);
-            }
-        }
+        const anchorEl = (paginationDiv && !paginationDiv.classList.contains('hidden')) ? paginationDiv : addBtn;
+        runWithScrollAnchoring(anchorEl, cardRowsContainer, pageAction);
     }
 
     let addBtn = document.getElementById('addCardRowBtn');
