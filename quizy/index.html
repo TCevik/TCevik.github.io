@@ -103,6 +103,22 @@
             font-size: 0.85rem;
             margin: 0;
         }
+
+        /* Responsive header button styles */
+        header .big-btn {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            header .big-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            .hide-mobile {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -113,7 +129,7 @@
             <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i
                     class="fa-solid fa-moon"></i></button>
             <nav class="nav-buttons">
-                <a href="#" id="loginBtn" class="big-btn">Inloggen met Google</a>
+                <a href="#" id="loginBtn" class="big-btn">Inloggen<span class="hide-mobile"> met Google</span></a>
             </nav>
         </div>
     </header>
