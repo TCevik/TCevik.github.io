@@ -2049,13 +2049,19 @@
                 const term = termInput.value.trim();
                 const definition = defInput.value.trim();
                 const starred = row.dataset.starred === "true";
-                if (term || definition) {
+                
+                if ((term && !definition) || (!term && definition)) {
+                    alert("Elke kaart moet zowel een term als een definitie hebben.");
+                    return;
+                }
+                
+                if (term && definition) {
                     items.push({ term, definition, starred });
                 }
             }
 
-            if (items.length === 0) {
-                alert("Voeg ten minste één kaart toe.");
+            if (items.length < 4) {
+                alert("Een quiz-set moet minimaal 4 kaarten bevatten.");
                 return;
             }
 
