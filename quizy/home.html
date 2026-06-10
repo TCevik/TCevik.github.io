@@ -577,8 +577,6 @@
                 padding: 16px 12px;
             }
         }
-
-
     </style>
 </head>
 
@@ -638,16 +636,20 @@
                     </div>
 
                     <div style="display: flex; gap: 12px; align-items: center;">
-                        <div id="streakContainer" style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                        <div id="streakContainer"
+                            style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
                             <span style="font-size: 1.5rem;">🔥</span>
                             <div style="text-align: left;">
-                                <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);" id="streakCount">0 dagen streak</div>
+                                <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);"
+                                    id="streakCount">0 dagen streak</div>
                             </div>
                         </div>
-                        <div id="freezeContainer" style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                        <div id="freezeContainer"
+                            style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
                             <span style="font-size: 1.5rem;">❄️</span>
                             <div style="text-align: left;">
-                                <div style="font-weight: 700; font-size: 1rem; color: #3b82f6;" id="freezeCount">0 freezes</div>
+                                <div style="font-weight: 700; font-size: 1rem; color: #3b82f6;" id="freezeCount">0
+                                    freezes</div>
                             </div>
                         </div>
                     </div>
@@ -708,12 +710,14 @@
 
             <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-bottom: 20px;">
                 <input type="checkbox" id="langLearningToggle" style="width: auto; cursor: pointer;">
-                <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren (Spraak & kolommen aanpassen)</label>
+                <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren
+                    (Spraak & kolommen aanpassen)</label>
             </div>
 
             <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
                 <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
-                <select id="langSingleSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
+                <select id="langSingleSelect"
+                    style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
                     <option value="nl-NL">Nederlands</option>
                     <option value="en-US">Engels</option>
                     <option value="fr-FR">Frans</option>
@@ -724,10 +728,13 @@
                 </select>
             </div>
 
-            <div id="langSelectorContainer" class="hidden" style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
+            <div id="langSelectorContainer" class="hidden"
+                style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
-                    <select id="langLeftSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
+                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom
+                        1):</label>
+                    <select id="langLeftSelect"
+                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
                         <option value="nl-NL">Nederlands</option>
                         <option value="en-US">Engels</option>
                         <option value="fr-FR">Frans</option>
@@ -738,8 +745,10 @@
                     </select>
                 </div>
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
-                    <select id="langRightSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
+                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom
+                        2):</label>
+                    <select id="langRightSelect"
+                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
                         <option value="nl-NL">Nederlands</option>
                         <option value="en-US" selected>Engels</option>
                         <option value="fr-FR">Frans</option>

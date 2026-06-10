@@ -1,4 +1,4 @@
-(function() {
+(function () {
     const token = localStorage.getItem('google_access_token');
     const expiry = localStorage.getItem('google_token_expiry');
 
@@ -15,7 +15,7 @@
 
     // Intercept fetch calls to catch any 401 Unauthorized errors dynamically (safety net)
     const originalFetch = window.fetch;
-    window.fetch = async function(...args) {
+    window.fetch = async function (...args) {
         try {
             const response = await originalFetch(...args);
             if (response.status === 401) {

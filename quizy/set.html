@@ -652,7 +652,8 @@
                         <h3 class="study-card-title">Spelling</h3>
                     </div>
                     <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=match'">
-                        <div class="study-card-icon" style="color: #ec4899;"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <div class="study-card-icon" style="color: #ec4899;"><i class="fa-solid fa-puzzle-piece"></i>
+                        </div>
                         <h3 class="study-card-title">Verbinden</h3>
                     </div>
                 </div>
@@ -685,12 +686,14 @@
 
             <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-bottom: 20px;">
                 <input type="checkbox" id="langLearningToggle" style="width: auto; cursor: pointer;">
-                <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren (Spraak & kolommen aanpassen)</label>
+                <label for="langLearningToggle" style="margin: 0; cursor: pointer; font-weight: 600;">Talen leren
+                    (Spraak & kolommen aanpassen)</label>
             </div>
 
             <div id="singleLangContainer" style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 6px;">
                 <label for="langSingleSelect" style="font-size: 0.9rem; font-weight: 600;">Taal van de set:</label>
-                <select id="langSingleSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
+                <select id="langSingleSelect"
+                    style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; max-width: 300px; cursor: pointer;">
                     <option value="nl-NL">Nederlands</option>
                     <option value="en-US">Engels</option>
                     <option value="fr-FR">Frans</option>
@@ -701,10 +704,13 @@
                 </select>
             </div>
 
-            <div id="langSelectorContainer" class="hidden" style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
+            <div id="langSelectorContainer" class="hidden"
+                style="display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom 1):</label>
-                    <select id="langLeftSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
+                    <label for="langLeftSelect" style="font-size: 0.9rem; font-weight: 600;">Taal links (kolom
+                        1):</label>
+                    <select id="langLeftSelect"
+                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
                         <option value="nl-NL">Nederlands</option>
                         <option value="en-US">Engels</option>
                         <option value="fr-FR">Frans</option>
@@ -715,8 +721,10 @@
                     </select>
                 </div>
                 <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 6px;">
-                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom 2):</label>
-                    <select id="langRightSelect" style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
+                    <label for="langRightSelect" style="font-size: 0.9rem; font-weight: 600;">Taal rechts (kolom
+                        2):</label>
+                    <select id="langRightSelect"
+                        style="padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%; cursor: pointer;">
                         <option value="nl-NL">Nederlands</option>
                         <option value="en-US" selected>Engels</option>
                         <option value="fr-FR">Frans</option>
@@ -880,7 +888,7 @@
                 if (!contentResponse.ok) throw new Error("Kon inhoud niet ophalen");
                 const content = await contentResponse.json();
 
-                 currentSetData = {
+                currentSetData = {
                     id: fileId,
                     name: metadata.name,
                     modifiedTime: metadata.modifiedTime,
