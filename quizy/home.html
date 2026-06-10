@@ -629,6 +629,20 @@
                 currentUsername = config.username;
                 localStorage.setItem('quizy_username', currentUsername);
 
+                if (config.theme) {
+                    localStorage.setItem('theme', config.theme);
+                    applyTheme(config.theme);
+                }
+                if (config.answerWith) {
+                    localStorage.setItem('quizy_answer_with', config.answerWith);
+                }
+                if (config.autoPlayAudio !== undefined) {
+                    localStorage.setItem('quizy_auto_play_audio', config.autoPlayAudio);
+                }
+                if (config.retypeOnIncorrect !== undefined) {
+                    localStorage.setItem('quizy_retype_on_incorrect', config.retypeOnIncorrect);
+                }
+
                 // Update streak display
                 const streak = config.streak || 0;
                 document.getElementById('streakCount').textContent = `${streak} ${streak === 1 ? 'dag' : 'dagen'} streak`;
@@ -714,6 +728,7 @@
             try {
                 // We updaten alleen de inhoud van het bestand
                 const fileData = {
+                    ...userConfig,
                     username: newUsername,
                     updatedAt: new Date().toISOString()
                 };

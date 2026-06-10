@@ -64,6 +64,42 @@ function applyTheme(theme) {
  * Initialiseer de thema-toggle-knop.
  * Leest het opgeslagen thema en koppelt de click-event-listener.
  */
+async function saveConfigSettings(updates) {
+    const token = localStorage.getItem('google_access_token');
+    if (!token) return;
+    try {
+        const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and 'appDataFolder' in parents and trashed=false`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (data.files && data.files.length > 0) {
+            const cfgId = data.files[0].id;
+            const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${cfgId}?alt=media`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const config = await contentResponse.json();
+            
+            Object.assign(config, updates);
+            config.updatedAt = new Date().toISOString();
+            
+            await fetch(`https://www.googleapis.com/upload/drive/v3/files/${cfgId}?uploadType=media`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(config)
+            });
+        }
+    } catch (err) {
+        console.error("Fout bij opslaan instellingen in Drive:", err);
+    }
+}
+
+/**
+ * Initialiseer de thema-toggle-knop.
+ * Leest het opgeslagen thema en koppelt de click-event-listener.
+ */
 function initThemeToggle() {
     applyTheme(localStorage.getItem('theme') || 'light');
     const themeToggleBtn = document.getElementById('themeToggle');
@@ -73,6 +109,7 @@ function initThemeToggle() {
             const next = current === 'light' ? 'dark' : 'light';
             localStorage.setItem('theme', next);
             applyTheme(next);
+            saveConfigSettings({ theme: next });
         });
     }
 }
