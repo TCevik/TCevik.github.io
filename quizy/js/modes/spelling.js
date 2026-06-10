@@ -54,11 +54,17 @@ function renderSpelling() {
 
     const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
 
+    const realIndex = currentSetData.items.indexOf(activeWord);
     modeContent.innerHTML = `
         <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
             Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
         </div>
-        <div class="prompt-text">${promptLabel}</div>
+        <div style="position: relative; display: flex; justify-content: center; align-items: center; max-width: 600px; margin: 0 auto 20px;">
+            <div class="prompt-text" style="margin: 0; padding-right: 40px; flex: 1;">${promptLabel}</div>
+            <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; flex-shrink: 0;" title="Moeilijk woord markeren">
+                <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+            </button>
+        </div>
         <div style="text-align: center; margin-bottom: 25px;">
             <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;"><i class="fa-solid fa-volume-high"></i> Luister</button>
         </div>

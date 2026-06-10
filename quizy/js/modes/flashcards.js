@@ -57,13 +57,17 @@ function renderFlashcards() {
     frontLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
     backLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
 
+    const realIndex = currentSetData.items.indexOf(activeWord);
     modeContent.innerHTML = `
         <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
             Kaart ${currentIdx + 1} / ${flashcardQueue.length} (Ronde) | Weet ik: ${flashcardStates.known.length}, Nog niet: ${flashcardStates.unknown.length}
         </div>
 
-        <div class="flashcard-wrapper" onclick="toggleFlip()">
-            <div class="flashcard" id="activeFlashcard" data-front-lang="${frontLang}" data-back-lang="${backLang}">
+        <div class="flashcard-wrapper" style="position: relative;">
+            <button class="quick-star-btn" onclick="event.stopPropagation(); toggleQuickStar(${realIndex})" style="position: absolute; top: 15px; right: 15px; z-index: 10; background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; line-height: 1;" title="Moeilijk woord markeren">
+                <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+            </button>
+            <div class="flashcard" id="activeFlashcard" data-front-lang="${frontLang}" data-back-lang="${backLang}" onclick="toggleFlip()">
                 <div class="card-face card-front">
                     <div>${escapeHTML(frontText)}</div>
                 </div>

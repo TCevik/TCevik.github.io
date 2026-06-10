@@ -12,8 +12,20 @@ function renderMatch() {
         matchTimerInterval = null;
     }
 
+    let numPairs = 6;
+    let numCols = 4;
+    if (matchDifficulty === 'medium') {
+        numPairs = 10;
+        numCols = 5;
+    } else if (matchDifficulty === 'hard') {
+        numPairs = 15;
+        numCols = 6;
+    }
+
+    numPairs = Math.min(numPairs, setTerms.length);
+
     const shuffled = shuffleArray(setTerms);
-    const sample = shuffled.slice(0, Math.min(6, setTerms.length));
+    const sample = shuffled.slice(0, numPairs);
 
     const cards = [];
     sample.forEach((item, index) => {
@@ -34,10 +46,15 @@ function renderMatch() {
 
     modeContent.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm ${matchDifficulty === 'easy' ? 'active' : ''}" style="${matchDifficulty === 'easy' ? 'background-color: var(--brand-color);' : ''}" onclick="setMatchDifficulty('easy')">Makkelijk (4x3)</button>
+                <button class="btn btn-secondary btn-sm ${matchDifficulty === 'medium' ? 'active' : ''}" style="${matchDifficulty === 'medium' ? 'background-color: var(--brand-color);' : ''}" onclick="setMatchDifficulty('medium')" ${setTerms.length < 8 ? 'disabled' : ''}>Gemiddeld (5x4)</button>
+                <button class="btn btn-secondary btn-sm ${matchDifficulty === 'hard' ? 'active' : ''}" style="${matchDifficulty === 'hard' ? 'background-color: var(--brand-color);' : ''}" onclick="setMatchDifficulty('hard')" ${setTerms.length < 12 ? 'disabled' : ''}>Moeilijk (6x5)</button>
+            </div>
             <h3 style="margin: 0; font-size: 1.25rem;">Tijd: <strong id="matchTimer" style="color: var(--brand-color);">0.0s</strong></h3>
             <button class="btn btn-secondary btn-sm" onclick="renderMatch()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
         </div>
-        <div class="match-grid">
+        <div class="match-grid" style="--cols: ${numCols}; grid-template-columns: repeat(var(--cols, 4), 1fr);">
             ${gridHTML}
         </div>
     `;
