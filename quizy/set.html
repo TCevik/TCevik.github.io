@@ -6,7 +6,12 @@
     <script src="/script.js"></script>
     <script>
         // Thema direct instellen om flicker te voorkomen
-        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark-mode');
+        let savedTheme = localStorage.getItem('theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            localStorage.setItem('theme', savedTheme);
+        }
+        if (savedTheme === 'dark') document.documentElement.classList.add('dark-mode');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

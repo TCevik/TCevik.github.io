@@ -65,7 +65,12 @@ function applyTheme(theme) {
  * Leest het opgeslagen thema en koppelt de click-event-listener.
  */
 function initThemeToggle() {
-    applyTheme(localStorage.getItem('theme') || 'light');
+    let currentTheme = localStorage.getItem('theme');
+    if (!currentTheme) {
+        currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+    }
+    applyTheme(currentTheme);
     const themeToggleBtn = document.getElementById('themeToggle');
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {

@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         // Set theme immediately to avoid flash
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        let savedTheme = localStorage.getItem('theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            localStorage.setItem('theme', savedTheme);
+        }
         if (savedTheme === 'dark') {
             document.documentElement.classList.add('dark-mode');
         }
