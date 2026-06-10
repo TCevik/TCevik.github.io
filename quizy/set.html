@@ -1023,8 +1023,7 @@
                     const response = await driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(setFile),
-                        keepalive: true
+                        body: JSON.stringify(setFile)
                     });
                     if (!response.ok) console.warn("Opslaan van voortgang mislukt.");
                 } catch (err) {
