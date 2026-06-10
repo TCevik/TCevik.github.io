@@ -10,15 +10,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="quizy-utils.js"></script>
-    <script>
-        // Set theme immediately to avoid flash
-        let savedTheme = localStorage.getItem('theme');
-        if (!savedTheme) {
-            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            localStorage.setItem('theme', savedTheme);
-        }
-        if (savedTheme === 'dark') document.documentElement.classList.add('dark-mode');
-    </script>
+    <script src="theme-init.js"></script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>

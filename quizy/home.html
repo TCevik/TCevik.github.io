@@ -10,17 +10,7 @@
     <title>Home - TC_tam Quizy</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // Set theme immediately to avoid flash
-        let savedTheme = localStorage.getItem('theme');
-        if (!savedTheme) {
-            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            localStorage.setItem('theme', savedTheme);
-        }
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark-mode');
-        }
-    </script></head>
+    <script src="theme-init.js"></script></head>
 
 <body>
 
@@ -181,9 +171,7 @@
         async function checkFirstTime() {
             try {
                 const fId = await getOrCreateFolderId();
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='${FILE_NAME}' and '${fId}' in parents and trashed=false`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
+                const response = await driveRequest(`${DRIVE_BASE}/files?spaces=appDataFolder&q=name='${FILE_NAME}' and '${fId}' in parents and trashed=false`);
                 const data = await response.json();
 
                 if (data.files && data.files.length > 0) {
@@ -204,10 +192,7 @@
         // 2. Haal de inhoud van het configuratiebestand op
         async function fetchUsername(fileId) {
             try {
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
-                const config = await response.json();
+                const config = await driveGetJSON(fileId);
                 userConfig = config;
 
                 currentUsername = config.username;
@@ -247,28 +232,13 @@
             saveBtn.disabled = true;
             saveBtn.textContent = "Opslaan...";
 
-            const fId = await getOrCreateFolderId();
-            const metadata = {
-                name: FILE_NAME,
-                mimeType: 'application/json',
-                parents: [fId]
-            };
-
             const fileData = {
                 username: username,
                 createdAt: new Date().toISOString()
             };
 
-            const form = new FormData();
-            form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-            form.append('file', new Blob([JSON.stringify(fileData)], { type: 'application/json' }));
-
             try {
-                const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${TOKEN}` },
-                    body: form
-                });
+                const response = await driveCreateFile(FILE_NAME, fileData);
 
                 if (response.ok) {
                     window.location.reload();
@@ -302,14 +272,7 @@
                     updatedAt: new Date().toISOString()
                 };
 
-                const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${configFileId}?uploadType=media`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(fileData)
-                });
+                const response = await drivePatchJSON(configFileId, fileData);
 
                 if (response.ok) {
                     currentUsername = newUsername;
@@ -337,19 +300,14 @@
             try {
                 const fId = await getOrCreateFolderId();
                 // Zoek naar bestanden die beginnen met SET_PREFIX
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name contains '${SET_PREFIX}' and '${fId}' in parents and trashed=false&fields=files(id, name, createdTime)`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
+                const response = await driveRequest(`${DRIVE_BASE}/files?spaces=appDataFolder&q=name contains '${SET_PREFIX}' and '${fId}' in parents and trashed=false&fields=files(id, name, createdTime)`);
                 const data = await response.json();
 
                 if (data.files && data.files.length > 0) {
                     // Fetch set contents in parallel to get the number of items/words
                     await Promise.all(data.files.map(async (file) => {
                         try {
-                            const res = await fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
-                                headers: { 'Authorization': `Bearer ${TOKEN}` }
-                            });
-                            const content = await res.json();
+                            const content = await driveGetJSON(file.id);
                             file.itemCount = (content.items && Array.isArray(content.items)) ? content.items.length : 0;
                         } catch (err) {
                             console.error("Fout bij ophalen set inhoud:", err);
@@ -416,9 +374,8 @@
             }
 
             try {
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                const response = await driveRequest(`${DRIVE_BASE}/files/${fileId}`, {
+                    method: 'DELETE'
                 });
 
                 if (response.ok) {

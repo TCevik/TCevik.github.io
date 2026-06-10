@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <script src="auth-check.js"></script>
     <script src="/script.js"></script>
-    <script>
-        // Thema direct instellen om flicker te voorkomen
-        let savedTheme = localStorage.getItem('theme');
-        if (!savedTheme) {
-            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            localStorage.setItem('theme', savedTheme);
-        }
-        if (savedTheme === 'dark') document.documentElement.classList.add('dark-mode');
-    </script>
+    <script src="theme-init.js"></script>
+    <script src="quizy-utils.js"></script>
+    <script src="js/modes/flashcards.js"></script>
+    <script src="js/modes/spelling.js"></script>
+    <script src="js/modes/match.js"></script>
+    <script src="js/modes/test.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Oefen en bestudeer je set met flashcards, meerkeuze en meer op TC_tam Quizy.">
     <title>Set bekijken - TC_tam Quizy</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="quizy-utils.js"></script>
-    
 </head>
 
 <body>
@@ -314,18 +308,12 @@
 
             try {
                 // 1. Metadata ophalen (voor de naam/titel en updated tijd)
-                const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?fields=name,modifiedTime`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
+                const metaResponse = await driveRequest(`${DRIVE_BASE}/files/${fileId}?fields=name,modifiedTime`);
                 if (!metaResponse.ok) throw new Error("Kon metadata niet ophalen");
                 const metadata = await metaResponse.json();
 
                 // 2. Inhoud ophalen
-                const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
-                if (!contentResponse.ok) throw new Error("Kon inhoud niet ophalen");
-                const content = await contentResponse.json();
+                const content = await driveGetJSON(fileId);
 
                 currentSetData = {
                     id: fileId,
@@ -453,14 +441,7 @@
                                 langRight: currentSetData.langRight,
                                 updatedAt: new Date().toISOString()
                             };
-                            await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Authorization': `Bearer ${TOKEN}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(fileData)
-                            });
+                            await drivePatchJSON(fileId, fileData);
                         } catch (err) {
                             console.error("Fout bij opslaan star:", err);
                         }
@@ -498,9 +479,8 @@
             deleteSetBtn.textContent = "Verwijderen...";
 
             try {
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                const response = await driveRequest(`${DRIVE_BASE}/files/${fileId}`, {
+                    method: 'DELETE'
                 });
 
                 if (response.ok) {
@@ -570,22 +550,12 @@
 
             try {
                 // Inhoud bijwerken
-                const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(fileData)
-                });
+                const response = await drivePatchJSON(fileId, fileData);
 
                 // Naam bijwerken
-                const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+                const metaResponse = await driveRequest(`${DRIVE_BASE}/files/${fileId}`, {
                     method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: setFileName })
                 });
 
@@ -680,21 +650,7 @@
                     updatedAt: new Date().toISOString()
                 };
 
-                const metadata = {
-                    name: setFileName,
-                    mimeType: 'application/json',
-                    parents: ['appDataFolder']
-                };
-
-                const form = new FormData();
-                form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-                form.append('file', new Blob([JSON.stringify(fileData)], { type: 'application/json' }));
-
-                const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${TOKEN}` },
-                    body: form
-                });
+                const response = await driveCreateFile(setFileName, fileData);
 
                 if (response.ok) {
                     const result = await response.json();
@@ -1066,12 +1022,9 @@
 
             const performSave = async () => {
                 try {
-                    const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                    const response = await driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
                         method: 'PATCH',
-                        headers: {
-                            'Authorization': `Bearer ${TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(setFile),
                         keepalive: true
                     });
@@ -1094,6 +1047,7 @@
         }
 
         function renderLearn() {
+            if (currentMode !== 'learn') return;
             if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
                 renderCompletedScreen('learn', 'Leren voltooid!');
                 return;
@@ -1358,552 +1312,13 @@
             }, 1200);
         }
 
-        function renderTest() {
-            barContainer.classList.add('hidden');
-
-            if (!isTestActive) {
-                // Render setup screen
-                const maxQuestions = setTerms.length;
-                let limitOptionsHTML = '';
-                [5, 10, 20, 50, 100].forEach(val => {
-                    if (val <= maxQuestions) {
-                        limitOptionsHTML += `<option value="${val}">${val} woorden</option>`;
-                    }
-                });
-                limitOptionsHTML += `<option value="${maxQuestions}">Alle (${maxQuestions}) woorden</option>`;
-
-                modeContent.innerHTML = `
-                    <div style="max-width: 500px; margin: 0 auto; text-align: left; padding: 20px;">
-                        <h2 style="margin-top: 0; font-size: 1.5rem; text-align: center; color: var(--text-primary); margin-bottom: 25px;"><i class="fa-solid fa-file-lines" style="color: #3b82f6;"></i> Oefentoets Instellingen</h2>
-                        
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label style="font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block;">Aantal woorden:</label>
-                            <div class="custom-select-wrapper">
-                                <select id="testLimitSelect" class="custom-select">
-                                    ${limitOptionsHTML}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 25px;">
-                            <label style="font-weight: 600; color: var(--text-primary); margin-bottom: 12px; display: block;">Vraagtypes inbegrepen:</label>
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
-                                    <input type="checkbox" id="typeChoice" checked style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span>Meerkeuze</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
-                                    <input type="checkbox" id="typeTF" checked style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span>Waar / Niet waar</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
-                                    <input type="checkbox" id="typeOpen" checked style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span>Open vragen (Typen)</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
-                                    <input type="checkbox" id="typeMatch" checked style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span>Verbinden (Matching)</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button class="btn" id="startTestBtn" style="width: 100%;">Toets starten</button>
-                    </div>
-                `;
-
-                document.getElementById('startTestBtn').addEventListener('click', () => {
-                    const limit = parseInt(document.getElementById('testLimitSelect').value, 10);
-                    const types = [];
-                    if (document.getElementById('typeChoice').checked) types.push('choice');
-                    if (document.getElementById('typeTF').checked) types.push('tf');
-                    if (document.getElementById('typeOpen').checked) types.push('open');
-                    if (document.getElementById('typeMatch').checked) types.push('match');
-
-                    if (types.length === 0) {
-                        alert("Selecteer ten minste één vraagtype!");
-                        return;
-                    }
-
-                    testConfig = { limit, types };
-                    isTestActive = true;
-                    generateTestQuestions();
-                    
-                    gameProgress.test = {
-                        config: testConfig,
-                        questions: generatedQuestions,
-                        isTestActive: isTestActive
-                    };
-                    saveProgressToDrive();
-                    renderTest();
-                });
-                return;
-            }
-
-            // Render active test questions
-            let questionsHTML = '';
-            generatedQuestions.forEach((q, index) => {
-                questionsHTML += `
-                    <div class="test-question" data-idx="${index}">
-                        <div class="test-question-title">${index + 1}. ${escapeHTML(q.prompt)}</div>
-                `;
-
-                if (q.type === 'choice') {
-                    questionsHTML += `<div class="test-choices">`;
-                    q.options.forEach((opt, optIdx) => {
-                        questionsHTML += `
-                            <label class="test-radio-label">
-                                <input type="radio" name="q-${index}" value="${escapeHTML(opt)}">
-                                <span>${escapeHTML(opt)}</span>
-                            </label>
-                        `;
-                    });
-                    questionsHTML += `</div>`;
-                } else if (q.type === 'tf') {
-                    questionsHTML += `
-                        <div class="test-choices">
-                            <label class="test-radio-label">
-                                <input type="radio" name="q-${index}" value="True">
-                                <span>Waar</span>
-                            </label>
-                            <label class="test-radio-label">
-                                <input type="radio" name="q-${index}" value="False">
-                                <span>Niet Waar</span>
-                            </label>
-                        </div>
-                    `;
-                } else if (q.type === 'open') {
-                    questionsHTML += `
-                        <div class="answer-form" style="max-width:100%">
-                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Jouw antwoord..." autocomplete="off">
-                        </div>
-                    `;
-                } else if (q.type === 'match') {
-                    questionsHTML += `
-                        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
-                            <!-- Terms with dropdowns -->
-                            <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 12px;">
-                                ${q.terms.map((t, tIdx) => `
-                                    <div style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color);">
-                                        <select class="custom-select" name="q-${index}-match-${tIdx}" style="width: auto; padding: 6px 24px 6px 10px;">
-                                            <option value="">Kies...</option>
-                                            ${q.definitions.map((_, dIdx) => `
-                                                <option value="${String.fromCharCode(65 + dIdx)}">${String.fromCharCode(65 + dIdx)}</option>
-                                            `).join('')}
-                                        </select>
-                                        <span style="font-weight: 600; color: var(--text-primary);">${escapeHTML(t.term)}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <!-- Definitions with letters -->
-                            <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 8px;">
-                                ${q.definitions.map((d, dIdx) => `
-                                    <div style="padding: 8px 12px; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-primary);">
-                                        <strong style="color: var(--brand-color);">${String.fromCharCode(65 + dIdx)}.</strong> ${escapeHTML(d)}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-
-                questionsHTML += `</div>`;
-            });
-
-            let totalTermsInTest = 0;
-            generatedQuestions.forEach(q => {
-                if (q.type === 'match') {
-                    totalTermsInTest += q.terms.length;
-                } else {
-                    totalTermsInTest += 1;
-                }
-            });
-
-            modeContent.innerHTML = `
-                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                    <div>
-                        <h2 style="margin:0; font-size:1.4rem;">Toets: ${escapeHTML(currentSetData.title)}</h2>
-                        <p style="color:#64748b; margin:5px 0 0 0;">Beantwoord de vragen en klik op Toets nakijken. (Totaal ${totalTermsInTest} van de ${setTerms.length} woorden worden getoetst in ${generatedQuestions.length} vragen)</p>
-                    </div>
-                    <button class="btn btn-secondary btn-sm" id="resetTestBtn"><i class="fa-solid fa-rotate-right"></i> Opnieuw instellen</button>
-                </div>
-                <div>
-                    ${questionsHTML}
-                </div>
-                <div style="text-align: center; margin-top:30px;">
-                    <button class="btn" id="submitTestBtn">Toets nakijken</button>
-                </div>
-                <div id="testResults"></div>
-            `;
-
-            document.getElementById('submitTestBtn').addEventListener('click', checkTestAnswers);
-            document.getElementById('resetTestBtn').addEventListener('click', () => {
-                isTestActive = false;
-                generatedQuestions = [];
-                gameProgress.test = null;
-                saveProgressToDrive();
-                renderTest();
-            });
-        }
-
-        function generateTestQuestions() {
-            generatedQuestions = [];
-            const shuffled = shuffleArray(setTerms);
-            const sample = shuffled.slice(0, Math.min(testConfig.limit, setTerms.length));
-            const selectedTypes = testConfig.types || ['choice', 'tf', 'open', 'match'];
-
-            let i = 0;
-            while (i < sample.length) {
-                const currentType = selectedTypes[Math.floor(Math.random() * selectedTypes.length)];
-
-                if (currentType === 'match' && (sample.length - i >= 2)) {
-                    const blockSize = Math.min(4, sample.length - i);
-                    const blockItems = sample.slice(i, i + blockSize);
-                    i += blockSize;
-
-                    const originalDefs = blockItems.map(item => item.definition);
-                    const shuffledDefs = shuffleArray(originalDefs);
-
-                    const correctAnswers = blockItems.map(item => {
-                        const correctIdx = shuffledDefs.indexOf(item.definition);
-                        return String.fromCharCode(65 + correctIdx);
-                    });
-
-                    generatedQuestions.push({
-                        type: 'match',
-                        prompt: `Verbind de juiste termen met hun definities:`,
-                        terms: blockItems,
-                        definitions: shuffledDefs,
-                        correctAnswers: correctAnswers
-                    });
-                } else {
-                    const item = sample[i];
-                    i++;
-
-                    const nonMatchTypes = selectedTypes.filter(t => t !== 'match');
-                    const finalType = nonMatchTypes.length > 0 ? nonMatchTypes[Math.floor(Math.random() * nonMatchTypes.length)] : 'open';
-
-                    if (finalType === 'choice') {
-                        const options = [item.definition];
-                        const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
-                        const shuffledOthers = shuffleArray(otherDefs);
-
-                        for (let j = 0; j < Math.min(3, shuffledOthers.length); j++) {
-                            options.push(shuffledOthers[j]);
-                        }
-
-                        generatedQuestions.push({
-                            type: 'choice',
-                            prompt: `Wat is de definitie van: '${item.term}'?`,
-                            correctAnswer: item.definition,
-                            options: shuffleArray(options)
-                        });
-                    } else if (finalType === 'tf') {
-                        const randomIsCorrect = Math.random() > 0.5;
-                        let displayDef = item.definition;
-                        if (!randomIsCorrect && setTerms.length > 1) {
-                            const others = setTerms.filter(t => t.definition !== item.definition);
-                            if (others.length > 0) {
-                                displayDef = others[Math.floor(Math.random() * others.length)].definition;
-                            }
-                        }
-
-                        generatedQuestions.push({
-                            type: 'tf',
-                            prompt: `Betekent '${item.term}' inderdaad '${displayDef}'?`,
-                            correctAnswer: randomIsCorrect ? 'True' : 'False',
-                            displayDef: displayDef,
-                            actualTerm: item.term,
-                            actualDef: item.definition
-                        });
-                    } else {
-                        generatedQuestions.push({
-                            type: 'open',
-                            prompt: `Geef het woord/de definitie voor: '${item.term}'`,
-                            correctAnswer: item.definition
-                        });
-                    }
-                }
-            }
-        }
-
-        function checkTestAnswers() {
-            let totalPoints = 0;
-            let scorePoints = 0;
-            let questionBreakdown = {
-                choice: { correct: 0, total: 0 },
-                tf: { correct: 0, total: 0 },
-                open: { correct: 0, total: 0 },
-                match: { correct: 0, total: 0 }
-            };
-
-            const testResultsDiv = document.getElementById('testResults');
-            let resultsHTML = '<h3 style="margin-top: 30px; font-size:1.3rem;">Foutenanalyse:</h3>';
-
-            generatedQuestions.forEach((q, index) => {
-                if (q.type === 'match') {
-                    let blockCorrect = 0;
-                    let blockHTML = '';
-                    
-                    q.terms.forEach((t, tIdx) => {
-                        const select = document.querySelector(`select[name="q-${index}-match-${tIdx}"]`);
-                        const userAnswer = select ? select.value : '';
-                        const correctAnswer = q.correctAnswers[tIdx];
-                        const isSubCorrect = userAnswer === correctAnswer;
-                        
-                        totalPoints++;
-                        questionBreakdown.match.total++;
-                        if (isSubCorrect) {
-                            scorePoints++;
-                            blockCorrect++;
-                            questionBreakdown.match.correct++;
-                        }
-
-                        blockHTML += `
-                            <div style="padding: 6px 12px; margin-top: 4px; border-radius: 6px; border: 1px solid ${isSubCorrect ? 'var(--correct-border)' : 'var(--incorrect-border)'}; background-color: ${isSubCorrect ? 'var(--correct-bg)' : 'var(--incorrect-bg)'}; font-size: 0.9rem;">
-                                <strong>${escapeHTML(t.term)}:</strong> Jouw keuze: <span style="color:${isSubCorrect ? 'var(--correct-text)' : 'var(--incorrect-text)'}; font-weight: 600;">${userAnswer || '(geen)'}</span>
-                                ${!isSubCorrect ? ` | Juiste letter: <strong style="color:var(--correct-text)">${correctAnswer} (${escapeHTML(t.definition)})</strong>` : ''}
-                            </div>
-                        `;
-                    });
-
-                    const isAllCorrect = blockCorrect === q.terms.length;
-                    resultsHTML += `
-                        <div style="padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid ${isAllCorrect ? 'var(--correct-border)' : 'var(--incorrect-border)'}; background-color: var(--card-bg); color: var(--text-primary);">
-                            <strong>Vraag ${index + 1}: Verbinden (${blockCorrect}/${q.terms.length} goed)</strong><br>
-                            ${blockHTML}
-                        </div>
-                    `;
-                } else {
-                    let userAnswer = '';
-                    if (q.type === 'choice' || q.type === 'tf') {
-                        const checked = document.querySelector(`input[name="q-${index}"]:checked`);
-                        userAnswer = checked ? checked.value : '';
-                    } else {
-                        const input = document.querySelector(`input[name="q-${index}"]`);
-                        userAnswer = input ? input.value.trim() : '';
-                    }
-
-                    const isCorrect = userAnswer.toLowerCase() === q.correctAnswer.toLowerCase();
-                    
-                    totalPoints++;
-                    if (q.type === 'choice') {
-                        questionBreakdown.choice.total++;
-                        if (isCorrect) { questionBreakdown.choice.correct++; scorePoints++; }
-                    } else if (q.type === 'tf') {
-                        questionBreakdown.tf.total++;
-                        if (isCorrect) { questionBreakdown.tf.correct++; scorePoints++; }
-                    } else {
-                        questionBreakdown.open.total++;
-                        if (isCorrect) { questionBreakdown.open.correct++; scorePoints++; }
-                    }
-
-                    resultsHTML += `
-                        <div style="padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid ${isCorrect ? 'var(--correct-border)' : 'var(--incorrect-border)'}; background-color: ${isCorrect ? 'var(--correct-bg)' : 'var(--incorrect-bg)'}; color: var(--text-primary);">
-                            <strong>Vraag ${index + 1}: ${escapeHTML(q.prompt)}</strong><br>
-                            <span>Jouw antwoord: <span style="color:${isCorrect ? 'var(--correct-text)' : 'var(--incorrect-text)'}; font-weight: 600;">${escapeHTML(userAnswer || '(geen antwoord)')}</span></span><br>
-                            ${!isCorrect ? `<span>Juiste antwoord: <strong style="color:var(--correct-text)">${escapeHTML(q.correctAnswer === 'True' ? 'Waar' : q.correctAnswer === 'False' ? 'Niet Waar' : q.correctAnswer)}</strong></span>` : ''}
-                        </div>
-                    `;
-                }
-            });
-
-            const percentage = Math.round((scorePoints / totalPoints) * 100);
-            const scoreGrade = (scorePoints / totalPoints * 9 + 1).toFixed(1);
-
-            let breakdownHTML = '<div style="margin-top: 15px; font-size: 0.95rem; text-align: left; display: inline-block; background: var(--bg-primary); padding: 12px 20px; border-radius: 8px; border: 1px solid var(--border-color);">';
-            breakdownHTML += '<strong style="display:block; margin-bottom: 8px;">Resultaten per vraagtype:</strong>';
-            if (questionBreakdown.choice.total > 0) {
-                breakdownHTML += `<div>Meerkeuze: ${questionBreakdown.choice.correct} / ${questionBreakdown.choice.total} goed</div>`;
-            }
-            if (questionBreakdown.tf.total > 0) {
-                breakdownHTML += `<div>Waar / Niet Waar: ${questionBreakdown.tf.correct} / ${questionBreakdown.tf.total} goed</div>`;
-            }
-            if (questionBreakdown.open.total > 0) {
-                breakdownHTML += `<div>Open Vragen: ${questionBreakdown.open.correct} / ${questionBreakdown.open.total} goed</div>`;
-            }
-            if (questionBreakdown.match.total > 0) {
-                breakdownHTML += `<div>Verbinden: ${questionBreakdown.match.correct} / ${questionBreakdown.match.total} verbindingen goed</div>`;
-            }
-            breakdownHTML += '</div>';
-
-            resultsHTML = `
-                <div style="text-align: center; background: var(--result-banner-bg); padding: 25px; border-radius: 12px; margin-top: 35px; border: 1px solid var(--result-banner-border); color: var(--text-primary);">
-                    <div style="font-size: 3rem;"><i class="fa-solid fa-graduation-cap"></i></div>
-                    <h2 style="margin: 10px 0;">Je behaalde cijfer: <strong style="color: var(--brand-color);">${scoreGrade}</strong></h2>
-                    <p style="font-size: 1.1rem; color: var(--result-banner-text); margin: 0;">Je had ${scorePoints} van de ${totalPoints} punten goed (${percentage}%).</p>
-                    ${breakdownHTML}
-                </div>
-                ${resultsHTML}
-            `;
-
-            testResultsDiv.innerHTML = resultsHTML;
-            document.getElementById('submitTestBtn').style.display = 'none';
-
-            isTestActive = false;
-            gameProgress.test = null;
-            saveProgressToDrive();
-
-            updateStudyStreak(null, percentage);
-        }
-
-        function renderFlashcards() {
-            if (!flashcardQueue || flashcardQueue.length === 0) {
-                flashcardQueue = setTerms.map((_, i) => i);
-            }
-
-            if (currentIdx >= flashcardQueue.length) {
-                if (flashcardStates.unknown.length > 0) {
-                    const numUnknown = flashcardStates.unknown.length;
-                    modeContent.innerHTML = `
-                        <div class="completed-screen">
-                            <div class="completed-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
-                            <h2>Ronde voltooid!</h2>
-                            <p style="color:#64748b; margin-bottom: 30px;">Je hebt alle kaarten gehad. Laten we de ${numUnknown} ${numUnknown === 1 ? 'kaart' : 'kaarten'} die je nog niet wist opnieuw proberen!</p>
-                            <button class="btn" id="startNextRoundBtn">Volgende ronde starten</button>
-                        </div>
-                    `;
-                    document.getElementById('startNextRoundBtn').addEventListener('click', () => {
-                        flashcardQueue = [...flashcardStates.unknown];
-                        flashcardStates.unknown = [];
-                        currentIdx = 0;
-
-                        gameProgress.flashcards = {
-                            queue: flashcardQueue,
-                            known: flashcardStates.known,
-                            unknown: flashcardStates.unknown,
-                            currentIndex: currentIdx
-                        };
-                        saveProgressToDrive();
-                        renderFlashcards();
-                    });
-                    return;
-                } else {
-                    renderCompletedScreen('flashcards', 'Flashcards voltooid!');
-                    return;
-                }
-            }
-
-            const pct = Math.round((currentIdx / flashcardQueue.length) * 100);
-            updateProgressBar(pct);
-
-            const termRealIdx = flashcardQueue[currentIdx];
-            const activeWord = setTerms[termRealIdx];
-
-            const answerWith = document.getElementById('answerWithSelect').value;
-            let frontText, backText, frontLang, backLang;
-            if (answerWith === 'term') {
-                frontText = activeWord.definition;
-                backText = activeWord.term;
-            } else {
-                frontText = activeWord.term;
-                backText = activeWord.definition;
-            }
-
-            frontLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
-            backLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
-
-            modeContent.innerHTML = `
-                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
-                    Kaart ${currentIdx + 1} / ${flashcardQueue.length} (Ronde) | Weet ik: ${flashcardStates.known.length}, Nog niet: ${flashcardStates.unknown.length}
-                </div>
-
-                <div class="flashcard-wrapper" onclick="toggleFlip()">
-                    <div class="flashcard" id="activeFlashcard" data-front-lang="${frontLang}" data-back-lang="${backLang}">
-                        <div class="card-face card-front">
-                            <div>${escapeHTML(frontText)}</div>
-                        </div>
-                        <div class="card-face card-back">
-                            <div>${escapeHTML(backText)}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flashcard-actions">
-                    <button class="btn btn-danger" id="dontKnowBtn"><i class="fa-solid fa-xmark"></i> Weet ik niet</button>
-                    <button class="btn" id="knowBtn"><i class="fa-solid fa-check"></i> Weet ik</button>
-                </div>
-            `;
-
-            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
-            if (savedAutoPlay) {
-                setTimeout(() => {
-                    speakSpellingWord(frontText, frontLang);
-                }, 100);
-            }
-
-            document.getElementById('knowBtn').addEventListener('click', () => recordFlashcardResult(true));
-            document.getElementById('dontKnowBtn').addEventListener('click', () => recordFlashcardResult(false));
-        }
-
-        function toggleFlip() {
-            const card = document.getElementById('activeFlashcard');
-            if (card) {
-                card.classList.toggle('flipped');
-
-                const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
-                if (savedAutoPlay) {
-                    if (card.classList.contains('flipped')) {
-                        const backText = card.querySelector('.card-back div').textContent;
-                        const backLang = card.dataset.backLang || 'nl-NL';
-                        speakSpellingWord(backText, backLang);
-                    } else {
-                        const frontText = card.querySelector('.card-front div').textContent;
-                        const frontLang = card.dataset.frontLang || 'nl-NL';
-                        speakSpellingWord(frontText, frontLang);
-                    }
-                }
-            }
-        }
-
-        function recordFlashcardResult(known) {
-            const termRealIdx = flashcardQueue[currentIdx];
-            if (known) {
-                if (!flashcardStates.known.includes(termRealIdx)) {
-                    flashcardStates.known.push(termRealIdx);
-                }
-                const unknownIdx = flashcardStates.unknown.indexOf(termRealIdx);
-                if (unknownIdx !== -1) {
-                    flashcardStates.unknown.splice(unknownIdx, 1);
-                }
-            } else {
-                if (!flashcardStates.unknown.includes(termRealIdx)) {
-                    flashcardStates.unknown.push(termRealIdx);
-                }
-                const knownIdx = flashcardStates.known.indexOf(termRealIdx);
-                if (knownIdx !== -1) {
-                    flashcardStates.known.splice(knownIdx, 1);
-                }
-                
-                // Count how many times this card is already in the remaining queue
-                const remainingQueue = flashcardQueue.slice(currentIdx + 1);
-                const countInQueue = remainingQueue.filter(idx => idx === termRealIdx).length;
-                const copiesToAdd = Math.min(2, 3 - countInQueue);
-
-                if (copiesToAdd >= 1) {
-                    const offset1 = Math.floor(Math.random() * (5 - 3 + 1)) + 3; // 3 to 5 steps away
-                    const targetIdx1 = Math.min(flashcardQueue.length, currentIdx + 1 + offset1);
-                    flashcardQueue.splice(targetIdx1, 0, termRealIdx);
-                }
-                if (copiesToAdd >= 2) {
-                    const offset2 = Math.floor(Math.random() * (10 - 7 + 1)) + 7; // 7 to 10 steps away
-                    const targetIdx2 = Math.min(flashcardQueue.length, currentIdx + 1 + offset2);
-                    flashcardQueue.splice(targetIdx2, 0, termRealIdx);
-                }
-            }
-
-            currentIdx++;
-
-            gameProgress.flashcards = {
-                queue: flashcardQueue,
-                known: flashcardStates.known,
-                unknown: flashcardStates.unknown,
-                currentIndex: currentIdx
-            };
-            saveProgressToDrive();
-            renderFlashcards();
-        }
+        // renderTest, generateTestQuestions en checkTestAnswers zijn verplaatst naar js/modes/test.js
+        // renderFlashcards, toggleFlip en recordFlashcardResult zijn verplaatst naar js/modes/flashcards.js
+        // renderSpelling en speakSpellingWord zijn verplaatst naar js/modes/spelling.js
+        // renderMatch en selectMatchCard zijn verplaatst naar js/modes/match.js
 
         function renderChoice() {
+            if (currentMode !== 'choice') return;
             if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
                 renderCompletedScreen('choice', 'Meerkeuze voltooid!');
                 return;
@@ -2033,299 +1448,7 @@
             }, 1200);
         }
 
-        function renderSpelling() {
-            if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
-                renderCompletedScreen('spelling', 'Spelling voltooid!');
-                return;
-            }
 
-            const pct = Math.round((activeCompletedCount / setTerms.length) * 100);
-            updateProgressBar(pct);
-
-            const activeItem = activeRepetitionQueue[0];
-            const activeWord = setTerms[activeItem.index];
-            learnRetypeMode = false;
-
-            const answerWith = document.getElementById('answerWithSelect').value;
-            let speakText, clueText, correctWord, promptLabel;
-
-            if (setFile.isLanguageLearning) {
-                const localesMap = {
-                    'nl-NL': 'Nederlands',
-                    'en-US': 'Engels',
-                    'fr-FR': 'Frans',
-                    'de-DE': 'Duits'
-                };
-                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
-                const rightName = localesMap[setFile.langRight] || 'Taal 2';
-
-                if (answerWith === 'term') {
-                    speakText = activeWord.term;
-                    clueText = activeWord.definition;
-                    correctWord = activeWord.term.trim().toLowerCase();
-                    promptLabel = `Typ het woord in het <em>${escapeHTML(leftName)}</em> dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
-                } else {
-                    speakText = activeWord.definition;
-                    clueText = activeWord.term;
-                    correctWord = activeWord.definition.trim().toLowerCase();
-                    promptLabel = `Typ de vertaling in het <em>${escapeHTML(rightName)}</em> die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
-                }
-            } else {
-                if (answerWith === 'term') {
-                    speakText = activeWord.term;
-                    clueText = activeWord.definition;
-                    correctWord = activeWord.term.trim().toLowerCase();
-                    promptLabel = `Typ het woord dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
-                } else {
-                    speakText = activeWord.definition;
-                    clueText = activeWord.term;
-                    correctWord = activeWord.definition.trim().toLowerCase();
-                    promptLabel = `Typ de definitie die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
-                }
-            }
-
-            const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
-
-            modeContent.innerHTML = `
-                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
-                    Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
-                </div>
-                <div class="prompt-text">${promptLabel}</div>
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;"><i class="fa-solid fa-volume-high"></i> Luister</button>
-                </div>
-                <div class="answer-form">
-                    <input type="text" id="spellingInput" placeholder="Spelling..." autofocus autocomplete="off">
-                    <button class="btn" id="spellingSubmitBtn">Controleren</button>
-                </div>
-                <div id="spellingFeedback"></div>
-            `;
-
-            const input = document.getElementById('spellingInput');
-            const submitBtn = document.getElementById('spellingSubmitBtn');
-            const speakBtn = document.getElementById('speakWordBtn');
-
-            input.focus();
-
-            const speakLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
-            
-            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
-            if (savedAutoPlay) {
-                speakSpellingWord(speakText, speakLang);
-            }
-
-            speakBtn.addEventListener('click', () => speakSpellingWord(speakText, speakLang));
-
-            const checkAnswer = () => {
-                if (submitBtn.textContent === 'Doorgaan') {
-                    renderSpelling();
-                    return;
-                }
-
-                const answer = input.value.trim().toLowerCase();
-
-                if (learnRetypeMode) {
-                    if (answer === correctWord) {
-                        renderSpelling();
-                    } else {
-                        document.getElementById('spellingFeedback').innerHTML = `
-                            <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(speakText)}</strong></div>
-                        `;
-                        input.value = '';
-                        input.focus();
-                    }
-                    return;
-                }
-
-                const activeItemProcessed = activeRepetitionQueue.shift();
-
-                if (answer === correctWord) {
-                    document.getElementById('spellingFeedback').innerHTML = `
-                        <div class="status-box correct">Super, exact goed gespeld! <i class="fa-solid fa-star" style="color: #eab308;"></i></div>
-                    `;
-                    input.disabled = true;
-                    submitBtn.disabled = true;
-
-                    activeItemProcessed.weight--;
-                    if (activeItemProcessed.weight > 0) {
-                        rescheduleItem(activeRepetitionQueue, activeItemProcessed);
-                    } else {
-                        activeCompletedCount++;
-                    }
-
-                    gameProgress.spelling = {
-                        queue: activeRepetitionQueue,
-                        completedCount: activeCompletedCount
-                    };
-                    saveProgressToDrive();
-
-                    setTimeout(() => {
-                        renderSpelling();
-                    }, 1000);
-                } else {
-                    const retypeEnabled = localStorage.getItem('quizy_retype_on_incorrect') !== 'false';
-
-                    activeItemProcessed.weight = Math.min(3, activeItemProcessed.weight + 1);
-                    rescheduleItem(activeRepetitionQueue, activeItemProcessed);
-
-                    gameProgress.spelling = {
-                        queue: activeRepetitionQueue,
-                        completedCount: activeCompletedCount
-                    };
-                    saveProgressToDrive();
-
-                    if (retypeEnabled) {
-                        learnRetypeMode = true;
-                        document.getElementById('spellingFeedback').innerHTML = `
-                            <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
-                        `;
-                        input.value = '';
-                        input.focus();
-                    } else {
-                        document.getElementById('spellingFeedback').innerHTML = `
-                            <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong></div>
-                        `;
-                        input.disabled = true;
-                        submitBtn.textContent = 'Doorgaan';
-                        submitBtn.focus();
-                    }
-                }
-            };
-
-            submitBtn.addEventListener('click', checkAnswer);
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') checkAnswer();
-            });
-        }
-
-        function speakSpellingWord(word, lang) {
-            if ('speechSynthesis' in window) {
-                try {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(word);
-                    utterance.lang = lang || 'nl-NL';
-                    window.speechSynthesis.speak(utterance);
-                } catch (e) {
-                    console.warn("Spraaksynthese mislukt:", e);
-                }
-            }
-        }
-
-        function renderMatch() {
-            barContainer.classList.add('hidden');
-
-            if (matchTimerInterval) {
-                clearInterval(matchTimerInterval);
-                matchTimerInterval = null;
-            }
-
-            const shuffled = shuffleArray(setTerms);
-            const sample = shuffled.slice(0, Math.min(6, setTerms.length));
-
-            const cards = [];
-            sample.forEach((item, index) => {
-                cards.push({ text: item.term, type: 'term', index: index });
-                cards.push({ text: item.definition, type: 'definition', index: index });
-            });
-
-            const shuffledCards = shuffleArray(cards);
-
-            let gridHTML = '';
-            shuffledCards.forEach(card => {
-                gridHTML += `
-                    <div class="match-card" data-index="${card.index}" data-type="${card.type}" onclick="selectMatchCard(this)">
-                        ${escapeHTML(card.text)}
-                    </div>
-                `;
-            });
-
-            modeContent.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-                    <h3 style="margin: 0; font-size: 1.25rem;">Tijd: <strong id="matchTimer" style="color: var(--brand-color);">0.0s</strong></h3>
-                    <button class="btn btn-secondary btn-sm" onclick="renderMatch()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
-                </div>
-                <div class="match-grid">
-                    ${gridHTML}
-                </div>
-            `;
-
-            matchStartTime = Date.now();
-            matchTimerInterval = setInterval(() => {
-                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
-                const timerEl = document.getElementById('matchTimer');
-                if (timerEl) {
-                    timerEl.textContent = `${elapsed}s`;
-                }
-            }, 100);
-        }
-
-        let firstSelectedCard = null;
-        let isProcessingMatch = false;
-
-        function selectMatchCard(cardEl) {
-            if (isProcessingMatch) return;
-            if (cardEl.classList.contains('matched') || cardEl.classList.contains('selected')) return;
-
-            cardEl.classList.add('selected');
-
-            if (!firstSelectedCard) {
-                firstSelectedCard = cardEl;
-                return;
-            }
-
-            const idx1 = firstSelectedCard.dataset.index;
-            const type1 = firstSelectedCard.dataset.type;
-            const idx2 = cardEl.dataset.index;
-            const type2 = cardEl.dataset.type;
-
-            if (idx1 === idx2 && type1 !== type2) {
-                firstSelectedCard.classList.remove('selected');
-                cardEl.classList.remove('selected');
-
-                firstSelectedCard.classList.add('matched');
-                cardEl.classList.add('matched');
-
-                firstSelectedCard = null;
-
-                const totalCards = document.querySelectorAll('.match-card');
-                const matchedCards = document.querySelectorAll('.match-card.matched');
-                if (totalCards.length === matchedCards.length) {
-                    clearInterval(matchTimerInterval);
-                    const elapsed = parseFloat(((Date.now() - matchStartTime) / 1000).toFixed(1));
-
-                    saveProgressToDrive(true);
-                    updateStudyStreak(elapsed);
-
-                    setTimeout(() => {
-                        modeContent.innerHTML = `
-                            <div class="completed-screen">
-                                <div class="completed-icon" style="color: #22c55e; font-size: 3.5rem; margin-bottom: 20px;"><i class="fa-solid fa-trophy"></i></div>
-                                <h2>Spel voltooid!</h2>
-                                <p style="color:#64748b; margin-bottom: 10px; font-size: 1.15rem;">Je hebt alle kaarten verbonden in <strong style="color: var(--brand-color);">${elapsed} seconden</strong>!</p>
-                                <div style="display:flex; justify-content:center; gap:15px;">
-                                    <button class="btn btn-secondary" onclick="renderMatch()">Nog een keer</button>
-                                    <button class="btn" id="backToSetBtnCompleted">Terug naar de set</button>
-                                </div>
-                            </div>
-                        `;
-                        document.getElementById('backToSetBtnCompleted').addEventListener('click', () => {
-                            document.getElementById('backToSetBtn').click();
-                        });
-                    }, 500);
-                }
-            } else {
-                isProcessingMatch = true;
-                firstSelectedCard.classList.add('incorrect');
-                cardEl.classList.add('incorrect');
-
-                setTimeout(() => {
-                    firstSelectedCard.classList.remove('selected', 'incorrect');
-                    cardEl.classList.remove('selected', 'incorrect');
-                    firstSelectedCard = null;
-                    isProcessingMatch = false;
-                }, 500);
-            }
-        }
 
         async function getOrCreateFolderId() {
             return 'appDataFolder';
@@ -2334,16 +1457,11 @@
         async function updateStudyStreak(matchTime = null, testPercentage = null) {
             try {
                 const fId = await getOrCreateFolderId();
-                const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and '${fId}' in parents and trashed=false`, {
-                    headers: { 'Authorization': `Bearer ${TOKEN}` }
-                });
+                const response = await driveRequest(`${DRIVE_BASE}/files?spaces=appDataFolder&q=name='quizy_config.json' and '${fId}' in parents and trashed=false`);
                 const data = await response.json();
                 if (data.files && data.files.length > 0) {
                     const cfgId = data.files[0].id;
-                    const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${cfgId}?alt=media`, {
-                        headers: { 'Authorization': `Bearer ${TOKEN}` }
-                    });
-                    const config = await contentResponse.json();
+                    const config = await driveGetJSON(cfgId);
 
                     const todayStr = new Date().toISOString().split('T')[0];
                     if (!config.streak) config.streak = 0;
@@ -2400,14 +1518,7 @@
 
                     config.updatedAt = new Date().toISOString();
 
-                    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${cfgId}?uploadType=media`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Authorization': `Bearer ${TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(config)
-                    });
+                    await drivePatchJSON(cfgId, config);
                 }
             } catch (err) {
                 console.error("Fout bij bijwerken streak:", err);
@@ -2553,12 +1664,9 @@
                 clearTimeout(saveTimeout);
                 saveTimeout = null;
 
-                fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
                     method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(setFile),
                     keepalive: true
                 }).catch(err => {
