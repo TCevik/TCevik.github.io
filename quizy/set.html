@@ -192,7 +192,7 @@
                     </div>
 
                     <!-- Panel Inner Screen Content -->
-                    <div id="modeContent">
+                    <div id="modeContent" style="position: relative;">
                         <!-- Dynamic screens will load here -->
                     </div>
                 </div>
@@ -1305,13 +1305,11 @@
 
                 const realIndex = currentSetData.items.indexOf(activeWord);
                 modeContent.innerHTML = `
+                    <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; z-index: 10;" title="Moeilijk woord markeren">
+                        <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+                    </button>
                     ${statsHTML}
-                    <div style="position: relative; display: flex; justify-content: center; align-items: center; max-width: 600px; margin: 0 auto 20px;">
-                        <div class="prompt-text" style="margin: 0; padding-right: 40px; flex: 1;">${promptText}</div>
-                        <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; flex-shrink: 0;" title="Moeilijk woord markeren">
-                            <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
-                        </button>
-                    </div>
+                    <div class="prompt-text">${promptText}</div>
                     <div class="choices-grid">
                         ${optionsHTML}
                     </div>
@@ -1361,13 +1359,11 @@
 
                 const realIndex = currentSetData.items.indexOf(activeWord);
                 modeContent.innerHTML = `
+                    <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; z-index: 10;" title="Moeilijk woord markeren">
+                        <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+                    </button>
                     ${statsHTML}
-                    <div style="position: relative; display: flex; justify-content: center; align-items: center; max-width: 600px; margin: 0 auto 20px;">
-                        <div class="prompt-text" style="margin: 0; padding-right: 40px; flex: 1;">${questionLabel}</div>
-                        <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; flex-shrink: 0;" title="Moeilijk woord markeren">
-                            <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
-                        </button>
-                    </div>
+                    <div class="prompt-text">${questionLabel}</div>
                     <div class="answer-form">
                         <input type="text" id="learnInput" placeholder="${placeholderText}" autofocus autocomplete="off">
                         <button class="btn" id="learnSubmitBtn">Controleren</button>
@@ -1574,15 +1570,13 @@
 
             const realIndex = currentSetData.items.indexOf(activeWord);
             modeContent.innerHTML = `
+                <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; z-index: 10;" title="Moeilijk woord markeren">
+                    <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+                </button>
                 <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
                     Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
                 </div>
-                <div style="position: relative; display: flex; justify-content: center; align-items: center; max-width: 600px; margin: 0 auto 20px;">
-                    <div class="prompt-text" style="margin: 0; padding-right: 40px; flex: 1;">${promptText}</div>
-                    <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; flex-shrink: 0;" title="Moeilijk woord markeren">
-                        <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
-                    </button>
-                </div>
+                <div class="prompt-text">${promptText}</div>
                 <div class="choices-grid">
                     ${optionsHTML}
                 </div>
