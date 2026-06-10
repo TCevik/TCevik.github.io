@@ -1650,8 +1650,6 @@
                     const todayStr = new Date().toISOString().split('T')[0];
                     if (!config.streak) config.streak = 0;
                     if (!config.streakFreezes) config.streakFreezes = 0;
-                    if (!config.totalWordsStudied) config.totalWordsStudied = 0;
-                    if (!config.totalSessions) config.totalSessions = 0;
                     if (!config.modesUsed) config.modesUsed = [];
 
                     let streakUpdated = false;
@@ -1685,8 +1683,6 @@
                     }
 
                     config.lastStudyDate = todayStr;
-                    config.totalWordsStudied += setTerms.length;
-                    config.totalSessions += 1;
 
                     if (currentMode && !config.modesUsed.includes(currentMode)) {
                         config.modesUsed.push(currentMode);
