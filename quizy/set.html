@@ -579,6 +579,537 @@
                 padding: 16px 12px;
             }
         }
+
+        /* Practice / Exercise Styles */
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .practice-info h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .practice-info span {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            color: var(--brand-color);
+            border-bottom-color: var(--brand-color);
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            padding: 30px;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--brand-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .prompt-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-box {
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-box.correct {
+            background-color: #dcfce7;
+            color: #14532d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-box.incorrect {
+            background-color: #fee2e2;
+            color: #7f1d1d;
+            border: 1px solid #fca5a5;
+        }
+
+        .flashcard-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            margin: 0 auto 30px auto;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-front {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .card-back {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            transform: rotateY(180deg);
+            border-color: var(--border-color);
+        }
+
+        .flashcard-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .choice-btn {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s, background-color 0.2s, border-color 0.2s;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--brand-color);
+            background-color: var(--bg-primary);
+        }
+
+        .choice-btn.correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #14532d !important;
+        }
+
+        .choice-btn.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #7f1d1d !important;
+        }
+
+        .answer-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 450px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .answer-form input[type="text"] {
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            border-radius: 10px;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .answer-form input[type="text"]:focus {
+            border-color: var(--brand-color);
+        }
+
+        .test-question {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .test-question:last-child {
+            border-bottom: none;
+        }
+
+        .test-question-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .test-choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .test-radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .test-radio-label:hover {
+            background-color: var(--bg-primary);
+        }
+
+        .completed-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .completed-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .settings-popover {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 290px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: var(--shadow-md), 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 18px;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            opacity: 1;
+            visibility: visible;
+            transform-origin: top right;
+            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s;
+        }
+
+        .settings-popover.hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: scale(0.95) translateY(-8px);
+            pointer-events: none;
+            display: flex !important;
+        }
+
+        .settings-popover-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-option {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: opacity 0.2s ease;
+        }
+
+        .settings-option.hidden {
+            display: none !important;
+        }
+
+        .settings-option:has(.switch) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        input:checked+.slider {
+            background-color: var(--brand-color);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Custom Select */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 10px 36px 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1.5px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            border-radius: 10px;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .custom-select:focus {
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px var(--brand-glow);
+        }
+
+        .custom-select-wrapper::after {
+            content: "\f0d7";
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .practice-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .practice-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .mode-tabs {
+                gap: 5px;
+                padding-bottom: 8px;
+                margin-bottom: 20px;
+                scrollbar-width: none;
+            }
+
+            .mode-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .panel {
+                padding: 20px 16px;
+                min-height: auto;
+            }
+
+            .prompt-text {
+                font-size: 1.25rem;
+                margin-bottom: 16px;
+            }
+
+            .flashcard-wrapper {
+                height: 250px;
+                margin-bottom: 20px;
+            }
+
+            .card-front {
+                font-size: 1.5rem;
+            }
+
+            .card-back {
+                font-size: 1.3rem;
+            }
+
+            .choice-btn {
+                padding: 14px;
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 16px 12px;
+            }
+        }
+
+        /* Prompt Modal styling */
+        .prompt-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+
+        .prompt-modal-content {
+            background-color: var(--modal-bg);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .prompt-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 24px;
+        }
     </style>
 </head>
 
@@ -628,30 +1159,30 @@
                 <!-- Learning Options -->
                 <div class="study-section-title">Oefen deze set</div>
                 <div class="study-options-grid">
-                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=learn'">
+                    <div class="study-card" onclick="openExercise('learn')">
                         <div class="study-card-icon" style="color: #52873e;"><i class="fa-solid fa-book-open"></i></div>
                         <h3 class="study-card-title">Leren</h3>
                     </div>
-                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=test'">
+                    <div class="study-card" onclick="openExercise('test')">
                         <div class="study-card-icon" style="color: #3b82f6;"><i class="fa-solid fa-file-lines"></i>
                         </div>
                         <h3 class="study-card-title">Oefentoetsen</h3>
                     </div>
-                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=flashcards'">
+                    <div class="study-card" onclick="openExercise('flashcards')">
                         <div class="study-card-icon" style="color: #8b5cf6;"><i class="fa-solid fa-layer-group"></i>
                         </div>
                         <h3 class="study-card-title">Flashcards</h3>
                     </div>
-                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=choice'">
+                    <div class="study-card" onclick="openExercise('choice')">
                         <div class="study-card-icon" style="color: #10b981;"><i class="fa-solid fa-list-check"></i>
                         </div>
                         <h3 class="study-card-title">Meerkeuze</h3>
                     </div>
-                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=spelling'">
+                    <div class="study-card" onclick="openExercise('spelling')">
                         <div class="study-card-icon" style="color: #f59e0b;"><i class="fa-solid fa-keyboard"></i></div>
                         <h3 class="study-card-title">Spelling</h3>
                     </div>
-                    <div class="study-card" onclick="location.href='oefening.html?id=' + fileId + '&mode=match'">
+                    <div class="study-card" onclick="openExercise('match')">
                         <div class="study-card-icon" style="color: #ec4899;"><i class="fa-solid fa-puzzle-piece"></i>
                         </div>
                         <h3 class="study-card-title">Verbinden</h3>
@@ -666,6 +1197,78 @@
 
                 <div id="termsList" class="terms-list">
                     <!-- Terms row will load dynamically -->
+                </div>
+            </div>
+
+            <!-- Oefening Workspace -->
+            <div id="exerciseWorkspace" class="hidden">
+                <div class="practice-header">
+                    <div class="practice-info">
+                        <h1 id="setLabelTitle">Set Titel</h1>
+                        <span id="setLabelCount">0 kaarten</span>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: relative;">
+                        <!-- Instellingen Knop -->
+                        <button id="practiceSettingsBtn" class="btn btn-secondary btn-sm" title="Instellingen">
+                            <i class="fa-solid fa-gear"></i> Instellingen
+                        </button>
+                        <button id="backToSetBtn" class="btn btn-secondary btn-sm">Terug naar de set</button>
+
+                        <!-- Instellingen Popover -->
+                        <div id="practiceSettingsPopover" class="settings-popover hidden">
+                            <div class="settings-popover-header">
+                                <h3><i class="fa-solid fa-sliders"></i> Opties</h3>
+                            </div>
+                            <!-- Swap settings -->
+                            <div class="settings-option" id="swapSettingsContainer">
+                                <label for="answerWithSelect" class="option-label">Vraag met:</label>
+                                <div class="custom-select-wrapper">
+                                    <select id="answerWithSelect" class="custom-select">
+                                        <option value="definition">Term (Antwoord met definitie)</option>
+                                        <option value="term">Definitie (Antwoord met term)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Star filter -->
+                            <div class="settings-option" id="starredFilterContainer">
+                                <span class="option-label"><i class="fa-solid fa-star" style="color: #eab308;"></i>
+                                    Moeilijke woorden</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="starredFilterToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="mode-tabs">
+                    <button class="tab-btn" id="tab-learn" onclick="switchMode('learn')"><i
+                            class="fa-solid fa-book-open"></i> Leren</button>
+                    <button class="tab-btn" id="tab-test" onclick="switchMode('test')"><i
+                            class="fa-solid fa-file-lines"></i> Oefentoets</button>
+                    <button class="tab-btn" id="tab-flashcards" onclick="switchMode('flashcards')"><i
+                            class="fa-solid fa-layer-group"></i> Flashcards</button>
+                    <button class="tab-btn" id="tab-choice" onclick="switchMode('choice')"><i
+                            class="fa-solid fa-list-check"></i> Meerkeuze</button>
+                    <button class="tab-btn" id="tab-spelling" onclick="switchMode('spelling')"><i
+                            class="fa-solid fa-keyboard"></i> Spelling</button>
+                    <button class="tab-btn" id="tab-match" onclick="switchMode('match')"><i
+                            class="fa-solid fa-puzzle-piece"></i> Verbinden</button>
+                </div>
+
+                <!-- Play Board Panel -->
+                <div class="panel" id="playPanel">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container" id="barContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+
+                    <!-- Panel Inner Screen Content -->
+                    <div id="modeContent">
+                        <!-- Dynamic screens will load here -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -786,6 +1389,18 @@
         </div>
     </div>
 
+    <!-- Resume Prompt Modal -->
+    <div id="resumeModal" class="prompt-modal hidden">
+        <div class="prompt-modal-content">
+            <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: var(--text-primary);">Voortgang gevonden!</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">Je hebt al eerder geoefend met deze leermethode. Wil je verdergaan waar je gebleven was?</p>
+            <div class="prompt-modal-actions">
+                <button class="btn btn-secondary" onclick="startFresh()">Opnieuw starten</button>
+                <button class="btn" onclick="resumeProgress()">Verdergaan</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <a href="home.html" class="bottom-nav-item active">
@@ -901,6 +1516,12 @@
                 };
 
                 renderSet();
+
+                const currentParams = new URLSearchParams(window.location.search);
+                const modeParam = currentParams.get('mode');
+                if (modeParam) {
+                    openExercise(modeParam);
+                }
             } catch (error) {
                 console.error("Fout bij ophalen set:", error);
                 loadingIndicator.innerHTML = "<span>Fout bij het laden van de set details. Controleer of de set bestaat.</span>";
@@ -1400,6 +2021,1368 @@
                 window.location.href = 'index.html';
             });
         }
+
+        // ==========================================
+        // STATE VARIABLES & FUNCTIONS FOR EXERCISE MODES
+        // ==========================================
+        let currentMode = 'learn';
+        let gameProgress = {};
+        let currentIdx = 0;
+        let learnRetypeMode = false;
+        let generatedQuestions = [];
+        let flashcardStates = { known: [], unknown: [] };
+        let flashcardQueue = [];
+        let activeRepetitionQueue = [];
+        let activeCompletedCount = 0;
+        let setTerms = [];
+        let setFile = null;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let saveTimeout = null;
+
+        const barContainer = document.getElementById('barContainer');
+        const progressBar = document.getElementById('progressBar');
+        const modeContent = document.getElementById('modeContent');
+        const resumeModal = document.getElementById('resumeModal');
+
+        // Shuffle helper
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Open exercise workspace directly
+        function openExercise(mode) {
+            currentMode = mode;
+            setFile = currentSetData;
+            setTerms = getActiveTerms();
+
+            // Silently update URL mode parameter
+            const newUrl = `${window.location.pathname}?id=${fileId}&mode=${mode}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            // Hide set content, show exercise
+            document.getElementById('setContent').classList.add('hidden');
+            document.getElementById('exerciseWorkspace').classList.remove('hidden');
+
+            // Set titles
+            document.getElementById('setLabelTitle').textContent = currentSetData.title;
+            document.getElementById('setLabelCount').textContent = `${setTerms.length} ${setTerms.length === 1 ? 'kaart' : 'kaarten'}`;
+
+            if (!currentSetData.progress) {
+                currentSetData.progress = {};
+            }
+            gameProgress = currentSetData.progress;
+
+            const savedAnswerWith = localStorage.getItem('quizy_answer_with') || 'definition';
+            const answerWithSelect = document.getElementById('answerWithSelect');
+            if (answerWithSelect) {
+                if (currentSetData.isLanguageLearning) {
+                    const localesMap = {
+                        'nl-NL': 'Nederlands',
+                        'en-US': 'Engels',
+                        'fr-FR': 'Frans',
+                        'de-DE': 'Duits',
+                        'es-ES': 'Spaans',
+                        'it-IT': 'Italiaans',
+                        'tr-TR': 'Turks'
+                    };
+                    const leftName = localesMap[currentSetData.langLeft] || 'Taal 1';
+                    const rightName = localesMap[currentSetData.langRight] || 'Taal 2';
+                    answerWithSelect.innerHTML = `
+                          <option value="definition">${leftName} (Antwoord met ${rightName})</option>
+                          <option value="term">${rightName} (Antwoord met ${leftName})</option>
+                      `;
+                } else {
+                    answerWithSelect.innerHTML = `
+                          <option value="definition">Term (Antwoord met definitie)</option>
+                          <option value="term">Definitie (Antwoord met term)</option>
+                      `;
+                }
+                answerWithSelect.value = savedAnswerWith;
+                if (answerWithSelect.value !== savedAnswerWith) {
+                    answerWithSelect.value = 'definition';
+                }
+            }
+
+            checkSavedProgress();
+        }
+
+        // Back to set view handler
+        document.getElementById('backToSetBtn').addEventListener('click', () => {
+            if (matchTimerInterval) {
+                clearInterval(matchTimerInterval);
+                matchTimerInterval = null;
+            }
+            if (saveTimeout) {
+                clearTimeout(saveTimeout);
+                saveTimeout = null;
+                saveProgressToDrive(true);
+            }
+            const newUrl = `${window.location.pathname}?id=${fileId}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            document.getElementById('exerciseWorkspace').classList.add('hidden');
+            document.getElementById('setContent').classList.remove('hidden');
+            renderSet();
+        });
+
+        function checkSavedProgress() {
+            if (gameProgress[currentMode]) {
+                const prog = gameProgress[currentMode];
+                let hasProg = false;
+
+                if (currentMode === 'learn' && prog.currentIndex > 0 && prog.currentIndex < setTerms.length) hasProg = true;
+                if (currentMode === 'flashcards') {
+                    const knownCount = prog.known ? prog.known.length : 0;
+                    if (knownCount > 0 && knownCount < setTerms.length) {
+                        hasProg = true;
+                    }
+                }
+                if (currentMode === 'choice' || currentMode === 'spelling') {
+                    const completed = prog.completedCount || 0;
+                    if (completed > 0 && completed < setTerms.length && prog.queue && prog.queue.length > 0) {
+                        hasProg = true;
+                    }
+                }
+
+                if (hasProg) {
+                    resumeModal.classList.remove('hidden');
+                    return;
+                }
+            }
+            startFresh();
+        }
+
+        function getActiveTerms() {
+            if (!currentSetData || !currentSetData.items) return [];
+            const filterToggle = document.getElementById('starredFilterToggle');
+            if (filterToggle && filterToggle.checked) {
+                const starred = currentSetData.items.filter(item => item.starred);
+                if (starred.length === 0) {
+                    alert("Je hebt nog geen moeilijke woorden gemarkeerd in deze set! Selecteer eerst een paar sterren in de set details.");
+                    filterToggle.checked = false;
+                    return currentSetData.items || [];
+                }
+                return starred;
+            }
+            return currentSetData.items || [];
+        }
+
+        function startFresh() {
+            resumeModal.classList.add('hidden');
+            setTerms = getActiveTerms();
+            currentIdx = 0;
+            learnRetypeMode = false;
+            flashcardStates = { known: [], unknown: [] };
+            flashcardQueue = [];
+            activeRepetitionQueue = [];
+            activeCompletedCount = 0;
+
+            if (currentMode === 'flashcards') {
+                flashcardQueue = setTerms.map((_, i) => i);
+                gameProgress[currentMode] = { queue: flashcardQueue, known: [], unknown: [], currentIndex: 0 };
+            } else if (currentMode === 'choice' || currentMode === 'spelling') {
+                activeRepetitionQueue = setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                gameProgress[currentMode] = { queue: activeRepetitionQueue, completedCount: 0 };
+            } else if (currentMode !== 'test') {
+                gameProgress[currentMode] = { currentIndex: 0 };
+            }
+
+            launchMode();
+        }
+
+        function resumeProgress() {
+            resumeModal.classList.add('hidden');
+            setTerms = getActiveTerms();
+            const prog = gameProgress[currentMode];
+            if (currentMode === 'flashcards') {
+                flashcardStates.known = prog.known || [];
+                flashcardStates.unknown = prog.unknown || [];
+                flashcardQueue = prog.queue || setTerms.map((_, i) => i);
+                currentIdx = prog.currentIndex !== undefined ? prog.currentIndex : (flashcardStates.known.length + flashcardStates.unknown.length);
+            } else if (currentMode === 'choice' || currentMode === 'spelling') {
+                activeRepetitionQueue = prog.queue || setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                activeCompletedCount = prog.completedCount || 0;
+            } else {
+                currentIdx = prog.currentIndex || 0;
+            }
+            launchMode();
+        }
+
+        function switchMode(mode) {
+            if (matchTimerInterval) {
+                clearInterval(matchTimerInterval);
+                matchTimerInterval = null;
+            }
+            currentMode = mode;
+            const newUrl = `${window.location.pathname}?id=${fileId}&mode=${mode}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeTab = document.getElementById(`tab-${mode}`);
+            if (activeTab) activeTab.classList.add('active');
+
+            learnRetypeMode = false;
+            checkSavedProgress();
+        }
+
+        function launchMode() {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeTab = document.getElementById(`tab-${currentMode}`);
+            if (activeTab) activeTab.classList.add('active');
+
+            const swapContainer = document.getElementById('swapSettingsContainer');
+            if (swapContainer) {
+                if (currentMode === 'test' || currentMode === 'match') {
+                    swapContainer.classList.add('hidden');
+                } else {
+                    swapContainer.classList.remove('hidden');
+                }
+            }
+
+            if (currentMode === 'learn') {
+                renderLearn();
+            } else if (currentMode === 'test') {
+                renderTest();
+            } else if (currentMode === 'flashcards') {
+                renderFlashcards();
+            } else if (currentMode === 'choice') {
+                renderChoice();
+            } else if (currentMode === 'spelling') {
+                renderSpelling();
+            } else if (currentMode === 'match') {
+                renderMatch();
+            }
+        }
+
+        async function saveProgressToDrive(immediate = false) {
+            setFile.progress = gameProgress;
+            setFile.updatedAt = new Date().toISOString();
+
+            if (saveTimeout) {
+                clearTimeout(saveTimeout);
+                saveTimeout = null;
+            }
+
+            const performSave = async () => {
+                try {
+                    const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${TOKEN}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(setFile),
+                        keepalive: true
+                    });
+                    if (!response.ok) console.warn("Opslaan van voortgang mislukt.");
+                } catch (err) {
+                    console.error("Fout bij opslaan voortgang:", err);
+                }
+            };
+
+            if (immediate) {
+                await performSave();
+            } else {
+                saveTimeout = setTimeout(performSave, 2000);
+            }
+        }
+
+        function updateProgressBar(percentage) {
+            barContainer.classList.remove('hidden');
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function renderLearn() {
+            if (currentIdx >= setTerms.length) {
+                renderCompletedScreen('learn', '📖 Leren voltooid!');
+                return;
+            }
+
+            const pct = Math.round((currentIdx / setTerms.length) * 100);
+            updateProgressBar(pct);
+
+            const activeWord = setTerms[currentIdx];
+            learnRetypeMode = false;
+
+            const answerWith = document.getElementById('answerWithSelect').value;
+            let questionLabel, placeholderText, correctAnswer;
+
+            if (setFile.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+
+                if (answerWith === 'term') {
+                    questionLabel = `Wat is de vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>?`;
+                    placeholderText = `Typ het woord in het ${leftName}...`;
+                    correctAnswer = activeWord.term.trim();
+                } else {
+                    questionLabel = `Wat is de vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>?`;
+                    placeholderText = `Typ het woord in het ${rightName}...`;
+                    correctAnswer = activeWord.definition.trim();
+                }
+            } else {
+                if (answerWith === 'term') {
+                    questionLabel = `Wat is het woord voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>?`;
+                    placeholderText = "Typ het woord...";
+                    correctAnswer = activeWord.term.trim();
+                } else {
+                    questionLabel = `Wat is de definitie van: <br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>?`;
+                    placeholderText = "Typ de definitie...";
+                    correctAnswer = activeWord.definition.trim();
+                }
+            }
+
+            modeContent.innerHTML = `
+                <div class="prompt-text">${questionLabel}</div>
+                <div class="answer-form">
+                    <input type="text" id="learnInput" placeholder="${placeholderText}" autofocus autocomplete="off">
+                    <button class="btn" id="learnSubmitBtn">Controleren</button>
+                </div>
+                <div id="learnFeedback"></div>
+            `;
+
+            const input = document.getElementById('learnInput');
+            const submitBtn = document.getElementById('learnSubmitBtn');
+
+            input.focus();
+
+            const checkAnswer = () => {
+                const answer = input.value.trim().toLowerCase();
+                const correctWordLower = correctAnswer.toLowerCase();
+
+                if (learnRetypeMode) {
+                    if (answer === correctWordLower) {
+                        currentIdx++;
+                        gameProgress.learn.currentIndex = currentIdx;
+                        saveProgressToDrive();
+                        renderLearn();
+                    } else {
+                        document.getElementById('learnFeedback').innerHTML = `
+                            <div class="status-box incorrect">Nog niet helemaal juist. Typ exact over: <br><strong>${escapeHTML(correctAnswer)}</strong></div>
+                        `;
+                        input.value = '';
+                        input.focus();
+                    }
+                    return;
+                }
+
+                if (answer === correctWordLower) {
+                    document.getElementById('learnFeedback').innerHTML = `
+                        <div class="status-box correct">Goed zo! 🎉</div>
+                    `;
+                    input.disabled = true;
+                    submitBtn.disabled = true;
+
+                    setTimeout(() => {
+                        currentIdx++;
+                        gameProgress.learn.currentIndex = currentIdx;
+                        saveProgressToDrive();
+                        renderLearn();
+                    }, 1000);
+                } else {
+                    learnRetypeMode = true;
+                    document.getElementById('learnFeedback').innerHTML = `
+                        <div class="status-box incorrect">Fout. Het juiste antwoord is:<br><strong style="font-size:1.15rem">${escapeHTML(correctAnswer)}</strong><br><br>Typ het antwoord hierboven nu correct over om door te gaan.</div>
+                    `;
+                    input.value = '';
+                    input.focus();
+                }
+            };
+
+            submitBtn.addEventListener('click', checkAnswer);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkAnswer();
+            });
+        }
+
+        function renderTest() {
+            barContainer.classList.add('hidden');
+            generateTestQuestions();
+
+            let questionsHTML = '';
+            generatedQuestions.forEach((q, index) => {
+                questionsHTML += `
+                    <div class="test-question" data-idx="${index}">
+                        <div class="test-question-title">${index + 1}. ${escapeHTML(q.prompt)}</div>
+                `;
+
+                if (q.type === 'choice' || q.type === 'choice_reverse') {
+                    questionsHTML += `<div class="test-choices">`;
+                    q.options.forEach((opt, optIdx) => {
+                        questionsHTML += `
+                            <label class="test-radio-label">
+                                <input type="radio" name="q-${index}" value="${escapeHTML(opt)}">
+                                <span>${escapeHTML(opt)}</span>
+                            </label>
+                        `;
+                    });
+                    questionsHTML += `</div>`;
+                } else if (q.type === 'tf') {
+                    questionsHTML += `
+                        <div class="test-choices">
+                            <label class="test-radio-label">
+                                <input type="radio" name="q-${index}" value="True">
+                                <span>Waar</span>
+                            </label>
+                            <label class="test-radio-label">
+                                <input type="radio" name="q-${index}" value="False">
+                                <span>Niet Waar</span>
+                            </label>
+                        </div>
+                    `;
+                } else if (q.type === 'audio') {
+                    questionsHTML += `
+                        <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="speakSpellingWord('${escapeJS(q.audioText)}', '${escapeJS(q.lang || 'nl-NL')}')"><i class="fa-solid fa-volume-high"></i> Luister naar het woord</button>
+                        </div>
+                        <div class="answer-form" style="max-width:100%">
+                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Typ wat je hoort..." autocomplete="off">
+                        </div>
+                    `;
+                } else if (q.type === 'missing_letters') {
+                    questionsHTML += `
+                        <div style="margin-bottom: 15px; font-family: 'Courier New', Courier, monospace; font-size: 1.3rem; font-weight: bold; background: var(--bg-primary); padding: 10px 16px; border-radius: 8px; letter-spacing: 3px; white-space: pre-wrap; border: 1px solid var(--border-color); display: inline-block;">${escapeHTML(q.maskedTerm)}</div>
+                        <div class="answer-form" style="max-width:100%">
+                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Vul het hele woord in..." autocomplete="off">
+                        </div>
+                    `;
+                } else {
+                    questionsHTML += `
+                        <div class="answer-form" style="max-width:100%">
+                            <input type="text" class="test-open-input" name="q-${index}" placeholder="Jouw antwoord..." autocomplete="off">
+                        </div>
+                    `;
+                }
+
+                questionsHTML += `</div>`;
+            });
+
+            modeContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="margin:0; font-size:1.4rem;">Toets: ${escapeHTML(currentSetData.title)}</h2>
+                    <p style="color:#64748b; margin:5px 0 0 0;">Maak alle vragen om je toets na te kijken.</p>
+                </div>
+                <div>
+                    ${questionsHTML}
+                </div>
+                <div style="text-align: center; margin-top:30px;">
+                    <button class="btn" id="submitTestBtn">Toets nakijken</button>
+                </div>
+                <div id="testResults"></div>
+            `;
+
+            document.getElementById('submitTestBtn').addEventListener('click', checkTestAnswers);
+        }
+
+        function generateTestQuestions() {
+            generatedQuestions = [];
+            const shuffled = shuffleArray(setTerms);
+            const sample = shuffled.slice(0, Math.min(30, setTerms.length));
+
+            sample.forEach((item, index) => {
+                const questionTypes = ['choice', 'choice_reverse', 'open', 'tf', 'missing_letters', 'audio'];
+                const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+
+                if (type === 'choice') {
+                    const options = [item.definition];
+                    const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
+                    const shuffledOthers = shuffleArray(otherDefs);
+
+                    for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                        options.push(shuffledOthers[i]);
+                    }
+
+                    generatedQuestions.push({
+                        type: 'choice',
+                        prompt: `Wat is de definitie van: '${item.term}'?`,
+                        correctAnswer: item.definition,
+                        options: shuffleArray(options)
+                    });
+                } else if (type === 'choice_reverse') {
+                    const options = [item.term];
+                    const otherTerms = setTerms.filter(t => t.term !== item.term).map(t => t.term);
+                    const shuffledOthers = shuffleArray(otherTerms);
+
+                    for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                        options.push(shuffledOthers[i]);
+                    }
+
+                    generatedQuestions.push({
+                        type: 'choice_reverse',
+                        prompt: `Welk woord hoort bij de definitie: '${item.definition}'?`,
+                        correctAnswer: item.term,
+                        options: shuffleArray(options)
+                    });
+                } else if (type === 'tf') {
+                    const randomIsCorrect = Math.random() > 0.5;
+                    let displayDef = item.definition;
+                    if (!randomIsCorrect && setTerms.length > 1) {
+                        const others = setTerms.filter(t => t.definition !== item.definition);
+                        if (others.length > 0) {
+                            displayDef = others[Math.floor(Math.random() * others.length)].definition;
+                        }
+                    }
+
+                    generatedQuestions.push({
+                        type: 'tf',
+                        prompt: `Betekent '${item.term}' inderdaad '${displayDef}'?`,
+                        correctAnswer: randomIsCorrect ? 'True' : 'False',
+                        displayDef: displayDef,
+                        actualTerm: item.term,
+                        actualDef: item.definition
+                    });
+                } else if (type === 'missing_letters') {
+                    let maskedTerm = '';
+                    for (let i = 0; i < item.term.length; i++) {
+                        const char = item.term[i];
+                        if (char === ' ') {
+                            maskedTerm += ' ';
+                        } else if (i % 2 === 1 && i > 0 && i < item.term.length - 1) {
+                            maskedTerm += '_';
+                        } else {
+                            maskedTerm += char;
+                        }
+                    }
+
+                    if (!maskedTerm.includes('_') && item.term.length > 1) {
+                        maskedTerm = item.term.substring(0, item.term.length - 1) + '_';
+                    }
+
+                    generatedQuestions.push({
+                        type: 'missing_letters',
+                        prompt: `Vul de ontbrekende letters in van het woord behorende bij de definitie '${item.definition}':`,
+                        maskedTerm: maskedTerm,
+                        correctAnswer: item.term
+                    });
+                } else if (type === 'audio') {
+                    const audioLang = setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL';
+                    generatedQuestions.push({
+                        type: 'audio',
+                        prompt: `Luister naar het uitgesproken woord (clue: '${item.definition}') en typ het correcte woord:`,
+                        audioText: item.term,
+                        correctAnswer: item.term,
+                        lang: audioLang
+                    });
+                } else {
+                    generatedQuestions.push({
+                        type: 'open',
+                        prompt: `Vertaal/geef de definitie voor: '${item.term}'`,
+                        correctAnswer: item.definition
+                    });
+                }
+            });
+        }
+
+        function checkTestAnswers() {
+            let score = 0;
+            const testResultsDiv = document.getElementById('testResults');
+            let resultsHTML = '<h3 style="margin-top: 30px; font-size:1.3rem;">Nakijkresultaten:</h3>';
+
+            generatedQuestions.forEach((q, index) => {
+                let userAnswer = '';
+                if (q.type === 'choice' || q.type === 'choice_reverse' || q.type === 'tf') {
+                    const checked = document.querySelector(`input[name="q-${index}"]:checked`);
+                    userAnswer = checked ? checked.value : '';
+                } else {
+                    const input = document.querySelector(`input[name="q-${index}"]`);
+                    userAnswer = input ? input.value.trim() : '';
+                }
+
+                const isCorrect = userAnswer.toLowerCase() === q.correctAnswer.toLowerCase();
+                if (isCorrect) score++;
+
+                resultsHTML += `
+                    <div style="padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid ${isCorrect ? 'var(--correct-border)' : 'var(--incorrect-border)'}; background-color: ${isCorrect ? 'var(--correct-bg)' : 'var(--incorrect-bg)'}; color: var(--text-primary);">
+                        <strong>Vraag ${index + 1}: ${escapeHTML(q.prompt)}</strong><br>
+                        <span>Jouw antwoord: <span style="color:${isCorrect ? 'var(--correct-text)' : 'var(--incorrect-text)'}; font-weight: 600;">${escapeHTML(userAnswer || '(geen antwoord)')}</span></span><br>
+                        ${!isCorrect ? `<span>Juiste antwoord: <strong style="color:var(--correct-text)">${escapeHTML(q.correctAnswer === 'True' ? 'Waar' : q.correctAnswer === 'False' ? 'Niet Waar' : q.correctAnswer)}</strong></span>` : ''}
+                    </div>
+                `;
+            });
+
+            const percentage = Math.round((score / generatedQuestions.length) * 100);
+            const scoreGrade = (score / generatedQuestions.length * 9 + 1).toFixed(1);
+
+            resultsHTML = `
+                <div style="text-align: center; background: var(--result-banner-bg); padding: 25px; border-radius: 12px; margin-top: 35px; border: 1px solid var(--result-banner-border); color: var(--text-primary);">
+                    <div style="font-size: 3rem;">🎓</div>
+                    <h2 style="margin: 10px 0;">Je behaalde cijfer: <strong style="color: var(--brand-color);">${scoreGrade}</strong></h2>
+                    <p style="font-size: 1.1rem; color: var(--result-banner-text); margin: 0;">Je had ${score} van de ${generatedQuestions.length} vragen goed (${percentage}%).</p>
+                </div>
+                ${resultsHTML}
+            `;
+
+            testResultsDiv.innerHTML = resultsHTML;
+            document.getElementById('submitTestBtn').style.display = 'none';
+
+            updateStudyStreak(null, percentage);
+        }
+
+        function renderFlashcards() {
+            if (!flashcardQueue || flashcardQueue.length === 0) {
+                flashcardQueue = setTerms.map((_, i) => i);
+            }
+
+            if (currentIdx >= flashcardQueue.length) {
+                if (flashcardStates.unknown.length > 0) {
+                    const numUnknown = flashcardStates.unknown.length;
+                    modeContent.innerHTML = `
+                        <div class="completed-screen">
+                            <div class="completed-icon">🔁</div>
+                            <h2>Ronde voltooid!</h2>
+                            <p style="color:#64748b; margin-bottom: 30px;">Je hebt alle kaarten gehad. Laten we de ${numUnknown} ${numUnknown === 1 ? 'kaart' : 'kaarten'} die je nog niet wist opnieuw proberen!</p>
+                            <button class="btn" id="startNextRoundBtn">Volgende ronde starten</button>
+                        </div>
+                    `;
+                    document.getElementById('startNextRoundBtn').addEventListener('click', () => {
+                        flashcardQueue = [...flashcardStates.unknown];
+                        flashcardStates.unknown = [];
+                        currentIdx = 0;
+
+                        gameProgress.flashcards = {
+                            queue: flashcardQueue,
+                            known: flashcardStates.known,
+                            unknown: flashcardStates.unknown,
+                            currentIndex: currentIdx
+                        };
+                        saveProgressToDrive();
+                        renderFlashcards();
+                    });
+                    return;
+                } else {
+                    renderCompletedScreen('flashcards', '📇 Flashcards voltooid!');
+                    return;
+                }
+            }
+
+            const pct = Math.round((currentIdx / flashcardQueue.length) * 100);
+            updateProgressBar(pct);
+
+            const termRealIdx = flashcardQueue[currentIdx];
+            const activeWord = setTerms[termRealIdx];
+
+            const answerWith = document.getElementById('answerWithSelect').value;
+            let frontText, backText, frontLang, backLang;
+            if (answerWith === 'term') {
+                frontText = activeWord.definition;
+                backText = activeWord.term;
+            } else {
+                frontText = activeWord.term;
+                backText = activeWord.definition;
+            }
+
+            frontLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL');
+            backLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL');
+
+            modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Kaart ${currentIdx + 1} / ${flashcardQueue.length} (Ronde) | Weet ik: ${flashcardStates.known.length}, Nog niet: ${flashcardStates.unknown.length}
+                </div>
+
+                <div class="flashcard-wrapper" onclick="toggleFlip()">
+                    <div class="flashcard" id="activeFlashcard" data-back-lang="${backLang}">
+                        <div class="card-face card-front">
+                            <div>${escapeHTML(frontText)}</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <div>${escapeHTML(backText)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; align-items: center;">
+                    <input type="checkbox" id="autoPlayAudioToggle" style="width: auto; cursor: pointer;">
+                    <label for="autoPlayAudioToggle" style="font-size: 0.95rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-volume-high"></i> Automatisch uitspreken</label>
+                </div>
+
+                <div class="flashcard-actions">
+                    <button class="btn btn-danger" id="dontKnowBtn">❌ Weet ik niet</button>
+                    <button class="btn" id="knowBtn">✅ Weet ik</button>
+                </div>
+            `;
+
+            const autoPlayCheckbox = document.getElementById('autoPlayAudioToggle');
+            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
+            if (autoPlayCheckbox) {
+                autoPlayCheckbox.checked = savedAutoPlay;
+                autoPlayCheckbox.addEventListener('change', () => {
+                    localStorage.setItem('quizy_auto_play_audio', autoPlayCheckbox.checked);
+                });
+            }
+
+            if (savedAutoPlay) {
+                setTimeout(() => {
+                    speakSpellingWord(frontText, frontLang);
+                }, 100);
+            }
+
+            document.getElementById('knowBtn').addEventListener('click', () => recordFlashcardResult(true));
+            document.getElementById('dontKnowBtn').addEventListener('click', () => recordFlashcardResult(false));
+        }
+
+        function toggleFlip() {
+            const card = document.getElementById('activeFlashcard');
+            if (card) {
+                card.classList.toggle('flipped');
+
+                const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
+                if (savedAutoPlay && card.classList.contains('flipped')) {
+                    const backText = card.querySelector('.card-back div').textContent;
+                    const backLang = card.dataset.backLang || 'nl-NL';
+                    speakSpellingWord(backText, backLang);
+                }
+            }
+        }
+
+        function recordFlashcardResult(known) {
+            const termRealIdx = flashcardQueue[currentIdx];
+            if (known) {
+                if (!flashcardStates.known.includes(termRealIdx)) {
+                    flashcardStates.known.push(termRealIdx);
+                }
+            } else {
+                if (!flashcardStates.unknown.includes(termRealIdx)) {
+                    flashcardStates.unknown.push(termRealIdx);
+                }
+            }
+
+            currentIdx++;
+
+            gameProgress.flashcards = {
+                queue: flashcardQueue,
+                known: flashcardStates.known,
+                unknown: flashcardStates.unknown,
+                currentIndex: currentIdx
+            };
+            saveProgressToDrive();
+            renderFlashcards();
+        }
+
+        function renderChoice() {
+            if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
+                renderCompletedScreen('choice', '✅ Meerkeuze voltooid!');
+                return;
+            }
+
+            const pct = Math.round((activeCompletedCount / setTerms.length) * 100);
+            updateProgressBar(pct);
+
+            const activeItem = activeRepetitionQueue[0];
+            const activeWord = setTerms[activeItem.index];
+            const answerWith = document.getElementById('answerWithSelect').value;
+
+            let correctAns, promptText, optionsSource;
+            if (setFile.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+
+                if (answerWith === 'term') {
+                    correctAns = activeWord.term;
+                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
+                } else {
+                    correctAns = activeWord.definition;
+                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+                }
+            } else {
+                if (answerWith === 'term') {
+                    correctAns = activeWord.term;
+                    promptText = `Kies het juiste woord voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
+                } else {
+                    correctAns = activeWord.definition;
+                    promptText = `Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+                }
+            }
+
+            const options = [correctAns];
+            const shuffledOthers = optionsSource.sort(() => 0.5 - Math.random());
+
+            for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                options.push(shuffledOthers[i]);
+            }
+
+            options.sort(() => 0.5 - Math.random());
+
+            let optionsHTML = '';
+            options.forEach(opt => {
+                optionsHTML += `
+                    <button class="choice-btn" onclick="selectChoice(this, '${escapeJS(opt)}', '${escapeJS(correctAns)}')">${escapeHTML(opt)}</button>
+                `;
+            });
+
+            const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
+
+            modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
+                </div>
+                <div class="prompt-text">${promptText}</div>
+                <div class="choices-grid">
+                    ${optionsHTML}
+                </div>
+                <div id="choiceFeedback"></div>
+            `;
+        }
+
+        function selectChoice(button, selected, correct) {
+            const btns = document.querySelectorAll('.choice-btn');
+            btns.forEach(btn => btn.disabled = true);
+
+            const activeItem = activeRepetitionQueue.shift();
+
+            if (selected === correct) {
+                button.classList.add('correct');
+                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box correct">Goed beantwoord! 🎉</div>`;
+                activeItem.weight--;
+                if (activeItem.weight > 0) {
+                    activeRepetitionQueue.push(activeItem);
+                } else {
+                    activeCompletedCount++;
+                }
+            } else {
+                button.classList.add('incorrect');
+                btns.forEach(btn => {
+                    if (btn.innerText === correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+                document.getElementById('choiceFeedback').innerHTML = `<div class="status-box incorrect">Helaas, niet juist.</div>`;
+
+                activeItem.weight = Math.min(4, activeItem.weight + 1);
+                activeRepetitionQueue.push(activeItem);
+            }
+
+            gameProgress.choice = {
+                queue: activeRepetitionQueue,
+                completedCount: activeCompletedCount
+            };
+            saveProgressToDrive();
+
+            setTimeout(() => {
+                renderChoice();
+            }, 1200);
+        }
+
+        function renderSpelling() {
+            if (!activeRepetitionQueue || activeRepetitionQueue.length === 0) {
+                renderCompletedScreen('spelling', '✍️ Spelling voltooid!');
+                return;
+            }
+
+            const pct = Math.round((activeCompletedCount / setTerms.length) * 100);
+            updateProgressBar(pct);
+
+            const activeItem = activeRepetitionQueue[0];
+            const activeWord = setTerms[activeItem.index];
+            learnRetypeMode = false;
+
+            const answerWith = document.getElementById('answerWithSelect').value;
+            let speakText, clueText, correctWord, promptLabel;
+
+            if (setFile.isLanguageLearning) {
+                const localesMap = {
+                    'nl-NL': 'Nederlands',
+                    'en-US': 'Engels',
+                    'fr-FR': 'Frans',
+                    'de-DE': 'Duits',
+                    'es-ES': 'Spaans',
+                    'it-IT': 'Italiaans',
+                    'tr-TR': 'Turks'
+                };
+                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
+                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+
+                if (answerWith === 'term') {
+                    speakText = activeWord.term;
+                    clueText = activeWord.definition;
+                    correctWord = activeWord.term.trim().toLowerCase();
+                    promptLabel = `Typ het woord in het <em>${escapeHTML(leftName)}</em> dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                } else {
+                    speakText = activeWord.definition;
+                    clueText = activeWord.term;
+                    correctWord = activeWord.definition.trim().toLowerCase();
+                    promptLabel = `Typ de vertaling in het <em>${escapeHTML(rightName)}</em> die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                }
+            } else {
+                if (answerWith === 'term') {
+                    speakText = activeWord.term;
+                    clueText = activeWord.definition;
+                    correctWord = activeWord.term.trim().toLowerCase();
+                    promptLabel = `Typ het woord dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                } else {
+                    speakText = activeWord.definition;
+                    clueText = activeWord.term;
+                    correctWord = activeWord.definition.trim().toLowerCase();
+                    promptLabel = `Typ de definitie die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+                }
+            }
+
+            const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
+
+            modeContent.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
+                    Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
+                </div>
+                <div class="prompt-text">${promptLabel}</div>
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;">🔊 Luister</button>
+                </div>
+                <div class="answer-form">
+                    <input type="text" id="spellingInput" placeholder="Spelling..." autofocus autocomplete="off">
+                    <button class="btn" id="spellingSubmitBtn">Controleren</button>
+                </div>
+                <div id="spellingFeedback"></div>
+            `;
+
+            const input = document.getElementById('spellingInput');
+            const submitBtn = document.getElementById('spellingSubmitBtn');
+            const speakBtn = document.getElementById('speakWordBtn');
+
+            input.focus();
+
+            const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL');
+            speakSpellingWord(speakText, speakLang);
+
+            speakBtn.addEventListener('click', () => speakSpellingWord(speakText, speakLang));
+
+            const checkAnswer = () => {
+                const answer = input.value.trim().toLowerCase();
+
+                if (learnRetypeMode) {
+                    if (answer === correctWord) {
+                        renderSpelling();
+                    } else {
+                        document.getElementById('spellingFeedback').innerHTML = `
+                            <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(speakText)}</strong></div>
+                        `;
+                        input.value = '';
+                        input.focus();
+                    }
+                    return;
+                }
+
+                const activeItemProcessed = activeRepetitionQueue.shift();
+
+                if (answer === correctWord) {
+                    document.getElementById('spellingFeedback').innerHTML = `
+                        <div class="status-box correct">Super, exact goed gespeld! 🌟</div>
+                    `;
+                    input.disabled = true;
+                    submitBtn.disabled = true;
+
+                    activeItemProcessed.weight--;
+                    if (activeItemProcessed.weight > 0) {
+                        activeRepetitionQueue.push(activeItemProcessed);
+                    } else {
+                        activeCompletedCount++;
+                    }
+
+                    gameProgress.spelling = {
+                        queue: activeRepetitionQueue,
+                        completedCount: activeCompletedCount
+                    };
+                    saveProgressToDrive();
+
+                    setTimeout(() => {
+                        renderSpelling();
+                    }, 1000);
+                } else {
+                    learnRetypeMode = true;
+                    document.getElementById('spellingFeedback').innerHTML = `
+                        <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
+                    `;
+                    input.value = '';
+                    input.focus();
+
+                    activeItemProcessed.weight = Math.min(4, activeItemProcessed.weight + 1);
+                    activeRepetitionQueue.push(activeItemProcessed);
+
+                    gameProgress.spelling = {
+                        queue: activeRepetitionQueue,
+                        completedCount: activeCompletedCount
+                    };
+                    saveProgressToDrive();
+                }
+            };
+
+            submitBtn.addEventListener('click', checkAnswer);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkAnswer();
+            });
+        }
+
+        function speakSpellingWord(word, lang) {
+            if ('speechSynthesis' in window) {
+                try {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(word);
+                    utterance.lang = lang || 'nl-NL';
+
+                    const voices = window.speechSynthesis.getVoices();
+                    if (voices.length > 0) {
+                        window.speechSynthesis.speak(utterance);
+                    } else {
+                        console.warn("Geen stemmen beschikbaar in deze browser.");
+                    }
+                } catch (e) {
+                    console.warn("Spraaksynthese mislukt:", e);
+                }
+            }
+        }
+
+        function renderMatch() {
+            barContainer.classList.add('hidden');
+
+            if (matchTimerInterval) {
+                clearInterval(matchTimerInterval);
+                matchTimerInterval = null;
+            }
+
+            const shuffled = shuffleArray(setTerms);
+            const sample = shuffled.slice(0, Math.min(6, setTerms.length));
+
+            const cards = [];
+            sample.forEach((item, index) => {
+                cards.push({ text: item.term, type: 'term', index: index });
+                cards.push({ text: item.definition, type: 'definition', index: index });
+            });
+
+            const shuffledCards = shuffleArray(cards);
+
+            let gridHTML = '';
+            shuffledCards.forEach(card => {
+                gridHTML += `
+                    <div class="match-card" data-index="${card.index}" data-type="${card.type}" onclick="selectMatchCard(this)">
+                        ${escapeHTML(card.text)}
+                    </div>
+                `;
+            });
+
+            modeContent.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                    <h3 style="margin: 0; font-size: 1.25rem;">Tijd: <strong id="matchTimer" style="color: var(--brand-color);">0.0s</strong></h3>
+                    <button class="btn btn-secondary btn-sm" onclick="renderMatch()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                </div>
+                <div class="match-grid">
+                    ${gridHTML}
+                </div>
+            `;
+
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                const timerEl = document.getElementById('matchTimer');
+                if (timerEl) {
+                    timerEl.textContent = `${elapsed}s`;
+                }
+            }, 100);
+        }
+
+        let firstSelectedCard = null;
+        let isProcessingMatch = false;
+
+        function selectMatchCard(cardEl) {
+            if (isProcessingMatch) return;
+            if (cardEl.classList.contains('matched') || cardEl.classList.contains('selected')) return;
+
+            cardEl.classList.add('selected');
+
+            if (!firstSelectedCard) {
+                firstSelectedCard = cardEl;
+                return;
+            }
+
+            const idx1 = firstSelectedCard.dataset.index;
+            const type1 = firstSelectedCard.dataset.type;
+            const idx2 = cardEl.dataset.index;
+            const type2 = cardEl.dataset.type;
+
+            if (idx1 === idx2 && type1 !== type2) {
+                firstSelectedCard.classList.remove('selected');
+                cardEl.classList.remove('selected');
+
+                firstSelectedCard.classList.add('matched');
+                cardEl.classList.add('matched');
+
+                firstSelectedCard = null;
+
+                const totalCards = document.querySelectorAll('.match-card');
+                const matchedCards = document.querySelectorAll('.match-card.matched');
+                if (totalCards.length === matchedCards.length) {
+                    clearInterval(matchTimerInterval);
+                    const elapsed = parseFloat(((Date.now() - matchStartTime) / 1000).toFixed(1));
+
+                    saveProgressToDrive(true);
+                    updateStudyStreak(elapsed);
+
+                    setTimeout(() => {
+                        modeContent.innerHTML = `
+                            <div class="completed-screen">
+                                <div class="completed-icon" style="color: #22c55e; font-size: 3.5rem; margin-bottom: 20px;"><i class="fa-solid fa-trophy"></i></div>
+                                <h2>Spel voltooid!</h2>
+                                <p style="color:#64748b; margin-bottom: 10px; font-size: 1.15rem;">Je hebt alle kaarten verbonden in <strong style="color: var(--brand-color);">${elapsed} seconden</strong>!</p>
+                                <div style="display:flex; justify-content:center; gap:15px;">
+                                    <button class="btn btn-secondary" onclick="renderMatch()">Nog een keer</button>
+                                    <button class="btn" id="backToSetBtnCompleted">Terug naar de set</button>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('backToSetBtnCompleted').addEventListener('click', () => {
+                            document.getElementById('backToSetBtn').click();
+                        });
+                    }, 500);
+                }
+            } else {
+                isProcessingMatch = true;
+                firstSelectedCard.classList.add('incorrect');
+                cardEl.classList.add('incorrect');
+
+                setTimeout(() => {
+                    firstSelectedCard.classList.remove('selected', 'incorrect');
+                    cardEl.classList.remove('selected', 'incorrect');
+                    firstSelectedCard = null;
+                    isProcessingMatch = false;
+                }, 500);
+            }
+        }
+
+        async function getOrCreateFolderId() {
+            return 'appDataFolder';
+        }
+
+        async function updateStudyStreak(matchTime = null, testPercentage = null) {
+            try {
+                const fId = await getOrCreateFolderId();
+                const response = await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='quizy_config.json' and '${fId}' in parents and trashed=false`, {
+                    headers: { 'Authorization': `Bearer ${TOKEN}` }
+                });
+                const data = await response.json();
+                if (data.files && data.files.length > 0) {
+                    const cfgId = data.files[0].id;
+                    const contentResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${cfgId}?alt=media`, {
+                        headers: { 'Authorization': `Bearer ${TOKEN}` }
+                    });
+                    const config = await contentResponse.json();
+
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    if (!config.streak) config.streak = 0;
+                    if (!config.streakFreezes) config.streakFreezes = 0;
+                    if (!config.totalWordsStudied) config.totalWordsStudied = 0;
+                    if (!config.totalSessions) config.totalSessions = 0;
+                    if (!config.modesUsed) config.modesUsed = [];
+
+                    let streakUpdated = false;
+
+                    if (config.lastStudyDate) {
+                        const lastDate = new Date(config.lastStudyDate);
+                        const today = new Date(todayStr);
+                        const diffTime = Math.abs(today - lastDate);
+                        const diffDays = Math.ceil(today - lastDate / (1000 * 60 * 60 * 24));
+
+                        if (diffDays === 1) {
+                            config.streak += 1;
+                            streakUpdated = true;
+                        } else if (diffDays > 1) {
+                            if (config.streakFreezes > 0) {
+                                config.streakFreezes--;
+                                config.streak += 1;
+                                streakUpdated = true;
+                            } else {
+                                config.streak = 1;
+                                streakUpdated = true;
+                            }
+                        }
+                    } else {
+                        config.streak = 1;
+                        streakUpdated = true;
+                    }
+
+                    if (streakUpdated && config.streak > 0 && config.streak % 30 === 0) {
+                        config.streakFreezes = Math.min(3, (config.streakFreezes || 0) + 1);
+                    }
+
+                    config.lastStudyDate = todayStr;
+                    config.totalWordsStudied += setTerms.length;
+                    config.totalSessions += 1;
+
+                    if (currentMode && !config.modesUsed.includes(currentMode)) {
+                        config.modesUsed.push(currentMode);
+                    }
+
+                    const hour = new Date().getHours();
+                    if (hour >= 22 || hour < 4) {
+                        config.nightOwlUnlocked = true;
+                    }
+                    if (hour >= 5 && hour < 9) {
+                        config.earlyBirdUnlocked = true;
+                    }
+
+                    config.updatedAt = new Date().toISOString();
+
+                    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${cfgId}?uploadType=media`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${TOKEN}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(config)
+                    });
+                }
+            } catch (err) {
+                console.error("Fout bij bijwerken streak:", err);
+            }
+        }
+
+        function renderCompletedScreen(mode, titleText) {
+            updateProgressBar(100);
+            updateStudyStreak();
+
+            gameProgress[mode] = { currentIndex: 0 };
+            if (mode === 'flashcards') {
+                gameProgress[mode] = { known: [], unknown: [] };
+            }
+            saveProgressToDrive(true);
+
+            modeContent.innerHTML = `
+                <div class="completed-screen">
+                    <div class="completed-icon" style="color: #52873e; font-size: 3.5rem; margin-bottom: 20px;"><i class="fa-solid fa-circle-check"></i></div>
+                    <h2>${escapeHTML(titleText)}</h2>
+                    <p style="color:#64748b; margin-bottom: 30px;">Goed gedaan, je hebt alle woorden in deze set geoefend met deze methode!</p>
+                    <div style="display:flex; justify-content:center; gap:15px;">
+                        <button class="btn btn-secondary" onclick="startFresh()">Nog een keer</button>
+                        <button class="btn" id="backToSetBtnCompletedScreen">Terug naar de set</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('backToSetBtnCompletedScreen').addEventListener('click', () => {
+                document.getElementById('backToSetBtn').click();
+            });
+        }
+
+        // Global listeners for exercise mode settings
+        const answerWithSelect = document.getElementById('answerWithSelect');
+        if (answerWithSelect) {
+            answerWithSelect.addEventListener('change', () => {
+                localStorage.setItem('quizy_answer_with', answerWithSelect.value);
+                if (currentMode === 'test') {
+                    generatedQuestions = [];
+                }
+                launchMode();
+            });
+        }
+
+        const starredFilterToggle = document.getElementById('starredFilterToggle');
+        if (starredFilterToggle) {
+            starredFilterToggle.addEventListener('change', (e) => {
+                const proceed = confirm("Weet je zeker dat je de filter voor moeilijke woorden wilt wijzigen? Dit zal je huidige oefensessie opnieuw opstarten.");
+                if (proceed) {
+                    startFresh();
+                } else {
+                    e.preventDefault();
+                    starredFilterToggle.checked = !starredFilterToggle.checked;
+                }
+            });
+        }
+
+        // Settings Popover toggle
+        const settingsBtn = document.getElementById('practiceSettingsBtn');
+        const settingsPopover = document.getElementById('practiceSettingsPopover');
+        if (settingsBtn && settingsPopover) {
+            settingsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                settingsPopover.classList.toggle('hidden');
+            });
+            settingsPopover.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            document.addEventListener('click', () => {
+                settingsPopover.classList.add('hidden');
+            });
+        }
+
+        // Keyboard shortcuts listener (only active when exercise workspace is visible)
+        window.addEventListener('keydown', (e) => {
+            const workspaceEl = document.getElementById('exerciseWorkspace');
+            if (!workspaceEl || workspaceEl.classList.contains('hidden')) {
+                return;
+            }
+            if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                return;
+            }
+
+            if (currentMode === 'flashcards') {
+                if (e.key === ' ') {
+                    e.preventDefault();
+                    toggleFlip();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const dontKnowBtn = document.getElementById('dontKnowBtn');
+                    if (dontKnowBtn) dontKnowBtn.click();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const knowBtn = document.getElementById('knowBtn');
+                    if (knowBtn) knowBtn.click();
+                }
+            }
+        });
+
+        // Unload & Close page auto-saves
+        window.addEventListener('beforeunload', (e) => {
+            const workspaceEl = document.getElementById('exerciseWorkspace');
+            if (workspaceEl && !workspaceEl.classList.contains('hidden') && saveTimeout) {
+                saveProgressToDrive(true);
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        window.addEventListener('pagehide', () => {
+            const workspaceEl = document.getElementById('exerciseWorkspace');
+            if (workspaceEl && !workspaceEl.classList.contains('hidden') && saveTimeout) {
+                clearTimeout(saveTimeout);
+                saveTimeout = null;
+
+                fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(setFile),
+                    keepalive: true
+                }).catch(err => {
+                    console.warn("Fout bij opslaan voortgang tijdens sluiten pagina:", err);
+                });
+            }
+        });
 
         // Theme toggling logic
         const themeToggleBtn = document.getElementById('themeToggle');
