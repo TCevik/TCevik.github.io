@@ -1192,9 +1192,12 @@
                         <div class="set-meta">
                             <span id="setViewCount">0 kaarten</span>
                             <span id="setViewUpdated">Bijgewerkt: -</span>
+                            <span id="setViewSharedBy" class="hidden"></span>
                         </div>
                     </div>
-                    <div class="set-actions">
+                    <div class="set-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button id="shareSetBtn" class="btn btn-secondary" style="background-color: #3b82f6;"><i class="fa-solid fa-share-nodes"></i> Delen</button>
+                        <button id="saveSharedSetBtn" class="btn hidden" style="background-color: #10b981;"><i class="fa-solid fa-cloud-arrow-down"></i> Set opslaan</button>
                         <button id="editSetBtn" class="btn"><i class="fa-solid fa-pen"></i> Bewerken</button>
                         <button id="deleteSetBtn" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i>
                             Verwijderen</button>
@@ -1457,6 +1460,24 @@
         </div>
     </div>
 
+    <!-- Modal voor Set Delen -->
+    <div id="shareModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Set delen</h3>
+                <button id="closeShareModalBtn" class="close-btn">&times;</button>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">Kopieer de onderstaande link om deze set te delen met anderen. Iedereen met deze link kan de set bekijken en oefenen.</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="text" id="shareLinkInput" readonly style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%;">
+                <button id="copyShareLinkBtn" class="btn"><i class="fa-solid fa-copy"></i> Kopieer</button>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button id="closeShareBtn" class="btn btn-secondary">Sluiten</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Resume Prompt Modal -->
     <div id="resumeModal" class="prompt-modal hidden">
         <div class="prompt-modal-content">
@@ -1516,12 +1537,13 @@
         // URL parameters controleren
         const urlParams = new URLSearchParams(window.location.search);
         const fileId = urlParams.get('id');
+        const shareData = urlParams.get('share');
 
-        if (!TOKEN) {
+        if (!TOKEN && !shareData) {
             window.location.href = 'index.html';
         }
 
-        if (!fileId) {
+        if (!fileId && !shareData) {
             window.location.href = 'home.html';
         }
 
@@ -1537,6 +1559,15 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const editSetBtn = document.getElementById('editSetBtn');
         const deleteSetBtn = document.getElementById('deleteSetBtn');
+        const shareSetBtn = document.getElementById('shareSetBtn');
+        const saveSharedSetBtn = document.getElementById('saveSharedSetBtn');
+
+        // Share Modal elements
+        const shareModal = document.getElementById('shareModal');
+        const shareLinkInput = document.getElementById('shareLinkInput');
+        const copyShareLinkBtn = document.getElementById('copyShareLinkBtn');
+        const closeShareModalBtn = document.getElementById('closeShareModalBtn');
+        const closeShareBtn = document.getElementById('closeShareBtn');
 
         // Modal elementen
         const setModal = document.getElementById('setModal');
@@ -1556,6 +1587,37 @@
 
         // Set ophalen
         async function fetchSetDetails() {
+            if (shareData) {
+                try {
+                    const decodedStr = decodeURIComponent(escape(atob(shareData)));
+                    const content = JSON.parse(decodedStr);
+                    currentSetData = {
+                        id: null,
+                        name: 'Gedeelde set',
+                        modifiedTime: new Date().toISOString(),
+                        title: content.title || 'Gedeelde set',
+                        items: content.items || [],
+                        isLanguageLearning: content.isLanguageLearning || false,
+                        langLeft: content.langLeft || 'nl-NL',
+                        langRight: content.langRight || 'en-US',
+                        sharedBy: content.sharedBy || 'Een Quizy-gebruiker',
+                        progress: {}
+                    };
+
+                    renderSet();
+
+                    const currentParams = new URLSearchParams(window.location.search);
+                    const modeParam = currentParams.get('mode');
+                    if (modeParam) {
+                        openExercise(modeParam);
+                    }
+                } catch (error) {
+                    console.error("Fout bij ophalen gedeelde set:", error);
+                    loadingIndicator.innerHTML = "<span>Fout bij het laden van de gedeelde set details. De link is mogelijk incompleet of ongeldig.</span>";
+                }
+                return;
+            }
+
             try {
                 // 1. Metadata ophalen (voor de naam/titel en updated tijd)
                 const metaResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?fields=name,modifiedTime`, {
@@ -1600,6 +1662,24 @@
         function renderSet() {
             loadingIndicator.classList.add('hidden');
             setContent.classList.remove('hidden');
+
+            if (shareData) {
+                editSetBtn.classList.add('hidden');
+                deleteSetBtn.classList.add('hidden');
+                saveSharedSetBtn.classList.remove('hidden');
+            } else {
+                editSetBtn.classList.remove('hidden');
+                deleteSetBtn.classList.remove('hidden');
+                saveSharedSetBtn.classList.add('hidden');
+            }
+
+            const viewSharedBy = document.getElementById('setViewSharedBy');
+            if (shareData && currentSetData.sharedBy) {
+                viewSharedBy.textContent = `Gedeeld door: ${currentSetData.sharedBy}`;
+                viewSharedBy.classList.remove('hidden');
+            } else {
+                viewSharedBy.classList.add('hidden');
+            }
 
 
 
@@ -1672,6 +1752,7 @@
                         }
 
                         // Save to drive immediately
+                        if (shareData) return;
                         try {
                             const fileData = {
                                 title: currentSetData.title,
@@ -2066,6 +2147,105 @@
         cancelSetBtn.addEventListener('click', () => setModal.classList.add('hidden'));
         saveSetBtn.addEventListener('click', saveSet);
 
+        // Share/Save Event Listeners
+        shareSetBtn.addEventListener('click', () => {
+            let dataToShare;
+            if (shareData) {
+                dataToShare = shareData;
+            } else {
+                const shareObj = {
+                    title: currentSetData.title,
+                    items: currentSetData.items.map(i => ({ term: i.term, definition: i.definition })),
+                    isLanguageLearning: currentSetData.isLanguageLearning,
+                    langLeft: currentSetData.langLeft,
+                    langRight: currentSetData.langRight,
+                    sharedBy: localStorage.getItem('quizy_username') || 'Een Quizy-gebruiker'
+                };
+                const jsonStr = JSON.stringify(shareObj);
+                dataToShare = btoa(unescape(encodeURIComponent(jsonStr)));
+            }
+
+            const shareLink = `${window.location.origin}${window.location.pathname}?share=${encodeURIComponent(dataToShare)}`;
+            shareLinkInput.value = shareLink;
+            shareModal.classList.remove('hidden');
+        });
+
+        copyShareLinkBtn.addEventListener('click', () => {
+            shareLinkInput.select();
+            shareLinkInput.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+                const originalText = copyShareLinkBtn.innerHTML;
+                copyShareLinkBtn.innerHTML = `<i class="fa-solid fa-check"></i> Gekopieerd!`;
+                setTimeout(() => {
+                    copyShareLinkBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error("Kon link niet kopiëren:", err);
+                alert("Kopiëren mislukt. Kopieer de link handmatig uit het tekstveld.");
+            });
+        });
+
+        closeShareModalBtn.addEventListener('click', () => shareModal.classList.add('hidden'));
+        closeShareBtn.addEventListener('click', () => shareModal.classList.add('hidden'));
+
+        saveSharedSetBtn.addEventListener('click', async () => {
+            if (!TOKEN) {
+                if (confirm("Je moet ingelogd zijn met Google om deze set op te slaan in je account. Wil je nu inloggen?")) {
+                    localStorage.setItem('login_redirect', window.location.href);
+                    window.location.href = 'index.html';
+                }
+                return;
+            }
+
+            saveSharedSetBtn.disabled = true;
+            const originalHTML = saveSharedSetBtn.innerHTML;
+            saveSharedSetBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Opslaan...`;
+
+            try {
+                const title = currentSetData.title;
+                const setFileName = `${SET_PREFIX}${title}.json`;
+                const fileData = {
+                    title: title,
+                    items: currentSetData.items.map(i => ({ term: i.term, definition: i.definition })),
+                    isLanguageLearning: currentSetData.isLanguageLearning,
+                    langLeft: currentSetData.langLeft,
+                    langRight: currentSetData.langRight,
+                    updatedAt: new Date().toISOString()
+                };
+
+                const metadata = {
+                    name: setFileName,
+                    mimeType: 'application/json',
+                    parents: ['appDataFolder']
+                };
+
+                const form = new FormData();
+                form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                form.append('file', new Blob([JSON.stringify(fileData)], { type: 'application/json' }));
+
+                const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${TOKEN}` },
+                    body: form
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert("Set is succesvol opgeslagen in je account!");
+                    window.location.href = `set.html?id=${result.id}`;
+                } else {
+                    alert("Opslaan mislukt. Probeer het opnieuw.");
+                    saveSharedSetBtn.disabled = false;
+                    saveSharedSetBtn.innerHTML = originalHTML;
+                }
+            } catch (error) {
+                console.error("Fout bij opslaan gedeelde set:", error);
+                alert("Er ging iets mis bij het opslaan.");
+                saveSharedSetBtn.disabled = false;
+                saveSharedSetBtn.innerHTML = originalHTML;
+            }
+        });
+
         // Language learning events
         document.getElementById('langLearningToggle').addEventListener('change', (e) => {
             const container = document.getElementById('langSelectorContainer');
@@ -2147,7 +2327,10 @@
             setTerms = getActiveTerms();
 
             // Silently update URL mode parameter
-            const newUrl = `${window.location.pathname}?id=${fileId}&mode=${mode}`;
+            // Silently update URL mode parameter
+            const newUrl = shareData 
+                ? `${window.location.pathname}?share=${encodeURIComponent(shareData)}&mode=${mode}`
+                : `${window.location.pathname}?id=${fileId}&mode=${mode}`;
             window.history.pushState({ path: newUrl }, '', newUrl);
 
             // Hide set content, show exercise
@@ -2208,7 +2391,9 @@
                 saveTimeout = null;
                 saveProgressToDrive(true);
             }
-            const newUrl = `${window.location.pathname}?id=${fileId}`;
+            const newUrl = shareData
+                ? `${window.location.pathname}?share=${encodeURIComponent(shareData)}`
+                : `${window.location.pathname}?id=${fileId}`;
             window.history.pushState({ path: newUrl }, '', newUrl);
 
             document.getElementById('exerciseWorkspace').classList.add('hidden');
@@ -2323,7 +2508,9 @@
                 matchTimerInterval = null;
             }
             currentMode = mode;
-            const newUrl = `${window.location.pathname}?id=${fileId}&mode=${mode}`;
+            const newUrl = shareData
+                ? `${window.location.pathname}?share=${encodeURIComponent(shareData)}&mode=${mode}`
+                : `${window.location.pathname}?id=${fileId}&mode=${mode}`;
             window.history.pushState({ path: newUrl }, '', newUrl);
 
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -2364,6 +2551,7 @@
         }
 
         async function saveProgressToDrive(immediate = false) {
+            if (shareData) return;
             setFile.progress = gameProgress;
             setFile.updatedAt = new Date().toISOString();
 

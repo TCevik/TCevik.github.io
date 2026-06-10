@@ -329,7 +329,13 @@
                         localStorage.setItem('google_access_token', tokenResponse.access_token);
                         const expiryTime = Date.now() + (parseInt(tokenResponse.expires_in, 10) || 3600) * 1000;
                         localStorage.setItem('google_token_expiry', expiryTime);
-                        window.location.href = '/quizy/home.html';
+                        const redirectUrl = localStorage.getItem('login_redirect');
+                        if (redirectUrl) {
+                            localStorage.removeItem('login_redirect');
+                            window.location.href = redirectUrl;
+                        } else {
+                            window.location.href = '/quizy/home.html';
+                        }
                     }
                 },
             });

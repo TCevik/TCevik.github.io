@@ -963,6 +963,7 @@
                 userConfig = config;
 
                 currentUsername = config.username;
+                localStorage.setItem('quizy_username', currentUsername);
 
                 // Update streak display
                 const streak = config.streak || 0;
@@ -1064,6 +1065,7 @@
 
                 if (response.ok) {
                     currentUsername = newUsername;
+                    localStorage.setItem('quizy_username', currentUsername);
                     welcomeTitle.textContent = `Welkom terug, ${currentUsername}!`;
                     closeUsernameEdit();
                 } else {
