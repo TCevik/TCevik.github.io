@@ -1285,6 +1285,14 @@
                                     <span class="slider"></span>
                                 </label>
                             </div>
+                            <!-- Auto pronounce audio -->
+                            <div class="settings-option" id="autoPlayAudioContainer">
+                                <span class="option-label"><i class="fa-solid fa-volume-high"></i> Auto uitspreken</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="globalAutoPlayAudioToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2417,6 +2425,14 @@
                 <div id="learnFeedback"></div>
             `;
 
+            // Auto play audio if enabled
+            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
+            if (savedAutoPlay) {
+                const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
+                const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langRight : 'en-US') : (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL');
+                speakSpellingWord(speakWord, speakLang);
+            }
+
             const input = document.getElementById('learnInput');
             const submitBtn = document.getElementById('learnSubmitBtn');
 
@@ -2756,7 +2772,7 @@
                 </div>
 
                 <div class="flashcard-wrapper" onclick="toggleFlip()">
-                    <div class="flashcard" id="activeFlashcard" data-back-lang="${backLang}">
+                    <div class="flashcard" id="activeFlashcard" data-front-lang="${frontLang}" data-back-lang="${backLang}">
                         <div class="card-face card-front">
                             <div>${escapeHTML(frontText)}</div>
                         </div>
@@ -2766,26 +2782,13 @@
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; align-items: center;">
-                    <input type="checkbox" id="autoPlayAudioToggle" style="width: auto; cursor: pointer;">
-                    <label for="autoPlayAudioToggle" style="font-size: 0.95rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-volume-high"></i> Automatisch uitspreken</label>
-                </div>
-
                 <div class="flashcard-actions">
                     <button class="btn btn-danger" id="dontKnowBtn">❌ Weet ik niet</button>
                     <button class="btn" id="knowBtn">✅ Weet ik</button>
                 </div>
             `;
 
-            const autoPlayCheckbox = document.getElementById('autoPlayAudioToggle');
             const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
-            if (autoPlayCheckbox) {
-                autoPlayCheckbox.checked = savedAutoPlay;
-                autoPlayCheckbox.addEventListener('change', () => {
-                    localStorage.setItem('quizy_auto_play_audio', autoPlayCheckbox.checked);
-                });
-            }
-
             if (savedAutoPlay) {
                 setTimeout(() => {
                     speakSpellingWord(frontText, frontLang);
@@ -2802,10 +2805,16 @@
                 card.classList.toggle('flipped');
 
                 const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
-                if (savedAutoPlay && card.classList.contains('flipped')) {
-                    const backText = card.querySelector('.card-back div').textContent;
-                    const backLang = card.dataset.backLang || 'nl-NL';
-                    speakSpellingWord(backText, backLang);
+                if (savedAutoPlay) {
+                    if (card.classList.contains('flipped')) {
+                        const backText = card.querySelector('.card-back div').textContent;
+                        const backLang = card.dataset.backLang || 'nl-NL';
+                        speakSpellingWord(backText, backLang);
+                    } else {
+                        const frontText = card.querySelector('.card-front div').textContent;
+                        const frontLang = card.dataset.frontLang || 'nl-NL';
+                        speakSpellingWord(frontText, frontLang);
+                    }
                 }
             }
         }
@@ -2910,11 +2919,27 @@
                 </div>
                 <div id="choiceFeedback"></div>
             `;
+
+            // Auto play audio if enabled
+            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
+            if (savedAutoPlay) {
+                const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
+                const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langRight : 'en-US') : (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL');
+                speakSpellingWord(speakWord, speakLang);
+            }
         }
 
         function selectChoice(button, selected, correct) {
             const btns = document.querySelectorAll('.choice-btn');
             btns.forEach(btn => btn.disabled = true);
+
+            // Play the clicked choice audio if enabled
+            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
+            if (savedAutoPlay) {
+                const answerWith = document.getElementById('answerWithSelect').value;
+                const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'en-US');
+                speakSpellingWord(selected, speakLang);
+            }
 
             const activeItem = activeRepetitionQueue.shift();
 
@@ -3029,7 +3054,11 @@
             input.focus();
 
             const speakLang = (answerWith === 'term') ? (setFile.isLanguageLearning ? setFile.langLeft : 'nl-NL') : (setFile.isLanguageLearning ? setFile.langRight : 'nl-NL');
-            speakSpellingWord(speakText, speakLang);
+            
+            const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
+            if (savedAutoPlay) {
+                speakSpellingWord(speakText, speakLang);
+            }
 
             speakBtn.addEventListener('click', () => speakSpellingWord(speakText, speakLang));
 
@@ -3369,6 +3398,14 @@
                     e.preventDefault();
                     starredFilterToggle.checked = !starredFilterToggle.checked;
                 }
+            });
+        }
+
+        const globalAutoPlayToggle = document.getElementById('globalAutoPlayAudioToggle');
+        if (globalAutoPlayToggle) {
+            globalAutoPlayToggle.checked = localStorage.getItem('quizy_auto_play_audio') === 'true';
+            globalAutoPlayToggle.addEventListener('change', () => {
+                localStorage.setItem('quizy_auto_play_audio', globalAutoPlayToggle.checked);
             });
         }
 
