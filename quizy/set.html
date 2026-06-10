@@ -1647,7 +1647,8 @@
                     const cfgId = data.files[0].id;
                     const config = await driveGetJSON(cfgId);
 
-                    const todayStr = new Date().toISOString().split('T')[0];
+                    const localDate = new Date();
+                    const todayStr = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}-${String(localDate.getDate()).padStart(2, '0')}`;
                     if (!config.streak) config.streak = 0;
                     if (!config.streakFreezes) config.streakFreezes = 0;
                     if (!config.modesUsed) config.modesUsed = [];
