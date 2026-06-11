@@ -1800,10 +1800,17 @@
             shuffleToggle.checked = localStorage.getItem('quizy_shuffle') === 'true';
             shuffleToggle.addEventListener('change', async (e) => {
                 localStorage.setItem('quizy_shuffle', shuffleToggle.checked);
-                const hasProgress = gameProgress[currentMode] && (
-                    (currentMode === 'flashcards' && gameProgress[currentMode].known && gameProgress[currentMode].known.length > 0) ||
-                    ((currentMode === 'learn' || currentMode === 'choice' || currentMode === 'spelling') && gameProgress[currentMode].completedCount > 0)
-                );
+                let hasProgress = false;
+                if (gameProgress[currentMode]) {
+                    const prog = gameProgress[currentMode];
+                    if (currentMode === 'flashcards') {
+                        hasProgress = (prog.known && prog.known.length > 0) || (prog.unknown && prog.unknown.length > 0);
+                    } else if (currentMode === 'learn') {
+                        hasProgress = (prog.completedCount > 0) || (prog.queue && prog.queue.some(item => item.level > 0));
+                    } else if (currentMode === 'choice' || currentMode === 'spelling') {
+                        hasProgress = (prog.completedCount > 0) || (prog.queue && prog.queue.some(item => item.weight !== 1));
+                    }
+                }
                 
                 if (!hasProgress || await customConfirm("Het wijzigen van de volgorde start een nieuwe sessie. Weet je het zeker?", "Volgorde wijzigen", "Wijzigen")) {
                     startFresh();
