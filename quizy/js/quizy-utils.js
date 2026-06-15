@@ -274,7 +274,7 @@ function createCardRowManager(cardRowsContainer) {
             e.preventDefault();
             saveInputsToMemory();
             
-            const newEmptyItem = { term: '', definition: '', starred: false };
+            const newEmptyItem = { term: '', definition: '', starred: false, image: '' };
             allEditorItems.push(newEmptyItem);
             
             currentEditorPage = Math.ceil(allEditorItems.length / editorPageSize);
@@ -371,12 +371,95 @@ function createCardRowManager(cardRowsContainer) {
         row.className = 'card-row';
         row.dataset.index = index;
         row.dataset.starred = item.starred ? 'true' : 'false';
+        const hasImage = !!item.image;
         row.innerHTML = `
             <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${item.starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${item.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
             <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(item.term)}" autocomplete="off">
+            <div class="row-image-container" style="display: flex; align-items: center; justify-content: center; position: relative; width: 38px; height: 38px; flex-shrink: 0;">
+                <input type="file" class="row-image-input" accept="image/*" style="display: none;">
+                ${hasImage ? `
+                    <div class="row-image-preview" style="position: relative; width: 38px; height: 38px; border-radius: 6px; border: 1px solid var(--border-color); overflow: hidden; cursor: pointer;">
+                        <img src="${item.image}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <button class="remove-row-image-btn" title="Afbeelding verwijderen" style="position: absolute; top: 0; right: 0; background: rgba(239, 68, 68, 0.85); color: #fff; border: none; border-radius: 0 0 0 4px; width: 14px; height: 14px; padding: 0; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;">&times;</button>
+                    </div>
+                ` : `
+                    <button class="add-row-image-btn" title="Afbeelding toevoegen" style="background: none; border: 1px dashed var(--border-color); border-radius: 6px; color: var(--text-secondary); cursor: pointer; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"><i class="fa-regular fa-image"></i></button>
+                `}
+            </div>
             <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(item.definition)}" autocomplete="off">
             <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
         `;
+
+        const fileInput = row.querySelector('.row-image-input');
+        const addImgBtn = row.querySelector('.add-row-image-btn');
+        const removeImgBtn = row.querySelector('.remove-row-image-btn');
+        const imgPreview = row.querySelector('.row-image-preview');
+
+        if (addImgBtn) {
+            addImgBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                fileInput.click();
+            });
+        }
+
+        if (imgPreview) {
+            imgPreview.addEventListener('click', (e) => {
+                if (!removeImgBtn || (e.target !== removeImgBtn && !removeImgBtn.contains(e.target))) {
+                    e.preventDefault();
+                    fileInput.click();
+                }
+            });
+        }
+
+        if (removeImgBtn) {
+            removeImgBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const idx = parseInt(row.dataset.index);
+                if (!isNaN(idx) && allEditorItems[idx]) {
+                    allEditorItems[idx].image = '';
+                    renderEditorPage();
+                }
+            });
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        const maxSide = 400;
+                        if (width > maxSide || height > maxSide) {
+                            if (width > height) {
+                                height *= maxSide / width;
+                                width = maxSide;
+                            } else {
+                                width *= maxSide / height;
+                                height = maxSide;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                        const idx = parseInt(row.dataset.index);
+                        if (!isNaN(idx) && allEditorItems[idx]) {
+                            allEditorItems[idx].image = dataUrl;
+                            renderEditorPage();
+                        }
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
         row.querySelector('.star-row-btn').addEventListener('click', (e) => {
             e.preventDefault();
@@ -480,8 +563,8 @@ function createCardRowManager(cardRowsContainer) {
         updateAddBtnText();
     }
 
-    function addCardRow(term = '', definition = '', starred = false) {
-        allEditorItems.push({ term, definition, starred });
+    function addCardRow(term = '', definition = '', starred = false, image = '') {
+        allEditorItems.push({ term, definition, starred, image });
     }
 
     function manageEmptyRows() {
@@ -512,7 +595,7 @@ function createCardRowManager(cardRowsContainer) {
     function cleanEmptyRows() {
         allEditorItems = allEditorItems.filter(item => item.term.trim() !== '' || item.definition.trim() !== '');
         if (allEditorItems.length === 0) {
-            allEditorItems.push({ term: '', definition: '', starred: false });
+            allEditorItems.push({ term: '', definition: '', starred: false, image: '' });
         }
     }
 
@@ -528,9 +611,9 @@ function createCardRowManager(cardRowsContainer) {
             if (commaIdx !== -1) {
                 const term = clean.substring(0, commaIdx).trim();
                 const def  = clean.substring(commaIdx + 1).trim();
-                if (term || def) { allEditorItems.push({ term, definition: def, starred: false }); count++; }
+                if (term || def) { allEditorItems.push({ term, definition: def, starred: false, image: '' }); count++; }
             } else {
-                allEditorItems.push({ term: clean, definition: '', starred: false });
+                allEditorItems.push({ term: clean, definition: '', starred: false, image: '' });
                 count++;
             }
         });
@@ -549,7 +632,7 @@ function createCardRowManager(cardRowsContainer) {
     }
 
     function resetForNew() {
-        allEditorItems = [{ term: '', definition: '', starred: false }];
+        allEditorItems = [{ term: '', definition: '', starred: false, image: '' }];
         currentEditorPage = 1;
         const toggle = document.getElementById('langLearningToggle');
         if (toggle) toggle.checked = false;
@@ -588,11 +671,11 @@ function createCardRowManager(cardRowsContainer) {
         }
 
         if (setData.items?.length) {
-            setData.items.forEach(item => addCardRow(item.term, item.definition, !!item.starred));
+            setData.items.forEach(item => addCardRow(item.term, item.definition, !!item.starred, item.image || ''));
         }
 
         if (allEditorItems.length === 0) {
-            allEditorItems.push({ term: '', definition: '', starred: false });
+            allEditorItems.push({ term: '', definition: '', starred: false, image: '' });
         }
 
         renderEditorPage();
@@ -610,7 +693,7 @@ function createCardRowManager(cardRowsContainer) {
         }
         allEditorItems = allEditorItems.filter(item => item.term.trim() !== '' || item.definition.trim() !== '');
         if (allEditorItems.length === 0) {
-            allEditorItems.push({ term: '', definition: '', starred: false });
+            allEditorItems.push({ term: '', definition: '', starred: false, image: '' });
         }
         renderEditorPage();
         const items = [];
@@ -618,7 +701,7 @@ function createCardRowManager(cardRowsContainer) {
             const item = allEditorItems[i];
             const term = item.term.trim();
             const def  = item.definition.trim();
-            if (term && def) items.push({ term, definition: def, starred: item.starred });
+            if (term && def) items.push({ term, definition: def, starred: item.starred, image: item.image || '' });
         }
         return items;
     }

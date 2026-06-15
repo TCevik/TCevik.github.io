@@ -51,6 +51,15 @@ function renderFlashcards() {
     frontLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
     backLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
 
+    let frontImageHTML = '', backImageHTML = '';
+    if (activeWord.image) {
+        if (answerWith === 'term') {
+            backImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${activeWord.image}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
+        } else {
+            frontImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${activeWord.image}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
+        }
+    }
+
     const realIndex = currentSetData.items.indexOf(activeWord);
     modeContent.innerHTML = `
         <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">
@@ -62,11 +71,13 @@ function renderFlashcards() {
                 <i class="${activeWord.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i>
             </button>
             <div class="flashcard" id="activeFlashcard" data-front-lang="${frontLang}" data-back-lang="${backLang}" onclick="toggleFlip()">
-                <div class="card-face card-front">
+                <div class="card-face card-front" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <div>${escapeHTML(frontText)}</div>
+                    ${frontImageHTML}
                 </div>
-                <div class="card-face card-back">
+                <div class="card-face card-back" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <div>${escapeHTML(backText)}</div>
+                    ${backImageHTML}
                 </div>
             </div>
         </div>

@@ -471,7 +471,10 @@
                         <div class="term-main-content">
                             <div class="term-column term-left">
                                 <span class="column-label">${escapeHTML(leftLabel)}</span>
-                                <span class="term-text">${escapeHTML(item.term)}</span>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    ${item.image ? `<img src="${item.image}" style="max-width: 80px; max-height: 80px; border-radius: 6px; border: 1px solid var(--border-color); object-fit: contain;">` : ''}
+                                    <span class="term-text">${escapeHTML(item.term)}</span>
+                                </div>
                             </div>
                             <div class="term-column term-right">
                                 <span class="column-label">${escapeHTML(rightLabel)}</span>
@@ -734,7 +737,7 @@
             } else {
                 const shareObj = {
                     title: currentSetData.title,
-                    items: currentSetData.items.map(i => ({ term: i.term, definition: i.definition })),
+                    items: currentSetData.items.map(i => ({ term: i.term, definition: i.definition, image: i.image || '' })),
                     isLanguageLearning: currentSetData.isLanguageLearning,
                     langLeft: currentSetData.langLeft,
                     langRight: currentSetData.langRight,
@@ -790,7 +793,7 @@
                 const setFileName = `${SET_PREFIX}${title}.json`;
                 const fileData = {
                     title: title,
-                    items: currentSetData.items.map(i => ({ term: i.term, definition: i.definition })),
+                    items: currentSetData.items.map(i => ({ term: i.term, definition: i.definition, image: i.image || '' })),
                     isLanguageLearning: currentSetData.isLanguageLearning,
                     langLeft: currentSetData.langLeft,
                     langRight: currentSetData.langRight,
@@ -1427,6 +1430,7 @@
                     </button>
                     ${statsHTML}
                     <div class="prompt-text">${promptText}</div>
+                    ${activeWord.image ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${activeWord.image}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>` : ''}
                     <div class="choices-grid">
                         ${optionsHTML}
                     </div>
@@ -1475,6 +1479,7 @@
                     </button>
                     ${statsHTML}
                     <div class="prompt-text">${questionLabel}</div>
+                    ${activeWord.image ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${activeWord.image}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>` : ''}
                     <div class="answer-form">
                         <input type="text" id="learnInput" placeholder="${placeholderText}" autofocus autocomplete="off">
                         <button class="btn" id="learnSubmitBtn">Controleren</button>
@@ -1664,6 +1669,7 @@
                     Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
                 </div>
                 <div class="prompt-text">${promptText}</div>
+                ${activeWord.image ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${activeWord.image}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>` : ''}
                 <div class="choices-grid">
                     ${optionsHTML}
                 </div>

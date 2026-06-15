@@ -29,8 +29,8 @@ function renderMatch() {
 
     const cards = [];
     sample.forEach((item, index) => {
-        cards.push({ text: item.term, type: 'term', index: index });
-        cards.push({ text: item.definition, type: 'definition', index: index });
+        cards.push({ text: item.term, type: 'term', index: index, image: item.image || '' });
+        cards.push({ text: item.definition, type: 'definition', index: index, image: '' });
     });
 
     const shuffledCards = shuffleArray(cards);
@@ -39,7 +39,12 @@ function renderMatch() {
     shuffledCards.forEach(card => {
         gridHTML += `
             <div class="match-card" data-index="${card.index}" data-type="${card.type}" onclick="selectMatchCard(this)">
-                ${escapeHTML(card.text)}
+                ${card.image ? `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; text-align: center;">
+                        <img src="${card.image}" style="max-height: 45px; max-width: 90%; border-radius: 4px; object-fit: contain;">
+                        <span>${escapeHTML(card.text)}</span>
+                    </div>
+                ` : escapeHTML(card.text)}
             </div>
         `;
     });

@@ -87,6 +87,7 @@ function renderTest() {
         questionsHTML += `
             <div class="test-question" data-idx="${index}">
                 <div class="test-question-title">${index + 1}. ${escapeHTML(q.prompt)}</div>
+                ${q.image ? `<div style="margin: 10px 0;"><img src="${q.image}" style="max-width: 120px; max-height: 120px; border-radius: 6px; border: 1px solid var(--border-color); object-fit: contain;"></div>` : ''}
         `;
 
         if (q.type === 'choice') {
@@ -132,7 +133,10 @@ function renderTest() {
                                         <option value="${String.fromCharCode(65 + dIdx)}">${String.fromCharCode(65 + dIdx)}</option>
                                     `).join('')}
                                 </select>
-                                <span style="font-weight: 600; color: var(--text-primary);">${escapeHTML(t.term)}</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    ${t.image ? `<img src="${t.image}" style="max-height: 25px; max-width: 40px; border-radius: 4px; object-fit: contain;">` : ''}
+                                    <span style="font-weight: 600; color: var(--text-primary);">${escapeHTML(t.term)}</span>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
@@ -230,7 +234,8 @@ function generateTestQuestions() {
                     type: 'choice',
                     prompt: `Wat is de definitie van: '${item.term}'?`,
                     correctAnswer: item.definition,
-                    options: generateMultipleChoiceOptions(item.definition, otherDefs)
+                    options: generateMultipleChoiceOptions(item.definition, otherDefs),
+                    image: item.image || ''
                 });
             } else if (finalType === 'tf') {
                 const randomIsCorrect = Math.random() > 0.5;
@@ -248,13 +253,15 @@ function generateTestQuestions() {
                     correctAnswer: randomIsCorrect ? 'True' : 'False',
                     displayDef: displayDef,
                     actualTerm: item.term,
-                    actualDef: item.definition
+                    actualDef: item.definition,
+                    image: item.image || ''
                 });
             } else {
                 generatedQuestions.push({
                     type: 'open',
                     prompt: `Geef het woord/de definitie voor: '${item.term}'`,
-                    correctAnswer: item.definition
+                    correctAnswer: item.definition,
+                    image: item.image || ''
                 });
             }
         }
