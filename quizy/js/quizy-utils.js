@@ -828,6 +828,7 @@ function injectCommonLayout() {
             </div>
             <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
             <div class="header-actions">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSenU2OuAafpBvayn0mgszuJmPA7dDdeHLP5ou0xpljfj0yRcg/viewform?usp=publish-editor" target="_blank" class="btn btn-secondary btn-sm" style="background-color: #dc2626; color: white; margin-right: 10px;" title="Glitch of Bug melden"><i class="fa-solid fa-triangle-exclamation"></i> Bug melden</a>
                 ${isHome ? '' : '<a href="home.html" class="btn btn-secondary btn-sm" style="margin-right: 10px;"><i class="fa-solid fa-house"></i> Dashboard</a>'}
                 <button id="logoutBtn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Uitloggen</button>
             </div>
@@ -850,6 +851,7 @@ function injectCommonLayout() {
             <div class="footer-links">
                 <a href="/privacy">Privacybeleid</a>
                 <a href="/terms">Voorwaarden</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSenU2OuAafpBvayn0mgszuJmPA7dDdeHLP5ou0xpljfj0yRcg/viewform?usp=publish-editor" target="_blank" style="color: #ef4444; font-weight: 600;"><i class="fa-solid fa-bug"></i> Glitch/Bug melden</a>
             </div>
             <p class="footer-copy">&copy; 2026 TC_tam Quizy. Alle rechten voorbehouden.</p>
         </div>
