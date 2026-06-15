@@ -209,10 +209,10 @@
                 <h3>Set delen</h3>
                 <button id="closeShareModalBtn" class="close-btn">&times;</button>
             </div>
-            <p style="color: var(--text-secondary); margin-bottom: 16px;">Kopieer de onderstaande link om deze set te delen met anderen. Iedereen met deze link kan de set bekijken en oefenen.</p>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="shareLinkInput" readonly autocomplete="off" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; width: 100%;">
-                <button id="copyShareLinkBtn" class="btn"><i class="fa-solid fa-copy"></i> Kopieer</button>
+            <p id="shareModalDesc" style="color: var(--text-secondary); margin-bottom: 16px;">Kopieer de onderstaande deelcode om deze set te delen met anderen. De ontvanger kan deze deelcode invoeren op het startscherm van Quizy om de set te openen.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                <textarea id="shareLinkInput" readonly autocomplete="off" style="width: 100%; height: 120px; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-size: 0.85rem; font-family: monospace; outline: none; box-sizing: border-box; resize: none;"></textarea>
+                <button id="copyShareLinkBtn" class="btn" style="width: 100%;"><i class="fa-solid fa-copy"></i> Kopieer deelcode</button>
             </div>
             <div style="display: flex; justify-content: flex-end;">
                 <button id="closeShareBtn" class="btn btn-secondary">Sluiten</button>
@@ -289,39 +289,6 @@
         let currentSetData = null;
         let currentSetPage = 1;
         const setPageSize = 50;
-
-        async function compressData(dataStr) {
-            const stream = new Blob([dataStr]).stream();
-            const compressedStream = stream.pipeThrough(new CompressionStream('gzip'));
-            const chunks = [];
-            const reader = compressedStream.getReader();
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                chunks.push(value);
-            }
-            const blob = new Blob(chunks);
-            const buffer = await blob.arrayBuffer();
-            const bytes = new Uint8Array(buffer);
-            let binary = '';
-            for (let i = 0; i < bytes.byteLength; i++) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-            return btoa(binary);
-        }
-
-        async function decompressData(base64Str) {
-            const binary = atob(base64Str);
-            const bytes = new Uint8Array(binary.length);
-            for (let i = 0; i < binary.length; i++) {
-                bytes[i] = binary.charCodeAt(i);
-            }
-            const stream = new Blob([bytes]).stream();
-            const decompressedStream = stream.pipeThrough(new DecompressionStream('gzip'));
-            const response = new Response(decompressedStream);
-            const blob = await response.blob();
-            return await blob.text();
-        }
 
         // Set ophalen
         async function fetchSetDetails() {
@@ -753,7 +720,7 @@
                 }
             }
 
-            const shareLink = `${window.location.origin}${window.location.pathname}?share=${encodeURIComponent(dataToShare)}`;
+            const shareLink = dataToShare;
             shareLinkInput.value = shareLink;
             shareModal.classList.remove('hidden');
         });

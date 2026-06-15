@@ -63,8 +63,10 @@
                 <!-- Quiz sets sectie -->
                 <div class="section-title-bar">
                     <h3>Jouw Quiz-sets</h3>
-                    <button id="createNewSetBtn" class="btn btn-sm"><i class="fa-solid fa-plus"></i> Nieuwe set
-                        maken</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="importCodeBtn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-import"></i> Deelcode invoeren</button>
+                        <button id="createNewSetBtn" class="btn btn-sm"><i class="fa-solid fa-plus"></i> Nieuwe set maken</button>
+                    </div>
                 </div>
 
                 <!-- Laad status van sets -->
@@ -90,6 +92,24 @@
 
     <!-- Floating Action Button -->
     <button id="mobileFab" class="fab"><i class="fa-solid fa-plus"></i></button>
+
+    <!-- Modal voor Deelcode Invoeren -->
+    <div id="importCodeModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Deelcode invoeren</h3>
+                <button id="closeImportCodeModalBtn" class="close-btn">&times;</button>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">Plak hieronder de deelcode van de set die je wilt importeren.</p>
+            <div style="margin-bottom: 20px;">
+                <textarea id="importCodeTextarea" placeholder="Plak deelcode hier..." style="width: 100%; height: 120px; padding: 12px; border-radius: 8px; border: 1px solid var(--input-border); background-color: var(--input-bg); color: var(--text-primary); font-family: monospace; font-size: 0.9rem; resize: none; outline: none; box-sizing: border-box;"></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button id="cancelImportCodeBtn" class="btn btn-secondary">Annuleren</button>
+                <button id="submitImportCodeBtn" class="btn"><i class="fa-solid fa-cloud-arrow-down"></i> Importeren</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         injectCommonLayout();
@@ -140,6 +160,78 @@
         const importTextarea = document.getElementById('importTextarea');
         const cancelImportBtn = document.getElementById('cancelImportBtn');
         const processImportBtn = document.getElementById('processImportBtn');
+
+        // Deelcode Import Elementen
+        const importCodeBtn = document.getElementById('importCodeBtn');
+        const importCodeModal = document.getElementById('importCodeModal');
+        const closeImportCodeModalBtn = document.getElementById('closeImportCodeModalBtn');
+        const cancelImportCodeBtn = document.getElementById('cancelImportCodeBtn');
+        const submitImportCodeBtn = document.getElementById('submitImportCodeBtn');
+        const importCodeTextarea = document.getElementById('importCodeTextarea');
+
+        importCodeBtn.addEventListener('click', () => {
+            importCodeTextarea.value = '';
+            importCodeModal.classList.remove('hidden');
+        });
+
+        const closeImportModal = () => {
+            importCodeModal.classList.add('hidden');
+        };
+
+        closeImportCodeModalBtn.addEventListener('click', closeImportModal);
+        cancelImportCodeBtn.addEventListener('click', closeImportModal);
+
+        submitImportCodeBtn.addEventListener('click', async () => {
+            const rawCode = importCodeTextarea.value.trim();
+            if (!rawCode) {
+                alert("Plak eerst een deelcode.");
+                return;
+            }
+
+            submitImportCodeBtn.disabled = true;
+            submitImportCodeBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Importeren...`;
+
+            try {
+                let decodedStr;
+                if (rawCode.startsWith('c_')) {
+                    decodedStr = await decompressData(rawCode.substring(2));
+                } else {
+                    decodedStr = decodeURIComponent(escape(atob(rawCode)));
+                }
+                const content = JSON.parse(decodedStr);
+                
+                if (!content.title || !content.items) {
+                    throw new Error("Ongeldig bestandsformaat.");
+                }
+
+                const title = content.title;
+                const setFileName = `quizy_set_${title}.json`;
+                const fileData = {
+                    title: title,
+                    items: content.items.map(i => ({ term: i.term, definition: i.definition, image: i.image || '' })),
+                    isLanguageLearning: !!content.isLanguageLearning,
+                    langLeft: content.langLeft || 'nl-NL',
+                    langRight: content.langRight || 'en-US',
+                    updatedAt: new Date().toISOString()
+                };
+
+                const response = await driveCreateFile(setFileName, fileData);
+                if (response.ok) {
+                    const result = await response.json();
+                    closeImportModal();
+                    alert("Set succesvol geïmporteerd!");
+                    window.location.href = `set.html?id=${result.id}`;
+                } else {
+                    alert("Importeren mislukt. Controleer de code en probeer het opnieuw.");
+                }
+            } catch (err) {
+                console.error("Fout bij importeren van deelcode:", err);
+                alert("Ongeldige deelcode. Controleer of de code correct is gekopieerd.");
+            } finally {
+                submitImportCodeBtn.disabled = false;
+                submitImportCodeBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Importeren`;
+            }
+        });
 
         // Beveiliging: als er geen token is, stuur terug naar index
         if (!TOKEN) {

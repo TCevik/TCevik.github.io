@@ -187,6 +187,39 @@ function overrideNativeAlert() {
     window.alert = (message) => showAlert(message);
 }
 
+async function compressData(dataStr) {
+    const stream = new Blob([dataStr]).stream();
+    const compressedStream = stream.pipeThrough(new CompressionStream('gzip'));
+    const chunks = [];
+    const reader = compressedStream.getReader();
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+    }
+    const blob = new Blob(chunks);
+    const buffer = await blob.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+}
+
+async function decompressData(base64Str) {
+    const binary = atob(base64Str);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+    const stream = new Blob([bytes]).stream();
+    const decompressedStream = stream.pipeThrough(new DecompressionStream('gzip'));
+    const response = new Response(decompressedStream);
+    const blob = await response.blob();
+    return await blob.text();
+}
+
 // ── Kaart-Editor Hulpmiddelen ──────────────────────────────────────────────
 
 function populateLanguageSelects() {
