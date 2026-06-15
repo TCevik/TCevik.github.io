@@ -52,11 +52,21 @@ function renderFlashcards() {
     backLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
 
     let frontImageHTML = '', backImageHTML = '';
-    if (activeWord.image) {
-        if (answerWith === 'term') {
-            backImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${activeWord.image}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
-        } else {
-            frontImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${activeWord.image}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
+    const termImg = activeWord.image;
+    const defImg = activeWord.defImage;
+    if (answerWith === 'term') {
+        if (defImg) {
+            frontImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${defImg}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
+        }
+        if (termImg) {
+            backImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${termImg}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
+        }
+    } else {
+        if (termImg) {
+            frontImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${termImg}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
+        }
+        if (defImg) {
+            backImageHTML = `<div style="margin-top: 15px; text-align: center;"><img src="${defImg}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>`;
         }
     }
 

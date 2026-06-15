@@ -297,11 +297,11 @@ main {
     /* Stack card rows cleanly using CSS grid on mobile */
     .card-row {
         display: grid !important;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr auto;
         grid-template-areas: 
             "star remove"
-            "term term"
-            "def def";
+            "term term-img"
+            "def def-img";
         gap: 12px !important;
         padding: 16px;
         background: var(--bg-primary);
@@ -309,6 +309,14 @@ main {
         border-radius: 12px;
         margin-bottom: 16px !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
+    }
+
+    .card-row .term-image-container {
+        grid-area: term-img;
+    }
+
+    .card-row .def-image-container {
+        grid-area: def-img;
     }
 
     .card-row .star-row-btn {

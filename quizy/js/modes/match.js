@@ -30,7 +30,7 @@ function renderMatch() {
     const cards = [];
     sample.forEach((item, index) => {
         cards.push({ text: item.term, type: 'term', index: index, image: item.image || '' });
-        cards.push({ text: item.definition, type: 'definition', index: index, image: '' });
+        cards.push({ text: item.definition, type: 'definition', index: index, image: item.defImage || '' });
     });
 
     const shuffledCards = shuffleArray(cards);

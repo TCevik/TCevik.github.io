@@ -47,6 +47,7 @@ function renderSpelling() {
 
     const countText = activeItem.weight > 1 ? ` (Herhalen: nog ${activeItem.weight}x goed)` : '';
 
+    const activeImage = (answerWith === 'term') ? activeWord.defImage : activeWord.image;
     const realIndex = currentSetData.items.indexOf(activeWord);
     modeContent.innerHTML = `
         <button class="quick-star-btn" onclick="toggleQuickStar(${realIndex})" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.6rem; color: ${activeWord.starred ? '#eab308' : '#cbd5e1'}; cursor: pointer; transition: color 0.2s; padding: 5px; z-index: 10;" title="Moeilijk woord markeren">
@@ -56,7 +57,7 @@ function renderSpelling() {
             Voltooid: ${activeCompletedCount} / ${setTerms.length} woorden ${countText}
         </div>
         <div class="prompt-text">${promptLabel}</div>
-        ${activeWord.image ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${activeWord.image}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>` : ''}
+        ${activeImage ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${activeImage}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: contain;"></div>` : ''}
         <div style="text-align: center; margin-bottom: 25px;">
             <button class="btn btn-secondary" id="speakWordBtn" style="font-size:1.1rem; padding:15px 30px;"><i class="fa-solid fa-volume-high"></i> Luister</button>
         </div>
