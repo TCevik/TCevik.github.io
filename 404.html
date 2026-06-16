@@ -9,13 +9,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <script>
         const redirectMap = {
-            "/winkelfix": "/apps/winkelfix"
+            "/winkelfix": "/apps/winkelfix",
+            "/quizy": "https://quizy.tctam.nl",
+            "/quizy/home": "https://quizy.tctam.nl",
+            "/quizy/set": "https://quizy.tctam.nl"
         };
 
         let currentPath = window.location.pathname;
+
+        if (currentPath.endsWith('.html')) {
+            currentPath = currentPath.slice(0, -5);
+        } else if (currentPath.endsWith('.htm')) {
+            currentPath = currentPath.slice(0, -4);
+        }
 
         if (currentPath.endsWith('/') && currentPath.length > 1) {
             currentPath = currentPath.slice(0, -1);
@@ -153,7 +162,8 @@
     <div class="error-container">
         <h1>404</h1>
         <h2>Oops! Page not found.</h2>
-        <p>The page you are looking for doesn't exist or has been moved. Don't worry, you can find your way back below.</p>
+        <p>The page you are looking for doesn't exist or has been moved. Don't worry, you can find your way back below.
+        </p>
 
         <div class="button-group">
             <a href="javascript:history.back()" class="main-button secondary">
@@ -172,4 +182,5 @@
     </footer>
 
 </body>
+
 </html>
