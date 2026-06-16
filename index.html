@@ -187,7 +187,7 @@
                 border-bottom: 1px solid var(--border-color);
                 align-items: stretch;
                 text-align: center;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             }
 
             #header-right.active {
@@ -526,7 +526,7 @@
                 </div>
             </div>
 
-<div class="card" data-size="2">
+            <div class="card" data-size="2">
                 <h2><i class="fa-solid fa-laptop-code"></i> Online IDE</h2>
                 <p>
                     Try my renewed <b>Online IDE</b>! Write and test an HTML file combining CSS and
@@ -537,7 +537,8 @@
                     style="margin-top: 5px; margin-bottom: 25px; padding-left: 20px; color: var(--color-text-secondary);">
                     <li><b>Single-File Workspace:</b> Write all your code in a single HTML file with inline styles and
                         scripts.</li>
-                    <li><b>Built-in Console:</b> Captures runtime errors and console logs directly inside the console panel.
+                    <li><b>Built-in Console:</b> Captures runtime errors and console logs directly inside the console
+                        panel.
                     </li>
                     <li><b>Responsive Demos:</b> Instantly simulate Desktop, Tablet, and Mobile screen sizes without
                         any delay.</li>
@@ -551,7 +552,8 @@
             <div class="card quizy-card" data-size="1">
                 <h2><i class="fa-solid fa-graduation-cap"></i> TC_tam Quizy</h2>
                 <p>Learn smarter and get better grades! With <b>Quizy</b> you can create personalized quiz sets and
-                    practice through interactive Flashcards, Practice Tests, Spelling and Matching games. Save your progress
+                    practice through interactive Flashcards, Practice Tests, Spelling and Matching games. Save your
+                    progress
                     securely via Google Drive.</p>
                 <div style="margin-top: 20px;">
                     <a href="quizy" class="quizy-btn"><i class="fa-solid fa-play"></i> <span>Open
@@ -591,7 +593,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const menuToggle = document.getElementById('menu-toggle');
             const headerRight = document.getElementById('header-right');
-            
+
             if (menuToggle && headerRight) {
                 menuToggle.addEventListener('click', () => {
                     headerRight.classList.toggle('active');
@@ -646,6 +648,20 @@
                 style="color: var(--color-text-secondary); text-decoration: none; margin: 0 10px;">Gebruiksvoorwaarden</a>
         </p>
     </footer>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister().then(function (boolean) {
+                        console.log('Service Worker succesvol verwijderd:', boolean);
+                        // Optioneel: herlaad de pagina eenmalig om de cache volledig te omzeilen
+                        window.location.reload();
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
