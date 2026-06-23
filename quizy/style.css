@@ -1916,4 +1916,61 @@ input[type="text"]:focus {
     display: inline-block;
 }
 
+/* PWA Download Buttons */
+.pwa-download-btn-desktop {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--brand-color);
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px var(--brand-glow);
+    transition: all 0.2s ease;
+}
+
+.pwa-download-btn-desktop:hover {
+    background-color: var(--brand-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(82, 135, 62, 0.3);
+}
+
+.pwa-download-btn-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pwa-download-btn-mobile:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .pwa-download-btn-desktop {
+        display: none !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .pwa-download-btn-mobile {
+        display: none !important;
+    }
+}
+
+
 
