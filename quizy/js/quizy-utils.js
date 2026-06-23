@@ -373,8 +373,8 @@ function createCardRowManager(cardRowsContainer) {
         row.dataset.starred = item.starred ? 'true' : 'false';
         row.innerHTML = `
             <button class="star-row-btn" title="Markeer als moeilijk" style="background: none; border: none; cursor: pointer; color: ${item.starred ? '#eab308' : '#94a3b8'}; font-size: 1.2rem; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"><i class="${item.starred ? 'fa-solid' : 'fa-regular'} fa-star"></i></button>
-            <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(item.term)}">
-            <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(item.definition)}">
+            <input type="text" class="term-input" placeholder="Term" value="${escapeHTML(item.term)}" autocomplete="off">
+            <input type="text" class="def-input" placeholder="Definitie" value="${escapeHTML(item.definition)}" autocomplete="off">
             <button class="remove-row-btn" title="Rij verwijderen">&times;</button>
         `;
 
@@ -786,7 +786,7 @@ function injectCommonLayout() {
 
             <div class="form-group">
                 <label for="setTitleInput">Titel van de set</label>
-                <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1">
+                <input type="text" id="setTitleInput" placeholder="Bijv. Spaans Hoofdstuk 1" autocomplete="off">
             </div>
 
             <div class="toggle-group">
@@ -1001,4 +1001,37 @@ window.updateSaveStatus = function(status) {
         indicator.classList.remove('visible');
     }
 };
+
+// Zorg dat bij ELKE input in heel quizy suggesties van oude dingen niet worden getoond
+(function() {
+    function disableAutocompleteGlobally() {
+        document.querySelectorAll('input').forEach(input => {
+            if (!input.hasAttribute('autocomplete')) {
+                input.setAttribute('autocomplete', 'off');
+            }
+        });
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        if (node.tagName === 'INPUT') {
+                            node.setAttribute('autocomplete', 'off');
+                        }
+                        node.querySelectorAll('input').forEach(input => {
+                            input.setAttribute('autocomplete', 'off');
+                        });
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', disableAutocompleteGlobally);
+    } else {
+        disableAutocompleteGlobally();
+    }
+})();
+
 
