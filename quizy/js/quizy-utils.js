@@ -938,6 +938,14 @@ function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn'
 
 window.activeSaves = new Set();
 
+window.addEventListener('beforeunload', (e) => {
+    if (window.activeSaves && window.activeSaves.size > 0) {
+        e.preventDefault();
+        e.returnValue = 'Changes you made may not be saved.';
+        return e.returnValue;
+    }
+});
+
 window.startSaveOperation = function(id) {
     window.activeSaves.add(id);
     window.updateSaveStatus('saving');

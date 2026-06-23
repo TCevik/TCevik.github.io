@@ -70,6 +70,12 @@ function renderTest() {
             testConfig = { limit, types };
             isTestActive = true;
             generateTestQuestions();
+            gameProgress.test = {
+                isTestActive: true,
+                config: testConfig,
+                questions: generatedQuestions
+            };
+            saveProgressToDrive();
             renderTest();
         });
         return;
@@ -175,6 +181,8 @@ function renderTest() {
     document.getElementById('resetTestBtn').addEventListener('click', () => {
         isTestActive = false;
         generatedQuestions = [];
+        gameProgress.test = { isTestActive: false };
+        saveProgressToDrive(true);
         renderTest();
     });
 }
@@ -367,4 +375,6 @@ function checkTestAnswers() {
     document.getElementById('submitTestBtn').style.display = 'none';
 
     isTestActive = false;
+    gameProgress.test = { isTestActive: false };
+    saveProgressToDrive(true);
 }

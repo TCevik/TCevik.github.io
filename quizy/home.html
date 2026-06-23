@@ -414,6 +414,7 @@
 
             saveSetBtn.disabled = true;
             saveSetBtn.textContent = 'Opslaan...';
+            window.startSaveOperation('save_set');
 
             const isLangLearning = document.getElementById('langLearningToggle').checked;
             const langLeft  = isLangLearning ? document.getElementById('langLeftSelect').value  : document.getElementById('langSingleSelect').value;
@@ -445,6 +446,7 @@
             } finally {
                 saveSetBtn.disabled = false;
                 saveSetBtn.textContent = 'Set opslaan';
+                window.endSaveOperation('save_set');
             }
         }
 
