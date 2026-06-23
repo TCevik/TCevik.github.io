@@ -22,13 +22,7 @@ function renderFlashcards() {
                 flashcardStates.unknown = [];
                 currentIdx = 0;
 
-                gameProgress.flashcards = {
-                    queue: flashcardQueue,
-                    known: flashcardStates.known,
-                    unknown: flashcardStates.unknown,
-                    currentIndex: currentIdx
-                };
-                saveProgressToDrive();
+                saveFlashcardProgress();
                 renderFlashcards();
             });
             return;
@@ -86,7 +80,7 @@ function renderFlashcards() {
     const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
     if (savedAutoPlay) {
         setTimeout(() => {
-            speakSpellingWord(frontText, frontLang);
+            speakText(frontText, frontLang);
         }, 100);
     }
 
@@ -104,14 +98,24 @@ function toggleFlip() {
             if (card.classList.contains('flipped')) {
                 const backText = card.querySelector('.card-back div').textContent;
                 const backLang = card.dataset.backLang || 'nl-NL';
-                speakSpellingWord(backText, backLang);
+                speakText(backText, backLang);
             } else {
                 const frontText = card.querySelector('.card-front div').textContent;
                 const frontLang = card.dataset.frontLang || 'nl-NL';
-                speakSpellingWord(frontText, frontLang);
+                speakText(frontText, frontLang);
             }
         }
     }
+}
+
+function saveFlashcardProgress() {
+    gameProgress.flashcards = {
+        queue: flashcardQueue,
+        known: flashcardStates.known,
+        unknown: flashcardStates.unknown,
+        currentIndex: currentIdx
+    };
+    saveProgressToDrive();
 }
 
 function recordFlashcardResult(known) {
@@ -152,12 +156,6 @@ function recordFlashcardResult(known) {
 
     currentIdx++;
 
-    gameProgress.flashcards = {
-        queue: flashcardQueue,
-        known: flashcardStates.known,
-        unknown: flashcardStates.unknown,
-        currentIndex: currentIdx
-    };
-    saveProgressToDrive();
+    saveFlashcardProgress();
     renderFlashcards();
 }

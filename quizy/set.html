@@ -428,14 +428,8 @@
             let leftLabel = 'Term';
             let rightLabel = 'Definitie';
             if (currentSetData.isLanguageLearning) {
-                const localesMap = {
-                    'nl-NL': 'Nederlands',
-                    'en-US': 'Engels',
-                    'fr-FR': 'Frans',
-                    'de-DE': 'Duits'
-                };
-                leftLabel = localesMap[currentSetData.langLeft] || 'Term';
-                rightLabel = localesMap[currentSetData.langRight] || 'Definitie';
+                leftLabel = getLanguageName(currentSetData.langLeft, 'Term');
+                rightLabel = getLanguageName(currentSetData.langRight, 'Definitie');
             }
 
             termsList.innerHTML = '';
@@ -500,34 +494,8 @@
                         </div>
                     `;
 
-                    row.querySelector('.star-toggle-btn').addEventListener('click', async () => {
-                        item.starred = !item.starred;
-                        const newStarred = item.starred;
-                        const starBtn = row.querySelector('.star-toggle-btn');
-                        const starIcon = starBtn.querySelector('i');
-                        if (newStarred) {
-                            starBtn.style.color = '#eab308';
-                            starIcon.className = 'fa-solid fa-star';
-                        } else {
-                            starBtn.style.color = 'var(--text-secondary)';
-                            starIcon.className = 'fa-regular fa-star';
-                        }
-
-                        // Save to drive immediately
-                        if (shareData) return;
-                        try {
-                            const fileData = {
-                                title: currentSetData.title,
-                                items: currentSetData.items,
-                                isLanguageLearning: currentSetData.isLanguageLearning,
-                                langLeft: currentSetData.langLeft,
-                                langRight: currentSetData.langRight,
-                                updatedAt: new Date().toISOString()
-                            };
-                            await drivePatchJSON(fileId, fileData);
-                        } catch (err) {
-                            console.error("Fout bij opslaan star:", err);
-                        }
+                    row.querySelector('.star-toggle-btn').addEventListener('click', () => {
+                        toggleQuickStar(currentSetData.items.indexOf(item));
                     });
 
                     termsList.appendChild(row);
@@ -537,14 +505,7 @@
             }
         }
 
-        // Spraaksynthese voor uitspraak (leuke micro-interactie)
-        function speakText(text, lang) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang || 'nl-NL';
-                window.speechSynthesis.speak(utterance);
-            }
-        }
+
 
         // Initialisatie
         overrideNativeAlert();
@@ -880,6 +841,46 @@
             return arr;
         }
 
+        // Helper for generating multiple choice options
+        function generateMultipleChoiceOptions(correctAns, optionsSource) {
+            const options = [correctAns];
+            const shuffledOthers = shuffleArray(optionsSource);
+            for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
+                options.push(shuffledOthers[i]);
+            }
+            return shuffleArray(options);
+        }
+
+        // Helper to generate choice question data (avoiding duplicate code)
+        function getChoiceQuestionData(activeWord, answerWith) {
+            let correctAns, promptText, optionsSource;
+            if (setFile.isLanguageLearning) {
+                const leftName = getLanguageName(setFile.langLeft, 'Taal 1');
+                const rightName = getLanguageName(setFile.langRight, 'Taal 2');
+
+                if (answerWith === 'term') {
+                    correctAns = activeWord.term;
+                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
+                } else {
+                    correctAns = activeWord.definition;
+                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+                }
+            } else {
+                if (answerWith === 'term') {
+                    correctAns = activeWord.term;
+                    promptText = `Kies het juiste woord voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
+                } else {
+                    correctAns = activeWord.definition;
+                    promptText = `Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
+                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
+                }
+            }
+            return { correctAns, promptText, optionsSource };
+        }
+
         // Open exercise workspace directly
         function openExercise(mode) {
             currentMode = mode;
@@ -922,14 +923,8 @@
             const answerWithSelect = document.getElementById('answerWithSelect');
             if (answerWithSelect) {
                 if (currentSetData.isLanguageLearning) {
-                    const localesMap = {
-                        'nl-NL': 'Nederlands',
-                        'en-US': 'Engels',
-                        'fr-FR': 'Frans',
-                        'de-DE': 'Duits'
-                    };
-                    const leftName = localesMap[currentSetData.langLeft] || 'Taal 1';
-                    const rightName = localesMap[currentSetData.langRight] || 'Taal 2';
+                    const leftName = getLanguageName(currentSetData.langLeft, 'Taal 1');
+                    const rightName = getLanguageName(currentSetData.langRight, 'Taal 2');
                     answerWithSelect.innerHTML = `
                           <option value="definition">${leftName} (Antwoord met ${rightName})</option>
                           <option value="term">${rightName} (Antwoord met ${leftName})</option>
@@ -1032,6 +1027,26 @@
                     }
                 }
             });
+
+            // Houd de woordenlijst ster-status in sync
+            const termRows = document.querySelectorAll('.term-row');
+            if (termRows.length > 0) {
+                const start = (currentSetData.items.length > setPageSize) ? (currentSetPage - 1) * setPageSize : 0;
+                const pageIndex = termIndex - start;
+                if (pageIndex >= 0 && pageIndex < termRows.length) {
+                    const starBtn = termRows[pageIndex].querySelector('.star-toggle-btn');
+                    if (starBtn) {
+                        const starIcon = starBtn.querySelector('i');
+                        if (isStarred) {
+                            starBtn.style.color = '#eab308';
+                            if (starIcon) starIcon.className = 'fa-solid fa-star';
+                        } else {
+                            starBtn.style.color = 'var(--text-secondary)';
+                            if (starIcon) starIcon.className = 'fa-regular fa-star';
+                        }
+                    }
+                }
+            }
 
             if (shareData) return;
             try {
@@ -1289,44 +1304,9 @@
 
             if (activeItem.level === 0) {
                 // Render Level 0: Multiple Choice
-                let correctAns, promptText, optionsSource;
-                if (setFile.isLanguageLearning) {
-                    const localesMap = {
-                        'nl-NL': 'Nederlands',
-                        'en-US': 'Engels',
-                        'fr-FR': 'Frans',
-                        'de-DE': 'Duits'
-                    };
-                    const leftName = localesMap[setFile.langLeft] || 'Taal 1';
-                    const rightName = localesMap[setFile.langRight] || 'Taal 2';
+                const { correctAns, promptText, optionsSource } = getChoiceQuestionData(activeWord, answerWith);
 
-                    if (answerWith === 'term') {
-                        correctAns = activeWord.term;
-                        promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
-                        optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
-                    } else {
-                        correctAns = activeWord.definition;
-                        promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
-                        optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
-                    }
-                } else {
-                    if (answerWith === 'term') {
-                        correctAns = activeWord.term;
-                        promptText = `Kies het juiste woord voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
-                        optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
-                    } else {
-                        correctAns = activeWord.definition;
-                        promptText = `Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
-                        optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
-                    }
-                }
-
-                const options = [correctAns];
-                const shuffledOthers = optionsSource.sort(() => 0.5 - Math.random());
-                for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
-                    options.push(shuffledOthers[i]);
-                }
-                options.sort(() => 0.5 - Math.random());
+                const options = generateMultipleChoiceOptions(correctAns, optionsSource);
 
                 let optionsHTML = '';
                 options.forEach(opt => {
@@ -1353,20 +1333,14 @@
                 if (savedAutoPlay) {
                     const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
                     const speakLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
-                    speakSpellingWord(speakWord, speakLang);
+                    speakText(speakWord, speakLang);
                 }
             } else {
                 // Render Level 1: Open typing question
                 let questionLabel, placeholderText, correctAnswer;
                 if (setFile.isLanguageLearning) {
-                    const localesMap = {
-                        'nl-NL': 'Nederlands',
-                        'en-US': 'Engels',
-                        'fr-FR': 'Frans',
-                        'de-DE': 'Duits'
-                    };
-                    const leftName = localesMap[setFile.langLeft] || 'Taal 1';
-                    const rightName = localesMap[setFile.langRight] || 'Taal 2';
+                    const leftName = getLanguageName(setFile.langLeft, 'Taal 1');
+                    const rightName = getLanguageName(setFile.langRight, 'Taal 2');
 
                     if (answerWith === 'term') {
                         questionLabel = `Wat is de vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor: <br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>?`;
@@ -1408,7 +1382,7 @@
                 if (savedAutoPlay) {
                     const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
                     const speakLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
-                    speakSpellingWord(speakWord, speakLang);
+                    speakText(speakWord, speakLang);
                 }
 
                 const input = document.getElementById('learnInput');
@@ -1563,46 +1537,9 @@
             const activeWord = setTerms[activeItem.index];
             const answerWith = document.getElementById('answerWithSelect').value;
 
-            let correctAns, promptText, optionsSource;
-            if (setFile.isLanguageLearning) {
-                const localesMap = {
-                    'nl-NL': 'Nederlands',
-                    'en-US': 'Engels',
-                    'fr-FR': 'Frans',
-                    'de-DE': 'Duits'
-                };
-                const leftName = localesMap[setFile.langLeft] || 'Taal 1';
-                const rightName = localesMap[setFile.langRight] || 'Taal 2';
+            const { correctAns, promptText, optionsSource } = getChoiceQuestionData(activeWord, answerWith);
 
-                if (answerWith === 'term') {
-                    correctAns = activeWord.term;
-                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(leftName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
-                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
-                } else {
-                    correctAns = activeWord.definition;
-                    promptText = `Kies de juiste vertaling in het <strong style="color:#52873e">${escapeHTML(rightName)}</strong> voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
-                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
-                }
-            } else {
-                if (answerWith === 'term') {
-                    correctAns = activeWord.term;
-                    promptText = `Kies het juiste woord voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.definition)}</strong>`;
-                    optionsSource = setTerms.filter(t => t.term !== correctAns).map(t => t.term);
-                } else {
-                    correctAns = activeWord.definition;
-                    promptText = `Kies de juiste betekenis voor:<br><strong style="color:#52873e">${escapeHTML(activeWord.term)}</strong>`;
-                    optionsSource = setTerms.filter(t => t.definition !== correctAns).map(t => t.definition);
-                }
-            }
-
-            const options = [correctAns];
-            const shuffledOthers = optionsSource.sort(() => 0.5 - Math.random());
-
-            for (let i = 0; i < Math.min(3, shuffledOthers.length); i++) {
-                options.push(shuffledOthers[i]);
-            }
-
-            options.sort(() => 0.5 - Math.random());
+            const options = generateMultipleChoiceOptions(correctAns, optionsSource);
 
             let optionsHTML = '';
             options.forEach(opt => {
@@ -1633,7 +1570,7 @@
             if (savedAutoPlay) {
                 const speakWord = (answerWith === 'term') ? activeWord.definition : activeWord.term;
                 const speakLang = (answerWith === 'term') ? (setFile.langRight || 'en-US') : (setFile.langLeft || 'nl-NL');
-                speakSpellingWord(speakWord, speakLang);
+                speakText(speakWord, speakLang);
             }
         }
 
@@ -1643,7 +1580,7 @@
             if (savedAutoPlay) {
                 const answerWith = document.getElementById('answerWithSelect').value;
                 const speakLang = (answerWith === 'term') ? (setFile.langLeft || 'nl-NL') : (setFile.langRight || 'en-US');
-                speakSpellingWord(selected, speakLang);
+                speakText(selected, speakLang);
             }
 
             const activeItem = activeRepetitionQueue.shift();
@@ -1678,9 +1615,7 @@
 
 
 
-        async function getOrCreateFolderId() {
-            return 'appDataFolder';
-        }
+
 
         function renderCompletedScreen(mode, titleText) {
             updateProgressBar(100);

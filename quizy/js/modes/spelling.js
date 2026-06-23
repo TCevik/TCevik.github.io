@@ -1,4 +1,10 @@
-// js/modes/spelling.js
+function saveSpellingProgress() {
+    gameProgress.spelling = {
+        queue: activeRepetitionQueue,
+        completedCount: activeCompletedCount
+    };
+    saveProgressToDrive();
+}
 
 function renderSpelling() {
     if (currentMode !== 'spelling') return;
@@ -15,39 +21,26 @@ function renderSpelling() {
     learnRetypeMode = false;
 
     const answerWith = document.getElementById('answerWithSelect').value;
-    let speakText, clueText, correctWord, promptLabel;
+    let speakTextVal, clueText, correctWord, promptLabel;
 
-    if (setFile.isLanguageLearning) {
-        const localesMap = {
-            'nl-NL': 'Nederlands',
-            'en-US': 'Engels',
-            'fr-FR': 'Frans',
-            'de-DE': 'Duits'
-        };
-        const leftName = localesMap[setFile.langLeft] || 'Taal 1';
-        const rightName = localesMap[setFile.langRight] || 'Taal 2';
-
-        if (answerWith === 'term') {
-            speakText = activeWord.term;
-            clueText = activeWord.definition;
-            correctWord = activeWord.term.trim().toLowerCase();
+    if (answerWith === 'term') {
+        speakTextVal = activeWord.term;
+        clueText = activeWord.definition;
+        correctWord = activeWord.term.trim().toLowerCase();
+        if (setFile.isLanguageLearning) {
+            const leftName = getLanguageName(setFile.langLeft, 'Taal 1');
             promptLabel = `Typ het woord in het <em>${escapeHTML(leftName)}</em> dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
         } else {
-            speakText = activeWord.definition;
-            clueText = activeWord.term;
-            correctWord = activeWord.definition.trim().toLowerCase();
-            promptLabel = `Typ de vertaling in het <em>${escapeHTML(rightName)}</em> die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+            promptLabel = `Typ het woord dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
         }
     } else {
-        if (answerWith === 'term') {
-            speakText = activeWord.term;
-            clueText = activeWord.definition;
-            correctWord = activeWord.term.trim().toLowerCase();
-            promptLabel = `Typ het woord dat je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
+        speakTextVal = activeWord.definition;
+        clueText = activeWord.term;
+        correctWord = activeWord.definition.trim().toLowerCase();
+        if (setFile.isLanguageLearning) {
+            const rightName = getLanguageName(setFile.langRight, 'Taal 2');
+            promptLabel = `Typ de vertaling in het <em>${escapeHTML(rightName)}</em> die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
         } else {
-            speakText = activeWord.definition;
-            clueText = activeWord.term;
-            correctWord = activeWord.definition.trim().toLowerCase();
             promptLabel = `Typ de definitie die je hoort (clue: <em>${escapeHTML(clueText)}</em>)`;
         }
     }
@@ -83,10 +76,10 @@ function renderSpelling() {
     
     const savedAutoPlay = localStorage.getItem('quizy_auto_play_audio') === 'true';
     if (savedAutoPlay) {
-        speakSpellingWord(speakText, speakLang);
+        speakText(speakTextVal, speakLang);
     }
 
-    speakBtn.addEventListener('click', () => speakSpellingWord(speakText, speakLang));
+    speakBtn.addEventListener('click', () => speakText(speakTextVal, speakLang));
 
     const checkAnswer = () => {
         if (submitBtn.textContent === 'Doorgaan') {
@@ -101,7 +94,7 @@ function renderSpelling() {
                 renderSpelling();
             } else {
                 document.getElementById('spellingFeedback').innerHTML = `
-                    <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(speakText)}</strong></div>
+                    <div class="status-box incorrect">Typ exact over: <br><strong>${escapeHTML(speakTextVal)}</strong></div>
                 `;
                 input.value = '';
                 input.focus();
@@ -125,11 +118,7 @@ function renderSpelling() {
                 activeCompletedCount++;
             }
 
-            gameProgress.spelling = {
-                queue: activeRepetitionQueue,
-                completedCount: activeCompletedCount
-            };
-            saveProgressToDrive();
+            saveSpellingProgress();
 
             setTimeout(() => {
                 renderSpelling();
@@ -140,22 +129,18 @@ function renderSpelling() {
             activeItemProcessed.weight = Math.min(3, activeItemProcessed.weight + 1);
             rescheduleItem(activeRepetitionQueue, activeItemProcessed);
 
-            gameProgress.spelling = {
-                queue: activeRepetitionQueue,
-                completedCount: activeCompletedCount
-            };
-            saveProgressToDrive();
+            saveSpellingProgress();
 
             if (retypeEnabled) {
                 learnRetypeMode = true;
                 document.getElementById('spellingFeedback').innerHTML = `
-                    <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
+                    <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakTextVal)}</strong><br><br>Typ het antwoord hierboven exact correct over om door te gaan.</div>
                 `;
                 input.value = '';
                 input.focus();
             } else {
                 document.getElementById('spellingFeedback').innerHTML = `
-                    <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakText)}</strong></div>
+                    <div class="status-box incorrect">Niet helemaal juist. Het juiste antwoord is:<br><strong style="font-size:1.2rem; color:#d97706;">${escapeHTML(speakTextVal)}</strong></div>
                 `;
                 input.disabled = true;
                 submitBtn.textContent = 'Doorgaan';
@@ -170,15 +155,3 @@ function renderSpelling() {
     });
 }
 
-function speakSpellingWord(word, lang) {
-    if ('speechSynthesis' in window) {
-        try {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(word);
-            utterance.lang = lang || 'nl-NL';
-            window.speechSynthesis.speak(utterance);
-        } catch (e) {
-            console.warn("Spraaksynthese mislukt:", e);
-        }
-    }
-}

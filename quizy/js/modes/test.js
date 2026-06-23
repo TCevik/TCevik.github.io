@@ -226,19 +226,12 @@ function generateTestQuestions() {
             const finalType = nonMatchTypes.length > 0 ? nonMatchTypes[Math.floor(Math.random() * nonMatchTypes.length)] : 'open';
 
             if (finalType === 'choice') {
-                const options = [item.definition];
                 const otherDefs = setTerms.filter(t => t.definition !== item.definition).map(t => t.definition);
-                const shuffledOthers = shuffleArray(otherDefs);
-
-                for (let j = 0; j < Math.min(3, shuffledOthers.length); j++) {
-                    options.push(shuffledOthers[j]);
-                }
-
                 generatedQuestions.push({
                     type: 'choice',
                     prompt: `Wat is de definitie van: '${item.term}'?`,
                     correctAnswer: item.definition,
-                    options: shuffleArray(options)
+                    options: generateMultipleChoiceOptions(item.definition, otherDefs)
                 });
             } else if (finalType === 'tf') {
                 const randomIsCorrect = Math.random() > 0.5;

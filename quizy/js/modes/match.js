@@ -95,8 +95,8 @@ function selectMatchCard(cardEl) {
         const card1 = firstSelectedCard;
         const card2 = cardEl;
         setTimeout(() => {
-            card1.style.display = 'none';
-            card2.style.display = 'none';
+            card1.style.visibility = 'hidden';
+            card2.style.visibility = 'hidden';
         }, 400);
 
         firstSelectedCard = null;

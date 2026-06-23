@@ -3,6 +3,18 @@
  * Gedeelde hulpfuncties voor de Quizy-app.
  */
 
+const LOCALES_MAP = {
+    'nl-NL': 'Nederlands',
+    'en-US': 'Engels',
+    'fr-FR': 'Frans',
+    'de-DE': 'Duits'
+};
+
+function getLanguageName(locale, defaultName = 'Taal') {
+    return LOCALES_MAP[locale] || defaultName;
+}
+
+
 // ── Thema ──────────────────────────────────────────────────────────────────
 
 /**
@@ -68,6 +80,19 @@ function escapeJS(str) {
         .replace(/\n/g, '\\n')
         .replace(/\r/g, '\\r')
         .replace(/'/g, "\\'");
+}
+
+function speakText(text, lang) {
+    if ('speechSynthesis' in window) {
+        try {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang || 'nl-NL';
+            window.speechSynthesis.speak(utterance);
+        } catch (e) {
+            console.warn("Spraaksynthese mislukt:", e);
+        }
+    }
 }
 
 // ── Aangepaste Dialogen ────────────────────────────────────────────────────
