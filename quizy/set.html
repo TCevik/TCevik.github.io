@@ -290,12 +290,50 @@
         let currentSetPage = 1;
         const setPageSize = 50;
 
+        async function compressData(dataStr) {
+            const stream = new Blob([dataStr]).stream();
+            const compressedStream = stream.pipeThrough(new CompressionStream('gzip'));
+            const chunks = [];
+            const reader = compressedStream.getReader();
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                chunks.push(value);
+            }
+            const blob = new Blob(chunks);
+            const buffer = await blob.arrayBuffer();
+            const bytes = new Uint8Array(buffer);
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        }
+
+        async function decompressData(base64Str) {
+            const binary = atob(base64Str);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            const stream = new Blob([bytes]).stream();
+            const decompressedStream = stream.pipeThrough(new DecompressionStream('gzip'));
+            const response = new Response(decompressedStream);
+            const blob = await response.blob();
+            return await blob.text();
+        }
+
         // Set ophalen
         async function fetchSetDetails() {
             currentSetPage = 1;
             if (shareData) {
                 try {
-                    const decodedStr = decodeURIComponent(escape(atob(shareData)));
+                    let decodedStr;
+                    if (shareData.startsWith('c_')) {
+                        decodedStr = await decompressData(shareData.substring(2));
+                    } else {
+                        decodedStr = decodeURIComponent(escape(atob(shareData)));
+                    }
                     const content = JSON.parse(decodedStr);
                     currentSetData = {
                         id: null,
@@ -671,7 +709,7 @@
         });
 
         // Share/Save Event Listeners
-        shareSetBtn.addEventListener('click', () => {
+        shareSetBtn.addEventListener('click', async () => {
             let dataToShare;
             if (shareData) {
                 dataToShare = shareData;
@@ -685,7 +723,13 @@
                     sharedBy: localStorage.getItem('quizy_username') || 'Een Quizy-gebruiker'
                 };
                 const jsonStr = JSON.stringify(shareObj);
-                dataToShare = btoa(unescape(encodeURIComponent(jsonStr)));
+                try {
+                    const compressed = await compressData(jsonStr);
+                    dataToShare = 'c_' + compressed;
+                } catch (e) {
+                    console.warn("Fout bij comprimeren, fallback naar standaard btoa:", e);
+                    dataToShare = btoa(unescape(encodeURIComponent(jsonStr)));
+                }
             }
 
             const shareLink = `${window.location.origin}${window.location.pathname}?share=${encodeURIComponent(dataToShare)}`;
