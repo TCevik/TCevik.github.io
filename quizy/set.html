@@ -1815,25 +1815,30 @@
         if (shuffleToggle) {
             shuffleToggle.checked = localStorage.getItem('quizy_shuffle') === 'true';
             shuffleToggle.addEventListener('change', async (e) => {
-                localStorage.setItem('quizy_shuffle', shuffleToggle.checked);
-                let hasProgress = false;
-                if (gameProgress[currentMode]) {
-                    const prog = gameProgress[currentMode];
+                const isShuffle = shuffleToggle.checked;
+                localStorage.setItem('quizy_shuffle', isShuffle);
+                if (gameProgress && gameProgress[currentMode]) {
                     if (currentMode === 'flashcards') {
-                        hasProgress = (prog.known && prog.known.length > 0) || (prog.unknown && prog.unknown.length > 0);
-                    } else if (currentMode === 'learn') {
-                        hasProgress = (prog.completedCount > 0) || (prog.queue && prog.queue.some(item => item.level > 0));
-                    } else if (currentMode === 'choice' || currentMode === 'spelling') {
-                        hasProgress = (prog.completedCount > 0) || (prog.queue && prog.queue.some(item => item.weight !== 1));
+                        if (isShuffle) {
+                            flashcardQueue = shuffleArray(flashcardQueue);
+                        } else {
+                            flashcardQueue.sort((a, b) => a - b);
+                        }
+                        gameProgress[currentMode].queue = flashcardQueue;
+                        await saveProgressToDrive(true);
+                        renderFlashcards();
+                    } else if (['learn', 'choice', 'spelling'].includes(currentMode)) {
+                        if (isShuffle) {
+                            activeRepetitionQueue = shuffleArray(activeRepetitionQueue);
+                        } else {
+                            activeRepetitionQueue.sort((a, b) => a.index - b.index);
+                        }
+                        gameProgress[currentMode].queue = activeRepetitionQueue;
+                        await saveProgressToDrive(true);
+                        if (currentMode === 'learn') renderLearn();
+                        else if (currentMode === 'choice') renderChoice();
+                        else if (currentMode === 'spelling') renderSpelling();
                     }
-                }
-                
-                if (!hasProgress || await customConfirm("Het wijzigen van de volgorde start een nieuwe sessie. Weet je het zeker?", "Volgorde wijzigen", "Wijzigen")) {
-                    startFresh();
-                } else {
-                    e.preventDefault();
-                    shuffleToggle.checked = !shuffleToggle.checked;
-                    localStorage.setItem('quizy_shuffle', shuffleToggle.checked);
                 }
             });
         }
