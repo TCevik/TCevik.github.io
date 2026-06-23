@@ -1036,4 +1036,102 @@ window.updateSaveStatus = function(status) {
     }
 })();
 
+// PWA setup specific to Quizy
+(function() {
+    // 1. Inject manifest
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = '/quizy/app.webmanifest';
+    document.head.appendChild(manifestLink);
+
+    // 2. Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/quizy/sw.js')
+                .then(reg => console.log('Quizy Service Worker registered', reg))
+                .catch(err => console.error('Quizy Service Worker registration failed', err));
+        });
+    }
+
+    // 3. PWA Installation Flow
+    window.deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        window.deferredPrompt = e;
+        setupPwaButtons();
+        updatePwaButtonsVisibility();
+    });
+
+    window.addEventListener('appinstalled', (e) => {
+        console.log('Quizy PWA was installed');
+        window.deferredPrompt = null;
+        updatePwaButtonsVisibility();
+    });
+
+    function triggerPwaInstall() {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the Quizy install prompt');
+                } else {
+                    console.log('User dismissed the Quizy install prompt');
+                }
+                window.deferredPrompt = null;
+                updatePwaButtonsVisibility();
+            });
+        }
+    }
+
+    function setupPwaButtons() {
+        // Mobile PWA Install button (links naast themeToggle)
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle && !document.getElementById('pwa-install-mobile')) {
+            const mobileBtn = document.createElement('button');
+            mobileBtn.id = 'pwa-install-mobile';
+            mobileBtn.className = 'pwa-download-btn-mobile';
+            mobileBtn.title = 'App downloaden';
+            mobileBtn.innerHTML = '<i class="fa-solid fa-circle-down"></i>';
+            mobileBtn.style.display = 'none';
+            themeToggle.parentNode.insertBefore(mobileBtn, themeToggle);
+            mobileBtn.addEventListener('click', triggerPwaInstall);
+        }
+
+        // Desktop PWA Install button (rechts in dashboard-intro)
+        const dashboardIntro = document.querySelector('.dashboard-intro');
+        if (dashboardIntro && !document.getElementById('pwa-install-desktop')) {
+            const desktopBtn = document.createElement('button');
+            desktopBtn.id = 'pwa-install-desktop';
+            desktopBtn.className = 'pwa-download-btn-desktop';
+            desktopBtn.innerHTML = '<i class="fa-solid fa-download"></i> App downloaden';
+            desktopBtn.style.display = 'none';
+            dashboardIntro.appendChild(desktopBtn);
+            desktopBtn.addEventListener('click', triggerPwaInstall);
+        }
+    }
+
+    function updatePwaButtonsVisibility() {
+        const show = !!window.deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches;
+        const mBtn = document.getElementById('pwa-install-mobile');
+        const dBtn = document.getElementById('pwa-install-desktop');
+        if (mBtn) mBtn.style.display = show ? 'flex' : 'none';
+        if (dBtn) dBtn.style.display = show ? 'inline-flex' : 'none';
+    }
+
+    // Keep checking for the elements in the DOM
+    document.addEventListener('DOMContentLoaded', () => {
+        setupPwaButtons();
+        updatePwaButtonsVisibility();
+        
+        const pwaInterval = setInterval(() => {
+            setupPwaButtons();
+            updatePwaButtonsVisibility();
+        }, 1000);
+        
+        setTimeout(() => clearInterval(pwaInterval), 10000);
+    });
+})();
+
+
 
