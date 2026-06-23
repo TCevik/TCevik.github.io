@@ -434,6 +434,56 @@
                 updatedAt: new Date().toISOString() 
             };
             if (currentEditingSetData) {
+                // Map old indices to new indices based on item terms and definitions to prevent Index-Drift
+                const oldItems = currentEditingSetData.items || [];
+                const oldKeyToIndex = new Map();
+                oldItems.forEach((item, idx) => {
+                    const key = `${item.term}|||${item.definition}`;
+                    if (!oldKeyToIndex.has(key)) {
+                        oldKeyToIndex.set(key, idx);
+                    }
+                });
+
+                const oldIndexToNewIndex = {};
+                items.forEach((item, newIdx) => {
+                    const key = `${item.term}|||${item.definition}`;
+                    if (oldKeyToIndex.has(key)) {
+                        const oldIdx = oldKeyToIndex.get(key);
+                        oldIndexToNewIndex[oldIdx] = newIdx;
+                    }
+                });
+
+                if (currentEditingSetData.progress) {
+                    const newProgress = {};
+                    for (const mode in currentEditingSetData.progress) {
+                        const prog = currentEditingSetData.progress[mode];
+                        if (!prog) continue;
+
+                        if (mode === 'flashcards') {
+                            newProgress[mode] = {
+                                known: (prog.known || []).map(oldIdx => oldIndexToNewIndex[oldIdx]).filter(newIdx => newIdx !== undefined),
+                                unknown: (prog.unknown || []).map(oldIdx => oldIndexToNewIndex[oldIdx]).filter(newIdx => newIdx !== undefined),
+                                queue: (prog.queue || []).map(oldIdx => oldIndexToNewIndex[oldIdx]).filter(newIdx => newIdx !== undefined),
+                                currentIndex: prog.currentIndex !== undefined && oldIndexToNewIndex[prog.currentIndex] !== undefined ? oldIndexToNewIndex[prog.currentIndex] : 0
+                            };
+                        } else if (mode === 'choice' || mode === 'spelling' || mode === 'learn') {
+                            newProgress[mode] = {
+                                queue: (prog.queue || []).map(item => {
+                                    const newIdx = oldIndexToNewIndex[item.index];
+                                    return newIdx !== undefined ? { ...item, index: newIdx } : null;
+                                }).filter(item => item !== null),
+                                completedCount: prog.completedCount || 0
+                            };
+                        } else {
+                            newProgress[mode] = {
+                                ...prog,
+                                currentIndex: prog.currentIndex !== undefined && oldIndexToNewIndex[prog.currentIndex] !== undefined ? oldIndexToNewIndex[prog.currentIndex] : 0
+                            };
+                        }
+                    }
+                    currentEditingSetData.progress = newProgress;
+                }
+
                 fileData.progress = currentEditingSetData.progress || {};
                 if (currentEditingSetData.sharedBy) {
                     fileData.sharedBy = currentEditingSetData.sharedBy;
