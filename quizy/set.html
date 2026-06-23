@@ -1638,77 +1638,8 @@
             return 'appDataFolder';
         }
 
-        async function updateStudyStreak(matchTime = null, testPercentage = null) {
-            try {
-                const fId = await getOrCreateFolderId();
-                const response = await driveRequest(`${DRIVE_BASE}/files?spaces=appDataFolder&q=name='quizy_config.json' and '${fId}' in parents and trashed=false`);
-                const data = await response.json();
-                if (data.files && data.files.length > 0) {
-                    const cfgId = data.files[0].id;
-                    const config = await driveGetJSON(cfgId);
-
-                    const localDate = new Date();
-                    const todayStr = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}-${String(localDate.getDate()).padStart(2, '0')}`;
-                    if (!config.streak) config.streak = 0;
-                    if (!config.streakFreezes) config.streakFreezes = 0;
-                    if (!config.modesUsed) config.modesUsed = [];
-
-                    let streakUpdated = false;
-
-                    if (config.lastStudyDate) {
-                        const lastDate = new Date(config.lastStudyDate);
-                        const today = new Date(todayStr);
-                        const diffTime = today - lastDate;
-                        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-                        if (diffDays === 1) {
-                            config.streak += 1;
-                            streakUpdated = true;
-                        } else if (diffDays > 1) {
-                            if (config.streakFreezes > 0) {
-                                config.streakFreezes--;
-                                config.streak += 1;
-                                streakUpdated = true;
-                            } else {
-                                config.streak = 1;
-                                streakUpdated = true;
-                            }
-                        }
-                    } else {
-                        config.streak = 1;
-                        streakUpdated = true;
-                    }
-
-                    if (streakUpdated && config.streak > 0 && config.streak % 30 === 0) {
-                        config.streakFreezes = Math.min(3, (config.streakFreezes || 0) + 1);
-                    }
-
-                    config.lastStudyDate = todayStr;
-
-                    if (currentMode && !config.modesUsed.includes(currentMode)) {
-                        config.modesUsed.push(currentMode);
-                    }
-
-                    const hour = new Date().getHours();
-                    if (hour >= 22 || hour < 4) {
-                        config.nightOwlUnlocked = true;
-                    }
-                    if (hour >= 5 && hour < 9) {
-                        config.earlyBirdUnlocked = true;
-                    }
-
-                    config.updatedAt = new Date().toISOString();
-
-                    await drivePatchJSON(cfgId, config);
-                }
-            } catch (err) {
-                console.error("Fout bij bijwerken streak:", err);
-            }
-        }
-
         function renderCompletedScreen(mode, titleText) {
             updateProgressBar(100);
-            updateStudyStreak();
 
             gameProgress[mode] = { currentIndex: 0 };
             if (mode === 'flashcards') {

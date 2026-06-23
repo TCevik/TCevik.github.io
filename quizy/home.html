@@ -57,24 +57,7 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 12px; align-items: center;">
-                        <div id="streakContainer"
-                            style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
-                            <span style="font-size: 1.5rem; display: flex; align-items: center;"><i class="fa-solid fa-fire" style="color: #f97316;"></i></span>
-                            <div style="text-align: left;">
-                                <div style="font-weight: 700; font-size: 1rem; color: var(--brand-color);"
-                                    id="streakCount">0 dagen streak</div>
-                            </div>
-                        </div>
-                        <div id="freezeContainer"
-                            style="display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; box-shadow: var(--shadow-sm);">
-                            <span style="font-size: 1.5rem; display: flex; align-items: center;"><i class="fa-solid fa-snowflake" style="color: #3b82f6;"></i></span>
-                            <div style="text-align: left;">
-                                <div style="font-weight: 700; font-size: 1rem; color: #3b82f6;" id="freezeCount">0
-                                    freezes</div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
                 <!-- Quiz sets sectie -->
@@ -197,11 +180,6 @@
 
                 currentUsername = config.username;
                 localStorage.setItem('quizy_username', currentUsername);
-
-                // Update streak display
-                const streak = config.streak || 0;
-                document.getElementById('streakCount').textContent = `${streak} ${streak === 1 ? 'dag' : 'dagen'} streak`;
-                document.getElementById('freezeCount').textContent = `${config.streakFreezes || 0} ${config.streakFreezes === 1 ? 'freeze' : 'freezes'}`;
 
                 // Toon welkom terug scherm
                 statusMessage.classList.add('hidden');

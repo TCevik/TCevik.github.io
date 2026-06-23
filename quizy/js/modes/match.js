@@ -108,7 +108,6 @@ function selectMatchCard(cardEl) {
             const elapsed = parseFloat(((Date.now() - matchStartTime) / 1000).toFixed(1));
 
             saveProgressToDrive(true);
-            updateStudyStreak(elapsed);
 
             setTimeout(() => {
                 modeContent.innerHTML = `

@@ -386,5 +386,4 @@ function checkTestAnswers() {
     gameProgress.test = null;
     saveProgressToDrive();
 
-    updateStudyStreak(null, percentage);
 }
