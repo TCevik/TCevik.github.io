@@ -776,8 +776,7 @@
         saveSharedSetBtn.addEventListener('click', async () => {
             if (!TOKEN) {
                 if (await customConfirm("Je moet ingelogd zijn met Google om deze set op te slaan in je account. Wil je nu inloggen?", "Inloggen vereist", "Inloggen")) {
-                    localStorage.setItem('login_redirect', window.location.href);
-                    window.location.href = 'index.html';
+                    window.location.href = 'index.html?redirect=' + encodeURIComponent(window.location.href);
                 }
                 return;
             }

@@ -262,9 +262,9 @@
                         localStorage.setItem('google_access_token', tokenResponse.access_token);
                         const expiryTime = Date.now() + (parseInt(tokenResponse.expires_in, 10) || 3600) * 1000;
                         localStorage.setItem('google_token_expiry', expiryTime);
-                        const redirectUrl = localStorage.getItem('login_redirect');
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirectUrl = urlParams.get('redirect');
                         if (redirectUrl) {
-                            localStorage.removeItem('login_redirect');
                             window.location.href = redirectUrl;
                         } else {
                             window.location.href = '/quizy/home.html';
@@ -274,7 +274,8 @@
             });
 
             // Automatically request token if user was redirected here due to auth check
-            const redirectUrl = localStorage.getItem('login_redirect');
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect');
             if (redirectUrl) {
                 tokenClient.requestAccessToken();
             }
