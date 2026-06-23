@@ -1868,4 +1868,52 @@ input[type="text"]:focus {
         transform-origin: top left;
     }
 }
+
+/* Save Indicator Styles */
+.save-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+
+.save-indicator.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.save-indicator.saving {
+    color: #3b82f6;
+    border-color: rgba(59, 130, 246, 0.3);
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.save-indicator.saved {
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+    background-color: rgba(16, 185, 129, 0.05);
+}
+
+.save-indicator.error {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.save-indicator .save-icon-spinner {
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+
 

@@ -707,6 +707,10 @@ function injectCommonLayout() {
     headerEl.innerHTML = `
         <a href="${isHome ? 'index.html' : 'home.html'}" id="logo">TC_tam <strong style="color: #52873e;">Quizy</strong></a>
         <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="saveIndicator" class="save-indicator" title="Opslagstatus">
+                <span class="save-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                <span class="save-text">Opgeslagen</span>
+            </div>
             <button id="themeToggle" class="theme-toggle-btn" title="Donkere/Lichte modus"><i class="fa-solid fa-moon"></i></button>
             <div class="header-actions">
                 ${isHome ? '' : '<a href="home.html" class="btn btn-secondary btn-sm" style="margin-right: 10px;"><i class="fa-solid fa-house"></i> Dashboard</a>'}
@@ -931,3 +935,62 @@ function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn'
         });
     }
 }
+
+window.activeSaves = new Set();
+
+window.startSaveOperation = function(id) {
+    window.activeSaves.add(id);
+    window.updateSaveStatus('saving');
+};
+
+window.endSaveOperation = function(id, success = true) {
+    window.activeSaves.delete(id);
+    if (window.activeSaves.size === 0) {
+        window.updateSaveStatus(success ? 'saved' : 'error');
+    } else {
+        window.updateSaveStatus('saving');
+    }
+};
+
+window.updateSaveStatus = function(status) {
+    const indicator = document.getElementById('saveIndicator');
+    if (!indicator) return;
+
+    if (window.saveStatusTimeout) {
+        clearTimeout(window.saveStatusTimeout);
+        window.saveStatusTimeout = null;
+    }
+
+    // Return early if we are already in saving state to prevent resetting the spinner rotation animation
+    if (status === 'saving' && indicator.classList.contains('saving')) {
+        return;
+    }
+
+    // Reset classes
+    indicator.className = 'save-indicator visible';
+
+    const iconEl = indicator.querySelector('.save-icon');
+    const textEl = indicator.querySelector('.save-text');
+
+    if (status === 'saving') {
+        indicator.classList.add('saving');
+        if (iconEl) iconEl.innerHTML = '<i class="fa-solid fa-rotate save-icon-spinner"></i>';
+        if (textEl) textEl.textContent = 'Opslaan...';
+    } else if (status === 'saved') {
+        indicator.classList.add('saved');
+        if (iconEl) iconEl.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i>';
+        if (textEl) textEl.textContent = 'Opgeslagen';
+
+        // Auto hide after 2 seconds
+        window.saveStatusTimeout = setTimeout(() => {
+            indicator.classList.remove('visible');
+        }, 2000);
+    } else if (status === 'error') {
+        indicator.classList.add('error');
+        if (iconEl) iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+        if (textEl) textEl.textContent = 'Fout bij opslaan';
+    } else {
+        indicator.classList.remove('visible');
+    }
+};
+

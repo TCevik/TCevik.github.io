@@ -1049,6 +1049,10 @@
             }
 
             if (shareData) return;
+            const starSaveId = `star_${termIndex}_${Date.now()}`;
+            if (typeof window.startSaveOperation === 'function') {
+                window.startSaveOperation(starSaveId);
+            }
             try {
                 const fileData = {
                     title: currentSetData.title,
@@ -1058,9 +1062,21 @@
                     langRight: currentSetData.langRight,
                     updatedAt: new Date().toISOString()
                 };
-                await drivePatchJSON(fileId, fileData);
+                const res = await drivePatchJSON(fileId, fileData);
+                if (res && res.ok) {
+                    if (typeof window.endSaveOperation === 'function') {
+                        window.endSaveOperation(starSaveId, true);
+                    }
+                } else {
+                    if (typeof window.endSaveOperation === 'function') {
+                        window.endSaveOperation(starSaveId, false);
+                    }
+                }
             } catch (err) {
                 console.error("Fout bij opslaan star:", err);
+                if (typeof window.endSaveOperation === 'function') {
+                    window.endSaveOperation(starSaveId, false);
+                }
             }
         }
 
@@ -1233,9 +1249,26 @@
             if (saveTimeout) {
                 clearTimeout(saveTimeout);
                 saveTimeout = null;
+                if (typeof window.endSaveOperation === 'function') {
+                    window.activeSaves.delete('progress_timeout');
+                }
+            }
+
+            if (typeof window.startSaveOperation === 'function') {
+                if (immediate) {
+                    window.startSaveOperation('progress_request');
+                } else {
+                    window.startSaveOperation('progress_timeout');
+                }
             }
 
             const performSave = async () => {
+                if (typeof window.endSaveOperation === 'function') {
+                    window.activeSaves.delete('progress_timeout');
+                }
+                if (typeof window.startSaveOperation === 'function') {
+                    window.startSaveOperation('progress_request');
+                }
                 try {
                     const bodyStr = JSON.stringify(setFile);
                     const response = await driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
@@ -1244,9 +1277,21 @@
                         body: bodyStr,
                         keepalive: bodyStr.length < 60000
                     });
-                    if (!response.ok) console.warn("Opslaan van voortgang mislukt.");
+                    if (response.ok) {
+                        if (typeof window.endSaveOperation === 'function') {
+                            window.endSaveOperation('progress_request', true);
+                        }
+                    } else {
+                        console.warn("Opslaan van voortgang mislukt.");
+                        if (typeof window.endSaveOperation === 'function') {
+                            window.endSaveOperation('progress_request', false);
+                        }
+                    }
                 } catch (err) {
                     console.error("Fout bij opslaan voortgang:", err);
+                    if (typeof window.endSaveOperation === 'function') {
+                        window.endSaveOperation('progress_request', false);
+                    }
                 } finally {
                     saveTimeout = null;
                 }
