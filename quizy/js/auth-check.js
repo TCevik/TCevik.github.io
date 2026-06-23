@@ -24,7 +24,13 @@
                 localStorage.removeItem('google_access_token');
                 localStorage.removeItem('google_token_expiry');
                 localStorage.setItem('login_redirect', window.location.href);
-                window.location.href = '/quizy/index.html';
+                
+                const isLoginPage = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/quizy/');
+                if (!isLoginPage) {
+                    alert("Je sessie is verlopen. Open Quizy in een nieuw tabblad/venster en log opnieuw in. Daarna kun je hier op 'Opslaan' klikken of doorgaan om je werk te behouden.");
+                } else {
+                    window.location.href = '/quizy/index.html';
+                }
             }
             return response;
         } catch (error) {

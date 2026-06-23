@@ -100,6 +100,7 @@
         let configFileId = null;
         let currentUsername = "";
         let currentEditingSetId = null; // null voor nieuwe, id voor bewerken
+        let currentEditingSetData = null;
         let userConfig = null;
 
         // Elementen ophalen
@@ -244,8 +245,9 @@
             saveUsernameBtn.textContent = "Laden...";
 
             try {
-                // We updaten alleen de inhoud van het bestand
+                // We updaten de inhoud met behoud van bestaande metadata (zoals createdAt)
                 const fileData = {
+                    ...userConfig,
                     username: newUsername,
                     updatedAt: new Date().toISOString()
                 };
@@ -254,6 +256,7 @@
 
                 if (response.ok) {
                     currentUsername = newUsername;
+                    userConfig = fileData;
                     localStorage.setItem('quizy_username', currentUsername);
                     welcomeTitle.textContent = `Welkom terug, ${currentUsername}!`;
                     closeUsernameEdit();
@@ -381,6 +384,7 @@
 
             try {
                 const setContent = await driveGetJSON(fileId);
+                currentEditingSetData = setContent;
                 cardRowMgr.loadSetIntoEditor(setContent);
                 setModal.classList.remove('hidden');
             } catch (error) {
@@ -421,7 +425,20 @@
             const langRight = isLangLearning ? document.getElementById('langRightSelect').value : document.getElementById('langSingleSelect').value;
 
             const setFileName = `${SET_PREFIX}${title}.json`;
-            const fileData = { title, items, isLanguageLearning: isLangLearning, langLeft, langRight, updatedAt: new Date().toISOString() };
+            const fileData = { 
+                title, 
+                items, 
+                isLanguageLearning: isLangLearning, 
+                langLeft, 
+                langRight, 
+                updatedAt: new Date().toISOString() 
+            };
+            if (currentEditingSetData) {
+                fileData.progress = currentEditingSetData.progress || {};
+                if (currentEditingSetData.sharedBy) {
+                    fileData.sharedBy = currentEditingSetData.sharedBy;
+                }
+            }
 
             try {
                 if (currentEditingSetId) {
@@ -456,6 +473,7 @@
 
         function openSetModalForNew() {
             currentEditingSetId = null;
+            currentEditingSetData = null;
             modalTitle.textContent = 'Nieuwe set maken';
             setTitleInput.value = '';
             importPanel.classList.add('hidden');

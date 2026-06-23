@@ -939,7 +939,9 @@ function initLogoutButtons(desktopId = 'logoutBtn', mobileId = 'mobileLogoutBtn'
 window.activeSaves = new Set();
 
 window.addEventListener('beforeunload', (e) => {
-    if (window.activeSaves && window.activeSaves.size > 0) {
+    const setModal = document.getElementById('setModal');
+    const isEditing = setModal && !setModal.classList.contains('hidden');
+    if (isEditing || (window.activeSaves && window.activeSaves.size > 0)) {
         e.preventDefault();
         e.returnValue = 'Changes you made may not be saved.';
         return e.returnValue;

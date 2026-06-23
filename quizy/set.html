@@ -588,8 +588,12 @@
                 isLanguageLearning: isLangLearning,
                 langLeft: langLeft,
                 langRight: langRight,
+                progress: currentSetData.progress || {},
                 updatedAt: new Date().toISOString()
             };
+            if (currentSetData.sharedBy) {
+                fileData.sharedBy = currentSetData.sharedBy;
+            }
 
             try {
                 // Inhoud bijwerken
@@ -1011,6 +1015,86 @@
             startFresh();
         }
 
+        // Globale promise chain en opslag helper om race-condities te voorkomen
+        let savePromiseChain = Promise.resolve();
+
+        async function saveSetFileToDrive(immediate = false) {
+            if (shareData) return;
+
+            // Zorg dat we de huidige progress in het set object zetten
+            if (gameProgress) {
+                currentSetData.progress = gameProgress;
+            }
+            currentSetData.updatedAt = new Date().toISOString();
+
+            // Annuleer lopende timer
+            if (saveTimeout) {
+                clearTimeout(saveTimeout);
+                saveTimeout = null;
+                if (typeof window.endSaveOperation === 'function') {
+                    window.activeSaves.delete('progress_timeout');
+                }
+            }
+
+            const performSave = async () => {
+                const saveId = `save_drive_${Date.now()}`;
+                if (typeof window.startSaveOperation === 'function') {
+                    window.startSaveOperation(saveId);
+                }
+                try {
+                    const fileData = {
+                        title: currentSetData.title,
+                        items: currentSetData.items,
+                        isLanguageLearning: currentSetData.isLanguageLearning,
+                        langLeft: currentSetData.langLeft,
+                        langRight: currentSetData.langRight,
+                        progress: currentSetData.progress || {},
+                        updatedAt: currentSetData.updatedAt
+                    };
+                    if (currentSetData.sharedBy) {
+                        fileData.sharedBy = currentSetData.sharedBy;
+                    }
+                    const bodyStr = JSON.stringify(fileData);
+                    const response = await driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: bodyStr,
+                        keepalive: bodyStr.length < 60000
+                    });
+                    if (response.ok) {
+                        if (typeof window.endSaveOperation === 'function') {
+                            window.endSaveOperation(saveId, true);
+                        }
+                    } else {
+                        console.warn("Opslaan naar Drive mislukt.");
+                        if (typeof window.endSaveOperation === 'function') {
+                            window.endSaveOperation(saveId, false);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Fout bij opslaan naar Drive:", err);
+                    if (typeof window.endSaveOperation === 'function') {
+                        window.endSaveOperation(saveId, false);
+                    }
+                }
+            };
+
+            if (immediate) {
+                savePromiseChain = savePromiseChain.then(() => performSave());
+                await savePromiseChain;
+            } else {
+                if (typeof window.startSaveOperation === 'function') {
+                    window.startSaveOperation('progress_timeout');
+                }
+                saveTimeout = setTimeout(() => {
+                    if (typeof window.endSaveOperation === 'function') {
+                        window.activeSaves.delete('progress_timeout');
+                    }
+                    savePromiseChain = savePromiseChain.then(() => performSave());
+                }, 2000);
+            }
+        }
+
         async function toggleQuickStar(termIndex) {
             const item = currentSetData.items[termIndex];
             if (!item) return;
@@ -1051,35 +1135,7 @@
             }
 
             if (shareData) return;
-            const starSaveId = `star_${termIndex}_${Date.now()}`;
-            if (typeof window.startSaveOperation === 'function') {
-                window.startSaveOperation(starSaveId);
-            }
-            try {
-                const fileData = {
-                    title: currentSetData.title,
-                    items: currentSetData.items,
-                    isLanguageLearning: currentSetData.isLanguageLearning,
-                    langLeft: currentSetData.langLeft,
-                    langRight: currentSetData.langRight,
-                    updatedAt: new Date().toISOString()
-                };
-                const res = await drivePatchJSON(fileId, fileData);
-                if (res && res.ok) {
-                    if (typeof window.endSaveOperation === 'function') {
-                        window.endSaveOperation(starSaveId, true);
-                    }
-                } else {
-                    if (typeof window.endSaveOperation === 'function') {
-                        window.endSaveOperation(starSaveId, false);
-                    }
-                }
-            } catch (err) {
-                console.error("Fout bij opslaan star:", err);
-                if (typeof window.endSaveOperation === 'function') {
-                    window.endSaveOperation(starSaveId, false);
-                }
-            }
+            await saveSetFileToDrive(true);
         }
 
         function setMatchDifficulty(difficulty) {
@@ -1147,12 +1203,21 @@
             setTerms = getActiveTerms();
             const prog = gameProgress[currentMode];
             if (currentMode === 'flashcards') {
-                flashcardStates.known = prog.known || [];
-                flashcardStates.unknown = prog.unknown || [];
-                flashcardQueue = prog.queue || setTerms.map((_, i) => i);
+                flashcardStates.known = (prog.known || []).filter(idx => idx >= 0 && idx < setTerms.length);
+                flashcardStates.unknown = (prog.unknown || []).filter(idx => idx >= 0 && idx < setTerms.length);
+                flashcardQueue = (prog.queue || []).filter(idx => idx >= 0 && idx < setTerms.length);
+                if (flashcardQueue.length === 0) {
+                    flashcardQueue = setTerms.map((_, i) => i);
+                }
                 currentIdx = prog.currentIndex !== undefined ? prog.currentIndex : (flashcardStates.known.length + flashcardStates.unknown.length);
+                if (currentIdx >= setTerms.length || currentIdx < 0) {
+                    currentIdx = 0;
+                }
             } else if (currentMode === 'choice' || currentMode === 'spelling' || currentMode === 'learn') {
-                activeRepetitionQueue = prog.queue || setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                activeRepetitionQueue = (prog.queue || []).filter(item => item && item.index !== undefined && item.index >= 0 && item.index < setTerms.length);
+                if (activeRepetitionQueue.length === 0) {
+                    activeRepetitionQueue = setTerms.map((_, i) => ({ index: i, weight: 1 }));
+                }
                 if (currentMode === 'learn') {
                     activeRepetitionQueue = activeRepetitionQueue.map(item => {
                         if (item.level === undefined) {
@@ -1162,6 +1227,9 @@
                     });
                 }
                 activeCompletedCount = prog.completedCount || 0;
+                if (activeCompletedCount > setTerms.length || activeCompletedCount < 0) {
+                    activeCompletedCount = 0;
+                }
             } else if (currentMode === 'test') {
                 if (prog && prog.isTestActive) {
                     testConfig = prog.config || { limit: 10, types: ['choice', 'tf', 'open', 'match'] };
@@ -1172,6 +1240,9 @@
                 }
             } else {
                 currentIdx = prog.currentIndex || 0;
+                if (currentIdx >= setTerms.length || currentIdx < 0) {
+                    currentIdx = 0;
+                }
             }
             launchMode();
         }
@@ -1248,65 +1319,7 @@
             if (filterToggle && filterToggle.checked && !force) {
                 return;
             }
-            setFile.progress = gameProgress;
-            setFile.updatedAt = new Date().toISOString();
-
-            if (saveTimeout) {
-                clearTimeout(saveTimeout);
-                saveTimeout = null;
-                if (typeof window.endSaveOperation === 'function') {
-                    window.activeSaves.delete('progress_timeout');
-                }
-            }
-
-            if (typeof window.startSaveOperation === 'function') {
-                if (immediate) {
-                    window.startSaveOperation('progress_request');
-                } else {
-                    window.startSaveOperation('progress_timeout');
-                }
-            }
-
-            const performSave = async () => {
-                if (typeof window.endSaveOperation === 'function') {
-                    window.activeSaves.delete('progress_timeout');
-                }
-                if (typeof window.startSaveOperation === 'function') {
-                    window.startSaveOperation('progress_request');
-                }
-                try {
-                    const bodyStr = JSON.stringify(setFile);
-                    const response = await driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: bodyStr,
-                        keepalive: bodyStr.length < 60000
-                    });
-                    if (response.ok) {
-                        if (typeof window.endSaveOperation === 'function') {
-                            window.endSaveOperation('progress_request', true);
-                        }
-                    } else {
-                        console.warn("Opslaan van voortgang mislukt.");
-                        if (typeof window.endSaveOperation === 'function') {
-                            window.endSaveOperation('progress_request', false);
-                        }
-                    }
-                } catch (err) {
-                    console.error("Fout bij opslaan voortgang:", err);
-                    if (typeof window.endSaveOperation === 'function') {
-                        window.endSaveOperation('progress_request', false);
-                    }
-                } finally {
-                    saveTimeout = null;
-                }
-            };
-
-            if (immediate) {
-                await performSave();
-            } else {
-                saveTimeout = setTimeout(performSave, 2000);
-            }
+            await saveSetFileToDrive(immediate);
         }
 
         function updateProgressBar(percentage) {
@@ -1832,10 +1845,28 @@
                 clearTimeout(saveTimeout);
                 saveTimeout = null;
 
+                if (gameProgress) {
+                    currentSetData.progress = gameProgress;
+                }
+                currentSetData.updatedAt = new Date().toISOString();
+
+                const cleanFileData = {
+                    title: currentSetData.title,
+                    items: currentSetData.items,
+                    isLanguageLearning: currentSetData.isLanguageLearning,
+                    langLeft: currentSetData.langLeft,
+                    langRight: currentSetData.langRight,
+                    progress: currentSetData.progress || {},
+                    updatedAt: currentSetData.updatedAt
+                };
+                if (currentSetData.sharedBy) {
+                    cleanFileData.sharedBy = currentSetData.sharedBy;
+                }
+
                 driveRequest(`${DRIVE_UPLOAD}/files/${fileId}?uploadType=media`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(setFile),
+                    body: JSON.stringify(cleanFileData),
                     keepalive: true
                 }).catch(err => {
                     console.warn("Fout bij opslaan voortgang tijdens sluiten pagina:", err);
