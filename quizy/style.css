@@ -244,6 +244,16 @@ main {
 
 /* Mobile-First Layout tweaks */
 @media (max-width: 768px) {
+    body {
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
+    input, textarea {
+        -webkit-user-select: text;
+        user-select: text;
+    }
+
     .bottom-nav {
         display: flex;
     }
@@ -1867,7 +1877,32 @@ input[type="text"]:focus {
         left: 0;
         transform-origin: top left;
     }
+
+    .pagination-controls {
+        flex-wrap: wrap;
+        gap: 8px !important;
+    }
+    
+    @media (max-width: 480px) {
+        .pagination-controls #setSkipPrevBtn,
+        .pagination-controls #setSkipNextBtn,
+        .pagination-controls #modalSkipPrevBtn,
+        .pagination-controls #modalSkipNextBtn {
+            display: none !important;
+        }
+        .pagination-controls {
+            gap: 6px !important;
+        }
+        .pagination-controls button {
+            padding: 8px 10px !important;
+            font-size: 0.85rem !important;
+        }
+        .pagination-controls span {
+            font-size: 0.85rem !important;
+        }
+    }
 }
+
 
 /* Save Indicator Styles */
 .save-indicator {
