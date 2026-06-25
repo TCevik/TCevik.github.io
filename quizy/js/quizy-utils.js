@@ -486,34 +486,6 @@ function createCardRowManager(cardRowsContainer) {
 
     function manageEmptyRows() {
         updateAddBtnText();
-        
-        const lastItem = allEditorItems[allEditorItems.length - 1];
-        if (allEditorItems.length > 1) {
-            const secondLast = allEditorItems[allEditorItems.length - 2];
-            const lastItemEmpty = lastItem && !lastItem.term.trim() && !lastItem.definition.trim();
-            const secondLastEmpty = secondLast && !secondLast.term.trim() && !secondLast.definition.trim();
-            if (lastItemEmpty && secondLastEmpty) {
-                allEditorItems.pop();
-                const totalPages = Math.ceil(allEditorItems.length / editorPageSize);
-                
-                const rows = Array.from(cardRowsContainer.getElementsByClassName('card-row'));
-                if (rows.length > 0) {
-                    rows[rows.length - 1].remove();
-                }
-                
-                if (currentEditorPage > totalPages) {
-                    currentEditorPage = Math.max(1, totalPages);
-                    renderEditorPageWithAnchoring(() => {
-                        renderEditorPage();
-                    });
-                } else if (paginationDiv && allEditorItems.length > editorPageSize) {
-                    paginationDiv.querySelector('#modalPageInfo').textContent = `Pagina ${currentEditorPage} van ${totalPages}`;
-                    paginationDiv.querySelector('#modalNextPageBtn').disabled = currentEditorPage === totalPages;
-                    paginationDiv.querySelector('#modalSkipNextBtn').disabled = currentEditorPage === totalPages;
-                }
-                updateAddBtnText();
-            }
-        }
     }
 
     function updatePlaceholderTexts() {
@@ -628,14 +600,24 @@ function createCardRowManager(cardRowsContainer) {
 
     function collectItems() {
         saveInputsToMemory();
+        for (let i = 0; i < allEditorItems.length; i++) {
+            const item = allEditorItems[i];
+            const term = item.term.trim();
+            const def  = item.definition.trim();
+            if ((term && !def) || (!term && def)) {
+                throw new Error('Elke kaart moet zowel een term als een definitie hebben.');
+            }
+        }
+        allEditorItems = allEditorItems.filter(item => item.term.trim() !== '' || item.definition.trim() !== '');
+        if (allEditorItems.length === 0) {
+            allEditorItems.push({ term: '', definition: '', starred: false });
+        }
+        renderEditorPage();
         const items = [];
         for (let i = 0; i < allEditorItems.length; i++) {
             const item = allEditorItems[i];
             const term = item.term.trim();
             const def  = item.definition.trim();
-            if (term && !def || !term && def) {
-                throw new Error('Elke kaart moet zowel een term als een definitie hebben.');
-            }
             if (term && def) items.push({ term, definition: def, starred: item.starred });
         }
         return items;
