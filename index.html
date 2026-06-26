@@ -151,13 +151,66 @@
             box-shadow: 0 6px 15px rgba(82, 135, 62, 0.4);
         }
 
+        #menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 101;
+            transition: color 0.3s ease;
+        }
+
+        #menu-toggle:hover {
+            color: var(--color-accent);
+        }
+
         @media (max-width: 768px) {
-            #header-right a.search-btn span {
+            #menu-toggle {
+                display: block;
+            }
+
+            #header-right {
                 display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: rgba(18, 18, 18, 0.95);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                padding: 20px;
+                gap: 15px;
+                border-bottom: 1px solid var(--border-color);
+                align-items: stretch;
+                text-align: center;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            }
+
+            #header-right.active {
+                display: flex;
+            }
+
+            #header-right a {
+                padding: 10px;
+                font-size: 16px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            #header-right a:last-child {
+                border-bottom: none;
+            }
+
+            #header-right a.search-btn span {
+                display: inline;
             }
 
             #header-right a.search-btn {
-                padding: 6px 10px;
+                padding: 10px 14px;
+                justify-content: center;
             }
         }
 
@@ -419,6 +472,7 @@
     <header>
         <h1 id="header-title" onclick="location.href='/'"><span>TC_tam</span><span class="header-subtitle"> -
                 Homepage</span></h1>
+        <button id="menu-toggle" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
         <div id="header-right">
             <a href="quizy/home.html"><i class="fa-solid fa-graduation-cap"></i> Quizy Dashboard</a>
             <a href="https://old.tctam.nl">Old Website</a>
@@ -535,6 +589,32 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle');
+            const headerRight = document.getElementById('header-right');
+            
+            if (menuToggle && headerRight) {
+                menuToggle.addEventListener('click', () => {
+                    headerRight.classList.toggle('active');
+                    const icon = menuToggle.querySelector('i');
+                    if (headerRight.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-xmark');
+                    } else {
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!menuToggle.contains(e.target) && !headerRight.contains(e.target)) {
+                        headerRight.classList.remove('active');
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+
             if (window.innerWidth <= 768) {
                 const cards = document.querySelectorAll('.card');
 
